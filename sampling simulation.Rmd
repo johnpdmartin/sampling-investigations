@@ -1,0 +1,667 @@
+---
+title: "sampling research using a simulated zulily customer frame"
+author: "John P. D. Martin"
+date: "Friday, December 5, 2014"
+#output: html_document
+output: pdf_document
+---
+
+###Executive Summary
+
+The paper investigates the differences in sampling estimates and A/B testing sample sizes expected through use of a simulated customer purchase history frame. It is found that monthly stochastic purchasing behaviour and different yearly purchasing frequencies by customers can sometimes impact on the robustness of the sampling method and statistical inferences from A/B testing.
+
+**Finding 1:** For a model customer frame with stochastic monthly purchasing behaviour. The sampling variance may be significantly greater than assumed from simply downscaling the yearly data. 
+
+As such, lower than expected monthly population variance would be computed from downscaling the yearly data and result in insufficient sample sizes being proposed for A/B testing compared to the expected 90% statistical power performance.
+
+**Recommendation 1:** Use of simulated repeated sampling from historical monthly data should be used as a nonparametric method, to establish the monthly population variance rather than analysing scaled yearly data.
+
+**Finding 2:** For a model customer frame with a wide range of yearly purchase frequencies, some reduction in the sampling variance can be achieved with stratified sampling compared to simple random sampling SRS of the whole frame. 
+
+Explicit use of the frame information via stratified sampling helps ensure more of the "one off" test samples contain a representative sample of the wide purchase frequency behaviour. 
+
+For the model investigated, it was found that stratified sampling (proportional to strata size with 7 strata) resulted in ~15% lower sampling variance. The actual results for a real customer frame would be different from this model result depending on the level of stochastic monthly purchasing behaviour, purchasing growth and seasonality but simulation using recent historical data would be internally consistent and insightful for any A/B testing experimental design. Based on historical data, stratified experimental design (sample per strata) can also be optimised to minimise sampling variance.
+
+**Recommendation 2:** The combined use of stratified sampling experimental designs and "conservative" SRS A/B testing design effects, would make the statistical inferences identified from testing more reliable.
+
+
+
+###Introduction
+
+Sampling from populations with important subgroups because of 
+
+- output requirements or 
+- significantly different variance behaviour 
+
+may require stratified experimental designs to achieve optimal confidence intervals for sample estimates and A/B testing. For zulily, important population subgroups are 
+
+(i) women customers by age groups,
+(ii) women customers grouped by family demographics, (eg. grown up, teenagers, young, zero children), 
+(iii) old and new customers and
+(iii) low, medium, high frequency purchasers.
+
+In this paper, the impact of new/old customers and different purchase frequency customers on sampling estimate confidence intervals are investigated by use of customer purchase model based on the Poisson distribution and some aggregate zulily data.
+
+Firstly, the Model Population frame is created at the yearly level based on published purchase frequency data. Then a monthly customer level model is derived by introducing monthly stochastic Poisson behaviour for each (yearly) purchase frequency. 
+
+Next the A/B testing sample size is determined (based on the variance of the monthly stochastic purchase model) for a proposed minimum detectable effect size of 0.1246, corresponding to a increase/decrease of 1 additional purchase transaction per customer per year. 
+
+Finally, the variance properties of repeated sampling from the frame is assessed comparatively for simple random sampling (SRS), stratified SRS and stratified systematic random sampling.
+
+Any conclusions drawn on differences between the sampling methods strictly applies to the Model frame. However, the empirical mean and variance properties for the zulily frame could be used along with repeated sampling from the zulily frame to see if similar conclusions are obtained. 
+
+###Model Population frame
+
+A simulated yearly customer purchase history is created initially on zulily press releases
+
+- A current customer base of 4.1 Million based on Second Quarter 2014 Results (1)
+- Average of 6 purchase transactions per year for new customers (2)
+- Average of 12 purchase transactions per year for old customers (2)
+- The customer base grew by 86% in the last year based on Second Quarter 2014 Results (1)
+
+From
+
+(1) http://investor.zulily.com/releasedetail.cfm?ReleaseID=864744
+
+(2) http://www.bizjournals.com/seattle/blog/techflash/2014/10/zulilys-big-hard-challenge-a-different-website-for.html
+
+Assumptions in the customer base model are
+
+- The yearly customer purchase history is modelled as the sum of two independent Poisson distributions for the new and old customer populations
+- The new customer population comprises the customer base growth (86%) in the last year (4.1M(0.86/1.86)=) 1.9M
+- The old customer population comprises the customer base last year, (4.1M/1.86=) 2.2M
+- The forecast monthly purchase transaction behaviour is assumed to be a stochastic Poisson modification of the average monthly behaviour for each yearly purchase frequency. For example, each customer may have varying numbers 0, 1, 2 .. etc purchase transactions each month based on their yearly purchase average. 
+
+
+
+To determine the required sample size for A/B testing the following is assumed
+
+- A detectable change in the average number of purchase transactions (per customer) by one  additional (or less) transaction per year across the customer base is specified as the designated threshold ("effect size") for hypothesis testing of significant differences between two samples (based on control and treatment versions of zulily personalised customer webpages). 
+- For old customers, this means a change from an average of 12 purchase transactions per year to 13 (or 11). 
+- For new customers, this means a change from an average 6 purchase transactions per year to 7 (or 5).
+- For the whole customer base model history (described below) this means an increase from an average of 9.125 purchase transactions per year to 10.125 (or decrease to 8.125) purchase transactions per year is regarded as a threshold change in the customer base purchase behaviour. 
+- The nominal effect size of this designated threshold (using the customer base model) is 0.1296.  
+- A two sided significance test is implemented as it is not confirmed whether the treatment personalised webpage will increase purchases
+- No sample loss, nonresponse or growth in the customer base is assumed (whereas in reality some attrition and significant growth is occurring)
+- The significance level for type I errors is set at the standard 95% level (corresponding to a 5% chance of false positives occurring, whereby confidence interval estimates of the purchase behaviour may not include the true population value)
+- The significance level for type II errors is set at 90% level similar to clincal trials (corresponding to a 10% chance of false negative conclusions, whereby the estimate of difference between two samples (control and treatment) is not statistically significant when the true population values are actually different by more than the designated threshold value between the two groups)
+- the control (monthly) purchase history rate is the average behaviour of ~ 0.768 (=9.125/12) purchase transactions per customer per month but based on a sample estimate. In real life, this A/B testing design element helps adjust for changes in the purchase behaviour arising from seasonality in purchase volume and the current monthly growth in zulily customer purchases.
+
+Table 1 and Figure 1 below, show the modelled new, old and combined customer purchase behaviour based on aggregate data for purchase transactions in 2014. The distributions are assumed to be Poisson distributions using the published zulily data for new (mean= 6 purchases per year) and old customers (mean= 12 purchases per year). The variances of these two components of the zulily customer base are modelled as 6 & 12 respectively consistent with the Poisson distribution assumption.
+
+The combined distribution is then a sum of two independent Poisson distributions. With the relative population sizes of the two components the estimated mean is ~ 9.216 purchases transactions per year and the estimated variance is 18.1235 (close to the theoretical value for the yearly variance of 18, calculated as the sum (6+12) of two independent components). 
+
+
+**Table 1: Modelled customer counts by purchase transactions per year**
+
+
+```{r, yearly customer model, echo=FALSE, cache=FALSE}
+setwd("d:/courses/research/zulily/sim_data")
+
+x_trans_mth <- c(0:25)
+popn <- matrix(nrow=26,ncol=4,dimnames=list(x_trans_mth,c("purch_trans_per_year","old_customers","new_customers","all_customers")))
+
+for (i in 1:26) {
+  popn[i,1] <- x_trans_mth[i]
+  popn[i,2] <- dpois(x_trans_mth[i],12)*2200000
+  popn[i,3] <- dpois(x_trans_mth[i],6)*1900000
+  popn[i,4] <- popn[i,2]+popn[i,3]}
+plot(y=popn[,4],x=popn[,1],xlab="purchase transactions per year",ylab="number of customers",pch=19,main="Fig. 1: 2014 bimodal purchase transaction zulily consumer model",sub="Fig. 1",xaxt="n")
+axis(1, at=seq(0,25), label=F, tick=T, tck=-.02)
+axis(1, at=seq(0,25,5), tck=-.04)
+
+points(y=popn[,2],x=popn[,1],col="blue")
+points(y=popn[,3],x=popn[,1],col="red")
+abline(v=sum(popn[,4]*popn[,1])/sum(popn[,4]),col="black",lwd=2,lty=2)
+head(popn,13)
+abline(v=sum(popn[,2]*popn[,1])/sum(popn[,2]),col="blue",lwd=2,lty=2)
+abline(v=sum(popn[,3]*popn[,1])/sum(popn[,3]),col="red",lwd=2,lty=2)
+
+```
+
+In practice, the A/B testing will be conducted on a monthly basis. The "yearly" model (shown above) would create a "monthly"" model which is too smooth in behaviour, if the purchase transaction numbers are simply divided by 12. This is because most customers will not be uniform across each month in their buying habits. (This behaviour is expected even ignoring seasonality). Customers will make 0, 1, 2 .. etc purchase transactions per month and this volatility will contribute to the variance of the sampling results and hence the required sampling size for statistical power of 90%.
+
+To model the monthly behaviour more realistically, a unit level model (4.1M records) is derived where each customer has a monthly stochastic number of purchase transactions 0, 1, 2, ... etc. The mean of the Poisson distribution used in the stochastic monthly behaviour for each customer is based on the yearly number of purchase transactions (of the customer) divided by 12. The R chunk "monthly customer model" in the associated R markdown source file of this report contains explicit details. 
+
+Table 2 and Figure 2 below, gives one realisation of the random Poisson based (individual customer) monthly purchase. The estimated mean purchase transactions per customer per month is ~ 0.768 (Figure 2) which is equivalent to the yearly average (9.215/12) and the numbers at aggregate level (Table 2) would be in close agreement with a downscaled yearly model. However, the variance in purchase transactions at monthly level is now significantly higher than if the yearly behaviour was simple scaled by 1/12.
+
+These model estimates should be compared to the real monthly zulily distribution (for 2014) when assessing the usefulness of the model including analysis by repeated sampling. For example, seasonality in purchase transactions would vary the (mean) and sampling variance across months.
+
+**Table 2: Stochastic model purchases compared to average purchases by yearly purchase frequency groups**
+
+```{r, monthly customer model, echo=FALSE, cache=FALSE}
+# converting the old and new component population counts by number of purchases per year to integers
+
+popn2 <- popn
+for(i in 1:26) {
+  popn2[i,2] <- round(popn2[i,2])
+  popn2[i,3] <- round(popn2[i,3])
+  popn2[i,4] <- popn2[i,2]+popn2[i,3]
+}
+#head(popn2)
+#sum(popn2[,4])
+
+# creating monthly model including stochastic purchase behaviour per month
+# using rpois(1,yearly average/12) for each customer
+
+popn_frame <- matrix(nrow=sum(popn2[,4]),ncol=5,dimnames=list(c(1:sum(popn2[,4])),c("purch_trans_per_mth","dummy","old_new","strata","rand_monthbuy")))
+i1 <- 0
+# assigning unique identifier to old customers
+
+# dividing population into strata "adjacent purchase frequency"
+
+# creating stochastic purchase history for one month
+# based on random poisson probability using monthly frequency 6/12, 8/12 etc as mean
+
+# allows for range of monthly purchase variations
+
+popn_frame[,3] <- 1
+set.seed(89342)
+for (i in 1:26 ) {
+  for ( j in 1:popn2[i,4]) {
+    i1 <- i1 + 1
+    popn_frame[i1,1] <- popn2[i,1] # purchase frequency per year
+    popn_frame[i1,2] <- 1 # count variable
+    if(j <= popn2[i,2]) {popn_frame[i1,3] <- 0 }
+    if(popn_frame[i1,1] %in% c(0,1,2,3,4)) { 
+      popn_frame[i1,4] <- 1;popn_frame[i1,5] <- rpois(1,popn_frame[i1,1]/12)}
+      else if (popn_frame[i1,1] %in% c(5,6)) { 
+        popn_frame[i1,4] <- 2;popn_frame[i1,5] <- rpois(1,popn_frame[i1,1]/12)}
+      else if (popn_frame[i1,1] %in% c(7,8)) { 
+        popn_frame[i1,4] <- 3;popn_frame[i1,5] <- rpois(1,popn_frame[i1,1]/12)}
+      else if (popn_frame[i1,1] %in% c(9,10)) { 
+        popn_frame[i1,4] <- 4;popn_frame[i1,5] <- rpois(1,popn_frame[i1,1]/12)}
+      else if (popn_frame[i1,1] %in% c(11,12)) { 
+        popn_frame[i1,4] <- 5;popn_frame[i1,5] <- rpois(1,popn_frame[i1,1]/12)}
+      else if (popn_frame[i1,1] %in% c(13:15)) { 
+        popn_frame[i1,4] <- 6;popn_frame[i1,5] <- rpois(1,popn_frame[i1,1]/12)}
+      else if (popn_frame[i1,1] %in% c(16:25)) { 
+        popn_frame[i1,4] <- 7;popn_frame[i1,5] <- rpois(1,popn_frame[i1,1]/12)}  }
+}
+
+# setting up dataset for figure 2 similar to figure 1
+
+
+
+agg_behaviour <- aggregate(popn_frame[,2],by=list(popn_frame[,5],popn_frame[,3]),FUN=sum)
+
+#agg_behaviour
+
+#remove(popn_mth)
+
+popn_mth <- matrix(nrow=11,ncol=4,dimnames=list(c(1:11),c("purch_trans_in_mth","old_customers","new_customers","all_customers")))
+
+popn_mth[,1] <- agg_behaviour[1:11,"Group.1"]
+popn_mth[,2] <- agg_behaviour[1:11,"x"]
+popn_mth[,3] <- 0
+for (i in 1:9) { popn_mth[i,3] <- agg_behaviour[11+i,"x"]}
+popn_mth[,4] <- popn_mth[,2]+popn_mth[,3]
+
+#popn_mth
+
+
+scaled_annual_purch_grp <- aggregate(popn_frame[,1],by=list(popn_frame[,4]),FUN=sum)/12
+
+#str(scaled_annual_purch_grp)
+
+#scaled_annual_purch_grp[,"x"]
+mthly_model_purch_grp <- aggregate(popn_frame[,5],by=list(popn_frame[,4]),FUN=sum)
+
+# comparing stochastic number purchases with average purchases
+
+comparison_models <- as.data.frame(cbind(c("0-4","5-6","7-8","9-10","11-12","13-15","16-25"),round(scaled_annual_purch_grp[,"x"],1),mthly_model_purch_grp[,"x"]))                                            
+colnames(comparison_models) <- c("purch_trans_per_year","scaled_yearly_model","stochastic_monthly_model") 
+comparison_models
+
+#plotting stochastic monthly behaviour of purchase transactions
+plot(y=popn_mth[,4],x=popn_mth[,1],xlab="purchase transactions per month",ylab="number of customers per month",pch=19,main="Fig. 2: Stochastic monthly purchase transaction model (2014)",sub="Fig. 2",xlim=c(0,4))
+axis(1, at=seq(0,4,.1), label=F, tick=T, tck=-.02)
+axis(1, at=seq(0,4,.5),  label=F,tck=-.04)
+axis(2, at=seq(0,2000000,100000), label=F, tick=T, tck=-.01)
+
+points(y=popn_mth[,2],x=popn_mth[,1],col="blue")
+points(y=popn_mth[,3],x=popn_mth[,1],col="red")
+abline(v=sum(popn_mth[,4]*popn_mth[,1])/sum(popn_mth[,4]),col="black",lwd=2,lty=2)
+abline(v=sum(popn_mth[,2]*popn_mth[,1])/sum(popn_mth[,2]),col="blue",lwd=2,lty=2)
+abline(v=sum(popn_mth[,3]*popn_mth[,1])/sum(popn_mth[,3]),col="red",lwd=2,lty=2)
+
+
+#mean(popn_frame[,5])
+#var(popn_frame[,5])
+```
+
+Under the stochastic model, the monthly average purchase transactions is 0.768 (black line) for the whole population. While the new and old customers exhibit average purchase transactions (red and blue lines) of 0.5 & 1. These mean estimates are all consistent with a simple average of the yearly behaviour (9.215/12, 6/12 & 12/12). What is different with the stochastic model is that there is additional variance at customer level in the number of purchase transactions per month which increases the sampling variance occurring with A/B testing.
+
+### A/B testing 
+
+Under consideration with A/B testing, is the testing of modified zulily personalised customer webpages to better match the range of items that each customer may be interested in purchasing for herself and her friends/family.
+
+As part of the experimental design for A/B testing, a suitable threshold value for change in purchase behaviour needs to firstly determined. 
+
+Given this agreed value for a noticeable change in sales performance, the required sample size is then determined using standard statistical sampling formulae based on 
+
+(i) expected mean purchase behaviour, 
+(ii) expected variance purchase behaviour and 
+(iii) requiring the sample size to achieve statistical power >= 90% for changes in the mean at least as large as the threshold value (as risk mitigation against false negative conclusions on the efficacy of a particular test modification compared to existing personalised webpage method)
+
+**Establishing a minimum detectable purchase change level for A/B testing**
+
+Since the intention of the webpage modification under test is to induce a fresh customer purchase in the month of the test. A suitable threshold value in observing a change of purchase behaviour is proposed as an increase (decrease) of one additional purchase per year.
+
+In monthly terms, this threshold is
+
+a minimum change in purchase behaviour of 0.0833 (=1/12)
+
+**Using the modelled zulily data** 
+
+The monthly mean purchase transaction rate is 0.768 transactions per customer (=9.125/12)
+
+The scaled yearly variance in the purchase transaction rate is 0.3548 (=sqrt(18.1235)/12). This value is expected to underestimate the real monthly variance for A/B testing use, since customers will vary the number of purchase transactions per month rather than have constant behaviour.
+
+A more realistic monthly variance in the purchase transaction rate would be 0.8948 based on the monthly model derived in the previous section (containing stochastically generated numbers of monthly purchase transactions per customer). For each real frame, repeated sampling of historical data can be used to establish the most accurate sampling variance estimate.
+
+
+Using these three values 
+
+- (mean~0.768, variance~0.8948, threshold change~1/12) for zulily customers and 
+- imposing a statistical power of 90% performance on the sample size (for two-sided significance test) to mitigate against false negative conclusions from A/B testing on the difference in results between the normal webpage (control sample) and test webpage (treatment sample), 
+
+gives the following required effect size to be observed for two sample (A/B) testing 
+
+(based on Cohen, J. (1988). Statistical Power Analysis for the Behavioral Sciences (2nd Edition). Hillsdale, NJ: Lawrence Earlbaum Associates.)
+
+effect size = (mean(treatment) - mean(control))/ sqrt(population variance) * sqrt(2)
+
+
+
+```{r, sample size, echo=FALSE, cache=FALSE}
+setwd("d:/courses/research/zulily/sim_data")
+#install.packages("pwr")
+library(pwr)
+
+# H0: mean0 = 0.768 versus Ha: meana != 0.768
+# two sided test, threshold delta = 0.08333
+# design effect 1 (simple random sampling assumed)
+# critical value (large sample) for distance between mean0 & meana
+# 3.241 for 95% significance level and 90% statistical power
+# power = P(Z>zb) = P( z(1-A/2) - (meana - mean0)/ ( sigma / sqrt(n)) )
+
+# the critical value 3.241 for power 90% 
+# is less stringent than the condition required for 
+# non-overlap of the two (equal size) sample confidence intervals
+# (2x1.96)=3.92 standard intervals
+
+## Two independent samples (power)
+
+designated_threshold_mth <- (10.125-9.125)/12 # change of 1 purchase per year
+
+print("effect size calculation")
+nom_effect_size <- designated_threshold_mth/sqrt(.8948304)*sqrt(2)
+nom_effect_size 
+# buy one more time each year
+pwr.t.test(d=nom_effect_size,power=0.90,sig.level=0.05,type="two.sample",alternative="two.sided") 
+
+#check using first priciples formula and critical values
+
+# normal approximation power estimate given large sample
+zalpha <- 1.96
+samp1 <- 1355
+samp2 <- 1355
+delta <- .083333 #  threshold change in mean between control and treatment
+totstd <- sqrt((.8948304+delta^2)/samp2+.8948304/samp1) # estimated sampling standard deviation of difference between two estimates
+est_std_diff <- delta/totstd # effect size
+samp1_std <- sqrt(.8948304/samp1) # sample 1 standard deviation
+est_samp1_UB <- 9.215/12+1.96*samp1_std # upper bound of sample 1 estimate
+samp2_std <- sqrt((.8948304+delta^2)/samp2)# sample 2 standard deviation
+est_samp2_powcov <- (est_samp1_UB-(9.215/12+delta))/samp2_std # estimated z value (power coverage) of the non overlapped right tail portion of the sample 2 confidence interval above the upper bound of sample 1 estimate 
+print("A double check on the 'pwr' R package estimate of statistical power:")
+print("the alternate estimate of statistical power using n = 1355 ")
+print("should also be close to 90% power, expressed as decimal (0.90)")
+pnorm(est_samp2_powcov,lower.tail = FALSE) # normal approximation estimate of resultant statistical power
+
+
+
+```
+**Other small levels of purchase changes and their required sample sizes for A/B testing**
+
+To provide some perspective on the relative impact of 1 additional purchase per year on sales and the required sample size (enforcing 90% statistical power), Table 3 below, lists the required sample size (per group for two-sided significance test) and effect size for changes in sales performance by the nominal amounts of 2%, 5%, 1/12, 10% & 20%.
+
+**Table 3: Required sample sizes for A/B testing (sig level 5%, power 90%) under different thresholds**
+
+```{r, other sample sizes, echo=FALSE, cache=FALSE}
+
+## Two independent samples (power)
+
+# suitable thresholds values would be 2%, 5%, 1/12, 10% growth/decline due to treatment
+possible_thresholds <- c(.02,.05,.08333,.1,.2)
+
+
+nom_effect_size <- possible_thresholds/sqrt(.8948304)*sqrt(2)
+# loop calculation
+sample_sizes <- 0
+for (i in 1:5) {sample_sizes[i] <- pwr.t.test(d=nom_effect_size[i],power=0.90,sig.level=0.05,type="two.sample",alternative="two.sided")$n}
+output_table <- cbind(possible_thresholds,round(nom_effect_size,4),round(sample_sizes,1))
+colnames(output_table) <- c("threshold","effect size","A/B sample size")
+rownames(output_table) <- c("2% more/less purchases per month","5% more/less purchases per month","1 more/less purchase per cust per yr","10% more/less purchases per month","20% more/less purchases per month")
+output_table
+
+
+
+```
+
+Under typical clinical trial conditions, due to high sample cost and the ethical impact of imposing placebo treatments on patients in control groups, the control & treatment groups are the same size. 
+
+With A/B testing of webpages, the sample cost may be considered to be lower and the ethics of imposing placebo (or status quo) treatment to the control group are not relevant, hence the control group can in principle be alternately set to equal the sum of the size of the treatment groups. This altered experimental design while potentially lowering the accuracy possible for each treatment group (if the available sample is limited) allows (i) interactions between simultaneous treatments to be separately measured and (ii) multiple thresholds of change in performance to be analysed.
+
+For example, using the current zulily example. With four samples (and three subsamples) comprising
+
+1. Control group, sample size ~4065 (broken into 3 subgroups of 1355)
+2. treatment 1, sample size 1355
+3. treatment 2, sample size 1355
+4. treatment 1 + treatment 2, sample size 1355
+
+The 3 control subgroups provide some empirical cross validation of the performance of the sample size of 1355. Each treatment group can be assessed against the control group for increase of 1 additional purchase per year. The interaction impact between treatment 1 and treatment 2 is independently measured. Finally, the combined treatment sample size 4065, can be compared to the combined control group to assess if a lower rate of improvement (~5% more purchases per year, see Table 2) may be identified even if the A/B test threshold change > 1/12 did not occur.
+
+In terms of monthly transactions, the total average monthly transaction expected is 3 Million per month, so the above experiment comprises ~0.27% (=8130/3M) of the customer transactions.
+
+###Assessing the impact of any internal structure within the sample frame, on the randomisation method
+
+Three different sampling methods 
+
+- simple random sampling (SRS), 
+- stratified SRS and
+- stratified systematic random sampling
+
+will be assessed comparatively using repeated sampling to see if the expected confidence intervals used in the above A/B testing sample size performance can be reproduced. 
+
+As previously described, the Model population frame consists of 4.1 Million customers. Each customer will have a unique identifier and the three sampling methods will be applied to this frame to obtain repeated samples. The variance across the repeated samples is then calculated to see if the sampling method produces different variances because of the internal structure of the population frame.
+
+In Table 4, four different estimates of mean and sampling variance are presented. 
+
+The first (reference) value was obtained by calculating the **population mean and population variance** for the monthly customer model (including monthly stochastic number of purchases). The **sampling variance** for sample size of 1355 was then obtained from the population variance and sample size using standard formula.
+
+The second estimate was obtained by **repeated simple random sampling** across the entire unit level monthly customer model, treating the frame as one strata. For each sample of 1355, the mean was calculated. To determine the sampling variance, the variance of the distribution of the means was calculated. In addition, to ensure enough repeated samples were taken the accumulated estimates of sampling variance was monitored for convergence. The data on the distribution and convergence of the estimated sampling variance is shown in the Appendix.
+
+The third estimate was obtained by **stratified repeated simple random sampling** where the monthly customer model frame was split into 7 roughly equal (by population) strata. The sample per strata was allocated proportional to population. The weighted mean was calculated for each repeated sample. To determine the sampling variance, the variance of the distribution of the means was calculated. Again the accumulated estimates of sampling variance was monitored for convergence. The data on the distribution and convergence of the estimated sampling variance is also shown in the Appendix. There are more sophisticated versions of stratified SRS where the sample size per strata is optimised to mimimise the overall sample variance (given inhomogeniety in variance behaviour across strata).
+
+Finally, the fourth estimate was obtained by **stratified random systematic sampling** where again the monthly customer model frame was split into 7 roughly equal (by population) strata. The sample per strata was also allocated proportional to population. The difference with random systematic sampling was that the sample was created by choosing the first sample unit in each strata randomly then the rest of the sample per strata was determined as a regular skip within the strata. It is expected to be similar in performance to stratified SRS but is of some benefit in ordered frames if there is a requirement for subgroups to be adequately sampled. For this paper, the fourth method acts as cross validation on the third method (as the first and second methods are also performing cross validation with respect to each other). As for methods two and three, the weighted mean was calculated for each repeated sample and the sampling varaince from the distribution of the means. The data on the distribution and convergence of the estimated sampling variance is again shown in the Appendix.
+
+**Table 4: Comparison of estimated means and sampling variance for different sampling methods**
+
+Sampling Method | Estimated Mean Purchase Transaction per customer per month | Estimated sampling variance (n=1355) | relative sampling variance performance
+--------------- | ----------------------------------------------------------- | ------------------------------------ | --------------------------------------
+population calculation | 0.7683 | .0006604 | 1
+SRS | 0.7685 | .0006505 | 0.985 
+stratified SRS | 0.7676 | .0005586 | 0.846
+random stratified systematic sampling | 0.7679 | .0005713 | 0.865
+
+It can be seen from Table 4 and the Appendix, that stratified SRS is producing some reduction in sampling variance compared to SRS. This efficiency gain is understood to occur because stratified SRS restricts the range of possible samples to reflect more closely the proportion of the population for each stratified range of purchase frequencies. If the population behaviour was uniform in density then stratified SRS would not show any difference to SRS.
+
+The difference in variance performance between repeated SRS and the population calculation results .0006505 & .0006604 (rows 2 & 1) arise from residual sampling error expected with repeated sampling. That is, .0006505 is an estimate and should have a confidence interval including .0006604 the true value, if it is unbiassed.
+
+###Conclusions
+
+The stochastic nature of Monthly purchase transaction behaviour may contribute significantly to the sampling variance for A/B testing. Stratified SRS should provide some reduction in sampling variance compared to SRS due to customer peaks in the yearly purchase transation behaviour. Historical analysis including simulated repeated sampling of monthly purchase data should be used to establish the population variance (and the contribution of stochasticity). Some information on the impact of seasonality on sampling variance should be possible by comparison of historical analysis across months.
+
+If A/B testing sample sizes were determined by SRS formula but the sample were selected by stratified SRS, then more reliable statistical inferences from any significant results identified should be obtained as a result of more robust samples (stratified SRS) and tougher A/B test critical values (SRS sample variance higher than stratfied SRS).
+
+
+
+###Appendix - results of repeated sampling
+
+Presented below are graphs of the distribution of repeated sampling estimates of (i) means and (ii) sample variance for three different sampling methods
+
+- SRS
+- stratified SRS
+- stratified random systematic sampling
+
+With large sample sizes >>30, the expectation is that the distribution of repeated mean estimates will approximate a normal distribution. The three sampling methods (with sample size 1355 and 2000 repeated samples), shown in Figures 3a, 4a & 5a exhibit this behaviour.
+
+With large sample sizes, it is also expected that the estimated sample variance from repeated samples will converge to a stable value. The three sampling methods, Figures 3b, 4b & 5b exhibit this behaviour.
+
+**repeated sampling SRS**
+
+```{r, repeated sampling SRS, echo=FALSE, cache=FALSE}
+# A/B testing will involve without replacement sampling
+# as the samples will be independent for any given month
+
+#mean(popn_frame[,5])
+#var(popn_frame[,5])/1355
+
+
+#set.seed(514)
+set.seed(1730)
+n <- 1355
+rsamples <- 2000
+mean_sample <- 0 
+for (i in 1:rsamples) 
+{ mean_sample[i] <- mean(sample(popn_frame[,5], n , replace = FALSE))}
+hist(mean_sample,breaks=50,xlab="purchase transactions per customer per month",ylab="number of customers",main="Fig. 3: Repeated sample estimates using SRS",sub="Fig. 3",xaxt="n",xlim=c(.67,.87))
+axis(1, at=seq(0.5,1.1,.01), label=F, tick=T, tck=-.02)
+axis(1, at=seq(0.5,1.1,.05), tck=-.04)
+
+abline(v=mean(mean_sample),col="blue",lwd=2,lty=2)
+abline(v=mean(mean_sample)+1.96*sqrt(var(mean_sample)),col="red",lwd=2,lty=2)
+abline(v=mean(mean_sample)-1.96*sqrt(var(mean_sample)),col="red",lwd=2,lty=2)
+
+```
+ 
+
+```{r, output repeated sampling SRS stats, echo=FALSE, cache=FALSE}
+
+#mean(mean_sample)
+#var(mean_sample) # var is sample variance
+#plot(sort(mean_sample))
+#plot(mean_sample)
+var_srs <- 0
+for (i in 5:2000) {var_srs[i] <- var(mean_sample[1:i])}
+plot(var_srs,main="Fig. 3b: SRS repeated sampling convergence",ylab="accumulated estimate of sample variance",xlab="number of repeated samples",sub="Fig. 3b")
+
+
+```
+
+**repeated stratified sampling SRS**
+
+
+```{r, repeated stratified sampling SRS, echo=FALSE, cache=FALSE}
+# A/B testing will involve without replacement sampling
+# as the samples will be independent for any given month
+strata_sum <- aggregate(popn_frame[,2],by=list(popn_frame[,4]),FUN=sum)
+samp_frac <- strata_sum/length(popn_frame[,1])*1355
+samp_frac2 <- round(samp_frac$x)
+
+samp_frac2[2] <- 229
+samp_wgt <- strata_sum$x/samp_frac2
+#samp_wgt
+#sum(samp_frac2)
+
+popn_str1 <- popn_frame[popn_frame[,4] == 1,5]
+popn_str2 <- popn_frame[popn_frame[,4] == 2,5]
+popn_str3 <- popn_frame[popn_frame[,4] == 3,5]
+popn_str4 <- popn_frame[popn_frame[,4] == 4,5]
+popn_str5 <- popn_frame[popn_frame[,4] == 5,5]
+popn_str6 <- popn_frame[popn_frame[,4] == 6,5]
+popn_str7 <- popn_frame[popn_frame[,4] == 7,5]
+
+mean_strata <- c(mean(popn_str1),mean(popn_str2),mean(popn_str3),mean(popn_str4),mean(popn_str5),mean(popn_str6),mean(popn_str7))
+var_strata <- c(var(popn_str1),var(popn_str2),var(popn_str3),var(popn_str4),var(popn_str5),var(popn_str6),var(popn_str7))
+#sqrt(sum(var_strata))
+
+wgt_inp <- 0
+for (i in 1:1355) {wgt_inp[i] <- 1}
+
+i2 <- 0
+for (i in 1:7) {
+  for (j in 1:samp_frac2[i]) {
+    i2 <- i2 + 1
+    wgt_inp[i2] <- samp_wgt[i]
+    }
+  }
+
+# wgt_inp
+#set.seed(514)
+set.seed(1730)
+#n <- 200
+rsamples <- 2000
+mean_sample_str <- 0
+samplesizes <- 0
+for (i in 1:rsamples) {
+  sampq <- c(sample(popn_str1, samp_frac2[1] , replace = FALSE),
+             sample(popn_str2, samp_frac2[2] , replace = FALSE),
+             sample(popn_str3, samp_frac2[3] , replace = FALSE),
+             sample(popn_str4, samp_frac2[4] , replace = FALSE),
+             sample(popn_str5, samp_frac2[5] , replace = FALSE),
+             sample(popn_str6, samp_frac2[6] , replace = FALSE),
+             sample(popn_str7, samp_frac2[7] , replace = FALSE))
+             
+  mean_sample_str[i] <- weighted.mean(sampq,wgt_inp)
+  samplesizes[i] <- length(sampq)}
+#mean(samplesizes) # check samples are all 201
+#length(sampq)
+
+hist(mean_sample_str,breaks=50,xlab="purchase transactions per customer per month",ylab="number of customers",main="Fig. 4: Repeated sample estimates using stratified SRS",sub="Fig. 4",xaxt="n",xlim=c(.67,0.87))
+axis(1, at=seq(0.5,1.1,.01), label=F, tick=T, tck=-.02)
+axis(1, at=seq(0.5,1.1,.05), tck=-.04)
+
+abline(v=mean(mean_sample_str),col="blue",lwd=2,lty=2)
+abline(v=mean(mean_sample_str)+1.96*sqrt(var(mean_sample_str)),col="red",lwd=2,lty=2)
+abline(v=mean(mean_sample_str)-1.96*sqrt(var(mean_sample_str)),col="red",lwd=2,lty=2)
+
+
+```
+ 
+```{r, output repeated sampling stratified SRS stats, echo=FALSE, cache=FALSE}
+
+#mean(mean_sample_str)
+#var(mean_sample_str) # var is sample variance
+#plot(sort(mean_sample))
+#plot(mean_sample)
+var_str <- 0
+for (i in 5:2000) {var_str[i] <- var(mean_sample_str[1:i])}
+plot(var_str,main="4b: stratified SRS repeated sampling has convergence",ylab="accumulated estimate of sample variance",xlab="number of repeated samples",sub="Fig. 4b")
+
+```
+
+
+**repeated systematic sampling SRS**
+
+
+```{r, repeated systematic sampling SRS, echo=FALSE, cache=FALSE}
+# A/B testing will involve without replacement sampling
+# as the samples will be independent for any given month
+
+# with systematic sampling and smooth behaviour there will be lumps in the histogram of repeated sampling
+# by introducing stochastic element into model data
+# such that persons with 0,1,2..,6,.. purchases each year will have their purchase for one month selected via poisson coin flip
+# using their yearly average as the probability 1/12, 2/12, .. 6/12 etc
+
+
+  set.seed(274183)
+len1 <- length(popn_str1)
+len2 <- length(popn_str2)
+len3 <- length(popn_str3)
+len4 <- length(popn_str4)
+len5 <- length(popn_str5)
+len6 <- length(popn_str6)
+len7 <- length(popn_str7)
+len <- c(len1,len2,len3,len4,len5,len6,len7) 
+sys_seln_skip <- len/samp_frac2
+
+mean_sample_sys <- 0
+
+for (j2 in 1:2000) {
+  start_seln <- c(ceiling(len1*runif(1)),ceiling(len2*runif(1)),ceiling(len3*runif(1)),ceiling(len4*runif(1)),ceiling(len5*runif(1)),ceiling(len6*runif(1)),ceiling(len7*runif(1)))
+ 
+  for (j1 in 1:7) {if(start_seln[j1] > len[j1]) {start_seln[j1] <- start_seln[j1]-len[j1]}}
+
+  i3 <- start_seln
+  
+  
+  
+  sample_sys <- 0
+  sample_num <- 0
+  
+
+  for (j in 1:samp_frac2[1]) { sample_num[j] <- ceiling(i3[1])
+                         
+                         sample_sys[j] <- popn_str1[ceiling(i3[1])]
+                         
+                         i3[1] <- i3[1] + sys_seln_skip[1]
+                         if(i3[1] > len[1]) {i3[1] <- i3[1]-len[1]}
+                         }
+  for (j in 1:samp_frac2[2]) { sample_num[j+samp_frac2[1]] <- ceiling(i3[2])
+                         
+                         sample_sys[j+samp_frac2[1]] <- popn_str2[ceiling(i3[2])]
+                         
+                         i3[2] <- i3[2] + sys_seln_skip[2]
+                         if(i3[2] > len[2]) {i3[2] <- i3[2]-len[2]}
+                         }
+
+ for (j in 1:samp_frac2[3]) { sample_num[j+sum(samp_frac2[1:2])] <- ceiling(i3[3])
+                         
+                         sample_sys[j+sum(samp_frac2[1:2])] <- popn_str3[ceiling(i3[3])]
+                         
+                         i3[3] <- i3[3] + sys_seln_skip[3]
+                         if(i3[3] > len[3]) {i3[3] <- i3[3]-len[3]}
+                         }
+
+for (j in 1:samp_frac2[4]) { sample_num[j+sum(samp_frac2[1:3])] <- ceiling(i3[4])
+                         
+                         sample_sys[j+sum(samp_frac2[1:3])] <- popn_str4[ceiling(i3[4])]
+                         
+                         i3[4] <- i3[4] + sys_seln_skip[4]
+                         if(i3[4] > len[4]) {i3[4] <- i3[4]-len[4]}
+                         }
+
+for (j in 1:samp_frac2[5]) { sample_num[j+sum(samp_frac2[1:4])] <- ceiling(i3[5])
+                         
+                         sample_sys[j+sum(samp_frac2[1:4])] <- popn_str5[ceiling(i3[5])]
+                         
+                         i3[5] <- i3[5] + sys_seln_skip[5]
+                         if(i3[5] > len[5]) {i3[5] <- i3[5]-len[5]}
+                         }
+for (j in 1:samp_frac2[6]) { sample_num[j+sum(samp_frac2[1:5])] <- ceiling(i3[6])
+                         
+                         sample_sys[j+sum(samp_frac2[1:5])] <- popn_str6[ceiling(i3[6])]
+                         
+                         i3[6] <- i3[6] + sys_seln_skip[6]
+                         if(i3[6] > len[6]) {i3[6] <- i3[6]-len[6]}
+                         }
+for (j in 1:samp_frac2[7]) { sample_num[j+sum(samp_frac2[1:6])] <- ceiling(i3[7])
+                         
+                         sample_sys[j+sum(samp_frac2[1:6])] <- popn_str7[ceiling(i3[7])]
+                         
+                         i3[7] <- i3[7] + sys_seln_skip[7]
+                         if(i3[7] > len[7]) {i3[7] <- i3[7]-len[7]}
+                         }
+  
+
+
+  mean_sample_sys[j2] <- mean(sample_sys)
+  #print(mean_sample_sys[j2]);print(length(sample_sys))
+}
+
+
+hist(mean_sample_sys,breaks=50,xlab="purchase transactions per customer per month",ylab="number of customers",main="Fig. 5: Repeated sampling using stratified systematic sampling",sub="Fig. 5",xaxt="n",xlim=c(.67,.87))
+axis(1, at=seq(0.5,1.1,.01), label=F, tick=T, tck=-.02)
+axis(1, at=seq(0.5,1.1,.05), tck=-.04)
+
+abline(v=mean(mean_sample_sys),col="blue",lwd=2,lty=2)
+abline(v=mean(mean_sample_sys)+1.96*sqrt(var(mean_sample_sys)),col="red",lwd=2,lty=2)
+abline(v=mean(mean_sample_sys)-1.96*sqrt(var(mean_sample_sys)),col="red",lwd=2,lty=2)
+
+
+```
+ 
+
+```{r, output repeated sampling random stratified systematic stats, echo=FALSE, cache=FALSE}
+#mean(mean_sample_sys)
+#var(mean_sample_sys) # var is sample variance
+#plot(sort(mean_sample_sys))
+#plot(mean_sample_sys)
+var_sys <- 0
+for (i in 5:2000) {var_sys[i] <- var(mean_sample_sys[1:i])}
+plot(var_sys,main="Fig 5b: systematic sampling repeated sampling convergence",ylab="accumulated estimate of sample variance",xlab="number of repeated samples",sub="Fig. 5b")
+
+
+```
