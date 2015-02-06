@@ -2,8 +2,8 @@
 title: Improved jackknife estimates for median variance in equally weighted samples using percentile scale based calculations
 author: "John P. D. Martin"
 date: "Thursday, February 5, 2015"
-#output: pdf_document
-output: html_document
+output: pdf_document
+#output: html_document
 ---
 
 ###Executive Summary
@@ -423,7 +423,7 @@ mtext("red - pop'n value, black - sample median, blue - 2.5%/97.5% CI bounds", s
 
 
 **Figure 4**
-```{r, symmetric_distribution_case_2_uniform, echo=FALSE, cache=FALSE, fig.width=6, fig.height=6, fig.keep='high'}
+```{r, symmetric_distribution_case_2_N(0,1), echo=FALSE, cache=FALSE, fig.width=6, fig.height=6, fig.keep='high'}
 setwd("d:/courses/research/variance")
 
 par(mfrow=c(2,1))
@@ -546,7 +546,7 @@ abline(v=quantile(symm,thetaBar-1.96*seEst),col="blue",lwd=2,lty=2)
 abline(v=quantile(symm,thetaBar+1.96*seEst),col="blue",lwd=2,lty=2)
 
 mtext("Median variance and 95% Confidence Interval estimates", side=3, outer=TRUE, line=-1.5)
-mtext("symmetric distribution case 3 - systematic unif(0,1)", side=3, outer=TRUE, line=-3)
+mtext("symmetric distribution case 2 - N(0,1)", side=3, outer=TRUE, line=-3)
 mtext("red - pop'n value, black - sample median, blue - 2.5%/97.5% CI bounds", side=3, outer=TRUE, line=-5)
 
 ```
