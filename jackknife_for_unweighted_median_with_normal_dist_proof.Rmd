@@ -129,7 +129,7 @@ The mean of the drop jackknife estimates, for n odd, is
 
 which differs from the full sample median estimate
 
-\begin{equation}\therefore bias\_jk\_n\_odd \approx -\frac{1}{2n^{2}}+...\end{equation}
+\begin{equation}\therefore bias\_jk\_n\_odd \approx -\frac{n-1}{2n^{2}}+...\end{equation}
 
 
 The next step in the jackknife estimation is to calculate the  variance of the distribution of the jackknife estimates. 
