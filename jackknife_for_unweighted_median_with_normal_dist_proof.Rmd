@@ -123,13 +123,13 @@ For the points ordered above the median point, the drop one jackknife estimate o
 The mean of the drop jackknife estimates, for n odd, is
 
 
-\begin{equation}\frac{1}{n}\cdot((floor(\frac{n}{2})+1)jk\_lower+floor(\frac{n}{2})jk\_upper) = \frac{1}{n}jk\_lower\end{equation}
+\begin{equation}\frac{1}{n}\cdot((floor(\frac{n}{2})+1)jk\_lower+floor(\frac{n}{2})jk\_upper) = \frac{1}{n}\cdot (n\cdot\frac{1}{2}-\frac{1}{2n}-\frac{1}{2n^{2}})\end{equation}
 
-\begin{equation}\approx \frac{1}{2n}-\frac{1}{2n^{2}}+...\end{equation}
+\begin{equation}\approx \frac{1}{2}-\frac{1}{2n^{2}}-\frac{1}{2n^{3}}+...\end{equation}
 
 which differs from the full sample median estimate
 
-\begin{equation}\therefore bias\_jk\_n\_odd \approx \frac{1}{2n}+...\end{equation}
+\begin{equation}\therefore bias\_jk\_n\_odd \approx -\frac{1}{2n^{2}}+...\end{equation}
 
 
 The next step in the jackknife estimation is to calculate the  variance of the distribution of the jackknife estimates. 
@@ -155,11 +155,11 @@ The variance of the jackknife estimates, for n odd is
 
 using the results from eqns(10-18)
 
-\begin{equation}= \frac{n-1}{n}\cdot ((floor(\frac{n}{2})+1)\cdot((jk\_lower-\frac{1}{2})^{2}+(floor(\frac{n}{2})\cdot(jk\_upper-\frac{1}{2})^{2}))\end{equation}
+\begin{equation}= \frac{n-1}{n}\cdot ((floor(\frac{n}{2})+1)\cdot((jk\_lower-\frac{1}{2}+\frac{1}{2n^{2}})^{2}+(floor(\frac{n}{2})\cdot(jk\_upper-\frac{1}{2}+\frac{1}{2n^{2}})^{2}))\end{equation}
 
-\begin{equation}\approx \frac{n-1}{n}\cdot(2\cdot floor(\frac{n}{2})+1)\cdot(\frac{1}{2n}+\frac{1}{2n^{2}}+...)^{2}\end{equation}
+\begin{equation}\approx \frac{n-1}{n}\cdot(2\cdot floor(\frac{n}{2})+1)\cdot(\frac{1}{2n}+...)^{2}\end{equation}
 
-\begin{equation}\approx \frac{n-1}{n}\cdot n\cdot(\frac{1}{2n}+\frac{1}{2n^{2}}+...)^{2}\end{equation}
+\begin{equation}\approx \frac{n-1}{n}\cdot n\cdot(\frac{1}{2n}+...)^{2}\end{equation}
 
 \begin{equation}\approx (n-1)\cdot\frac{1}{4}\cdot(\frac{1}{n}+...)^{2}\end{equation}
 
