@@ -1,0 +1,1145 @@
+---
+title: Improved jackknife estimates for median variance in equally weighted samples
+  using percentile scale based calculations
+author: "John P. D. Martin"
+date: "Thursday, February 5, 2015"
+output: pdf_document
+---
+
+###Executive Summary
+
+This paper demonstrates the improvement in accuracy of jackknife estimates of the classical confidence intervals of medians from equally weighted (or unweighted) samples using calculations based on the percentile scale rather than the original scale of the observations. The method used is similar to the Woodruff approach for weighted samples (1) and the improved estimates are consistent with the expectation that suitably transforming the reference frame can improve variance estimation accuracy (2).
+
+As shown in Table 1, the jackknife estimates of median confidence intervals for unweighted samples conducted in the percentile scale, and then backtransformed to the original scale are found to be highly consistent with bootstrap estimates for several common distributions; uniform, normal, log-normal and skewed bivariate normal.
+
+**Table 1: Estimated median 95% confidence intervals of unweighted samples for different resampling methods**
+
+Distribution | popn median | bootstrap | original scale jackknife | percentile scale jackknife 
+--------- | ------- | ----------- | ------- | -------
+random uniform(0,1) | 0.5 | (0.4612,0.5218) | (0.4402,0.5513) | (0.4612,0.5218)
+normal N(0,1) | 0 | (-0.0993,0.0576) | (-0.08749,.02576) | (-.09972,.05772)
+systematic uniform(0,1) | 0.5 | (0.4532,0.5494) | (0.4534,0.5492) | (0.4545,0.5505)
+log-normal exp(N(0.1,1)) | 1.09 | (1.026,1.18) | (0.9434,1.236) | (1.026,1.181)
+bivariate normal | 76.65 | (74.7,77.73) | (75.98,77.75) | (74.71,77.74)
+
+To highlight the need for a locally linear (smooth) quality to the unweighted sample distribution (2,3,4) in the region of the median point, in order for jackknife median variance calculations to match the performance of bootstrap median variance calculations. The third example in Table 1, is the highly artifical case of evenly spaced observations. In this rare linear example in the original scale, as expected, the regular jackknife calculation approach also closely matches the bootstrap confidence interval estimate.
+
+Various aspects of transforming the median variance estimation calculation to the percentile scale, have been in long use by statistical agencies such as the Australian Bureau of Statistics and Westat for weighted data. From Rogers 2003 (1), in particular,"... the Woodruff method calculates a confidence interval for the sample amount below the estimated percentile. That confidence interval is then transformed to the measurement scale using the inverse of the sample quantile function". 
+
+This is basically the same approach as what has been performed in this paper. There have been descriptions of the benefits of transformation for both bootstrap and jackknife variances estimates (2,3) but this report (i) describes this good performance of the jackknife approach for estimating the median variance for the special case of unweighted (or equally weighted) samples or (ii) uses this special case as a limit for convergence of bootstrap resampling calculations. 
+
+
+#Introduction
+
+The issue with the jackknife estimator as a linearisation of the bootstrap method, is that it relies on the distribution of sample estimates of mean, median etc being asymptopically linear and smooth.  
+
+For estimates of means, as the sample size grows, the central limit theorem is applicable and the distribution of sample means with jackknife subsampling becomes increasingly smooth and locally linear.
+
+For sampling estimates of median variance, the distribution of resampled (bootstrap) or subsampled (jacknife) estimates of median is generally asymmetric in the original scale (2) of observed distributions and the central limit theorem does not apply. 
+
+However, in the case of unweighted samples, it is also generally true that the percentile distribution (empirical cumulative density distribution (ecdf)) about the median value 0.5, is linear. This is shown in figure 1b&d, for a N(0,1) unweighted sample of size 50, where each unweighted observation contributes the same amount 1/n to the ecdf. 
+
+Note that there are some more complex versions of cdfs where the ends of sample distributions are given less weighting via continuity corrections, eg. empirical distribution function with averaging and interpolation (used by Australian Bureau of Statistics). Such modified cdfs, value the sample distribution end points more weakly as the true end points of population distributions are harder to accurately sample.
+
+Performing the jackknife calculations for estimates of median variance for unweighted samples in the percentile scale has the advantage that the percentile distribution of unweighted samples is linear while the jackknife is a linearised bootstrap estimator. Hence, the jackknife estimator could in principle approach the performance of bootstrap calculations. 
+
+##Sample variance of medians  
+
+
+The jackknife estimation of variance for the median, using the original measurement scale, has been shown to be inconsistent (6). 
+
+In particular, the known distribution of the sample median from a population with a density function f(x) is asymptotically normal with mean m and variance (7)
+
+\begin{equation}\frac{ 1 }{ 4n f( m )^2 }\end{equation}  
+
+Derived values for the jackknife variance estimate of median, using the original measurement scale, are not consistent with the above value.
+
+However, it has also been shown that "transformation of means" to particular reference frames can improve jackknife variance accuracy (2,3). In this paper, a suitable choice of reference frame for "transformation of median" that results in improved jackknife variance estimates is the percentile scale, where the observations are arranged and labelled in percentile order. 
+
+In these next two sub-sections, the variance and bias of unweighted sample medians using jackknife estimation in the percentile scale are calculated. Then the jackknife variance estimate is backtransformed to the original measurement scale, for the standard normal distribution and compared to the asymptotic median variance given in equation 1. 
+
+###Transformation of median calculations to the percentile scale 
+
+For the percentile scale for unweighted samples, the median (and pth-quantile) are points on a linear scale. Each ordered point in this distribution has the following cdf values, (using a basic median definition)
+
+1/n , 2/n , 3/n , .... , n/n
+
+In the drop one unit jackknife variance approach for such a distribution (ignoring continuity corrections), the (n-1) subsampled cdf values assigned to each ordered point are
+
+1/(n-1), 2/(n-1), 3/(n-1), .... , (n-1)/(n-1)
+
+Performing the drop one unit jackknife variance calculation about the median point in this reference frame. 
+
+If n is even,
+
+
+For the lower half of the ordered units, the drop one unit jackknife estimate of the median point has the value
+
+\begin{equation}jk\_lower = (\frac{n}{2}-1)\cdot\frac{1}{n-1}\end{equation}  
+
+\begin{equation}\approx (\frac{1}{2}-\frac{1}{n})\cdot(1+\frac{1}{n}+\frac{1}{n^{2}}+...)\end{equation}
+
+\begin{equation}\approx \frac{1}{2}-\frac{1}{2n}-\frac{1}{2n^{2}}+...\end{equation}
+
+For the upper other half of the ordered units, the drop one jackknife estimate of median point has the value
+
+\begin{equation}jk\_lower = (\frac{n}{2})\cdot\frac{1}{n-1}\end{equation}
+
+\begin{equation}\approx \frac{n}{2}\cdot\frac{1}{n}\cdot(1+\frac{1}{n}+\frac{1}{n^{2}}+...)\end{equation}
+
+\begin{equation}\approx \frac{1}{2}+\frac{1}{2n}+\frac{1}{2n^{2}}+...\end{equation}
+
+
+The mean of the drop jackknife estimates, for n even, is
+
+
+\begin{equation}\frac{1}{n}\cdot(\frac{n}{2}\cdot(jk\_lower+jk\_upper)) = \frac{1}{2}\end{equation}
+
+which is the full sample median estimate
+
+\begin{equation}\therefore bias\_jk\_n\_even = 0\end{equation}
+
+
+If n is odd,
+
+
+For the lower half of the ordered units plus the median point, the drop one unit jackknife estimate of the median point has the value
+
+\begin{equation}jk\_lower = (floor(\frac{n}{2})-1)\cdot\frac{1}{n-1}\end{equation}  
+
+\begin{equation}\approx (\frac{1}{2}-\frac{1}{n})\cdot(1+\frac{1}{n}+\frac{1}{n^{2}}+...)\end{equation}
+
+\begin{equation}\approx \frac{1}{2}-\frac{1}{2n}-\frac{1}{2n^{2}}+...\end{equation}
+
+For the points ordered above the median point, the drop one jackknife estimate of median point has the value
+
+\begin{equation}jk\_lower = floor(\frac{n}{2})\cdot\frac{1}{n-1}\end{equation}
+
+\begin{equation}\approx \frac{1}{2}\cdot(1+\frac{1}{n}+\frac{1}{n^{2}}+...)\end{equation}
+
+\begin{equation}\approx \frac{1}{2}+\frac{1}{2n}+\frac{1}{2n^{2}}+...\end{equation}
+
+
+The mean of the drop jackknife estimates, for n odd, is
+
+
+\begin{equation}\frac{1}{n}\cdot((floor(\frac{n}{2})+1)jk\_lower+floor(\frac{n}{2})jk\_upper) = \frac{1}{n}jk\_lower\end{equation}
+
+\begin{equation}\approx \frac{1}{2n}-\frac{1}{2n^{2}}+...\end{equation}
+
+which differs from the full sample median estimate
+
+\begin{equation}\therefore bias\_jk\_n\_odd \approx \frac{1}{2n}+...\end{equation}
+
+
+The next step in the jackknife estimation is to calculate the  variance of the distribution of the jackknife estimates. 
+
+The variance of the jackknife estimates, for n even is
+
+\begin{equation}{(n-1)}\cdot\frac{1}{n}\sum{(jk\_est-jk\_mean)^{2}}\end{equation}
+
+using the results from eqns(2-9)
+
+\begin{equation}= \frac{n-1}{n}\cdot\frac{n}{2}\cdot((jk\_lower-\frac{1}{2})^{2}+(jk\_upper-\frac{1}{2})^{2})\end{equation}
+
+\begin{equation}\approx \frac{n-1}{n}\cdot\frac{n}{2}\cdot 2\cdot(\frac{1}{2n}+\frac{1}{2n^{2}}+...)^{2}\end{equation}
+
+\begin{equation}\approx (n-1)\cdot\frac{1}{4}\cdot(\frac{1}{n}+...)^{2}\end{equation}
+
+\begin{equation}\approx \frac{1}{4n}\cdot\frac{n-1}{n}\end{equation}
+
+
+The variance of the jackknife estimates, for n odd is
+
+\begin{equation}{(n-1)}\cdot\frac{1}{n}\sum{(jk\_est-jk\_mean)^{2}}\end{equation}
+
+using the results from eqns(10-18)
+
+\begin{equation}= \frac{n-1}{n}\cdot ((floor(\frac{n}{2})+1)\cdot((jk\_lower-\frac{1}{2})^{2}+(floor(\frac{n}{2})\cdot(jk\_upper-\frac{1}{2})^{2}))\end{equation}
+
+\begin{equation}\approx \frac{n-1}{n}\cdot(2\cdot floor(\frac{n}{2})+1)\cdot(\frac{1}{2n}+\frac{1}{2n^{2}}+...)^{2}\end{equation}
+
+\begin{equation}\approx \frac{n-1}{n}\cdot n\cdot(\frac{1}{2n}+\frac{1}{2n^{2}}+...)^{2}\end{equation}
+
+\begin{equation}\approx (n-1)\cdot\frac{1}{4}\cdot(\frac{1}{n}+...)^{2}\end{equation}
+
+\begin{equation}\approx \frac{1}{4n}\cdot\frac{n-1}{n}\end{equation}
+
+
+
+Therefore, the first order jackknife variance estimate of the unweighted median, in the percentile scale, is of the common form (for n odd or even)
+
+\begin{equation}{(n-1)}\cdot\frac{1}{n}\sum{(jk\_est-jk\_mean)^{2}} \approx \frac{1}{4n}\cdot\frac{n-1}{n}\end{equation}
+
+
+
+###Backtransformation of jackknife estimates of median variance to original measurment scale - standard normal distribution
+
+Given calulated median estimates in the percentile scale, it is necessary to backtransform the results to the original measurement scale. In practice, this requires an inversion of the cumulative density function which can be algebraically intractable. In Table 1 and the appendix of this paper this backtransformation has been conducted numerically.
+
+In the case of the normal distribution, the cumulative density function does have a known form (8). In particular, the cdf can be expressed as a power series
+
+\begin{equation}\Phi(x)\; =\;0.5+\frac{1}{\sqrt{2\pi}}\cdot e^{-x^2/2}\left[x+\frac{x^3}{3}+\frac{x^5}{3\cdot 5}+\cdots+\frac{x^{2n+1}}{(2n+1)!!} + \cdots\right]\end{equation}
+
+Equating the percentile scale stanbard error points, median point +/- equation 30, to the CDF (equation 31), it is possible to find measurement scale solutions for the variance values given by equation 30.
+
+\begin{equation}median \pm \sqrt{jk\_var\_perc\_scale} = CDF(x) \end{equation}
+
+\begin{equation}0.5 \pm sqrt{(\frac{1}{4n}\cdot\frac{n-1}{n})} = \;0.5+\frac{1}{\sqrt{2\pi}}\cdot e^{-x^2/2}\left[x+\frac{x^3}{3}+\frac{x^5}{3\cdot 5}+\cdots+\frac{x^{2n+1}}{(2n+1)!!} + \cdots\right] \end{equation}
+
+In the asymptotic limit of large sample sizes
+
+\begin{equation}0.5 \pm sqrt{(\frac{1}{4n})} \approx \;0.5+\frac{1}{\sqrt{2\pi}}\cdot e^{-x^2/2}\left[x+ \cdots\right] \end{equation}
+
+Therefore,
+
+\begin{equation}sqrt{(\frac{1}{4n})} \approx \pm \frac{1}{\sqrt{2\pi}}\cdot (1-\frac{x^{2}}{2})\left[x+ \cdots\right] \end{equation}
+
+\begin{equation}(\frac{1}{4n}) \approx \frac{1}{2\pi}\cdot x^{2} \end{equation}
+
+
+Therefore, in the original measurement scale for the standard normal distribution
+
+\begin{equation}x^{2}  \approx \frac{2\pi}{4n}\end{equation}
+
+which can be directly compared to the general asymptotic median variance given in equation 1, which for the standard normal distribution has the value
+
+\begin{equation}N(0,1)\_asymptotic\_median\_var = \frac{ 1 }{ 4n f(0)^{2} }\end{equation}  
+
+\begin{equation} = \frac{ 1 }{ 4n (\frac{1}{\sqrt{2\pi}})^{2} }\end{equation}
+
+\begin{equation} = \frac{ 2\pi }{ 4n }\end{equation}
+
+
+The large sample estimates, equations 37 & 40 are in good agreement indicating that to first order, jackknife estimates of median (and potentially p-quantiles) calculated in the percentile scale and backtransformed to the original measurement scale can be consistent with population values.
+
+##Numerical calculations for unweighted sample medians of several continuous distributions
+
+In Table 1 and the appendix, jackknife variance estimates of unweighted medians in the percentile scale are compared to standard jackknife calculations and classical bootstrap median confidence intervals (based on 10000 resamples) for five examples of continuous distributions.
+
+Two common symmetric distributions
+
+(i) uniform distribution unif(0,1) of sample 1000, and
+
+(ii) the standard normal distribution N(0,1) of sample 1000
+
+an artificial linear smooth symmetric distribution in the measurement scale
+
+(iii) systematic unif(0,1) of random sample size 415 using start/skip selection
+
+and two common skewed distributions
+
+(iv) a log-normal distribution exp(N(0.1,1)) of sample 1000, and 
+
+(v) a continuous bivariate normal distribution 1/3(N(55,5.5))+2/3(N(80,6)) of sample 270. This example is a continuous distribution analogue of the old faithful geyser waiting duration data located as data(faithful) on the r library(datasets). 
+
+The 2.5th/97.5th percentiles of the jackknife variance estimates are calculated using
+
+  0.5 +/- 1.96/sqrt(n)  
+  
+under the normal approximation consistent with comparing to standard CI bootstrap calculations (shown in the R code given in the appendix) and the sample sizes 270, 415 & 1000 used in this paper.
+
+
+
+
+**Figure 1** 
+```{r, cdf, echo=FALSE, cache=FALSE, fig.width=6, fig.height=6, fig.keep='high'}
+
+set.seed(2618)
+samp <- rnorm(50,0,1)
+Fn <- ecdf(samp)
+yval <- Fn(samp)
+
+setdata <- as.data.frame(cbind(samp,yval))
+setdata <- setdata[order(setdata[,"yval"]),]
+#length(setdata)
+setdata[,3] <- as.vector(c(1:50)/50)
+#head(setdata)
+
+colnames(setdata) <- c("orig scale","cdf value","percentscale")
+
+library(boot)
+stat <- function(x, i) {median(x[i])}
+boot.out <- boot(data = setdata[,1],
+                 statistic = stat,
+                 R = 10000)
+# boot.ci(boot.out)
+# print("mean of bootstrap samples")
+# mean(boot.out$t)
+# median(boot.out$t)
+# print("standard error of bootstrap samples")
+# sd(boot.out$t)
+outboot <- quantile(boot.out$t,probs=c(.025,.15865,.5,.6827,.975))
+
+
+n <- length(samp)
+theta <- median(samp)
+jkinv <- sapply(1 : n,
+             function(i) {Fn <- ecdf(samp[-i]);
+                             Fn(theta)}
+)
+
+thetaBarinv <- mean(jkinv)
+jkexpinv <- (jkinv-thetaBarinv)*sqrt(n)+thetaBarinv
+jkexpandinv <- quantile(samp,jkexpinv) 
+#head(jkexpandinv)
+biasEstinv <- (n - 1) * (thetaBarinv - theta)
+seEstinv <- sqrt((n - 1) * mean((jkinv - thetaBarinv)^2))
+
+
+par(mfrow=c(2,2))
+par(fig=c(0,0.5,0.45,0.9))
+
+plot(y=yval,x=samp,ylim=c(0,1),main="CDF in original scale",xlab="x value of N(0,1)",ylab="cumulative percentile",sub="Fig. 1a")
+abline(h=0.5,col="red",lwd=2,lty=2)
+abline(v=median(samp),col="red",lwd=2,lty=1)
+
+
+par(fig=c(0.5,1,0.45,0.9), new=TRUE)
+plot(y=setdata[,"cdf value"],x=setdata[,"percentscale"],ylim=c(0,1),main="ECDF of unweighted sample in percentile scale",xlab="relative position number in ECDF",ylab="cumulative percentile",cex.main=0.95,sub="Fig. 1b")
+abline(h=0.5,col="red",lwd=2,lty=2)
+abline(v=0.5,col="red",lwd=2,lty=1)
+
+
+par(fig=c(0,0.5,0,0.5), new=TRUE)
+
+plot(y=yval,x=samp,xlim=c(-1,.5),ylim=c(.3,.7),main="CDF  and CI about sample median point",xlab="x value of N(0,1)",ylab="cumulative percentile",cex.main=0.95,sub="Fig. 1c")
+abline(h=0.5,col="red",lwd=2,lty=2)
+abline(v=median(samp),col="red",lwd=2,lty=1)
+abline(v=outboot[1],col="blue",lwd=2,lty=2)
+abline(v=outboot[5],col="blue",lwd=2,lty=2)
+Fn <- ecdf(samp)
+abline(h=Fn(outboot[1]),col="blue",lwd=2,lty=1)
+abline(h=Fn(outboot[5]),col="blue",lwd=2,lty=1)
+
+par(fig=c(0.5,1,0,0.5), new=TRUE)
+plot(y=setdata[,"cdf value"],x=setdata[,"percentscale"],xlim=c(.35,.65),ylim=c(.3,.7),main="ECDF and CI about sample median point",xlab="relative position number in ECDF",ylab="cumulative percentile",cex.main=0.95,sub="Fig. 1d")
+abline(h=0.5,col="red",lwd=2,lty=2)
+abline(v=0.5,col="red",lwd=2,lty=1)
+abline(v=0.5-1.96*seEstinv,col="blue",lwd=2,lty=2)
+abline(v=0.5+1.96*seEstinv,col="blue",lwd=2,lty=2)
+abline(h=0.5-1.96*seEstinv,col="blue",lwd=2,lty=1)
+abline(h=0.5+1.96*seEstinv,col="blue",lwd=2,lty=1)
+
+
+mtext("CDF in the (original) measurement scale and the percentile scale - N(0,1)", side=3, outer=TRUE, line=-1.5)
+mtext("red line - median level", side=3, outer=TRUE, line=-3)
+mtext("blue lines - 2.5%/97.5% CI bounds", side=3, outer=TRUE, line=-4)
+
+```
+
+
+
+
+This range of datasets has different smoothness and nonlinearity of the cdf about the median point. As such, the confidence interval results for the regular jackknife calculation conducted in the (original) measurement scale, do not agree with the bootstrap calculation except for the artifical linear distribution example. Of course, for this artifical example (iii), the original scale cdf is linear and the jackknife calculation is expected to be accurate.
+
+However, comparing the "jackknife variance estimates using the percentile scale"" to the bootstrap calculations there is good agreement in the confidence intervals of the unweighted medians across all five examples. The tranformation of the jackknife calculation to the linear ecdf scale allows the jackknife method to consider the full characteristic of the sample distribution and the backtransformation from the ecdf to the original measurement scale handles the nonlinearity in the observed data distribution. 
+
+
+**Table 1: Estimated median 95% confidence intervals of unweighted samples for different resampling methods**
+
+Distribution | popn median | bootstrap | original scale jackknife | percentile scale jackknife 
+--------- | ------- | ----------- | ------- | -------
+random uniform(0,1) | 0.5 | (0.4612,0.5218) | (0.4402,0.5513) | (0.4612,0.5218)
+normal N(0,1) | 0 | (-0.0993,0.0576) | (-0.08749,.02576) | (-.09972,.05772)
+systematic uniform(0,1) | 0.5 | (0.4532,0.5494) | (0.4534,0.5492) | (0.4545,0.5505)
+log-normal exp(N(0.1,1)) | 1.09 | (1.026,1.18) | (0.9434,1.236) | (1.026,1.181)
+bivariate normal | 76.65 | (74.7,77.73) | (75.98,77.75) | (74.71,77.74)
+
+**Conclusions**
+
+The transformation of the jackknife calculation to the percentile scale for the special case of median estimates of unweighted samples, allows jackknife variance estimates to be consistent with median confidence interval estimates using first-order bootstrap calculations.
+
+This special case provides (i) a limiting value for bootstrap calculations as the number of resamples approaches infinity, (ii) supports jackknife estimation as a linearisation of classical bootstrap estimation and (iii) supports the paradigm that SRSWR bootstrap resampling is not somehow modifying the information given by the collected distribution since the jackknife estimation is using subsampling which is more clearly thought not to modify the information given by the sample.
+
+The issue of the accuracy of the Woodruff method for unequally weighted data (complex surveys) using replicate weighting and jackknife in the percentile scale, should be assessed by investigation of the linearity and smoothness of the cdf about the estimation point (mean, median etc).
+
+
+**References**
+
+1. John W. Rogers (2003), Estimating the variance of percentiles using replicate weights, 2003 Joint Statistical Meetings - Section on Survey Research Methods, p3525-3532, 
+http://www.amstat.org/sections/SRMS/Proceedings/y2003/Files/JSM2003-000742.pdf
+ 
+2. Efron, B. (1979) Bootstrap Methods: Another look at the Jackknife, The Annals of Statistics 7, pp1-26
+ 
+3. Efron, B. (2003) Second thoughts on the bootstrap, Statistical Science 18, pp135-140
+
+4. Miller, R.G. (1974) The Jackknife--a review, Biometrika 61, pp1-15 
+
+5. Caffo, B. (2007) Mathematical Biostatistics Boot Camp Lecture 12 on bootstrapping and resampling, http://www.biostat.jhsph.edu/~bcaffo/651/files/lecture12.pdf 
+
+6.  Efron, B. (1982). The Jackknife, the Bootstrap and other Resampling Plans. Philadelphia: SIAM. ISBN 0898711797.
+
+7. Rider, Paul R. (1960). "Variance of the median of small samples from several special populations". J. Amer. Statist. Assoc. 55 (289): 148-150. doi:10.1080/01621459.1960.10482056
+
+8. https://en.wikipedia.org/wiki/Normal_distribution
+
+###Appendix A - Adaption of R code to jackknife calculations in percentile scale for continuous distributions
+
+With the John Hopkins University, Data Science and Biostatistics online courses. The drop one unit jackknife variance estimation for median (5) was presented with the following R code
+
+n <- length(gmVol)
+
+theta <- median(gmVol)
+
+jk <- sapply(1 : n,
+
+function(i) median(gmVol[-i]) )
+
+thetaBar <- mean(jk)
+
+biasEst <- (n - 1) * (thetaBar - theta)
+
+seEst <- sqrt((n - 1) * mean((jk - thetaBar)^2))
+
+where gmVol is the dataset under consideration and the loop "sapply" with argument median(gmVol[-i]) drops one unit at a time and recalculates the median estimate as per the jackknife prescription. The distrubtion of the jackknife replicate estimates are then collated to estimate the mean, bias and standard deviation of the sample.
+
+The Woodruff method for percentile variance estimation uses (i) the whole sample to estimate the percentile boundaries and then (ii) calculates the uncertainty in the amount of sample within each percentile boundary by subsampling or other methods. The above example code for jackknife variance estimation, in the (original) scale can be converted to the woodruff method with only a few modifications (for continuous distributions)
+
+n <- length(gmVol)
+
+theta <- median(gmVol)
+
+jk <- sapply(1 : n,
+
+function(i) {
+
+Fn <- ecdf(gmVol[-i]);   # empirical cumulative density function
+
+Fn(theta)  # calculates the percent of sample < percentile boundary theta for each jackknife subsample
+
+}
+)
+
+thetaBarinv <- mean(jkinv)  # using inv to indicate the jackknife calculations are in percentile space
+
+jkexpinv <- (jkinv-thetaBarinv)*sqrt(n)+thetaBarinv # a scaled version of jackknife estimate close to 1 sd
+
+jkexpandinv <- quantile(samp,jkexpinv) 
+
+biasEstinv <- (n - 1) * (thetaBarinv - theta)
+
+seEstinv <- sqrt((n - 1) * mean((jkinv - thetaBarinv)^2))
+
+jackknife_median <- quantile(gmVol,0.5) # the sample median back again
+
+jackknife_median <- quantile(gmVol,0.5+1.96*seEstinv) # 2.5th percentile jackknife in original scale
+
+jackknife_median <- quantile(gmVol,0.5+1.96*seEstinv) # 97.5th percentile jackknife in original scale
+
+My appreciation to Profs Caffo/Peng/Leeto, John Hopkins University and Coursera for their open learning approach and content availability on the world wide web as it greatly facilitated this research to be developed.
+
+
+####Appendix B - Results and calculations of bootstrap and jackknife resampling for several continuous distributions  
+
+Using continuous distribution examples, allows the empirical cumulative density function (ecdf) to be as smooth as feasible allowing for a clear demonstration of percentile based jacknkife calculations. 
+
+With drop one unit jackknife median estimation it is well known that the median estimates of jackknife subsamples have only two values. This is because the full sample median point will only move one ordered place as the number of data points in the subsamples is (n-1) compared to the full sample n. Hence in the graphs of jackknife median estimates shown below, you will only see two peaks compared to the multiple discrete distribution of bootstrap median resample estimates. 
+
+**Figure 2** 
+```{r, symmdistcase1unif, echo=FALSE, cache=FALSE, fig.width=6, fig.height=6, fig.keep='high'}
+
+setwd("d:/courses/research/variance")
+
+# small sample size 1000 
+set.seed(971)
+symm <- runif(1000,0,1)
+
+library(boot)
+stat <- function(x, i) {median(x[i])}
+boot.out <- boot(data = symm,
+                 statistic = stat,
+                 R = 10000)
+boot.ci(boot.out)
+print("mean of bootstrap samples")
+mean(boot.out$t)
+print("standard error of bootstrap samples")
+sd(boot.out$t)
+outboot <- quantile(boot.out$t,probs=c(.025,.15865,.5,.6827,.975))
+
+
+
+
+par(mfrow=c(2,1))
+par(fig=c(0,1,0.4,0.85))
+
+#large sample size
+set.seed(92513)
+symmdist <- runif(10000,0,1)
+hist(symmdist,breaks=1,xlim=c(0,1),main="uniform distribution unif(0,1)",xaxt="n",sub="Fig. 2a",xlab="distribution values",cex.main=0.9)
+axis(1, at=seq(0,1,.1), label=F, tick=T, tck=-.06)
+axis(1, at=seq(0,1,.2), tck=-.1)
+
+abline(v=0.5,col="black",lwd=2,lty=2)
+abline(v=0.5,col="red",lwd=2,lty=3)
+abline(v=0.025,col="blue",lwd=2,lty=2)
+abline(v=0.975,col="blue",lwd=2,lty=2)
+
+par(fig=c(0,1,0,0.4), new=TRUE)
+
+hist(symm,breaks=40,xlim=c(0,1),main="unif(0,1) - sample size 1000",xaxt="n",sub="Fig. 2b",xlab="sample distribution values",ylab="frequency of sample values",cex.main=0.9)
+meannormsamp <- mean(symm)
+mednormsamp <- median(symm)
+axis(1, at=seq(0,1,.1), label=F, tick=T, tck=-.06)
+axis(1, at=seq(0,1,.2), tck=-.1)
+abline(v=mednormsamp,col="black",lwd=2,lty=2)
+abline(v=0.5,col="red",lwd=2,lty=1)
+abline(v=quantile(symm,probs=c(.025)),col="blue",lwd=2,lty=2)
+abline(v=quantile(symm,probs=c(.975)),col="blue",lwd=2,lty=2)
+
+mtext("Symmetric distribution case 1 - unif(0,1)", side=3, outer=TRUE, line=-1.5)
+mtext("red line - population median, black line - sample median", side=3, outer=TRUE, line=-3)
+mtext("blue lines - 2.5%/97.5% percentile bounds", side=3, outer=TRUE, line=-4)
+
+
+
+
+# jackknife calculations in original scale of observations
+
+
+n <- length(symm)
+theta <- median(symm)
+jk <- sapply(1 : n,
+             function(i) median(symm[-i])
+)
+thetaBar <- mean(jk)
+jkexpand <- (jk-thetaBar)*sqrt(n)+thetaBar
+biasEst <- (n - 1) * (thetaBar - theta)
+seEst <- sqrt((n - 1) * mean((jk - thetaBar)^2))
+print("jackknife median estimate using calculations in original scale")
+thetaBar
+print("jackknife median CI lower bound using calculations in original scale")
+thetaBar-1.96*seEst
+print("jackknife median CI upper bound using calculations in original scale")
+thetaBar+1.96*seEst
+
+
+
+# jackknife calculations in percentile scale and then backtransforming results to observed scale 
+
+
+n <- length(symm)
+theta <- median(symm)
+jkinv <- sapply(1 : n,
+             function(i) {Fn <- ecdf(symm[-i]);
+                             Fn(theta)}
+)
+#head(jkinv)
+
+thetaBarinv <- mean(jkinv)
+jkexpinv <- (jkinv-thetaBarinv)*sqrt(n)+thetaBarinv
+jkexpandinv <- quantile(symm,jkexpinv) 
+#head(jkexpandinv)
+biasEstinv <- (n - 1) * (thetaBarinv - theta)
+seEstinv <- sqrt((n - 1) * mean((jkinv - thetaBarinv)^2))
+
+print("")
+print("jackknife median estimate using calculations in percentile scale")
+print("and then backtransformed to original scale")
+quantile(symm,thetaBarinv)
+print("jackknife median estimate lower bound using calculations in ")
+print("percentile scale and then backtransformed to original scale")
+quantile(symm,thetaBarinv-1.96*seEstinv)
+print("jackknife median estimate upper bound using calculations in ")
+print("percentile scale and then backtransformed to original scale")
+quantile(symm,thetaBarinv+1.96*seEstinv)
+
+
+par(mfrow=c(3,1))
+par(fig=c(0,1,0.6,0.9))
+
+hist(boot.out$t,breaks=60,xlim=c(.42,.56),main="Bootstrap resamples of median",xaxt="n",sub="Fig. 3a",xlab="bootstrap median sample values",ylab="frequency of values",)
+medianest <- mean(boot.out$t)
+axis(1, at=seq(.4,.6,.02), label=F, tick=T, tck=-.02)
+axis(1, at=seq(.4,.6,.05), tck=-.04)
+abline(v=medianest,col="black",lwd=2,lty=2)
+abline(v=0.5,col="red",lwd=2,lty=1)
+abline(v=outboot[1],col="blue",lwd=2,lty=2)
+abline(v=outboot[5],col="blue",lwd=2,lty=2)
+
+
+par(fig=c(0,1,0.3,0.6), new=TRUE)
+hist(jkexpand,breaks=40,xlim=c(.42,.56),main="Drop one unit Jackknife subsamples of median using original scale",xaxt="n",sub="Fig. 3b",xlab="jackknife median sample values",ylab="frequency of values",)
+ 
+axis(1, at=seq(.4,.6,.02), label=F, tick=T, tck=-.02)
+axis(1, at=seq(.4,.6,.05), tck=-.04)
+abline(v=thetaBar,col="black",lwd=2,lty=2)
+abline(v=0,col="red",lwd=2,lty=1)
+abline(v=thetaBar-1.96*seEst,col="blue",lwd=2,lty=2)
+abline(v=thetaBar+1.96*seEst,col="blue",lwd=2,lty=2)
+
+
+
+par(fig=c(0,1,0,0.3), new=TRUE)
+hist(jkexpandinv,breaks=40,xlim=c(.42,.56),main="Drop one unit Jackknife subsamples of median using percentile scale",xaxt="n",sub="Fig. 3c",xlab="jackknife median sample values",ylab="frequency of values",)
+ 
+axis(1, at=seq(.4,.6,.02), label=F, tick=T, tck=-.02)
+axis(1, at=seq(.4,.6,.05), tck=-.04)
+abline(v=quantile(symm,thetaBarinv),col="black",lwd=2,lty=2)
+abline(v=0,col="red",lwd=2,lty=1)
+abline(v=quantile(symm,thetaBarinv-1.96*seEstinv),col="blue",lwd=2,lty=2)
+abline(v=quantile(symm,thetaBarinv+1.96*seEstinv),col="blue",lwd=2,lty=2)
+
+mtext("Median variance and 95% Confidence Interval estimates", side=3, outer=TRUE, line=-1.5)
+mtext("symmetric distribution case 1 - uniform - unif(0,1)", side=3, outer=TRUE, line=-3)
+mtext("red - pop'n value, black - sample median, blue - 2.5%/97.5% CI bounds", side=3, outer=TRUE, line=-5)
+
+```
+
+
+**Figure 4**
+```{r, symmetric_distribution_case_2_N(0,1), echo=FALSE, cache=FALSE, fig.width=6, fig.height=6, fig.keep='high'}
+setwd("d:/courses/research/variance")
+
+par(mfrow=c(2,1))
+par(fig=c(0,1,0.4,0.85))
+
+#large sample size
+set.seed(92513)
+symm <- rnorm(10000,0,1)
+plot(density(symm,bw=.2),xlim=c(-4,4),main="normal distribution N(0,1)",xaxt="n",sub="Fig. 4a",xlab="distribution values",cex.main=0.9)
+axis(1, at=seq(-4,4), label=F, tick=T, tck=-.06)
+axis(1, at=seq(-4,4,2), tck=-.1)
+
+abline(v=0,col="black",lwd=2,lty=2)
+abline(v=0,col="red",lwd=2,lty=3)
+abline(v=0-1.96*1,col="blue",lwd=2,lty=2)
+abline(v=0+1.96*1,col="blue",lwd=2,lty=2)
+
+# small sample size 1000 
+set.seed(971)
+symm <- rnorm(1000,0,1)
+par(fig=c(0,1,0,0.4), new=TRUE)
+
+hist(symm,breaks=40,xlim=c(-4,4),main="N(0.1,1) - sample size 1000",xaxt="n",sub="Fig. 4b",xlab="sample distribution values",ylab="frequency of sample values",cex.main=0.9)
+meannormsamp <- mean(symm)
+mednormsamp <- median(symm)
+axis(1, at=seq(-4,4), label=F, tick=T, tck=-.06)
+axis(1, at=seq(-4,4,2), tck=-.1)
+abline(v=meannormsamp,col="black",lwd=2,lty=2)
+abline(v=mednormsamp,col="red",lwd=2,lty=3)
+abline(v=0,col="red",lwd=2,lty=1)
+abline(v=mednormsamp-1.96*1,col="blue",lwd=2,lty=2)
+abline(v=mednormsamp+1.96*1,col="blue",lwd=2,lty=2)
+
+mtext("Symmetric distribution case 2 - normal - N(0,1)", side=3, outer=TRUE, line=-1.5)
+mtext("red line - population median, black line - sample median", side=3, outer=TRUE, line=-3)
+mtext("blue lines - 2.5%/97.5% percentile bounds", side=3, outer=TRUE, line=-4)
+
+```
+
+
+**Figure 5**
+```{r, median_symm_calculations_case_2, echo=FALSE, cache=FALSE,  fig.width=6, fig.height=6, fig.keep='high'}
+
+library(boot)
+stat <- function(x, i) {median(x[i])}
+boot.out <- boot(data = symm,
+                 statistic = stat,
+                 R = 10000)
+boot.ci(boot.out)
+ mean(boot.out$t)
+ sd(boot.out$t)
+outboot <- quantile(boot.out$t,probs=c(.025,.15865,.5,.6827,.975))
+#outboot
+
+par(mfrow=c(3,1))
+par(fig=c(0,1,0.6,0.9))
+
+hist(boot.out$t,breaks=60,xlim=c(-.2,.2),main="Bootstrap resamples of median",xaxt="n",sub="Fig. 5a",xlab="bootstrap median sample values",ylab="frequency of values",)
+medianest <- mean(boot.out$t)
+axis(1, at=seq(-.2,.2,.02), label=F, tick=T, tck=-.02)
+axis(1, at=seq(-.2,.2,.1), tck=-.04)
+abline(v=medianest,col="black",lwd=2,lty=2)
+abline(v=0,col="red",lwd=2,lty=1)
+abline(v=outboot[1],col="blue",lwd=2,lty=2)
+abline(v=outboot[5],col="blue",lwd=2,lty=2)
+
+n <- length(symm)
+theta <- median(symm)
+jk <- sapply(1 : n,
+             function(i) median(symm[-i])
+)
+thetaBar <- mean(jk)
+jkexpand <- (jk-thetaBar)*sqrt(n)+thetaBar
+biasEst <- (n - 1) * (thetaBar - theta)
+seEst <- sqrt((n - 1) * mean((jk - thetaBar)^2))
+print("jackknife estimate based on original scale")
+thetaBar
+thetaBar-1.96*seEst
+thetaBar+1.96*seEst
+
+par(fig=c(0,1,0.3,0.6), new=TRUE)
+hist(jkexpand,breaks=40,xlim=c(-.2,.2),main="Drop one unit Jackknife subsamples of median using original scale",xaxt="n",sub="Fig. 5b",xlab="jackknife median sample values",ylab="frequency of values",)
+ 
+axis(1, at=seq(-.2,.2,.02), label=F, tick=T, tck=-.02)
+axis(1, at=seq(-.2,.2,.1), tck=-.04)
+abline(v=thetaBar,col="black",lwd=2,lty=2)
+abline(v=0,col="red",lwd=2,lty=1)
+abline(v=thetaBar-1.96*seEst,col="blue",lwd=2,lty=2)
+abline(v=thetaBar+1.96*seEst,col="blue",lwd=2,lty=2)
+
+
+n <- length(symm)
+theta <- median(symm)
+jkinv <- sapply(1 : n,
+             function(i) {Fn <- ecdf(symm[-i]);
+                             Fn(theta)}
+)
+#head(jkinv)
+
+thetaBar <- mean(jkinv)
+#thetaBar
+jkexpinv <- (jkinv-thetaBar)*sqrt(n)+thetaBar
+jkexpand <- quantile(symm,jkexpinv) 
+#head(jkexpand)
+biasEst <- (n - 1) * (thetaBar - theta)
+seEst <- sqrt((n - 1) * mean((jkinv - thetaBar)^2))
+print("jackknife estimates based on percentile scale")
+quantile(symm,thetaBar)
+quantile(symm,thetaBar-1.96*seEst)
+quantile(symm,thetaBar+1.96*seEst)
+
+par(fig=c(0,1,0,0.3), new=TRUE)
+hist(jkexpand,breaks=40,xlim=c(-.2,.2),main="Drop one unit Jackknife subsamples of median using percentile scale",xaxt="n",sub="Fig. 5c",xlab="jackknife median sample values",ylab="frequency of values",)
+ 
+axis(1, at=seq(-.2,.2,.02), label=F, tick=T, tck=-.02)
+axis(1, at=seq(-.2,.2,.1), tck=-.04)
+abline(v=quantile(symm,thetaBar),col="black",lwd=2,lty=2)
+abline(v=0,col="red",lwd=2,lty=1)
+abline(v=quantile(symm,thetaBar-1.96*seEst),col="blue",lwd=2,lty=2)
+abline(v=quantile(symm,thetaBar+1.96*seEst),col="blue",lwd=2,lty=2)
+
+mtext("Median variance and 95% Confidence Interval estimates", side=3, outer=TRUE, line=-1.5)
+mtext("symmetric distribution case 2 - N(0,1)", side=3, outer=TRUE, line=-3)
+mtext("red - pop'n value, black - sample median, blue - 2.5%/97.5% CI bounds", side=3, outer=TRUE, line=-5)
+
+```
+
+**Figure 6**
+```{r, symmdistcase3sysunif, echo=FALSE, cache=FALSE, fig.width=6, fig.height=6, fig.keep='high'}
+
+setwd("d:/courses/research/variance")
+
+# small sample size random between 300-1000
+set.seed(6971)
+symmstart <- runif(1,0.001,.0033333)
+symmskip <- runif(1,0.001,.0033333)
+symm <- seq(symmstart,1,symmskip)
+#symm
+
+library(boot)
+stat <- function(x, i) {median(x[i])}
+boot.out <- boot(data = symm,
+                 statistic = stat,
+                 R = 10000)
+boot.ci(boot.out)
+print("mean of bootstrap samples")
+mean(boot.out$t)
+print("standard error of bootstrap samples")
+sd(boot.out$t)
+outboot <- quantile(boot.out$t,probs=c(.025,.15865,.5,.6827,.975))
+
+
+
+
+par(mfrow=c(2,1))
+par(fig=c(0,1,0.4,0.85))
+
+#large sample size using sample size between 6000-20000
+set.seed(513)
+symmdiststart <- runif(1,0.001,.0033333)/20
+symmdistskip <- runif(1,0.001,.0033333)/20
+symmdist <- seq(symmdiststart,1,symmdistskip)
+hist(symmdist,breaks=1,xlim=c(0,1),main="uniform distribution unif(0,1)",xaxt="n",sub="Fig. 6a",xlab="distribution values",cex.main=0.9)
+axis(1, at=seq(0,1,.1), label=F, tick=T, tck=-.06)
+axis(1, at=seq(0,1,.2), tck=-.1)
+
+abline(v=0.5,col="black",lwd=2,lty=2)
+abline(v=0.5,col="red",lwd=2,lty=3)
+abline(v=0.025,col="blue",lwd=2,lty=2)
+abline(v=0.975,col="blue",lwd=2,lty=2)
+
+par(fig=c(0,1,0,0.4), new=TRUE)
+
+hist(symm,breaks=60,xlim=c(0,1),main="systematic unif(0,1) - sample size 415",xaxt="n",sub="Fig. 6b",xlab="sample distribution values",ylab="frequency of sample values",cex.main=0.9)
+meannormsamp <- mean(symm)
+mednormsamp <- median(symm)
+axis(1, at=seq(0,1,.1), label=F, tick=T, tck=-.06)
+axis(1, at=seq(0,1,.2), tck=-.1)
+abline(v=mednormsamp,col="black",lwd=2,lty=2)
+abline(v=0.5,col="red",lwd=2,lty=1)
+abline(v=quantile(symm,probs=c(.025)),col="blue",lwd=2,lty=2)
+abline(v=quantile(symm,probs=c(.975)),col="blue",lwd=2,lty=2)
+
+mtext("Symmetric distribution case 3 - systematic unif(0,1)", side=3, outer=TRUE, line=-1.5)
+mtext("red line - population median, black line - sample median", side=3, outer=TRUE, line=-3)
+mtext("blue lines - 2.5%/97.5% percentile bounds", side=3, outer=TRUE, line=-4)
+
+
+
+
+# jackknife calculations in original scale of observations
+
+
+n <- length(symm)
+theta <- median(symm)
+jk <- sapply(1 : n,
+             function(i) median(symm[-i])
+)
+thetaBar <- mean(jk)
+jkexpand <- (jk-thetaBar)*sqrt(n)+thetaBar
+biasEst <- (n - 1) * (thetaBar - theta)
+seEst <- sqrt((n - 1) * mean((jk - thetaBar)^2))
+print("jackknife median estimate using calculations in original scale")
+thetaBar
+print("jackknife median CI lower bound using calculations in original scale")
+thetaBar-1.96*seEst
+print("jackknife median CI upper bound using calculations in original scale")
+thetaBar+1.96*seEst
+
+
+
+# jackknife calculations in percentile scale and then backtransforming results to observed scale 
+
+
+n <- length(symm)
+theta <- median(symm)
+jkinv <- sapply(1 : n,
+             function(i) {Fn <- ecdf(symm[-i]);
+                             Fn(theta)}
+)
+#head(jkinv)
+
+thetaBarinv <- mean(jkinv)
+jkexpinv <- (jkinv-thetaBarinv)*sqrt(n)+thetaBarinv
+jkexpandinv <- quantile(symm,jkexpinv) 
+#head(jkexpandinv)
+biasEstinv <- (n - 1) * (thetaBarinv - theta)
+seEstinv <- sqrt((n - 1) * mean((jkinv - thetaBarinv)^2))
+
+print("")
+print("jackknife median estimate using calculations in percentile scale ")
+print("and then backtransformed to original scale")
+quantile(symm,thetaBarinv)
+print("jackknife median estimate lower bound using calculations in ")
+print("percentile scale and then backtransformed to original scale")
+quantile(symm,thetaBarinv-1.96*seEstinv)
+print("jackknife median estimate upper bound using calculations in ")
+print("percentile scale and then backtransformed to original scale")
+quantile(symm,thetaBarinv+1.96*seEstinv)
+
+
+par(mfrow=c(3,1))
+par(fig=c(0,1,0.6,0.9))
+
+hist(boot.out$t,breaks=60,xlim=c(.42,.56),main="Bootstrap resamples of median",xaxt="n",sub="Fig. 7a",xlab="bootstrap median sample values",ylab="frequency of values",)
+medianest <- mean(boot.out$t)
+axis(1, at=seq(.4,.6,.02), label=F, tick=T, tck=-.02)
+axis(1, at=seq(.4,.6,.05), tck=-.04)
+abline(v=medianest,col="black",lwd=2,lty=2)
+abline(v=0.5,col="red",lwd=2,lty=1)
+abline(v=outboot[1],col="blue",lwd=2,lty=2)
+abline(v=outboot[5],col="blue",lwd=2,lty=2)
+
+
+par(fig=c(0,1,0.3,0.6), new=TRUE)
+hist(jkexpand,breaks=40,xlim=c(.42,.56),main="Drop one unit Jackknife subsamples of median using original scale",xaxt="n",sub="Fig. 7b",xlab="jackknife median sample values",ylab="frequency of values",)
+ 
+axis(1, at=seq(.4,.6,.02), label=F, tick=T, tck=-.02)
+axis(1, at=seq(.4,.6,.05), tck=-.04)
+abline(v=thetaBar,col="black",lwd=2,lty=2)
+abline(v=0,col="red",lwd=2,lty=1)
+abline(v=thetaBar-1.96*seEst,col="blue",lwd=2,lty=2)
+abline(v=thetaBar+1.96*seEst,col="blue",lwd=2,lty=2)
+
+
+
+par(fig=c(0,1,0,0.3), new=TRUE)
+hist(jkexpandinv,breaks=40,xlim=c(.42,.56),main="Drop one unit Jackknife subsamples of median using percentile scale",xaxt="n",sub="Fig. 7c",xlab="jackknife median sample values",ylab="frequency of values",)
+ 
+axis(1, at=seq(.4,.6,.02), label=F, tick=T, tck=-.02)
+axis(1, at=seq(.4,.6,.05), tck=-.04)
+abline(v=quantile(symm,thetaBarinv),col="black",lwd=2,lty=2)
+abline(v=0,col="red",lwd=2,lty=1)
+abline(v=quantile(symm,thetaBarinv-1.96*seEst),col="blue",lwd=2,lty=2)
+abline(v=quantile(symm,thetaBarinv+1.96*seEst),col="blue",lwd=2,lty=2)
+
+mtext("Median variance and 95% Confidence Interval estimates", side=3, outer=TRUE, line=-1.5)
+mtext("symmetric distribution case 3 - systematic uniform - evenly spaced points (0,1)", side=3, outer=TRUE, line=-3)
+mtext("red - pop'n value, black - sample median, blue - 2.5%/97.5% CI bounds", side=3, outer=TRUE, line=-5)
+
+```
+
+
+
+
+
+
+A simulated log-normal dataset is created to have a continuous right skewed distribution. This allows examination of the asymmetric nature of the median confidence interval in the original scale.
+
+
+**Figure 8**
+```{r, skewed_distribution_case_1_log_normal, echo=FALSE, cache=FALSE, fig.width=6, fig.height=6, fig.keep='high'}
+setwd("d:/courses/research/variance")
+
+par(mfrow=c(2,1))
+par(fig=c(0,1,0.4,0.85))
+
+#large sample size
+set.seed(92513)
+skewed <- exp(rnorm(10000,0.1,1))
+plot(density(skewed,bw=.16),xlim=c(0,10),main="log-normal distribution exp(N(0.1,1))",xaxt="n",sub="Fig. 8a",xlab="distribution values",cex.main=0.9)
+axis(1, at=seq(0,10), label=F, tick=T, tck=-.02)
+axis(1, at=seq(0,10,2), tck=-.04)
+
+abline(v=exp(0.1),col="red",lwd=2,lty=2)
+abline(v=exp(0.1+1/2),col="black",lwd=2,lty=2)
+
+# small sample size 1000 
+set.seed(6971)
+skewed <- exp(rnorm(1000,0.1,1))
+par(fig=c(0,1,0,0.45), new=TRUE)
+
+hist(skewed,breaks=101,xlim=c(0,10),main="exp(N(0.1,1)) - sample size 1000",xaxt="n",sub="Fig. 8b",xlab="sample distribution values",ylab="frequency of sample values",cex.main=0.9)
+meanlognormsamp <- mean(sort(skewed))
+medlognormsamp <- median(skewed)
+axis(1, at=seq(0,10), label=F, tick=T, tck=-.02)
+axis(1, at=seq(0,10,2), tck=-.04)
+abline(v=meanlognormsamp,col="black",lwd=2,lty=2)
+abline(v=medlognormsamp,col="red",lwd=2,lty=2)
+
+mtext("Skewed distribution case 1 - log-normal exp(N(0.1,1))", side=3, outer=TRUE, line=-1.5)
+mtext("red line - population/sample median", side=3, outer=TRUE, line=-3)
+mtext("black line - population/sample mean", side=3, outer=TRUE, line=-4)
+
+```
+
+**Figure 9**
+```{r, skewed_median_calculations_case_1, echo=FALSE, cache=FALSE, fig.width=6, fig.height=6, fig.keep='high'}
+
+
+library(boot)
+stat <- function(x, i) {median(x[i])}
+boot.out <- boot(data = skewed,
+                 statistic = stat,
+                 R = 10000)
+boot.ci(boot.out)
+mean(boot.out$t)
+sd(boot.out$t)
+outboot <- quantile(boot.out$t,probs=c(.025,.15865,.5,.6827,.975))
+outboot
+
+par(mfrow=c(3,1))
+par(fig=c(0,1,0.6,0.9))
+hist(boot.out$t,breaks=70,xlim=c(0.95,1.3),main="Bootstrap resamples of median",xaxt="n",sub="Fig. 9a",xlab="bootstrap median sample values",ylab="frequency of values",)
+medianest <- mean(boot.out$t)
+axis(1, at=seq(0.9,1.3,.1), label=F, tick=T, tck=-.05)
+axis(1, at=seq(0.8,1.3,.1), tck=-.1)
+abline(v=medianest,col="black",lwd=2,lty=2)
+abline(v=exp(0.1),col="red",lwd=2,lty=1)
+abline(v=outboot[1],col="blue",lwd=2,lty=2)
+abline(v=outboot[5],col="blue",lwd=2,lty=2)
+
+
+n <- length(skewed)
+theta <- median(skewed)
+jk <- sapply(1 : n,
+             function(i) median(skewed[-i])
+)
+thetaBar <- mean(jk)
+jkexpand <- (jk-thetaBar)*sqrt(n)+thetaBar
+biasEst <- (n - 1) * (thetaBar - theta)
+seEst <- sqrt((n - 1) * mean((jk - thetaBar)^2))
+print("Jackknife estimates using original scale")
+thetaBar
+thetaBar-1.96*seEst
+thetaBar+1.96*seEst
+
+par(fig=c(0,1,0.3,0.6), new=TRUE)
+hist(jkexpand,breaks=70,xlim=c(0.95,1.3),main="Drop one unit Jackknife subsamples of median using original scale",xaxt="n",sub="Fig. 9b",xlab="jackknife median sample values",ylab="frequency of values",)
+ 
+axis(1, at=seq(0.9,1.3,.1), label=F, tick=T, tck=-.05)
+axis(1, at=seq(0.8,1.3,.1), tck=-.1)
+abline(v=thetaBar,col="black",lwd=2,lty=2)
+abline(v=exp(0.1),col="red",lwd=2,lty=1)
+abline(v=thetaBar-1.96*seEst,col="blue",lwd=2,lty=2)
+abline(v=thetaBar+1.96*seEst,col="blue",lwd=2,lty=2)
+
+
+n <- length(skewed)
+theta <- median(skewed)
+jkinv <- sapply(1 : n,
+             function(i) {Fn <- ecdf(skewed[-i]);
+                             Fn(theta)}
+)
+#head(jkinv)
+
+thetaBar <- mean(jkinv)
+#thetaBar
+jkexpinv <- (jkinv-thetaBar)*sqrt(n)+thetaBar
+jkexpand <- quantile(skewed,jkexpinv) 
+#head(jkexpand)
+biasEst <- (n - 1) * (thetaBar - theta)
+seEst <- sqrt((n - 1) * mean((jkinv - thetaBar)^2))
+
+print("Jackknife estimates using percentile scale and backtransformed")
+quantile(skewed,thetaBar)
+quantile(skewed,thetaBar-1.96*seEst)
+quantile(skewed,thetaBar+1.96*seEst)
+
+par(fig=c(0,1,0,0.3), new=TRUE)
+hist(jkexpand,breaks=70,xlim=c(0.95,1.3),main="Drop one unit Jackknife subsamples of median using percentile scale",xaxt="n",sub="Fig. 9c",xlab="jackknife median sample values",ylab="frequency of values",)
+ 
+axis(1, at=seq(0.9,1.3,.1), label=F, tick=T, tck=-.05)
+axis(1, at=seq(0.8,1.3,.1), tck=-.1)
+abline(v=quantile(skewed,thetaBar),col="black",lwd=2,lty=2)
+abline(v=exp(0.1),col="red",lwd=2,lty=1)
+abline(v=quantile(skewed,thetaBar-1.96*seEst),col="blue",lwd=2,lty=2)
+abline(v=quantile(skewed,thetaBar+1.96*seEst),col="blue",lwd=2,lty=2)
+
+mtext("Median variance and 95% Confidence Interval estimates", side=3, outer=TRUE, line=-1.5)
+mtext("Skewed distribution case 1 - log-normal exp(N(0.1,1))", side=3, outer=TRUE, line=-3)
+mtext("red - pop'n value, black - sample median, blue - 2.5%/97.5% CI bounds", side=3, outer=TRUE, line=-5)
+
+```
+
+
+This final example is a continuous distribution analogue of the waiting duration data for the "old faithful geyser" on r library(datasets) as data(waiting). The sample size of the simulation (270) and the asymmetry of the bivariate distribution is closely matched to the real dataset.
+
+**Figure 10**
+```{r, skewed_distribution_case_2_weighted_bivariate_normal, echo=FALSE, cache=FALSE, fig.width=6, fig.height=6, fig.keep='high'}
+setwd("d:/courses/research/variance")
+
+par(mfrow=c(2,1))
+par(fig=c(0,1,0.4,0.85))
+
+#large sample size
+set.seed(13)
+waitdur1 <- rnorm(90000,55,5.5)
+waitdur2 <- rnorm(180000,80,6)
+waitdur <- c(waitdur1,waitdur2)
+median_dist <- median(waitdur)
+plot(density(waitdur,bw=.44),xlim=c(40,100),main="bivariate normal - 1/3*exp(N(55,5.5)+2/3*exp(N(80,6)))",xaxt="n",sub="Fig. 10a",xlab="distribution values (seconds)",cex.main=0.9)
+axis(1, at=seq(40,100,5), label=F, tick=T, tck=-.02)
+axis(1, at=seq(40,100,10), tck=-.04)
+abline(v=median_dist,col="red",lwd=2,lty=2)
+abline(v=1/3*55+2/3*80,col="black",lwd=2,lty=2)
+
+# small sample size 1000 
+set.seed(719)
+waitdur1 <- rnorm(90,55,5.5)
+waitdur2 <- rnorm(180,80,6)
+waitdur <- c(waitdur1,waitdur2)
+par(fig=c(0,1,0,0.45), new=TRUE)
+hist(waitdur,breaks=61,xlim=c(40,100),main="bimodal - sample size 270",xaxt="n",sub="Fig. 10b",xlab="sample distribution values (seconds)",ylab="frequency of sample values",cex.main=0.9)
+meanbimodalsamp <- mean(sort(waitdur))
+medbimodalsamp <- median(waitdur)
+axis(1, at=seq(40,100,5), label=F, tick=T, tck=-.02)
+axis(1, at=seq(40,100,10), tck=-.04)
+abline(v=meanbimodalsamp,col="black",lwd=2,lty=2)
+abline(v=medbimodalsamp,col="red",lwd=2,lty=2)
+
+mtext("Skewed distribution case 2 - weighted bivariate normal", side=3, outer=TRUE, line=-1)
+mtext("approximation of old faithful geyser wait duration", side=3, outer=TRUE, line=-2)
+mtext("red line - population/sample median", side=3, outer=TRUE, line=-3)
+mtext("black line - population/sample mean", side=3, outer=TRUE, line=-4)
+
+```
+
+**Figure 11**
+```{r, right_skewed_median_calculations_case_2, echo=FALSE, cache=FALSE, fig.width=6, fig.height=6, fig.keep='high'}
+
+
+library(boot)
+stat <- function(x, i) {median(x[i])}
+boot.out <- boot(data = waitdur,
+                 statistic = stat,
+                 R = 40000)
+boot.ci(boot.out)
+mean(boot.out$t)
+sd(boot.out$t)
+outboot <- quantile(boot.out$t,probs=c(.025,.15865,.5,.6827,.975))
+outboot
+
+par(mfrow=c(3,1))
+par(fig=c(0,1,0.6,0.9))
+hist(boot.out$t,breaks=60,xlim=c(74,78),main="Bootstrap resamples of median",xaxt="n",sub="Fig. 11a",xlab="bootstrap median sample values",ylab="frequency of values",)
+medianest <- mean(boot.out$t)
+axis(1, at=seq(74,78,.1), label=F, tick=T, tck=-.05)
+axis(1, at=seq(74,78,.5), tck=-.1)
+abline(v=medianest,col="black",lwd=2,lty=2)
+abline(v=median_dist,col="red",lwd=2,lty=1)
+abline(v=outboot[1],col="blue",lwd=2,lty=2)
+abline(v=outboot[5],col="blue",lwd=2,lty=2)
+
+
+n <- length(waitdur)
+theta <- median(waitdur)
+jk <- sapply(1 : n,
+             function(i) median(waitdur[-i])
+)
+thetaBar <- mean(jk)
+jkexpand <- (jk-thetaBar)*sqrt(n)+thetaBar
+biasEst <- (n - 1) * (thetaBar - theta)
+seEst <- sqrt((n - 1) * mean((jk - thetaBar)^2))
+print("Jackknife estimates using the original scale")
+thetaBar
+thetaBar-1.96*seEst
+thetaBar+1.96*seEst
+
+par(fig=c(0,1,0.3,0.6), new=TRUE)
+hist(jkexpand,breaks=60,xlim=c(74,78),main="Drop one unit Jackknife subsamples of median using original scale",xaxt="n",sub="Fig. 11b",xlab="jackknife median sample values",ylab="frequency of values",)
+ 
+axis(1, at=seq(74,78,.1), label=F, tick=T, tck=-.05)
+axis(1, at=seq(74,78,.5), tck=-.1)
+abline(v=thetaBar,col="black",lwd=2,lty=2)
+abline(v=median_dist,col="red",lwd=2,lty=1)
+abline(v=thetaBar-1.96*seEst,col="blue",lwd=2,lty=2)
+abline(v=thetaBar+1.96*seEst,col="blue",lwd=2,lty=2)
+
+
+n <- length(waitdur)
+theta <- median(waitdur)
+jkinv <- sapply(1 : n,
+             function(i) {Fn <- ecdf(waitdur[-i]);
+                             Fn(theta)}
+)
+#head(jkinv)
+
+thetaBar <- mean(jkinv)
+#thetaBar
+jkexpinv <- (jkinv-thetaBar)*sqrt(n)+thetaBar
+jkexpand <- quantile(waitdur,jkexpinv) 
+#head(jkexpand)
+biasEst <- (n - 1) * (thetaBar - theta)
+seEst <- sqrt((n - 1) * mean((jkinv - thetaBar)^2))
+print("Jackknife estimates using percentile scale and backtransformed")
+quantile(waitdur,thetaBar)
+quantile(waitdur,thetaBar-1.96*seEst)
+quantile(waitdur,thetaBar+1.96*seEst)
+
+par(fig=c(0,1,0,0.3), new=TRUE)
+hist(jkexpand,breaks=60,xlim=c(74,78),main="Drop one unit Jackknife subsamples of median using percentile scale",xaxt="n",sub="Fig. 11c",xlab="jackknife median sample values",ylab="frequency of values",)
+ 
+axis(1, at=seq(74,78,.1), label=F, tick=T, tck=-.05)
+axis(1, at=seq(74,78,.5), tck=-.1)
+abline(v=quantile(waitdur,thetaBar),col="black",lwd=2,lty=2)
+abline(v=median_dist,col="red",lwd=2,lty=1)
+abline(v=quantile(waitdur,thetaBar-1.96*seEst),col="blue",lwd=2,lty=2)
+abline(v=quantile(waitdur,thetaBar+1.96*seEst),col="blue",lwd=2,lty=2)
+
+mtext("Median variance and 95% Confidence Interval estimates", side=3, outer=TRUE, line=-1.5)
+mtext("skewed distribution case 2 - weighted bivariate normal", side=3, outer=TRUE, line=-3)
+mtext("red - pop'n value, black - sample median, blue - 2.5%/97.5% CI bounds", side=3, outer=TRUE, line=-5)
+
+```
+
+
+
+
+
+
+
+
+
