@@ -1,0 +1,690 @@
+---
+title: "effect of sample size and repeated values for jackknife CI estimates of unweighted median"
+author: "John P.D. Martin"
+date: "Thursday, February 12, 2015"
+output: pdf_document
+---
+
+##Executive Summary
+
+A comparison of bootstrap variance and jacknife variance estimates for different sample sizes is presented, including examples of continuous and discrete distributions. The jackknife variance estimates are calculated in the percentile scale and then backtransformed to the original measurement scale.
+
+Useful agreement between the jackknife and bootstrap confidence interval estimates is observed across the spectrum of sample sizes.
+
+##Introduction
+
+For the median (pth-quantile) distribution, the ordered distribution in the percentile frame is linear. As such for continuous distributions, it has been shown (1) by numerical examples of symmetric and skewed distributions and algebraically for the asymptotic limit of the normal distribtuion; that conducting jackknife calculations in this reference frame, followed by backtransformation to the measurement scale using the (empirical) cumulative distribution function (CDF) produces variance estimates in close agreement with bootstrap variance estimates. 
+
+Each data point in the ordered percentile scale distribution of the median has the following cdf values, (using a basic median definition)
+
+1/n , 2/n , 3/n , .... , n/n
+
+In the drop one unit jackknife variance approach for such a distribution (ignoring continuity corrections), the (n-1) subsampled cdf values assigned to each ordered point are
+
+1/(n-1), 2/(n-1), 3/(n-1), .... , (n-1)/(n-1)
+
+The estimated first order jackknife variance in this reference frame is 
+
+\begin{equation}{(n-1)}\cdot\frac{1}{n}\sum{(jk\_est-jk\_mean)^{2}} \approx \frac{1}{4n}\cdot\frac{n-1}{n}\end{equation}
+
+The contribution of the observed sample distribution is then handled, non-parametrically, by the backtransformation of the jackknife results to the original measurement scale using the empirical cdf.
+
+For discrete distributions, there are repeated values in the observations. Therefore, to use the above transformed jackknife estimator approach for discrete distributions, requires each data point (in the ordered percentile scale and the algorithm program) to be assigned a unique ordered position number. The step function empirical cdf that is generated from the original observations is then used to perform the backtransformation of the jackknife results.
+
+In this paper, the performance of the jackknife confidence interval estimate for unweighted samples, using this approach is demonstrated (i) across a range of samples sizes, (ii) the algorithm is extended to the case of discrete distributions and (iii) confidence interval corrections for bias (for n odd) and t distribution (for small sample sizes) are introduced.
+
+##Calculations and estimators
+
+In the original paper (1), relatively large sample sizes were considered and the jackknife confidence interval was considered to follow the normal approximation. In this paper, (i) three versions of jackknife estimator are investigated
+
+1. normal approximation
+
+\begin{equation}jk\_normal\_app = jk\_mean \pm 1.96\cdot\sqrt{jk\_var}\end{equation}
+
+2. bias corrected (n odd)
+
+\begin{equation}jk\_bias\_corr = 0.5 \pm 1.96\cdot\sqrt{jk\_var}\end{equation}
+
+3. bias corrected (n odd) and t distribution for 2.5th/97.5th percentile
+
+\begin{equation}jk\_bias\_tdist\_corr = 0.5 \pm tdist(0.95,df=(n-1))\cdot\sqrt{jk\_var}\end{equation}
+
+
+and (ii) the algorithm code is amended to deal with discrete distributions. 
+
+In particular, the algorithm for discrete distributions has the steps
+
+1. the unweighted data observations are ordered by the sorting variable (univariate case)
+
+2. ordered percentile values are assigned to each data point (this is the mapping of empirical cdf to observed values which is later used in step 6)
+
+3. the sample median estimate is obtained as the ordered data point with quantile >= 0.5
+
+4. In the drop one unit jackknife estimation loop, calculated in the ordered percentile frame and hence using the linear distribution of percentile values, the drop one unit percentile estimate of the sample median data point (the data point with the same order position as determined in step 3) is obtained and stored (following the Woodruff method (2))
+
+5. calculations of the confidence interval, variance and mean of the jackknife estimates are conducted and scaled using standard formula
+
+6. the empirical CDF (determined in step 2) is then used to backtransform the jackknife confidence interval values to the original measurement scale 
+
+
+Note that in the examples investigated, where Poisson distributions of mean 40, 60, 80 are used, the t distribution may be considered applicable as a confidence interval correction as the Poisson distributions approximates to normal distribution for such large means.
+
+
+##Results
+
+For comparison, the improved jackknife confidence interval estimates are plotted with bootstrap interval and BCa estimates, for three cases
+
+
+1. Normal distribution N(60,sqrt(60))
+
+  to examine the behaviour of the confidence intervals with sample size
+
+2. Poisson distribution Pois(60)
+
+  to examine the effect of discrete distributions
+
+3. bivariate Poisson distributions Pois(40)+Pois(80)
+
+  to examine the effect of skewness in the distribution
+  
+
+For completeness, the three cases are presented by graphs of (i) the large sample distribution, (ii) and example small sample distribution and (iii) the confidence interval estimates of the unweighted sample median by sample size.
+
+The graphs are essentially convergence studies, as for a fixed random generating seed, the sample size is increased from 5 to 3600.
+
+
+
+
+```{r, repeated_values_case_1_dist, echo=FALSE, cache=FALSE, fig.width=6, fig.height=6, fig.keep='high', warning=FALSE}
+setwd("d:/courses/research/variance")
+
+par(mfrow=c(2,1))
+par(fig=c(0,1,0.4,0.85))
+
+#large sample size
+set.seed(13)
+norm_dist <- rnorm(40000,60,sqrt(60))
+#table(norm_dist) 
+median_dist <- median(norm_dist)
+hist(norm_dist,xlim=c(45,75),breaks=80,main="normal distribution N(60,sqrt(60))",xaxt="n",sub="Fig. 1a",xlab="distribution values",cex.main=0.9)
+axis(1, at=seq(45,75,1), label=F, tick=T, tck=-.02)
+axis(1, at=seq(45,75,5), tck=-.04)
+abline(v=median_dist,col="red",lwd=4,lty=2)
+abline(v=mean(norm_dist),col="black",lwd=2,lty=2)
+
+# small sample size 1000 
+set.seed(719)
+rnorm_samp <- rnorm(101,60,sqrt(60))
+par(fig=c(0,1,0,0.45), new=TRUE)
+hist(rnorm_samp,breaks=80,xlim=c(45,75),main="normal dist N(60,sqrt(60)) - sample size 101",xaxt="n",sub="Fig. 1b",xlab="sample distribution values",ylab="frequency of sample values",cex.main=0.9)
+meannormsamp <- mean(sort(rnorm_samp))
+mednormsamp <- median(rnorm_samp)
+axis(1, at=seq(45,75,1), label=F, tick=T, tck=-.02)
+axis(1, at=seq(45,75,5), tck=-.04)
+abline(v=meannormsamp,col="black",lwd=2,lty=2)
+abline(v=mednormsamp,col="red",lwd=2,lty=2)
+
+mtext("sample size investigation case - N(60,sqrt(60))", side=3, outer=TRUE, line=-1.5)
+mtext("red line - population/sample median", side=3, outer=TRUE, line=-3)
+mtext("black line - population/sample mean", side=3, outer=TRUE, line=-4)
+
+```
+
+In Figure 2, for n > 20 there is good agreement between the jackknife and bootstrap confiodence interval estimators. For n < 20 there are more noticeable differences across the various estimators. The deviation of the bootstrap Bca estimates is caused by algorithm issues for the sample data causing default intervals to be output rather than optimal solution. For this continuous distribution it can be seen that the bootstrap mean and the sample median are in close agreement.
+
+
+```{r, repeated_values_case_1_samples, echo=FALSE, cache=FALSE, fig.width=6, fig.height=6, fig.keep='high', warning=FALSE}
+setwd("d:/courses/research/variance")
+
+library(boot)
+stat <- function(x, i) {median(x[i])}
+
+sampsizes <- c(seq(5,30,1),seq(35,55,5),seq(60,300,10),seq(350,1000,50),1200,1500,2000,3000,3600)
+#sampsizes <- c(seq(1000,1000,1))
+nsamp <- length(sampsizes)
+init <- c(rep("",nsamp))
+boot_int_l <- init
+boot_bca_l <- init
+boot_int_u <- init
+boot_bca_u <- init
+boot_mean <- init
+
+sample_med <- init
+
+jkinv_l <- init
+jkinv_u <- init
+jkinv_ba_l <- init
+jkinv_ba_u <- init
+jkinv_bat_l <- init
+jkinv_bat_u <- init
+
+count <- 0
+for (inn in sampsizes) 
+  {
+  count <- count+1
+set.seed(719)
+rnorm_samp <- rnorm(inn,60,sqrt(60))
+sort_norm_samp <- sort(rnorm_samp)
+
+n <- length(sort_norm_samp)
+theta <- as.numeric(strsplit(as.character(names(quantile(sort_norm_samp,probs=c(.5)))),"%"))/100
+#theta
+sample_med[count] <- median(sort_norm_samp)
+
+
+thetapos <- floor(n/2)
+
+
+jkinv <- sapply(1 : n,
+             function(i) {
+               Fn <- quantile(sort_norm_samp[-i],
+                              probs=seq(1/(n-1),1,1/(n-1)));
+               p1 <- as.numeric(strsplit(as.character(names(Fn[thetapos])),"%"))/100;
+               p2 <- as.numeric(strsplit(as.character(names(Fn[thetapos-1])),"%"))/100;
+               ifelse(i <= thetapos,p1,p2)
+                             }
+)
+#jkinv
+#print(jkinv)
+thetaBar <- mean(jkinv)
+#thetaBar
+jkexpinv <- (jkinv-thetaBar)*sqrt(n)+thetaBar
+jkexpand <- quantile(sort_norm_samp,jkexpinv) 
+#jkexpand
+biasEstinv <- (n - 1) * (thetaBar - theta)
+#biasEstinv
+seEstinv <- sqrt((n - 1) * mean((jkinv - thetaBar)^2))
+#print(seEstinv)
+#print("Jackknife estimates using percentile scale and backtransformed")
+#print(inn)
+#quantile(sort_norm_samp,thetaBar)
+
+jkinv_ba_l[count] <- quantile(sort_norm_samp,0.5-1.96*seEstinv)
+jkinv_ba_u[count] <- quantile(sort_norm_samp,0.5+1.96*seEstinv)
+
+
+possible_error4 <- tryCatch(quantile(sort_norm_samp,0.5-qt(.975,inn)*seEstinv),error=function(e) e)
+  
+  if (inherits(possible_error4,"error") ) {next}
+
+jkinv_bat_l[count] <- quantile(sort_norm_samp,0.5-qt(.975,inn)*seEstinv)
+jkinv_bat_u[count] <- quantile(sort_norm_samp,0.5+qt(.975,inn)*seEstinv)
+ 
+
+
+
+possible_error3 <- tryCatch(quantile(sort_norm_samp,thetaBar-1.96*seEstinv),error=function(e) e)
+  
+  if (inherits(possible_error3,"error") ) {next}
+
+jkinv_l[count] <- quantile(sort_norm_samp,thetaBar-1.96*seEstinv)
+
+possible_error4 <- tryCatch(quantile(sort_norm_samp,thetaBar+1.96*seEstinv),error=function(e) e)
+  
+  if (inherits(possible_error4,"error") ) {next}
+
+
+jkinv_u[count] <- quantile(sort_norm_samp,thetaBar+1.96*seEstinv)
+
+
+
+nreps <- ifelse(inn <= 1000, 100, 100)
+
+
+
+
+possible_error <- tryCatch(boot(data = rnorm_samp,
+                 statistic = stat,
+                 R = nreps),error=function(e) e)
+  
+  if (inherits(possible_error,"error") ) {next}
+      
+      boot.out <- boot(data = rnorm_samp,statistic = stat,R = nreps);
+boot_mean[count] <- mean(boot.out$t)
+
+possible_error2 <- tryCatch(boot.ci(boot.out,type=c("perc","bca")),error=function(e) e)
+  
+  if (inherits(possible_error2,"error") ) {next}
+
+
+info <- boot.ci(boot.out,type=c("perc","bca"));
+ 
+boot_int_l[count] <- info$perc[1,4];
+boot_bca_l[count] <- info$bca[1,4];
+boot_int_u[count] <- info$perc[1,5];
+boot_bca_u[count] <- info$bca[1,5];
+
+ 
+
+
+
+}
+
+output_boot1 <- cbind(sampsizes,sample_med,boot_int_l,boot_int_u,boot_bca_l,boot_bca_u,
+boot_mean,jkinv_l,jkinv_u,jkinv_ba_l,jkinv_ba_u,jkinv_bat_l,jkinv_bat_u)
+
+#output_boot1
+
+par(mfrow=c(1,1))
+
+plot(x=as.numeric(output_boot1[,"sampsizes"]),y=output_boot1[,"jkinv_ba_l"],type="b",lwd=2,ylim=c(45,75),xlim=c(5,3600),log="x",pch=20,xlab="sample size",ylab="observed distribution values",main="estimated 95% CI for sample median - normal dist N(60,sqrt(60))",sub="Fig 2")
+par(new=T)
+plot(x=as.numeric(output_boot1[,"sampsizes"]),y=output_boot1[,"jkinv_ba_u"],type="b",lwd=2,axes=F,xlab="",ylab="",ylim=c(45,75),xlim=c(5,3600),log="x",pch=20)
+par(new=F)
+lines(x=as.numeric(output_boot1[,"sampsizes"]),y=output_boot1[,"boot_mean"],lwd=2,col="blue")
+abline(h=60,lwd=2,col="black",lty=2)
+lines(x=as.numeric(output_boot1[,"sampsizes"]),y=output_boot1[,"sample_med"],lty=1,lwd=2,col="red")
+lines(x=as.numeric(output_boot1[,"sampsizes"]),y=output_boot1[,"boot_bca_l"],lty=1,lwd=2,col="magenta")
+lines(x=as.numeric(output_boot1[,"sampsizes"]),y=output_boot1[,"boot_bca_u"],lty=1,lwd=2,col="magenta")
+lines(x=as.numeric(output_boot1[,"sampsizes"]),y=output_boot1[,"boot_int_l"],lty=1,lwd=2,col="green")
+lines(x=as.numeric(output_boot1[,"sampsizes"]),y=output_boot1[,"boot_int_u"],lty=1,lwd=2,col="green")
+lines(x=as.numeric(output_boot1[,"sampsizes"]),y=output_boot1[,"jkinv_l"],lty=2,lwd=2,col="red")
+lines(x=as.numeric(output_boot1[,"sampsizes"]),y=output_boot1[,"jkinv_u"],lty=2,lwd=2,col="red")
+lines(x=as.numeric(output_boot1[,"sampsizes"]),y=output_boot1[,"jkinv_bat_l"],lty=1,lwd=2,col="brown4")
+lines(x=as.numeric(output_boot1[,"sampsizes"]),y=output_boot1[,"jkinv_bat_u"],lty=1,lwd=2,col="brown4")
+legend(500, 75, c("jk_bias_corr", "jk_bias_tdist_corr", "jk_normal_app","boot_perc","boot_bca","sample_median","boot_mean","popn_median"), col = c("black", "brown4", "red","green","magenta","red","blue","black"),
+       text.col = "green4", lty = c(1,1,2,1,1,1,1,2), pch = c(15, NA, NA, NA, NA, NA, NA, NA),cex=.65,
+       merge = TRUE, bg = "white")
+```
+
+
+
+  ```{r, repeated_values_case_2_dist, echo=FALSE, cache=FALSE, fig.width=6, fig.height=6, fig.keep='high', warning=FALSE}
+setwd("d:/courses/research/variance")
+
+par(mfrow=c(2,1))
+par(fig=c(0,1,0.4,0.85))
+
+#large sample size
+set.seed(13)
+pois_dist <- rpois(40000,60)
+#table(norm_dist) 
+median_dist <- median(pois_dist)
+hist(pois_dist,xlim=c(45,75),breaks=80,main="Pois(60)",xaxt="n",sub="Fig. 3a",xlab="distribution values",cex.main=0.9)
+axis(1, at=seq(45,75,1), label=F, tick=T, tck=-.02)
+axis(1, at=seq(45,75,5), tck=-.04)
+abline(v=median_dist,col="red",lwd=4,lty=2)
+abline(v=mean(norm_dist),col="black",lwd=2,lty=2)
+
+# small sample size 1000 
+set.seed(719)
+pois_samp <- rpois(101,60)
+par(fig=c(0,1,0,0.45), new=TRUE)
+hist(pois_samp,breaks=80,xlim=c(45,75),main="Pois(60) - sample size 101",xaxt="n",sub="Fig. 3b",xlab="sample distribution values",ylab="frequency of sample values",cex.main=0.9)
+meanpoissamp <- mean(sort(pois_samp))
+medpoissamp <- median(pois_samp)
+axis(1, at=seq(45,75,1), label=F, tick=T, tck=-.02)
+axis(1, at=seq(45,75,5), tck=-.04)
+abline(v=meanpoissamp,col="black",lwd=2,lty=2)
+abline(v=medpoissamp,col="red",lwd=2,lty=2)
+
+mtext("Discrete distribution case - Poisson dist Pois(60)", side=3, outer=TRUE, line=-1.5)
+mtext("red line - population/sample median", side=3, outer=TRUE, line=-3)
+mtext("black line - population/sample mean", side=3, outer=TRUE, line=-4)
+
+```
+
+
+Looking at the case of a symmetric discrete distribution, in Figure 4, for n > 100 there is good agreement between the jackknife and bootstrap confiodence interval estimators. For, 20 < n < 100 there are some differences across the various estimators with the bootstrap estimator occassionally be smaller by one unit (sensitive to the discrete nature of the distribution) while a couple are issues with robust Bca solutions. Below n = 20, there are slightly wider differences across the estimators compared to the continuous case fig 2). For this discrete distribution example it can be seen that the bootstrap mean is similar but not unbiassed with respect to the sample median. 
+
+Although the population is a symmetric distribution, each repeated sampling experiment like figure 4 would be expected to display some asymmetry until convergence is achieved.
+
+  ```{r, repeated_values_case_2_samples, echo=FALSE, cache=FALSE, fig.width=6, fig.height=6, fig.keep='high', warning=FALSE}
+setwd("d:/courses/research/variance")
+
+library(boot)
+stat <- function(x, i) {median(x[i])}
+
+sampsizes <- c(seq(5,30,1),seq(35,55,5),seq(60,300,10),seq(350,1000,50),1200,1500,2000,3000,3600)
+#sampsizes <- c(seq(20,20,1))
+nsamp <- length(sampsizes)
+init <- c(rep("",nsamp))
+boot_int_l <- init
+boot_bca_l <- init
+boot_int_u <- init
+boot_bca_u <- init
+boot_mean <- init
+
+sample_med <- init
+
+jkinv_l <- init
+jkinv_u <- init
+jkinv_ba_l <- init
+jkinv_ba_u <- init
+jkinv_bat_l <- init
+jkinv_bat_u <- init
+
+count <- 0
+for (inn in sampsizes) 
+{
+  count <- count+1
+  set.seed(719)
+  pois_samp <- rpois(inn,60)
+  sort_pois_samp <- sort(pois_samp)
+  
+  n <- length(sort_pois_samp)
+  theta <- as.numeric(strsplit(as.character(names(quantile(sort_norm_samp,probs=c(.5)))),"%"))/100
+  #theta
+  sample_med[count] <- median(sort_pois_samp)
+  
+  
+  thetapos <- floor(n/2)
+  
+  
+  jkinv <- sapply(1 : n,
+                  function(i) {
+                    Fn <- quantile(sort_pois_samp[-i],
+                                   probs=seq(1/(n-1),1,1/(n-1)));
+                    p1 <- as.numeric(strsplit(as.character(names(Fn[thetapos])),"%"))/100;
+                    p2 <- as.numeric(strsplit(as.character(names(Fn[thetapos-1])),"%"))/100;
+                    ifelse(i <= thetapos,p1,p2)
+                  }
+  )
+  #jkinv
+  #print(jkinv)
+  thetaBar <- mean(jkinv)
+  #thetaBar
+  jkexpinv <- (jkinv-thetaBar)*sqrt(n)+thetaBar
+  jkexpand <- quantile(sort_norm_samp,jkexpinv) 
+  #jkexpand
+  biasEstinv <- (n - 1) * (thetaBar - theta)
+  #biasEstinv
+  seEstinv <- sqrt((n - 1) * mean((jkinv - thetaBar)^2))
+  #print(seEstinv)
+  #print("Jackknife estimates using percentile scale and backtransformed")
+  #print(inn)
+  #quantile(sort_norm_samp,thetaBar)
+  
+  jkinv_ba_l[count] <- quantile(sort_pois_samp,0.5-1.96*seEstinv)
+  jkinv_ba_u[count] <- quantile(sort_pois_samp,0.5+1.96*seEstinv)
+  
+  
+  possible_error4 <- tryCatch(quantile(sort_pois_samp,0.5-qt(.975,inn)*seEstinv),error=function(e) e)
+  
+  if (inherits(possible_error4,"error") ) {next}
+  
+  jkinv_bat_l[count] <- quantile(sort_pois_samp,0.5-qt(.975,inn)*seEstinv)
+  jkinv_bat_u[count] <- quantile(sort_pois_samp,0.5+qt(.975,inn)*seEstinv)
+  
+  
+  
+  
+  possible_error3 <- tryCatch(quantile(sort_pois_samp,thetaBar-1.96*seEstinv),error=function(e) e)
+  
+  if (inherits(possible_error3,"error") ) {next}
+  
+  jkinv_l[count] <- quantile(sort_pois_samp,thetaBar-1.96*seEstinv)
+  
+  possible_error4 <- tryCatch(quantile(sort_pois_samp,thetaBar+1.96*seEstinv),error=function(e) e)
+  
+  if (inherits(possible_error4,"error") ) {next}
+  
+  
+  jkinv_u[count] <- quantile(sort_pois_samp,thetaBar+1.96*seEstinv)
+  
+  
+  
+  nreps <- ifelse(inn <= 1000, 100, 100)
+  
+  
+  
+  
+  possible_error <- tryCatch(boot(data = pois_samp,
+                                  statistic = stat,
+                                  R = nreps),error=function(e) e)
+  
+  if (inherits(possible_error,"error") ) {next}
+  
+  boot.out <- boot(data = pois_samp,statistic = stat,R = nreps);
+  boot_mean[count] <- mean(boot.out$t)
+  
+  possible_error2 <- tryCatch(boot.ci(boot.out,type=c("perc","bca")),error=function(e) e)
+  
+  if (inherits(possible_error2,"error") ) {next}
+  
+  
+  info <- boot.ci(boot.out,type=c("perc","bca"));
+  #print(info)
+  
+  boot_int_l[count] <- info$perc[1,4];
+  boot_bca_l[count] <- info$bca[1,4];
+  boot_int_u[count] <- info$perc[1,5];
+  boot_bca_u[count] <- info$bca[1,5];
+  
+  
+  
+  
+  
+}
+
+output_boot1 <- cbind(sampsizes,sample_med,boot_int_l,boot_int_u,boot_bca_l,boot_bca_u,
+                      boot_mean,jkinv_l,jkinv_u,jkinv_ba_l,jkinv_ba_u,jkinv_bat_l,jkinv_bat_u)
+
+#output_boot1
+
+par(mfrow=c(1,1))
+
+plot(x=as.numeric(output_boot1[,"sampsizes"]),y=output_boot1[,"jkinv_ba_l"],type="b",lwd=2,ylim=c(45,75),xlim=c(5,3600),log="x",pch=20,xlab="sample size",ylab="observed distribution values",main="estimated 95% CI for sample median - Pois(60)",sub="Fig 4")
+par(new=T)
+plot(x=as.numeric(output_boot1[,"sampsizes"]),y=output_boot1[,"jkinv_ba_u"],type="b",lwd=2,axes=F,xlab="",ylab="",ylim=c(45,75),xlim=c(5,3600),log="x",pch=20)
+par(new=F)
+lines(x=as.numeric(output_boot1[,"sampsizes"]),y=output_boot1[,"boot_mean"],lwd=2,col="blue")
+abline(h=60,lwd=2,col="black",lty=2)
+lines(x=as.numeric(output_boot1[,"sampsizes"]),y=output_boot1[,"sample_med"],lty=1,lwd=2,col="red")
+lines(x=as.numeric(output_boot1[,"sampsizes"]),y=output_boot1[,"boot_bca_l"],lty=1,lwd=2,col="magenta")
+lines(x=as.numeric(output_boot1[,"sampsizes"]),y=output_boot1[,"boot_bca_u"],lty=1,lwd=2,col="magenta")
+lines(x=as.numeric(output_boot1[,"sampsizes"]),y=output_boot1[,"boot_int_l"],lty=1,lwd=2,col="green")
+lines(x=as.numeric(output_boot1[,"sampsizes"]),y=output_boot1[,"boot_int_u"],lty=1,lwd=2,col="green")
+lines(x=as.numeric(output_boot1[,"sampsizes"]),y=output_boot1[,"jkinv_l"],lty=2,lwd=2,col="red")
+lines(x=as.numeric(output_boot1[,"sampsizes"]),y=output_boot1[,"jkinv_u"],lty=2,lwd=2,col="red")
+lines(x=as.numeric(output_boot1[,"sampsizes"]),y=output_boot1[,"jkinv_bat_l"],lty=1,lwd=2,col="brown4")
+lines(x=as.numeric(output_boot1[,"sampsizes"]),y=output_boot1[,"jkinv_bat_u"],lty=1,lwd=2,col="brown4")
+legend(500, 75, c("jk_bias_corr", "jk_bias_tdist_corr", "jk_normal_app","boot_perc","boot_bca","sample_median","boot_mean","popn_median"), col = c("black", "brown4", "red","green","magenta","red","blue","black"),
+       text.col = "green4", lty = c(1,1,2,1,1,1,1,2), pch = c(15, NA, NA, NA, NA, NA, NA, NA),cex=.65,
+       merge = TRUE, bg = "white")
+```
+ 
+
+
+  ```{r, repeated_values_case_3_dist, echo=FALSE, cache=FALSE, fig.width=6, fig.height=6, fig.keep='high', warning=FALSE}
+setwd("d:/courses/research/variance")
+
+par(mfrow=c(2,1))
+par(fig=c(0,1,0.4,0.85))
+
+#large sample size
+set.seed(13)
+biv_dist <- c(rpois(40000,40),rpois(40000,80))
+#table(norm_dist) 
+median_dist <- median(biv_dist)
+#median_dist
+hist(biv_dist,xlim=c(25,95),breaks=80,main="Pois(40)+Pois(80)",xaxt="n",sub="Fig. 5a",xlab="distribution values",cex.main=0.9)
+axis(1, at=seq(20,100,5), label=F, tick=T, tck=-.02)
+axis(1, at=seq(20,100,10), tck=-.04)
+abline(v=median_dist,col="red",lwd=4,lty=2)
+abline(v=mean(biv_dist),col="black",lwd=2,lty=2)
+
+# small sample size 1000 
+set.seed(719)
+pois_samp <- c(rpois(101,40),rpois(101,80))
+par(fig=c(0,1,0,0.45), new=TRUE)
+hist(pois_samp,breaks=80,xlim=c(25,95),main="Pois(40)+Pois(80) - sample size 101",xaxt="n",sub="Fig. 5b",xlab="sample distribution values",ylab="frequency of sample values",cex.main=0.9)
+meanpoissamp <- mean(sort(pois_samp))
+medpoissamp <- median(pois_samp)
+axis(1, at=seq(20,100,5), label=F, tick=T, tck=-.02)
+axis(1, at=seq(20,100,10), tck=-.04)
+abline(v=meanpoissamp,col="black",lwd=2,lty=2)
+abline(v=medpoissamp,col="red",lwd=2,lty=2)
+
+mtext("Skewed Discrete distribution case - bivariate Pois(40)+Pois(80)", side=3, outer=TRUE, line=-1.5)
+mtext("red line - population/sample median", side=3, outer=TRUE, line=-3)
+mtext("black line - population/sample mean", side=3, outer=TRUE, line=-4)
+
+```
+Looking at the case of a skewed distribution with discrete components, given in Figure 6 by a bivariate Poisson distribution, for n > 20 there is good agreement between the jackknife and bootstrap median confidence interval estimates. Below n = 20, there are slightly wider differences across the estimators. 
+
+For this skewed discrete distribution example it can be seen that the bootstrap mean converges more quickly to the population median (=57) than does the sample median.
+
+
+  ```{r, repeated_values_case_3_samples, echo=FALSE, cache=FALSE, fig.width=6, fig.height=6, fig.keep='high', warning=FALSE}
+setwd("d:/courses/research/variance")
+
+library(boot)
+stat <- function(x, i) {median(x[i])}
+
+sampsizes <- c(seq(5,30,1),seq(35,55,5),seq(60,300,10),seq(350,1000,50),1200,1500,2000,3000,3600)
+#sampsizes <- c(seq(20,20,1))
+nsamp <- length(sampsizes)
+init <- c(rep("",nsamp))
+boot_int_l <- init
+boot_bca_l <- init
+boot_int_u <- init
+boot_bca_u <- init
+boot_mean <- init
+
+sample_med <- init
+
+jkinv_l <- init
+jkinv_u <- init
+jkinv_ba_l <- init
+jkinv_ba_u <- init
+jkinv_bat_l <- init
+jkinv_bat_u <- init
+
+count <- 0
+for (inn in sampsizes) 
+{
+  count <- count+1
+  set.seed(719)
+  pois_samp <- c(rpois(floor(inn/2),40),rpois(floor(inn/2)+1,80))
+  sort_pois_samp <- sort(pois_samp)
+  
+  n <- length(sort_pois_samp)
+  theta <- as.numeric(strsplit(as.character(names(quantile(sort_norm_samp,probs=c(.5)))),"%"))/100
+  #theta
+  sample_med[count] <- median(sort_pois_samp)
+  
+  
+  thetapos <- floor(n/2)
+  
+  
+  jkinv <- sapply(1 : n,
+                  function(i) {
+                    Fn <- quantile(sort_pois_samp[-i],
+                                   probs=seq(1/(n-1),1,1/(n-1)));
+                    p1 <- as.numeric(strsplit(as.character(names(Fn[thetapos])),"%"))/100;
+                    p2 <- as.numeric(strsplit(as.character(names(Fn[thetapos-1])),"%"))/100;
+                    ifelse(i <= thetapos,p1,p2)
+                  }
+  )
+  #jkinv
+  #print(jkinv)
+  thetaBar <- mean(jkinv)
+  #thetaBar
+  jkexpinv <- (jkinv-thetaBar)*sqrt(n)+thetaBar
+  jkexpand <- quantile(sort_norm_samp,jkexpinv) 
+  #jkexpand
+  biasEstinv <- (n - 1) * (thetaBar - theta)
+  #biasEstinv
+  seEstinv <- sqrt((n - 1) * mean((jkinv - thetaBar)^2))
+  #print(seEstinv)
+  #print("Jackknife estimates using percentile scale and backtransformed")
+  #print(inn)
+  #quantile(sort_norm_samp,thetaBar)
+  
+  jkinv_ba_l[count] <- quantile(sort_pois_samp,0.5-1.96*seEstinv)
+  jkinv_ba_u[count] <- quantile(sort_pois_samp,0.5+1.96*seEstinv)
+  
+  
+  possible_error4 <- tryCatch(quantile(sort_pois_samp,0.5-qt(.975,inn)*seEstinv),error=function(e) e)
+  
+  if (inherits(possible_error4,"error") ) {next}
+  
+  jkinv_bat_l[count] <- quantile(sort_pois_samp,0.5-qt(.975,inn)*seEstinv)
+  jkinv_bat_u[count] <- quantile(sort_pois_samp,0.5+qt(.975,inn)*seEstinv)
+  
+  
+  
+  
+  possible_error3 <- tryCatch(quantile(sort_pois_samp,thetaBar-1.96*seEstinv),error=function(e) e)
+  
+  if (inherits(possible_error3,"error") ) {next}
+  
+  jkinv_l[count] <- quantile(sort_pois_samp,thetaBar-1.96*seEstinv)
+  
+  possible_error4 <- tryCatch(quantile(sort_pois_samp,thetaBar+1.96*seEstinv),error=function(e) e)
+  
+  if (inherits(possible_error4,"error") ) {next}
+  
+  
+  jkinv_u[count] <- quantile(sort_pois_samp,thetaBar+1.96*seEstinv)
+  
+  
+  
+  nreps <- ifelse(inn <= 1000, 100, 100)
+  
+  
+  
+  
+  possible_error <- tryCatch(boot(data = pois_samp,
+                                  statistic = stat,
+                                  R = nreps),error=function(e) e)
+  
+  if (inherits(possible_error,"error") ) {next}
+  
+  boot.out <- boot(data = pois_samp,statistic = stat,R = nreps);
+  boot_mean[count] <- mean(boot.out$t)
+  
+  possible_error2 <- tryCatch(boot.ci(boot.out,type=c("perc","bca")),error=function(e) e)
+  
+  if (inherits(possible_error2,"error") ) {next}
+  
+  
+  info <- boot.ci(boot.out,type=c("perc","bca"));
+  #print(info)
+  
+  boot_int_l[count] <- info$perc[1,4];
+  boot_bca_l[count] <- info$bca[1,4];
+  boot_int_u[count] <- info$perc[1,5];
+  boot_bca_u[count] <- info$bca[1,5];
+  
+  
+  
+  
+  
+}
+
+output_boot1 <- cbind(sampsizes,sample_med,boot_int_l,boot_int_u,boot_bca_l,boot_bca_u,
+                      boot_mean,jkinv_l,jkinv_u,jkinv_ba_l,jkinv_ba_u,jkinv_bat_l,jkinv_bat_u)
+
+#output_boot1
+
+par(mfrow=c(1,1))
+
+plot(x=as.numeric(output_boot1[,"sampsizes"]),y=output_boot1[,"jkinv_ba_l"],type="b",lwd=2,ylim=c(25,95),xlim=c(5,3600),log="x",pch=20,xlab="sample size",ylab="observed distribution values",main="estimated 95% CI for sample median - bivariate Poisson dists means 40 & 80",sub="Fig 6")
+par(new=T)
+plot(x=as.numeric(output_boot1[,"sampsizes"]),y=output_boot1[,"jkinv_ba_u"],type="b",lwd=2,axes=F,xlab="",ylab="",ylim=c(25,95),xlim=c(5,3600),log="x",pch=20)
+par(new=F)
+lines(x=as.numeric(output_boot1[,"sampsizes"]),y=output_boot1[,"boot_mean"],lwd=2,col="blue")
+abline(h=57,lwd=2,col="black",lty=2)
+lines(x=as.numeric(output_boot1[,"sampsizes"]),y=output_boot1[,"sample_med"],lty=1,lwd=2,col="red")
+lines(x=as.numeric(output_boot1[,"sampsizes"]),y=output_boot1[,"boot_bca_l"],lty=1,lwd=2,col="magenta")
+lines(x=as.numeric(output_boot1[,"sampsizes"]),y=output_boot1[,"boot_bca_u"],lty=1,lwd=2,col="magenta")
+lines(x=as.numeric(output_boot1[,"sampsizes"]),y=output_boot1[,"boot_int_l"],lty=1,lwd=2,col="green")
+lines(x=as.numeric(output_boot1[,"sampsizes"]),y=output_boot1[,"boot_int_u"],lty=1,lwd=2,col="green")
+lines(x=as.numeric(output_boot1[,"sampsizes"]),y=output_boot1[,"jkinv_l"],lty=2,lwd=2,col="red")
+lines(x=as.numeric(output_boot1[,"sampsizes"]),y=output_boot1[,"jkinv_u"],lty=2,lwd=2,col="red")
+lines(x=as.numeric(output_boot1[,"sampsizes"]),y=output_boot1[,"jkinv_bat_l"],lty=1,lwd=2,col="brown4")
+lines(x=as.numeric(output_boot1[,"sampsizes"]),y=output_boot1[,"jkinv_bat_u"],lty=1,lwd=2,col="brown4")
+legend(700, 96, c("jk_bias_corr", "jk_bias_tdist_corr", "jk_normal_app","boot_perc","boot_bca","sample_median","boot_mean","popn_median"), col = c("black", "brown4", "red","green","magenta","red","blue","black"),
+       text.col = "green4", lty = c(1,1,2,1,1,1,1,2), pch = c(15, NA, NA, NA, NA, NA, NA, NA),cex=.65,
+       merge = TRUE, bg = "white")
+```
+
+
+##References
+
+1. Martin J.P.D. (2015) https://github.com/johnpdmartin/sampling-investigations/blob/master/jackknife_for_unweighted_median_with_normal_dist_proof.pdf
+
+2. John W. Rogers (2003), Estimating the variance of percentiles using replicate weights, 2003 Joint Statistical Meetings - Section on Survey Research Methods, p3525-3532, 
+http://www.amstat.org/sections/SRMS/Proceedings/y2003/Files/JSM2003-000742.pdf
