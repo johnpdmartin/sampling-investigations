@@ -440,7 +440,7 @@ setwd("d:/courses/research/variance")
 
 # small sample size 1000 
 set.seed(971)
-symm <- runif(30,0,1)
+symm <- runif(1000,0,1)
 
 library(boot)
 stat <- function(x, i) {median(x[i])}
@@ -521,7 +521,7 @@ jkinv <- sapply(1 : n,
              function(i) {Fn <- ecdf(symm[-i]);
                              Fn(theta)}
 )
-jkinv
+#jkinv
 
 thetaBarinv <- mean(jkinv)
 jkexpinv <- (jkinv-thetaBarinv)*sqrt(n)+thetaBarinv
@@ -545,10 +545,10 @@ quantile(symm,thetaBarinv+1.96*seEstinv)
 par(mfrow=c(3,1))
 par(fig=c(0,1,0.6,0.9))
 
-hist(boot.out$t,breaks=60,xlim=c(.4,.8),main="Bootstrap resamples of median",xaxt="n",sub="Fig. 3a",xlab="bootstrap median sample values",ylab="frequency of values",)
+hist(boot.out$t,breaks=60,xlim=c(.42,.6),main="Bootstrap resamples of median",xaxt="n",sub="Fig. 3a",xlab="bootstrap median sample values",ylab="frequency of values",)
 medianest <- mean(boot.out$t)
-axis(1, at=seq(.4,.8,.02), label=F, tick=T, tck=-.02)
-axis(1, at=seq(.4,.8,.05), tck=-.04)
+axis(1, at=seq(.42,.6,.02), label=F, tick=T, tck=-.02)
+axis(1, at=seq(.42,.6,.05), tck=-.04)
 abline(v=medianest,col="black",lwd=2,lty=2)
 abline(v=0.5,col="red",lwd=2,lty=1)
 abline(v=outboot[1],col="blue",lwd=2,lty=2)
@@ -556,10 +556,10 @@ abline(v=outboot[5],col="blue",lwd=2,lty=2)
 
 
 par(fig=c(0,1,0.3,0.6), new=TRUE)
-hist(jkexpand,breaks=40,xlim=c(.4,.8),main="Drop one unit Jackknife subsamples of median using original scale",xaxt="n",sub="Fig. 3b",xlab="jackknife median sample values",ylab="frequency of values",)
+hist(jkexpand,breaks=40,xlim=c(.42,.6),main="Drop one unit Jackknife subsamples of median using original scale",xaxt="n",sub="Fig. 3b",xlab="jackknife median sample values",ylab="frequency of values",)
  
-axis(1, at=seq(.4,.8,.02), label=F, tick=T, tck=-.02)
-axis(1, at=seq(.4,.8,.05), tck=-.04)
+axis(1, at=seq(.42,.6,.02), label=F, tick=T, tck=-.02)
+axis(1, at=seq(.42,.6,.05), tck=-.04)
 abline(v=thetaBar,col="black",lwd=2,lty=2)
 abline(v=0,col="red",lwd=2,lty=1)
 abline(v=thetaBar-1.96*seEst,col="blue",lwd=2,lty=2)
@@ -568,10 +568,10 @@ abline(v=thetaBar+1.96*seEst,col="blue",lwd=2,lty=2)
 
 
 par(fig=c(0,1,0,0.3), new=TRUE)
-hist(jkexpandinv,breaks=40,xlim=c(.4,.8),main="Drop one unit Jackknife subsamples of median using percentile scale",xaxt="n",sub="Fig. 3c",xlab="jackknife median sample values",ylab="frequency of values",)
+hist(jkexpandinv,breaks=40,xlim=c(.42,.6),main="Drop one unit Jackknife subsamples of median using percentile scale",xaxt="n",sub="Fig. 3c",xlab="jackknife median sample values",ylab="frequency of values",)
  
-axis(1, at=seq(.4,.8,.02), label=F, tick=T, tck=-.02)
-axis(1, at=seq(.4,.8,.05), tck=-.04)
+axis(1, at=seq(.42,.6,.02), label=F, tick=T, tck=-.02)
+axis(1, at=seq(.42,.6,.05), tck=-.04)
 abline(v=quantile(symm,thetaBarinv),col="black",lwd=2,lty=2)
 abline(v=0,col="red",lwd=2,lty=1)
 abline(v=quantile(symm,thetaBarinv-1.96*seEstinv),col="blue",lwd=2,lty=2)
