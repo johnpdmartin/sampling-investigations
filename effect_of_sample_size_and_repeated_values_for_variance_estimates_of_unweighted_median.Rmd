@@ -203,12 +203,12 @@ jkinv_ba_l[count] <- quantile(sort_norm_samp,0.5-1.96*seEstinv)
 jkinv_ba_u[count] <- quantile(sort_norm_samp,0.5+1.96*seEstinv)
 
 
-possible_error4 <- tryCatch(quantile(sort_norm_samp,0.5-qt(.975,inn)*seEstinv),error=function(e) e)
+possible_error4 <- tryCatch(quantile(sort_norm_samp,0.5-qt(.975,inn-1)*seEstinv),error=function(e) e)
   
   if (inherits(possible_error4,"error") ) {next}
 
-jkinv_bat_l[count] <- quantile(sort_norm_samp,0.5-qt(.975,inn)*seEstinv)
-jkinv_bat_u[count] <- quantile(sort_norm_samp,0.5+qt(.975,inn)*seEstinv)
+jkinv_bat_l[count] <- quantile(sort_norm_samp,0.5-qt(.975,inn-1)*seEstinv)
+jkinv_bat_u[count] <- quantile(sort_norm_samp,0.5+qt(.975,inn-1)*seEstinv)
  
 
 
@@ -399,12 +399,12 @@ for (inn in sampsizes)
   jkinv_ba_u[count] <- quantile(sort_pois_samp,0.5+1.96*seEstinv)
   
   
-  possible_error4 <- tryCatch(quantile(sort_pois_samp,0.5-qt(.975,inn)*seEstinv),error=function(e) e)
+  possible_error4 <- tryCatch(quantile(sort_pois_samp,0.5-qt(.975,inn-1)*seEstinv),error=function(e) e)
   
   if (inherits(possible_error4,"error") ) {next}
   
-  jkinv_bat_l[count] <- quantile(sort_pois_samp,0.5-qt(.975,inn)*seEstinv)
-  jkinv_bat_u[count] <- quantile(sort_pois_samp,0.5+qt(.975,inn)*seEstinv)
+  jkinv_bat_l[count] <- quantile(sort_pois_samp,0.5-qt(.975,inn-1)*seEstinv)
+  jkinv_bat_u[count] <- quantile(sort_pois_samp,0.5+qt(.975,inn-1)*seEstinv)
   
   
   
@@ -596,12 +596,12 @@ for (inn in sampsizes)
   jkinv_ba_u[count] <- quantile(sort_pois_samp,0.5+1.96*seEstinv)
   
   
-  possible_error4 <- tryCatch(quantile(sort_pois_samp,0.5-qt(.975,inn)*seEstinv),error=function(e) e)
+  possible_error4 <- tryCatch(quantile(sort_pois_samp,0.5-qt(.975,inn-1)*seEstinv),error=function(e) e)
   
   if (inherits(possible_error4,"error") ) {next}
   
-  jkinv_bat_l[count] <- quantile(sort_pois_samp,0.5-qt(.975,inn)*seEstinv)
-  jkinv_bat_u[count] <- quantile(sort_pois_samp,0.5+qt(.975,inn)*seEstinv)
+  jkinv_bat_l[count] <- quantile(sort_pois_samp,0.5-qt(.975,inn-1)*seEstinv)
+  jkinv_bat_u[count] <- quantile(sort_pois_samp,0.5+qt(.975,inn-1)*seEstinv)
   
   
   
