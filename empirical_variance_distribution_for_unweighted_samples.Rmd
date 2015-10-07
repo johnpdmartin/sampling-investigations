@@ -1,0 +1,1200 @@
+---
+title: "An empirical variance distribution approximation, using backtransformation from the percentile scale, for the quantile estimating function of continuous distributions"
+author: "John P. D. Martin"
+date: "Wednesday, October 6, 2015"
+output: pdf_document
+---
+
+```{r, setwd, echo=FALSE, cache=FALSE, fig.width=6, fig.height=6, fig.keep='high'}
+setwd("d:/courses/research/quantile_regression")
+```
+
+###Executive Summary
+
+This paper demonstrates a quadratic polynomial proxy, to calculate quantile variance estimates of continuous distributions in the percentile scale, for the quantile estimating function (Koencker & Bassett (1)). The empirical variance distribution function created by the backtransformation of the percentile scale calculations to the original measurement scale for the proxy estimator, has a step function morphology, in common with the empirical cumulative distribution function.
+
+Analysis of the accuracy of the results makes use of known results for consistent variance estimates of medians of unweighted samples, Martin (2,3) and quantile regression bootstrap results for "intercept only model". The derivation of closed form variance expressions in the percentile scale, is consistent with the expectation that suitably transforming the reference frame can improve estimation accuracy Miller (4). 
+
+Table 1 displays some quantile variance estimates for unweighted samples conducted in the percentile scale, and then backtransformed to the original scale for several common distributions; uniform, normal, log-normal and skewed bivariate normal. The empirical quantile variance estimates are compared to bootstrap quantile confidence intervals (from the quantreg r package (5)). 
+
+It can be seen that for modest samples, the empirical quantile variance estimates are generally asymmetric about the quantile estimate for the continuous distributions considered. However, the average standard error of the empirical variance distribtion is close to the calculated bootstrap values.
+
+**Table 1: Quantile regression estimates of intercept only model, bootstrap standard errors and proxy standard errors of unweighted samples**
+
+Distribution | quantile | est value | bootstrap std error | average proxy std error  | asymm proxy std errors 
+--------- | ------- | ------- | ----------- | ------- | -------
+random uniform(0,1) | 0.25 | 0.2432 | $\pm$ 0.0126 | $\pm$ 0.0138 | (-0.0171,0.0104)
+"" | 0.5 | 0.4895 | $\pm$ 0.0123 | $\pm$ 0.0132 | (-0.0116,0.0149)
+"" | 0.75 | 0.7242 | $\pm$ 0.0196 | $\pm$ 0.0192 | (-0.0103,0.0282)
+random normal(0,1) | 0.25 | -0.6831 | $\pm$ 0.0459 | $\pm$ 0.0451 | (-0.0530,0.0372)
+"" | 0.5 | -0.0300 | $\pm$ 0.0410 | $\pm$ 0.0433 | (-0.0325,0.0541)
+"" | 0.75 | 0.6237 | $\pm$ 0.0382 | $\pm$ 0.0367 | (-0.0368,0.0366)
+systematic uniform(0,1) | 0.25 | 0.2510 | $\pm$ 0.0208 | $\pm$ 0.0217 | (-0.0217,0.0217)
+"" | 0.5 | 0.5013 | $\pm$ 0.0251 | $\pm$ 0.0241 | (-0.0241,0.0241)
+"" | 0.75 | 0.7516 | $\pm$ 0.0214 | $\pm$ 0.0217 | (-0.0217,0.0217)
+log-normal N(0.1,1) | 0.25 | 0.5868 | $\pm$ 0.0249 | $\pm$ 0.0285 | (-0.0315,0.0254)
+"" | 0.5 | 1.0872 | $\pm$ 0.0404 | $\pm$ 0.0413 | (-0.0381,0.0445)
+"" | 0.75 | 2.1934 | $\pm$ 0.0779 | $\pm$ 0.0707 | (-0.0734,0.0681)
+$\frac{1}{3}$N(55,5.5)+$\frac{2}{3}$N(80,6) | 0.25 | 59.78 | $\pm$ 1.5041 | $\pm$ 1.3028 | (-1.6429,0.9628)
+"" | 0.5 | 76.84 | $\pm$ 0.8308 | $\pm$ 0.7378 | (-0.9610,0.5146)
+"" | 0.75 | 81.67 | $\pm$ 0.4497 | $\pm$ 0.4447 | (-0.5648,0.3245)
+
+To highlight the benefit of the linearity in the unweighted sample distribution (2,3) to variance calculations, afforded by the transformation to the percentile scale. The third example in Table 1, is the highly artifical case of evenly spaced observations. In this rare linear example in the original scale, as expected, the quadratic polynomial proxy can closely match the bootstrapped linear programming variance estimate. 
+
+Importantly, the use of the quadratic polynomial proxy approach (i) employs the quantile estimating function to perform the backtransformation from the percentile scale, (ii) only the sample size and chosen quantile value are needed for calculations in the percentile scale (ie. no sorting required) and (iii) a density function has been derived which allows small samples estimates to be calculated self-consistently (without CLT assumptions).
+
+The use of the empirical variance distribution approach to calculating the variance of the quantile regression residuals becomes a new method for calculating confidence intervals for fitted quantile regression coefficients. 
+
+
+#Introduction
+
+Quantiles (6) are an order statistic of a distribution defined by the equivalent probability amount contained under the cumulative distribution function up to the (ordered) value of the quantile point. 
+
+That is, x is a k-th q-quantile for a variable X if
+
+Pr[X < x] $\leq$ k/q or, equivalently, Pr[X $\geq$ x] $\geq$ (1 - k/q)
+
+So the 25th percentile point is the 25/100 (k/q) 100-quantile point where 25% of the probability under the cumulative density function has occurred.
+
+An equivalent calculation of quantile points has been demonstrated (1) using least absolute deviation (LAD) regression of the following quantile estimation function
+
+\begin{equation} \underset{ b \thinspace\epsilon \mathbb{R}}{\min}  \{ \theta \left|x_t-b\right| + (1-\theta)\left|x_t-b\right| \}\end{equation}
+
+where $\theta \equiv k/q$ and $x_t$ are the sample/population elements of X. As the absolute value functions in equation 1, create a piecewise linear function shape (convex polytope) to the estimating function, linear programming techniques are required to solve the minimsation problem. As such, closed form expressions for the standard error of the quantile estimates are not available from this approach.
+
+In this paper, it is demonstrated by transformation to the percentile scale of a cumulative density function for unweighted samples (i) the above quantile estimation function can be closely approximated by a (smoothing) quadratic polynomial proxy with analytic coefficients (in this reference frame), (ii) by comparing the standard deviation of the derived density function of the quadratic polynomial proxy to existing consistent variance estimates of the median, the closed form CLT standard error estimates of the quadratic polynomial proxy appears to be fully calibrated and (iii) approximate standard error estimates for equation (1) may be obtained by (numerical) backtransformation of the quadratic polynomial proxy results using quantile regression (with an intercept only model) to the original measurement scale.
+
+
+#Quantile estimation function smoothing
+
+One approach for estimated standard errors of the quantile estimation function solution is to concurrently calculate the standard errors of smoothed versions of the problem, Brown & Wang (7). Figure 1 demonstrates the potential for smoothed estimators to approximate the quantile estimation function (using a simple moving average smoothing example). 
+
+The black lines show the quantile estimating function results, the red lines show simple moving average smoothing and the blue markers indicate the sample values (from a N(0,1) distribution). Typically however the smoothed estimator itself is a different solution for each quantile point and dataset, so only numerical solutions rather than analytic results are possible.
+
+As part of understanding the properties of the quantile estimation function for different continuous distributions and sample sizes, it is valuable to use a quasi-normalised version of the function where the minimum of the function always lies in the interval (0,1]. Equation (2) below specifies such a quasi-normalised quantile estimation function
+
+\begin{equation} \underset{ b \thinspace\epsilon \mathbb{R}}{\min}  \left( \frac{\theta \left|x_t-b\right| + (1-\theta)\left|x_t-b\right|}{\theta(1-\theta)(\frac{n(\left|\max(X)\right|+\left|\min(X)\right|)}{2})} \right) \end{equation}
+
+\begin{equation} \underset{ b \thinspace\epsilon \mathbb{R}}{\min}  \left( \frac{\frac{\left|x_t-b\right|}{(1-\theta)} + \frac{\left|x_t-b\right|}{\theta}}{\frac{n(\left|\max(X)\right|+\left|\min(X)\right|)}{2}} \right) \end{equation}
+
+and the second pair of graphs in Figure 1 show (i) the conservation of the estimating function shape with quasi-normalisation and (ii) the consistent interval (0,1] in which the minimum occurs.
+
+```{r, q_est_fn, echo=FALSE, cache=FALSE, fig.width=6, fig.height=6, fig.keep='high'}
+setwd("d:/courses/research/quantile_regression")
+# define quantile estimating functions
+
+# unnormalised
+
+q_est_fn <- function(theta,x_array,grid_pt) {
+  sum(ifelse(x_array >= grid_pt,theta*abs(x_array-grid_pt),(1-theta)*abs(x_array-grid_pt)))
+}
+
+# normalised
+
+q_est_fn_norm <- function(theta,x_array,grid_pt) {
+  sum(ifelse(x_array >= grid_pt,abs(x_array-grid_pt)/(1-theta),abs(x_array-grid_pt)/theta))/(n_obs*(abs(max(x_array))+abs(min(x_array)))/2)
+}
+
+# select suitable grid search span
+
+grid_pts <- function(x_array) {
+  min_x <- min(x_array);
+  max_x <- max(x_array);
+  ext_lgth <- abs(quantile(x_array,.75)-quantile(x_array,.25))
+  seq(min_x-0.5*ext_lgth,max_x+0.5*ext_lgth,length.out=10*length(x_array))
+  }
+
+# deriving a specific example
+
+# obtain unweighted sample of continuous distribution
+
+set.seed(5923)
+x_sample <- rnorm(20,0,1)#seq(0.025,.975,length.out=20)#
+n_obs <- length(x_sample)
+
+search_grid <- grid_pts(x_sample)
+
+# set quantile point of interest
+
+q_pt <- 0.75
+
+# setting fine mesh for moving average smoothing estimates
+
+span_obs <- quantile(x_sample,.75)-quantile(x_sample,.25)
+pts_local <- seq(-50,50,100/n_obs)*.05*span_obs/40
+mov_avgwgt <- c(0.5/n_obs,rep(1/n_obs,n_obs-1),0.5/n_obs) 
+
+# obtain search grid results
+
+# regular function
+
+q_est_fn_results <- 0
+q_est_fn_smthresults <- 0
+sub_results <- 0
+
+for (i in 1:length(search_grid)) {
+  q_est_fn_results[i] <- q_est_fn(q_pt,x_sample,search_grid[i])
+  for (j in 1:length(pts_local)) {
+    sub_results[j] <- q_est_fn(q_pt,x_sample,search_grid[i]+pts_local[j]);
+    }
+q_est_fn_smthresults[i] <- sum(mov_avgwgt*sub_results)
+  }
+  
+par(mfrow=c(2,2))
+par(fig=c(0,0.5,0.45,0.9))
+
+plot(y=q_est_fn_results,x=search_grid,type="l",lwd=2,xlab="sample values",ylab="estimating function values",main=paste("estimating function values across sample dist","\nfor 75th quantile"),sub="figure 1a",cex.main=0.9)
+points(y=rep(quantile(q_est_fn_results,.75),length(x_sample)),x=x_sample,col="blue",pch="|")
+lines(y=q_est_fn_smthresults,x=search_grid,col="red",lwd=2,lty=2)
+
+par(fig=c(0.5,1,0.45,0.9), new=TRUE)
+
+plot(y=q_est_fn_results,x=search_grid,type="l",lwd=2,ylim=c(0.99*min(q_est_fn_results),1.025*min(q_est_fn_results)),xlim=c(quantile(x_sample,q_pt-.15),quantile(x_sample,q_pt+.15)),xlab="sample values",ylab="estimating function values",main=paste("estimating function values near minimum","\nfor 75th quantile"),sub="figure 1b",cex.main=0.9)
+points(y=rep(1.0125*min(q_est_fn_results),length(x_sample)),x=x_sample,col="blue",pch="|")
+lines(y=q_est_fn_smthresults,x=search_grid,col="red",lwd=2,lty=2)
+
+
+
+q_est_fn_normsmthresults <- 0
+q_est_fn_normresults <- 0
+for (i in 1:length(search_grid)) {
+  q_est_fn_normresults[i] <- q_est_fn_norm(q_pt,x_sample,search_grid[i])
+  for (j in 1:length(pts_local)) {
+    sub_results[j] <- q_est_fn_norm(q_pt,x_sample,search_grid[i]+pts_local[j])
+#    print(paste(i,j,sub_results[j]))
+    }
+q_est_fn_normsmthresults[i] <- sum(mov_avgwgt*sub_results)
+  }
+
+par(fig=c(0,0.5,0,0.45), new=TRUE)
+
+plot(y=q_est_fn_normresults,x=search_grid,type="l",lwd=2,xlab="sample values",ylab="quasi-normalised est fn values",main=paste("quasi-normalised estimating fn values","\n across sample dist for 75th quantile"),sub="figure 1c",cex.main=0.9)
+points(y=rep(quantile(q_est_fn_normresults,.75),length(x_sample)),x=x_sample,col="blue",pch="|")
+lines(y=q_est_fn_normsmthresults,x=search_grid,col="red",lty=2,lwd=2)
+
+par(fig=c(0.5,1,0,0.45), new=TRUE)
+
+plot(y=q_est_fn_normresults,x=search_grid,type="l",lwd=2,ylim=c(0.99*min(q_est_fn_normresults),1.025*min(q_est_fn_normresults)),xlim=c(quantile(x_sample,q_pt-.15),quantile(x_sample,q_pt+.15)),xlab="sample values",ylab="quasi-normalised est fn values",main=paste("quasi-normalised estimating fn values","\n near minimum for 75th quantile"),sub="figure 1d",cex.main=0.9)
+points(y=rep(1.0125*min(q_est_fn_normresults),length(x_sample)),x=x_sample,col="blue",pch="|")
+lines(y=q_est_fn_normsmthresults,x=search_grid,col="red",lwd=2,lty=2)
+
+
+
+```
+
+**Figure 1; The quantile estimation function and a quasi-normalised version**
+ 
+
+Importantly, the denominator factor $\frac{n(\left|\max(X)\right|+\left|\min(X)\right|)}{2}$ is itself just a quasi simple arithmetic mean estimate of X. Its purpose (used in combination with the introduced $\frac{1}{\theta(1-\theta)}$ factor) is to ensure the quasi-normalised quantile estimation function minimum (of unweighted samples) lies in the interval (0,1] regardless of the X distribution, other denominator choices such as $\Sigma x_t$ or $\Sigma \left|x_t\right|$ do not guarantee this behaviour.
+
+Interestingly, when applying the quasi-normalised estimation function to quantile regression calculations, the function minimum may exceed 1 due to the lack of perfect correlation between the modelled values b & X.
+
+
+#Using the percentile scale for quantile estimation function
+
+For the percentile scale for unweighted samples, the median (and q-quantile) are points on a linear scale. Each ordered point in this distribution has the following cdf values, using a basic median definition
+
+1/n , 2/n , 3/n , .... , n/n
+
+It is also the case that other median definitions are used, a particularly useful definition for use with the quantile estimation function, in the percentile scale is
+
+1/2n, 3/2n, 5/2n, .... , (2n-1)/2n
+
+which describes the empirical cumulative distribution function with interpolation $\frac{(h_i + h_i-1)}{2}$ and the sample endpoints are assigned half percentile weights as a continuity correction. 
+
+Figure 2, shows the quasi-normalised quantile estimation function which is contained in the interval [0,1], the empirical cumulative distribution function with interpolation, for an unweighted sample of 20 data points with three target percentiles 75th, 31st & 17th.
+
+The black lines show the quasi-normalised estimating function values for a given choice of $\theta$ and the red lines indicate the behaviour of smoothing using a simple moving average. The blue markers are the (equally spaced) quantile values of the data points using the empirical cumulative distribution function with interpolation definition, in the percentile scale. Importantly, the equal spacing of the data points in this reference frame leads to equivalent smoothing function behaviour near the quantile estimating function regardless of the choice of $\theta$. 
+
+
+```{r, perc_scale, echo=FALSE, cache=FALSE, fig.width=6, fig.height=6, fig.keep='high'}
+setwd("d:/courses/research/quantile_regression")
+
+# deriving a specific example
+
+# define percentile scale unweighted sample of continuous distribution
+
+set.seed(5923)
+x_sample <- seq(0.025,0.975,length.out=20)
+n_obs <- length(x_sample)
+
+search_grid <- grid_pts(x_sample)
+
+# set quantile point of interest
+
+q_pt <- 0.75
+
+# setting fine mesh for moving average smoothing estimates
+
+span_obs <- quantile(x_sample,.75)-quantile(x_sample,.25)
+pts_local <- seq(-50,50,100/n_obs)*.05*span_obs/40
+mov_avgwgt <- c(0.5/n_obs,rep(1/n_obs,n_obs-1),0.5/n_obs) 
+
+# obtain search grid results
+
+q_est_fn_normsmthresults <- 0
+q_est_fn_normresults <- 0
+for (i in 1:length(search_grid)) {
+  q_est_fn_normresults[i] <- q_est_fn_norm(q_pt,x_sample,search_grid[i])
+  for (j in 1:length(pts_local)) {
+    sub_results[j] <- q_est_fn_norm(q_pt,x_sample,search_grid[i]+pts_local[j])
+#    print(paste(i,j,sub_results[j]))
+    }
+q_est_fn_normsmthresults[i] <- sum(mov_avgwgt*sub_results)
+  }
+
+par(mfrow=c(2,2))
+par(fig=c(0,0.5,0.45,0.9))
+
+plot(y=q_est_fn_normresults,x=search_grid,type="l",lwd=2,xlim=c(0,1),xlab="quantile values",ylab="quasi-normalised estimating fn values",main=paste("quasi-normalised estimating fn values","\n across sample dist for 75th quantile"),sub="figure 2a",cex.main=0.9)
+points(y=rep(quantile(q_est_fn_normresults,.75),length(x_sample)),x=x_sample,col="blue",pch="|")
+lines(y=q_est_fn_normsmthresults,x=search_grid,col="red",lty=2,lwd=2)
+
+par(fig=c(0.5,1,0.45,0.9), new=TRUE)
+
+plot(y=q_est_fn_normresults,x=search_grid,type="l",lwd=2,ylim=c(0.99*min(q_est_fn_normresults),1.025*min(q_est_fn_normresults)),xlim=c(quantile(x_sample,q_pt-.15),quantile(x_sample,q_pt+.15)),xlab="quantile values",ylab="quasi-normalised estimating fn values",main=paste("quasi-normalised estimating fn values ","\nnear minimum for 75th quantile"),sub="figure 2b",cex.main=0.9)
+points(y=rep(1.0125*min(q_est_fn_normresults),length(x_sample)),x=x_sample,col="blue",pch="|")
+lines(y=q_est_fn_normsmthresults,x=search_grid,col="red",lwd=2,lty=2)
+
+# create general function for quasi-normalised function
+
+# obtain search grid results
+
+q_norm <- function(q_pt,x_sample,search_grid,pts_local,mov_avgwgt) {
+  q_est_fn_normsmthresults <- 0
+q_est_fn_normresults <- 0
+for (i in 1:length(search_grid)) {
+  q_est_fn_normresults[i] <- q_est_fn_norm(q_pt,x_sample,search_grid[i])
+  for (j in 1:length(pts_local)) {
+    sub_results[j] <- q_est_fn_norm(q_pt,x_sample,search_grid[i]+pts_local[j])
+#    print(paste(i,j,sub_results[j]))
+    }
+q_est_fn_normsmthresults[i] <- sum(mov_avgwgt*sub_results)
+  }
+
+list(cbind(q_est_fn_normresults,q_est_fn_normsmthresults))
+}
+
+
+par(fig=c(0,.5,0,0.45), new=TRUE)
+
+q_pt <- .31
+q_norm_31 <- q_norm(q_pt,x_sample,search_grid,pts_local,mov_avgwgt)
+
+output <- as.data.frame(q_norm_31)
+
+plot(y=output[,1],x=search_grid,type="l",lwd=2,ylim=c(0.99,1.025),xlim=c(q_pt-.15,q_pt+.15),xaxt="n",yaxt="n",sub="figure 2c",xlab="quantile values",ylab="quasi-normalised estimating fn values",main=paste("quasi-normalised estimating fn values ","\nnear minimum for 31st quantile"),cex.main=0.9)
+axis(1, at=seq(q_pt-.15,q_pt+.15), label=F, tick=T, tck=-.06)
+axis(1, at=seq(q_pt-.15,q_pt+.15,length.out=5), tck=-.1)
+axis(2, at=seq(0.99,1.025), label=F, tick=T, tck=-.06)
+axis(2, at=seq(0.99,1.02,length.out=4), tck=-.1)
+
+points(y=rep(1.0125*min(output[,1]),length(x_sample)),x=x_sample,col="blue",pch="|")
+lines(y=output[,2],x=search_grid,col="red",lwd=2,lty=2)
+
+par(fig=c(0.5,1,0,0.45), new=TRUE)
+
+q_pt <- .17
+q_norm_17 <- q_norm(q_pt,x_sample,search_grid,pts_local,mov_avgwgt)
+
+output <- as.data.frame(q_norm_17)
+plot(y=output[,1],x=search_grid,type="l",lwd=2,ylim=c(0.99,1.025),xlim=c(q_pt-.15,q_pt+.15),xaxt="n",yaxt="n",sub="figure 2d",xlab="quantile values",ylab="quasi-normalised estimating fn values",main=paste("quasi-normalised estimating fn values ","\nnear minimum for 17th quantile"),cex.main=0.9)
+axis(1, at=seq(q_pt-.15,q_pt+.15), label=F, tick=T, tck=-.06)
+axis(1, at=seq(q_pt-.15,q_pt+.15,length.out=5), tck=-.1)
+axis(2, at=seq(0.99,1.025), label=F, tick=T, tck=-.06)
+axis(2, at=seq(0.99,1.02,length.out=4), tck=-.1)
+
+points(y=rep(1.0125*min(output[,1]),length(x_sample)),x=x_sample,col="blue",pch="|")
+lines(y=output[,2],x=search_grid,col="red",lwd=2,lty=2)
+
+
+```
+
+
+As can be seen, by using the quantile definition where the empirical cumulative distribution function with interpolation (ecdf_int) is assigned as the percentiles of the data points
+
+\begin {equation}  \underset{ b \thinspace\epsilon (0,1)}{\min}  \left( \frac{\frac{\left|k/q-b\right|}{(1-\theta)} + \frac{\left|k/q-b\right|}{\theta}}{\frac{n(\left|\max(k/q)\right|+\left|\min(k/q)\right|)}{2}} \right) \in (1-1/2n,1] \end{equation} 
+
+\begin {equation}   b_{min} \in [\theta-1/2n,\theta+1/2n]  \end{equation}
+
+as respectively, (i) each segment of the piecewise linear quantile estimation function shape has (percentile) width 1/n in the percentile scale for unweighted samples and (ii) the equally spaced sequence of data points in the percentile scale makes the denominator factor a true arithmetic sum which causes the estimation function minimum to be ~ 1.
+
+Observing from figure 2 and all other attempted $\theta$ choices in the percentile scale interval (0,1), for the smoothed quantile estimation function with ecdf_int, using a simple moving average it is the case that
+
+\begin {equation}  \underset{ b \thinspace\epsilon (0,1)}{\min}  \left(smoothed\thinspace quasinormalised\thinspace function \right) \equiv 1 \end{equation} 
+
+\begin {equation}   b_{min} (smoothed\thinspace quasinormalised\thinspace function) = \theta  \end{equation}
+
+Curve fitting the coefficients of the smoothed quasi-normalised estimation function as a quadratic polynomial for several quantile points, using ecdf_int definition for the data points in the (percentile scale) interval [0,1], gives the following results (with R-squared ~ 1) and easy assignment of analytic functions for the quadratic polynomial coefficients
+
+
+```{r, curve_fitting, echo=FALSE, cache=FALSE, fig.width=6, fig.height=6, fig.keep='high'}
+setwd("d:/courses/research/quantile_regression")
+
+table_out <- matrix(data=rep(1,44),nrow=11,ncol=4,dimnames=list(c(1:11),c("quantile_pt","sq_coeff","lin_coeff","intercept")))
+
+
+x_grid <- seq(0,1,length.out=1000)
+x_sq <- seq(0,1,length.out=1000)^2
+q_pts <- c(.01,.1,.25,1/3,.4,.5,.6,2/3,.75,.9,.99)
+for (i in 1:11) {
+  
+
+output <- as.data.frame(q_norm(q_pts[i],x_sample,x_grid,pts_local,mov_avgwgt))
+#plot(y=output[,2],x=x_grid)
+model <- lm(output[,2]~x_grid+x_sq)
+out_model <- as.numeric(unlist(model[1]))
+
+
+table_out[i,] <- c(q_pts[i],out_model[3],out_model[2],out_model[1])
+
+}
+table_out
+
+
+
+```
+
+Quantile value |  $\frac{1}{\theta(1-\theta)}b^2$ | $\frac{-2}{(1-\theta)}b$ | $\frac{1}{(1-\theta)}$ 
+--------- |  ----------- | ------- | -------
+0.01 |  10000/99 | -200/99 | 100/99
+0.1 |  100/9 | -20/9 | 10/9
+0.25 |  15/3 | -8/3 | 4/3
+1/3 |  9/2 | -6/2 | 3/2
+0.4 |  25/6 | -10/3 | 5/3
+0.5 |  4/1 | -4/1 | 2/1
+0.6 |  25/6 | -5/1 | 5/2
+2/3 |  9/2 | -6/1 | 3/1
+0.75 |  15/3 | -8/1 | 4/1
+0.9 |  100/9 | -20/1 | 10/1
+0.99 |  10000/99 | -200/1 | 100/1
+
+
+Hence it is the case that the simple quadratic polynomial
+
+\begin {equation} \underset{ b \thinspace\epsilon (0,1)}{\min} \left( \frac{1}{\theta(1-\theta)}b^2 + \frac{-2}{(1-\theta)}b + \frac{1}{(1-\theta)} \right) \,\, \in [1,\inf)  \end{equation}
+
+is an excellent approximation to the quasi-normalised quantile estimation function in the percentile scale, using the ecdf_int assignment of percentile values to the known number of data points.
+
+Since the quantile estimation function already provides the minimum value b in the original measurement scale for a given $\theta$ (without sorting the dataset). The main use of the quadratric polynomial proxy in the percentile scale is then to derive an (approximate) estimate for the quantile variance. As will be shown in the next section, this quantile variance estimate also does not need sorting of the dataset as only the number of data points and the ecdf_int defintion is required for the calculation.
+
+
+#Variance estimates for quantiles by derivation of a density function 
+
+Given the quadratic polynomial proxy for the quasi-normalised estimation function is differentiable, it is possible to create the following density function by transformation of the expression
+
+Firstly, since equation (8) in the interval (0,1) has a minimum value of 1, the following expression (with -1 added) is also a valid function for finding the minimum percentile b for a given $\theta$
+
+\begin {equation} \underset{ b \thinspace\epsilon (0,1)}{\min} \left( \frac{1}{\theta(1-\theta)}b^2 + \frac{-2}{(1-\theta)}b + \frac{1}{(1-\theta)} - 1  \right) \,\, \in [0,\inf) \end{equation}
+
+Secondly, the expression can be inverted from a minimisation problem to a maximisation problem by using a multiplicative factor of -1
+
+\begin {equation} \underset{ b \thinspace\epsilon (0,1)}{\max} \{ -\left( \frac{1}{\theta(1-\theta)}b^2 + \frac{-2}{(1-\theta)}b + \frac{1}{(1-\theta)} - 1  \right) \} \,\, \in (-\inf,0] \end{equation}
+
+The function is then transformed to form likelihood scale values, ie. lying in the interval (0,1) via exponentiation.
+
+\begin {equation} \underset{ b \thinspace\epsilon (0,1)}{\max} \exp\{ -\left( \frac{1}{\theta(1-\theta)}b^2 + \frac{-2}{(1-\theta)}b + \frac{1}{(1-\theta)} - 1  \right) \} \,\, \in [0,1] \end{equation}
+
+Finally, a density functional form can be defined from equation 11 noting (i) the quadratic nature of the exponent and (ii) including the sample size as a multiplicative factor consistent with the asymptotic $\sqrt{n}$ behaviour expected for population quantiles (1). In particular,
+
+\begin {equation} f_{q-proxy}(b,\theta,n) \propto \exp\{ -\left( \frac{1}{\theta(1-\theta)}b^2 + \frac{-2}{(1-\theta)}b + \frac{1}{(1-\theta)} - 1  \right) n \} \,\, \in [0,1] \end{equation}
+
+Using the standard normal transformation, it is then simple to derive the mean and central limit theorem (CLT) variance of equation (12)
+
+\begin {equation} -(\frac{b-\mu}{\sigma_{CLT}})^2 =  -\left( \frac{1}{\theta(1-\theta)}b^2 + \frac{-2}{(1-\theta)}b + \frac{1}{(1-\theta)} - 1  \right) n  \end{equation}
+
+first by expanding the LHS of equation (13)
+
+\begin {equation} -(\frac{b^2}{\sigma_{CLT}^2}+\frac{-2\mu b}{\sigma_{GLT}^2}+\frac{\mu^2}{\sigma_{CLT}^2}) =  -\left( \frac{1}{\theta(1-\theta)}b^2 + \frac{-2}{(1-\theta)}b + \frac{1}{(1-\theta)} - 1  \right) n  \end{equation}
+
+and then equating coefficients
+
+\begin {equation} \frac{1}{\sigma_{CLT}^2} \equiv  \frac{n}{\theta(1-\theta)}  \end{equation}
+
+\begin {equation} \frac{-2\mu}{\sigma_{CLT}^2} \equiv  \frac{-2n}{(1-\theta)}  \end{equation}
+
+\begin {equation} \frac{\mu^2}{\sigma_{CLT}^2} \equiv  \frac{n}{(1-\theta)} - n = \frac{\theta n}{(1-\theta)}  \end{equation}
+
+This derived density function gives the following compact solution for the population quantile and its CLT variance of the quadratic polynomial proxy for the quantile estimation function in the percentile scale
+
+\begin {equation} \mu =  \theta  \end{equation}
+
+\begin {equation} \sigma_{CLT} =  \sqrt{\frac{\theta(1-\theta)}{n}}  \end{equation}
+
+Since the density function is found to be proportional to a normal distribution depending on $\theta$ and n, the proportionality factor needed in equation (12) is also identified by integration over the interval [0,1], giving the density function the compact form
+
+\begin {equation} f_{q-proxy}(b,\theta,n) = \left( \frac{1}{\int\limits_0^1 \exp\{ \frac{-\left( b-\theta \right)^2}{\frac{\theta(1-\theta)}{n}}    \} \ db} \right) \exp\{ \frac{-\left( b-\theta \right)^2}{\frac{\theta(1-\theta)}{n}}    \}  \end{equation}
+
+and in the large n limit, the density function of the quadratic polynomial proxy for the quantile estimating function (in the percentile scale) converges to a normal distribution form
+
+\begin {equation} f_{q-proxy}(b,\theta,n)_{CLT} \rightarrow \frac{1}{\sqrt{2\pi}\frac{\theta(1-\theta)}{n}} \exp\{ \frac{-\left( b-\theta \right)^2}{\frac{\theta(1-\theta)}{n}}    \}  \end{equation}
+
+
+#Comparison to analytic median jackknife variance results in percentile scale
+
+While equations(20,21) are a very compact result, and may add alternative insights to the coverage research done on $var(proportion \thinspace p) = \sqrt{\frac{p(1-p)}{n}}$ (which has the same CLT variance form to the quadratic polynomial proxy for quantiles) by Agresti et al (8) and earlier authors, the above variance estimator will be assessed for accuracy in this paper in the following two ways.
+
+1. Within the percentile scale, known results for the CLT jacknife variance estimate of median can be used to assess if equations (20,21) are accurate for medians or require further calibration.
+
+2. Numerical comparison of the variance results using equations (20,21) after backtransformation of the percentile scale results to the original measurement scale to bootstrap variance results for quantile estimation function for several continuous distributions.
+
+Test 1 checks will be conducted in the rest of this section and test 2 checks in the following section.
+
+Martin (2015) presented a derivation of jackknife variance estimates of median in the percentile scale which can then be backtransformed to the original measurement scale providing consistent estimates of median variance for unweighted samples.
+
+The proof involved series expansions of powers of $1/n$. However, since that paper used the standard (1/n, 2/n, ... n/n) quantile definition and this quantile paper has used the ecdf_int definition (1/2n, 3/2n, 5/2n, ... (2n-1)/2n) the proof has been repeated in appendix A to show (i) that the ecdf_int quantile definition doesn't change the outcome and (ii) that a series expansion approach for the jackknife variance estimate is not necessary.
+
+Comparing the jackknife variance of the median to the quadratic polynomial proxy CLT variance estimate for the median point (from equation (19)) 
+
+\begin {equation} \sigma_{CLT}^2(median \thinspace based \thinspace on  \thinspace quadratic \thinspace polynomial) =  \frac{(\frac{1}{2})(\frac{1}{2})}{n}  \end{equation}
+
+\begin {equation}   =  \frac{1}{4n}  \end{equation}
+
+\begin{equation}\sigma_{jk \thinspace median \thinspace in \thinspace percentile \thinspace scale}^2 = \frac{1}{4(n-1)}\end{equation}
+
+\begin{equation} \rightarrow \frac{1}{4n} \thinspace for \thinspace large \thinspace n\end{equation}
+
+there is good agreement, so no further calibration adjustment to the estimator in the CLT limit for median value is required.
+
+##Numerical calculations for unweighted sample quantiles of several continuous distributions
+
+The algorithm for using the quadratic polynomial proxy as the quantile variance estimator is 
+
+1. Use the quantile estimation function (or quasi-normalised version) in the original measurement scale to determine X distribution values for each given $\theta$. In practice, this can be done using the "quantreg" r package to perform quantile regression of the X distribution against an "intercept only" model.
+
+2. Use the given sample size and quantile point $\theta$ to determine the quadratic polynomial proxy variance estimate or confidence interval in the percentile scale (using equations (18,19,21) and/or equations (18,20))
+
+3. Use the quantile estimation function (or quasi-normalised version) in the original measurement scale to determine X distribution values for each given $\theta$ value of the variance estimate or confidence interval obtained in step 2
+
+The bootstrap quantile variance estimates will be obtained by using the "quantreg" r package results in step 1 and calling the summary.boot option.
+
+Using the quadratic polynomial proxy for the variance estimate of the quantile estimating function, means that in the percentile scale, the variance distribution of possible theta values is smooth, as shown in figures 3a & c for $\theta$ = 0.025 & 0.5, for a sample size of 1000 from a N(0,1) dist. However, on backtransformation to the original measurement scale, as shown in figures 3b & d, the variance distribution becomes a stepped curve (due to the linear interpolation of the ecdf_int used in the calculation). 
+
+This "empirical variance distribution" has the step function behaviour of sample cdfs, corresponding to the density of the sample distribution (blue markers) and so may be considered a natural companion distribution of the empirical cdf whereas the bootstrap variance estimates from quantile regression are smoothed distributions.
+
+Figure 3 is followed by tables of (i) the results of the quantile regression fit (intercept only model to N(0,1) distribution) and (ii) backtransformed quadratic polynomial proxy variance estimates for more quantile values 0.025,.1,.25,.5,.75,.9 & .975. The asymmetry in the $\pm$ one standard error confidence interval for n=1000 is apparent in the results for the quadratic polynomial proxy variance estimates. However, the average standard error of the interval estimate is reasonably similar to the bootstrap values. For smaller sample sizes and quantiles in the tail of the sample distribution, the asymmetry in the confidence interval of the empirical variance distribution will only get stronger.
+
+
+```{r, symmdistcase1unif, echo=FALSE, cache=FALSE, fig.width=6, fig.height=6, fig.keep='high', message=FALSE, warning=FALSE}
+
+setwd("d:/courses/research/variance")
+library("quantreg")
+
+# small sample size 1000 
+set.seed(971)
+samp <- rnorm(1000,0,1)
+n_samp <- length(samp)
+
+# quantreg estimates of X distribution values for given $\theta$ values
+
+taus = c(.025,.1,.25,.5,.75,.9,.975)
+
+q_var <- sqrt(taus*(1-taus)/n_samp)
+
+
+grid_int <- seq(0,1,length.out=10000)
+n_grid <- length(grid_int)
+
+
+n_row <- length(taus)
+
+qr_dat <- matrix(c(1:1*n_row),nrow=n_row,ncol=1,
+                           dimnames=list(taus,c("beta0")))
+qp_lstd <- matrix(c(1:1*n_row),nrow=n_row,ncol=1,
+                           dimnames=list(taus,c("lstd")))
+qp_ustd <- matrix(c(1:1*n_row),nrow=n_row,ncol=1,
+                           dimnames=list(taus,c("ustd")))
+backtrans_std <- matrix(c(1:3*n_row),nrow=n_row,ncol=3,
+                           dimnames=list(taus,c("lower_std_dist","upper_std_dist","average_std_value")))
+qrboot_dat <- matrix(c(1:4*n_row),nrow=n_row,ncol=4,
+                           dimnames=list(taus,c("beta0","std_error","t_value","Pr")))
+
+quad_densfn <- matrix(rep(1,length(taus)*n_grid),nrow=n_grid,ncol=length(taus),dimnames=list(c(1:n_grid),c(1:length(taus))))
+
+
+
+for (i in 1:length(taus)) {
+
+  model_fit <- rq((samp)~(1),tau=taus[i],method="fn")
+  qr_dat[i,] <- c(summary(model_fit)$coefficients[1])
+  qrboot_dat[i,] <- c(summary(model_fit,se="boot")$coefficients[1:4])
+
+  qp_lstd[i] <- taus[i]-q_var[i]
+  qp_ustd[i] <- taus[i]+q_var[i]
+  taustd <- c(qp_lstd[i],qp_ustd[i])
+  
+  for (j in 1:n_grid) {
+  
+  quad_densfn[j,i] <- exp(-(grid_int[j]-taus[i])^2/q_var[i]^2)
+}
+
+quad_densfn[,i] <- quad_densfn[,i]/sum(quad_densfn[,i])*n_grid
+
+ 
+  model_fit_lstd <- summary(rq((samp)~(1),tau=qp_lstd[i],method="fn"))$coefficients[1]
+  model_fit_ustd <- summary(rq((samp)~(1),tau=qp_ustd[i],method="fn"))$coefficients[1]
+  
+  backtrans_std[i,] <- c(model_fit_lstd-qr_dat[i],model_fit_ustd-qr_dat[i],(model_fit_ustd-model_fit_lstd)/2)
+  
+
+
+
+
+}
+
+
+
+par(mfrow=c(2,2))
+par(fig=c(0,0.5,0.45,0.9))
+
+plot(y=quad_densfn[,1],x=grid_int,xlim=c(max(0,taus[1]-3*sqrt(taus[1]*(1-taus[1])/n_samp)),min(1,taus[1]+3*sqrt(taus[1]*(1-taus[1])/n_samp))),type="l",xlab="percentile_scale_value",ylab="quad poly proxy density fn",main=paste("quantile var dist for q=0.025","\n in the percentile scale"),sub="figure 3a",cex.main=0.9)
+
+samp_perc <- rep(1,n_samp)/n_samp
+
+samp_perc[1] <- 1/2/n_samp
+samp_perc[n_samp] <- 1/2/n_samp
+
+#samp_perc
+samp_int <- 0
+samp_sort <- sort(samp)
+count <- 0
+for (j in 1:(n_samp-1)) {
+  for (i in 0:9) {
+    count <- count+1
+  samp_int[count] <- samp_sort[j]+i*(samp_sort[j+1]-samp_sort[j])/10
+}
+}
+#samp_int
+#length(samp_int)
+
+#length(grid_int)
+
+par(fig=c(0.5,1,0.45,0.9), new=TRUE)
+plot(y=quad_densfn[,1][6:9995],x=samp_int,type="l",xlim=c(-2.46,-1.66),xlab="measurement_scale_value",ylab="backtransformed density fn",main=paste("quantile var dist for q=0.025","\n in original measurement scale"),sub="figure 3b",cex.main=0.9)
+points(y=rep(10,n_samp),x=samp,col="blue",pch="|")
+abline(v=qr_dat[1],col="red",lwd=2,lty=3)
+
+par(fig=c(0,0.5,0,0.45), new=TRUE)
+plot(y=quad_densfn[,4],x=grid_int,xlim=c(max(0,taus[4]-3*sqrt(taus[4]*(1-taus[4])/n_samp)),min(1,taus[4]+3*sqrt(taus[4]*(1-taus[4])/n_samp))),type="l",xlab="percentile_scale_value",ylab="quad poly proxy density fn",main=paste("quantile var dist for q=0.5","\n in the percentile scale"),sub="figure 3c",cex.main=0.9)
+
+par(fig=c(0.5,1,0,0.45), new=TRUE)
+plot(y=quad_densfn[,4][6:9995],x=samp_int,type="l",xlim=c(-.125,.125),xlab="measurement_scale_value",ylab="backtransformed density fn",main=paste("quantile var dist for q=0.5","\n in original measurement scale"),sub="figure 3d",cex.main=0.9)
+points(y=rep(10,n_samp),x=samp,col="blue",pch="|")
+abline(v=qr_dat[4],col="red",lwd=2,lty=3)
+
+print("N(0,1) dist - n=1000")
+print("quantile regression fit - rq")
+qr_dat
+print("quantile regression fit - summary.rq(...,se='boot')")
+qrboot_dat
+print("quadratic polynomial proxy - backtransformation fit") 
+backtrans_std
+
+```
+
+
+In Table 1 and the appendix, backtransformed quadratic polynomial proxy (empirical) variance estimates of quantiles for unweighted samples are compared to bootstrap quantile confidence intervals for five examples of continuous distributions.
+
+Two common symmetric distributions
+
+(i) uniform distribution unif(0,1) of sample 1000, and
+
+(ii) the standard normal distribution N(0,1) of sample 1000
+
+an artificial linear smooth symmetric distribution in the measurement scale
+
+(iii) systematic unif(0,1) of random sample size 415 using start/skip selection
+
+and two common skewed distributions
+
+(iv) a log-normal distribution exp(N(0.1,1)) of sample 1000, and 
+
+(v) a continuous bivariate normal distribution 1/3(N(55,5.5))+2/3(N(80,6)) of sample 270. This example is a continuous distribution analogue of the old faithful geyser waiting duration data located as data(faithful) on the r library(datasets). 
+
+This range of datasets has different smoothness and nonlinearity of the cdf across the quantile range [0,1]. It is seen that the empirical variance distribution has asymmetric standard errors for samples sizes 270-1000 in comparison to the bootstrap calculations except for the artifical linear distribution example. For this artifical example (iii), the original scale cdf is linear and the empirical variance distribution is expected to be symmetric and very closely match the bootstrap results, which is the case.
+
+In general, comparing the "empirical variance distribution standard error estimates using the percentile scale"" to the bootstrap calculations, results in good agreement for the "average of the asymmetric standard errors" from the empirical variance distribution of the unweighted quantiles across all five examples. The transformation of the quantile variance calculation to the linear ecdf_int scale allows the "smoothed quantile estimating function approach" to consider the full characteristic of the sample distribution and the backtransformation from the percentile scale to the original measurement scale handles the nonlinearity in the observed data distribution. 
+
+
+**Table 1: Quantile regression estimates of intercept only model, bootstrap standard errors and proxy standard errors of unweighted samples**
+
+Distribution | quantile | est value | bootstrap std error | average proxy std error  | asymm proxy std errors 
+--------- | ------- | ------- | ----------- | ------- | -------
+random uniform(0,1) | 0.025 | 0.0026 | $\pm$ 0.0032 | $\pm$ 0.0015 | (-0.0019,0.0012)
+"" | 0.10 | 0.0778 | $\pm$ 0.0102 | $\pm$ 0.0070 | (-0.0072,0.0068)
+"" | 0.25 | 0.2432 | $\pm$ 0.0126 | $\pm$ 0.0138 | (-0.0171,0.0104)
+"" | 0.5 | 0.4895 | $\pm$ 0.0123 | $\pm$ 0.0132 | (-0.0116,0.0149)
+"" | 0.75 | 0.7242 | $\pm$ 0.0196 | $\pm$ 0.0192 | (-0.0103,0.0282)
+"" | 0.9 | 0.8818 | $\pm$ 0.0101 | $\pm$ 0.0099 | (-0.0095,0.0103)
+"" | 0.975 | 0.9711 | $\pm$ 0.0043 | $\pm$ 0.0033 | (-0.0033,0.0034)
+random normal(0,1) | 0.025 | -2.1348 | $\pm$ 0.1078 | $\pm$ 0.1157 | (-0.0593,0.1721)
+"" | 0.10 | -1.2979 | $\pm$ 0.0557 | $\pm$ 0.0484 | (-0.0471,0.0498)
+"" | 0.25 | -0.6831 | $\pm$ 0.0459 | $\pm$ 0.0451 | (-0.0530,0.0372)
+"" | 0.5 | -0.0300 | $\pm$ 0.0410 | $\pm$ 0.0433 | (-0.0325,0.0541)
+"" | 0.75 | 0.6237 | $\pm$ 0.0382 | $\pm$ 0.0367 | (-0.0368,0.0366)
+"" | 0.9 | 1.2281 | $\pm$ 0.0420 | $\pm$ 0.0354 | (-0.0265,0.0444)
+"" | 0.975 | 1.9449 | $\pm$ 0.0843 | $\pm$ 0.0705 | (-0.0772,0.0637)
+systematic uniform(0,1) | 0.025 | 0.0271 | $\pm$ 0.0074 | $\pm$ 0.0072 | (-0.0072,0.0072)
+"" | 0.10 | 0.1018 | $\pm$ 0.0136 | $\pm$ 0.0144 | (-0.0144,0.0144)
+"" | 0.25 | 0.2510 | $\pm$ 0.0208 | $\pm$ 0.0217 | (-0.0217,0.0217)
+"" | 0.5 | 0.5013 | $\pm$ 0.0251 | $\pm$ 0.0241 | (-0.0241,0.0241)
+"" | 0.75 | 0.7516 | $\pm$ 0.0214 | $\pm$ 0.0217 | (-0.0217,0.0217)
+"" | 0.9 | 0.9009 | $\pm$ 0.0144 | $\pm$ 0.0144 | (-0.0144,0.0144)
+"" | 0.975 | 0.97547 | $\pm$ 0.0079 | $\pm$ 0.0072 | (-0.0072,0.0072)
+log-normal N(0.1,1) | 0.025 | 0.0158 | $\pm$ 0.0074 | $\pm$ 0.0120 | (-0.0065,0.0175)
+"" | 0.10 | 0.3513 | $\pm$ 0.0163 | $\pm$ 0.0160 | (-0.0141,0.0178)
+"" | 0.25 | 0.5868 | $\pm$ 0.0249 | $\pm$ 0.0285 | (-0.0315,0.0254)
+"" | 0.5 | 1.0872 | $\pm$ 0.0404 | $\pm$ 0.0413 | (-0.0381,0.0445)
+"" | 0.75 | 2.1934 | $\pm$ 0.0779 | $\pm$ 0.0707 | (-0.0734,0.0681)
+"" | 0.9 | 3.7931 | $\pm$ 0.1308 | $\pm$ 0.1051 | (-0.0889,0.1214)
+"" | 0.975 | 6.8360 | $\pm$ 0.8589 | $\pm$ 0.9175 | (-0.1238,1.7112)
+$\frac{1}{3}$N(55,5.5)+$\frac{2}{3}$N(80,6) | 0.025 | 48.16 | $\pm$ 1.6878 | $\pm$ 1.5209 | (-2.2188,0.8230)
+"" | 0.10 | 52.97 | $\pm$ 0.6888 | $\pm$ 0.6439 | (-0.8096,0.4781)
+"" | 0.25 | 59.78 | $\pm$ 1.5041 | $\pm$ 1.3028 | (-1.6429,0.9628)
+"" | 0.5 | 76.84 | $\pm$ 0.8308 | $\pm$ 0.7378 | (-0.9610,0.5146)
+"" | 0.75 | 81.67 | $\pm$ 0.4497 | $\pm$ 0.4447 | (-0.5648,0.3245)
+"" | 0.9 | 85.93 | $\pm$ 0.7630 | $\pm$ 0.5499 | (-0.3975,0.7022)
+"" | 0.975 | 91.42 | $\pm$ 0.9172 | $\pm$ 1.1671 | (-1.4353,0.8989)
+
+
+
+
+**Conclusions**
+
+The transformation of the quantile variance calculation to the percentile scale for the quantile estimating function of unweighted samples, allows (i) analytical variance estimates to be derived consistent with median jackknife variance estimates, (ii) good confidence interval agreement with quantile regression bootstrap calculations on backtransformation to the original measurement scale, (iii) no requirement for sorting of the dataset when used in conjunction with the quantile estimating function.
+
+While the approach has shown promise, the validation checks have mostly involved regression modelling with an "intercept only model". Thus the use of the exponentiation step in equation (12) only has only been really tested for quantile analysis of a single distribution, rather than multivariate quantile regression. 
+
+Preliminary coverage work, using the percentile scale to calculate the variance of quantile regression residuals, confirms good results for the confidence intervals of the intercept coefficients but potentially lower coverage for the slope coefficients estimates. It may be use of the beta distribution (8) rather than exponentiation is also a good approach.
+
+
+#References
+
+
+1. Koencker, R. W. & Bassett G., Econometrica, 1978, vol. 46, issue 1, pages 33-50
+
+2. Martin J.P.D., 2015, http://figshare.com/articles/Improved_jackknife_estimates_for_median_variance_in_equally_weighted_samples_using_percentile_scale_based_calculations/1332463
+
+3. Martin J.P.D., 2015, http://figshare.com/articles/effect_of_sample_size_and_repeated_values_for_jackknife_CI_estimates_of_unweighted_median/1332464
+
+4. Miller, R.G. (1974) The Jackknife--a review, Biometrika 61, pp1-15 
+
+5. Koencker, R. W., Portnoy S. et al, https://cran.r-project.org/web/packages/quantreg/quantreg.pdf
+
+6. https://en.wikipedia.org/wiki/Quantile
+
+7. Brown, B. M. and Wang, Y.-G. (2005). Standard errors and covariance
+matrices for smoothed rank estimators. Biometrika 92 149-158. MR2158616
+
+8. Agresti A. and Caffo B., The American Statistician, Vol. 54, No. 4, (Nov., 2000), pp. 280-288 
+
+#Appendix A - Jackknife variance estimate for median of unweighted samples in the percentile scale
+
+In the drop one unit jackknife variance approach for such a distribution (ignoring continuity corrections), the (n-1) subsampled cdf values assigned to each ordered point are
+
+1/2(n-1), 3/2(n-1), 5/2(n-1), .... , (2n-3)/2(n-1)
+
+Performing the drop one unit jackknife variance calculation about the median point in this reference frame. 
+
+If n is even,
+
+For the lower half of the ordered units, the drop one unit jackknife estimate of the median point which is an interpolated point, has the value using the ecdf_int defintion
+
+\begin{equation}jk\_lower = ((2(\frac{n}{2}+\frac{1}{2})-1)-2)\cdot\frac{1}{2(n-1)}\end{equation}  
+
+\begin{equation} = \frac{n-2}{2(n-1)}\end{equation}  
+
+For the upper other half of the ordered units, the drop one jackknife estimate of median point has the numerator value unchanged
+
+\begin{equation}jk\_lower = (2(\frac{n}{2}+\frac{1}{2})-1)\cdot\frac{1}{2(n-1)}\end{equation}
+
+\begin{equation} = \frac{n}{2(n-1)}\end{equation}
+
+
+
+The mean of the drop jackknife estimates, for n even, is
+
+
+\begin{equation}\frac{1}{n}\cdot(\frac{n}{2}\cdot(jk\_lower+jk\_upper)) = \frac{1}{n}\cdot(\frac{n}{2}\cdot(\frac{n-2}{2(n-1)}+\frac{n}{2(n-1)}))\end{equation}
+
+\begin{equation} = \frac{1}{4(n-1)}\cdot(n-2+n)\end{equation}
+
+\begin{equation} = \frac{1}{4(n-1)}\cdot(2(n-1))\end{equation}
+
+\begin{equation} = \frac{1}{2}\end{equation}
+
+which is the full sample median estimate
+
+\begin{equation}\therefore bias\_jk\_n\_even = 0\end{equation}
+
+If n is odd,
+
+
+The expressions for $jk\_lower$ and $jk\_upper$ in edcf_int definition are the same but the mean of the drop one jackknife estimates, for n odd, has one extra data point for $jk\_lower$
+  
+  
+\begin{multline}\frac{1}{n}\cdot((floor(\frac{n}{2})+1)jk\_lower+floor(\frac{n}{2})jk\_upper) \\ = \frac{1}{n}\cdot (floor(\frac{n}{2}+1)\cdot(\frac{n-2}{2(n-1)})+floor(\frac{n}{2})\cdot(\frac{n}{2(n-1)}))\end{multline}
+
+\begin{equation} =  \frac{1}{2n(n-1)}\cdot (floor(\frac{n}{2})\cdot((n-2)+n)+(n-2))\end{equation}
+
+\begin{equation} = \frac{1}{2n(n-1)}(floor(\frac{n}{2})\cdot2(n-1)+(n-2))\end{equation}
+
+
+\begin{equation} = \frac{1}{2}+\frac{n-2}{2n(n-1)}\end{equation}
+
+
+\begin{equation}\approx \frac{1}{2}+\frac{1}{2n}+...\end{equation}
+
+which differs from the full sample median estimate (as expected for n odd)
+
+\begin{equation}\therefore bias\_jk\_n\_odd \approx +\frac{1}{2n}+...\end{equation}
+
+The next step in the jackknife estimation is to calculate the  variance of the distribution of the jackknife estimates. 
+
+The variance of the jackknife estimates, for n even is
+
+\begin{equation}{(n-1)}\cdot\frac{1}{n}\sum{(jk\_est-jk\_mean)^{2}} = \frac{n-1}{n}\cdot\frac{n}{2}\cdot((jk\_lower-\frac{1}{2})^{2}+(jk\_upper-\frac{1}{2})^{2})\end{equation}
+
+\begin{equation}=  \frac{n-1}{n}\cdot\frac{n}{2}\cdot((\frac{n-2}{2(n-1)}-\frac{1}{2})^{2}+(\frac{n}{2(n-1)}-\frac{1}{2})^{2})\end{equation}
+
+\begin{equation}=  \frac{1}{8(n-1)}\cdot(((n-2)-(n-1))^{2}+(n-(n-1))^{2})\end{equation}
+
+\begin{equation}=  \frac{1}{8(n-1)}\cdot((-1)^{2}+(1)^{2})\end{equation}
+
+\begin{equation}=  \frac{1}{8(n-1)}\cdot((-1)^{2}+(1)^{2})\end{equation}
+
+\begin{equation}=  \frac{1}{4(n-1)}\end{equation}
+
+
+The variance of the jackknife estimates, for n odd is
+
+\begin{multline}{(n-1)}\cdot\frac{1}{n}\sum{(jk\_est-jk\_mean)^{2}} = \frac{n-1}{n}\cdot ((floor(\frac{n}{2})+1)\cdot((jk\_lower-\frac{1}{2})^{2} \\ +(floor(\frac{n}{2})\cdot(jk\_upper-\frac{1}{2})^{2})))\end{multline}
+
+\begin{equation}= \frac{n-1}{n}\cdot ((floor(\frac{n}{2})+1)\cdot((\frac{n-2}{2(n-1)}-\frac{1}{2})^{2} +(floor(\frac{n}{2})\cdot(\frac{n}{2(n-1)}-\frac{1}{2})^{2})))\end{equation} 
+
+\begin{equation}= \frac{n-1}{n}\cdot (floor(\frac{n}{2})\cdot((\frac{n-2}{2(n-1)}-\frac{1}{2})^{2} +(\frac{n}{2(n-1)}-\frac{1}{2})^{2})+(\frac{n-2}{2(n-1)}-\frac{1}{2})^{2})\end{equation} 
+
+\begin{equation}= \frac{1}{4n(n-1)}\cdot (floor(\frac{n}{2})\cdot(((n-2)-(n-1))^{2} +(n-(n-1))^{2})+((n-2)-(n-1))^{2})\end{equation} 
+
+\begin{equation}= \frac{1}{4n(n-1)}\cdot (floor(\frac{n}{2})\cdot((-1)^{2} +(1)^{2})+(-1)^{2})\end{equation} 
+
+\begin{equation}= \frac{1}{4n(n-1)}\cdot (floor(\frac{n}{2})\cdot2n+1)\end{equation} 
+
+\begin{equation}= \frac{1}{4n(n-1)}\cdot n\end{equation} 
+
+\begin{equation}= \frac{1}{4(n-1)}\end{equation}
+
+
+Therefore, the jackknife variance estimate of the unweighted median, in the percentile scale, is of the common form (for n odd or even)
+
+\begin{equation}\sigma_{jk \thinspace median \thinspace in \thinspace percentile \thinspace scale} = \frac{1}{4(n-1)}\end{equation}
+
+#Appendix B - Results of quantile regression, and bootstrap & backtransformed quadratic polynomial proxy quantile variance calculations  
+
+
+
+
+```{r, symmdistcase2unif, echo=FALSE, cache=FALSE, fig.width=6, fig.height=6, fig.keep='high', message=FALSE, warning=FALSE}
+
+setwd("d:/courses/research/variance")
+library("quantreg")
+
+# small sample size 1000 
+set.seed(731)
+samp <- runif(1000,0,1)
+n_samp <- length(samp)
+
+# quantreg estimates of X distribution values for given $\theta$ values
+
+taus = c(.025,.1,.25,.5,.75,.9,.975)
+
+q_var <- sqrt(taus*(1-taus)/n_samp)
+
+
+grid_int <- seq(0,1,length.out=10000)
+n_grid <- length(grid_int)
+
+
+n_row <- length(taus)
+
+qr_dat <- matrix(c(1:1*n_row),nrow=n_row,ncol=1,
+                           dimnames=list(taus,c("beta0")))
+qp_lstd <- matrix(c(1:1*n_row),nrow=n_row,ncol=1,
+                           dimnames=list(taus,c("lstd")))
+qp_ustd <- matrix(c(1:1*n_row),nrow=n_row,ncol=1,
+                           dimnames=list(taus,c("ustd")))
+backtrans_std <- matrix(c(1:3*n_row),nrow=n_row,ncol=3,
+                           dimnames=list(taus,c("lower_std_dist","upper_std_dist","average_std_value")))
+qrboot_dat <- matrix(c(1:4*n_row),nrow=n_row,ncol=4,
+                           dimnames=list(taus,c("beta0","std_error","t_value","Pr")))
+
+quad_densfn <- matrix(rep(1,length(taus)*n_grid),nrow=n_grid,ncol=length(taus),dimnames=list(c(1:n_grid),c(1:length(taus))))
+
+
+
+for (i in 1:length(taus)) {
+
+  model_fit <- rq((samp)~(1),tau=taus[i],method="fn")
+  qr_dat[i,] <- c(summary(model_fit)$coefficients[1])
+  qrboot_dat[i,] <- c(summary(model_fit,se="boot")$coefficients[1:4])
+
+  qp_lstd[i] <- taus[i]-q_var[i]
+  qp_ustd[i] <- taus[i]+q_var[i]
+  taustd <- c(qp_lstd[i],qp_ustd[i])
+  
+  for (j in 1:n_grid) {
+  
+  quad_densfn[j,i] <- exp(-(grid_int[j]-taus[i])^2/q_var[i]^2)
+}
+
+quad_densfn[,i] <- quad_densfn[,i]/sum(quad_densfn[,i])*n_grid
+
+ 
+  model_fit_lstd <- summary(rq((samp)~(1),tau=qp_lstd[i],method="fn"))$coefficients[1]
+  model_fit_ustd <- summary(rq((samp)~(1),tau=qp_ustd[i],method="fn"))$coefficients[1]
+  
+  backtrans_std[i,] <- c(model_fit_lstd-qr_dat[i],model_fit_ustd-qr_dat[i],(model_fit_ustd-model_fit_lstd)/2)
+  
+
+
+
+
+}
+
+
+samp_perc <- rep(1,n_samp)/n_samp
+
+samp_perc[1] <- 1/2/n_samp
+samp_perc[n_samp] <- 1/2/n_samp
+
+#samp_perc
+samp_int <- 0
+samp_sort <- sort(samp)
+count <- 0
+for (j in 1:(n_samp-1)) {
+  for (i in 0:9) {
+    count <- count+1
+  samp_int[count] <- samp_sort[j]+i*(samp_sort[j+1]-samp_sort[j])/10
+}
+}
+#samp_int
+#length(samp_int)
+
+#length(grid_int)
+
+
+print("unif(0,1) dist - n=1000")
+print("quantile regression fit - rq")
+qr_dat
+print("quantile regression fit - summary.rq(...,se='boot')")
+qrboot_dat
+print("quadratic polynomial proxy - backtransformation fit") 
+backtrans_std
+
+```
+
+```{r, symmdistcase3sysunif, echo=FALSE, cache=FALSE, fig.width=6, fig.height=6, fig.keep='high', message=FALSE, warning=FALSE}
+
+setwd("d:/courses/research/variance")
+
+# small sample size random between 300-1000
+set.seed(6971)
+symmstart <- runif(1,0.001,.0033333)
+symmskip <- runif(1,0.001,.0033333)
+samp <- seq(symmstart,1,symmskip)
+library("quantreg")
+
+# small sample size 415 
+n_samp <- length(samp)
+
+# quantreg estimates of X distribution values for given $\theta$ values
+
+taus = c(.025,.1,.25,.5,.75,.9,.975)
+
+q_var <- sqrt(taus*(1-taus)/n_samp)
+
+
+grid_int <- seq(0,1,length.out=9960)
+n_grid <- length(grid_int)
+
+
+n_row <- length(taus)
+
+qr_dat <- matrix(c(1:1*n_row),nrow=n_row,ncol=1,
+                           dimnames=list(taus,c("beta0")))
+qp_lstd <- matrix(c(1:1*n_row),nrow=n_row,ncol=1,
+                           dimnames=list(taus,c("lstd")))
+qp_ustd <- matrix(c(1:1*n_row),nrow=n_row,ncol=1,
+                           dimnames=list(taus,c("ustd")))
+backtrans_std <- matrix(c(1:3*n_row),nrow=n_row,ncol=3,
+                           dimnames=list(taus,c("lower_std_dist","upper_std_dist","average_std_value")))
+qrboot_dat <- matrix(c(1:4*n_row),nrow=n_row,ncol=4,
+                           dimnames=list(taus,c("beta0","std_error","t_value","Pr")))
+
+quad_densfn <- matrix(rep(1,length(taus)*n_grid),nrow=n_grid,ncol=length(taus),dimnames=list(c(1:n_grid),c(1:length(taus))))
+
+
+
+for (i in 1:length(taus)) {
+
+  model_fit <- rq((samp)~(1),tau=taus[i],method="fn")
+  qr_dat[i,] <- c(summary(model_fit)$coefficients[1])
+  qrboot_dat[i,] <- c(summary(model_fit,se="boot")$coefficients[1:4])
+
+  qp_lstd[i] <- taus[i]-q_var[i]
+  qp_ustd[i] <- taus[i]+q_var[i]
+  taustd <- c(qp_lstd[i],qp_ustd[i])
+  
+  for (j in 1:n_grid) {
+  
+  quad_densfn[j,i] <- exp(-(grid_int[j]-taus[i])^2/q_var[i]^2)
+}
+
+quad_densfn[,i] <- quad_densfn[,i]/sum(quad_densfn[,i])*n_grid
+
+ 
+  model_fit_lstd <- summary(rq((samp)~(1),tau=qp_lstd[i],method="fn"))$coefficients[1]
+  model_fit_ustd <- summary(rq((samp)~(1),tau=qp_ustd[i],method="fn"))$coefficients[1]
+  
+  backtrans_std[i,] <- c(model_fit_lstd-qr_dat[i],model_fit_ustd-qr_dat[i],(model_fit_ustd-model_fit_lstd)/2)
+  
+
+
+
+
+}
+
+samp_perc <- rep(1,n_samp)/n_samp
+
+samp_perc[1] <- 1/2/n_samp
+samp_perc[n_samp] <- 1/2/n_samp
+
+#samp_perc
+samp_int <- 0
+samp_sort <- sort(samp)
+count <- 0
+for (j in 1:(n_samp-1)) {
+  for (i in 0:23) {
+    count <- count+1
+  samp_int[count] <- samp_sort[j]+i*(samp_sort[j+1]-samp_sort[j])/(9960/415)
+}
+}
+#samp_int
+#length(samp_int)
+
+#length(grid_int)
+
+
+print("systematic uniform - n=415")
+print("quantile regression fit - rq")
+qr_dat
+print("quantile regression fit - summary.rq(...,se='boot')")
+qrboot_dat
+print("quadratic polynomial proxy - backtransformation fit") 
+backtrans_std
+
+```
+
+```{r, skewed_distribution_case_1_log_normal, echo=FALSE, cache=FALSE, fig.width=6, fig.height=6, fig.keep='high', message=FALSE, warning=FALSE}
+setwd("d:/courses/research/variance")
+
+
+# small sample size 1000 
+set.seed(6971)
+samp <- exp(rnorm(1000,0.1,1))
+library("quantreg")
+
+n_samp <- length(samp)
+
+# quantreg estimates of X distribution values for given $\theta$ values
+
+taus = c(.025,.1,.25,.5,.75,.9,.975)
+
+q_var <- sqrt(taus*(1-taus)/n_samp)
+
+
+grid_int <- seq(0,1,length.out=10000)
+n_grid <- length(grid_int)
+
+
+n_row <- length(taus)
+
+qr_dat <- matrix(c(1:1*n_row),nrow=n_row,ncol=1,
+                           dimnames=list(taus,c("beta0")))
+qp_lstd <- matrix(c(1:1*n_row),nrow=n_row,ncol=1,
+                           dimnames=list(taus,c("lstd")))
+qp_ustd <- matrix(c(1:1*n_row),nrow=n_row,ncol=1,
+                           dimnames=list(taus,c("ustd")))
+backtrans_std <- matrix(c(1:3*n_row),nrow=n_row,ncol=3,
+                           dimnames=list(taus,c("lower_std_dist","upper_std_dist","average_std_value")))
+qrboot_dat <- matrix(c(1:4*n_row),nrow=n_row,ncol=4,
+                           dimnames=list(taus,c("beta0","std_error","t_value","Pr")))
+
+quad_densfn <- matrix(rep(1,length(taus)*n_grid),nrow=n_grid,ncol=length(taus),dimnames=list(c(1:n_grid),c(1:length(taus))))
+
+
+
+for (i in 1:length(taus)) {
+
+  model_fit <- rq((samp)~(1),tau=taus[i],method="fn")
+  qr_dat[i,] <- c(summary(model_fit)$coefficients[1])
+  qrboot_dat[i,] <- c(summary(model_fit,se="boot")$coefficients[1:4])
+
+  qp_lstd[i] <- taus[i]-q_var[i]
+  qp_ustd[i] <- taus[i]+q_var[i]
+  taustd <- c(qp_lstd[i],qp_ustd[i])
+  
+  for (j in 1:n_grid) {
+  
+  quad_densfn[j,i] <- exp(-(grid_int[j]-taus[i])^2/q_var[i]^2)
+}
+
+quad_densfn[,i] <- quad_densfn[,i]/sum(quad_densfn[,i])*n_grid
+
+ 
+  model_fit_lstd <- summary(rq((samp)~(1),tau=qp_lstd[i],method="fn"))$coefficients[1]
+  model_fit_ustd <- summary(rq((samp)~(1),tau=qp_ustd[i],method="fn"))$coefficients[1]
+  
+  backtrans_std[i,] <- c(model_fit_lstd-qr_dat[i],model_fit_ustd-qr_dat[i],(model_fit_ustd-model_fit_lstd)/2)
+  
+
+
+
+
+}
+
+
+
+samp_perc <- rep(1,n_samp)/n_samp
+
+samp_perc[1] <- 1/2/n_samp
+samp_perc[n_samp] <- 1/2/n_samp
+
+#samp_perc
+samp_int <- 0
+samp_sort <- sort(samp)
+count <- 0
+for (j in 1:(n_samp-1)) {
+  for (i in 0:9) {
+    count <- count+1
+  samp_int[count] <- samp_sort[j]+i*(samp_sort[j+1]-samp_sort[j])/100
+}
+}
+#samp_int
+#length(samp_int)
+
+#length(grid_int)
+
+
+print("log-normal N(0.1,1) dist - n=1000")
+print("quantile regression fit - rq")
+qr_dat
+print("quantile regression fit - summary.rq(...,se='boot')")
+qrboot_dat
+print("quadratic polynomial proxy - backtransformation fit") 
+backtrans_std
+
+```
+
+```{r, skewed_distribution_case_2_weighted_bivariate_normal, echo=FALSE, cache=FALSE, fig.width=6, fig.height=6, fig.keep='high', message=FALSE, warning=FALSE}
+setwd("d:/courses/research/variance")
+
+
+
+# small sample size 1000 
+set.seed(719)
+waitdur1 <- rnorm(90,55,5.5)
+waitdur2 <- rnorm(180,80,6)
+samp <- c(waitdur1,waitdur2)
+library("quantreg")
+
+# small sample size 270 
+n_samp <- length(samp)
+
+# quantreg estimates of X distribution values for given $\theta$ values
+
+taus = c(.025,.1,.25,.5,.75,.9,.975)
+
+q_var <- sqrt(taus*(1-taus)/n_samp)
+
+
+grid_int <- seq(0,1,length.out=10000)
+n_grid <- length(grid_int)
+
+
+n_row <- length(taus)
+
+qr_dat <- matrix(c(1:1*n_row),nrow=n_row,ncol=1,
+                           dimnames=list(taus,c("beta0")))
+qp_lstd <- matrix(c(1:1*n_row),nrow=n_row,ncol=1,
+                           dimnames=list(taus,c("lstd")))
+qp_ustd <- matrix(c(1:1*n_row),nrow=n_row,ncol=1,
+                           dimnames=list(taus,c("ustd")))
+backtrans_std <- matrix(c(1:3*n_row),nrow=n_row,ncol=3,
+                           dimnames=list(taus,c("lower_std_dist","upper_std_dist","average_std_value")))
+qrboot_dat <- matrix(c(1:4*n_row),nrow=n_row,ncol=4,
+                           dimnames=list(taus,c("beta0","std_error","t_value","Pr")))
+
+quad_densfn <- matrix(rep(1,length(taus)*n_grid),nrow=n_grid,ncol=length(taus),dimnames=list(c(1:n_grid),c(1:length(taus))))
+
+
+
+for (i in 1:length(taus)) {
+
+  model_fit <- rq((samp)~(1),tau=taus[i],method="fn")
+  qr_dat[i,] <- c(summary(model_fit)$coefficients[1])
+  qrboot_dat[i,] <- c(summary(model_fit,se="boot")$coefficients[1:4])
+
+  qp_lstd[i] <- taus[i]-q_var[i]
+  qp_ustd[i] <- taus[i]+q_var[i]
+  taustd <- c(qp_lstd[i],qp_ustd[i])
+  
+  for (j in 1:n_grid) {
+  
+  quad_densfn[j,i] <- exp(-(grid_int[j]-taus[i])^2/q_var[i]^2)
+}
+
+quad_densfn[,i] <- quad_densfn[,i]/sum(quad_densfn[,i])*n_grid
+
+ 
+  model_fit_lstd <- summary(rq((samp)~(1),tau=qp_lstd[i],method="fn"))$coefficients[1]
+  model_fit_ustd <- summary(rq((samp)~(1),tau=qp_ustd[i],method="fn"))$coefficients[1]
+  
+  backtrans_std[i,] <- c(model_fit_lstd-qr_dat[i],model_fit_ustd-qr_dat[i],(model_fit_ustd-model_fit_lstd)/2)
+  
+
+
+
+
+}
+
+samp_perc <- rep(1,n_samp)/n_samp
+
+samp_perc[1] <- 1/2/n_samp
+samp_perc[n_samp] <- 1/2/n_samp
+
+#samp_perc
+samp_int <- 0
+samp_sort <- sort(samp)
+count <- 0
+for (j in 1:(n_samp-1)) {
+  for (i in 0:9) {
+    count <- count+1
+  samp_int[count] <- samp_sort[j]+i*(samp_sort[j+1]-samp_sort[j])/100
+}
+}
+#samp_int
+#length(samp_int)
+
+#length(grid_int)
+
+
+print("bivariate normal $\frac{1}{3}$N(55,5.5)+$\frac{2}{3}$N(80,6) dist - n=270")
+print("quantile regression fit - rq")
+qr_dat
+print("quantile regression fit - summary.rq(...,se='boot')")
+qrboot_dat
+print("quadratic polynomial proxy - backtransformation fit") 
+backtrans_std
+
+```
