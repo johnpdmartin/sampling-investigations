@@ -1,7 +1,7 @@
 ---
 title: "An empirical variance distribution approximation, using backtransformation from the percentile scale, for the quantile estimating function of continuous distributions"
 author: "John P. D. Martin"
-date: "Wednesday, October 6, 2015"
+date: "Wednesday, October 7, 2015"
 output: pdf_document
 ---
 
@@ -395,25 +395,25 @@ The function is then transformed to form likelihood scale values, ie. lying in t
 
 \begin {equation} \underset{ b \thinspace\epsilon (0,1)}{\max} \exp\{ -\left( \frac{1}{\theta(1-\theta)}b^2 + \frac{-2}{(1-\theta)}b + \frac{1}{(1-\theta)} - 1  \right) \} \,\, \in [0,1] \end{equation}
 
-Finally, a density functional form can be defined from equation 11 noting (i) the quadratic nature of the exponent and (ii) including the sample size as a multiplicative factor consistent with the asymptotic $\sqrt{n}$ behaviour expected for population quantiles (1). In particular,
+Finally, a density functional form can be defined from equation 11 noting (i) the quadratic nature of the exponent, a property that is known to be shared by the normal distribution and (ii) including the sample size as a multiplicative factor consistent with the asymptotic $\sqrt{n}$ behaviour expected for population quantiles (1). In particular,
 
-\begin {equation} f_{q-proxy}(b,\theta,n) \propto \exp\{ -\left( \frac{1}{\theta(1-\theta)}b^2 + \frac{-2}{(1-\theta)}b + \frac{1}{(1-\theta)} - 1  \right) n \} \,\, \in [0,1] \end{equation}
+\begin {equation} f_{q-proxy}(b,\theta,n) \propto \exp\{ -\left( \frac{1}{\theta(1-\theta)}b^2 + \frac{-2}{(1-\theta)}b + \frac{1}{(1-\theta)} - 1  \right) \frac{n}{2} \} \,\, \in [0,1] \end{equation}
 
 Using the standard normal transformation, it is then simple to derive the mean and central limit theorem (CLT) variance of equation (12)
 
-\begin {equation} -(\frac{b-\mu}{\sigma_{CLT}})^2 =  -\left( \frac{1}{\theta(1-\theta)}b^2 + \frac{-2}{(1-\theta)}b + \frac{1}{(1-\theta)} - 1  \right) n  \end{equation}
+\begin {equation} -(\frac{(b-\mu)^2}{2\sigma_{CLT}^2}) =  -\left( \frac{1}{\theta(1-\theta)}b^2 + \frac{-2}{(1-\theta)}b + \frac{1}{(1-\theta)} - 1  \right) \frac{n}{2}  \end{equation}
 
 first by expanding the LHS of equation (13)
 
-\begin {equation} -(\frac{b^2}{\sigma_{CLT}^2}+\frac{-2\mu b}{\sigma_{GLT}^2}+\frac{\mu^2}{\sigma_{CLT}^2}) =  -\left( \frac{1}{\theta(1-\theta)}b^2 + \frac{-2}{(1-\theta)}b + \frac{1}{(1-\theta)} - 1  \right) n  \end{equation}
+\begin {equation} -(\frac{b^2}{2\sigma_{CLT}^2}+\frac{-2\mu b}{2\sigma_{CLT}^2}+\frac{\mu^2}{2\sigma_{CLT}^2}) =  -\left( \frac{1}{\theta(1-\theta)}b^2 + \frac{-2}{(1-\theta)}b + \frac{1}{(1-\theta)} - 1  \right) \frac{n}{2}  \end{equation}
 
 and then equating coefficients
 
-\begin {equation} \frac{1}{\sigma_{CLT}^2} \equiv  \frac{n}{\theta(1-\theta)}  \end{equation}
+\begin {equation} \frac{1}{2\sigma_{CLT}^2} \equiv  \frac{n}{2\theta(1-\theta)}  \end{equation}
 
-\begin {equation} \frac{-2\mu}{\sigma_{CLT}^2} \equiv  \frac{-2n}{(1-\theta)}  \end{equation}
+\begin {equation} \frac{-2\mu}{2\sigma_{CLT}^2} \equiv  \frac{-2n}{2(1-\theta)}  \end{equation}
 
-\begin {equation} \frac{\mu^2}{\sigma_{CLT}^2} \equiv  \frac{n}{(1-\theta)} - n = \frac{\theta n}{(1-\theta)}  \end{equation}
+\begin {equation} \frac{\mu^2}{2\sigma_{CLT}^2} \equiv  \frac{n}{2(1-\theta)} - \frac{n}{2} = \frac{\theta n}{2(1-\theta)}  \end{equation}
 
 This derived density function gives the following compact solution for the population quantile and its CLT variance of the quadratic polynomial proxy for the quantile estimation function in the percentile scale
 
@@ -423,11 +423,11 @@ This derived density function gives the following compact solution for the popul
 
 Since the density function is found to be proportional to a normal distribution depending on $\theta$ and n, the proportionality factor needed in equation (12) is also identified by integration over the interval [0,1], giving the density function the compact form
 
-\begin {equation} f_{q-proxy}(b,\theta,n) = \left( \frac{1}{\int\limits_0^1 \exp\{ \frac{-\left( b-\theta \right)^2}{\frac{\theta(1-\theta)}{n}}    \} \ db} \right) \exp\{ \frac{-\left( b-\theta \right)^2}{\frac{\theta(1-\theta)}{n}}    \}  \end{equation}
+\begin {equation} f_{q-proxy}(b,\theta,n) = \left( \frac{1}{\int\limits_0^1 \exp\{ \frac{-\left( b-\theta \right)^2}{2\sigma_{CLT}^2}    \} \ db} \right) \exp\{ \frac{-\left( b-\theta \right)^2}{2\sigma_{CLT}^2}    \}  \end{equation}
 
 and in the large n limit, the density function of the quadratic polynomial proxy for the quantile estimating function (in the percentile scale) converges to a normal distribution form
 
-\begin {equation} f_{q-proxy}(b,\theta,n)_{CLT} \rightarrow \frac{1}{\sqrt{2\pi}\frac{\theta(1-\theta)}{n}} \exp\{ \frac{-\left( b-\theta \right)^2}{\frac{\theta(1-\theta)}{n}}    \}  \end{equation}
+\begin {equation} f_{q-proxy}(b,\theta,n)_{CLT} \rightarrow \frac{1}{\sigma_{CLT}\sqrt{2\pi}} \exp\{ \frac{-\left( b-\theta \right)^2}{2\sigma_{CLT}^2} \}  \end{equation}
 
 
 #Comparison to analytic median jackknife variance results in percentile scale
@@ -525,10 +525,10 @@ for (i in 1:length(taus)) {
   
   for (j in 1:n_grid) {
   
-  quad_densfn[j,i] <- exp(-(grid_int[j]-taus[i])^2/q_var[i]^2)
+  quad_densfn[j,i] <- exp(-(grid_int[j]-taus[i])^2/2/q_var[i]^2)
 }
 
-quad_densfn[,i] <- quad_densfn[,i]/sum(quad_densfn[,i])*n_grid
+quad_densfn[,i] <- quad_densfn[,i]/sum(quad_densfn[,i])
 
  
   model_fit_lstd <- summary(rq((samp)~(1),tau=qp_lstd[i],method="fn"))$coefficients[1]
@@ -542,17 +542,16 @@ quad_densfn[,i] <- quad_densfn[,i]/sum(quad_densfn[,i])*n_grid
 
 }
 
-
-
-par(mfrow=c(2,2))
-par(fig=c(0,0.5,0.45,0.9))
-
-plot(y=quad_densfn[,1],x=grid_int,xlim=c(max(0,taus[1]-3*sqrt(taus[1]*(1-taus[1])/n_samp)),min(1,taus[1]+3*sqrt(taus[1]*(1-taus[1])/n_samp))),type="l",xlab="percentile_scale_value",ylab="quad poly proxy density fn",main=paste("quantile var dist for q=0.025","\n in the percentile scale"),sub="figure 3a",cex.main=0.9)
-
 samp_perc <- rep(1,n_samp)/n_samp
 
 samp_perc[1] <- 1/2/n_samp
 samp_perc[n_samp] <- 1/2/n_samp
+
+samp_perc_cdf <- samp_perc
+for (i in 2:n_samp) {
+  samp_perc_cdf[i] <- 1/n_samp+samp_perc_cdf[i-1]
+}
+
 
 #samp_perc
 samp_int <- 0
@@ -569,17 +568,28 @@ for (j in 1:(n_samp-1)) {
 
 #length(grid_int)
 
+
+par(mfrow=c(2,2))
+par(fig=c(0,0.5,0.45,0.9))
+
+plot(y=quad_densfn[,1],x=grid_int,xlim=c(max(0,taus[1]-3*sqrt(taus[1]*(1-taus[1])/n_samp)),min(1,taus[1]+3*sqrt(taus[1]*(1-taus[1])/n_samp))),type="l",xlab="percentile_scale_value",ylab="quad poly proxy density fn",main=paste("quantile var dist for q=0.025","\n in the percentile scale"),sub="figure 3a",cex.main=0.9)
+points(y=rep(10/n_grid,n_samp),x=samp_perc_cdf,col="blue",pch="|")
+abline(v=taus[1],col="red",lwd=2,lty=3)
+
+
 par(fig=c(0.5,1,0.45,0.9), new=TRUE)
 plot(y=quad_densfn[,1][6:9995],x=samp_int,type="l",xlim=c(-2.46,-1.66),xlab="measurement_scale_value",ylab="backtransformed density fn",main=paste("quantile var dist for q=0.025","\n in original measurement scale"),sub="figure 3b",cex.main=0.9)
-points(y=rep(10,n_samp),x=samp,col="blue",pch="|")
+points(y=rep(10/n_grid,n_samp),x=samp,col="blue",pch="|")
 abline(v=qr_dat[1],col="red",lwd=2,lty=3)
 
 par(fig=c(0,0.5,0,0.45), new=TRUE)
 plot(y=quad_densfn[,4],x=grid_int,xlim=c(max(0,taus[4]-3*sqrt(taus[4]*(1-taus[4])/n_samp)),min(1,taus[4]+3*sqrt(taus[4]*(1-taus[4])/n_samp))),type="l",xlab="percentile_scale_value",ylab="quad poly proxy density fn",main=paste("quantile var dist for q=0.5","\n in the percentile scale"),sub="figure 3c",cex.main=0.9)
+points(y=rep(10/n_grid,n_samp),x=samp_perc_cdf,col="blue",pch="|")
+abline(v=taus[4],col="red",lwd=2,lty=3)
 
 par(fig=c(0.5,1,0,0.45), new=TRUE)
 plot(y=quad_densfn[,4][6:9995],x=samp_int,type="l",xlim=c(-.125,.125),xlab="measurement_scale_value",ylab="backtransformed density fn",main=paste("quantile var dist for q=0.5","\n in original measurement scale"),sub="figure 3d",cex.main=0.9)
-points(y=rep(10,n_samp),x=samp,col="blue",pch="|")
+points(y=rep(10/n_grid,n_samp),x=samp,col="blue",pch="|")
 abline(v=qr_dat[4],col="red",lwd=2,lty=3)
 
 print("N(0,1) dist - n=1000")
