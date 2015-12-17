@@ -1,0 +1,938 @@
+---
+title: "Quantile regression model coefficient CIs using the empirical variance distribution approximation"
+author: "John P. D. Martin"
+date: "Wednesday, December 16, 2015"
+output: pdf_document
+---
+
+```{r, setwd, echo=FALSE, cache=FALSE, fig.width=6, fig.height=6, fig.keep='high'}
+setwd("d:/courses/research/quantile_regression")
+```
+
+###Executive Summary
+
+This paper investigates the application of the empirical variance distribution (evd) function (Martin (1,2)), to estimate the confidence interval bounds of the quantile regression model coefficient estimates (Koencker & Bassett (3)), for homoscedastic unweighted data. 
+
+Analysis of the coverage accuracy of the results is conducted by repeated sampling of several sample sizes to known regression models and error distributions. Table 1 displays the coverage performance of several quantile regression variance estimates of unweighted regression examples, for sample size 1000. The empirical variance distribution (evd) based estimates are compared to default bootstrap quantile confidence intervals calculated using 600 replicates (from the quantreg r package (4)). 
+
+It can be seen that for this modest sample size, the bootstrap estimator and the two evd based confidence interval estimators exhibit nominal 95% coverage for homoscedastic iid cases in slope estimates and >93% in the intercept estimates. For extreme quantiles in smaller samples or when homoscedastic iid error is not present, the coverage performance is lower.
+
+
+**Table 1: Quantile regression confidence interval estimator coverage of sample size 1000 for (slope,intercept) respectively, based on 1000 repeated samples**
+\footnotesize
+
+Regression $Y=\beta X + \varepsilon$ | quantile |  bootstrap coverage | evd_max coverage  | bin_max coverage
+--------- | ------- | ------- | ----------- | ------- | -------
+$y = x + rnorm(0,10)$ | 0.1 |  (0.947,0.944) | (0.956,0.965) | (0.954,0.960)
+"" | 0.5 |  (0.945,0.953) | (0.957,0.971) | (0.957,0.971)
+"" | 0.9 |  (0.950,0.952) | (0.958,0.960) | (0.960,0.957)
+$y = x^2 + rnorm(0,10)$ | 0.1 |  (0.953,0.947) | (0.969,0.937) | (0.966,0.933)
+"" | 0.5 |  (0.944,0.956) | (0.957,0.934) | (0.957,0.934)
+"" | 0.9 |  (0.957,0.947) | (0.962,0.928) | (0.960,0.924)
+$y = x + urlaplace(0,10)$ | 0.1 |  (0.950,0.948) | (0.958,0.961) | (0.951,0.958)
+"" | 0.5 |  (0.956,0.958) | (0.959,0.970) | (0.959,0.970)
+"" | 0.9 |  (0.944,0.951) | (0.957,0.957) | (0.953,0.958)
+$y = x + \frac{x^2}{2} + rnorm(0,10)$ | 0.1 |  (0.960,0.964,0.947) | (0.956,0.964,0.929) | (0.955,0.960,0.929)
+"" | 0.5 |  (0.955,0.958,0.959) | (0.962,0.961,0.943) | (0.957,0.952,0.934)
+"" | 0.9 |  (0.957,0.961,0.940) | (0.953,0.961,0.921) | (0.953,0.957,0.910)
+$y = x + AR(1)$ | 0.1 |  (0.953,0.837) | (0.957,0.863) | (0.961,0.863)
+"" | 0.5 |  (0.950,0.798) | (0.962,0.835) | (0.962,0.835)
+"" | 0.9 |  (0.957,0.830) | (0.959,0.868) | (0.957,0.868)
+
+In Table 1, the regression degrees of freedom model adjustment $\sqrt{n/(n-p-1)}$ for the evd based estimators was performed in the percentile scale.
+\normalsize
+
+The first example examines a location shift only model with gaussian noise. The second example involves a nonlinear location shift model analysed using polynomial quantile regression, providing a stronger test of the intercept confidence interval estimator. The third example, examines the impact on coverage performance of a different iid noise distribution for which quantile regression is known to be a more efficient regression estimator. The fourth example, involving additive polynomial regression examines the coverage performance when multiple explanatory variables are present and illustrates the good coverage achievable if the homoscedastic iid model has correctly specified nonlinearities. Finally, to contrast the good performance for homoscedastic iid examples, the fifth example in Table 1, contains autocorrelation (AR(1)) between the errors terms of the sample observation. In this non-iid example, the coverage performance of the intercept confidence interval estimators is lower than desired for the bootstrap as well as the evd based estimators due to model error iid misspecification. In this final case, the slope confidence interval estimates remain at 95% as their calculation is robust against the non-iid behaviour. 
+
+Importantly, the use of the quadratic polynomial proxy approach applied to estimate sample quantile variances (1,2) has now been extended, to provide useful approximations of quantile regression model variances in homoscedastic unweighted cases.
+
+
+#Introduction
+
+Quantiles (5) are an order statistic of a distribution defined by the equivalent probability amount contained under the cumulative distribution function up to the (ordered) value of the quantile point. 
+
+That is, x is a k-th q-quantile for a variable X if
+
+Pr[X < x] $\leq$ k/q or, equivalently, Pr[X $\geq$ x] $\geq$ (1 - k/q)
+
+So the 25th percentile point is the 25/100 (k/q) 100-quantile point where 25% of the probability under the cumulative density function has occurred.
+
+An equivalent calculation of quantile points has been demonstrated (3) using least absolute deviation (LAD) regression of the following quantile estimation function
+
+\begin{equation} \underset{ b \thinspace\epsilon \mathbb{R}}{\min}  \{ \theta \left|x_t-b\right| + (1-\theta)\left|x_t-b\right| \}\end{equation}
+
+where $\theta \equiv k/q$ and $x_t$ are the sample/population elements of X. As the absolute value functions in equation 1, create a piecewise linear function shape (convex polytope) to the estimating function, linear programming techniques are required to solve the minimsation problem. As such, closed form expressions for the standard error of the quantile estimates are not available from this approach.
+
+Another approach for estimated standard errors of the quantile estimation function solution is to concurrently calculate the standard errors of smoothed versions of the problem, Brown & Wang (6). Consistent with that approach, Martin (1) identified an analytic quadratic polynomial smoothing function, in the percentile scale, for the quantile estimating function of unweighted samples. This analytic function, only requires the sample size and selected quantile value, to calculate the sample quantile confidence interval (CI) bounds in the percentile scale. 
+
+Backtransforming to the original measurement scale, using the CI bounds in the quantile estimation function calculations on the sample distribution results in the empirical variance distribution (evd). As shown in (1), the evd is an asymmetric stepped sample CI, in contrast to smooth symmetric bootstrap sample CIs, but similar in morphology to the discrete cumulative density function (cdf). 
+
+In Martin (2), several evd based sample quantile CI estimators were shown to have nominal 95% performance for samples sizes 50-100-1000, except for extreme quantiles in the smallest samples. Some improvement in the sample quantile CI coverage was also shown to be possible for these extreme cases, via use of quantile regression extrapolated 0th,100th quantile sample bounds.  
+
+In this current research, the evd based sample quantile CI estimators (2) have been trialled, assessed and adapted where required as quantile regression model coefficient CI estimators. 
+
+In this paper, the best performing evd based estimators for quantile regression model coefficient CIs of homoscedastic iid cases, will be presented along with the regression formulae required to transform the CI bounds to original scale values. The results are then compared to the known population slope and intercept regression values as well as default quantreg () bootstrap estimates.    
+
+In practice, this evd based model CI method to approximate quantile regression model coefficient CIs for homoscedastic iid cases is very easy to perform. 
+
+(i) Firstly, the quantile estimating function is used to perform the quantile regression modelling and derive the residuals distribution, 
+(ii) next, using only the sample size and the given quantile value $\theta \thinspace \epsilon \thinspace (0,1)$, the evd variance estimator approach provides the confidence interval bound values ($\theta_{LB}$, $\theta_{UB}$) for the quantile regression residuals distribution, 
+(iii) the quantile estimating function is then used on the residuals distribution to backtransform the (quantile) confidence interval bound values ($\theta_{LB}$, $\theta_{UB}$) to the original measurement scale, and
+(iv) simple regression formulae (analogous to the linear regression case) use the evd based approximations of the quantile regression residual CIs as input, to calculate evd based approximation estimates of the quantile regression model coefficient CIs.
+
+Based on the present results, the regression degrees of freedom adjustment $\sqrt{\frac{n}{(n-p-1)}}$ required for model coefficient CIs can be applied in either step (ii) or (iv). There is weak evidence that performing the degrees of freedom adjustment in step (ii) has slightly better coverage for smaller sample sizes.
+
+# Sample quantile confidence interval evd based estimators
+
+In (2), it was found that three sample quantile CI estimators calculated in the percentile scale before backtransformation to the original measurement scale, 
+
+(i) the binomial distribution, 
+(ii) the empirical variance distribution and 
+(iii) the total variance $E[Var(\theta | x)] + Var(E[\theta | x])$ confidence interval
+
+all produced nominal 95% coverage for sample quantiles between 0.1-0.9 similar to bootstrap results.
+
+###binomial CI estimator
+
+The binomial variance distribution formula is a total variance estimator, selfconsistently including the high probability of 0(1) occurring for repeated sampling of bernoulli experiments with probabilities close to 0(1). That is why it was described as the exact distribution for the estimate of proportions (7) from repeated sampling. It has an naturally skewed distribution reflecting the bounded distribution of the possible outcomes. For large n, CLT behaviour is observed. 
+
+In use for quantile variance estimation, in the percentile scale, the estimated quantile 2.5th & 97.5th points applicable to a 95% confidence interval are obtained by dividing the binomial cumulative distribution function by the sample size 
+
+
+\begin {equation} F(k/n;n,\theta)_{binom} = \frac{1}{n}\sum_{i=0}^{\lfloor k \rfloor} \frac{n!}{k!(n-k)!} \theta^i(1-\theta)^{(n-i)}\label {eq:bin} \end {equation}
+
+where (i) $\theta$ is substituted for the proportion terms in the usual proportion formula as shown, and i are integers between 0 & n. 
+
+
+###evd CI estimator
+
+The empirical variance probability distribution, given in equation (3), is a rescaled normal distribution due to the quantile bounds (0,1).  It is also only an estimator of the form $E[Var(\theta | x)]$ rather than a total variance estimator. This is because the quantile estimating function minimisation, that the quadratic polynomial proxy (1) mimics, is strictly a conditional variance of the observed sample, ie. if the observed quantile is 0 or 1, the calculated variance is zero.
+
+\begin {equation} f_{q-proxy}(b,\theta,n) = \left( \frac{1}{\int\limits_0^1 \exp\{ \frac{-\left( b-\theta \right)^2}{2\sigma_{CLT}^2}    \} \ db} \right) \exp\{ \frac{-\left( b-\theta \right)^2}{2\sigma_{CLT}^2}    \}  \end{equation}
+
+where 
+
+\begin {equation} \sigma_{CLT} =  \sqrt{\frac{\theta(1-\theta)}{n}}  \end{equation}
+
+On backtransformation to the original measurement scale, the shape of the resulting empirical variance distribution (evd) using empirical cdf with interpolation, shares the step function character of the cumulative distribution function and in general exhibits some asymmetry compared to the convention of outputting symmetric bootstrap standard errors.
+
+In the large n limit, the density function of the quadratic polynomial proxy for the quantile estimating function (in the percentile scale) converges to a (CLT) normal distribution form
+
+\begin {equation} f_{q-proxy}(b,\theta,n)_{CLT} \rightarrow \frac{1}{\sigma_{CLT}\sqrt{2\pi}} \exp\{ \frac{-\left( b-\theta \right)^2}{2\sigma_{CLT}^2} \}  \end{equation}
+
+In use for quantile variance estimation, the effect of rescaling in equation (3), in the percentile scale, means the estimated quantile 2.5th & 97.5th points applicable to a 95% confidence interval are obtained by using a normal cumulative distribution function bounded to the interval [0,1]
+
+
+\begin {equation} F(q)_{evd} = \frac{1}{2}[1 + erf(\frac{q-\theta}{\sigma_{CLT}\sqrt{2}})]  \thinspace\thinspace \epsilon \thinspace [0,1] \label {eq:evd} \end {equation}
+
+
+### evd plus $Var(E[\theta | x])$ approximation 
+
+Using the variance expression for indicator random variables, the $Var(E[\theta | x])$ term is approximated, in the percentile scale, by 
+
+\begin  {align} Var(E[\theta | k/q]) =& E(\theta)^2Var(k/q)_{\theta} \label{eq:total} \\
+\approx& \begin {cases} \theta^2Pr(\theta=0)Pr(\theta>0) \thinspace\thinspace\thinspace for \thinspace\theta \leq 0.5  \\
+ (1-\theta)^2Pr(\theta=1)Pr(\theta<1) \thinspace\thinspace\thinspace for \thinspace\theta > 0.5 \end {cases} \end {align} 
+
+
+where var(k/q) term is a population variance, in the percentile scale, and so is an unconditional variance contribution to the total variance.
+
+In use for sample quantile variance estimation, the total variance estimator is obtained as the squared sum of the $E[Var(\theta | x)]$ and $Var(E[\theta | x])$ standard errors according to equations (6) & (7)
+
+As mentioned in (2), the advantage of the empirical variance distribution based 95% confidence interval estimators is that the quantile values of the intervals can be determined very simply in the percentile scale using only the sample size and given quantile value. 
+
+
+# Quantile regression model coefficients confidence interval estimators
+
+A major difference between estimating regression model slope(s) and intercept coefficient confidence intervals and sample confidence intervals, is that the sample quantile confidence intervals are defined directly as points located on the measured sample distribution (using bootstrap approach) or cdf (using the evd approach). 
+
+However, for regression modelling the slope(s) and intercept coefficient confidence intervals, are typically a scaled value of the regression residuals variance. For example, for ordinary least squares regression with two explanatory variables, 
+
+\begin{equation} y = \beta_0 + \beta_1 x_1 + \beta_2 x_2 + \varepsilon \end{equation}
+
+the model slope(s) and coefficients are derived from the residuals sample variance (distribution) $s_{res}$ via the linear regression relationships
+
+\begin{equation} s_{\beta_1} = \frac{s_{res}}{var(x_1)(1-r_{12})}\label{eq:1} \end{equation}
+
+\begin{equation} s_{\beta_2} = \frac{s_{res}}{var(x_2)(1-r_{12})}\label{eq:2} \end{equation}
+
+\begin{equation} s_{\beta_0} = s_{res}\sqrt{1+s_{\beta_1}^2\bar{x}_1^2 +s_{\beta_2}^2\bar{x}_2^2 }\label{eq:3} \end{equation}
+
+\begin{equation} r_{12} = \frac{cov(x_1,x_2)}{\sqrt{var(x_1)var(x_2)}} \end{equation}
+
+Since the evd approximation to quantile estimating function, produces a smooth, differentiable approximation to the quantile estimating function (1), the obvious model slope variance estimators to trial with evd based model slope coefficient CI estimators for quantile regression are exactly equations \eqref{eq:1} & \eqref{eq:2}. As the results shown in this paper indicate, this choice of functional relationship works well for the given evd based model slope CI estimators.
+
+For the model intercept coefficient variance estimator, two obvious adaptions of \eqref{eq:3} for evd based approximations of quantile regression model intercept variance (as well as others) were trialled.
+
+\begin{equation} s_{\beta_0}(\theta) = s_{res}\sqrt{1+s_{\beta_1}^2 (x_1(\theta))^2 +s_{\beta_2}^2 (x_2(\theta))^2 }\label{eq:4} \end{equation}
+
+\begin{equation} s_{\beta_0}(\theta) = s_{res}\sqrt{1+s_{\beta_1}^2 median(x_1)^2 +s_{\beta_2}^2 median(x_2)^2 }\label{eq:5} \end{equation}
+
+where $\theta$ is the quantile value under quantile regression modelling. Examining the evd approximation CI results of a quadratic polynomial quantile regression example, very strongly indicates that equation \eqref{eq:5} gives superior and symmetric coverage performance compared to equation \eqref{eq:4} over the whole quantile range (0,1). That only the median sample estimate needs to involved, rather than individual $\theta$ sample estimates for the intercept CI, is probably a reflection of the equal slope observed for different quantile values in quantile regression results for homoscedastic data.  
+
+In this research, equations \eqref{eq:1}, \eqref{eq:2} & \eqref{eq:5} have been found to form a suitable basis to produce accurate evd based approximations to quantile regression model coefficient CIs for homoscedastic iid cases, from quantile regression residuals. 
+
+Importantly, to keep the evd based variance estimation maximising the use of quantile regression calculations. The residuals distribution variance is not calculated using sum of squares of errors of the residuals but is calculated by performing quantile regression calculations on the residual distribution using evd based estimates of ($\theta_{LB}$, $\theta_{UB}$), to then estimate the 2.5th & 97.5th bounds in the original measurement scale. 
+
+To properly acknowledge the loss of degrees of freedom, produced by the quantile regression model and hence higher uncertainty in estimated CIs, equations \eqref{eq:1}, \eqref{eq:2} & \eqref{eq:5} also will contain implicitly or explicitly a $\sqrt{n/(n-p-1)}$ factor. This correction can be done (i) in the percentile scale on equations \eqref{eq:bin} & \eqref{eq:evd} so the adjustment is implicitly in equations \eqref{eq:1}, \eqref{eq:2} & \eqref{eq:5}, or (ii) equations \eqref{eq:1}, \eqref{eq:2} & \eqref{eq:5} can have the degree of freedom adjustment explicitly included. Both versions of this adjustment have been trialled for evd based CI estimators.
+
+
+### assessing/adapting evd based estimators for use as quantile regression model coefficient CI estimators
+
+As a result of investigations of the coverage performance of the above three sample CI estimators equations \eqref{eq:bin}, \eqref{eq:evd} & \eqref{eq:total}, as quantile regression model coefficient CI estimators, some shortcomings were identified with the direct use of evd based sample quantile estimators as quantile regression model CI estimators 
+
+1. the evd plus $Var(E[\theta | x])$ total variance approximation produced overcoverage due to the $Var(E[\theta | x])$ term
+2. the use of extrapolated 0th, 100th quantile bounds in (2) produced overcoverage
+3. the asymmetry of the residuals distribution CI when using raw evd based estimators in the original scale led to undercoverage
+4. the use of mean evd standard errors calculated from the average of the asymmetric residuals distribution CIs also led to undercoverage. Noting that in (1) there appeared to evidence of reasonable agreement between bootstrap sample quantile CIs and mean evd based sample quantile CIs.
+
+These observations directly led to the most likely candidates for evd based quantile regression model CIs, being to take the maximum half CI of the asymmetric evd CIs (using equations \eqref{eq:bin} or \eqref{eq:evd}) of the residuals distribution and use that as a symmetric confidence interval estimate. This approach was expected to cause some overcoverage but that is much more palatable than undercoverage. 
+
+Some evidence of the need for symmetrisation for quantile regression model coefficient CIs is that the repeated sampling produced symmetrical distributions for the point estimates of the slope(s) and intercept obtained from the quantile regression results. Whereas in (1,2), under repeated sampling, there was a clear asymmetry in the histogram about a given sample quantile, for non-linear sample distributions.
+
+### evd approximations to the regression residuals variance/CI
+
+Given the above findings, the field of useful evd based estimators for quantile regression model coefficient CI estimators was thus reduced to the following short list of estimators of the residuals CI
+
+
+1. bin_max_perc; binomial distribution based evd CI estimator with the regression degrees of freedom adjustment in the percentile frame
+
+determine 2.5th & 97.5th percentile bounds of residuals using
+
+qbinom(0.025,(n-p-1),q)/(n-p-1)
+
+qbinom(0.975,(n-p-1),q)/(n-p-1)
+
+then calculate the maximum half CI in the original scale of the residuals distribution using quantile regression
+
+max_evd_perc = max(abs(bin_UB-point estimate),abs(bin_LB-point estimate))
+
+
+2. bin_max_org; binomial distribution based evd CI estimator with the regression degrees of freedom adjustment in the original scale
+
+determine 2.5th & 97.5th percentile bounds of residuals using
+
+qbinom(0.025,n,q)/n
+
+qbinom(0.975,n,q)/n
+
+then calculate the maximum half CI in the original scale of the residuals distribution using quantile regression
+
+max_bin_org = max(abs(bin_UB-point estimate),abs(bin_LB-point estimate))
+
+then use $\sqrt(n/n-p-1)$ factor to inflate max_bin_org 
+
+3. evd_max_perc; evd distribution with regression degrees of freedom adjustment conducted in the percentile frame
+
+determine variance in percentile scale of residuals distribution using
+
+$\sigma_{CLT}(n-p-1) =  \sqrt{\frac{\theta(1-\theta)}{n-p-1}}$
+
+determine 2.5th & 97.5th percentile bounds of residuals using
+
+max(qnorm(0.025,q,$\sigma_{CLT}$(n-p-1)),0)
+
+min(qnorm(0.975,q,$\sigma_{CLT}$(n-p-1)),1)
+
+then calculate the maximum half CI in the original scale of the residuals distribution using quantile regression
+
+max_evd_perc = max(abs(evd_UB-point estimate),abs(evd_LB-point estimate))
+
+
+4. max_evd_org; evd distribution with regression degrees of freedom adjustment conducted later in the original scale
+
+determine variance in percentile scale of residuals distribution using
+
+$\sigma_{CLT}(n) =  \sqrt{\frac{\theta(1-\theta)}{n}}$
+
+determine 2.5th & 97.5th percentile bounds of residuals using
+
+max(qnorm(0.025,q,$\sigma_{CLT}$(n)),0)
+
+min(qnorm(0.975,q,$\sigma_{CLT}$(n)),1)
+
+then calculate the maximum half CI in the original scale of the residuals distribution using quantile regression
+
+max_evd_org = max(abs(evd_UB-point estimate),abs(evd_LB-point estimate))
+
+then use $\sqrt(n/n-p-1)$ factor to inflate max_evd_org 
+
+### estimating model slope(s) and intercept CIs
+
+The output of the evd based estimators of the residuals variance/CI were then used to estimate the model slope(s) and intercepts using equations \eqref{eq:1}, \eqref{eq:2} & \eqref{eq:5}. The coverage performance was then assessed and compared to the known population regression model and default quantreg bootstrap estimates using 600 replicates as shown in the next section.
+
+# Assessing coverage performance for different homoscedastic datasets
+
+In the following figures, the coverage performance of evd based model coefficients CI estimators (based on 1000 resamples) for five quantile regression cases. Three samples size n=50,100,1000 were trialled.
+
+(i) y = 1 * runif(n,-10,10) + rnorm(n,0,10); 
+
+A simple linear relationship between the dependent variable (Y) and explanatory variable (runif(n,-10,10)) where the quantile regression for different quantiles results in a set of parallel regression lines.
+
+(ii) y = 1 * runif(n,-10,10)^2 + rnorm(n,0,10); 
+
+Where the quantile regression is performed as quadratic polynomial fit but results in a set of diverging curved regression lines. This model fit provided a sensitive test of the evd based model intercept CI estimator.
+
+(iii) y = 1 * runif(n,-10,10) + urlaplace(n,0,10);
+
+A second simple linear relationship between the dependent variable (Y) and explanatory variable (runif(n,-10,10)) but with different error distribution. To illustrate that quantile regression and hence any useful evd based model coefficient CI estimators are robust to different types of homoscedsatic iid error distributions.
+
+(iv) y = 1 * runif(n,-10,10) + 0.5 * runif(n,-10,10)^2 + urlaplace(n,0,10);
+
+A multiple explanatory variables quantile regression with nonlinear relationship to more fully test the evd based model coefficient CI estimators.
+
+(v) y = 1 * runif(n,-10,10) + AR(1); with a non-iid scale factor of 0.5
+
+A homoscedastic non-iid regression example, to see if only the evd based model intercept coefficient CIs but not the slope coefficients fails to produce nominal 95% coverage. With a non-iid scale factor of 0.5, the effective sample size of variance of the error term is $\sqrt{n/2}$ rather than $\sqrt{n}$.  
+
+In the figures below, the coverage is calculated for 15 quantile points (0.025, 0.05 ,0.1 ,0.2 ,0.25 ,0.3 ,0.4 ,0.5 ,0.6 ,0.7 ,0.75 ,0.8 ,0.9 ,0.95 ,0.975). The black points and lines indicate the default quantreg bootstrap estimates (R=600). The blue lines indicate the evd_max CI estimators, estimator 3 are included on each subfigure x(a), x(b), x(c), estimator 4 are included on each subfigure x(d), x(e), x(f). The red lines indicate the bin_max CI estimators, estimator 1 are included on each subfigure x(a), x(b), x(c), estimator 2 are included on each subfigure x(d), x(e), x(f). This overlap of estimators and subfigures allows a visual comparison of the effects of sample size, degrees of freedom adjustment placement and estimator type.
+
+Figures 1 & 2 display the coverage performance of bootstrap, bin_max & evd_max for the slope and intercept respectively of model (i).
+
+Figures 3 & 4 display the coverage performance of bootstrap, bin_max & evd_max for the slope and intercept respectively of model (ii).
+
+Figures 5 & 6 display the coverage performance of bootstrap, bin_max & evd_max for the slope and intercept respectively of model (iii).
+
+Figures 7, 8 & 9 display the coverage performance of bootstrap, bin_max & evd_max for the two slopes and intercept respectively of model (iv).
+
+Figures 10 & 11 display the coverage performance of bootstrap, bin_max & evd_max for the slope and intercept respectively of model (v).
+
+Generally, the figures for the homoscedastic iid cases (i)-(iv) are similar in their characteristics. 
+
+1. for n=1000, nominal 95% coverage for bootstrap, evd_max, bin_max estimators for all quantiles (0.025-0.975)
+2. for n=100, lower slope CI coverage for quantiles (0.025,0.05,0.95,0.975)
+3. for n=50, lower slope CI coverage for quantiles (<.1,>.9) for all three CI estimators
+4. bin_max has moderate slope CI undercoverage for quantile ranges (.1-.3), (.7-.9)
+5. evd_max has slope CI overcoverage for quantile ranges (.1-.3), (.7-.9)
+6. for nonlinear model cases (ii) & (iv), the intercept CI has  93% coverage for evd_max & bin_max. The default bootstrap estimates are nominal 95% coverage.
+
+
+For the non-iid case (v), figure 11 shows undercoverage of the intercept CI estimators for default bootstrap, evd_max, bin_max estimators
+
+
+```{r, reg1slope, echo=FALSE, cache=FALSE, fig.width=6, fig.height=6, fig.keep='high', message=FALSE, warning=FALSE}
+
+setwd("C:/Users/John/Documents/GitHub/sampling-investigations")
+# library("quantreg")
+
+reg1_50perc <- read.csv(file="./50_linear_gaussian_10_dfadj_in_perc_scale.csv")
+reg1_100perc <- read.csv(file="./100_linear_gaussian_10_dfadj_in_perc_scale.csv")
+reg1_1000perc <- read.csv(file="./1000_linear_gaussian_10_dfadj_in_perc_scale.csv")
+
+reg1_50org <- read.csv(file="./50_linear_gaussian_10_dfadj_in_org_scale.csv")
+reg1_100org <- read.csv(file="./100_linear_gaussian_10_dfadj_in_org_scale.csv")
+reg1_1000org <- read.csv(file="./1000_linear_gaussian_10_dfadj_in_org_scale.csv")
+
+par(mfrow=c(2,3))
+
+par(fig=c(0,.333,0.45,0.9))
+
+plot(x=reg1_50perc[,2],y=reg1_50perc[,5],main=paste("df adj in perc scale","\n n=50"),ylim=c(0.75,1),typ="b",xlab="quantile",ylab="coverage",sub="Fig. 1a",cex.main=0.9)
+lines(x=reg1_50perc[,2],y=reg1_50perc[,6],col="blue",lwd=2)
+lines(x=reg1_50perc[,2],y=reg1_50perc[,7],col="red",lwd=2)
+abline(h=0.95,col="green",lwd=2,lty=2)
+
+par(fig=c(.333,.666,0.45,0.9), new=TRUE)
+plot(x=reg1_100perc[,2],y=reg1_100perc[,5],main=paste("df adj in perc scale","\n n=100"),ylim=c(0.75,1),typ="b",xlab="quantile",ylab="coverage",sub="Fig. 1b",cex.main=0.9)
+lines(x=reg1_100perc[,2],y=reg1_100perc[,6],col="blue",lwd=2)
+lines(x=reg1_100perc[,2],y=reg1_100perc[,7],col="red",lwd=2)
+abline(h=0.95,col="green",lwd=2,lty=2)
+
+par(fig=c(.666,1,0.45,0.9), new=TRUE)
+plot(x=reg1_1000perc[,2],y=reg1_1000perc[,5],main=paste("df adj in perc scale","\n n=1000"),ylim=c(0.75,1),typ="b",xlab="quantile",ylab="coverage",sub="Fig. 1c",cex.main=0.9)
+lines(x=reg1_1000perc[,2],y=reg1_1000perc[,6],col="blue",lwd=2)
+lines(x=reg1_1000perc[,2],y=reg1_1000perc[,7],col="red",lwd=2)
+abline(h=0.95,col="green",lwd=2,lty=2)
+
+par(fig=c(.0,.333,0.0,0.45), new=TRUE)
+plot(x=reg1_50org[,2],y=reg1_50org[,5],main=paste("df adj in org scale","\n n=50"),ylim=c(0.75,1),typ="b",xlab="quantile",ylab="coverage",sub="Fig. 1d",cex.main=0.9)
+lines(x=reg1_50org[,2],y=reg1_50org[,6],col="blue",lwd=2)
+lines(x=reg1_50org[,2],y=reg1_50org[,7],col="red",lwd=2)
+abline(h=0.95,col="green",lwd=2,lty=2)
+
+par(fig=c(.333,.666,0.0,0.45), new=TRUE)
+plot(x=reg1_100org[,2],y=reg1_100org[,5],main=paste("df adj in org scale","\n n=100"),ylim=c(0.75,1),typ="b",xlab="quantile",ylab="coverage",sub="Fig. 1e",cex.main=0.9)
+lines(x=reg1_100org[,2],y=reg1_100org[,6],col="blue",lwd=2)
+lines(x=reg1_100org[,2],y=reg1_100org[,7],col="red",lwd=2)
+abline(h=0.95,col="green",lwd=2,lty=2)
+
+par(fig=c(.666,1,0.0,0.45), new=TRUE)
+plot(x=reg1_1000org[,2],y=reg1_1000org[,5],main=paste("df adj in org scale","\n n=1000"),ylim=c(0.75,1),typ="b",xlab="quantile",ylab="coverage",sub="Fig. 1f",cex.main=0.9)
+lines(x=reg1_1000org[,2],y=reg1_1000org[,6],col="blue",lwd=2)
+lines(x=reg1_1000org[,2],y=reg1_1000org[,7],col="red",lwd=2)
+abline(h=0.95,col="green",lwd=2,lty=2)
+
+mtext("model (i): slope CI coverage", side=3, outer=TRUE, line=-1.5)
+mtext("black - bootstrap, blue line - evd_max, red lines - bin_max", side=3, outer=TRUE, line=-3)
+
+```
+
+```{r, reg1intercept, echo=FALSE, cache=FALSE, fig.width=6, fig.height=6, fig.keep='high', message=FALSE, warning=FALSE}
+
+
+
+par(mfrow=c(2,3))
+
+par(fig=c(0,.333,0.45,0.9))
+
+plot(x=reg1_50perc[,2],y=reg1_50perc[,15],main=paste("df adj in perc scale","\n n=50"),ylim=c(0.75,1),typ="b",xlab="quantile",ylab="coverage",sub="Fig. 2a",cex.main=0.9)
+lines(x=reg1_50perc[,2],y=reg1_50perc[,16],col="blue",lwd=2)
+lines(x=reg1_50perc[,2],y=reg1_50perc[,17],col="red",lwd=2)
+abline(h=0.95,col="green",lwd=2,lty=2)
+
+par(fig=c(.333,.666,0.45,0.9), new=TRUE)
+plot(x=reg1_100perc[,2],y=reg1_100perc[,15],main=paste("df adj in perc scale","\n n=100"),ylim=c(0.75,1),typ="b",xlab="quantile",ylab="coverage",sub="Fig. 2b",cex.main=0.9)
+lines(x=reg1_100perc[,2],y=reg1_100perc[,16],col="blue",lwd=2)
+lines(x=reg1_100perc[,2],y=reg1_100perc[,17],col="red",lwd=2)
+abline(h=0.95,col="green",lwd=2,lty=2)
+
+par(fig=c(.666,1,0.45,0.9), new=TRUE)
+plot(x=reg1_1000perc[,2],y=reg1_1000perc[,15],main=paste("df adj in perc scale","\n n=1000"),ylim=c(0.75,1),typ="b",xlab="quantile",ylab="coverage",sub="Fig. 2c",cex.main=0.9)
+lines(x=reg1_1000perc[,2],y=reg1_1000perc[,16],col="blue",lwd=2)
+lines(x=reg1_1000perc[,2],y=reg1_1000perc[,17],col="red",lwd=2)
+abline(h=0.95,col="green",lwd=2,lty=2)
+
+par(fig=c(.0,.333,0.0,0.45), new=TRUE)
+plot(x=reg1_50org[,2],y=reg1_50org[,15],main=paste("df adj in org scale","\n n=50"),ylim=c(0.75,1),typ="b",xlab="quantile",ylab="coverage",sub="Fig. 2d",cex.main=0.9)
+lines(x=reg1_50org[,2],y=reg1_50org[,16],col="blue",lwd=2)
+lines(x=reg1_50org[,2],y=reg1_50org[,17],col="red",lwd=2)
+abline(h=0.95,col="green",lwd=2,lty=2)
+
+par(fig=c(.333,.666,0.0,0.45), new=TRUE)
+plot(x=reg1_100org[,2],y=reg1_100org[,15],main=paste("df adj in org scale","\n n=100"),ylim=c(0.75,1),typ="b",xlab="quantile",ylab="coverage",sub="Fig. 2e",cex.main=0.9)
+lines(x=reg1_100org[,2],y=reg1_100org[,16],col="blue",lwd=2)
+lines(x=reg1_100org[,2],y=reg1_100org[,17],col="red",lwd=2)
+abline(h=0.95,col="green",lwd=2,lty=2)
+
+par(fig=c(.666,1,0.0,0.45), new=TRUE)
+plot(x=reg1_1000org[,2],y=reg1_1000org[,15],main=paste("df adj in org scale","\n n=1000"),ylim=c(0.75,1),typ="b",xlab="quantile",ylab="coverage",sub="Fig. 2f",cex.main=0.9)
+lines(x=reg1_1000org[,2],y=reg1_1000org[,16],col="blue",lwd=2)
+lines(x=reg1_1000org[,2],y=reg1_1000org[,17],col="red",lwd=2)
+abline(h=0.95,col="green",lwd=2,lty=2)
+
+mtext("model (i): intercept CI coverage", side=3, outer=TRUE, line=-1.5)
+mtext("black - bootstrap, blue line - evd_max, red lines - bin_max", side=3, outer=TRUE, line=-3)
+
+
+```
+
+
+
+```{r, reg2slope, echo=FALSE, cache=FALSE, fig.width=6, fig.height=6, fig.keep='high', message=FALSE, warning=FALSE}
+
+setwd("C:/Users/John/Documents/GitHub/sampling-investigations")
+# library("quantreg")
+
+reg2_50perc <- read.csv(file="./50_squaredonly_gaussian_10_dfadj_in_perc_scale.csv")
+reg2_100perc <- read.csv(file="./100_squaredonly_gaussian_10_dfadj_in_perc_scale.csv")
+reg2_1000perc <- read.csv(file="./1000_squaredonly_gaussian_10_dfadj_in_perc_scale.csv")
+
+reg2_50org <- read.csv(file="./50_squaredonly_gaussian_10_dfadj_in_org_scale.csv")
+reg2_100org <- read.csv(file="./100_squaredonly_gaussian_10_dfadj_in_org_scale.csv")
+reg2_1000org <- read.csv(file="./1000_squaredonly_gaussian_10_dfadj_in_org_scale.csv")
+
+par(mfrow=c(2,3))
+
+par(fig=c(0,.333,0.45,0.9))
+
+plot(x=reg2_50perc[,2],y=reg2_50perc[,5],main=paste("df adj in perc scale","\n n=50"),ylim=c(0.75,1),typ="b",xlab="quantile",ylab="coverage",sub="Fig. 3a",cex.main=0.9)
+lines(x=reg2_50perc[,2],y=reg2_50perc[,6],col="blue",lwd=2)
+lines(x=reg2_50perc[,2],y=reg2_50perc[,7],col="red",lwd=2)
+abline(h=0.95,col="green",lwd=2,lty=2)
+
+par(fig=c(.333,.666,0.45,0.9), new=TRUE)
+plot(x=reg2_100perc[,2],y=reg2_100perc[,5],main=paste("df adj in perc scale","\n n=100"),ylim=c(0.75,1),typ="b",xlab="quantile",ylab="coverage",sub="Fig. 3b",cex.main=0.9)
+lines(x=reg2_100perc[,2],y=reg2_100perc[,6],col="blue",lwd=2)
+lines(x=reg2_100perc[,2],y=reg2_100perc[,7],col="red",lwd=2)
+abline(h=0.95,col="green",lwd=2,lty=2)
+
+par(fig=c(.666,1,0.45,0.9), new=TRUE)
+plot(x=reg2_1000perc[,2],y=reg2_1000perc[,5],main=paste("df adj in perc scale","\n n=1000"),ylim=c(0.75,1),typ="b",xlab="quantile",ylab="coverage",sub="Fig. 3c",cex.main=0.9)
+lines(x=reg2_1000perc[,2],y=reg2_1000perc[,6],col="blue",lwd=2)
+lines(x=reg2_1000perc[,2],y=reg2_1000perc[,7],col="red",lwd=2)
+abline(h=0.95,col="green",lwd=2,lty=2)
+
+par(fig=c(.0,.333,0.0,0.45), new=TRUE)
+plot(x=reg2_50org[,2],y=reg2_50org[,5],main=paste("df adj in org scale","\n n=50"),ylim=c(0.75,1),typ="b",xlab="quantile",ylab="coverage",sub="Fig. 3d",cex.main=0.9)
+lines(x=reg2_50org[,2],y=reg2_50org[,6],col="blue",lwd=2)
+lines(x=reg2_50org[,2],y=reg2_50org[,7],col="red",lwd=2)
+abline(h=0.95,col="green",lwd=2,lty=2)
+
+par(fig=c(.333,.666,0.0,0.45), new=TRUE)
+plot(x=reg2_100org[,2],y=reg2_100org[,5],main=paste("df adj in org scale","\n n=100"),ylim=c(0.75,1),typ="b",xlab="quantile",ylab="coverage",sub="Fig. 3e",cex.main=0.9)
+lines(x=reg2_100org[,2],y=reg2_100org[,6],col="blue",lwd=2)
+lines(x=reg2_100org[,2],y=reg2_100org[,7],col="red",lwd=2)
+abline(h=0.95,col="green",lwd=2,lty=2)
+
+par(fig=c(.666,1,0.0,0.45), new=TRUE)
+plot(x=reg2_1000org[,2],y=reg2_1000org[,5],main=paste("df adj in org scale","\n n=1000"),ylim=c(0.75,1),typ="b",xlab="quantile",ylab="coverage",sub="Fig. 3f",cex.main=0.9)
+lines(x=reg2_1000org[,2],y=reg2_1000org[,6],col="blue",lwd=2)
+lines(x=reg2_1000org[,2],y=reg2_1000org[,7],col="red",lwd=2)
+abline(h=0.95,col="green",lwd=2,lty=2)
+
+mtext("model (ii): slope CI coverage", side=3, outer=TRUE, line=-1.5)
+mtext("black - bootstrap, blue line - evd_max, red lines - bin_max", side=3, outer=TRUE, line=-3)
+
+
+
+
+
+```
+
+```{r, reg2intercept, echo=FALSE, cache=FALSE, fig.width=6, fig.height=6, fig.keep='high', message=FALSE, warning=FALSE}
+
+
+
+par(mfrow=c(2,3))
+
+par(fig=c(0,.333,0.45,0.9))
+
+plot(x=reg2_50perc[,2],y=reg2_50perc[,15],main=paste("df adj in perc scale","\n n=50"),ylim=c(0.75,1),typ="b",xlab="quantile",ylab="coverage",sub="Fig. 4a",cex.main=0.9)
+lines(x=reg2_50perc[,2],y=reg2_50perc[,16],col="blue",lwd=2)
+lines(x=reg2_50perc[,2],y=reg2_50perc[,17],col="red",lwd=2)
+abline(h=0.95,col="green",lwd=2,lty=2)
+
+par(fig=c(.333,.666,0.45,0.9), new=TRUE)
+plot(x=reg2_100perc[,2],y=reg2_100perc[,15],main=paste("df adj in perc scale","\n n=100"),ylim=c(0.75,1),typ="b",xlab="quantile",ylab="coverage",sub="Fig. 4b",cex.main=0.9)
+lines(x=reg2_100perc[,2],y=reg2_100perc[,16],col="blue",lwd=2)
+lines(x=reg2_100perc[,2],y=reg2_100perc[,17],col="red",lwd=2)
+abline(h=0.95,col="green",lwd=2,lty=2)
+
+par(fig=c(.666,1,0.45,0.9), new=TRUE)
+plot(x=reg2_1000perc[,2],y=reg2_1000perc[,15],main=paste("df adj in perc scale","\n n=1000"),ylim=c(0.75,1),typ="b",xlab="quantile",ylab="coverage",sub="Fig. 4c",cex.main=0.9)
+lines(x=reg2_1000perc[,2],y=reg2_1000perc[,16],col="blue",lwd=2)
+lines(x=reg2_1000perc[,2],y=reg2_1000perc[,17],col="red",lwd=2)
+abline(h=0.95,col="green",lwd=2,lty=2)
+
+par(fig=c(.0,.333,0.0,0.45), new=TRUE)
+plot(x=reg2_50org[,2],y=reg2_50org[,15],main=paste("df adj in org scale","\n n=50"),ylim=c(0.75,1),typ="b",xlab="quantile",ylab="coverage",sub="Fig. 4d",cex.main=0.9)
+lines(x=reg2_50org[,2],y=reg2_50org[,16],col="blue",lwd=2)
+lines(x=reg2_50org[,2],y=reg2_50org[,17],col="red",lwd=2)
+abline(h=0.95,col="green",lwd=2,lty=2)
+
+par(fig=c(.333,.666,0.0,0.45), new=TRUE)
+plot(x=reg2_100org[,2],y=reg2_100org[,15],main=paste("df adj in org scale","\n n=100"),ylim=c(0.75,1),typ="b",xlab="quantile",ylab="coverage",sub="Fig. 4e",cex.main=0.9)
+lines(x=reg2_100org[,2],y=reg2_100org[,16],col="blue",lwd=2)
+lines(x=reg2_100org[,2],y=reg2_100org[,17],col="red",lwd=2)
+abline(h=0.95,col="green",lwd=2,lty=2)
+
+par(fig=c(.666,1,0.0,0.45), new=TRUE)
+plot(x=reg2_1000org[,2],y=reg2_1000org[,15],main=paste("df adj in org scale","\n n=1000"),ylim=c(0.75,1),typ="b",xlab="quantile",ylab="coverage",sub="Fig. 4f",cex.main=0.9)
+lines(x=reg2_1000org[,2],y=reg2_1000org[,16],col="blue",lwd=2)
+lines(x=reg2_1000org[,2],y=reg2_1000org[,17],col="red",lwd=2)
+abline(h=0.95,col="green",lwd=2,lty=2)
+
+mtext("model (ii): intercept CI coverage", side=3, outer=TRUE, line=-1.5)
+mtext("black - bootstrap, blue line - evd_max, red lines - bin_max", side=3, outer=TRUE, line=-3)
+
+
+```
+
+```{r, reg3slope, echo=FALSE, cache=FALSE, fig.width=6, fig.height=6, fig.keep='high', message=FALSE, warning=FALSE}
+
+setwd("C:/Users/John/Documents/GitHub/sampling-investigations")
+# library("quantreg")
+
+reg3_50perc <- read.csv(file="./50_linear_laplacian_10_dfadj_in_perc_scale.csv")
+reg3_100perc <- read.csv(file="./100_linear_laplacian_10_dfadj_in_perc_scale.csv")
+reg3_1000perc <- read.csv(file="./1000_linear_laplacian_10_dfadj_in_perc_scale.csv")
+
+reg3_50org <- read.csv(file="./50_linear_laplacian_10_dfadj_in_org_scale.csv")
+reg3_100org <- read.csv(file="./100_linear_laplacian_10_dfadj_in_org_scale.csv")
+reg3_1000org <- read.csv(file="./1000_linear_laplacian_10_dfadj_in_org_scale.csv")
+
+par(mfrow=c(2,3))
+
+par(fig=c(0,.333,0.45,0.9))
+
+plot(x=reg3_50perc[,2],y=reg3_50perc[,5],main=paste("df adj in perc scale","\n n=50"),ylim=c(0.75,1),typ="b",xlab="quantile",ylab="coverage",sub="Fig. 5a",cex.main=0.9)
+lines(x=reg3_50perc[,2],y=reg3_50perc[,6],col="blue",lwd=2)
+lines(x=reg3_50perc[,2],y=reg3_50perc[,7],col="red",lwd=2)
+abline(h=0.95,col="green",lwd=2,lty=2)
+
+par(fig=c(.333,.666,0.45,0.9), new=TRUE)
+plot(x=reg3_100perc[,2],y=reg3_100perc[,5],main=paste("df adj in perc scale","\n n=100"),ylim=c(0.75,1),typ="b",xlab="quantile",ylab="coverage",sub="Fig. 5b",cex.main=0.9)
+lines(x=reg3_100perc[,2],y=reg3_100perc[,6],col="blue",lwd=2)
+lines(x=reg3_100perc[,2],y=reg3_100perc[,7],col="red",lwd=2)
+abline(h=0.95,col="green",lwd=2,lty=2)
+
+par(fig=c(.666,1,0.45,0.9), new=TRUE)
+plot(x=reg3_1000perc[,2],y=reg3_1000perc[,5],main=paste("df adj in perc scale","\n n=1000"),ylim=c(0.75,1),typ="b",xlab="quantile",ylab="coverage",sub="Fig. 5c",cex.main=0.9)
+lines(x=reg3_1000perc[,2],y=reg3_1000perc[,6],col="blue",lwd=2)
+lines(x=reg3_1000perc[,2],y=reg3_1000perc[,7],col="red",lwd=2)
+abline(h=0.95,col="green",lwd=2,lty=2)
+
+par(fig=c(.0,.333,0.0,0.45), new=TRUE)
+plot(x=reg3_50org[,2],y=reg3_50org[,5],main=paste("df adj in org scale","\n n=50"),ylim=c(0.75,1),typ="b",xlab="quantile",ylab="coverage",sub="Fig. 5d",cex.main=0.9)
+lines(x=reg3_50org[,2],y=reg3_50org[,6],col="blue",lwd=2)
+lines(x=reg3_50org[,2],y=reg3_50org[,7],col="red",lwd=2)
+abline(h=0.95,col="green",lwd=2,lty=2)
+
+par(fig=c(.333,.666,0.0,0.45), new=TRUE)
+plot(x=reg3_100org[,2],y=reg3_100org[,5],main=paste("df adj in org scale","\n n=100"),ylim=c(0.75,1),typ="b",xlab="quantile",ylab="coverage",sub="Fig. 5e",cex.main=0.9)
+lines(x=reg3_100org[,2],y=reg3_100org[,6],col="blue",lwd=2)
+lines(x=reg3_100org[,2],y=reg3_100org[,7],col="red",lwd=2)
+abline(h=0.95,col="green",lwd=2,lty=2)
+
+par(fig=c(.666,1,0.0,0.45), new=TRUE)
+plot(x=reg3_1000org[,2],y=reg3_1000org[,5],main=paste("df adj in org scale","\n n=1000"),ylim=c(0.75,1),typ="b",xlab="quantile",ylab="coverage",sub="Fig. 5f",cex.main=0.9)
+lines(x=reg3_1000org[,2],y=reg3_1000org[,6],col="blue",lwd=2)
+lines(x=reg3_1000org[,2],y=reg3_1000org[,7],col="red",lwd=2)
+abline(h=0.95,col="green",lwd=2,lty=2)
+
+mtext("model (iii): slope CI coverage", side=3, outer=TRUE, line=-1.5)
+mtext("black - bootstrap, blue line - evd_max, red lines - bin_max", side=3, outer=TRUE, line=-3)
+
+```
+
+```{r, reg3intercept, echo=FALSE, cache=FALSE, fig.width=6, fig.height=6, fig.keep='high', message=FALSE, warning=FALSE}
+
+
+
+par(mfrow=c(2,3))
+
+par(fig=c(0,.333,0.45,0.9))
+
+plot(x=reg3_50perc[,2],y=reg3_50perc[,15],main=paste("df adj in perc scale","\n n=50"),ylim=c(0.75,1),typ="b",xlab="quantile",ylab="coverage",sub="Fig. 6a",cex.main=0.9)
+lines(x=reg3_50perc[,2],y=reg3_50perc[,16],col="blue",lwd=2)
+lines(x=reg3_50perc[,2],y=reg3_50perc[,17],col="red",lwd=2)
+abline(h=0.95,col="green",lwd=2,lty=2)
+
+par(fig=c(.333,.666,0.45,0.9), new=TRUE)
+plot(x=reg3_100perc[,2],y=reg3_100perc[,15],main=paste("df adj in perc scale","\n n=100"),ylim=c(0.75,1),typ="b",xlab="quantile",ylab="coverage",sub="Fig. 6b",cex.main=0.9)
+lines(x=reg3_100perc[,2],y=reg3_100perc[,16],col="blue",lwd=2)
+lines(x=reg3_100perc[,2],y=reg3_100perc[,17],col="red",lwd=2)
+abline(h=0.95,col="green",lwd=2,lty=2)
+
+par(fig=c(.666,1,0.45,0.9), new=TRUE)
+plot(x=reg3_1000perc[,2],y=reg3_1000perc[,15],main=paste("df adj in perc scale","\n n=1000"),ylim=c(0.75,1),typ="b",xlab="quantile",ylab="coverage",sub="Fig. 6c",cex.main=0.9)
+lines(x=reg3_1000perc[,2],y=reg3_1000perc[,16],col="blue",lwd=2)
+lines(x=reg3_1000perc[,2],y=reg3_1000perc[,17],col="red",lwd=2)
+abline(h=0.95,col="green",lwd=2,lty=2)
+
+par(fig=c(.0,.333,0.0,0.45), new=TRUE)
+plot(x=reg3_50org[,2],y=reg3_50org[,15],main=paste("df adj in org scale","\n n=50"),ylim=c(0.75,1),typ="b",xlab="quantile",ylab="coverage",sub="Fig. 6d",cex.main=0.9)
+lines(x=reg3_50org[,2],y=reg3_50org[,16],col="blue",lwd=2)
+lines(x=reg3_50org[,2],y=reg3_50org[,17],col="red",lwd=2)
+abline(h=0.95,col="green",lwd=2,lty=2)
+
+par(fig=c(.333,.666,0.0,0.45), new=TRUE)
+plot(x=reg3_100org[,2],y=reg3_100org[,15],main=paste("df adj in org scale","\n n=100"),ylim=c(0.75,1),typ="b",xlab="quantile",ylab="coverage",sub="Fig. 6e",cex.main=0.9)
+lines(x=reg3_100org[,2],y=reg3_100org[,16],col="blue",lwd=2)
+lines(x=reg3_100org[,2],y=reg3_100org[,17],col="red",lwd=2)
+abline(h=0.95,col="green",lwd=2,lty=2)
+
+par(fig=c(.666,1,0.0,0.45), new=TRUE)
+plot(x=reg3_1000org[,2],y=reg3_1000org[,15],main=paste("df adj in org scale","\n n=1000"),ylim=c(0.75,1),typ="b",xlab="quantile",ylab="coverage",sub="Fig. 6f",cex.main=0.9)
+lines(x=reg3_1000org[,2],y=reg3_1000org[,16],col="blue",lwd=2)
+lines(x=reg3_1000org[,2],y=reg3_1000org[,17],col="red",lwd=2)
+abline(h=0.95,col="green",lwd=2,lty=2)
+
+mtext("model (iii): intercept CI coverage", side=3, outer=TRUE, line=-1.5)
+mtext("black - bootstrap, blue line - evd_max, red lines - bin_max", side=3, outer=TRUE, line=-3)
+
+
+```
+
+
+```{r, reg4slope, echo=FALSE, cache=FALSE, fig.width=6, fig.height=6, fig.keep='high', message=FALSE, warning=FALSE}
+
+setwd("C:/Users/John/Documents/GitHub/sampling-investigations")
+# library("quantreg")
+
+reg4_50perc <- read.csv(file="./50_twoterms_laplacian_10_dfadj_in_perc_scale.csv")
+reg4_100perc <- read.csv(file="./100_twoterms_laplacian_10_dfadj_in_perc_scale.csv")
+reg4_1000perc <- read.csv(file="./1000_twoterms_laplacian_10_dfadj_in_perc_scale.csv")
+
+reg4_50org <- read.csv(file="./50_twoterms_laplacian_10_dfadj_in_org_scale.csv")
+reg4_100org <- read.csv(file="./100_twoterms_laplacian_10_dfadj_in_org_scale.csv")
+reg4_1000org <- read.csv(file="./1000_twoterms_laplacian_10_dfadj_in_org_scale.csv")
+
+par(mfrow=c(2,3))
+
+par(fig=c(0,.333,0.45,0.9))
+
+plot(x=reg4_50perc[,2],y=reg4_50perc[,5],main=paste("df adj in perc scale","\n n=50"),ylim=c(0.75,1),typ="b",xlab="quantile",ylab="coverage",sub="Fig. 7a",cex.main=0.9)
+lines(x=reg4_50perc[,2],y=reg4_50perc[,6],col="blue",lwd=2)
+lines(x=reg4_50perc[,2],y=reg4_50perc[,7],col="red",lwd=2)
+abline(h=0.95,col="green",lwd=2,lty=2)
+
+par(fig=c(.333,.666,0.45,0.9), new=TRUE)
+plot(x=reg4_100perc[,2],y=reg4_100perc[,5],main=paste("df adj in perc scale","\n n=100"),ylim=c(0.75,1),typ="b",xlab="quantile",ylab="coverage",sub="Fig. 7b",cex.main=0.9)
+lines(x=reg4_100perc[,2],y=reg4_100perc[,6],col="blue",lwd=2)
+lines(x=reg4_100perc[,2],y=reg4_100perc[,7],col="red",lwd=2)
+abline(h=0.95,col="green",lwd=2,lty=2)
+
+par(fig=c(.666,1,0.45,0.9), new=TRUE)
+plot(x=reg4_1000perc[,2],y=reg4_1000perc[,5],main=paste("df adj in perc scale","\n n=1000"),ylim=c(0.75,1),typ="b",xlab="quantile",ylab="coverage",sub="Fig. 7c",cex.main=0.9)
+lines(x=reg4_1000perc[,2],y=reg4_1000perc[,6],col="blue",lwd=2)
+lines(x=reg4_1000perc[,2],y=reg4_1000perc[,7],col="red",lwd=2)
+abline(h=0.95,col="green",lwd=2,lty=2)
+
+par(fig=c(.0,.333,0.0,0.45), new=TRUE)
+plot(x=reg4_50org[,2],y=reg4_50org[,5],main=paste("df adj in org scale","\n n=50"),ylim=c(0.75,1),typ="b",xlab="quantile",ylab="coverage",sub="Fig. 7d",cex.main=0.9)
+lines(x=reg4_50org[,2],y=reg4_50org[,6],col="blue",lwd=2)
+lines(x=reg4_50org[,2],y=reg4_50org[,7],col="red",lwd=2)
+abline(h=0.95,col="green",lwd=2,lty=2)
+
+par(fig=c(.333,.666,0.0,0.45), new=TRUE)
+plot(x=reg4_100org[,2],y=reg4_100org[,5],main=paste("df adj in org scale","\n n=100"),ylim=c(0.75,1),typ="b",xlab="quantile",ylab="coverage",sub="Fig. 7e",cex.main=0.9)
+lines(x=reg4_100org[,2],y=reg4_100org[,6],col="blue",lwd=2)
+lines(x=reg4_100org[,2],y=reg4_100org[,7],col="red",lwd=2)
+abline(h=0.95,col="green",lwd=2,lty=2)
+
+par(fig=c(.666,1,0.0,0.45), new=TRUE)
+plot(x=reg4_1000org[,2],y=reg4_1000org[,5],main=paste("df adj in org scale","\n n=1000"),ylim=c(0.75,1),typ="b",xlab="quantile",ylab="coverage",sub="Fig. 7f",cex.main=0.9)
+lines(x=reg4_1000org[,2],y=reg4_1000org[,6],col="blue",lwd=2)
+lines(x=reg4_1000org[,2],y=reg4_1000org[,7],col="red",lwd=2)
+abline(h=0.95,col="green",lwd=2,lty=2)
+
+mtext("model (iv): linear term slope CI coverage", side=3, outer=TRUE, line=-1.5)
+mtext("black - bootstrap, blue line - evd_max, red lines - bin_max", side=3, outer=TRUE, line=-3)
+
+```
+
+```{r, reg4slope2, echo=FALSE, cache=FALSE, fig.width=6, fig.height=6, fig.keep='high', message=FALSE, warning=FALSE}
+
+setwd("C:/Users/John/Documents/GitHub/sampling-investigations")
+# library("quantreg")
+
+reg4_50perc <- read.csv(file="./50_twoterms_laplacian_10_dfadj_in_perc_scale.csv")
+reg4_100perc <- read.csv(file="./100_twoterms_laplacian_10_dfadj_in_perc_scale.csv")
+reg4_1000perc <- read.csv(file="./1000_twoterms_laplacian_10_dfadj_in_perc_scale.csv")
+
+reg4_50org <- read.csv(file="./50_twoterms_laplacian_10_dfadj_in_org_scale.csv")
+reg4_100org <- read.csv(file="./100_twoterms_laplacian_10_dfadj_in_org_scale.csv")
+reg4_1000org <- read.csv(file="./1000_twoterms_laplacian_10_dfadj_in_org_scale.csv")
+
+par(mfrow=c(2,3))
+
+par(fig=c(0,.333,0.45,0.9))
+
+plot(x=reg4_50perc[,2],y=reg4_50perc[,28],main=paste("df adj in perc scale","\n n=50"),ylim=c(0.75,1),typ="b",xlab="quantile",ylab="coverage",sub="Fig. 8a",cex.main=0.9)
+lines(x=reg4_50perc[,2],y=reg4_50perc[,29],col="blue",lwd=2)
+lines(x=reg4_50perc[,2],y=reg4_50perc[,30],col="red",lwd=2)
+abline(h=0.95,col="green",lwd=2,lty=2)
+
+par(fig=c(.333,.666,0.45,0.9), new=TRUE)
+plot(x=reg4_100perc[,2],y=reg4_100perc[,28],main=paste("df adj in perc scale","\n n=100"),ylim=c(0.75,1),typ="b",xlab="quantile",ylab="coverage",sub="Fig. 8b",cex.main=0.9)
+lines(x=reg4_100perc[,2],y=reg4_100perc[,29],col="blue",lwd=2)
+lines(x=reg4_100perc[,2],y=reg4_100perc[,30],col="red",lwd=2)
+abline(h=0.95,col="green",lwd=2,lty=2)
+
+par(fig=c(.666,1,0.45,0.9), new=TRUE)
+plot(x=reg4_1000perc[,2],y=reg4_1000perc[,28],main=paste("df adj in perc scale","\n n=1000"),ylim=c(0.75,1),typ="b",xlab="quantile",ylab="coverage",sub="Fig. 8c",cex.main=0.9)
+lines(x=reg4_1000perc[,2],y=reg4_1000perc[,29],col="blue",lwd=2)
+lines(x=reg4_1000perc[,2],y=reg4_1000perc[,30],col="red",lwd=2)
+abline(h=0.95,col="green",lwd=2,lty=2)
+
+par(fig=c(.0,.333,0.0,0.45), new=TRUE)
+plot(x=reg4_50org[,2],y=reg4_50org[,28],main=paste("df adj in org scale","\n n=50"),ylim=c(0.75,1),typ="b",xlab="quantile",ylab="coverage",sub="Fig. 8d",cex.main=0.9)
+lines(x=reg4_50org[,2],y=reg4_50org[,29],col="blue",lwd=2)
+lines(x=reg4_50org[,2],y=reg4_50org[,30],col="red",lwd=2)
+abline(h=0.95,col="green",lwd=2,lty=2)
+
+par(fig=c(.333,.666,0.0,0.45), new=TRUE)
+plot(x=reg4_100org[,2],y=reg4_100org[,28],main=paste("df adj in org scale","\n n=100"),ylim=c(0.75,1),typ="b",xlab="quantile",ylab="coverage",sub="Fig. 8e",cex.main=0.9)
+lines(x=reg4_100org[,2],y=reg4_100org[,29],col="blue",lwd=2)
+lines(x=reg4_100org[,2],y=reg4_100org[,30],col="red",lwd=2)
+abline(h=0.95,col="green",lwd=2,lty=2)
+
+par(fig=c(.666,1,0.0,0.45), new=TRUE)
+plot(x=reg4_1000org[,2],y=reg4_1000org[,28],main=paste("df adj in org scale","\n n=1000"),ylim=c(0.75,1),typ="b",xlab="quantile",ylab="coverage",sub="Fig. 8f",cex.main=0.9)
+lines(x=reg4_1000org[,2],y=reg4_1000org[,29],col="blue",lwd=2)
+lines(x=reg4_1000org[,2],y=reg4_1000org[,30],col="red",lwd=2)
+abline(h=0.95,col="green",lwd=2,lty=2)
+
+mtext("model (iv): quadratic term slope CI coverage", side=3, outer=TRUE, line=-1.5)
+mtext("black - bootstrap, blue line - evd_max, red lines - bin_max", side=3, outer=TRUE, line=-3)
+
+```
+
+```{r, reg4intercept, echo=FALSE, cache=FALSE, fig.width=6, fig.height=6, fig.keep='high', message=FALSE, warning=FALSE}
+
+
+
+par(mfrow=c(2,3))
+
+par(fig=c(0,.333,0.45,0.9))
+
+plot(x=reg4_50perc[,2],y=reg4_50perc[,15],main=paste("df adj in perc scale","\n n=50"),ylim=c(0.75,1),typ="b",xlab="quantile",ylab="coverage",sub="Fig. 9a",cex.main=0.9)
+lines(x=reg4_50perc[,2],y=reg4_50perc[,16],col="blue",lwd=2)
+lines(x=reg4_50perc[,2],y=reg4_50perc[,17],col="red",lwd=2)
+abline(h=0.95,col="green",lwd=2,lty=2)
+
+par(fig=c(.333,.666,0.45,0.9), new=TRUE)
+plot(x=reg4_100perc[,2],y=reg4_100perc[,15],main=paste("df adj in perc scale","\n n=100"),ylim=c(0.75,1),typ="b",xlab="quantile",ylab="coverage",sub="Fig. 9b",cex.main=0.9)
+lines(x=reg4_100perc[,2],y=reg4_100perc[,16],col="blue",lwd=2)
+lines(x=reg4_100perc[,2],y=reg4_100perc[,17],col="red",lwd=2)
+abline(h=0.95,col="green",lwd=2,lty=2)
+
+par(fig=c(.666,1,0.45,0.9), new=TRUE)
+plot(x=reg4_1000perc[,2],y=reg4_1000perc[,15],main=paste("df adj in perc scale","\n n=1000"),ylim=c(0.75,1),typ="b",xlab="quantile",ylab="coverage",sub="Fig. 9c",cex.main=0.9)
+lines(x=reg4_1000perc[,2],y=reg4_1000perc[,16],col="blue",lwd=2)
+lines(x=reg4_1000perc[,2],y=reg4_1000perc[,17],col="red",lwd=2)
+abline(h=0.95,col="green",lwd=2,lty=2)
+
+par(fig=c(.0,.333,0.0,0.45), new=TRUE)
+plot(x=reg4_50org[,2],y=reg4_50org[,15],main=paste("df adj in org scale","\n n=50"),ylim=c(0.75,1),typ="b",xlab="quantile",ylab="coverage",sub="Fig. 9d",cex.main=0.9)
+lines(x=reg4_50org[,2],y=reg4_50org[,16],col="blue",lwd=2)
+lines(x=reg4_50org[,2],y=reg4_50org[,17],col="red",lwd=2)
+abline(h=0.95,col="green",lwd=2,lty=2)
+
+par(fig=c(.333,.666,0.0,0.45), new=TRUE)
+plot(x=reg4_100org[,2],y=reg4_100org[,15],main=paste("df adj in org scale","\n n=100"),ylim=c(0.75,1),typ="b",xlab="quantile",ylab="coverage",sub="Fig. 9e",cex.main=0.9)
+lines(x=reg4_100org[,2],y=reg4_100org[,16],col="blue",lwd=2)
+lines(x=reg4_100org[,2],y=reg4_100org[,17],col="red",lwd=2)
+abline(h=0.95,col="green",lwd=2,lty=2)
+
+par(fig=c(.666,1,0.0,0.45), new=TRUE)
+plot(x=reg4_1000org[,2],y=reg4_1000org[,15],main=paste("df adj in org scale","\n n=1000"),ylim=c(0.75,1),typ="b",xlab="quantile",ylab="coverage",sub="Fig. 9f",cex.main=0.9)
+lines(x=reg4_1000org[,2],y=reg4_1000org[,16],col="blue",lwd=2)
+lines(x=reg4_1000org[,2],y=reg4_1000org[,17],col="red",lwd=2)
+abline(h=0.95,col="green",lwd=2,lty=2)
+
+mtext("model (iv): intercept CI coverage", side=3, outer=TRUE, line=-1.5)
+mtext("black - bootstrap, blue line - evd_max, red lines - bin_max", side=3, outer=TRUE, line=-3)
+
+
+```
+
+
+
+
+
+```{r, reg5slope, echo=FALSE, cache=FALSE, fig.width=6, fig.height=6, fig.keep='high', message=FALSE, warning=FALSE}
+
+setwd("C:/Users/John/Documents/GitHub/sampling-investigations")
+# library("quantreg")
+
+reg5_50perc <- read.csv(file="./50_noniid_gaussian_10_dfadj_in_perc_scale.csv")
+reg5_100perc <- read.csv(file="./100_noniid_gaussian_10_dfadj_in_perc_scale.csv")
+reg5_1000perc <- read.csv(file="./1000_noniid_gaussian_10_dfadj_in_perc_scale.csv")
+
+reg5_50org <- read.csv(file="./50_noniid_gaussian_10_dfadj_in_org_scale.csv")
+reg5_100org <- read.csv(file="./100_noniid_gaussian_10_dfadj_in_org_scale.csv")
+reg5_1000org <- read.csv(file="./1000_noniid_gaussian_10_dfadj_in_org_scale.csv")
+
+par(mfrow=c(2,3))
+
+par(fig=c(0,.333,0.45,0.9))
+
+plot(x=reg5_50perc[,2],y=reg5_50perc[,5],main=paste("df adj in perc scale","\n n=50"),ylim=c(0.75,1),typ="b",xlab="quantile",ylab="coverage",sub="Fig. 10a",cex.main=0.9)
+lines(x=reg5_50perc[,2],y=reg5_50perc[,6],col="blue",lwd=2)
+lines(x=reg5_50perc[,2],y=reg5_50perc[,7],col="red",lwd=2)
+abline(h=0.95,col="green",lwd=2,lty=2)
+
+par(fig=c(.333,.666,0.45,0.9), new=TRUE)
+plot(x=reg5_100perc[,2],y=reg5_100perc[,5],main=paste("df adj in perc scale","\n n=100"),ylim=c(0.75,1),typ="b",xlab="quantile",ylab="coverage",sub="Fig. 10b",cex.main=0.9)
+lines(x=reg5_100perc[,2],y=reg5_100perc[,6],col="blue",lwd=2)
+lines(x=reg5_100perc[,2],y=reg5_100perc[,7],col="red",lwd=2)
+abline(h=0.95,col="green",lwd=2,lty=2)
+
+par(fig=c(.666,1,0.45,0.9), new=TRUE)
+plot(x=reg5_1000perc[,2],y=reg5_1000perc[,5],main=paste("df adj in perc scale","\n n=1000"),ylim=c(0.75,1),typ="b",xlab="quantile",ylab="coverage",sub="Fig. 10c",cex.main=0.9)
+lines(x=reg5_1000perc[,2],y=reg5_1000perc[,6],col="blue",lwd=2)
+lines(x=reg5_1000perc[,2],y=reg5_1000perc[,7],col="red",lwd=2)
+abline(h=0.95,col="green",lwd=2,lty=2)
+
+par(fig=c(.0,.333,0.0,0.45), new=TRUE)
+plot(x=reg5_50org[,2],y=reg5_50org[,5],main=paste("df adj in org scale","\n n=50"),ylim=c(0.75,1),typ="b",xlab="quantile",ylab="coverage",sub="Fig. 10d",cex.main=0.9)
+lines(x=reg5_50org[,2],y=reg5_50org[,6],col="blue",lwd=2)
+lines(x=reg5_50org[,2],y=reg5_50org[,7],col="red",lwd=2)
+abline(h=0.95,col="green",lwd=2,lty=2)
+
+par(fig=c(.333,.666,0.0,0.45), new=TRUE)
+plot(x=reg5_100org[,2],y=reg5_100org[,5],main=paste("df adj in org scale","\n n=100"),ylim=c(0.75,1),typ="b",xlab="quantile",ylab="coverage",sub="Fig. 10e",cex.main=0.9)
+lines(x=reg5_100org[,2],y=reg5_100org[,6],col="blue",lwd=2)
+lines(x=reg5_100org[,2],y=reg5_100org[,7],col="red",lwd=2)
+abline(h=0.95,col="green",lwd=2,lty=2)
+
+par(fig=c(.666,1,0.0,0.45), new=TRUE)
+plot(x=reg5_1000org[,2],y=reg5_1000org[,5],main=paste("df adj in org scale","\n n=1000"),ylim=c(0.75,1),typ="b",xlab="quantile",ylab="coverage",sub="Fig. 10f",cex.main=0.9)
+lines(x=reg5_1000org[,2],y=reg5_1000org[,6],col="blue",lwd=2)
+lines(x=reg5_1000org[,2],y=reg5_1000org[,7],col="red",lwd=2)
+abline(h=0.95,col="green",lwd=2,lty=2)
+
+mtext("model (v): slope CI coverage", side=3, outer=TRUE, line=-1.5)
+mtext("black - bootstrap, blue line - evd_max, red lines - bin_max", side=3, outer=TRUE, line=-3)
+
+```
+
+```{r, reg5intercept, echo=FALSE, cache=FALSE, fig.width=6, fig.height=6, fig.keep='high', message=FALSE, warning=FALSE}
+
+
+
+par(mfrow=c(2,3))
+
+par(fig=c(0,.333,0.45,0.9))
+
+plot(x=reg5_50perc[,2],y=reg5_50perc[,15],main=paste("df adj in perc scale","\n n=50"),ylim=c(0.75,1),typ="b",xlab="quantile",ylab="coverage",sub="Fig. 11a",cex.main=0.9)
+lines(x=reg5_50perc[,2],y=reg5_50perc[,16],col="blue",lwd=2)
+lines(x=reg5_50perc[,2],y=reg5_50perc[,17],col="red",lwd=2)
+abline(h=0.95,col="green",lwd=2,lty=2)
+
+par(fig=c(.333,.666,0.45,0.9), new=TRUE)
+plot(x=reg5_100perc[,2],y=reg5_100perc[,15],main=paste("df adj in perc scale","\n n=100"),ylim=c(0.75,1),typ="b",xlab="quantile",ylab="coverage",sub="Fig. 11b",cex.main=0.9)
+lines(x=reg5_100perc[,2],y=reg5_100perc[,16],col="blue",lwd=2)
+lines(x=reg5_100perc[,2],y=reg5_100perc[,17],col="red",lwd=2)
+abline(h=0.95,col="green",lwd=2,lty=2)
+
+par(fig=c(.666,1,0.45,0.9), new=TRUE)
+plot(x=reg5_1000perc[,2],y=reg5_1000perc[,15],main=paste("df adj in perc scale","\n n=1000"),ylim=c(0.75,1),typ="b",xlab="quantile",ylab="coverage",sub="Fig. 11c",cex.main=0.9)
+lines(x=reg5_1000perc[,2],y=reg5_1000perc[,16],col="blue",lwd=2)
+lines(x=reg5_1000perc[,2],y=reg5_1000perc[,17],col="red",lwd=2)
+abline(h=0.95,col="green",lwd=2,lty=2)
+
+par(fig=c(.0,.333,0.0,0.45), new=TRUE)
+plot(x=reg5_50org[,2],y=reg5_50org[,15],main=paste("df adj in org scale","\n n=50"),ylim=c(0.75,1),typ="b",xlab="quantile",ylab="coverage",sub="Fig. 11d",cex.main=0.9)
+lines(x=reg5_50org[,2],y=reg5_50org[,16],col="blue",lwd=2)
+lines(x=reg5_50org[,2],y=reg5_50org[,17],col="red",lwd=2)
+abline(h=0.95,col="green",lwd=2,lty=2)
+
+par(fig=c(.333,.666,0.0,0.45), new=TRUE)
+plot(x=reg5_100org[,2],y=reg5_100org[,15],main=paste("df adj in org scale","\n n=100"),ylim=c(0.75,1),typ="b",xlab="quantile",ylab="coverage",sub="Fig. 11e",cex.main=0.9)
+lines(x=reg5_100org[,2],y=reg5_100org[,16],col="blue",lwd=2)
+lines(x=reg5_100org[,2],y=reg5_100org[,17],col="red",lwd=2)
+abline(h=0.95,col="green",lwd=2,lty=2)
+
+par(fig=c(.666,1,0.0,0.45), new=TRUE)
+plot(x=reg5_1000org[,2],y=reg5_1000org[,15],main=paste("df adj in org scale","\n n=1000"),ylim=c(0.75,1),typ="b",xlab="quantile",ylab="coverage",sub="Fig. 11f",cex.main=0.9)
+lines(x=reg5_1000org[,2],y=reg5_1000org[,16],col="blue",lwd=2)
+lines(x=reg5_1000org[,2],y=reg5_1000org[,17],col="red",lwd=2)
+abline(h=0.95,col="green",lwd=2,lty=2)
+
+mtext("model (v): intercept CI coverage", side=3, outer=TRUE, line=-1.5)
+mtext("black - bootstrap, blue line - evd_max, red lines - bin_max", side=3, outer=TRUE, line=-3)
+
+
+```
+
+
+# Conclusions
+
+For homoscedastic iid unweighted cases, both the evd_max and bin_max evd based approximations to quantile regression model coefficient CIs show good performance for model slope CIs coverage for moderate samples n=1000. For smaller samples, the coverage performance is weaker for extreme quantiles.
+
+For model intercept CI estimates, the evd_max and bin_max evd based approximations have good coverage for linear cases but slight undercoverage (93%) for nonlinear examples, with the same sample size dependence as for model slope CI estimates.
+
+It would be worthwhile investigating, (i) minor improvements to equation \eqref{eq:5} for model intercept CI estimates and (ii) heteroscedastic consistent standard error extensions of the current approach.
+
+
+#References
+
+
+1. Martin J.P.D., 2015, http://dx.doi.org/10.6084/m9.figshare.1566828
+
+2. Martin J.P.D., 2015, http://dx.doi.org/10.6084/m9.figshare.1591019
+
+3. Koencker, R. W. & Bassett G., Econometrica, 1978, vol. 46, issue 1, pages 33-50
+
+4. Koencker, R. W., Portnoy S. et al, https://cran.r-project.org/web/packages/quantreg/quantreg.pdf
+
+5. https://en.wikipedia.org/wiki/Quantile
+
+6. Brown, B. M. and Wang, Y.-G. (2005). Standard errors and covariance
+matrices for smoothed rank estimators. Biometrika 92 149-158. MR2158616
+
+7. Agresti, A. and Coull, B. A. 1998 The American Statistician, vol. 52, p119-126. doi:10.2307/2685469. JSTOR 2685469
+
