@@ -2,7 +2,7 @@
 
 This directory contains results from sampling and simulations using R programming
 
-1. Quantile regression model coefficient variance estimation: Tested and adapted sample quantile CI estimators to the task of quantile regression model coefficient variance estimation. Needed to use max half CIs to increase coverage and worked out how to adapt standard regression formula for slope variance (unchanged) and intercept variance (obvious change). Nominal 95% coverage for homoscedastic idd cases.
+1. Quantile regression model coefficient variance estimation: Tested and adapted sample quantile CI estimators to the task of quantile regression model coefficient variance estimation. Needed to use max half CIs to increase coverage and worked out how to adapt standard regression formula for slope variance (unchanged) and intercept variance (obvious change). Nominal 95% coverage for homoscedastic iid cases.
 
 2. Sample quantile estimation: Suitably transforming the reference frame for quantile variance estimation can improve smoothed quantile estimating function variance estimates of sample quantile standard errors and get good agreement with bootstrap estimates of the linear programming (unsmoothed) quantile estimating function solution. The approach has potential for quantile regression where variances estimates of Y-bX are calculated rather than X as calculated in the first paper "empirical variance distribution ..."
 
