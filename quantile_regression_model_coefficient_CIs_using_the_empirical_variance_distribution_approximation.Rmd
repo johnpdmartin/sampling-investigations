@@ -312,16 +312,16 @@ For the non-iid case (v), figure 11 shows undercoverage of the intercept CI esti
 
 ```{r, reg1slope, echo=FALSE, cache=FALSE, fig.width=6, fig.height=6, fig.keep='high', message=FALSE, warning=FALSE}
 
-setwd("C:/Users/John/Documents/GitHub/sampling-investigations")
+setwd("C:/Users/John/Documents/GitHub/sampling-investigations/modelCIhomogeneouscaseresults")
 # library("quantreg")
 
-reg1_50perc <- read.csv(file="./50_linear_gaussian_10_dfadj_in_perc_scale.csv")
-reg1_100perc <- read.csv(file="./100_linear_gaussian_10_dfadj_in_perc_scale.csv")
-reg1_1000perc <- read.csv(file="./1000_linear_gaussian_10_dfadj_in_perc_scale.csv")
+reg1_50perc <- read.csv(file="../modelCIhomogeneouscaseresults/50_linear_gaussian_10_dfadj_in_perc_scale.csv")
+reg1_100perc <- read.csv(file="../modelCIhomogeneouscaseresults/100_linear_gaussian_10_dfadj_in_perc_scale.csv")
+reg1_1000perc <- read.csv(file="../modelCIhomogeneouscaseresults/1000_linear_gaussian_10_dfadj_in_perc_scale.csv")
 
-reg1_50org <- read.csv(file="./50_linear_gaussian_10_dfadj_in_org_scale.csv")
-reg1_100org <- read.csv(file="./100_linear_gaussian_10_dfadj_in_org_scale.csv")
-reg1_1000org <- read.csv(file="./1000_linear_gaussian_10_dfadj_in_org_scale.csv")
+reg1_50org <- read.csv(file="../modelCIhomogeneouscaseresults/50_linear_gaussian_10_dfadj_in_org_scale.csv")
+reg1_100org <- read.csv(file="../modelCIhomogeneouscaseresults/100_linear_gaussian_10_dfadj_in_org_scale.csv")
+reg1_1000org <- read.csv(file="../modelCIhomogeneouscaseresults/1000_linear_gaussian_10_dfadj_in_org_scale.csv")
 
 par(mfrow=c(2,3))
 
@@ -420,16 +420,16 @@ mtext("black - bootstrap, blue line - evd_max, red lines - bin_max", side=3, out
 
 ```{r, reg2slope, echo=FALSE, cache=FALSE, fig.width=6, fig.height=6, fig.keep='high', message=FALSE, warning=FALSE}
 
-setwd("C:/Users/John/Documents/GitHub/sampling-investigations")
+setwd("C:/Users/John/Documents/GitHub/sampling-investigations/modelCIhomogeneouscaseresults")
 # library("quantreg")
 
-reg2_50perc <- read.csv(file="./50_squaredonly_gaussian_10_dfadj_in_perc_scale.csv")
-reg2_100perc <- read.csv(file="./100_squaredonly_gaussian_10_dfadj_in_perc_scale.csv")
-reg2_1000perc <- read.csv(file="./1000_squaredonly_gaussian_10_dfadj_in_perc_scale.csv")
+reg2_50perc <- read.csv(file="../modelCIhomogeneouscaseresults/50_squaredonly_gaussian_10_dfadj_in_perc_scale.csv")
+reg2_100perc <- read.csv(file="../modelCIhomogeneouscaseresults/100_squaredonly_gaussian_10_dfadj_in_perc_scale.csv")
+reg2_1000perc <- read.csv(file="../modelCIhomogeneouscaseresults/1000_squaredonly_gaussian_10_dfadj_in_perc_scale.csv")
 
-reg2_50org <- read.csv(file="./50_squaredonly_gaussian_10_dfadj_in_org_scale.csv")
-reg2_100org <- read.csv(file="./100_squaredonly_gaussian_10_dfadj_in_org_scale.csv")
-reg2_1000org <- read.csv(file="./1000_squaredonly_gaussian_10_dfadj_in_org_scale.csv")
+reg2_50org <- read.csv(file="../modelCIhomogeneouscaseresults/50_squaredonly_gaussian_10_dfadj_in_org_scale.csv")
+reg2_100org <- read.csv(file="../modelCIhomogeneouscaseresults/100_squaredonly_gaussian_10_dfadj_in_org_scale.csv")
+reg2_1000org <- read.csv(file="../modelCIhomogeneouscaseresults/1000_squaredonly_gaussian_10_dfadj_in_org_scale.csv")
 
 par(mfrow=c(2,3))
 
@@ -530,16 +530,16 @@ mtext("black - bootstrap, blue line - evd_max, red lines - bin_max", side=3, out
 
 ```{r, reg3slope, echo=FALSE, cache=FALSE, fig.width=6, fig.height=6, fig.keep='high', message=FALSE, warning=FALSE}
 
-setwd("C:/Users/John/Documents/GitHub/sampling-investigations")
+setwd("C:/Users/John/Documents/GitHub/sampling-investigations/modelCIhomogeneouscaseresults")
 # library("quantreg")
 
-reg3_50perc <- read.csv(file="./50_linear_laplacian_10_dfadj_in_perc_scale.csv")
-reg3_100perc <- read.csv(file="./100_linear_laplacian_10_dfadj_in_perc_scale.csv")
-reg3_1000perc <- read.csv(file="./1000_linear_laplacian_10_dfadj_in_perc_scale.csv")
+reg3_50perc <- read.csv(file="../modelCIhomogeneouscaseresults/50_linear_laplacian_10_dfadj_in_perc_scale.csv")
+reg3_100perc <- read.csv(file="../modelCIhomogeneouscaseresults/100_linear_laplacian_10_dfadj_in_perc_scale.csv")
+reg3_1000perc <- read.csv(file="../modelCIhomogeneouscaseresults/1000_linear_laplacian_10_dfadj_in_perc_scale.csv")
 
-reg3_50org <- read.csv(file="./50_linear_laplacian_10_dfadj_in_org_scale.csv")
-reg3_100org <- read.csv(file="./100_linear_laplacian_10_dfadj_in_org_scale.csv")
-reg3_1000org <- read.csv(file="./1000_linear_laplacian_10_dfadj_in_org_scale.csv")
+reg3_50org <- read.csv(file="../modelCIhomogeneouscaseresults/50_linear_laplacian_10_dfadj_in_org_scale.csv")
+reg3_100org <- read.csv(file="../modelCIhomogeneouscaseresults/100_linear_laplacian_10_dfadj_in_org_scale.csv")
+reg3_1000org <- read.csv(file="../modelCIhomogeneouscaseresults/1000_linear_laplacian_10_dfadj_in_org_scale.csv")
 
 par(mfrow=c(2,3))
 
@@ -637,16 +637,16 @@ mtext("black - bootstrap, blue line - evd_max, red lines - bin_max", side=3, out
 
 ```{r, reg4slope, echo=FALSE, cache=FALSE, fig.width=6, fig.height=6, fig.keep='high', message=FALSE, warning=FALSE}
 
-setwd("C:/Users/John/Documents/GitHub/sampling-investigations")
+setwd("C:/Users/John/Documents/GitHub/sampling-investigations/modelCIhomogeneouscaseresults")
 # library("quantreg")
 
-reg4_50perc <- read.csv(file="./50_twoterms_laplacian_10_dfadj_in_perc_scale.csv")
-reg4_100perc <- read.csv(file="./100_twoterms_laplacian_10_dfadj_in_perc_scale.csv")
-reg4_1000perc <- read.csv(file="./1000_twoterms_laplacian_10_dfadj_in_perc_scale.csv")
+reg4_50perc <- read.csv(file="../modelCIhomogeneouscaseresults/50_twoterms_laplacian_10_dfadj_in_perc_scale.csv")
+reg4_100perc <- read.csv(file="../modelCIhomogeneouscaseresults/100_twoterms_laplacian_10_dfadj_in_perc_scale.csv")
+reg4_1000perc <- read.csv(file="../modelCIhomogeneouscaseresults/1000_twoterms_laplacian_10_dfadj_in_perc_scale.csv")
 
-reg4_50org <- read.csv(file="./50_twoterms_laplacian_10_dfadj_in_org_scale.csv")
-reg4_100org <- read.csv(file="./100_twoterms_laplacian_10_dfadj_in_org_scale.csv")
-reg4_1000org <- read.csv(file="./1000_twoterms_laplacian_10_dfadj_in_org_scale.csv")
+reg4_50org <- read.csv(file="../modelCIhomogeneouscaseresults/50_twoterms_laplacian_10_dfadj_in_org_scale.csv")
+reg4_100org <- read.csv(file="../modelCIhomogeneouscaseresults/100_twoterms_laplacian_10_dfadj_in_org_scale.csv")
+reg4_1000org <- read.csv(file="../modelCIhomogeneouscaseresults/1000_twoterms_laplacian_10_dfadj_in_org_scale.csv")
 
 par(mfrow=c(2,3))
 
@@ -694,16 +694,16 @@ mtext("black - bootstrap, blue line - evd_max, red lines - bin_max", side=3, out
 
 ```{r, reg4slope2, echo=FALSE, cache=FALSE, fig.width=6, fig.height=6, fig.keep='high', message=FALSE, warning=FALSE}
 
-setwd("C:/Users/John/Documents/GitHub/sampling-investigations")
+setwd("C:/Users/John/Documents/GitHub/sampling-investigations/modelCIhomogeneouscaseresults")
 # library("quantreg")
 
-reg4_50perc <- read.csv(file="./50_twoterms_laplacian_10_dfadj_in_perc_scale.csv")
-reg4_100perc <- read.csv(file="./100_twoterms_laplacian_10_dfadj_in_perc_scale.csv")
-reg4_1000perc <- read.csv(file="./1000_twoterms_laplacian_10_dfadj_in_perc_scale.csv")
+reg4_50perc <- read.csv(file="../modelCIhomogeneouscaseresults/50_twoterms_laplacian_10_dfadj_in_perc_scale.csv")
+reg4_100perc <- read.csv(file="../modelCIhomogeneouscaseresults/100_twoterms_laplacian_10_dfadj_in_perc_scale.csv")
+reg4_1000perc <- read.csv(file="../modelCIhomogeneouscaseresults/1000_twoterms_laplacian_10_dfadj_in_perc_scale.csv")
 
-reg4_50org <- read.csv(file="./50_twoterms_laplacian_10_dfadj_in_org_scale.csv")
-reg4_100org <- read.csv(file="./100_twoterms_laplacian_10_dfadj_in_org_scale.csv")
-reg4_1000org <- read.csv(file="./1000_twoterms_laplacian_10_dfadj_in_org_scale.csv")
+reg4_50org <- read.csv(file="../modelCIhomogeneouscaseresults/50_twoterms_laplacian_10_dfadj_in_org_scale.csv")
+reg4_100org <- read.csv(file="../modelCIhomogeneouscaseresults/100_twoterms_laplacian_10_dfadj_in_org_scale.csv")
+reg4_1000org <- read.csv(file="../modelCIhomogeneouscaseresults/1000_twoterms_laplacian_10_dfadj_in_org_scale.csv")
 
 par(mfrow=c(2,3))
 
@@ -804,16 +804,16 @@ mtext("black - bootstrap, blue line - evd_max, red lines - bin_max", side=3, out
 
 ```{r, reg5slope, echo=FALSE, cache=FALSE, fig.width=6, fig.height=6, fig.keep='high', message=FALSE, warning=FALSE}
 
-setwd("C:/Users/John/Documents/GitHub/sampling-investigations")
+setwd("C:/Users/John/Documents/GitHub/sampling-investigations/modelCIhomogeneouscaseresults")
 # library("quantreg")
 
-reg5_50perc <- read.csv(file="./50_noniid_gaussian_10_dfadj_in_perc_scale.csv")
-reg5_100perc <- read.csv(file="./100_noniid_gaussian_10_dfadj_in_perc_scale.csv")
-reg5_1000perc <- read.csv(file="./1000_noniid_gaussian_10_dfadj_in_perc_scale.csv")
+reg5_50perc <- read.csv(file="../modelCIhomogeneouscaseresults/50_noniid_gaussian_10_dfadj_in_perc_scale.csv")
+reg5_100perc <- read.csv(file="../modelCIhomogeneouscaseresults/100_noniid_gaussian_10_dfadj_in_perc_scale.csv")
+reg5_1000perc <- read.csv(file="../modelCIhomogeneouscaseresults/1000_noniid_gaussian_10_dfadj_in_perc_scale.csv")
 
-reg5_50org <- read.csv(file="./50_noniid_gaussian_10_dfadj_in_org_scale.csv")
-reg5_100org <- read.csv(file="./100_noniid_gaussian_10_dfadj_in_org_scale.csv")
-reg5_1000org <- read.csv(file="./1000_noniid_gaussian_10_dfadj_in_org_scale.csv")
+reg5_50org <- read.csv(file="../modelCIhomogeneouscaseresults/50_noniid_gaussian_10_dfadj_in_org_scale.csv")
+reg5_100org <- read.csv(file="../modelCIhomogeneouscaseresults/100_noniid_gaussian_10_dfadj_in_org_scale.csv")
+reg5_1000org <- read.csv(file="../modelCIhomogeneouscaseresults/1000_noniid_gaussian_10_dfadj_in_org_scale.csv")
 
 par(mfrow=c(2,3))
 
