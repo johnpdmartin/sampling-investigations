@@ -1,0 +1,1867 @@
+---
+title: "Quantile regression model coefficient CIs for linear expanding horn heteroscedastic cases using auxiliary regression and the empirical variance distribution"
+author: "John P. D. Martin"
+date: "Sunday, February 7, 2016"
+output: pdf_document
+---
+
+```{r, setwd, echo=FALSE, cache=FALSE, fig.width=6, fig.height=6, fig.keep='high'}
+setwd("C:/Users/John/Documents/GitHub/sampling-investigations/modelCIheterogeneouscaseresults")
+
+```
+
+###Executive Summary
+
+This paper investigates the application of the empirical variance distribution (evd) function (Martin (1-3)), to estimate the confidence interval bounds of the quantile regression model coefficient estimates (Koencker & Bassett (4)), for linear expanding horn heteroscedastic unweighted data cases. The heteroscedascity is analysed and transformed by auxiliary regression to provide estimates of the slope variance and regression formula components of the intercept variance previously trialled for the homoscedastic case Martin (3).
+
+Analysis of the coverage accuracy of the results is conducted by repeated sampling of several sample sizes to known regression models and error distributions. Importantly, the sampling also included different positions of the intercept in the known distributions, since the intercept variance changes in the heteroscedastic case depending on the position of the intercept within the observed data range. Table 1 displays the coverage performance of several quantile regression variance estimates of unweighted regression examples, for sample size 1000. The empirical variance distribution (evd) based coverage estimates are compared to default bootstrap quantile coverage calculated using 600 replicates (from the quantreg r package (5)). 
+
+**Table 1: Quantile regression confidence interval estimator coverage of sample size 1000 for (slope,intercept) respectively, based on 1000 repeated samples**
+\footnotesize
+
+Regression $Y=\beta f(X) + x \varepsilon$ | quantile |  bootstrap coverage | bootstrap half CI | evd_aux reg coverage
+--------- | ------- | ------- | ----------- | ------- | -------
+Intercept at median(x) |  |   |  | 
+$y = 0.5*x + x*rnorm(0,1.5)$ | 0.1 |  (0.935,0.931) | (0.0089,1.0753) | (0.963,0.931)
+"" | 0.5 |  (0.935,0.937) | (0.0065,0.7866) | (0.956,0.921)
+"" | 0.9 |  (0.955,0.940) | (0.0089,1.0771) | (0.971,0.938)
+Intercept at weighted median(x)  |  |   |  | 
+using auxiliary regression model as weights  |  |   |  | 
+$y = 0.5*x + x*rnorm(0,1.5)$ | 0.1 |  (0.935,0.948) | (0.0089,0.6851) | (0.963,0.958)
+"" | 0.5 |  (0.935,0.943) | (0.0065,0.5014) | (0.956,0.958)
+"" | 0.9 |  (0.955,0.954) | (0.0089,0.6928) | (0.971,0.965)
+Intercept at median($e^x$) |  |   |  | 
+$y = 0.5*e^x + x*rnorm(0,1.5)$ | 0.1 |  (0.937,0.956) | (0.0111,8.0037) | (0.979,0.969)
+"" | 0.5 |  (0.955,0.951) | (0.0081,5.7855) | (0.977,0.950)
+"" | 0.9 |  (0.936,0.950) | (0.0111,8.0106) | (0.971,0.938)
+Intercept at weighted median($e^x$)  |  |   |  | 
+using auxiliary regression model as weights  |  |   |  | 
+$y = 0.5*e^x + x*rnorm(0,1.5)$ | 0.1 |  (0.937,0.962) | (0.0111,6.6743) | (0.979,0.971)
+"" | 0.5 |  (0.955,0.951) | (0.0081,4.7947) | (0.977,0.950)
+"" | 0.9 |  (0.936,0.946) | (0.0111,6.6838) | (0.971,0.956)
+
+
+In Table 1, the regression degrees of freedom model adjustment $\sqrt{n/(n-p-1)}$ for the evd based estimators was performed in the percentile scale.
+\normalsize
+
+It can be seen that for this modest sample size, the bootstrap estimator and the evd based confidence interval estimators exhibit nominal 95% coverage for univariate linear expanding horn heteroscedastic, independent error cases in slope estimates. The evd based intercept CI estimates have good coverage for intercepts in the middle of distributions. 
+
+For extreme quantiles in smaller samples the evd based slope CIs coverage performance is lower. For intercepts on the edge of distributions the evd based intercept CIs coverage performance are weaker. The good performance for evd based estimators is expected to be sensitive to how well the quantile regression is specified compared to the data. For Table 1 results, all the quantile regression fits are linear matching the specified distributions, however, if the expanding horn heteroscedasticity varies as $x^2$ then the best quantile regression fitting is a second order polynomial model. This sensitivity to model specification for evd based estimators for heteroscedastic cases is part of the reason for the lower coverage with smaller sample sizes. The quantreg (5) default bootstrap estimator coverage is robust for smaller samples with linear or quadratic expanding horn heteroscedascity.
+
+The first and second examples illustrate the same uniformly distributed x distribution with linear expanding horn heteroscedasticity for two different intercept values. The third and fourth examples illustrate the same exponential normal distribution (similar to the Engel food expenditure dataset behaviour) with expanding horn heteroscedasticity for two different intercept values. Examining the bootstrap intercept intervals for the four examples shown in Table 1, as well as other intercept values, the minimum intercept confidence interval length occurs near the weighted median value of the x distribution when weighted by the auxiliary regression model of the heteroscedasticity. This numerical bootstrap data on quantile regression intercept variance behaviour has been used to further develop the quantile regression evd estimator intercept confidence interval formula (presented in (3)) to work for the linear expanding horn heteroscedastic case.  
+
+
+#Introduction
+
+Quantiles (6) are an order statistic of a distribution defined by the equivalent probability amount contained under the cumulative distribution function up to the (ordered) value of the quantile point. 
+
+That is, x is a k-th q-quantile for a variable X if
+
+Pr[X < x] $\leq$ k/q or, equivalently, Pr[X $\geq$ x] $\geq$ (1 - k/q)
+
+So the 25th percentile point is the 25/100 (k/q) 100-quantile point where 25% of the probability under the cumulative density function has occurred.
+
+An equivalent calculation of quantile points has been demonstrated (4) using least absolute deviation (LAD) regression of the following quantile estimation function
+
+\begin{equation} \underset{ b \thinspace\epsilon \mathbb{R}}{\min}  \{ \theta \left|x_t-b\right| + (1-\theta)\left|x_t-b\right| \}\end{equation}
+
+where $\theta \equiv k/q$ and $x_t$ are the sample/population elements of X. As the absolute value functions in equation 1, create a piecewise linear function shape (convex polytope) to the estimating function, linear programming techniques are required to solve the minimsation problem. As such, closed form expressions for the standard error of the quantile estimates are not available from this approach.
+
+Another approach for estimated standard errors of the quantile estimation function solution is to concurrently calculate the standard errors of smoothed versions of the problem, Brown & Wang (7). Consistent with that approach, Martin (1) identified an analytic quadratic polynomial smoothing function, in the percentile scale, for the quantile estimating function of unweighted samples. This analytic function, only requires the sample size and selected quantile value, to calculate the sample quantile confidence interval (CI) bounds in the percentile scale. 
+
+Backtransforming to the original measurement scale, using the CI bounds in the quantile estimation function calculations on the sample distribution results in the empirical variance distribution (evd). As shown in (1), the evd is an asymmetric stepped sample CI, in contrast to smooth symmetric bootstrap sample CIs, but similar in morphology to the discrete cumulative density function (cdf). 
+
+In Martin (2), several evd based sample quantile CI estimators were shown to have nominal 95% performance for samples sizes 50-100-1000, except for extreme quantiles in the smallest samples. Some improvement in the sample quantile CI coverage was also shown to be possible for these extreme cases, via use of quantile regression extrapolated 0th,100th quantile sample bounds.  
+
+In Martin (3), the evd based sample quantile CI estimators (1,2) were trialled, assessed and adapted where required as quantile regression model coefficient CI estimators. Since the evd approximation to quantile estimating function, produces a smooth, differentiable approximation to the quantile estimating function (1), the evd based CI estimators trialled for homoscedastic iid cases were analogous to the ordinary least squares regression estimators where the median has replaced the mean estimate in the variance intercept formula. For regression with two explanatory variables, 
+
+\begin{equation} y = \beta_0 + \beta_1 x_1 + \beta_2 x_2 + \varepsilon \end{equation}
+
+the model slope(s) and intercept CI estimates are derived from empirical variance distribution (evd) approximations of the quantile regression residuals sample variance (distribution) $s_{res}$ via the relationships
+
+\begin{equation} s_{\beta_1} = \frac{s_{res}}{var(x_1)(1-r_{12qr})}\label{eq:1} \end{equation}
+
+\begin{equation} s_{\beta_2} = \frac{s_{res}}{var(x_2)(1-r_{12qr})}\label{eq:2} \end{equation}
+
+\begin{equation} s_{\beta_0}(\theta) = \sqrt{s_{res}^2+s_{\beta_1}^2 median(x_1)^2 +s_{\beta_2}^2 median(x_2)^2 }\label{eq:3} \end{equation}
+
+where the following covariance term had been trialled 
+
+\begin{equation} r_{12qr} \sim \frac{cov(x_1,x_2)}{\sqrt{var(x_1)var(x_2)}}\label{eq:4} \end{equation}
+
+In (3), equations \eqref{eq:1}, \eqref{eq:2} & \eqref{eq:3} were found to form a suitable basis to produce accurate evd based approximations to quantile regression model coefficient CIs for univariate homoscedastic iid cases, from quantile regression residuals. 
+
+\textbf{
+However, further research, for the current paper has revealed that the covariance term $r_{12qr}$ in equation \eqref{eq:4} is not accurate enough for use with bivariate quantile regression, it is sufficient for specific bivariate cases when $r_{12qr} \rightarrow 0$ but more generalisation of the covariate adjustment is needed.}
+
+Importantly, to keep the evd based variance estimation maximising the use of quantile regression calculations. The residuals distribution variance $s_{res}$ is not calculated using sum of squares of errors of the residuals but is calculated by performing quantile regression calculations on the residual distribution using evd based estimates of ($\theta_{LB}$, $\theta_{UB}$), to then estimate the 2.5th & 97.5th bounds in the original measurement scale.   
+
+In this paper, the evd based quantile regression model coefficient CI estimators (3) have been successfully adapted to estimate CI intervals for linear expanding horn heteroscedastic, independent error cases. The results are then compared to the known population slope and intercept regression values as well as default quantreg (5) bootstrap estimates. To deal with the heteroscedasticity, auxiliary regression of the quantile regression residuals (analogous to generalised least squares regression) has proved essential to transform the distribution before extracting useful and consistent evd quantile values for single covariate cases (and some limited bivariate cases).
+
+It has been identified for linear expanding horn heteroscedastic cases, that the weighted median of the explanatory variable closely corresponds to the minimum CI of the dependent variable model estimate, for well specified models. The weights are obtained from auxiliary quantile regression fitting of the heteroscedasticity.
+
+## Quantile regression model \textit{slope} coefficient CI estimators for linear expanding horn heteroscedasticity using auxiliary regression and empirical variance distribution
+
+A well specified quantile regression model is one where the density of data points beyond a given fitted quantile regression line is relatively independent of the explanatory variables when repeated sampling occurs from a population distribution. For example, with a linear explanatory variable dependence and linear expanding horn heteroscedasticity, linear quantile regression lines would be expected to occur for all quantile values, as shown in figure 1. 
+
+
+```{r, linearhorn, echo=FALSE, cache=FALSE, fig.width=6, fig.height=6, fig.keep='high', message=FALSE, warning=FALSE}
+
+
+library(Runuran);library(quantreg);library(Bolstad);library(scatterplot3d)
+# START MANUAL SETTING 1
+# set heteroscedasticity and population distribution slope and noise of interest
+sampsize <- 1000;p_con <- 1;multi <- 0.5;lambda <- 1.5;
+adj_het <- "adjHet" # "adjHet"   "none"
+method_df <- "perc_scale" # "perc_scale" # "org_scale" #  
+# initialise some important arrays
+# setting up original datasets and any transformation for quantile regression
+set.seed(592)  
+shift <- -180
+x_sample_org <- runif(sampsize,-0,360)+(shift)
+y_sample_org <- multi*(x_sample_org)+
+    (3+1*(x_sample_org-(shift))/20)^p_con*rnorm(sampsize,0,lambda)
+  
+x_sample <- x_sample_org  
+y_sample <- y_sample_org 
+  
+med_est_x <- rq((x_sample)~(1),tau=.5,weights=rep(1,sampsize))
+  
+# setting quantile values of interest
+taus_set <- c(.1,.25,.75,.9)
+
+# calculating proxy population parameters for quantile regression based on whole of repeated samples
+
+n_obs <- length(x_sample)
+t_adj <- abs(qt(.025,n_obs))
+
+model_fit_rq <- rq((y_sample)~(x_sample),tau=.5)
+# model_fit_rq
+rq_beta0 <- model_fit_rq$coefficients[1]
+rq_beta1 <- model_fit_rq$coefficients[2]
+# summary(model_fit_rq,se="boot",R=600)
+
+plot(y=y_sample,x=x_sample,main="Linear expanding horn heteroscedasticity",sub="Figure 1:Linear heteroscedasticity with small homoscedastic component")
+lines(y=(rq_beta0+rq_beta1*x_sample),x=x_sample,pch=20,col="red",lwd=2)
+lines(y=fitted.values(rq((y_sample)~(x_sample),tau=.025)),x=x_sample,col="green",pch=20,lwd=2)
+lines(y=fitted.values(rq((y_sample)~(x_sample),tau=.1)),x=x_sample,col="green",pch=20,lwd=2)
+lines(y=fitted.values(rq((y_sample)~(x_sample),tau=.25)),x=x_sample,col="green",pch=20,lwd=2)
+lines(y=fitted.values(rq((y_sample)~(x_sample),tau=.75)),x=x_sample,col="green",pch=20,lwd=2)
+lines(y=fitted.values(rq((y_sample)~(x_sample),tau=.9)),x=x_sample,col="green",pch=20,lwd=2)
+lines(y=fitted.values(rq((y_sample)~(x_sample),tau=.975)),x=x_sample,col="green",pch=20,lwd=2)
+
+```
+
+
+As shown in Firgure 2, the quantile regression model residuals exhibit heteroscedasticity. Initially, the evd based model slope coefficent CI estimator for homoscedastic case (3) was trialled explicitly on the heteroscedastically scattered residual distribution but undercoverage of the evd based model slope coefficent CI estimates was clearly evident. 
+
+```{r, linearhornresiduals, echo=FALSE, cache=FALSE, fig.width=6, fig.height=6, fig.keep='high', message=FALSE, warning=FALSE}
+
+
+ # trying to adjust for heterogeniety
+    yres <- resid(model_fit_rq)
+
+   plot(y=yres,x=x_sample,ylab="value of residuals",main="Quantile regression residuals for theta=0.5",sub="Figure 2: Original residuals distribution")
+
+
+
+```
+
+
+Following the approach of auxiliary regression, the heteroscedascity in the residuals can be modelled using quantile regression applied to the absolute values of the residuals, as shown in Figure 3. 
+
+
+```{r, linearhornauxiliaryregression, echo=FALSE, cache=FALSE, fig.width=6, fig.height=6, fig.keep='high', message=FALSE, warning=FALSE}
+
+
+ # trying to adjust for heterogeniety
+
+    y2 <- abs(yres)
+    res_model <- rq(y2~poly(x_sample,6),tau=0.5)
+    var_est <- fitted.values(res_model)
+   q_maxes <- rq(yres~1,tau=c(.025,.975))$coefficients[1:2]
+   
+   trimdatax <- subset(x_sample,!(yres > q_maxes[2] | yres < q_maxes[1] | var_est == 0 )) 
+   trimdatay <- subset(y2,!(yres > q_maxes[2] | yres < q_maxes[1] | var_est == 0 )) 
+    trimdatavar_est <- subset(abs(var_est),!(yres > q_maxes[2] | yres < q_maxes[1] | var_est == 0  )) 
+    var_adj <- var_est/(suppressMessages(sintegral(trimdatax,trimdatay)$value)/
+                          suppressMessages(sintegral(trimdatax,trimdatay/trimdatavar_est)$value))
+    pts_adj <- ifelse(!(var_est ==0 | abs(yres/var_adj) > max(abs(yres))  ), 1, 0)
+  #   print(paste(reps,sum(pts_adj)))
+
+          res_adj <- ifelse(pts_adj,yres/var_adj,yres)
+      wgt_adj <- ifelse(pts_adj,1/var_adj,1)
+      wgt_adj <- ifelse(wgt_adj > 0,wgt_adj,0)
+      
+     res_adjfin <- res_adj#*max(y2)/max(abs(res_adj))
+     
+    plot(y=y2,x=x_sample,ylab="absolute value of residuals",main="Auxiliary Quantile regression of absolute values of residuals",sub="Figure 3: Auxiliary regression of heteroscedasticity in residuals distribution")
+     points(y=var_est,x=x_sample,col="red",pch=20)
+
+```
+
+
+The auxiliary regression model can be used explicitly to adjust the residuals distribution as shown in Figure 4. As part of the adjustment procedure, the area of the homoscedastic transformed residuals distribution was explicitly adjusted to be equal to the area of the original heteroscedastic residuals distribution for the 2.5th & 97.5 quantile bounds.
+
+\begin{equation} model_{residual adjust} = \frac{(model_{residual})}{(auxiliary_{model value})}*\frac{\int_{.025}^{.975} model_{residual} dx}{\int_{.025}^{.975} \frac{(model_{residual})}{(auxiliary_{model value})} dx} \label{eq:norm}
+\end{equation}
+
+```{r, linearhornadjustedresiduals, echo=FALSE, cache=FALSE, fig.width=6, fig.height=6, fig.keep='high', message=FALSE, warning=FALSE}
+
+   plot(y=res_adjfin,x=x_sample,ylim=c(-max(y2,abs(res_adj)),max(y2,abs(res_adj))),main=paste("Homoscedastically transformed residuals distribution","\n using auxiliary regression"),sub="Figure 4: Adjusted residuals for evd based model slope CI estimation",ylab="adjusted residuals values",col="green")
+
+
+
+```
+
+In the examples, to be shown, the evd based model slope coefficients CI estimators based on the auxiliary regression adjusted residuals distribution give good coverage performance. 
+
+\begin{equation} s_{\beta_1} = \frac{s_{residual adjust (max half evd CI)}}{var(x)}\label{eq:slopehet} \end{equation}
+
+It has been found that using $\theta=0.5$ for auxiliary quantile regression modelling of the absolute residuals is satisfactory for linear expanding horn heteroscedasticity, regardless of the quantile value investigated in the quantile regression. Also, consistent with the evd based model slope coefficients CI estimators in (3), it is necessary to take the maximum half CI of the asymmetric evd CIs of the (transformed) residuals distribution as the estimated symmetric confidence interval estimate of the slope coefficient.
+
+## Quantile regression model \textit{intercept} coefficient CI estimators for linear expanding horn heteroscedasticity using auxiliary regression and empirical variance distribution
+
+In investigating possible evd based model intercept coefficient CI estimators, it is instructive to graph the default bootstrap model intercept coefficient CI length as the intercept position within a fixed scatterplot pattern. As shown in figure 5, for two examples, the minimum in the bootstrap model intercept coefficient CI length for linear heterscedasticity is close to the weighted median of the explanatory variable, where the weights are obtained by auxiliary regression of the residuals.
+
+As expected, the intercept CI is much smaller if the intercept is centrally located in the measured data. However, it is apparent that the unweighted median is no longer the minimum CI length in the presence of linear heteroscedasticity.
+
+
+```{r, xmedianCIlength, echo=FALSE, cache=FALSE, fig.width=6, fig.height=6, fig.keep='high', message=FALSE, warning=FALSE}
+
+setwd("C:/Users/John/Documents/GitHub/sampling-investigations/modelCIheterogeneouscaseresults")
+# library("quantreg")
+
+linear1000 <- read.csv(file="../modelCIheterogeneouscaseresults/intercept_behaviour_linhet1000.csv")
+engel1000 <- read.csv(file="../modelCIheterogeneouscaseresults/intercept_behaviour_engel1000.csv")
+
+par(mfrow=c(2,2))
+
+par(fig=c(0,.5,0.45,0.9))
+
+plot(x=linear1000[,3],y=linear1000[,4],main=paste("y=x+x*N(0,1.5)"),typ="b",xlab="auxiliary regression weighted median",ylab="CI length",sub="Fig. 5a",cex.main=0.9,cex.xlab=.7)
+# lines(x=reg1_50perc[,2],y=reg1_50perc[,6],col="blue",lwd=2)
+# lines(x=reg1_50perc[,2],y=reg1_50perc[,7],col="red",lwd=2)
+# abline(h=0.95,col="green",lwd=2,lty=2)
+
+par(fig=c(.5,1,0.45,0.9), new=TRUE)
+plot(x=engel1000[,3],y=engel1000[,4],main=paste("y=exp(x)+x*N(0,1.5)"),typ="b",xlab="auxiliary regression weighted median",ylab="CI length",sub="Fig. 5b",cex.main=0.9,cex.xlab=.7)
+# lines(x=reg1_100perc[,2],y=reg1_100perc[,6],col="blue",lwd=2)
+# lines(x=reg1_100perc[,2],y=reg1_100perc[,7],col="red",lwd=2)
+# abline(h=0.95,col="green",lwd=2,lty=2)
+
+par(fig=c(0,.5,0,0.45),new=TRUE)
+
+plot(x=linear1000[,2],y=linear1000[,4],main=paste("y=x+x*N(0,1.5)"),typ="b",xlab="unweighted median estimate",ylab="CI length",sub="Fig. 5c",cex.main=0.9)
+# lines(x=reg1_50perc[,2],y=reg1_50perc[,6],col="blue",lwd=2)
+# lines(x=reg1_50perc[,2],y=reg1_50perc[,7],col="red",lwd=2)
+# abline(h=0.95,col="green",lwd=2,lty=2)
+
+par(fig=c(.5,1,0,0.45), new=TRUE)
+plot(x=engel1000[,2],y=engel1000[,4],main=paste("y=exp(x)+x*N(0,1.5)"),typ="b",xlab="unweighted median estimate",ylab="CI length",sub="Fig. 5d",cex.main=0.9)
+# lines(x=reg1_100perc[,2],y=reg1_100perc[,6],col="blue",lwd=2)
+# lines(x=reg1_100perc[,2],y=reg1_100perc[,7],col="red",lwd=2)
+# abline(h=0.95,col="green",lwd=2,lty=2)
+
+mtext("Figure 5: bootstrap intercept CI length as a function of", side=3, outer=TRUE, line=-1.5)
+mtext("auxiliary model weighted median or unweighted sample", side=3, outer=TRUE, line=-3)
+
+```
+
+Using this insight, the evd based regression intercept estimator \eqref{eq:3} applied to linear expanding horn heteroscedasticity was trialled sourcing,
+
+(i) the first term in the sqrt expression, from the (auxiliary regression) weighted quantile regression of the original residuals distribution, and 
+(ii) the median($x_i$) terms in the sqrt expression were converted to (auxiliary regression) weighted medians.
+
+\begin{equation} s_{\beta_0}(\theta) \sim \sqrt{s(median(residuals,w_{auxreg}))^2+s_{\beta_1}^2 (0-median(x_1,w_{auxreg}))^2 }\label{eq:trialint} \end{equation}
+
+
+On assessing \eqref{eq:trialint}, better coverage performance was occurring if $s_{\beta_i}$ used in the intercept CI was reduced from the evd based max half CI, to mean half CI estimates as was found optimal for sample quantile CIs (1). These findings result in the following evd based model coefficient intercept CI estimator
+
+\begin{equation} s_{\beta_0}(\theta) = \sqrt{s(median(residuals,w_{auxreg}))^2+s_{\beta_1 mean half CI}^2 (0-median(x_1,w_{auxreg}))^2 }\label{eq:finalint} \end{equation}
+
+As shown in figure 6, this estimator has good performance compared to the default bootstrap estimates for linear expanding horn heterscedasticity. Namely, $s(median(residuals,w_{auxreg}))$ term closely corresponds to the minimum intercept CI length and $s_{\beta_i mean half CI}$ term provides the best match to the curvature to the bootstrap intercept CI length as the intercept position is varied within a fixed scatterplot shape.
+
+```{r, evdxmedianCIlength, echo=FALSE, cache=FALSE, fig.width=6, fig.height=6, fig.keep='high', message=FALSE, warning=FALSE}
+
+setwd("C:/Users/John/Documents/GitHub/sampling-investigations/modelCIheterogeneouscaseresults")
+# library("quantreg")
+
+linear1000 <- read.csv(file="../modelCIheterogeneouscaseresults/intercept_behaviour_linhet1000.csv")
+engel1000 <- read.csv(file="../modelCIheterogeneouscaseresults/intercept_behaviour_engel1000.csv")
+
+par(mfrow=c(2,2))
+
+par(fig=c(0,.5,0.45,0.9))
+
+plot(x=linear1000[,3],y=linear1000[,4],main=paste("y=x+x*N(0,1.5)"),typ="b",xlab="auxiliary regression weighted median term",ylab="CI length",sub="Fig. 6a",cex.main=0.9,cex.xlab=.5)
+lines(x=linear1000[,3],y=linear1000[,5],col="blue",lwd=2)
+lines(x=linear1000[,3],y=linear1000[,6],col="red",lwd=2)
+# abline(h=0.95,col="green",lwd=2,lty=2)
+
+par(fig=c(.5,1,0.45,0.9), new=TRUE)
+plot(x=engel1000[,3],y=engel1000[,4],main=paste("y=exp(x)+x*N(0,1.5)"),typ="b",xlab="auxiliary regression weighted median term",ylab="CI length",sub="Fig. 6b",cex.main=0.9,cex.xlab=.5)
+lines(x=engel1000[,2],y=engel1000[,5],col="blue",lwd=2)
+lines(x=engel1000[,2],y=engel1000[,6],col="red",lwd=2)
+# abline(h=0.95,col="green",lwd=2,lty=2)
+
+par(fig=c(0,.5,0,0.45),new=TRUE)
+
+plot(x=linear1000[,2],y=linear1000[,4],main=paste("y=x+x*N(0,1.5)"),typ="b",xlab="unweighted median estimate",ylab="CI length",sub="Fig. 6c",cex.main=0.9)
+lines(x=linear1000[,2],y=linear1000[,5],col="blue",lwd=2)
+lines(x=linear1000[,2],y=linear1000[,6],col="red",lwd=2)
+# abline(h=0.95,col="green",lwd=2,lty=2)
+
+par(fig=c(.5,1,0,0.45), new=TRUE)
+plot(x=engel1000[,2],y=engel1000[,4],main=paste("y=exp(x)+x*N(0,1.5)"),typ="b",xlab="unweighted median estimate",ylab="CI length",sub="Fig. 6d",cex.main=0.9)
+lines(x=engel1000[,2],y=engel1000[,5],col="blue",lwd=2)
+lines(x=engel1000[,2],y=engel1000[,6],col="red",lwd=2)
+# abline(h=0.95,col="green",lwd=2,lty=2)
+
+mtext("Figure 6: bootstrap and evd based intercept CI length as a function of", side=3, outer=TRUE, line=-1)
+mtext("auxiliary model weighted median or unweighted sample", side=3, outer=TRUE, line=-2)
+mtext("black - bootstrap, red - evd symm, blue - evd CI median(residuals,w_auxreg)", side=3, outer=TRUE, line=-3)
+
+```
+
+
+In practice, this evd based model CI method to approximate quantile regression model coefficient CIs for linear expanding horn heterscedastic id cases contains the following steps. 
+
+(a) Firstly, the quantile estimating function is used to perform the quantile regression modelling and derive the residuals distribution,
+(b) in the presence of linear heteroscedasticity in the residuals, auxiliary regression of the absolute residuals is conducted using quantile regression for $\theta=0.5$ to obtain a set of transformation weights,
+
+(c) \textbf{for slope CI estimates;}for the model slope coefficent CI estimates, the residuals are transformed to homoscedastic form using the transformation weights and normalisation adjustment of the original and transformed cdf totals \eqref{eq:norm} 
+(d) next, using only the sample size and the given quantile value $\theta \thinspace \epsilon \thinspace (0,1)$, the evd variance estimator approach provides the confidence interval bound values ($\theta_{LB}$, $\theta_{UB}$) for the homoscedastically transformed quantile regression residuals distribution, 
+(e) the quantile estimating function is then used on the residuals distribution to backtransform the evd based model slope coefficent(quantile) confidence interval bound values ($\theta_{LB}$, $\theta_{UB}$) to the original measurement scale. For the slope CI estimates, the \textbf{maximum half CI} of the backtransformed results are used,
+
+(f) \textbf{for intercept (and point) CI estimates;}the \textbf{mean half CI} of the backtransformed evd slope coefficent CI estimates are obtained and will be used in equation \eqref{eq:finalint}, 
+(g) the weighted median(s) of the explanatory variable(s) are calculated,
+(h) the variance of the weighted median of the original heteroscedastic residuals distribution is calculated using weighted quantile regression on the residuals distribution to backtransform the evd based model slope coefficent(quantile) confidence interval bound values ($\theta_{LB}$, $\theta_{UB}$) to the original measurement scale,
+(i) the regression formula equation \eqref{eq:finalint}, is used based on (f-h) to calculate evd based approximation estimates of the quantile regression model intercept coefficient CIs. For other point estimates besides the intercept, replace 0 in the RHS of \eqref{eq:finalint} with x value of interest.
+
+In the implemented code, the regression degrees of freedom adjustment $\sqrt{\frac{n}{(n-p-1)}}$ required for model coefficient CIs has been applied in the percentile frame ($\theta_{LB}$, $\theta_{UB}$). This is in contrast, to (3) where two versions of regression degrees of freedom adjustment were assessed.
+
+### estimating model slope(s) and intercept CIs
+
+The output of the evd based estimators of the residuals variance/CI were then used to estimate the model slope(s) and intercepts using equations \eqref{eq:slopehet} & \eqref{eq:finalint}. For bivariate cases, the approximation \eqref{eq:4} was also included in the calculations. The coverage performance was then assessed and compared to the known population regression model and default quantreg bootstrap estimates using 600 replicates as shown in the next section.
+
+# Assessing coverage performance for different homoscedastic datasets
+
+In the following figures, the coverage performance of evd based model coefficients CI estimators (based on 1000 resamples) for three linear expanding horn heteroscedastic quantile regression cases. 
+
+Three samples size n=50,100,1000 were trialled and four intercept positions, (i) left edge, (ii) auxiliary regression weighted median, (iii) unweighted median and (iv) right edge.
+
+Given the scatterplot (heteroscedasticity) does not change shape under intercept shifts, the same model slope coefficient CI estimates are expected.
+
+model (i) $y = \frac{(runif(n,-180,180) + x_{shift})}{2} + (3+\frac{(runif(n,-180,180) + x_{shift})}{20}-\frac{x_{shift}}{20}) rnorm(n,0,1.5)$
+
+A simple linear relationship between the dependent variable (Y) and explanatory variable (runif(n,-180,180)) with linear expanding horn heteroscedasticity (see figure 1), where the quantile regression for different quantiles results in a set of diverging regression lines.
+
+model (ii) $y = \frac{(exp(rnorm(n,7.5,.5)) + x_{shift})}{2} + (3+\frac{(exp(rnorm(n,7.5,.5)) + x_{shift})}{20}-\frac{x_{shift}}{20}) rnorm(n,0,1.5)$
+   
+Also a linear relationship between the dependent variable (Y) and an exponential normal explanatory variable exp(rnorm(n,7.5,.5)) with linear expanding horn heteroscedasticity. The behaviour is a synthetic simulation of the Engel food expenditure dataset. Again, the quantile regression for different quantiles results in a set of diverging regression lines. This example is to more thoroughly test coverage performance for Engel data scenario with a known population distribution.
+
+model (iii) 
+
+$y = \frac{(runif(n,-180,180) + x_{shift})}{2} + (runif(n,-10,10) + z_{shift})+ (3+\frac{(runif(n,-180,180) + x_{shift})}{20}-\frac{x_{shift}}{20}) rnorm(n,0,1.5)$
+
+To further test the evd based model intercept coefficient CI performance. A bivariate example where the covariance between the two explanatory variables is expected to be small and hence coverage performance may be considered less sensitive to the current inaccuracy in $r_{12qr}$ estimator. 
+
+
+In the figures below, the coverage is calculated for 15 quantile points (0.025, 0.05 ,0.1 ,0.2 ,0.25 ,0.3 ,0.4 ,0.5 ,0.6 ,0.7 ,0.75 ,0.8 ,0.9 ,0.95 ,0.975). The black points and lines indicate the default quantreg bootstrap estimates (R=600). 
+
+For graphs, containing the model slope coefficient CI coverage, the blue lines indicate the evd_max CI estimators, and the red lines indicate the bin_max CI estimators described in (3), which includes degrees of freedom correction in percentile scale. This overlap of estimators and subfigures allows a visual comparison of the effects of sample size, and estimator type.
+
+For graphs, containing the model intercept coefficient CI coverage, the blue lines indicate the evd_max CI estimators, and the red lines indicate the bin_max CI estimators. In subfigures (a-c), (d-f) & (g-i) the intercept is on the left edge, median(x,w_auxreg) & right edge of the data. This overlap of estimators and subfigures allows a visual comparison of the effects of sample size, heteroscedasticity magnitude and estimator type.
+
+Figures 7 & 8, display the coverage performance of bootstrap, bin_max & evd_max for the slope and intercept respectively of model (i) as a function of the sample size.
+
+Figures 9 & 10, display the coverage performance of bootstrap, bin_max & evd_max for the slope and intercept respectively of model (ii) as a function of the sample size.
+
+Figures 11-13, display the coverage performance of bootstrap, bin_max & evd_max for the slope and intercept respectively of model (iii) as a function of the positions of the intercepts of the two explanatory variables.
+
+```{r, reg1slope, echo=FALSE, cache=FALSE, fig.width=6, fig.height=3, fig.keep='high', message=FALSE, warning=FALSE}
+
+setwd("C:/Users/John/Documents/GitHub/sampling-investigations/modelCIheterogeneouscaseresults")
+# library("quantreg")
+
+reg1_50perc <- read.csv(file="../modelCIheterogeneouscaseresults/50_runif_intunwgtmid_p15_dfadj_in_perc_scale_aux_reg.csv")
+reg1_100perc <- read.csv(file="../modelCIheterogeneouscaseresults/100_runif_intunwgtmid_p15_dfadj_in_perc_scale_aux_reg.csv")
+reg1_1000perc <- read.csv(file="../modelCIheterogeneouscaseresults/1000_runif_intunwgtmid_p15_dfadj_in_perc_scale_aux_reg.csv")
+
+
+par(mfrow=c(1,3))
+
+par(fig=c(0,.333,0,0.9))
+
+plot(x=reg1_50perc[,2],y=reg1_50perc[,5],main=paste("n=50"),ylim=c(0.75,1),typ="b",xlab="quantile",ylab="coverage",sub="Fig. 7a",cex.main=0.9)
+lines(x=reg1_50perc[,2],y=reg1_50perc[,6],col="blue",lwd=2)
+lines(x=reg1_50perc[,2],y=reg1_50perc[,7],col="red",lwd=2)
+abline(h=0.95,col="green",lwd=2,lty=2)
+
+par(fig=c(.333,.666,0,0.9), new=TRUE)
+plot(x=reg1_100perc[,2],y=reg1_100perc[,5],main=paste("n=100"),ylim=c(0.75,1),typ="b",xlab="quantile",ylab="coverage",sub="Fig. 7b",cex.main=0.9)
+lines(x=reg1_100perc[,2],y=reg1_100perc[,6],col="blue",lwd=2)
+lines(x=reg1_100perc[,2],y=reg1_100perc[,7],col="red",lwd=2)
+abline(h=0.95,col="green",lwd=2,lty=2)
+
+par(fig=c(.666,1,0,0.9), new=TRUE)
+plot(x=reg1_1000perc[,2],y=reg1_1000perc[,5],main=paste("n=1000"),ylim=c(0.75,1),typ="b",xlab="quantile",ylab="coverage",sub="Fig. 7c",cex.main=0.9)
+lines(x=reg1_1000perc[,2],y=reg1_1000perc[,6],col="blue",lwd=2)
+lines(x=reg1_1000perc[,2],y=reg1_1000perc[,7],col="red",lwd=2)
+abline(h=0.95,col="green",lwd=2,lty=2)
+
+
+mtext("model (i): slope CI coverage", side=3, outer=TRUE, line=-1.5)
+mtext("black - bootstrap, blue line - evd_max, red lines - bin_max", side=3, outer=TRUE, line=-3)
+
+```
+
+In figures 7 & 8, for n=1000, nominal 95% coverage is observed for bootstrap, evd_max, bin_max estimators for all quantiles (0.025-0.975) in slope CIs and > 96% for the evd based CIs of the intercept. For smaller samples, bin_max and evd_max based CIs estimates exhibit poorer coverage for extreme quantiles. Good intercept coverage performance is observed for the intercept CI estimates regardless of sample size if the intercept of the explanatory variable is positioned at the (auxliary regression) weighted median. This result indicates the first term in equation \eqref{eq:finalint} is performing excellently.
+
+
+```{r, reg1intercept, echo=FALSE, cache=FALSE, fig.width=6, fig.height=6, fig.keep='high', message=FALSE, warning=FALSE}
+
+setwd("C:/Users/John/Documents/GitHub/sampling-investigations/modelCIheterogeneouscaseresults")
+reg1_50perc <- read.csv(file="../modelCIheterogeneouscaseresults/50_runif_intleft_p15_dfadj_in_perc_scale_aux_reg.csv")
+reg1_100perc <- read.csv(file="../modelCIheterogeneouscaseresults/100_runif_intleft_p15_dfadj_in_perc_scale_aux_reg.csv")
+reg1_1000perc <- read.csv(file="../modelCIheterogeneouscaseresults/1000_runif_intleft_p15_dfadj_in_perc_scale_aux_reg.csv")
+
+
+par(mfrow=c(3,3))
+
+par(fig=c(0,.333,0.6,0.9))
+
+plot(x=reg1_50perc[,2],y=reg1_50perc[,15],main=paste("intercept on left edge","\n n=50"),ylim=c(0.75,1),typ="b",xlab="quantile",ylab="coverage",sub="Fig. 8a",cex.main=0.9)
+lines(x=reg1_50perc[,2],y=reg1_50perc[,16],col="blue",lwd=2)
+lines(x=reg1_50perc[,2],y=reg1_50perc[,17],col="red",lwd=2)
+abline(h=0.95,col="green",lwd=2,lty=2)
+
+par(fig=c(.333,.666,0.6,0.9), new=TRUE)
+plot(x=reg1_100perc[,2],y=reg1_100perc[,15],main=paste("intercept on left edge","\n n=100"),ylim=c(0.75,1),typ="b",xlab="quantile",ylab="coverage",sub="Fig. 8b",cex.main=0.9)
+lines(x=reg1_100perc[,2],y=reg1_100perc[,16],col="blue",lwd=2)
+lines(x=reg1_100perc[,2],y=reg1_100perc[,17],col="red",lwd=2)
+abline(h=0.95,col="green",lwd=2,lty=2)
+
+par(fig=c(.666,1,0.6,0.9), new=TRUE)
+plot(x=reg1_1000perc[,2],y=reg1_1000perc[,15],main=paste("intercept on left edge","\n n=1000"),ylim=c(0.75,1),typ="b",xlab="quantile",ylab="coverage",sub="Fig. 8c",cex.main=0.9)
+lines(x=reg1_1000perc[,2],y=reg1_1000perc[,16],col="blue",lwd=2)
+lines(x=reg1_1000perc[,2],y=reg1_1000perc[,17],col="red",lwd=2)
+abline(h=0.95,col="green",lwd=2,lty=2)
+
+reg1_50perc <- read.csv(file="../modelCIheterogeneouscaseresults/50_runif_intwgtmid_p15_dfadj_in_perc_scale_aux_reg.csv")
+reg1_100perc <- read.csv(file="../modelCIheterogeneouscaseresults/100_runif_intwgtmid_p15_dfadj_in_perc_scale_aux_reg.csv")
+reg1_1000perc <- read.csv(file="../modelCIheterogeneouscaseresults/1000_runif_intwgtmid_p15_dfadj_in_perc_scale_aux_reg.csv")
+
+par(fig=c(0,.333,0.3,0.6), new=TRUE)
+
+plot(x=reg1_50perc[,2],y=reg1_50perc[,15],main=paste("intercept at wgted med","\n n=50"),ylim=c(0.75,1),typ="b",xlab="quantile",ylab="coverage",sub="Fig. 8d",cex.main=0.9)
+lines(x=reg1_50perc[,2],y=reg1_50perc[,16],col="blue",lwd=2)
+lines(x=reg1_50perc[,2],y=reg1_50perc[,17],col="red",lwd=2)
+abline(h=0.95,col="green",lwd=2,lty=2)
+
+par(fig=c(.333,.666,0.3,0.6), new=TRUE)
+plot(x=reg1_100perc[,2],y=reg1_100perc[,15],main=paste("intercept at wgted med","\n n=100"),ylim=c(0.75,1),typ="b",xlab="quantile",ylab="coverage",sub="Fig. 8e",cex.main=0.9)
+lines(x=reg1_100perc[,2],y=reg1_100perc[,16],col="blue",lwd=2)
+lines(x=reg1_100perc[,2],y=reg1_100perc[,17],col="red",lwd=2)
+abline(h=0.95,col="green",lwd=2,lty=2)
+
+par(fig=c(.666,1,0.3,0.6), new=TRUE)
+plot(x=reg1_1000perc[,2],y=reg1_1000perc[,15],main=paste("intercept at wgted med","\n n=1000"),ylim=c(0.75,1),typ="b",xlab="quantile",ylab="coverage",sub="Fig. 8f",cex.main=0.9)
+lines(x=reg1_1000perc[,2],y=reg1_1000perc[,16],col="blue",lwd=2)
+lines(x=reg1_1000perc[,2],y=reg1_1000perc[,17],col="red",lwd=2)
+abline(h=0.95,col="green",lwd=2,lty=2)
+
+reg1_50perc <- read.csv(file="../modelCIheterogeneouscaseresults/50_runif_intright_p15_dfadj_in_perc_scale_aux_reg.csv")
+reg1_100perc <- read.csv(file="../modelCIheterogeneouscaseresults/100_runif_intright_p15_dfadj_in_perc_scale_aux_reg.csv")
+reg1_1000perc <- read.csv(file="../modelCIheterogeneouscaseresults/1000_runif_intright_p15_dfadj_in_perc_scale_aux_reg.csv")
+
+par(fig=c(0,.333,0.0,0.3), new=TRUE)
+
+plot(x=reg1_50perc[,2],y=reg1_50perc[,15],main=paste("intercept on right edge","\n n=50"),ylim=c(0.75,1),typ="b",xlab="quantile",ylab="coverage",sub="Fig. 8d",cex.main=0.9)
+lines(x=reg1_50perc[,2],y=reg1_50perc[,16],col="blue",lwd=2)
+lines(x=reg1_50perc[,2],y=reg1_50perc[,17],col="red",lwd=2)
+abline(h=0.95,col="green",lwd=2,lty=2)
+
+par(fig=c(.333,.666,0.0,0.3), new=TRUE)
+plot(x=reg1_100perc[,2],y=reg1_100perc[,15],main=paste("intercept on right edge","\n n=100"),ylim=c(0.75,1),typ="b",xlab="quantile",ylab="coverage",sub="Fig. 8e",cex.main=0.9)
+lines(x=reg1_100perc[,2],y=reg1_100perc[,16],col="blue",lwd=2)
+lines(x=reg1_100perc[,2],y=reg1_100perc[,17],col="red",lwd=2)
+abline(h=0.95,col="green",lwd=2,lty=2)
+
+par(fig=c(.666,1,0.0,0.3), new=TRUE)
+plot(x=reg1_1000perc[,2],y=reg1_1000perc[,15],main=paste("intercept on right edge","\n n=1000"),ylim=c(0.75,1),typ="b",xlab="quantile",ylab="coverage",sub="Fig. 8f",cex.main=0.9)
+lines(x=reg1_1000perc[,2],y=reg1_1000perc[,16],col="blue",lwd=2)
+lines(x=reg1_1000perc[,2],y=reg1_1000perc[,17],col="red",lwd=2)
+abline(h=0.95,col="green",lwd=2,lty=2)
+
+mtext("model (i): intercept CI coverage", side=3, outer=TRUE, line=-1.5)
+mtext("black - bootstrap, blue line - evd_max, red lines - bin_max", side=3, outer=TRUE, line=-3)
+
+
+```
+
+
+
+```{r, reg2slope, echo=FALSE, cache=FALSE, fig.width=6, fig.height=3, fig.keep='high', message=FALSE, warning=FALSE}
+
+setwd("C:/Users/John/Documents/GitHub/sampling-investigations/modelCIheterogeneouscaseresults")
+# library("quantreg")
+
+reg2_50perc <- read.csv(file="../modelCIheterogeneouscaseresults/50_engelproxy_intunwgtmid_p15_dfadj_in_perc_scale_aux_reg.csv")
+reg2_100perc <- read.csv(file="../modelCIheterogeneouscaseresults/100_engelproxy_intunwgtmid_p15_dfadj_in_perc_scale_aux_reg.csv")
+reg2_1000perc <- read.csv(file="../modelCIheterogeneouscaseresults/1000_engelproxy_intunwgtmid_p15_dfadj_in_perc_scale_aux_reg.csv")
+
+
+par(mfrow=c(1,3))
+
+par(fig=c(0,.333,0,0.9))
+
+plot(x=reg2_50perc[,2],y=reg2_50perc[,5],main=paste("n=50"),ylim=c(0.75,1),typ="b",xlab="quantile",ylab="coverage",sub="Fig. 9a",cex.main=0.9)
+lines(x=reg2_50perc[,2],y=reg2_50perc[,6],col="blue",lwd=2)
+lines(x=reg2_50perc[,2],y=reg2_50perc[,7],col="red",lwd=2)
+abline(h=0.95,col="green",lwd=2,lty=2)
+
+par(fig=c(.333,.666,0,0.9), new=TRUE)
+plot(x=reg2_100perc[,2],y=reg2_100perc[,5],main=paste("n=100"),ylim=c(0.75,1),typ="b",xlab="quantile",ylab="coverage",sub="Fig. 9b",cex.main=0.9)
+lines(x=reg2_100perc[,2],y=reg2_100perc[,6],col="blue",lwd=2)
+lines(x=reg2_100perc[,2],y=reg2_100perc[,7],col="red",lwd=2)
+abline(h=0.95,col="green",lwd=2,lty=2)
+
+par(fig=c(.666,1,0,0.9), new=TRUE)
+plot(x=reg2_1000perc[,2],y=reg2_1000perc[,5],main=paste("n=1000"),ylim=c(0.75,1),typ="b",xlab="quantile",ylab="coverage",sub="Fig. 9c",cex.main=0.9)
+lines(x=reg2_1000perc[,2],y=reg2_1000perc[,6],col="blue",lwd=2)
+lines(x=reg2_1000perc[,2],y=reg2_1000perc[,7],col="red",lwd=2)
+abline(h=0.95,col="green",lwd=2,lty=2)
+
+
+mtext("model (ii): slope CI coverage", side=3, outer=TRUE, line=-1.5)
+mtext("black - bootstrap, blue line - evd_max, red lines - bin_max", side=3, outer=TRUE, line=-3)
+
+```
+
+In figures 9 & 10, for n=1000, nominal 95% coverage is observed for bootstrap, evd_max, bin_max estimators for all quantiles (0.025-0.975) in slope CIs and > 96% for the evd based CIs of the intercept. For smaller samples, bin_max and evd_max based CIs estimates exhibit poorer coverage for extreme quantiles. Comparison of figure 8 & 10 indicates weaker performance in figures 10a & 10c. Part of this difference may be due to the unequal spread of x values above & below, fitted quantile regression lines in model (ii) compared to the (random) uniform model (i). This unevenness in the data scatter is more apparent for small samples and so raises the question of what is the lowest MSE quantile regression model that could be specified with small samples. For small samples, the default bootstrap estimator is quite robust to model specification in comparison.
+
+Looking at figures 10d-10f, the first term in equation \eqref{eq:finalint} is again performing excellently with evd_max and bin_max intercept CI estimates.
+
+
+```{r, reg2intercept, echo=FALSE, cache=FALSE, fig.width=6, fig.height=6, fig.keep='high', message=FALSE, warning=FALSE}
+
+
+setwd("C:/Users/John/Documents/GitHub/sampling-investigations/modelCIheterogeneouscaseresults")
+reg2_50perc <- read.csv(file="../modelCIheterogeneouscaseresults/50_engelproxy_intleft_p15_dfadj_in_perc_scale_aux_reg.csv")
+reg2_100perc <- read.csv(file="../modelCIheterogeneouscaseresults/100_engelproxy_intleft_p15_dfadj_in_perc_scale_aux_reg.csv")
+reg2_1000perc <- read.csv(file="../modelCIheterogeneouscaseresults/1000_engelproxy_intleft_p15_dfadj_in_perc_scale_aux_reg.csv")
+
+
+par(mfrow=c(3,3))
+
+par(fig=c(0,.333,0.6,0.9))
+
+plot(x=reg2_50perc[,2],y=reg2_50perc[,15],main=paste("intercept on left edge","\n n=50"),ylim=c(0.75,1),typ="b",xlab="quantile",ylab="coverage",sub="Fig. 10a",cex.main=0.9)
+lines(x=reg2_50perc[,2],y=reg2_50perc[,16],col="blue",lwd=2)
+lines(x=reg2_50perc[,2],y=reg2_50perc[,17],col="red",lwd=2)
+abline(h=0.95,col="green",lwd=2,lty=2)
+
+par(fig=c(.333,.666,0.6,0.9), new=TRUE)
+plot(x=reg2_100perc[,2],y=reg2_100perc[,15],main=paste("intercept on left edge","\n n=100"),ylim=c(0.75,1),typ="b",xlab="quantile",ylab="coverage",sub="Fig. 10b",cex.main=0.9)
+lines(x=reg2_100perc[,2],y=reg2_100perc[,16],col="blue",lwd=2)
+lines(x=reg2_100perc[,2],y=reg2_100perc[,17],col="red",lwd=2)
+abline(h=0.95,col="green",lwd=2,lty=2)
+
+par(fig=c(.666,1,0.6,0.9), new=TRUE)
+plot(x=reg2_1000perc[,2],y=reg2_1000perc[,15],main=paste("intercept on left edge","\n n=1000"),ylim=c(0.75,1),typ="b",xlab="quantile",ylab="coverage",sub="Fig. 10c",cex.main=0.9)
+lines(x=reg2_1000perc[,2],y=reg2_1000perc[,16],col="blue",lwd=2)
+lines(x=reg2_1000perc[,2],y=reg2_1000perc[,17],col="red",lwd=2)
+abline(h=0.95,col="green",lwd=2,lty=2)
+
+reg2_50perc <- read.csv(file="../modelCIheterogeneouscaseresults/50_engelproxy_intwgtmid_p15_dfadj_in_perc_scale_aux_reg.csv")
+reg2_100perc <- read.csv(file="../modelCIheterogeneouscaseresults/100_engelproxy_intwgtmid_p15_dfadj_in_perc_scale_aux_reg.csv")
+reg2_1000perc <- read.csv(file="../modelCIheterogeneouscaseresults/1000_engelproxy_intwgtmid_p15_dfadj_in_perc_scale_aux_reg.csv")
+# 
+par(fig=c(0,.333,0.3,0.6), new=TRUE)
+
+plot(x=reg2_50perc[,2],y=reg2_50perc[,15],main=paste("intercept at wgted med","\n n=50"),ylim=c(0.75,1),typ="b",xlab="quantile",ylab="coverage",sub="Fig. 10d",cex.main=0.9)
+lines(x=reg2_50perc[,2],y=reg2_50perc[,16],col="blue",lwd=2)
+lines(x=reg2_50perc[,2],y=reg2_50perc[,17],col="red",lwd=2)
+abline(h=0.95,col="green",lwd=2,lty=2)
+
+par(fig=c(.333,.666,0.3,0.6), new=TRUE)
+plot(x=reg2_100perc[,2],y=reg2_100perc[,15],main=paste("intercept at wgted med","\n n=100"),ylim=c(0.75,1),typ="b",xlab="quantile",ylab="coverage",sub="Fig. 10e",cex.main=0.9)
+lines(x=reg2_100perc[,2],y=reg2_100perc[,16],col="blue",lwd=2)
+lines(x=reg2_100perc[,2],y=reg2_100perc[,17],col="red",lwd=2)
+abline(h=0.95,col="green",lwd=2,lty=2)
+
+par(fig=c(.666,1,0.3,0.6), new=TRUE)
+plot(x=reg2_1000perc[,2],y=reg2_1000perc[,15],main=paste("intercept at wgted med","\n n=1000"),ylim=c(0.75,1),typ="b",xlab="quantile",ylab="coverage",sub="Fig. 10f",cex.main=0.9)
+lines(x=reg2_1000perc[,2],y=reg2_1000perc[,16],col="blue",lwd=2)
+lines(x=reg2_1000perc[,2],y=reg2_1000perc[,17],col="red",lwd=2)
+abline(h=0.95,col="green",lwd=2,lty=2)
+
+reg2_50perc <- read.csv(file="../modelCIheterogeneouscaseresults/50_engelproxy_intright_p15_dfadj_in_perc_scale_aux_reg.csv")
+reg2_100perc <- read.csv(file="../modelCIheterogeneouscaseresults/100_engelproxy_intright_p15_dfadj_in_perc_scale_aux_reg.csv")
+reg2_1000perc <- read.csv(file="../modelCIheterogeneouscaseresults/1000_engelproxy_intright_p15_dfadj_in_perc_scale_aux_reg.csv")
+
+par(fig=c(0,.333,0.0,0.3), new=TRUE)
+
+plot(x=reg2_50perc[,2],y=reg2_50perc[,15],main=paste("intercept on right edge","\n n=50"),ylim=c(0.75,1),typ="b",xlab="quantile",ylab="coverage",sub="Fig. 10d",cex.main=0.9)
+lines(x=reg2_50perc[,2],y=reg2_50perc[,16],col="blue",lwd=2)
+lines(x=reg2_50perc[,2],y=reg2_50perc[,17],col="red",lwd=2)
+abline(h=0.95,col="green",lwd=2,lty=2)
+
+par(fig=c(.333,.666,0.0,0.3), new=TRUE)
+plot(x=reg2_100perc[,2],y=reg2_100perc[,15],main=paste("intercept on right edge","\n n=100"),ylim=c(0.75,1),typ="b",xlab="quantile",ylab="coverage",sub="Fig. 10e",cex.main=0.9)
+lines(x=reg2_100perc[,2],y=reg2_100perc[,16],col="blue",lwd=2)
+lines(x=reg2_100perc[,2],y=reg2_100perc[,17],col="red",lwd=2)
+abline(h=0.95,col="green",lwd=2,lty=2)
+
+par(fig=c(.666,1,0.0,0.3), new=TRUE)
+plot(x=reg2_1000perc[,2],y=reg2_1000perc[,15],main=paste("intercept on right edge","\n n=1000"),ylim=c(0.75,1),typ="b",xlab="quantile",ylab="coverage",sub="Fig. 10f",cex.main=0.9)
+lines(x=reg2_1000perc[,2],y=reg2_1000perc[,16],col="blue",lwd=2)
+lines(x=reg2_1000perc[,2],y=reg2_1000perc[,17],col="red",lwd=2)
+abline(h=0.95,col="green",lwd=2,lty=2)
+
+mtext("model (ii): intercept CI coverage", side=3, outer=TRUE, line=-1.5)
+mtext("black - bootstrap, blue line - evd_max, red lines - bin_max", side=3, outer=TRUE, line=-3)
+
+
+
+```
+
+```{r, reg3slope, echo=FALSE, cache=FALSE, fig.width=6, fig.height=3, fig.keep='high', message=FALSE, warning=FALSE}
+
+setwd("C:/Users/John/Documents/GitHub/sampling-investigations/modelCIheterogeneouscaseresults")
+# library("quantreg")
+
+reg3_1000leftperc <- read.csv(file="../modelCIheterogeneouscaseresults/1000_runif_intmidtwoterms_m180_10_xlin_p15_dfadj_in_perc_scale_aux_reg.csv")
+reg3_1000midperc <- read.csv(file="../modelCIheterogeneouscaseresults/1000_runif_intmidtwoterms_m180_0_xlin_p15_dfadj_in_perc_scale_aux_reg.csv")
+reg3_1000rightperc <- read.csv(file="../modelCIheterogeneouscaseresults/1000_runif_intmidtwoterms_m180_m10_xlin_p15_dfadj_in_perc_scale_aux_reg.csv")
+
+
+par(mfrow=c(2,3))
+
+par(fig=c(0,.333,0,0.9))
+
+plot(x=reg3_1000leftperc[,2],y=reg3_1000leftperc[,5],main=paste("1st intercept at median","\n 2nd intercept on left edge"),ylim=c(0.9,1),typ="b",xlab="quantile",ylab="coverage",sub="Fig. 11a",cex.main=0.9)
+lines(x=reg3_1000leftperc[,2],y=reg3_1000leftperc[,6],col="blue",lwd=2)
+lines(x=reg3_1000leftperc[,2],y=reg3_1000leftperc[,7],col="red",lwd=2)
+abline(h=0.95,col="green",lwd=2,lty=2)
+
+par(fig=c(.333,.666,0,0.9), new=TRUE)
+plot(x=reg3_1000midperc[,2],y=reg3_1000midperc[,5],main=paste("1st intercept at median","\n 2nd intercept at median"),ylim=c(0.9,1),typ="b",xlab="quantile",ylab="coverage",sub="Fig. 11b",cex.main=0.9)
+lines(x=reg3_1000midperc[,2],y=reg3_1000midperc[,6],col="blue",lwd=2)
+lines(x=reg3_1000midperc[,2],y=reg3_1000midperc[,7],col="red",lwd=2)
+abline(h=0.95,col="green",lwd=2,lty=2)
+
+par(fig=c(.666,1,0,0.9), new=TRUE)
+plot(x=reg3_1000rightperc[,2],y=reg3_1000rightperc[,5],main=paste("1st intercept at median","\n 2nd intercept on right edge"),ylim=c(0.9,1),typ="b",xlab="quantile",ylab="coverage",sub="Fig. 11c",cex.main=0.9)
+lines(x=reg3_1000rightperc[,2],y=reg3_1000rightperc[,6],col="blue",lwd=2)
+lines(x=reg3_1000rightperc[,2],y=reg3_1000rightperc[,7],col="red",lwd=2)
+abline(h=0.95,col="green",lwd=2,lty=2)
+
+
+mtext("model (iii): first slope CI coverage, n=1000", side=3, outer=TRUE, line=-1.5)
+mtext("black - bootstrap, blue line - evd_max, red lines - bin_max", side=3, outer=TRUE, line=-3)
+
+```
+
+```{r, reg3slope2, echo=FALSE, cache=FALSE, fig.width=6, fig.height=3, fig.keep='high', message=FALSE, warning=FALSE}
+
+setwd("C:/Users/John/Documents/GitHub/sampling-investigations/modelCIheterogeneouscaseresults")
+# library("quantreg")
+
+reg3_1000leftperc <- read.csv(file="../modelCIheterogeneouscaseresults/1000_runif_intmidtwoterms_m180_10_xlin_p15_dfadj_in_perc_scale_aux_reg.csv")
+reg3_1000midperc <- read.csv(file="../modelCIheterogeneouscaseresults/1000_runif_intmidtwoterms_m180_0_xlin_p15_dfadj_in_perc_scale_aux_reg.csv")
+reg3_1000rightperc <- read.csv(file="../modelCIheterogeneouscaseresults/1000_runif_intmidtwoterms_m180_m10_xlin_p15_dfadj_in_perc_scale_aux_reg.csv")
+
+
+par(mfrow=c(2,3))
+
+par(fig=c(0,.333,0,0.9))
+
+plot(x=reg3_1000leftperc[,2],y=reg3_1000leftperc[,34],main=paste("1st intercept at median","\n 2nd intercept on left edge"),ylim=c(0.9,1),typ="b",xlab="quantile",ylab="coverage",sub="Fig. 12a",cex.main=0.9)
+lines(x=reg3_1000leftperc[,2],y=reg3_1000leftperc[,35],col="blue",lwd=2)
+lines(x=reg3_1000leftperc[,2],y=reg3_1000leftperc[,36],col="red",lwd=2)
+abline(h=0.95,col="green",lwd=2,lty=2)
+
+par(fig=c(.333,.666,0,0.9), new=TRUE)
+plot(x=reg3_1000midperc[,2],y=reg3_1000midperc[,34],main=paste("1st intercept at median","\n 2nd intercept at median"),ylim=c(0.9,1),typ="b",xlab="quantile",ylab="coverage",sub="Fig. 12b",cex.main=0.9)
+lines(x=reg3_1000midperc[,2],y=reg3_1000midperc[,35],col="blue",lwd=2)
+lines(x=reg3_1000midperc[,2],y=reg3_1000midperc[,36],col="red",lwd=2)
+abline(h=0.95,col="green",lwd=2,lty=2)
+
+par(fig=c(.666,1,0,0.9), new=TRUE)
+plot(x=reg3_1000rightperc[,2],y=reg3_1000rightperc[,34],main=paste("1st intercept at median","\n 2nd intercept on right edge"),ylim=c(0.9,1),typ="b",xlab="quantile",ylab="coverage",sub="Fig. 12c",cex.main=0.9)
+lines(x=reg3_1000rightperc[,2],y=reg3_1000rightperc[,35],col="blue",lwd=2)
+lines(x=reg3_1000rightperc[,2],y=reg3_1000rightperc[,36],col="red",lwd=2)
+abline(h=0.95,col="green",lwd=2,lty=2)
+
+
+mtext("model (iii): second slope CI coverage, n=1000", side=3, outer=TRUE, line=-1.5)
+mtext("black - bootstrap, blue line - evd_max, red lines - bin_max", side=3, outer=TRUE, line=-3)
+
+```
+
+In figure 11, for n=1000, the slope CI coverage of the first variable which is causing the heteroscedasticity are at >96% coverage performance. In figure 12, the slope CI coverage of the second variable which does not contribute to the heterscedasticity exhibits higher overcoverage. Part of this poorer performance will be related to the inaccuracy in the covariance correction term \label{eq:4}. 
+
+Looking at the intercept CI coverage performance in figure 13, as the intercept positions are varied, the performance can exhibit slight undercoverage to slight overcoverage, in this specific bivariate case. 
+
+```{r, reg3intercept, echo=FALSE, cache=FALSE, fig.width=6, fig.height=6, fig.keep='high', message=FALSE, warning=FALSE}
+
+setwd("C:/Users/John/Documents/GitHub/sampling-investigations/modelCIheterogeneouscaseresults")
+reg3_1000leftperc <- read.csv(file="../modelCIheterogeneouscaseresults/1000_runif_intlefttwoterms_0_10_xlin_p15_dfadj_in_perc_scale_aux_reg.csv")
+reg3_1000midperc <- read.csv(file="../modelCIheterogeneouscaseresults/1000_runif_intlefttwoterms_0_0_xlin_p15_dfadj_in_perc_scale_aux_reg.csv")
+reg3_1000rightperc <- read.csv(file="../modelCIheterogeneouscaseresults/1000_runif_intlefttwoterms_0_m10_xlin_p15_dfadj_in_perc_scale_aux_reg.csv")
+
+
+par(mfrow=c(3,3))
+
+par(fig=c(0,.333,0.6,0.9))
+
+plot(x=reg3_1000leftperc[,2],y=reg3_1000leftperc[,15],main=paste("1st intercept on left edge","\n 2nd intercept on left edge"),ylim=c(0.9,1),typ="b",xlab="quantile",ylab="coverage",sub="Fig. 13a",cex.main=0.9)
+lines(x=reg3_1000leftperc[,2],y=reg3_1000leftperc[,16],col="blue",lwd=2)
+lines(x=reg3_1000leftperc[,2],y=reg3_1000leftperc[,17],col="red",lwd=2)
+abline(h=0.95,col="green",lwd=2,lty=2)
+
+par(fig=c(.333,.666,0.6,0.9), new=TRUE)
+plot(x=reg3_1000midperc[,2],y=reg3_1000midperc[,15],main=paste("1st intercept on left edge","\n 2nd intercept at median"),ylim=c(0.9,1),typ="b",xlab="quantile",ylab="coverage",sub="Fig. 13b",cex.main=0.9)
+lines(x=reg3_1000midperc[,2],y=reg3_1000midperc[,16],col="blue",lwd=2)
+lines(x=reg3_1000midperc[,2],y=reg3_1000midperc[,17],col="red",lwd=2)
+abline(h=0.95,col="green",lwd=2,lty=2)
+
+par(fig=c(.666,1,0.6,0.9), new=TRUE)
+plot(x=reg3_1000rightperc[,2],y=reg3_1000rightperc[,15],main=paste("1st intercept on left edge","\n 2nd intercept on right edge"),ylim=c(0.9,1),typ="b",xlab="quantile",ylab="coverage",sub="Fig. 13c",cex.main=0.9)
+lines(x=reg3_1000rightperc[,2],y=reg3_1000rightperc[,16],col="blue",lwd=2)
+lines(x=reg3_1000rightperc[,2],y=reg3_1000rightperc[,17],col="red",lwd=2)
+abline(h=0.95,col="green",lwd=2,lty=2)
+
+reg3_1000leftperc <- read.csv(file="../modelCIheterogeneouscaseresults/1000_runif_intmidtwoterms_m180_10_xlin_p15_dfadj_in_perc_scale_aux_reg.csv")
+reg3_1000midperc <- read.csv(file="../modelCIheterogeneouscaseresults/1000_runif_intmidtwoterms_m180_0_xlin_p15_dfadj_in_perc_scale_aux_reg.csv")
+reg3_1000rightperc <- read.csv(file="../modelCIheterogeneouscaseresults/1000_runif_intmidtwoterms_m180_m10_xlin_p15_dfadj_in_perc_scale_aux_reg.csv")
+
+
+par(fig=c(0,.333,0.3,0.6), new=TRUE)
+
+plot(x=reg3_1000leftperc[,2],y=reg3_1000leftperc[,15],main=paste("1st intercept at median","\n 2nd intercept on left edge"),ylim=c(0.9,1),typ="b",xlab="quantile",ylab="coverage",sub="Fig. 13a",cex.main=0.9)
+lines(x=reg3_1000leftperc[,2],y=reg3_1000leftperc[,16],col="blue",lwd=2)
+lines(x=reg3_1000leftperc[,2],y=reg3_1000leftperc[,17],col="red",lwd=2)
+abline(h=0.95,col="green",lwd=2,lty=2)
+
+par(fig=c(.333,.666,0.3,0.6), new=TRUE)
+plot(x=reg3_1000midperc[,2],y=reg3_1000midperc[,15],main=paste("1st intercept at median","\n 2nd intercept at median"),ylim=c(0.9,1),typ="b",xlab="quantile",ylab="coverage",sub="Fig. 13b",cex.main=0.9)
+lines(x=reg3_1000midperc[,2],y=reg3_1000midperc[,16],col="blue",lwd=2)
+lines(x=reg3_1000midperc[,2],y=reg3_1000midperc[,17],col="red",lwd=2)
+abline(h=0.95,col="green",lwd=2,lty=2)
+
+par(fig=c(.666,1,0.3,0.6), new=TRUE)
+plot(x=reg3_1000rightperc[,2],y=reg3_1000rightperc[,15],main=paste("1st intercept at median","\n 2nd intercept on right edge"),ylim=c(0.9,1),typ="b",xlab="quantile",ylab="coverage",sub="Fig. 13c",cex.main=0.9)
+lines(x=reg3_1000rightperc[,2],y=reg3_1000rightperc[,16],col="blue",lwd=2)
+lines(x=reg3_1000rightperc[,2],y=reg3_1000rightperc[,17],col="red",lwd=2)
+abline(h=0.95,col="green",lwd=2,lty=2)
+
+reg3_1000leftperc <- read.csv(file="../modelCIheterogeneouscaseresults/1000_runif_intrighttwoterms_m360_10_xlin_p15_dfadj_in_perc_scale_aux_reg.csv")
+reg3_1000midperc <- read.csv(file="../modelCIheterogeneouscaseresults/1000_runif_intrighttwoterms_m360_0_xlin_p15_dfadj_in_perc_scale_aux_reg.csv")
+reg3_1000rightperc <- read.csv(file="../modelCIheterogeneouscaseresults/1000_runif_intrighttwoterms_m360_m10_xlin_p15_dfadj_in_perc_scale_aux_reg.csv")
+
+
+par(fig=c(0,.333,0.0,0.3), new=TRUE)
+
+plot(x=reg3_1000leftperc[,2],y=reg3_1000leftperc[,15],main=paste("1st intercept on right edge","\n 2nd intercept on left edge"),ylim=c(0.9,1),typ="b",xlab="quantile",ylab="coverage",sub="Fig. 13a",cex.main=0.9)
+lines(x=reg3_1000leftperc[,2],y=reg3_1000leftperc[,16],col="blue",lwd=2)
+lines(x=reg3_1000leftperc[,2],y=reg3_1000leftperc[,17],col="red",lwd=2)
+abline(h=0.95,col="green",lwd=2,lty=2)
+
+par(fig=c(.333,.666,0,0.3), new=TRUE)
+plot(x=reg3_1000midperc[,2],y=reg3_1000midperc[,15],main=paste("1st intercept on right edge","\n 2nd intercept at median"),ylim=c(0.9,1),typ="b",xlab="quantile",ylab="coverage",sub="Fig. 13b",cex.main=0.9)
+lines(x=reg3_1000midperc[,2],y=reg3_1000midperc[,16],col="blue",lwd=2)
+lines(x=reg3_1000midperc[,2],y=reg3_1000midperc[,17],col="red",lwd=2)
+abline(h=0.95,col="green",lwd=2,lty=2)
+
+par(fig=c(.666,1,0,0.3), new=TRUE)
+plot(x=reg3_1000rightperc[,2],y=reg3_1000rightperc[,15],main=paste("1st intercept on right edge","\n 2nd intercept on right edge"),ylim=c(0.9,1),typ="b",xlab="quantile",ylab="coverage",sub="Fig. 13c",cex.main=0.9)
+lines(x=reg3_1000rightperc[,2],y=reg3_1000rightperc[,16],col="blue",lwd=2)
+lines(x=reg3_1000rightperc[,2],y=reg3_1000rightperc[,17],col="red",lwd=2)
+abline(h=0.95,col="green",lwd=2,lty=2)
+
+mtext("model (iii): intercept CI coverage, n=1000", side=3, outer=TRUE, line=-1.5)
+mtext("black - bootstrap, blue line - evd_max, red lines - bin_max", side=3, outer=TRUE, line=-3)
+
+
+```
+
+
+
+#Comparing coverage performance for a small sample "real world" example
+
+To round off the CI performance comparison, appendix A, contains a comparison of the evd based model coefficient CI estimator to the quantreg default bootstrap and rank inversion CI estimates for the Engel food expenditure dataset [8]. Providing this example also allows, the r markdown version of this paper [9], to conveniently contain a concise version of the linear expanding horn heteroscedasticity evd based model coefficient CI estimator algorithm rather than the lengthy repeated sampling version.  
+
+For the Engel dataset, the linear expanding horn heteroscedasticity evd based model \textbf{slope} coefficient CI estimator produces improved results over the homoscedastic estimator (3). For model intercept coefficient CI estimates, the improvement is only small though it must be kept in mind that the Engel data intercept position is an extrapolated value and quantile crossing is observed in the linear quantile regression model fits (both conditions not considered in this paper).
+
+
+# Conclusions
+
+For linear expanding horn heteroscedastic, independent error, unweighted cases, auxiliary regression modelling of the heterscedasticity provides improved evd based approximations to quantile regression model coefficient CIs. Good coverage performance for model coefficient CIs is observed, for moderate (n=1000) to large samples. 
+
+In the presence of heteroscedasticity, the evd based results have shown that the minimum CI occurs at approximately median(x,w_auxreg). Further, the evd based value of the CI for this minimum point estimate is robust to sample size in univariate case.
+
+The evd based estimates are sensitive to the accuracy of the specification of the quantile regression model, the current covariance term correction needs improvement and a jackknife version of the evd based approach could be considered.
+
+
+#References
+
+
+1. Martin J.P.D., 2015, http://dx.doi.org/10.6084/m9.figshare.1566828
+
+2. Martin J.P.D., 2015, http://dx.doi.org/10.6084/m9.figshare.1591019
+
+3. Martin J.P.D., 2015, http://dx.doi.org/10.6084/m9.figshare.2055882
+
+4. Koencker, R. W. & Bassett G., Econometrica, 1978, vol. 46, issue 1, pages 33-50
+
+5. Koencker, R. W., Portnoy S. et al, https://cran.r-project.org/web/packages/quantreg/quantreg.pdf
+
+6. https://en.wikipedia.org/wiki/Quantile
+
+7. Brown, B. M. and Wang, Y.-G. (2005). Standard errors and covariance
+matrices for smoothed rank estimators. Biometrika 92 149-158. MR2158616
+
+8. https://cran.r-project.org/web/packages/quantreg/vignettes/rq.pdf
+
+9. https://github.com/johnpdmartin/sampling-investigations/blob/master/quantile_regression_model_coefficient_CIs_for_some_heteroscedastic_cases_using_aux_reg_and_evd.Rmd
+
+# Appendix A: Comparison of model coefficient CIs for Engel dataset
+
+The Engel dataset is a small sample example of the heteroscedastic relationship between food expenditure and household income and is included in the quantreg package as an quantile regression example.
+
+In log linear form, by taking the logarithms of both food expenditure and household income prior to quantile regression analysis, the error distribution is almost homoscedastic in nature, as shown in Figure A1-b.
+
+
+
+```{r, engel_log-log, echo=FALSE, cache=FALSE, fig.width=6, fig.height=6, fig.keep='high',warning=FALSE,message=FALSE}
+
+library(quantreg)
+#example(rq)
+data(engel)
+
+
+par(mfrow=c(2,1))
+par(fig=c(0,1,0.5,1))
+par(mar=c(5,6,4,3)+0.1)
+plot(engel$income,engel$foodexp,xlab="Household Income",
+     ylab="Food Expenditure")
+taus <- c(.05,.1,.25,.75,.90,.95)
+abline(rq((engel$foodexp)~(engel$income),tau=.5),col="blue")
+abline(lm((engel$foodexp)~(engel$income)),lty = 3,col="red")
+for( i in 1:length(taus)){
+  abline(rq((engel$foodexp)~(engel$income),tau=taus[i]),col="gray")
+  }
+
+par(fig=c(0,1,0,0.5), new=TRUE)
+par(mar=c(5,6,4,3)+0.1)
+plot(engel$income,engel$foodexp,log="xy",xlab="Household Income",
+     ylab="Food Expenditure")
+taus <- c(.05,.1,.25,.75,.90,.95)
+abline(rq(log10(engel$foodexp)~log10(engel$income),tau=.5),col="blue")
+abline(lm(log10(engel$foodexp)~log10(engel$income)),lty = 3,col="red")
+for( i in 1:length(taus)){
+  abline(rq(log10(engel$foodexp)~log10(engel$income),tau=taus[i]),col="gray")
+  }
+mtext("Linear Quantile regression modelling of Engel dataset", side=3, outer=TRUE, line=-1.5)
+
+```
+
+***Figure A1: Engel dataset on food expenditure as a function of household income***
+
+
+Figure A2, shows the model coefficents CI estimates of the intercept and slope, using 
+
+1. rank inversion
+2. quantreg package default bootstrap (delete-d-group jackknife)
+3. evd_symm_max with the degrees of freedom calculated in the percentile scale
+
+where the outline of the bootstrap CIs is given in all the sub-graphs.
+
+The rank inversion method was replaced as the quantreg default quantile regression CI estimator by the bootstrap method. As seen in figure A2, for this quasi-iid homoscedastic case, the bootstrap and evd_symm_max estimates are similar for many quantiles except for minor differences for regions near 0.4-0.5 and 0.6-0.8. The difference occur in both the slope and intercept CI estimates suggesting a breakdown of the iid conditions for the evd_symm_max method. The older rank inversion method exhibits smaller CIs compared to the other two methods for quasi-iid homoscedastic conditions.
+
+Comparing figure A2 & A3 shows only a slight improvement due to the auxiliary regression adjustment to the evd based estimators compared to the delete-d-group jackknife CI estimates. For this dataset the intercept is a extrapolated x value.
+
+
+```{r, evd_algorithm, echo=FALSE, cache=FALSE, fig.width=6, fig.height=6, fig.keep='high',warning=FALSE}
+
+library(quantreg)
+#example(rq)
+data(engel)
+
+
+
+CI_estimator <- function(y_data,x_data,dfadj_scale) {
+
+n_samp <- length(x_data)
+
+method_df <- dfadj_scale # "perc_scale" # "org_scale" #  
+
+t_adj <- abs(qt(.025,n_samp))
+
+wgt_filereg <- rep(1,n_samp)
+
+taus_set <- seq(.02,.98,length.out=50)
+
+x_sample <- x_data
+y_sample <- y_data
+med_est_x <- rq((x_sample)~(1),tau=.5,weights=wgt_filereg)
+med_pt_est_x <- med_est_x$coefficients[1]
+
+boot_low <- 0;boot_high <- 0
+rank_low <- 0;rank_high <- 0
+evd_low <- 0;evd_high <- 0 
+evd_symm_low <- 0;evd_symm_high <- 0 
+bin_low <- 0 ;bin_high <- 0 
+
+boot_y0_low <- 0;boot_y0_high <- 0
+rank_y0_low <- 0;rank_y0_high <- 0
+evd_y0_low <- 0;evd_y0_high <- 0 
+evd_symm_y0_low <- 0;evd_symm_y0_high <- 0 
+bin_y0_low <- 0 ;bin_y0_high <- 0 
+
+pt_est_b0 <- 0;pt_est_b1 <- 0
+
+
+for (i in 1:length(taus_set)) {
+  
+  #taus <- .05
+  
+  taus <- taus_set[i]
+  
+  
+  if(method_df == "perc_scale") {
+    q_var <- sqrt(taus*(1-taus)/(n_samp-2))} else
+    {q_var <- sqrt(taus*(1-taus)/(n_samp))}
+  
+  p_low <- qnorm(0.025,taus,q_var)
+  p_high <- qnorm(0.975,taus,q_var)
+
+
+  p_low <- max(p_low,0.0001)
+  p_high <- min(p_high,0.9999)
+
+  
+  if(method_df == "perc_scale")  {
+    b_low <- qbinom(.025,n_samp-2,taus)/(n_samp-2)
+    b_high <- qbinom(.975,n_samp-2,taus)/(n_samp-2)}  
+  else  {b_low <- qbinom(.025,n_samp,taus)/(n_samp)
+       b_high <- qbinom(.975,n_samp,taus)/(n_samp)}
+  
+  
+  
+#   print("binomial CI | evd CI  , in percentile scale")
+#   print("lower bounds")
+#   print(paste(b_low,p_low))
+#   print("upper bounds")
+#   print(paste(b_high,p_high))
+  
+  
+
+  
+    model_fit_rq <- rq((y_sample)~(x_sample),tau=taus,weights=wgt_filereg)
+    model_fit_rq
+    rqr_beta0 <- model_fit_rq$coefficients[1]
+    rqr_beta1 <- model_fit_rq$coefficients[2]
+ std_errors <- summary(model_fit_rq,se="boot",R=600)$coefficients[c(3:4)]
+  std_errorsrank <- summary(model_fit_rq,se="rank")$coefficients[c(3:6)]
+    beta1_std <- std_errors[2]
+    beta0_std <- std_errors[1]
+beta1_rlb <- std_errorsrank[2]
+beta0_rlb <- std_errorsrank[1]
+beta1_rub <- std_errorsrank[4]
+beta0_rub <- std_errorsrank[3]
+y_var <- var(y_sample)
+samp <- y_sample-rqr_beta0-rqr_beta1*x_sample
+samp_var <- var(samp)
+
+    rho <- function(u,taur=.5) u*(taur - (u < 0))
+    samp_r1 <- 1 - model_fit_rq$rho/rq(y_sample~1,tau=taus,weights=wgt_filereg)$rho
+    
+      
+      model_fit <- rq((samp)~(1),tau=taus,method="fn",weights=wgt_filereg)
+      qr_dat <- c(summary(model_fit)$coefficients[1])
+      qrboot_dat  <- c(summary(model_fit,se="boot",R=600)$coefficients[1:4])
+      
+    
+    
+    back_pts1 <- rq((samp)~(1),tau=p_low,weights=wgt_filereg)$coefficients[1]
+    
+    back_pts2 <- rq((samp)~(1),tau=p_high,weights=wgt_filereg)$coefficients[1]
+    
+    back_pts3 <- rq((samp)~(1),tau=b_low,weights=wgt_filereg)$coefficients[1]
+    
+    back_pts4 <- rq((samp)~(1),tau=b_high,weights=wgt_filereg)$coefficients[1]
+    
+    
+    bk_pt <- c(back_pts1,back_pts2,back_pts3,back_pts4)
+# print(bk_pt)
+    
+    
+ #   s2x1x2 <- sum(x_sample*x_sample2)-sum(x_sample)*sum(x_sample2)/n_samp
+    s2x1 <- sum(x_sample^2)-sum(x_sample)^2/n_samp
+ #   s2x2 <- sum(x_sample2^2)-sum(x_sample2)^2/n_samp
+    
+#    r12 <- s2x1x2/sqrt(s2x1*s2x2)
+    r12 <- 0  
+    
+    
+    if(method_df == "perc_scale")   {se1adj <- sqrt((s2x1)*(1-r12)/n_samp)}   else   {se1adj <- sqrt((s2x1)*(1-r12)/(1/(n_samp-2)))/n_samp}
+#     se2adj <- sqrt((s2x2)*(1-r12)/n_samp)}
+ #    se2adj <- sqrt((s2x2)*(1-r12)/(1/(n_samp-3)))/n_samp}
+    
+    
+    
+    boot_low[i] <- rqr_beta1-t_adj*beta1_std
+    boot_high[i] <- rqr_beta1+t_adj*beta1_std
+rank_low[i] <- beta1_rlb
+rank_high[i] <- beta1_rub
+
+evd_low[i] <- rqr_beta1+bk_pt[1]/se1adj
+    evd_high[i] <- rqr_beta1+bk_pt[2]/se1adj
+    evd_ci <- max(abs(bk_pt[1]),abs(bk_pt[2]))
+    evd_symm_low[i] <- rqr_beta1-evd_ci/se1adj
+    evd_symm_high[i] <- rqr_beta1+evd_ci/se1adj
+    bin_ci <- max(abs(bk_pt[3]),abs(bk_pt[4]))
+    bin_low[i] <- rqr_beta1-bin_ci/se1adj
+    bin_high[i] <- rqr_beta1+bin_ci/se1adj
+    
+    
+#     boot_low2 <- rqr_beta2-t_adj*beta2_std
+#     boot_high2 <- rqr_beta2+t_adj*beta2_std
+#     evd_low2 <- rqr_beta2+bk_pt[1]/se2adj
+#     evd_high2 <- rqr_beta2+bk_pt[2]/se2adj
+#     evd_symm_low2 <- rqr_beta2-evd_ci/se2adj
+#     evd_symm_high2 <- rqr_beta2+evd_ci/se2adj
+#     bin_low2 <- rqr_beta2-bin_ci/se2adj
+#     bin_high2 <- rqr_beta2+bin_ci/se2adj
+    
+    
+    samp_low <- min(samp)
+    samp_high <- max(samp)
+    
+    pt_est <- qr_dat
+    pt_est_b1[i] <- rqr_beta1
+    pt_est_b0[i] <- rqr_beta0
+    
+
+
+    if(method_df == "perc_scale")   {denxvar2 <- sqrt(1+(med_pt_est_x)^2/(se1adj)^2)}     else   {denxvar2 <- sqrt(n_samp/(n_samp-2)+(med_pt_est_x)^2/(se1adj)^2)}
+# +
+#                         (med_pt_est_x2)^2/(se2adj)^2)}
+#     else   {denxvar2 <- sqrt(n_samp/(n_samp-2)+
+#                                (med_pt_est_x)^2/(se1adj)^2)}
+# +
+#                         (med_pt_est_x2)^2/(se2adj)^2)}
+    
+    
+    denxevd2 <- denxvar2
+    
+    denxbin2 <- denxvar2
+    
+    boot_y0_low[i] <- rqr_beta0-t_adj*beta0_std
+    boot_y0_high[i] <- rqr_beta0+t_adj*beta0_std
+rank_y0_low[i] <- beta0_rlb
+rank_y0_high[i] <- beta0_rub
+
+evd_y0_low[i] <- rqr_beta0+bk_pt[1]*denxevd2
+    evd_y0_high[i] <- rqr_beta0+bk_pt[2]*denxevd2
+    evd_symm_y0_low[i] <- rqr_beta0-evd_ci*denxevd2
+    evd_symm_y0_high[i] <- rqr_beta0+evd_ci*denxevd2
+    bin_y0_low[i] <- rqr_beta0-bin_ci*denxbin2
+    bin_y0_high[i] <- rqr_beta0+bin_ci*denxbin2
+    
+    if(method_df == "perc_scale") {samp_var_theta <- (bin_ci/t_adj)^2} else {samp_var_theta <- (bin_ci/t_adj)^2*n_samp/(n_samp-2)}
+    
+      
+  mea_lm <- summary(lm(y_sample~x_sample))$r.squared
+  
+  rsq <- 1- samp_var/y_var
+  samp_r1 
+ 
+
+
+# print(paste(boot_low[i],boot_high[i])) 
+# print(paste(rank_low[i],rank_high[i])) 
+# print(paste(evd_low[i],evd_high[i] ))
+# print(paste(evd_symm_low[i],evd_symm_high[i]))
+# print(paste(bin_low[i],bin_high[i])) 
+# 
+# pt_est 
+# print(paste(pt_est_b1[i],pt_est_b0[i]))
+# 
+# med_pt_est_x 
+# 
+# 
+# print(paste(boot_y0_low[i],boot_y0_high[i])) 
+# print(paste(rank_y0_low[i],rank_y0_high[i])) 
+# print(paste(evd_y0_low[i],evd_y0_high[i])) 
+# print(paste(evd_symm_y0_low[i],evd_symm_y0_high[i]))
+# print(paste(bin_y0_low[i],bin_y0_high[i]))
+
+}
+
+
+list(as.numeric(c(taus_set, pt_est_b0, 
+                  rank_y0_low,rank_y0_high,boot_y0_low,boot_y0_high,
+                  evd_symm_y0_low,evd_symm_y0_high,bin_y0_low,bin_y0_high,
+                  pt_est_b1,
+                  rank_low,rank_high,boot_low,boot_high,
+                  evd_symm_low,evd_symm_high,bin_low,bin_high)))
+
+}
+
+
+CI_estimator_het <- function(y_data,x_data,dfadj_scale,aux_reg_order) {
+
+n_samp <- length(x_data)
+
+method_df <- dfadj_scale # "perc_scale" # "org_scale" #  
+
+t_adj <- abs(qt(.025,n_samp))
+
+wgt_filereg <- rep(1,n_samp)
+
+taus_set <- seq(.02,.98,length.out=50)
+
+x_sample <- x_data
+y_sample <- y_data
+med_est_x <- rq((x_sample)~(1),tau=.5,weights=wgt_filereg)
+med_pt_est_x <- med_est_x$coefficients[1]
+
+boot_low <- 0;boot_high <- 0
+rank_low <- 0;rank_high <- 0
+evd_low <- 0;evd_high <- 0 
+evd_symm_low <- 0;evd_symm_high <- 0 
+bin_low <- 0 ;bin_high <- 0 
+
+boot_y0_low <- 0;boot_y0_high <- 0
+rank_y0_low <- 0;rank_y0_high <- 0
+evd_y0_low <- 0;evd_y0_high <- 0 
+evd_symm_y0_low <- 0;evd_symm_y0_high <- 0 
+bin_y0_low <- 0 ;bin_y0_high <- 0 
+
+pt_est_b0 <- 0;pt_est_b1 <- 0
+
+
+for (i in 1:length(taus_set)) {
+  
+  #taus <- .05
+  
+  taus <- taus_set[i]
+  
+  
+  if(method_df == "perc_scale") {
+    q_var <- sqrt(taus*(1-taus)/(n_samp-2))} else
+    {q_var <- sqrt(taus*(1-taus)/(n_samp))}
+  
+  p_low <- qnorm(0.025,taus,q_var)
+  p_high <- qnorm(0.975,taus,q_var)
+
+
+  p_low <- max(p_low,0.0001)
+  p_high <- min(p_high,0.9999)
+
+  
+  if(method_df == "perc_scale")  {
+    b_low <- qbinom(.025,n_samp-2,taus)/(n_samp-2)
+    b_high <- qbinom(.975,n_samp-2,taus)/(n_samp-2)}  
+  else  {b_low <- qbinom(.025,n_samp,taus)/(n_samp)
+       b_high <- qbinom(.975,n_samp,taus)/(n_samp)}
+  
+  
+  
+#   print("binomial CI | evd CI  , in percentile scale")
+#   print("lower bounds")
+#   print(paste(b_low,p_low))
+#   print("upper bounds")
+#   print(paste(b_high,p_high))
+  
+  
+
+  
+    model_fit_rq <- rq((y_sample)~(x_sample),tau=taus,weights=wgt_filereg)
+    model_fit_rq
+    rqr_beta0 <- model_fit_rq$coefficients[1]
+    rqr_beta1 <- model_fit_rq$coefficients[2]
+ std_errors <- summary(model_fit_rq,se="boot",R=600)$coefficients[c(3:4)]
+  std_errorsrank <- summary(model_fit_rq,se="rank")$coefficients[c(3:6)]
+    beta1_std <- std_errors[2]
+    beta0_std <- std_errors[1]
+beta1_rlb <- std_errorsrank[2]
+beta0_rlb <- std_errorsrank[1]
+beta1_rub <- std_errorsrank[4]
+beta0_rub <- std_errorsrank[3]
+y_var <- var(y_sample)
+
+#samp <- y_sample-rqr_beta0-rqr_beta1*x_sample
+
+y <- resid(model_fit_rq)
+y2 <- abs(resid(model_fit_rq))
+x2 <- x_sample^2
+res_model <- rq((y2~poly(x_sample,aux_reg_order)),tau=0.5,method="fn")
+var_est <- fitted.values(res_model)
+ 
+q_bdlow <- rq(y~1,tau=.025)$coefficients[1]
+q_bdhigh <- rq(y~1,tau=.975)$coefficients[1]
+
+trimdatay <- subset(y2,!(y > q_bdhigh | y < q_bdlow | var_est == 0 ) )
+trimdatax <- subset(x_sample,!(y > q_bdhigh | y < q_bdlow | var_est == 0 ) )
+trimdatavar_est <- subset(var_est,!(y > q_bdhigh | y < q_bdlow | var_est == 0 ) )
+var_adj <- var_est/(suppressMessages(sintegral(trimdatax,trimdatay)$value)/
+                      suppressMessages(sintegral(trimdatax,trimdatay/trimdatavar_est)$value))
+
+# var_adj <- var_est/(sum(trimdatay)/sum(trimdatay/trimdatavar_est))
+pts_adj <- ifelse(!(var_est == 0 | abs(y/var_adj) > max(abs(y)) ), 1,0)
+res_adj <- ifelse(pts_adj,y/var_adj,y)
+wgt_adj <- ifelse(pts_adj,1/var_adj,1)
+wgt_adj <- ifelse(wgt_adj > 0, wgt_adj,0)
+#res_maxes <- rq(res_adj~1,tau=c(0.5/n_samp,1-0.5/n_samp))$coefficients[1:2]
+#res_adj <- res_adj*max(abs(q_maxes))/max(abs(res_maxes))
+#res_adj <- res_adj*max(abs(q_maxes))/max(abs(res_maxes))
+# res_adj <- res_adj*max(abs(y))/max(abs(res_adj))
+ 
+samp <- res_adj
+med_est_x <- rq((x_sample)~(1),tau=.5,weights=wgt_adj^1)
+med_pt_est_x_wgt <- med_est_x$coefficients[1]
+
+
+# par(mfrow=c(1,1))
+# plot(y=y,x=x_sample,main=paste("tau =",taus))
+# points(y=samp,x=x_sample,col="red")
+# points(y=var_est,,x=x_sample,col="red")
+# points(y=fitted.values(rq((samp~poly(x_sample,1)),tau=0.5,method="fn")),x=x_sample,col="blue")
+# points(y=fitted.values(rq((samp~poly(x_sample,1)),tau=0.1,method="fn")),x=x_sample,col="green")
+# points(y=fitted.values(rq((samp~poly(x_sample,1)),tau=0.9,method="fn")),x=x_sample,col="green")
+# points(y=fitted.values(rq((samp~poly(x_sample,1)),tau=0.75,method="fn")),x=x_sample,col="green")
+# points(y=fitted.values(rq((samp~poly(x_sample,1)),tau=0.25,method="fn")),x=x_sample,col="green")
+# points(y=fitted.values(rq((samp~poly(x_sample,1)),tau=0.975,method="fn")),x=x_sample,col="green")
+# points(y=fitted.values(rq((samp~poly(x_sample,1)),tau=0.025,method="fn")),x=x_sample,col="green")
+
+# par(mfrow=c(1,1))
+# plot(y=y2,x=x_sample)
+# points(y=trimdatay,x=trimdatax,col="red")
+# points(y=trimdatay/trimdatavar_est,x=trimdatax,col="green")
+ 
+samp_var <- var(samp)
+
+    rho <- function(u,taur=.5) u*(taur - (u < 0))
+    samp_r1 <- 1 - model_fit_rq$rho/rq(y_sample~1,tau=taus,weights=wgt_filereg)$rho
+    
+      
+      model_fit <- rq((samp)~(1),tau=taus,method="fn",weights=wgt_filereg)
+      qr_dat <- c(summary(model_fit)$coefficients[1])
+      qrboot_dat  <- c(summary(model_fit,se="boot",R=600)$coefficients[1:4])
+      
+    
+    
+back_pts1 <- rq((samp)~(1),tau=p_low,weights=wgt_filereg)$coefficients[1]
+
+back_pts2 <- rq((samp)~(1),tau=p_high,weights=wgt_filereg)$coefficients[1]
+
+back_pts1a <- sum(rq((y_sample-(rqr_beta0+rqr_beta1*x_sample))
+                     ~(x_sample),tau=p_low,
+                     weights=wgt_filereg)$coefficients[1:2]*
+                    (c(1,med_pt_est_x_wgt)))
+
+back_pts5 <- sum(rq((y_sample-(rqr_beta0+rqr_beta1*x_sample))~
+                      (x_sample),tau=taus,
+                    weights=wgt_filereg)$coefficients[1:2]*
+                   (c(1,med_pt_est_x_wgt)))
+
+back_pts2a <- sum(rq((y_sample-(rqr_beta0+rqr_beta1*x_sample))~
+                       (x_sample),tau=p_high,
+                     weights=wgt_filereg)$coefficients[1:2]*
+                    (c(1,med_pt_est_x_wgt)))
+
+back_pts3 <- rq((samp)~(1),tau=b_low,weights=wgt_filereg)$coefficients[1]
+
+back_pts4 <- rq((samp)~(1),tau=b_high,weights=wgt_filereg)$coefficients[1]
+
+back_pts3a <- sum(rq((y_sample-(rqr_beta0+rqr_beta1*x_sample))~
+                       (x_sample),tau=b_low,
+                     weights=wgt_filereg)$coefficients[1:2]*
+                    (c(1,med_pt_est_x_wgt)))
+
+back_pts4a <- sum(rq((y_sample-(rqr_beta0+rqr_beta1*x_sample))~
+                       (x_sample),tau=b_high,
+                     weights=wgt_filereg)$coefficients[1:2]*
+                    (c(1,med_pt_est_x_wgt)))
+
+# print(rq((y_sample-(rqr_beta0+rqr_beta1*x_sample))~
+#            (x_sample),tau=b_high,
+#          weights=wgt_filereg)$coefficients[1:2]*
+#         (c(1,med_pt_est_x)))
+# print(back_pts4a)
+
+bk_pt <- c(back_pts1,back_pts2,back_pts3,back_pts4,back_pts1a,back_pts2a,
+           back_pts5,back_pts3a,back_pts4a)
+# print(bk_pt)
+
+
+#   s2x1x2 <- sum(x_sample*x_sample2)-sum(x_sample)*sum(x_sample2)/n_samp
+s2x1 <- sum(x_sample^2)-sum(x_sample)^2/n_samp
+#   s2x2 <- sum(x_sample2^2)-sum(x_sample2)^2/n_samp
+
+#    r12 <- s2x1x2/sqrt(s2x1*s2x2)
+r12 <- 0  
+
+
+if(method_df == "perc_scale")   {se1adj <- sqrt((s2x1)*(1-r12)/n_samp)}   else   {se1adj <- sqrt((s2x1)*(1-r12)/(1/(n_samp-2)))/n_samp}
+#     se2adj <- sqrt((s2x2)*(1-r12)/n_samp)}
+#    se2adj <- sqrt((s2x2)*(1-r12)/(1/(n_samp-3)))/n_samp}
+
+
+
+boot_low[i] <- rqr_beta1-t_adj*beta1_std
+boot_high[i] <- rqr_beta1+t_adj*beta1_std
+rank_low[i] <- beta1_rlb
+rank_high[i] <- beta1_rub
+
+evd_low[i] <- rqr_beta1+bk_pt[1]/se1adj
+evd_high[i] <- rqr_beta1+bk_pt[2]/se1adj
+evd_ci <- max(abs(bk_pt[1]),abs(bk_pt[2]))
+evd_mean_ci <- mean(abs(bk_pt[1]),abs(bk_pt[2]))
+evd_hom_ci <- max(abs(bk_pt[7]-bk_pt[5]),abs(bk_pt[7]-bk_pt[6]))
+evd_symm_low[i] <- rqr_beta1-evd_ci/se1adj
+evd_symm_high[i] <- rqr_beta1+evd_ci/se1adj
+bin_ci <- max(abs(bk_pt[3]),abs(bk_pt[4]))
+bin_mean_ci <- mean(abs(bk_pt[3]),abs(bk_pt[4]))
+bin_hom_ci <- max(abs(bk_pt[7]-bk_pt[8]),abs(bk_pt[7]-bk_pt[9]))
+bin_low[i] <- rqr_beta1-bin_ci/se1adj
+bin_high[i] <- rqr_beta1+bin_ci/se1adj
+
+
+#     boot_low2 <- rqr_beta2-t_adj*beta2_std
+#     boot_high2 <- rqr_beta2+t_adj*beta2_std
+#     evd_low2 <- rqr_beta2+bk_pt[1]/se2adj
+#     evd_high2 <- rqr_beta2+bk_pt[2]/se2adj
+#     evd_symm_low2 <- rqr_beta2-evd_ci/se2adj
+#     evd_symm_high2 <- rqr_beta2+evd_ci/se2adj
+#     bin_low2 <- rqr_beta2-bin_ci/se2adj
+#     bin_high2 <- rqr_beta2+bin_ci/se2adj
+
+
+samp_low <- min(samp)
+samp_high <- max(samp)
+
+pt_est <- qr_dat
+pt_est_b1[i] <- rqr_beta1
+pt_est_b0[i] <- rqr_beta0
+
+
+
+if(method_df == "perc_scale")   {denxevd2 <- sqrt(evd_hom_ci+((med_pt_est_x_wgt)*evd_mean_ci)^2/(se1adj)^2)
+                                 denxbin2 <- sqrt(bin_hom_ci+((med_pt_est_x_wgt)*bin_mean_ci)^2/(se1adj)^2)}     
+else   {denxvar2 <- sqrt(n_samp/(n_samp-2)+(med_pt_est_x)^2/(se1adj)^2)}
+# +
+#                         (med_pt_est_x2)^2/(se2adj)^2)}
+#     else   {denxvar2 <- sqrt(n_samp/(n_samp-2)+
+#                                (med_pt_est_x)^2/(se1adj)^2)}
+# +
+#                         (med_pt_est_x2)^2/(se2adj)^2)}
+
+
+boot_y0_low[i] <- rqr_beta0-t_adj*beta0_std
+boot_y0_high[i] <- rqr_beta0+t_adj*beta0_std
+rank_y0_low[i] <- beta0_rlb
+rank_y0_high[i] <- beta0_rub
+
+evd_y0_low[i] <- rqr_beta0+bk_pt[1]*denxevd2
+evd_y0_high[i] <- rqr_beta0+bk_pt[2]*denxevd2
+evd_symm_y0_low[i] <- rqr_beta0-denxevd2
+evd_symm_y0_high[i] <- rqr_beta0+denxevd2
+bin_y0_low[i] <- rqr_beta0-denxbin2
+bin_y0_high[i] <- rqr_beta0+denxbin2
+
+    if(method_df == "perc_scale") {samp_var_theta <- (bin_ci/t_adj)^2} else {samp_var_theta <- (bin_ci/t_adj)^2*n_samp/(n_samp-2)}
+    
+      
+  mea_lm <- summary(lm(y_sample~x_sample))$r.squared
+  
+  rsq <- 1- samp_var/y_var
+  samp_r1 
+ 
+
+
+# print(paste(boot_low[i],boot_high[i])) 
+# print(paste(rank_low[i],rank_high[i])) 
+# print(paste(evd_low[i],evd_high[i] ))
+# print(paste(evd_symm_low[i],evd_symm_high[i]))
+# print(paste(bin_low[i],bin_high[i])) 
+# 
+# pt_est 
+# print(paste(pt_est_b1[i],pt_est_b0[i]))
+# 
+# med_pt_est_x 
+# 
+# 
+# print(paste(boot_y0_low[i],boot_y0_high[i])) 
+# print(paste(rank_y0_low[i],rank_y0_high[i])) 
+# print(paste(evd_y0_low[i],evd_y0_high[i])) 
+# print(paste(evd_symm_y0_low[i],evd_symm_y0_high[i]))
+# print(paste(bin_y0_low[i],bin_y0_high[i]))
+
+}
+
+
+list(as.numeric(c(taus_set, pt_est_b0, 
+                  rank_y0_low,rank_y0_high,boot_y0_low,boot_y0_high,
+                  evd_symm_y0_low,evd_symm_y0_high,bin_y0_low,bin_y0_high,
+                  pt_est_b1,
+                  rank_low,rank_high,boot_low,boot_high,
+                  evd_symm_low,evd_symm_high,bin_low,bin_high)))
+
+}
+
+
+
+
+```
+
+
+```{r, Engel_quasi-homoscedastic, echo=FALSE, cache=FALSE, fig.width=6, fig.height=6, fig.keep='high',warning=FALSE}
+
+CI_results <- CI_estimator(log(engel$foodexp),log(engel$income),"perc_scale")
+
+
+taus_set <- CI_results[[1]][1:50]
+pt_est_b0 <- CI_results[[1]][51:100]
+rank_y0_low <- CI_results[[1]][101:150]
+rank_y0_high <- CI_results[[1]][151:200]
+boot_y0_low <- CI_results[[1]][201:250]
+boot_y0_high <- CI_results[[1]][251:300]
+evd_symm_y0_low <- CI_results[[1]][301:350]
+evd_symm_y0_high <- CI_results[[1]][351:400]
+bin_y0_low <- CI_results[[1]][401:450]
+bin_y0_high <- CI_results[[1]][451:500]
+
+pt_est_b1 <- CI_results[[1]][501:550]
+rank_low <- CI_results[[1]][551:600]
+rank_high <- CI_results[[1]][601:650]
+boot_low <- CI_results[[1]][651:700]
+boot_high <- CI_results[[1]][701:750]
+evd_symm_low <- CI_results[[1]][751:800]
+evd_symm_high <- CI_results[[1]][801:850]
+bin_low <- CI_results[[1]][851:900]
+bin_high <- CI_results[[1]][901:950]
+
+par(mfrow=c(2,3))
+
+par(fig=c(0,.333,0.435,.935))
+par(mar=c(3,3,3,1.5)+0.1)
+plot(x=taus_set, y=pt_est_b0, ylim = c(-.2,1.2), pch=20,
+     xlab="",ylab="",main=paste("rank inversion","\n intercept"))
+#make polygon where coordinates start with lower limit and 
+# then upper limit in reverse order
+polygon(c(taus_set,rev(taus_set)),c(rank_y0_low,rev(rank_y0_high)),col = "grey75", border = FALSE)
+points(x=taus_set, y=pt_est_b0,  pch=20)
+lines(x=taus_set, y=boot_y0_low, col="red",lty=2)
+lines(x=taus_set, y=boot_y0_high, col="red",lty=2)
+
+
+par(fig=c(0,.333,0,0.5), new=TRUE)
+par(mar=c(3,3,3,1.5)+0.1)
+plot(x=taus_set, y=pt_est_b1, ylim = c(.6,1),
+     xlab="",main="income",mar=c(1,1,1,1))
+#make polygon where coordinates start with lower limit and 
+# then upper limit in reverse order
+polygon(c(taus_set,rev(taus_set)),c(rank_low,rev(rank_high)),col = "grey75", border = FALSE)
+points(x=taus_set, y=pt_est_b1, pch=20)
+lines(x=taus_set, y=boot_low, col="red",lty=2)
+lines(x=taus_set, y=boot_high, col="red",lty=2)
+
+
+
+
+par(fig=c(0.333,.666,0.435,.935),new=TRUE)
+par(mar=c(3,3,3,1.5)+0.1)
+plot(x=taus_set, y=pt_est_b0, ylim = c(-.2,1.2), pch=20,
+     xlab="",ylab="",main=paste("default bootstrap","\n intercept"))
+#make polygon where coordinates start with lower limit and 
+# then upper limit in reverse order
+polygon(c(taus_set,rev(taus_set)),c(boot_y0_low,rev(boot_y0_high)),col = "grey75", border = FALSE)
+points(x=taus_set, y=pt_est_b0,  pch=20)
+
+
+par(fig=c(0.333,.666,0,0.5), new=TRUE)
+par(mar=c(3,3,3,1.5)+0.1)
+plot(x=taus_set, y=pt_est_b1, ylim = c(.6,1),
+     xlab="",main="income",mar=c(1,1,1,1))
+#make polygon where coordinates start with lower limit and 
+# then upper limit in reverse order
+polygon(c(taus_set,rev(taus_set)),c(boot_low,rev(boot_high)),col = "grey75", border = FALSE)
+points(x=taus_set, y=pt_est_b1, pch=20)
+
+
+
+par(fig=c(0.666,1,0.435,.935),new=TRUE)
+par(mar=c(3,3,3,1.5)+0.1)
+plot(x=taus_set, y=pt_est_b0, ylim = c(-.2,1.2), pch=20,
+     xlab="",ylab="",main=paste("evd symm max","\n intercept"))
+#make polygon where coordinates start with lower limit and 
+# then upper limit in reverse order
+polygon(c(taus_set,rev(taus_set)),c(evd_symm_y0_low,rev(evd_symm_y0_high)),col = "grey75", border = FALSE)
+points(x=taus_set, y=pt_est_b0,  pch=20)
+#add red lines on borders of polygon
+lines(x=taus_set, y=boot_y0_low, col="red",lty=2)
+lines(x=taus_set, y=boot_y0_high, col="red",lty=2)
+
+
+
+par(fig=c(0.666,1,0,0.5), new=TRUE)
+par(mar=c(3,3,3,1.5)+0.1)
+plot(x=taus_set, y=pt_est_b1, ylim = c(.6,1),
+     xlab="",main="income",mar=c(1,1,1,1))
+#make polygon where coordinates start with lower limit and 
+# then upper limit in reverse order
+polygon(c(taus_set,rev(taus_set)),c(evd_symm_low,rev(evd_symm_high)),col = "grey75", border = FALSE)
+points(x=taus_set, y=pt_est_b1, pch=20)
+#add red lines on borders of polygon
+lines(x=taus_set, y=boot_low, col="red",lty=2)
+lines(x=taus_set, y=boot_high, col="red",lty=2)
+
+
+mtext("ENGELS log10(foodexp) v log10(income) quantile regression", side=3, outer=TRUE, line=-1.5)
+mtext("approximately homoscedastic iid conditions", side=3, outer=TRUE, line=-3)
+
+
+```
+
+***Figure A2: Estimated intercept and slope model coefficient CIs for log-log transformed Engel dataset, homoscedastic model***
+
+```{r, Engel_quasi-homoscedastic_auxreg, echo=FALSE, cache=FALSE, fig.width=6, fig.height=6, fig.keep='high',warning=FALSE}
+
+CI_results <- CI_estimator_het(log(engel$foodexp),log(engel$income),"perc_scale",6)
+
+
+taus_set <- CI_results[[1]][1:50]
+pt_est_b0 <- CI_results[[1]][51:100]
+rank_y0_low <- CI_results[[1]][101:150]
+rank_y0_high <- CI_results[[1]][151:200]
+boot_y0_low <- CI_results[[1]][201:250]
+boot_y0_high <- CI_results[[1]][251:300]
+evd_symm_y0_low <- CI_results[[1]][301:350]
+evd_symm_y0_high <- CI_results[[1]][351:400]
+bin_y0_low <- CI_results[[1]][401:450]
+bin_y0_high <- CI_results[[1]][451:500]
+
+pt_est_b1 <- CI_results[[1]][501:550]
+rank_low <- CI_results[[1]][551:600]
+rank_high <- CI_results[[1]][601:650]
+boot_low <- CI_results[[1]][651:700]
+boot_high <- CI_results[[1]][701:750]
+evd_symm_low <- CI_results[[1]][751:800]
+evd_symm_high <- CI_results[[1]][801:850]
+bin_low <- CI_results[[1]][851:900]
+bin_high <- CI_results[[1]][901:950]
+
+par(mfrow=c(2,3))
+
+par(fig=c(0,.333,0.435,.935))
+par(mar=c(3,3,3,1.5)+0.1)
+plot(x=taus_set, y=pt_est_b0, ylim = c(-.2,1.2), pch=20,
+     xlab="",ylab="",main=paste("rank inversion","\n intercept"))
+#make polygon where coordinates start with lower limit and 
+# then upper limit in reverse order
+polygon(c(taus_set,rev(taus_set)),c(rank_y0_low,rev(rank_y0_high)),col = "grey75", border = FALSE)
+points(x=taus_set, y=pt_est_b0,  pch=20)
+lines(x=taus_set, y=boot_y0_low, col="red",lty=2)
+lines(x=taus_set, y=boot_y0_high, col="red",lty=2)
+
+
+par(fig=c(0,.333,0,0.5), new=TRUE)
+par(mar=c(3,3,3,1.5)+0.1)
+plot(x=taus_set, y=pt_est_b1, ylim = c(.6,1),
+     xlab="",main="income",mar=c(1,1,1,1))
+#make polygon where coordinates start with lower limit and 
+# then upper limit in reverse order
+polygon(c(taus_set,rev(taus_set)),c(rank_low,rev(rank_high)),col = "grey75", border = FALSE)
+points(x=taus_set, y=pt_est_b1, pch=20)
+lines(x=taus_set, y=boot_low, col="red",lty=2)
+lines(x=taus_set, y=boot_high, col="red",lty=2)
+
+
+
+
+par(fig=c(0.333,.666,0.435,.935),new=TRUE)
+par(mar=c(3,3,3,1.5)+0.1)
+plot(x=taus_set, y=pt_est_b0, ylim = c(-.2,1.2), pch=20,
+     xlab="",ylab="",main=paste("default bootstrap","\n intercept"))
+#make polygon where coordinates start with lower limit and 
+# then upper limit in reverse order
+polygon(c(taus_set,rev(taus_set)),c(boot_y0_low,rev(boot_y0_high)),col = "grey75", border = FALSE)
+points(x=taus_set, y=pt_est_b0,  pch=20)
+
+
+par(fig=c(0.333,.666,0,0.5), new=TRUE)
+par(mar=c(3,3,3,1.5)+0.1)
+plot(x=taus_set, y=pt_est_b1, ylim = c(.6,1),
+     xlab="",main="income",mar=c(1,1,1,1))
+#make polygon where coordinates start with lower limit and 
+# then upper limit in reverse order
+polygon(c(taus_set,rev(taus_set)),c(boot_low,rev(boot_high)),col = "grey75", border = FALSE)
+points(x=taus_set, y=pt_est_b1, pch=20)
+
+
+
+par(fig=c(0.666,1,0.435,.935),new=TRUE)
+par(mar=c(3,3,3,1.5)+0.1)
+plot(x=taus_set, y=pt_est_b0, ylim = c(-.2,1.2), pch=20,
+     xlab="",ylab="",main=paste("evd symm max","\n intercept"))
+#make polygon where coordinates start with lower limit and 
+# then upper limit in reverse order
+polygon(c(taus_set,rev(taus_set)),c(evd_symm_y0_low,rev(evd_symm_y0_high)),col = "grey75", border = FALSE)
+points(x=taus_set, y=pt_est_b0,  pch=20)
+#add red lines on borders of polygon
+lines(x=taus_set, y=boot_y0_low, col="red",lty=2)
+lines(x=taus_set, y=boot_y0_high, col="red",lty=2)
+
+
+
+par(fig=c(0.666,1,0,0.5), new=TRUE)
+par(mar=c(3,3,3,1.5)+0.1)
+plot(x=taus_set, y=pt_est_b1, ylim = c(.6,1),
+     xlab="",main="income",mar=c(1,1,1,1))
+#make polygon where coordinates start with lower limit and 
+# then upper limit in reverse order
+polygon(c(taus_set,rev(taus_set)),c(evd_symm_low,rev(evd_symm_high)),col = "grey75", border = FALSE)
+points(x=taus_set, y=pt_est_b1, pch=20)
+#add red lines on borders of polygon
+lines(x=taus_set, y=boot_low, col="red",lty=2)
+lines(x=taus_set, y=boot_high, col="red",lty=2)
+
+
+mtext("ENGELS log10(foodexp) v log10(income) quantile regression", side=3, outer=TRUE, line=-1.5)
+mtext("auxiliary regression on approx homoscedastic iid case", side=3, outer=TRUE, line=-3)
+
+
+```
+
+***Figure A3: Estimated intercept and slope model coefficient CIs for log-log transformed Engel dataset using heteroscedastic correction***
+
+Figure A4 & A5 gives the comparative performance of the three CI estimators for the original heteroscedastic scattered dataset. It can be seen going from A4 to A5, that the auxiliary regression adjustment to the evd based estimators does usefully improve the coverage of the slope evd_symm_max CIs to a closer match with the delete-d-group jackknife CI estimates. 
+
+In comparison, the intercept CIs are only slightly increased.However, it needs to be kept in mind that for the Engel dataset, the intercept is a extrapolated x value and quantile crossing is observed in the quantile regression model fit.
+
+
+
+```{r, engel_heteroscedastic, echo=FALSE, cache=FALSE, fig.width=6, fig.height=6, fig.keep='high'}
+
+
+CI_results <- CI_estimator(engel$foodexp,engel$income,"perc_scale")
+
+
+taus_set <- CI_results[[1]][1:50]
+pt_est_b0 <- CI_results[[1]][51:100]
+rank_y0_low <- CI_results[[1]][101:150]
+rank_y0_high <- CI_results[[1]][151:200]
+boot_y0_low <- CI_results[[1]][201:250]
+boot_y0_high <- CI_results[[1]][251:300]
+evd_symm_y0_low <- CI_results[[1]][301:350]
+evd_symm_y0_high <- CI_results[[1]][351:400]
+bin_y0_low <- CI_results[[1]][401:450]
+bin_y0_high <- CI_results[[1]][451:500]
+
+pt_est_b1 <- CI_results[[1]][501:550]
+rank_low <- CI_results[[1]][551:600]
+rank_high <- CI_results[[1]][601:650]
+boot_low <- CI_results[[1]][651:700]
+boot_high <- CI_results[[1]][701:750]
+evd_symm_low <- CI_results[[1]][751:800]
+evd_symm_high <- CI_results[[1]][801:850]
+bin_low <- CI_results[[1]][851:900]
+bin_high <- CI_results[[1]][901:950]
+
+
+par(mfrow=c(2,3))
+
+par(fig=c(0,.333,0.435,.935))
+par(mar=c(3,3,3,1.5)+0.1)
+plot(x=taus_set, y=pt_est_b0, ylim = c(0,200), pch=20,
+     xlab="",ylab="",main=paste("rank inversion","\n intercept"))
+#make polygon where coordinates start with lower limit and 
+# then upper limit in reverse order
+polygon(c(taus_set,rev(taus_set)),c(rank_y0_low,rev(rank_y0_high)),col = "grey75", border = FALSE)
+points(x=taus_set, y=pt_est_b0,  pch=20)
+lines(x=taus_set, y=boot_y0_low, col="red",lty=2)
+lines(x=taus_set, y=boot_y0_high, col="red",lty=2)
+
+
+par(fig=c(0,.333,0,0.5), new=TRUE)
+par(mar=c(3,3,3,1.5)+0.1)
+plot(x=taus_set, y=pt_est_b1, ylim = c(.3,0.9),
+     xlab="",main="income",mar=c(1,1,1,1))
+#make polygon where coordinates start with lower limit and 
+# then upper limit in reverse order
+polygon(c(taus_set,rev(taus_set)),c(rank_low,rev(rank_high)),col = "grey75", border = FALSE)
+points(x=taus_set, y=pt_est_b1, pch=20)
+lines(x=taus_set, y=boot_low, col="red",lty=2)
+lines(x=taus_set, y=boot_high, col="red",lty=2)
+
+
+
+
+par(fig=c(0.333,.666,0.435,.935),new=TRUE)
+par(mar=c(3,3,3,1.5)+0.1)
+plot(x=taus_set, y=pt_est_b0, ylim = c(0,200), pch=20,
+     xlab="",ylab="",main=paste("default bootstrap","\n intercept"))
+#make polygon where coordinates start with lower limit and 
+# then upper limit in reverse order
+polygon(c(taus_set,rev(taus_set)),c(boot_y0_low,rev(boot_y0_high)),col = "grey75", border = FALSE)
+points(x=taus_set, y=pt_est_b0,  pch=20)
+
+
+par(fig=c(0.333,.666,0,0.5), new=TRUE)
+par(mar=c(3,3,3,1.5)+0.1)
+plot(x=taus_set, y=pt_est_b1, ylim = c(.3,0.9),
+     xlab="",main="income",mar=c(1,1,1,1))
+#make polygon where coordinates start with lower limit and 
+# then upper limit in reverse order
+polygon(c(taus_set,rev(taus_set)),c(boot_low,rev(boot_high)),col = "grey75", border = FALSE)
+points(x=taus_set, y=pt_est_b1, pch=20)
+
+
+
+par(fig=c(0.666,1,0.435,.935),new=TRUE)
+par(mar=c(3,3,3,1.5)+0.1)
+plot(x=taus_set, y=pt_est_b0, ylim = c(0,200), pch=20,
+     xlab="",ylab="",main=paste("evd symm max","\n intercept"))
+#make polygon where coordinates start with lower limit and 
+# then upper limit in reverse order
+polygon(c(taus_set,rev(taus_set)),c(evd_symm_y0_low,rev(evd_symm_y0_high)),col = "grey75", border = FALSE)
+points(x=taus_set, y=pt_est_b0,  pch=20)
+#add red lines on borders of polygon
+lines(x=taus_set, y=boot_y0_low, col="red",lty=2)
+lines(x=taus_set, y=boot_y0_high, col="red",lty=2)
+
+par(fig=c(0.666,1,0,0.5), new=TRUE)
+par(mar=c(3,3,3,1.5)+0.1)
+plot(x=taus_set, y=pt_est_b1, ylim = c(.3,0.9),
+     xlab="",main="income",mar=c(1,1,1,1))
+#make polygon where coordinates start with lower limit and 
+# then upper limit in reverse order
+polygon(c(taus_set,rev(taus_set)),c(evd_symm_low,rev(evd_symm_high)),col = "grey75", border = FALSE)
+points(x=taus_set, y=pt_est_b1, pch=20)
+#add red lines on borders of polygon
+lines(x=taus_set, y=boot_low, col="red",lty=2)
+lines(x=taus_set, y=boot_high, col="red",lty=2)
+
+mtext("ENGELS foodexp v income quantile regression", side=3, outer=TRUE, line=-1.5)
+mtext("homoscedastic evd estimator on heteroscedastic conditions", side=3, outer=TRUE, line=-3)
+
+```
+
+***Figure A4: Estimated model coefficient CIs for non-transformed Engel dataset using evd based homoscedastic iid estimators***
+
+```{r, engel_heteroscedastic_auxreg, echo=FALSE, cache=FALSE, fig.width=6, fig.height=6, fig.keep='high'}
+
+
+CI_results <- CI_estimator_het(engel$foodexp,engel$income,"perc_scale",6)
+
+
+taus_set <- CI_results[[1]][1:50]
+pt_est_b0 <- CI_results[[1]][51:100]
+rank_y0_low <- CI_results[[1]][101:150]
+rank_y0_high <- CI_results[[1]][151:200]
+boot_y0_low <- CI_results[[1]][201:250]
+boot_y0_high <- CI_results[[1]][251:300]
+evd_symm_y0_low <- CI_results[[1]][301:350]
+evd_symm_y0_high <- CI_results[[1]][351:400]
+bin_y0_low <- CI_results[[1]][401:450]
+bin_y0_high <- CI_results[[1]][451:500]
+
+pt_est_b1 <- CI_results[[1]][501:550]
+rank_low <- CI_results[[1]][551:600]
+rank_high <- CI_results[[1]][601:650]
+boot_low <- CI_results[[1]][651:700]
+boot_high <- CI_results[[1]][701:750]
+evd_symm_low <- CI_results[[1]][751:800]
+evd_symm_high <- CI_results[[1]][801:850]
+bin_low <- CI_results[[1]][851:900]
+bin_high <- CI_results[[1]][901:950]
+
+
+par(mfrow=c(2,3))
+
+par(fig=c(0,.333,0.435,.935))
+par(mar=c(3,3,3,1.5)+0.1)
+plot(x=taus_set, y=pt_est_b0, ylim = c(0,200), pch=20,
+     xlab="",ylab="",main=paste("rank inversion","\n intercept"))
+#make polygon where coordinates start with lower limit and 
+# then upper limit in reverse order
+polygon(c(taus_set,rev(taus_set)),c(rank_y0_low,rev(rank_y0_high)),col = "grey75", border = FALSE)
+points(x=taus_set, y=pt_est_b0,  pch=20)
+lines(x=taus_set, y=boot_y0_low, col="red",lty=2)
+lines(x=taus_set, y=boot_y0_high, col="red",lty=2)
+
+
+par(fig=c(0,.333,0,0.5), new=TRUE)
+par(mar=c(3,3,3,1.5)+0.1)
+plot(x=taus_set, y=pt_est_b1, ylim = c(.3,0.9),
+     xlab="",main="income",mar=c(1,1,1,1))
+#make polygon where coordinates start with lower limit and 
+# then upper limit in reverse order
+polygon(c(taus_set,rev(taus_set)),c(rank_low,rev(rank_high)),col = "grey75", border = FALSE)
+points(x=taus_set, y=pt_est_b1, pch=20)
+lines(x=taus_set, y=boot_low, col="red",lty=2)
+lines(x=taus_set, y=boot_high, col="red",lty=2)
+
+
+
+
+par(fig=c(0.333,.666,0.435,.935),new=TRUE)
+par(mar=c(3,3,3,1.5)+0.1)
+plot(x=taus_set, y=pt_est_b0, ylim = c(0,200), pch=20,
+     xlab="",ylab="",main=paste("default bootstrap","\n intercept"))
+#make polygon where coordinates start with lower limit and 
+# then upper limit in reverse order
+polygon(c(taus_set,rev(taus_set)),c(boot_y0_low,rev(boot_y0_high)),col = "grey75", border = FALSE)
+points(x=taus_set, y=pt_est_b0,  pch=20)
+
+
+par(fig=c(0.333,.666,0,0.5), new=TRUE)
+par(mar=c(3,3,3,1.5)+0.1)
+plot(x=taus_set, y=pt_est_b1, ylim = c(.3,0.9),
+     xlab="",main="income",mar=c(1,1,1,1))
+#make polygon where coordinates start with lower limit and 
+# then upper limit in reverse order
+polygon(c(taus_set,rev(taus_set)),c(boot_low,rev(boot_high)),col = "grey75", border = FALSE)
+points(x=taus_set, y=pt_est_b1, pch=20)
+
+
+
+par(fig=c(0.666,1,0.435,.935),new=TRUE)
+par(mar=c(3,3,3,1.5)+0.1)
+plot(x=taus_set, y=pt_est_b0, ylim = c(0,200), pch=20,
+     xlab="",ylab="",main=paste("evd symm max","\n intercept"))
+#make polygon where coordinates start with lower limit and 
+# then upper limit in reverse order
+polygon(c(taus_set,rev(taus_set)),c(evd_symm_y0_low,rev(evd_symm_y0_high)),col = "grey75", border = FALSE)
+points(x=taus_set, y=pt_est_b0,  pch=20)
+#add red lines on borders of polygon
+lines(x=taus_set, y=boot_y0_low, col="red",lty=2)
+lines(x=taus_set, y=boot_y0_high, col="red",lty=2)
+
+par(fig=c(0.666,1,0,0.5), new=TRUE)
+par(mar=c(3,3,3,1.5)+0.1)
+plot(x=taus_set, y=pt_est_b1, ylim = c(.3,0.9),
+     xlab="",main="income",mar=c(1,1,1,1))
+#make polygon where coordinates start with lower limit and 
+# then upper limit in reverse order
+polygon(c(taus_set,rev(taus_set)),c(evd_symm_low,rev(evd_symm_high)),col = "grey75", border = FALSE)
+points(x=taus_set, y=pt_est_b1, pch=20)
+#add red lines on borders of polygon
+lines(x=taus_set, y=boot_low, col="red",lty=2)
+lines(x=taus_set, y=boot_high, col="red",lty=2)
+
+mtext("ENGELS foodexp v income quantile regression", side=3, outer=TRUE, line=-1.5)
+mtext("auxiliary regression analysed heteroscedastic error", side=3, outer=TRUE, line=-3)
+
+```
+
+***Figure A5: Estimated model coefficient CIs for non-transformed Engel dataset using evd based linear expanding horn heteroscedasticity estimators***
+
