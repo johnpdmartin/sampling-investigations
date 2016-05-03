@@ -8,17 +8,17 @@ y_samp <- matrix(rep(1,sampsize*replicates),nrow=replicates,ncol=sampsize)
 med_pt_est_x <- matrix(rep(1,sampsize*replicates),nrow=replicates,ncol=sampsize)
 med_pt_est_x2 <- matrix(rep(1,sampsize*replicates),nrow=replicates,ncol=sampsize)
 output <- matrix(rep(1,34*15),nrow=15,ncol=34)
-filename <- "twoterms_laplacian_10_dfadj_in_org_scale" #  _perc_scale" # _org_scale" #
+filename <- "twoterms_hetguassian_1_dfadj_in_perc_scale" #  _perc_scale" # _org_scale" #
 set.seed(592)
 # set quantile point of interest
-exp_theta <- 0.2
-method_df <- "org_scale" # "perc_scale" # "org_scale" #  
+exp_theta <- 0.5
+method_df <- "perc_scale" # "perc_scale" # "org_scale" #  
 multi <- 1
-multi2 <- .5
-lambda <- 10
-x_sample <- runif(sampsize,-10,10)^1#exp(rnorm(sampsize,0,2))#runif(sampsize,-10,10)#seq(0.025,.975,length.out=20)
-x_sample2 <- x_sample^2
-y_sample <- multi*x_sample+multi*x_sample2+1*urlaplace(sampsize,0,lambda)#1*urlaplace(sampsize,0,lambda) #
+multi2 <- 0.5
+lambda <- 1;shift <- -0;pcon <- 0
+x_sample <- runif(sampsize,-180,180)^1+(shift)#exp(rnorm(sampsize,0,2))#runif(sampsize,-10,10)#seq(0.025,.975,length.out=20)
+x_sample2 <- (x_sample-shift)^2
+y_sample <- multi*(x_sample-shift)+multi2*x_sample2+(10+x_sample-(shift))^pcon*rnorm(sampsize,0,lambda)#1*urlaplace(sampsize,0,lambda) #
 n_obs <- length(x_sample)
 t_adj <- abs(qt(.025,n_obs))
 #quantile(urlaplace(1000000,0,lambda),taus)
@@ -36,15 +36,14 @@ summary(model_fit_rq,se="boot",R=600)
 plot(y=y_sample,x=x_sample)
 points(y=(rq_beta0+rq_beta1*x_sample+rq_beta2*x_sample2),x=x_sample,col="red")
 
-
 # full mode 95% CI
 
 # START MANUAL SETTING 1
 
 #lambda <- 1
 sampsize <- length(y_sample)
-taus_set <- c(0.025,.05,.1,.2,.25,.3,.4,.5,.6,.7,.75,.8,.9,.95,.975)
-#taus_set <- c(exp_theta)
+# taus_set <- c(0.025,.05,.1,.2,.25,.3,.4,.5,.6,.7,.75,.8,.9,.95,.975)
+taus_set <- c(exp_theta)
 
 wgt_filereg <- rep(1,length(x_sample))#y_sample#
 wgt_fileregexp <- rep(1,400)
@@ -68,9 +67,9 @@ biny0_cov <- 0
 
 for (reps_setup in 1:replicates) {
   
-  x_samp[reps_setup,] <- runif(sampsize,-10,10)^1#exp(rnorm(sampsize,0,2))#runif(sampsize,-10,10)#seq(0.025,.975,length.out=20)
-  x_samp2[reps_setup,] <- x_samp[reps_setup,]^2
-  y_samp[reps_setup,] <- multi*x_samp[reps_setup,]+multi2*x_samp2[reps_setup,]+1*urlaplace(sampsize,0,lambda) #
+  x_samp[reps_setup,] <- runif(sampsize,-180,180)^1+(shift)#exp(rnorm(sampsize,0,2))#runif(sampsize,-10,10)#seq(0.025,.975,length.out=20)
+  x_samp2[reps_setup,] <- (x_samp[reps_setup,]-shift)^2
+  y_samp[reps_setup,] <- multi*(x_samp[reps_setup,]-shift)+multi2*x_samp2[reps_setup,]+(10+x_samp[reps_setup,]-(shift))^pcon*rnorm(sampsize,0,lambda) #
 
   med_est_x <- rq((x_samp[reps_setup,])~(1),tau=.5,weights=wgt_filereg)
   med_pt_est_x[reps_setup,] <- med_est_x$coefficients[1]
@@ -145,9 +144,9 @@ for (j in 1:15)  {
   # START MANUAL SETTING 3
   
   set.seed(592)
-  x_sample <- runif(sampsize,-10,10)^1#exp(rnorm(sampsize,0,2))#runif(sampsize,-10,10)#seq(0.025,.975,length.out=20)
-  x_sample2 <- x_sample^2
-  y_sample <- multi*x_sample+multi2*x_sample2+1*urlaplace(sampsize,0,lambda) #
+  x_sample <- runif(sampsize,-180,180)^1+(shift)#exp(rnorm(sampsize,0,2))#runif(sampsize,-10,10)#seq(0.025,.975,length.out=20)
+  x_sample2 <- (x_sample-shift)^2
+  y_sample <- multi*(x_sample-shift)+multi2*x_sample2+(10+x_sample-(shift))^pcon*rnorm(sampsize,0,lambda) #
   model_fit_rq <- rq((y_sample)~(x_sample+x_sample2),tau=taus,weights=wgt_filereg)
   model_fit_rq
   rq_beta0 <- model_fit_rq$coefficients[1]
@@ -173,11 +172,23 @@ for (j in 1:15)  {
   #l_mk <- qnorm(taus,0,lambda)
   l_mk <- multi
   l2_mk <- multi2
-  
-  m_mk <- quantile(urlaplace(1000000,0,lambda),taus)
-#  m_mk <- qnorm(taus,0,lambda)
-  #  #l_mk <- qlaplace(sampsize, location=0, scale=lambda)
 
+  x_large <- c(x_samp)
+  x2_large <- c(x_samp2)
+  y_large <- c(y_samp)
+  
+  
+  bmk_model <- rq(y_large~x_large+x2_large,tau=taus,method="fn")
+  print(bmk_model) 
+  m_mk <- bmk_model$coefficient[1]
+  l_mk <- bmk_model$coefficient[2]
+  l2_mk <- bmk_model$coefficient[3]
+  print("estimated popn regression slopes and intercept")
+  print(taus_set)
+  print(round(m_mk,3))
+  print(round(l_mk,3))
+  print(round(l2_mk,3))
+  
   
   # END MANUAL SETTING 4
   
@@ -302,7 +313,7 @@ if(method_df == "perc_scale") {
            s2x2 <- sum(x_sample2^2)-sum(x_sample2)^2/n_samp
        
            r12 <- s2x1x2/sqrt(s2x1*s2x2)
-    #r12 <- 0  
+    # r12 <- 0.935 
     
     #     popvar1 <- sqrt((s2x1)/(n_samp))
     #     popvar2 <- sqrt((s2x2)/(n_samp))
@@ -328,11 +339,11 @@ if(method_df == "perc_scale") {
     #    evd_ci <- abs((bk_pt[1]-bk_pt[2])/2)
     evd_low[reps] <- rqr_beta1+bk_pt[1]/se1adj
     evd_high[reps] <- rqr_beta1+bk_pt[2]/se1adj
-    evd_ci <- max(abs(bk_pt[1]),abs(bk_pt[2]))
+    evd_ci <- mean(abs(bk_pt[1]),abs(bk_pt[2]))
     evd_symm_low[reps] <- rqr_beta1-evd_ci/se1adj
     evd_symm_high[reps] <- rqr_beta1+evd_ci/se1adj
     #    bin_ci <- abs((bk_pt[3]-bk_pt[4])/2)
-    bin_ci <- max(abs(bk_pt[3]),abs(bk_pt[4]))
+    bin_ci <- mean(abs(bk_pt[3]),abs(bk_pt[4]))
     bin_low[reps] <- rqr_beta1-bin_ci/se1adj
     bin_high[reps] <- rqr_beta1+bin_ci/se1adj
     
@@ -382,8 +393,8 @@ if(method_df == "perc_scale") {
     {denxvar2 <- sqrt(1+(med_pt_est_x[reps])^2/(se1adj)^2+
         (med_pt_est_x2[reps])^2/(se2adj)^2)}
       else
-      {denxvar2 <- sqrt(n_samp/(n_samp-3)+(med_pt_est_x[reps])^2/(se1adj)^2+
-        (med_pt_est_x2[reps])^2/(se2adj)^2)}
+      {denxvar2 <- sqrt(n_samp/(n_samp-3)+(shift-med_pt_est_x[reps])^2/(se1adj)^2+
+        (shift^2-med_pt_est_x2[reps])^2/(se2adj)^2)}
     
 
         ### df correction in original frame
@@ -622,8 +633,10 @@ output[j,] <- c(taus,l_mk,mean(pt_est_b1),
 }
 
 print(output)
-write.csv(output,file=paste("./",
+write.csv(output,file=paste("/home/bear/Projects/quantile_regression/",
                             sampsize,"_",filename,".csv"))
 
 
 output[2,]
+mean(med_pt_est_x)
+mean(med_pt_est_x2)
