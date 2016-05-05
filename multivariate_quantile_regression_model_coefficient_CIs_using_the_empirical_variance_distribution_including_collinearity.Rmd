@@ -137,9 +137,9 @@ where the equivalent result for ordinary least squares linear regression is exac
 
 \begin{multline} var(\beta_0) \approx \ var(median(y) - \hat{\beta_1}median(x_1) - \hat{\beta_2}median(x_2)) \\ 
 = \ var(median(y)) - 2*cov(median(y),median(x_1)*\hat{\beta_1}) - 2*cov(median(y),median(x_2)*\hat{\beta_2}) \\
-+ \ var(\hat{\beta_1})median(x_1)^2 + var(\hat{\beta_2})median(x_2)^2 + cov(\hat{\beta_1},\hat{\beta_2})median(x_1)median(x_2) \\
++ \ var(\hat{\beta_1})median(x_1)^2 + var(\hat{\beta_2})median(x_2)^2 + 2*cov(\hat{\beta_1},\hat{\beta_2})median(x_1)median(x_2) \\
 \approx \ var(median(y)) + var(\hat{\beta_1})median(x_1)^2 + var(\hat{\beta_2})median(x_2)^2 
- + \ cov(\hat{\beta_1},\hat{\beta_2})median(x_1)median(x_2)  \label{eq:var}
+ + \ 2*cov(\hat{\beta_1},\hat{\beta_2})median(x_1)median(x_2)  \label{eq:var}
 \end{multline} 
 
 Usings eqns \eqref{eq:b1}, \eqref{eq:b2}, \eqref{eq:r12}, \eqref{eq:var} and Martin (3,4), covariance matrix consistent model intercept CI estimates for homoscedastic iid error cases, may be usefully obtained from evd approximations of the quantile regression residuals model variance via the relationship
@@ -168,8 +168,10 @@ The inconsistent evd based results found by Martin (3,4) for bivariate quantile 
 
 where it is now understood that the $cov(x_1,x_2)$ term was not consistently included. In the limit, $cov(x_1,x_2)$ & $r_{12} \rightarrow 0$, eqn \eqref{eq:intapprox} would have been adequate for particular examples.
 
-Importantly, to keep the evd based variance estimation maximising the use of quantile regression calculations. The residuals distribution variances $s_{maxhalfCI}$ and $s_{meanhalfCI}$ are not calculated using sum of squares of errors of the residuals but are calculated by performing quantile regression calculations on the residual distribution using evd based estimates of ($\theta_{LB}$, $\theta_{UB}$), to then estimate the 2.5th & 97.5th bounds in the original measurement scale. As noted in (3,4) $s_{maxhalfCI}$ term applies to the numerator of the slope CI estimates and the constant term of the intercept CI estimator giving respectively, good coverage performance and comparability to bootstrap results for the minimum intercept CI width. The $s_{meanhalfCI}$ modification was introduced in (4) for the covariate dependent terms of the intercept CI estimator giving improved 95% coverage performance under linear expanding horn heteroscedasticity. 
+A future improvement of the above approach for heteroscedastic cases, may involve replacing in eqn \eqref{eq:intercept}, the estimated intercept coefficient variance eqn \eqref{eq:var}, currently based on the quantile regression fit to the median(y) eqn \eqref{eq:beta0} by the quantile regression fit to the dependent variable quantile of interest $\theta(y)$.
 
+Importantly, to keep the evd based variance estimation maximising the use of quantile regression calculations. The residuals distribution variances $s_{maxhalfCI}$ and $s_{meanhalfCI}$ are not calculated using sum of squares of errors of the residuals but are calculated by performing quantile regression calculations on the residual distribution using evd based estimates of ($\theta_{LB}$, $\theta_{UB}$), to then estimate the 2.5th & 97.5th bounds in the original measurement scale. As noted in (3,4) $s_{maxhalfCI}$ term applies to the numerator of the slope CI estimates and the constant term of the intercept CI estimator giving respectively, good coverage performance and comparability to bootstrap results for the minimum intercept CI width. The $s_{meanhalfCI}$ modification was introduced in (4) for the covariate dependent terms of the intercept CI estimator giving improved 95% coverage performance under linear expanding horn heteroscedasticity. 
+ 
 
 # Algorithm for evd based estimators for use as quantile regression model coefficient CI estimators in homoscedastic iid error cases
 
