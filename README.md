@@ -2,7 +2,7 @@
 
 This directory contains results from sampling and simulations using R programming
 
-1. THe Reimann Zeta function is noisy, complex and infinite. Using a conjugate pair version of the function results in a smooth function with FM modulation behaviour, independent of the distance from the critical line. The smooth envelope function will help allow better estimates of the asymptotic behaviour of the Reimann Zeta function.
+1. The Reimann Zeta function is noisy, complex and infinite. Using a conjugate pair version of the function results in a smooth function with FM modulation behaviour, independent of the distance from the critical line. The smooth envelope function will help allow better estimates of the asymptotic behaviour of the Reimann Zeta function.
  
 2. Quantile regression model coefficient variance estimation, homoscedastic iid case with collinearity: Tested and implemented covariance matrix terms for model intercept coefficient CI bivariate case. Collinearity between the explanatory variables, results in variance inflation of slope CIs of collinear variables. The variable inflation factor is present in intercept CI estimator but is finely balanced by numerator covariance term to leave intercept CI relatively insensitive to collinearity. Improved bivariate performance is found to occur compared to earlier paper examples. Old r code also had mean(x) which needs to be mean(c(x)) to ensure mean is vector calculation.
  
