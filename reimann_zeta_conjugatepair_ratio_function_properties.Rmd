@@ -320,7 +320,7 @@ A coarse upper bound on A(Im(s),abs(0.5-Re(s))) for large Im(s), given Re(s) < 0
 
 The Reimann Zeta conjugate pair ratio functional dependence gives a smooth natural representation of the FM contribution to the Reimann Zeta function and illustrates the Reimann Zeta function zeroes on the critical line as an interference pattern of the periodicity of the natural prime numbers. The FM modulation is determined by twice the Reimann Zeta Theta function, independent of Re(s).
 
-The smoothness and increasing nature of the AM contribution to the Reimann Zeta conjugate pair ratio functional dependence for increasing abs(0.5-Re(s)) for Re(s) < 0.5 indicates that the Reimann Hypothesis is true. Further, the separable nature of the FM modulation for the Reimann Zeta conjugate pair ratio function, ie. independent from Re(s), drives the reason for this Reimann Hypothesis behaviour. 
+The smoothness and increasing nature of the AM contribution to the Reimann Zeta conjugate pair ratio functional dependence for increasing abs(0.5-Re(s)) for Re(s) < 0.5 provides strong evidence that the Reimann Hypothesis is true. Further, the separable nature of the FM modulation for the Reimann Zeta conjugate pair ratio function, ie. independent from Re(s), drives the reason for this Reimann Hypothesis behaviour. 
 
 
 ###References
