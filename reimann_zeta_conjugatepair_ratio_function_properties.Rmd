@@ -1,17 +1,18 @@
 ---
-title: "The exact behaviour of the Reimann Zeta conjugate pair ratio function"
+title: "The exact behaviour of the Riemann Zeta conjugate pair ratio function"
 author: "John Martin"
 date: "Sunday, July 17, 2016"
 output: pdf_document
 ---
+revision date: Tuesday, July 19, 2016
 
 ###Executive Summary
 
-Graphical examination of the Reimann Zeta conjugate pair ratio function $\frac{\zeta (s)}{\zeta (1-s)}$ reveals a simple AM-FM lineshape for the real and imaginary components with (i) the FM terms present in the exact terms of the Reimann Seigal $\theta(t)$ function and  $\Gamma(0.5+it)$ and (ii) only the AM term is dependent on the distance of the real value of s from 0.5. The envelope function $abs(\frac{\zeta (s)}{\zeta (1-s)})$ is smooth and increases (decreases) with increasing distance from the critical line for $Re(s) < 0.5$ ($Re(s) > 0.5$) indicating no zeroes away from the critical line in agreement with the Reimann Hypothesis. 
+Graphical examination of the Riemann Zeta conjugate pair ratio function $\frac{\zeta (s)}{\zeta (1-s)}$ reveals a simple AM-FM lineshape for the real and imaginary components with (i) the FM terms present in the exact terms of the Riemann Seigal $\theta(t)$ function and  $\Gamma(0.5+it)$ and (ii) only the AM term is dependent on the distance of the real value of s from 0.5. The envelope function $abs(\frac{\zeta (s)}{\zeta (1-s)})$ is smooth and increases (decreases) with increasing distance from the critical line for $Re(s) < 0.5$ ($Re(s) > 0.5$) indicating no zeroes away from the critical line in agreement with the Riemann Hypothesis. The envelope function is also a good fit for the average growth of the Riemann Zeta function for Re(s) <= 0.5. 
 
 ###Introduction
 
-The Reimann Zeta function is defined (1), in the complex plane by the integral 
+The Riemann Zeta function is defined (1), in the complex plane by the integral 
 
 \begin{equation}
 \zeta(s) = \frac{\prod(-s)}{2\pi i}\int_{C_{\epsilon,\delta}} \frac{(-x)^s}{(e^{x}-1)x}dx
@@ -20,7 +21,7 @@ The Reimann Zeta function is defined (1), in the complex plane by the integral
 
 where $s \thinspace \epsilon \thinspace \mathbb{C}$ and $C_{\epsilon,\delta}$ is the contour about the imaginary poles.
 
-The Reimann Zeta function has been shown to obey the functional equation (2)
+The Riemann Zeta function has been shown to obey the functional equation (2)
 
 \begin{equation}
 \zeta(s) = 2^s\pi^{s-1}sin(\frac{\pi s}{2})\Gamma(1-s)\zeta(1-s) \label{eq:func}
@@ -28,9 +29,9 @@ The Reimann Zeta function has been shown to obey the functional equation (2)
 
 Following directly from the form of the functional equation and the properties of the coefficients on the RHS of eqn \eqref{eq:func} it has been shown that any zeroes off the critical line would be paired, ie. if $\zeta(s)$ = 0 was true then $\zeta(1-s) = 0$.
 
-Figure 1 displays, the well known Reimann Zeta function behaviour for the critical line (0.5+it) and an Reimann Zeta function conjugate pair example $\zeta(s)$,$\zeta(1-s)$ for (0.2+it) , (0.8-it). The blue, green and red lines indicate respectively, the Re, Im and Abs values of the Reimann Zeta function. It can be seen that there are many zeroes along the critical line, characterised by both $Re(\zeta(0.5+it))=Im(\zeta(0.5+it))=0$. For the Reimann Zeta function off the critical line (shown in the bottom two graphs), there does not appear to be any zeroes (on red line) but the complicated lineshape makes it difficult to be sure that some zeroes may occur as $t \rightarrow \infty$. 
+Figure 1 displays, the well known Riemann Zeta function behaviour for the critical line (0.5+it) and an Riemann Zeta function conjugate pair example $\zeta(s)$,$\zeta(1-s)$ for (0.2+it) , (0.8-it). The blue, green and red lines indicate respectively, the Re, Im and Abs values of the Riemann Zeta function. It can be seen that there are many zeroes along the critical line, characterised by both $Re(\zeta(0.5+it))=Im(\zeta(0.5+it))=0$. For the Riemann Zeta function off the critical line (shown in the bottom two graphs), there does not appear to be any zeroes (on red line) but the complicated lineshape makes it difficult to be sure that some zeroes may occur as $t \rightarrow \infty$. 
 
-```{r, reimann, echo=FALSE, cache=FALSE, fig.width=6, fig.height=6, fig.keep='high', warning=FALSE}
+```{r, riemann, echo=FALSE, cache=FALSE, fig.width=6, fig.height=6, fig.keep='high', warning=FALSE}
 
 
 #install.packages("pracma")
@@ -108,10 +109,10 @@ plotzeta(.1,50,.2)
 
 ```
 
-***Figure 1: Reimann Zeta function behaviour***
+***Figure 1: Riemann Zeta function behaviour***
 
 
-In this paper, the properties of the Reimann Zeta conjugate pair ratio function is examined. It is obtained from eqn \eqref{eq:func} by dividing by sides by $\zeta(1-s)$.
+In this paper, the properties of the Riemann Zeta conjugate pair ratio function is examined. It is obtained from eqn \eqref{eq:func} by dividing by sides by $\zeta(1-s)$.
 
 \begin{equation}
 \frac{\zeta(s)}{\zeta(1-s)} = 2^s\pi^{s-1}sin(\frac{\pi s}{2})\Gamma(1-s) \label{eq:ratio}
@@ -123,12 +124,12 @@ The validity of this estimator function depends on whether $\zeta(1-s)=0$ off th
 \frac{lim \thinspace  \zeta(s) \rightarrow 0}{lim \thinspace \zeta(1-s) \rightarrow 0}  \label{eq:limit}
 \end{equation}
 
-is continuous. This ratio function will be shown to have a simpler lineshape than the Reimann Zeta function and has separable AM, FM components which resolves eqn \eqref{eq:limit} continuity issues.
+is continuous. This ratio function will be shown to have a simpler lineshape than the Riemann Zeta function and has separable AM, FM components which resolves eqn \eqref{eq:limit} continuity issues.
 
 
-#Reimann Seigal Theta function 
+#Riemann Seigal Theta function 
 
-As a precursor to the viewing the lineshapes of $Re(\frac{\zeta (s)}{\zeta (1-s)})$ and $Im(\frac{\zeta (s)}{\zeta (1-s)})$, it is important to revisit the Reimann Seigal function and its Theta and Z components. The Reimann Seigal function is an approximating function (3) for the Reimann Zeta function along the critical line (0.5+it) of the form
+As a precursor to the viewing the lineshapes of $Re(\frac{\zeta (s)}{\zeta (1-s)})$ and $Im(\frac{\zeta (s)}{\zeta (1-s)})$, it is important to revisit the Riemann Seigal function and its Theta and Z components. The Riemann Seigal function is an approximating function (3) for the Riemann Zeta function along the critical line (0.5+it) of the form
 
 \begin{equation}
 \zeta(0.5+it) = Z(t)e^{-i\theta(t)} \label{eq:rs}
@@ -140,9 +141,9 @@ where
 \theta(t) = Im(ln(\Gamma(\frac{1}{4}+\frac{1}{2}it)))-\frac{t}{2}ln(\pi) \label{eq:rs}
 \end{equation}
 
-For values of s away from the critical line, series expansions based around the Reimann Seigal function are employed.
+For values of s away from the critical line, series expansions based around the Riemann Seigal function are employed.
 
-Figure 2, below illustrates the Reimann Seigal function for the critical line alongside the abs($\zeta(0.5+it)$). The lineshape can be understood as a combined modulation signal with a FM and AM terms both depending on t. 
+Figure 2, below illustrates the Riemann Seigal function for the critical line alongside the abs($\zeta(0.5+it)$). The lineshape can be understood as a combined modulation signal with a FM and AM terms both depending on t. 
 
 
 
@@ -169,7 +170,7 @@ par(mfrow=c(1,1))
 plot(x, fa, type="n", xlim = c(minx, maxx), 
      ylim = c(-max(fa), max(fa)),
           xlab = "", ylab = "Function value",
-     main = "Riemann Seigal and Reimann Zeta Fns along the critical line")
+     main = "Riemann Seigal and Riemann Zeta Fns along the critical line")
 # lines(x, fr, col="blue")
 # lines(x, fi, col="darkgreen")
 grid(lwd = 2,col="black") # grid only in y-direction
@@ -192,7 +193,7 @@ plotzeta(.1,100,.5)
 
 ```
 
-***Figure 2: Reimann Seigal and Reimann Zeta function behaviour on the critical line***
+***Figure 2: Riemann Seigal and Riemann Zeta function behaviour on the critical line***
 
 
 #$\frac{\zeta(s)}{\zeta(1-s)}$ behaviour
@@ -241,7 +242,7 @@ plotzeta(.1,50,.5,"critical line")
 
 ```
 
-***Figure 3: Reimann Zeta conjugate pair ratio function behaviour on critical line***
+***Figure 3: Riemann Zeta conjugate pair ratio function behaviour on critical line***
 
 
 ```{r, ratio2, echo=FALSE, cache=FALSE, fig.width=6, fig.height=4.2, fig.keep='high', warning=FALSE}
@@ -253,7 +254,7 @@ plotzeta(.1,50,.4,"zeta(0.4+it)/zeta(0.6-it)")
 
 ```
 
-***Figure 4: Reimann Zeta conjugate pair ratio function behaviour near critical line***
+***Figure 4: Riemann Zeta conjugate pair ratio function behaviour near critical line***
 
 ```{r, ratio3, echo=FALSE, cache=FALSE, fig.width=6, fig.height=4.2, fig.keep='high', warning=FALSE}
 
@@ -267,40 +268,41 @@ plotzeta(.1,50,.1,"zeta(0.1+it)/zeta(0.9-it)")
 
 ```
 
-***Figure 3: Reimann Zeta conjugate pair ratio function behaviour near edge of critical strip***
+***Figure 5: Riemann Zeta conjugate pair ratio function behaviour near edge of critical strip***
 
 
 As can be seen, 
 
 (i) the FM modulation behaviour is fixed, just a function of Im(s) = t
 
-(ii) the AM modulation depends on t and distance from critical line abs(0.5-Re(s)). It appears to be smooth and monotonically increasing for $\frac{\zeta(a+it)}{\zeta(1-a-it)}$ where $a \le 0.5$.
+(ii) the AM modulation depends on t and distance from critical line abs(0.5-Re(s)). It appears to be smooth and monotonically increasing for $\frac{\zeta(a+it)}{\zeta(1-a-it)}$ where $a \le 0.5$. The value of the AM modulation is obtained from the RHS of eqn \eqref{eq:ratio}.
 
-(iii) the dotted lines in figures 3-5 indicate that a fitted function has also been plotted extremely well over the numeric calculations of $\frac{\zeta(s)}{\zeta(1-s)}$. The fit agrees for a wide range of Im(s) up to Im(s) ~ 450, the limit of the "pracma" r package (4). The fitted FM modulation functional dependence was easily confirmed to be twice the Im(s) dependence of the Reimann Seigal Theta function on the critical line, but now applicable to any value of s.
+(iii) the dotted lines in figures 3-5 indicate that a fitted function has also been plotted extremely well over the numeric calculations of $\frac{\zeta(s)}{\zeta(1-s)}$. The fit agrees for a wide range of Im(s) up to Im(s) ~ 450, the limit of the "pracma" r package (4). The fitted FM modulation functional dependence was easily confirmed to be twice the Im(s) dependence of the Riemann Seigal Theta function on the critical line, but now applicable to any value of s.
 
 \begin{equation}
-Re(\frac{\zeta(s)}{\zeta(1-s)}) = A(Im(s),abs(0.5-Re(s)))\dot Cos(2*(Im(ln(\Gamma(\frac{1}{4}+\frac{1}{2}it)))-\frac{t}{2}ln(\pi))) \label{eq:real}
+Re(\frac{\zeta(s)}{\zeta(1-s)}) = A(Im(s),abs(0.5-Re(s)))\cdot Cos(2*\theta(t)) \label{eq:real}
 \end{equation}
 
 \begin{equation}
-Im(\frac{\zeta(s)}{\zeta(1-s)}) = -A(Im(s),abs(0.5-Re(s)))\dot Sin(2*(Im(ln(\Gamma(\frac{1}{4}+\frac{1}{2}it)))-\frac{t}{2}ln(\pi))) \label{eq:imag}
+Im(\frac{\zeta(s)}{\zeta(1-s)}) = -A(Im(s),abs(0.5-Re(s)))\cdot Sin(2*\theta(t)) \label{eq:imag}
 \end{equation}
 
-\begin{equation}
-abs(\frac{\zeta(s)}{\zeta(1-s)}) = A(Im(s),abs(0.5-Re(s))) \label{eq:abs}
-\end{equation}
+\begin{align}
+abs(\frac{\zeta(s)}{\zeta(1-s)}) &= A(Im(s),abs(0.5-Re(s))) \\
+&= abs(2^s\pi^{s-1}sin(\frac{\pi s}{2})\Gamma(1-s) \exp{(i*2\theta(t))}) \\ &= abs(2^s\pi^{s-1}sin(\frac{\pi s}{2})\Gamma(1-s)) \label{eq:abs}
+\end{align}
 
 
-(iv) On the critical line (neglecting rounding errors), the ratio function remains smooth and continuous around the Reimann Zeta function zeroes. This behaviour occurs because the limiting behaviour of the numerator and denominator in eqn \eqref{eq:limit} are equivalent as A(Im(s),0) = 1 by the symmetry of 
+(iv) On the critical line (neglecting rounding errors), the ratio function remains smooth and continuous around the Riemann Zeta function zeroes. This behaviour occurs because the limiting behaviour of the numerator and denominator in eqn \eqref{eq:limit} are equivalent as A(Im(s),0) = 1 by the symmetry of 
 
 \begin{equation}
 Re(0.5+it) = Re(1-(0.5+it)) = 0.5
 \end{equation}
 
 
-(v) In practice, precisely on the critical line, the numeric ratio calculation broke down beyond Im(s) ~ 50. However, since the Reimann Zeta zeroes calculations accurate to 13 significant figures, were observed not to give precisely zero at t > 100 for (4) the pathology was assigned to rounding error problems. As soon as the s value was infinitesimally moved from the critical line, the numeric ratio calculation resulted in clean FM modulation
+(v) In practice, precisely on the critical line, the numeric ratio calculation broke down beyond Im(s) ~ 50. However, since the Riemann Zeta zeroes calculations accurate to 13 significant figures, were observed not to give precisely zero at t > 100 for (4) the pathology was assigned to rounding error problems. As soon as the s value was infinitesimally moved from the critical line, the numeric ratio calculation resulted in clean FM modulation
 
-The exact functional dependence of the AM modulation function A(Im(s),abs(0.5-Re(s))) remains to be obtained but the smooth functional dependence of abs($\frac{\zeta(s)}{\zeta(1-s)}$) compared to the noisy abs($\zeta(s)$) function will allow more thorough testing. The demonstrated separable nature of the FM term, the smoothness of the abs($\frac{\zeta(0.5+it)}{\zeta(0.5-it)}$) function, excluding rounding error issues, coupled with the increasing AM signal as Re(s) differs from 0.5 gives strong evidence that no zeroes are present in the critical strip away from the critical line. 
+The demonstrated separable nature of the FM term, the smoothness of the abs($\frac{\zeta(0.5+it)}{\zeta(0.5-it)}$) function, excluding rounding error issues, coupled with the increasing AM signal as Re(s) differs from 0.5 gives strong evidence that no zeroes are present in the critical strip away from the critical line. 
 
 A coarse lower bound on A(Im(s),abs(0.5-Re(s))) for large Im(s), given Re(s) < 0.5 is
 
@@ -311,16 +313,110 @@ A coarse lower bound on A(Im(s),abs(0.5-Re(s))) for large Im(s), given Re(s) < 0
 A coarse upper bound on A(Im(s),abs(0.5-Re(s))) for large Im(s), given Re(s) < 0.5 is
 
 \begin{equation}
-\frac{\Gamma(\frac{(1-s)}{2})}{\Gamma(\frac{s}{2})}     
+abs(\frac{\Gamma(\frac{(1-s)}{2})}{\Gamma(\frac{s}{2})} )    
 \end{equation}
 
+###Fitting the average growth of the Riemann Zeta function for Re(s) <= 0.5
+
+Figure 6, compares the behaviour of the Riemann Zeta function for Re(s) <= 0.5, to the behaviour of the absolute value of the Riemann Zeta conjugate pair ratio, $abs(\frac{\zeta(s)}{\zeta(1-s)})$. 
+
+
+```{r, riemanngrowth, echo=FALSE, cache=FALSE, fig.width=6, fig.height=6, fig.keep='high', warning=FALSE}
+
+
+#install.packages("pracma")
+# library(pracma)
+
+plotzeta <- function(minx,maxx,xval) {
+x <- seq(minx, maxx, len=1001)
+z <- 0.5 + x*1i
+zp <- .4 + x*1i
+zn <- 1-.4 - x*1i
+
+
+fr <- Re(zeta(z))
+fi <- Im(zeta(z))
+fa <- abs(zeta(zp))
+fat <- abs((2^zp*pi^(zp-1)*sin(0.5*zp*pi)*gammaz(1-zp)))
+
+par(mfrow=c(3,1))
+
+par(fig=c(0,1,0.6,0.9999))
+
+
+plot(x, fa, type="n", xlim = c(minx, maxx), 
+     ylim = c(0, max(fa)),
+          xlab = "", ylab = "Function value",
+     main = "Riemann's Zeta Fn for s=(0.4+it) just below the critical line")
+# lines(x, fr, col="blue")
+# lines(x, fi, col="darkgreen")
+abline(h=0)
+lines(x, fa, col="red",lwd=2)
+lines(x, fat, col="green",lwd=2)
+points(14.1347, 0, col = "darkred")
+legend(0.5, 6, c("real part", "imaginary part", "absolute value"),
+       lty = 1,cex=.4, lwd = c(1, 1, 2), col = c("blue", "darkgreen", "red"))
+
+zp <- .0 + x*1i
+zn <- 1-.0 - x*1i
+
+fr <- Re(zeta(zp))
+fi <- Im(zeta(zp))
+fa <- abs(zeta(zp))
+fat <- abs((2^zp*pi^(zp-1)*sin(0.5*zp*pi)*gammaz(1-zp)))
+
+par(fig=c(0,1,0.3,0.7), new=TRUE)
+
+plot(x, fa, type="n", xlim = c(minx, maxx), 
+     ylim = c(0, 75),
+          xlab = "", ylab = "Function value",
+     main = "for s=(0.0+it) on the lower edge of critical strip")
+# lines(x, fr, col="blue")
+# lines(x, fi, col="darkgreen")
+abline(h=0)
+lines(x, fa, col="red",lwd=2)
+lines(x, fat, col="green",lwd=2)
+points(14.1347, 0, col = "darkred")
+legend(0.5, 60, c("real part", "imaginary part", "absolute value"),
+       lty = 1,cex=.4, lwd = c(1, 1, 2), col = c("blue", "darkgreen", "red"))
+
+par(fig=c(0,1,0.0,0.4), new=TRUE)
+
+zp <- -1 + x*1i
+zn <- 1-1 - x*1i
+
+fr <- Re(zeta(zp))
+fi <- Im(zeta(zp))
+fa <- abs(zeta(zp))
+fat <- abs((2^zp*pi^(zp-1)*sin(0.5*zp*pi)*gammaz(1-zp)))
+plot(x, fa, type="n", xlim = c(minx, maxx), 
+     ylim = c(0, max(fa)),
+          xlab = "Imaginary part", ylab = "Function value",
+     main = "for s=(-1-it) below the critical strip")
+# lines(x, fr, col="blue")
+# lines(x, fi, col="darkgreen")
+abline(h=0)
+lines(x, fa, col="red",lwd=2)
+lines(x, fat, col="green",lwd=2)
+points(14.1347, 0, col = "darkred")
+legend(0.5, 600, c("real part", "imaginary part", "absolute value"),
+       lty = 1,cex=.4, lwd = c(1, 1, 2), col = c("blue", "darkgreen", "red"))
+grid()## End(Not run)
+
+}
+
+plotzeta(.1,450,.2)
+
+```
+
+***Figure 6: An average growth function estimator for the Riemann Zeta function, for Re(s) < 0.5***
 
 
 ###Conclusions
 
-The Reimann Zeta conjugate pair ratio functional dependence gives a smooth natural representation of the FM contribution to the Reimann Zeta function and illustrates the Reimann Zeta function zeroes on the critical line as an interference pattern of the periodicity of the natural prime numbers. The FM modulation is determined by twice the Reimann Zeta Theta function, independent of Re(s).
+The Riemann Zeta conjugate pair ratio functional dependence gives a smooth natural representation of the FM contribution to the Riemann Zeta function and illustrates the Riemann Zeta function zeroes on the critical line as an interference pattern of the periodicity of the natural prime numbers. The FM modulation is determined by twice the Riemann Zeta Theta function, independent of Re(s).
 
-The smoothness and increasing nature of the AM contribution to the Reimann Zeta conjugate pair ratio functional dependence for increasing abs(0.5-Re(s)) for Re(s) < 0.5 provides strong evidence that the Reimann Hypothesis is true. Further, the separable nature of the FM modulation for the Reimann Zeta conjugate pair ratio function, ie. independent from Re(s), drives the reason for this Reimann Hypothesis behaviour. 
+The smoothness and increasing nature of the AM contribution to the Riemann Zeta conjugate pair ratio functional dependence for increasing abs(0.5-Re(s)) for Re(s) < 0.5 provides strong evidence that the Riemann Hypothesis is true. Further, the AM amplitude $abs(2^s\pi^{s-1}sin(\frac{\pi s}{2})\Gamma(1-s))$ provides a good estimate of the average growth in the Reimann Zeta function for Re(s) <= 0.5. The separable nature of the FM modulation for the Riemann Zeta conjugate pair ratio function, ie. independent from Re(s), drives the reason for this Riemann Hypothesis behaviour. 
 
 
 ###References
