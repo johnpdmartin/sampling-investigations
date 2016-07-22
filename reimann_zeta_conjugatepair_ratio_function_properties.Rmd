@@ -8,7 +8,7 @@ revision date: Tuesday, July 19, 2016
 
 ###Executive Summary
 
-Graphical examination of the Riemann Zeta conjugate pair ratio function $\frac{\zeta (s)}{\zeta (1-s)}$ reveals a simple AM-FM lineshape for the real and imaginary components with (i) the FM terms present in the exact terms of the Riemann Seigal $\theta(t)$ function and  $\Gamma(0.5+it)$ and (ii) only the AM term is dependent on the distance of the real value of s from 0.5. The envelope function $abs(\frac{\zeta (s)}{\zeta (1-s)})$ is smooth and increases (decreases) with increasing distance from the critical line for $Re(s) < 0.5$ ($Re(s) > 0.5$) indicating no zeroes away from the critical line in agreement with the Riemann Hypothesis. The envelope function is also a good fit for the average growth of the Riemann Zeta function for Re(s) <= 0.5. 
+Graphical examination of the Riemann Zeta conjugate pair ratio function $\frac{\zeta (s)}{\zeta (1-s)}$ reveals a simple AM-FM lineshape for the real and imaginary components with (i) the FM terms present in the exact terms of the Riemann Siegel $\theta(t)$ function and  $\Gamma(0.5+it)$ and (ii) only the AM term is dependent on the distance of the real value of s from 0.5. The envelope function $abs(\frac{\zeta (s)}{\zeta (1-s)})$ is smooth and increases (decreases) with increasing distance from the critical line for $Re(s) < 0.5$ ($Re(s) > 0.5$) indicating no zeroes away from the critical line in agreement with the Riemann Hypothesis. The envelope function is also a good fit for the average growth of the Riemann Zeta function for Re(s) <= 0.5. 
 
 ###Introduction
 
@@ -127,9 +127,9 @@ The validity of this estimator function depends on whether $\zeta(1-s)=0$ off th
 is continuous. This ratio function will be shown to have a simpler lineshape than the Riemann Zeta function and has separable AM, FM components which resolves eqn \eqref{eq:limit} continuity issues.
 
 
-#Riemann Seigal Theta function 
+#Riemann Siegel Theta function 
 
-As a precursor to the viewing the lineshapes of $Re(\frac{\zeta (s)}{\zeta (1-s)})$ and $Im(\frac{\zeta (s)}{\zeta (1-s)})$, it is important to revisit the Riemann Seigal function and its Theta and Z components. The Riemann Seigal function is an approximating function (3) for the Riemann Zeta function along the critical line (0.5+it) of the form
+As a precursor to the viewing the lineshapes of $Re(\frac{\zeta (s)}{\zeta (1-s)})$ and $Im(\frac{\zeta (s)}{\zeta (1-s)})$, it is important to revisit the Riemann Siegel function and its Theta and Z components. The Riemann Siegel function is an approximating function (3) for the Riemann Zeta function along the critical line (0.5+it) of the form
 
 \begin{equation}
 \zeta(0.5+it) = Z(t)e^{-i\theta(t)} \label{eq:rs}
@@ -141,9 +141,9 @@ where
 \theta(t) = Im(ln(\Gamma(\frac{1}{4}+\frac{1}{2}it)))-\frac{t}{2}ln(\pi) \label{eq:rs}
 \end{equation}
 
-For values of s away from the critical line, series expansions based around the Riemann Seigal function are employed.
+For values of s away from the critical line, series expansions based around the Riemann Siegel function are employed.
 
-Figure 2, below illustrates the Riemann Seigal function for the critical line alongside the abs($\zeta(0.5+it)$). The lineshape can be understood as a combined modulation signal with a FM and AM terms both depending on t. 
+Figure 2, below illustrates the Riemann Siegel function for the critical line alongside the abs($\zeta(0.5+it)$). The lineshape can be understood as a combined modulation signal with a FM and AM terms both depending on t. 
 
 
 
@@ -170,7 +170,7 @@ par(mfrow=c(1,1))
 plot(x, fa, type="n", xlim = c(minx, maxx), 
      ylim = c(-max(fa), max(fa)),
           xlab = "", ylab = "Function value",
-     main = "Riemann Seigal and Riemann Zeta Fns along the critical line")
+     main = "Riemann Siegel and Riemann Zeta Fns along the critical line")
 # lines(x, fr, col="blue")
 # lines(x, fi, col="darkgreen")
 grid(lwd = 2,col="black") # grid only in y-direction
@@ -193,7 +193,7 @@ plotzeta(.1,100,.5)
 
 ```
 
-***Figure 2: Riemann Seigal and Riemann Zeta function behaviour on the critical line***
+***Figure 2: Riemann Siegel and Riemann Zeta function behaviour on the critical line***
 
 
 #$\frac{\zeta(s)}{\zeta(1-s)}$ behaviour
@@ -277,7 +277,7 @@ As can be seen,
 
 (ii) the AM modulation depends on t and distance from critical line abs(0.5-Re(s)). It appears to be smooth and monotonically increasing for $\frac{\zeta(a+it)}{\zeta(1-a-it)}$ where $a \le 0.5$. The value of the AM modulation is obtained from the RHS of eqn \eqref{eq:ratio}.
 
-(iii) the dotted lines in figures 3-5 indicate that a fitted function has also been plotted extremely well over the numeric calculations of $\frac{\zeta(s)}{\zeta(1-s)}$. The fit agrees for a wide range of Im(s) up to Im(s) ~ 450, the limit of the "pracma" r package (4). The fitted FM modulation functional dependence was easily confirmed to be twice the Im(s) dependence of the Riemann Seigal Theta function on the critical line, but now applicable to any value of s.
+(iii) the dotted lines in figures 3-5 indicate that a fitted function has also been plotted extremely well over the numeric calculations of $\frac{\zeta(s)}{\zeta(1-s)}$. The fit agrees for a wide range of Im(s) up to Im(s) ~ 450, the limit of the "pracma" r package (4). The fitted FM modulation functional dependence was easily confirmed to be twice the Im(s) dependence of the Riemann Siegel Theta function on the critical line, but now applicable to any value of s.
 
 \begin{equation}
 Re(\frac{\zeta(s)}{\zeta(1-s)}) = A(Im(s),abs(0.5-Re(s)))\cdot Cos(2*\theta(t)) \label{eq:real}
