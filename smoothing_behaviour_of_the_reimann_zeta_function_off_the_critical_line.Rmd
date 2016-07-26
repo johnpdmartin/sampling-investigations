@@ -346,6 +346,9 @@ http://dx.doi.org/10.6084/m9.figshare.3490955
 Using the average growth estimate for the Riemann Zeta function, the residuals distribution indicates a aggregated set of beta distributions from each segment of the Riemann Zeta function between the Riemann Zeta minimums (located above the critical line zeroes).
 
 As the Riemann Zeta function is extended to $\infty$ the aggregate residuals distributions become smooth beta distributions with peaks below zero (in the displayed histograms).
+
+
+
 ```{r, riemannstats, echo=FALSE, cache=FALSE, fig.width=6, fig.height=6, fig.keep='high', warning=FALSE}
 
 
@@ -461,20 +464,7 @@ par(fig=c(0.6666,0.9999,0.,0.4), new=TRUE)
 
 hist(res,breaks=1000)
 
-par(mfrow=c(1,1))
 
-hist(res1,breaks=1000)
-plot(x,fat1+res1)
-points(x,fat1,col="red")
-print(paste(max(res1),min(res1),min(res1)/max(fat1)))
-hist(res2,breaks=1000)
-plot(x,fat2+res2)
-points(x,fat2,col="red")
-print(paste(max(res2),min(res2),min(res2)/max(fat2)))
-hist(res3,breaks=1000)
-plot(x,fat3+res3)
-points(x,fat3,col="red")
-print(paste(max(res3),min(res3),min(res3)/max(fat3)))
 
 
 }
