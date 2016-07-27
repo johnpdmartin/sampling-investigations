@@ -207,7 +207,7 @@ plotzeta(.1,450,.2)
 
 ###Extending the Riemann Siegel function to the lower half of the critical strip
 
-Noting (i) the equivalence relationship between the Riemann Zeta function and Riemann Siegel function for the critical line and (ii) the average growth estimator for the Riemann Zeta function below the critical line eqref(eq:ratio), it is straightforward to attempt the following rescaled Riemann Siegel function
+Noting (i) the equivalence relationship between the Riemann Zeta function and Riemann Siegel function for the critical line and (ii) the average growth estimator for the Riemann Zeta function below the critical line \eqref{eq:ratio}, it is straightforward to attempt the following rescaled Riemann Siegel function
 
 \begin{equation}
  abs(2^s\pi^{s-1}sin(\frac{\pi s}{2})\Gamma(1-s))Z(t) \label{eq:rs_resc}
@@ -319,7 +319,11 @@ plotzeta(.1,50,.2)
 
 ***Figure 3: The Riemann Zeta function appearing as a smoothed version of the rescaled Riemann Siegel function, for Re(s) < 0.5***
 
-The closeness of the smoothing behaviour of the Riemann Zeta function and the rescaled Riemann Siegel function has also been confirmed with higher precision using Julia language code.
+For the above graphs, the calculations used the "pracma" r package (5). However, the closeness of the smoothing behaviour of the Riemann Zeta function and the rescaled Riemann Siegel function has also been confirmed with higher precision using Julia and pari-gp code. For example, figure 4, displays the comparative behaviour for s = 0.4 + I*t , near t ~ 400000 using pari-gp (6) calculations.
+
+![My Figure](riemann_zeta_near_imag_400000.pdf)
+
+***Figure 4: The Riemann Zeta function below the critical line (red), appearing as a smoothed version of the rescaled Riemann Siegel function (green) at large Im(s) values***
 
 ###Conclusions
 
@@ -339,6 +343,10 @@ The close relationship also explains the reason for the success of the Riemann S
 4. The exact behaviour of the Reimann Zeta conjugate pair ratio function
 Martin, John (2016)
 http://dx.doi.org/10.6084/m9.figshare.3490955
+
+5. Borchers H. W., "Pracma r package" v1.9.3 https://cran.r-project.org/web/packages/pracma/pracma.pdf 2016
+
+6. PARI/GP version 2.7.0, The PARI~Group, Bordeaux 2014, available from \url{http://pari.math.u-bordeaux.fr}
 
 
 ###Apendix A: Residuals distribution of Riemann Zeta function about average growth
@@ -476,3 +484,10 @@ plotzeta(.1,50,.2)
 ```
 
 ***Figure A1: Aggregated beta distributions for residuals of Riemann Zeta function about average growth, for Re(s) < 0.5***
+
+
+###Apendix B: Pari-gp code for figure 4
+
+psploth(X=400012,400016.3,[abs(zeta(0.4+X*I)),abs(2^(0.4+X*I)*Pi^(0.4+X*I-1)*sin(Pi/2*(0.4+X*I))*gamma(1-(0.4+X*I)))*abs(zeta(0.5+X*I)*exp(I*(imag(gamma(1/4+1/2*I*X)-X/2*log(Pi)))))])
+
+
