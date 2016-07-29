@@ -4,10 +4,11 @@ author: "John Martin"
 date: "Tuesday, July 26, 2016"
 output: pdf_document
 ---
+revision:July 29, 2016
 
 ###Executive Summary
 
-The Riemann Zeta function off the critical line can be understood as a smoothed version of the Riemann Siegel function scaled by the average growth, for Re(s) < 0.5, of the Riemann Zeta function. The smoothing behaviour off the critical line avoids the zeroes present in the rescaled Riemann Siegel function validating and explaining the Riemann Hypothesis. 
+The $abs(\zeta(s))$ off the critical line can be understood as a smoothed version of the absolute value of the Riemann Siegel function (and hence $abs(\zeta(0.5+I*t))$) scaled by the average growth of the Riemann Zeta function. For Re(s) < 0.5, there is large baseline growth in the $abs(\zeta(s))$ while for Re(s) > 0.5, the baseline of $abs(\zeta(s))$ is constant. The smoothing behaviour off the critical line avoids the zeroes present in the rescaled Riemann Siegel function validating and explaining the Riemann Hypothesis. 
 
 ###Introduction
 
@@ -28,7 +29,7 @@ The Riemann Zeta function has been shown to obey the functional equation (2)
 
 Following directly from the form of the functional equation and the properties of the coefficients on the RHS of eqn \eqref{eq:func} it has been shown that any zeroes off the critical line would be paired, ie. if $\zeta(s)$ = 0 was true then $\zeta(1-s) = 0$.
 
-The Riemann Siegel function is an approximating function (3) for the Riemann Zeta function along the critical line (0.5+it) of the form
+The Riemann Siegel function is an approximating function (3) for the magnitude of the Riemann Zeta function along the critical line (0.5+it) of the form
 
 \begin{equation}
 \zeta(0.5+it) = Z(t)e^{-i\theta(t)} \label{eq:rs}
@@ -37,10 +38,10 @@ The Riemann Siegel function is an approximating function (3) for the Riemann Zet
 where 
 
 \begin{equation}
-\theta(t) = Im(ln(\Gamma(\frac{1}{4}+\frac{1}{2}it)))-\frac{t}{2}ln(\pi) \label{eq:rs}
+\theta(t) = Im(ln(\Gamma(\frac{1}{4}+\frac{1}{2}it)))-\frac{t}{2}ln(\pi) \label{eq:theta}
 \end{equation}
 
-For values of $\zeta(s)$ away from the critical line, series expansions based around the Riemann Siegel function are employed.
+For values of $\zeta(s)$ away from the critical line, series expansions based around the Riemann Siegel function are employed. In the following results the $abs(\zeta(s))$ is compared to $abs(Z(t))$ and so the discussion revolves around the magnitudes and shapes of the Riemann Zeta and Riemann Siegel functions. Since from \eqref{eq:rs} the $abs(Z(t)) = abs(\zeta(0.5+I*t))$, the discussion really indicates how the critical line Riemann Zeta function and the Riemann Zeta function off the critical line are related. 
 
 Figure 1, below illustrates the Riemann Siegel and Riemann Zeta function for the critical line alongside the abs($\zeta(0.5+it)$).
 
@@ -205,21 +206,17 @@ plotzeta(.1,450,.2)
 
 ***Figure 2: An average growth function estimator for the Riemann Zeta function, for Re(s) < 0.5***
 
-###Extending the Riemann Siegel function to the lower half of the critical strip
 
-Noting (i) the equivalence relationship between the Riemann Zeta function and Riemann Siegel function for the critical line and (ii) the average growth estimator for the Riemann Zeta function below the critical line \eqref{eq:ratio}, it is straightforward to attempt the following rescaled Riemann Siegel function
+
+###Extending the Riemann Siegel function off the critical line
+
+Noting (i) the relationship eqn \eqref{eq:rs} between the Riemann Zeta function and Riemann Siegel function for the critical line and (ii) the average growth estimator for the Riemann Zeta function below the critical line \eqref{eq:ratio}, it is straightforward to attempt the following rescaled Riemann Siegel function
 
 \begin{equation}
  abs(2^s\pi^{s-1}sin(\frac{\pi s}{2})\Gamma(1-s))Z(t) \label{eq:rs_resc}
 \end{equation}
 
-Figure 3, illustrates the comparison of the absolute magnitudes of the Riemann Zeta function and rescaled Riemann Siegel function for several values below the critical line. The Riemann Zeta function clearly appears to be a smoothed version of the rescaled Riemann Siegel function. Given that 
-
-(i) the minimum of the Riemann Zeta function appear above the zeroes of the rescaled Riemann Siegel function and 
-
-(ii) zeroes off the critical line are expected to occur in pairs, 
-
-indicates that the Riemann Hypothesis is valid.
+Figure 3, illustrates the comparison of the absolute magnitudes of the Riemann Zeta function and rescaled Riemann Siegel function for several values below the critical line. The Riemann Zeta function clearly appears to be a smoothed version of the rescaled Riemann Siegel function. 
 
 ```{r, riemannsmooth, echo=FALSE, cache=FALSE, fig.width=6, fig.height=6, fig.keep='high', warning=FALSE}
 
@@ -317,17 +314,158 @@ plotzeta(.1,50,.2)
 
 ```
 
-***Figure 3: The Riemann Zeta function appearing as a smoothed version of the rescaled Riemann Siegel function, for Re(s) < 0.5***
+***Figure 3: The $abs(\zeta(s))$ appearing as a smoothed version of the rescaled $abs(Z(t))$, for Re(s) > 0.5***
 
-For the above graphs, the calculations used the "pracma" r package (5). However, the closeness of the smoothing behaviour of the Riemann Zeta function and the rescaled Riemann Siegel function has also been confirmed with higher precision using Julia and pari-gp code. For example, figure 4, displays the comparative behaviour for s = 0.4 + I*t , near t ~ 400000 using pari-gp (6) calculations.
 
-![My Figure](riemann_zeta_near_imag_400000.pdf)
+Figure 4, shows similar lineshapes for Re(s) > 0.5 but no growth of the Riemann Zeta function is observed.
 
-***Figure 4: The Riemann Zeta function below the critical line (red), appearing as a smoothed version of the rescaled Riemann Siegel function (green) at large Im(s) values***
+```{r, riemanngrowthpos, echo=FALSE, cache=FALSE, fig.width=6, fig.height=6, fig.keep='high', warning=FALSE}
+
+
+#install.packages("pracma")
+ library(pracma)
+
+plotzeta <- function(minx,maxx,xval) {
+x <- seq(minx, maxx, len=1001)
+
+par(mfrow=c(3,1))
+
+par(fig=c(0,1,0.6,0.9999))
+
+z <- 0.5 + x*1i
+zt <- 0 + x*1i
+
+zp <- 2 + x*1i
+zn <- 1-2 - x*1i
+fr <- Re(zeta(zp))
+fa <- abs(zeta(zp))
+fat <- abs(zeta(z))
+
+plot(x, fa, type="n", xlim = c(minx, maxx), 
+     ylim = c(0, max(fat)),
+          xlab = "", ylab = "Function value",
+     main = "for s=(2+it) above the critical strip")
+# lines(x, fr, col="blue")
+# lines(x, fi, col="darkgreen")
+abline(h=1,col="green")
+lines(x, fa, col="red",lwd=2)
+lines(x, fat, col="blue",lwd=2)
+points(14.1347, 0, col = "darkred")
+legend(0.5, 3, c("abs(Reimann Zeta)", "abs(unit Reimann Siegel)"),
+       lty = 1,cex=.6, lwd = c(2, 2), col = c("blue", "red"))
+
+zp <- 1. + x*1i
+zn <- 1-1. - x*1i
+
+fr <- Re(zeta(zp))
+fi <- Im(zeta(zp))
+fa <- abs(zeta(zp))
+fat <- abs(zeta(z))
+
+par(fig=c(0,1,0.3,0.7), new=TRUE)
+
+plot(x, fa, type="n", xlim = c(minx, maxx), 
+     ylim = c(0, max(fat)),
+          xlab = "", ylab = "Function value",
+     main = "for s=(1.0+it) on the higher edge of critical strip")
+# lines(x, fr, col="blue")
+# lines(x, fi, col="darkgreen")
+abline(h=1,col="green")
+lines(x, fa, col="red",lwd=2)
+lines(x, fat, col="blue",lwd=2)
+points(14.1347, 0, col = "darkred")
+legend(0.5, 3, c("abs(Reimann Zeta)", "abs(unit Reimann Siegel)"),
+       lty = 1,cex=.6, lwd = c(2, 2), col = c("blue", "red"))
+
+par(fig=c(0,1,0.0,0.4), new=TRUE)
+
+zp <- .6 + x*1i
+zn <- 1-.6 - x*1i
+
+
+fr <- Re(zeta(z))
+fi <- Im(zeta(z))
+fa <- abs(zeta(zp))
+fat <- abs(zeta(z))
+
+
+plot(x, fa, type="n", xlim = c(minx, maxx), 
+     ylim = c(0, max(fat)),
+          xlab = "Imaginary part", ylab = "Function value",
+     main = "Riemann's Zeta Fn for s=(0.6+it) just above the critical line")
+# lines(x, fr, col="blue")
+# lines(x, fi, col="darkgreen")
+abline(h=1,col="green")
+lines(x, fa, col="red",lwd=2)
+lines(x, fat, col="blue",lwd=2)
+points(14.1347, 0, col = "darkred")
+legend(0.5, 3, c("abs(Reimann Zeta)", "abs(unit Reimann Siegel)"),
+       lty = 1,cex=.6, lwd = c(2, 2), col = c("blue", "red"))
+
+
+grid()## End(Not run)
+
+}
+
+plotzeta(.1,50,.2)
+
+```
+
+***Figure 4: Zero average growth for the Riemann Zeta function and Riemann Siegel function, for Re(s) > 0.5***
+
+Given that 
+
+(i) the minimum of the Riemann Zeta function $abs(\zeta(s))$ appear above the zeroes of the rescaled Riemann Siegel function $abs(Z(t))$ and 
+
+(ii) zeroes off the critical line are expected to occur in pairs (1-3), 
+
+indicates that the Riemann Hypothesis is valid.
+
+
+### Behaviour for large imaginary values
+
+For the above graphs, the calculations used the "pracma" r package (5). However, the closeness of the smoothing behaviour of the Riemann Zeta function and the rescaled $abs(Z(t))$ has also been confirmed with higher precision using Julia and pari-gp code. For example, figures 5-10, display the comparative behaviour near t ~ 400000 using pari-gp (6) calculations.
+
+Figure 5-7, uses the pari-gp package (6) for large imaginary values t for Re(s) > 0.5 (0.6, 1.0 & 2.0). 
+
+![My Figure](pari_0_6.pdf)
+***Figure 5: For Re(s) = 0.6, the Riemann Zeta function above the critical line (red), appearing as a smoothed version of the unit Riemann Siegel function (green) at large Im(s) values***
+
+![My Figure](pari_1.pdf)
+***Figure 6: For Re(s) = 1.0, the Riemann Zeta function on the upper edge of the critical strip (red), appearing as a smoothed version of the unit Riemann Siegel function (green) at large Im(s) values***
+
+![My Figure](pari_2.pdf)
+***Figure 7: For Re(s) = 2.0, the Riemann Zeta function on the upper edge of the critical strip (red), appearing as a highly smoothed version of the unit Riemann Siegel function (green) at large Im(s) values***
+
+Figures 8-10, show the corresponding behaviour for Re(s) < 0.5 (0.4, 0.0 & -1). 
+
+![My Figure](pari_0_4.pdf)
+***Figure 8: For Re(s) = 0.4, the Riemann Zeta function below the critical line (red), appearing as a smoothed version of the rescaled Riemann Siegel function (green) at large Im(s) values***
+
+![My Figure](pari_0.pdf)
+***Figure 9: For Re(s) = 0.0, the Riemann Zeta function on the lower edge of the critical strip (red), appearing as a smoothed version of the rescaled Riemann Siegel function (green) at large Im(s) values***
+
+![My Figure](pari_m1.pdf)
+***Figure 10: For Re(s) = -1.0, the Riemann Zeta function below the lower edge of the critical strip (red), appearing as a highly smoothed version of the rescaled Riemann Siegel function (green) at large Im(s) values***
+
+
+In Figures 6,7 & 9,10 it can be seen that on or outside the critical strip, the smoothing present in the Riemann Zeta function with respect to the rescaled $abs(Z(t))$ is erasing the critical line Riemann Zeta oscillations for large imaginary values. 
+
+Noting the behaviour in figures 3-10, it is straightforward to define the following rescaled Riemann Siegel function
+
+\begin  {align} Z_{rescaled}(t) =& \begin {cases} Z(t) \qquad\qquad\qquad\qquad\qquad\qquad for \thinspace Re(s) \geq 0.5  \\
+ abs(2^s\pi^{s-1}sin(\frac{\pi s}{2})\Gamma(1-s))Z(t) \thinspace\thinspace\thinspace for \thinspace Re(s) < 0.5 \end {cases} \label{eq:rs_resc} \end {align} 
+
+which is consistent with the average growth factors of the Riemann Zeta function of 1 & $abs(2^s\pi^{s-1}sin(\frac{\pi s}{2})\Gamma(1-s))$ above and below the critical line respectively.
+
+In all the figures, the $abs(\zeta(s))$ clearly appears to be a smoothing (depending on abs(Re(s)-0.5)) of the rescaled $abs(Z(t))$.
+
+The bounding of the Riemann Zeta function by the unit $abs(Z(t))$ for Re(s) > 0.5, which is $abs(\zeta(0.5+I*t))$, then has useful information for the $Lindlel\ddot{o}f$ Hypothesis (1).
+
 
 ###Conclusions
 
-Using an accurate average growth estimator for the Riemann Zeta function has allowed the identification of the Riemann Zeta function as a smoothed version of the rescaled Riemann Siegel function and indicates the validity of the Riemann Hypothesis.
+Using an accurate average growth estimator for the Riemann Zeta function has allowed the identification of $abs(\zeta(s))$ as a smoothed version of the $abs(Z_{rescaled}(t))$ function and indicates the validity of the Riemann Hypothesis.
 
 The close relationship also explains the reason for the success of the Riemann Siegel function based series expansions in estimating Riemann Zeta function values. The nature of the smoothing function will involve a varying bandwidth related to $\theta(t)$ as $Im(s)=t \rightarrow \infty$. 
 
@@ -349,11 +487,11 @@ http://dx.doi.org/10.6084/m9.figshare.3490955
 6. PARI/GP version 2.7.0, The PARI~Group, Bordeaux 2014, available from \url{http://pari.math.u-bordeaux.fr}
 
 
-###Apendix A: Residuals distribution of Riemann Zeta function about average growth
+###Appendix A: Residuals distribution of Riemann Zeta function about average growth for truncated series
 
-Using the average growth estimate for the Riemann Zeta function, the residuals distribution indicates a aggregated set of beta distributions from each segment of the Riemann Zeta function between the Riemann Zeta minimums (located above the critical line zeroes).
+Using the average growth estimate for the Riemann Zeta function, the residuals distribution indicates an aggregated set of beta like distributions from each segment of the Riemann Zeta function between the Riemann Zeta minimums (located above the critical line zeroes).
 
-As the Riemann Zeta function is extended to $\infty$ the aggregate residuals distributions become smooth beta distributions with peaks below zero (in the displayed histograms).
+As the Riemann Zeta function is extended to $\infty$ the aggregate residuals distributions become smooth beta like distributions with peaks below zero (in the displayed histograms).
 
 
 
@@ -486,8 +624,14 @@ plotzeta(.1,50,.2)
 ***Figure A1: Aggregated beta distributions for residuals of Riemann Zeta function about average growth, for Re(s) < 0.5***
 
 
-###Apendix B: Pari-gp code for figure 4
+###Appendix B: example Pari-gp code (mixed with some latex symbols)
 
-psploth(X=400012,400016.3,[abs(zeta(0.4+X*I)),abs(2^(0.4+X*I)*Pi^(0.4+X*I-1)*sin(Pi/2*(0.4+X*I))*gamma(1-(0.4+X*I)))*abs(zeta(0.5+X*I)*exp(I*(imag(gamma(1/4+1/2*I*X)-X/2*log(Pi)))))])
+Re(s) < 0.5
+
+$psploth(X=400012,400016.3,[abs(zeta(0.4+X*I)),abs(2^{(0.4+X*I)}*Pi^{(0.4+X*I-1)}*sin(Pi/2*(0.4+X*I))*gamma(1-(0.4+X*I)))*abs(zeta(0.5+X*I)*exp(I*(imag(gamma(1/4+1/2*I*X)-X/2*log(Pi)))))])$
+
+Re(s) >= 0.5
+
+$psploth(X=400012,400016.3,[abs(zeta(0.6+X*I)),abs(zeta(0.5+X*I)*exp(I*(imag(gamma(1/4+1/2*I*X)-X/2*log(Pi)))))])$
 
 
