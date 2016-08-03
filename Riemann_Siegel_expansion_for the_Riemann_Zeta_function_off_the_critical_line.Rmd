@@ -299,7 +299,7 @@ abs(\zeta(s)) \approx A \cdot \sqrt{Re(Z(t))^2+B^2Re(Z)^\prime(t)^2+ B^3Re(Z)^{\
 where 
 
 \begin{equation}
-A = abs(2^s\pi^{(s-1)}sin(\frac{s}{2}\pi)\Gamma(1-s))
+A = \sqrt{abs(2^s\pi^{(s-1)}sin(\frac{s}{2}\pi)\Gamma(1-s))}
 \end{equation}
 
 and
