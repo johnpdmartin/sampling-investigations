@@ -78,7 +78,7 @@ Figure 1, below illustrates abs(Re(Z(t))), abs(Im(Z(t))), abs($\zeta(0.5+it)$) a
 \Sigma (Re(Z(t))^2 + \alpha^2Re(Z^\prime(t))^2) > 0, \qquad for \thinspace \alpha \thinspace \epsilon \thinspace \mathbb{R}  \label {eq:gzero}
 \end{equation}
 
-The calculations in this paper involving zeta and its numerical derivatives used the "pracma" r package (6).
+Most of the calculations in this paper involving zeta and its numerical derivatives used the "pracma" r package (6) except when using pari/gp at large imaginary values (7).
 
 ```{r, rs1, echo=FALSE, cache=FALSE, fig.width=6, fig.height=4.5, fig.keep='high', warning=FALSE}
 
@@ -144,7 +144,7 @@ abs(Z(t)) &= abs(\zeta(0.5+I*t)e^{i\theta(t)}) \\
 It has been found that the following series expansion
 
 \begin{equation}
-abs(\zeta(s)) = \sqrt{Z(t)^2+\alpha^2Re(Z)^\prime(t)^2+\beta^2Re(Z)^{\prime\prime}(t) + ....}   \label{eq:serexp}
+abs(\zeta(s)) = \sqrt{Re(Z(t))^2+\alpha^2Re(Z)^\prime(t)^2+\beta^2Re(Z)^{\prime\prime}(t) + ....}   \label{eq:serexp}
 \end{equation}
 
 has good properties to smoothly estimate $abs(\zeta(s))$.
@@ -218,7 +218,16 @@ plotzeta(58,62,.2,3)
 
 ```
 
-***Figure 2: First order Riemann Siegel series expansion and Riemann Zeta function behaviour, below the critical line for s = (0.2 + It)***
+***Figure 2a,b: First order Riemann Siegel series expansion and Riemann Zeta function behaviour, below the critical line for s = (0.2 + It)***
+
+![My Figure](lower_bound_realpart_0_4.pdf)
+***Figure 2c: For Re(s) = 0.4, the non-zero lower bound minimum (green) is below minima in Riemann Zeta function below the critical line (red) at tricky large Im(s) value 17,143.8***
+
+![My Figure](lower_bound_realpart_0_49.pdf)
+***Figure 2d: For Re(s) = 0.49, the non-zero lower bound twin minima (green) are lower than the twin minima in Riemann Zeta function below the critical line (red) at tricky large Im(s) value 17,143.8***
+
+![My Figure](lower_bound_realpart_0_497.pdf)
+***Figure 2e: For Re(s) = 0.497, the non-zero lower bound twin minima (green) are lower and converging below the twin minima in Riemann Zeta function below the critical line (red) at tricky large Im(s) value 17,143.8***
 
 For t >= (the first Riemann Zeta zero position) & Re(s) < 0.5, the crude series expansion eqn \eqref{eq:1storder} will have local minima located over each critical line Riemann Zeta zero due to the properties of abs(Z(t)) and $abs(Z^\prime(t))$. These local minima as indicated in figure 3 form a strictly positive lower bound for the Riemann Zeta function below the critical line.  
 
@@ -274,6 +283,7 @@ plotzeta(.1,60,.2,3)
 # plotzeta(58,62,.2,3)
 
 ```
+
 
 
 Given that 
@@ -426,3 +436,4 @@ http://dx.doi.org/10.6084/m9.figshare.3502166
 
 6. Borchers H. W., "Pracma r package" v1.9.3 https://cran.r-project.org/web/packages/pracma/pracma.pdf 2016
 
+7. PARI/GP version 2.7.0, The PARI~Group, Bordeaux 2014, available from \url{http://pari.math.u-bordeaux.fr}
