@@ -1,0 +1,428 @@
+---
+title: "Improved lower bounds > 0 for Riemann Zeta function off the critical line using derivatives of Re(Riemann Siegel Z) function."
+author: "John Martin"
+date: "Tuesday, August 2, 2016"
+output: pdf_document
+---
+
+
+###Executive Summary
+
+Approximate lower bounds > 0, for $abs(\zeta(s))$ off the critical line are generated using the real part of the Riemann Siegel function Re(Z(t)) and its first derivative, further supporting the Riemann Hypothesis. An approximation to $abs(\zeta(s))$ off the critical line, is then obtained by the rescaled series sum of the Re(Z(t)) and several higher order derivatives.
+
+###Introduction
+
+The Riemann Zeta function is defined (1), in the complex plane by the integral 
+
+\begin{equation}
+\zeta(s) = \frac{\prod(-s)}{2\pi i}\int_{C_{\epsilon,\delta}} \frac{(-x)^s}{(e^{x}-1)x}dx
+\end{equation}
+
+
+where $s \thinspace \epsilon \thinspace \mathbb{C}$ and $C_{\epsilon,\delta}$ is the contour about the imaginary poles.
+
+The Riemann Zeta function has been shown to obey the functional equation (2)
+
+\begin{equation}
+\zeta(s) = 2^s\pi^{s-1}sin(\frac{\pi s}{2})\Gamma(1-s)\zeta(1-s) \label{eq:func}
+\end{equation}
+
+Following directly from the form of the functional equation and the properties of the coefficients on the RHS of eqn \eqref{eq:func} it has been shown that any zeroes off the critical line would be paired, ie. if $\zeta(s)$ = 0 was true then $\zeta(1-s) = 0$.
+
+The Riemann Siegel function is an approximating function (3) for the magnitude of the Riemann Zeta function along the critical line (0.5+it) of the form
+
+\begin{equation}
+Z(t) = \zeta(0.5+it)e^{i\theta(t)} \label{eq:rs}
+\end{equation}
+
+where 
+
+\begin{equation}
+\theta(t) = Im(ln(\Gamma(\frac{1}{4}+\frac{1}{2}it)))-\frac{t}{2}ln(\pi) \label{eq:theta}
+\end{equation}
+
+The transformation $e^{i\theta(t)}$, rotates $\zeta(0.5+it)$ such that Re(Z(t)) contains the entire Riemann Zeta critical line waveform energy and the zeroes of Z(t) correspond with the zeroes of $abs(\zeta(0.5+it))$.
+
+In Martin (4), the properties of the Riemann Zeta conjugate pair ratio function was examined. It is obtained from eqn \eqref{eq:func} by dividing by sides by $\zeta(1-s)$.
+
+\begin{equation}
+\frac{\zeta(s)}{\zeta(1-s)} = 2^s\pi^{s-1}sin(\frac{\pi s}{2})\Gamma(1-s) \label{eq:ratio}
+\end{equation}
+
+As well as showing that the Riemann Zeta conjugate pair ratio function has a simple AM-FM lineshape. It was also illustrated that the absolute magnitude of the Riemann Zeta conjugate pair ratio function is an accurate estimate of the average growth of the Riemann Zeta function, for Re(s) <= 0.5. 
+
+In Martin (5), it was shown that 
+
+(i) the absolute value of the Riemann Zeta function clearly appears to be a smoothed version of the absolute value of the rescaled Riemann Siegel function,
+
+(ii) the Im(s) behaviour of $\zeta(s)$ is equivalent for the same abs(Re(s)-0.5) except  
+
+(iii) the amplitude of Im(s) is asymmetric above and below the critical line, given by the relationship
+
+\begin  {align} Z_{rescaled}(t) =& \begin {cases} Z(t) \qquad\qquad\qquad\qquad\qquad\qquad for \thinspace Re(s) \geq 0.5  \\
+ abs(2^s\pi^{s-1}sin(\frac{\pi s}{2})\Gamma(1-s))Z(t) \thinspace\thinspace\thinspace for \thinspace Re(s) < 0.5 \end {cases} \label{eq:rs_resc} \end {align} 
+
+Exploring the idea of smoothing the Riemann Siegel function (or critical line Riemann Zeta function). In this paper, a series expansion formula for the Riemann Zeta function is investigated using the Riemann Siegel Z function and its derivatives.
+
+### A smoothing series expansion of the Riemann Siegel Z function about the critical line Riemann Zeta zeroes
+
+Figure 1, below illustrates abs(Re(Z(t))), abs(Im(Z(t))), abs($\zeta(0.5+it)$) and additionally the absolute value of the first derivative of Re(Z(t)) ($abs(Z^\prime(t))$). It is important to note that 
+
+(ii) Im(Z(t)) = 0 except for rounding errors,
+
+(ii) the only zeroes of Re(Z(t)) are the Riemann Zeta critical line zeroes and
+
+(iii) $Re(Z^\prime(t))$ and Re(Z(t)) are $\frac{\pi}{2}$ out of phase so 
+
+\begin{equation}
+\Sigma (Re(Z(t))^2 + \alpha^2Re(Z^\prime(t))^2) > 0, \qquad for \thinspace \alpha \thinspace \epsilon \thinspace \mathbb{R}  \label {eq:gzero}
+\end{equation}
+
+The calculations in this paper involving zeta and its numerical derivatives used the "pracma" r package (6).
+
+```{r, rs1, echo=FALSE, cache=FALSE, fig.width=6, fig.height=4.5, fig.keep='high', warning=FALSE}
+
+
+#install.packages("pracma")
+library(pracma)
+
+plotzeta <- function(minx,maxx,xval,scale) {
+x <- seq(minx, maxx, len=1001)
+z <- 0.5 + x*1i
+
+func <- function(x) {
+  Re(zeta(0.5+1i*x)*exp(1i*(Im(log(gammaz(0.25+0.5i*x)))-0.5*x*log(pi))))
+}
+funi <- function(x) {
+  Im(zeta(0.5+1i*x)*exp(1i*(Im(log(gammaz(0.25+0.5i*x)))-0.5*x*log(pi))))
+}
+fder <- function(x) {
+  fderiv(func,x,1)
+}
+
+
+fr <- func(x)
+fi <- funi(x)
+fa <- abs(zeta(z))
+
+par(mfrow=c(1,1))
+
+plot(x, fa, type="n", xlim = c(minx, maxx), 
+          xlab = "", ylab = "Function value",
+     main = paste("abs(Re(Z)), abs(Im(Z)), abs(Re'(Z)) and ","\n Riemann Zeta Fns along the critical line"))
+grid(lwd = 2,col="black") # grid only in y-direction
+abline(h=0)
+lines(x, fa, col="blue",lwd=2)
+
+lines(x, abs(fr), col = "green", lwd = 2,lty=2)
+lines(x, abs(fi), col = "red", lwd = 2,lty=2)
+lines(x, abs(fder(x)), col = "brown", lwd = 2,lty=2)
+
+points(14.1347, 0, col = "darkred")
+legend(min(x), max(fa), c("abs(Riemann Zeta)", "Re(Riemann Siegel)", "Im(Riemann Siegel)","first derivative Re(Z)"),
+       lty = 1,cex=.6, lwd = c(2, 2, 2,2), col = c("blue", "green","red","brown"))
+
+}
+
+plotzeta(.1,30,.5,1)
+
+plotzeta(58,62,.5,1)
+
+```
+
+***Figure 1a: Riemann Siegel and Riemann Zeta function behaviour on the critical line. Figure 1b includes example of tricky adjacent Riemann Zeta zeroes***
+
+
+Given eqn \eqref{eq:gzero}, the findings in (5) and the relationships, 
+
+\begin{align}
+abs(Z(t)) &= abs(\zeta(0.5+I*t)e^{i\theta(t)}) \\
+&= abs(Re(Z(t))) \\
+&= abs(\zeta(0.5+I*t))
+\end{align}
+
+It has been found that the following series expansion
+
+\begin{equation}
+abs(\zeta(s)) = \sqrt{Z(t)^2+\alpha^2Z^\prime(t)^2+\beta^2Z^{\prime\prime}(t) + ....}   \label{eq:serexp}
+\end{equation}
+
+has good properties to smoothly estimate $abs(\zeta(s))$.
+
+### Non-zero lower bound estimate for abs(zeta(s)), for Re(s) < 0.5
+
+After some investigation, Figure 2, below illustrates a crude first order approximation, for Re(s) = 0.2
+
+\begin{equation}
+abs(\zeta(s)) \approx (1) \cdot \sqrt{Z(t)^2+abs(Re(s)-0.5)^2Z^\prime(t)^2+ ....}   \qquad for \thinspace Re(s) \thinspace < \thinspace 0.5 \label{eq:1storder}
+\end{equation}
+
+```{r, rs, echo=FALSE, cache=FALSE, fig.width=6, fig.height=4, fig.keep='high', warning=FALSE}
+
+
+#install.packages("pracma")
+library(pracma)
+
+plotzeta <- function(minx,maxx,xval,scale) {
+x <- seq(minx, maxx, len=1001)
+z <- 0.5 + x*1i
+zp <- xval + x*1i
+zn <- 1-xval - x*1i
+
+
+fr <- Re(zeta(z))
+fi <- Im(zeta(z))
+fa <- abs(zeta(z))
+fat <- abs((2^zp*pi^(zp-1)*sin(0.5*zp*pi)*gammaz(1-zp)))
+func <- function(x) {
+  Re(zeta(0.5+1i*x)*exp(1i*(Im(log(gammaz(0.25+0.5i*x)))-0.5*x*log(pi))))
+}
+funcy <- function(x) {
+  Im(zeta(0.5+1i*x)*exp(1i*(Im(log(gammaz(0.25+0.5i*x)))-0.5*x*log(pi))))
+}
+fder <- function(x) {
+  fderiv(func,x,1)
+}
+
+par(mfrow=c(1,1))
+
+plot(x, func(x), type="n", xlim = c(minx, maxx), 
+     ylim = c(0, scale),
+          xlab = "", ylab = "Function value",
+     main = paste("Riemann Siegel derivative based series expansion","\n and Riemann Zeta Fn for s = (0.2 + I*t)"))
+# lines(x, fr, col="blue")
+# lines(x, fi, col="darkgreen")
+grid(lwd = 2,col="black") # grid only in y-direction
+abline(h=0)
+lines(x, fa, col="blue",lwd=2)
+
+lines(x, func(x), col = "brown", lwd = 2,lty=2)
+lines(x, abs(zeta(zp)), col = "black", lwd = 2)
+lines(x, sqrt(func(x)^2+abs(zp-z)^2*fder(x)^2), col = "magenta", lwd = 2)
+
+
+
+points(14.1347, 0, col = "darkred")
+legend(min(x), 3, c("Critical line Riemann Zeta", "crude sqrt(Z(t)^2+abs(Re(s)-0.5)^2Z'(t)^2) expansion","Riemann Zeta"),
+       lty = 1,cex=.6, lwd = c(2, 2, 2), col = c("blue", "brown","black"))
+
+
+
+grid()## End(Not run)
+
+}
+
+plotzeta(.1,30,.2,3)
+
+plotzeta(58,62,.2,3)
+
+```
+
+***Figure 2: First order Riemann Siegel series expansion and Riemann Zeta function behaviour, below the critical line for s = (0.2 + It)***
+
+For t >= (the first Riemann Zeta zero position) & Re(s) < 0.5, the crude series expansion eqn \eqref{eq:1storder} will have local minima located over each critical line Riemann Zeta zero due to the properties of abs(Z(t)) and $abs(Z^\prime(t))$. These local minima as indicated in figure 3 form a strictly positive lower bound for the Riemann Zeta function below the critical line.  
+
+```{r, rs3, echo=FALSE, cache=FALSE, fig.width=6, fig.height=4, fig.keep='high', warning=FALSE}
+
+
+#install.packages("pracma")
+library(pracma)
+
+plotzeta <- function(minx,maxx,xval,scale) {
+x <- seq(minx, maxx, len=1001)
+z <- 0.5 + x*1i
+zp <- xval + x*1i
+zn <- 1-xval - x*1i
+
+
+fr <- Re(zeta(z))
+fi <- Im(zeta(z))
+fa <- abs(zeta(z))
+fat <- abs((2^zp*pi^(zp-1)*sin(0.5*zp*pi)*gammaz(1-zp)))
+func <- function(x) {
+  Re(zeta(0.5+1i*x)*exp(1i*(Im(log(gammaz(0.25+0.5i*x)))-0.5*x*log(pi))))
+}
+funcy <- function(x) {
+  Im(zeta(0.5+1i*x)*exp(1i*(Im(log(gammaz(0.25+0.5i*x)))-0.5*x*log(pi))))
+}
+fder <- function(x) {
+  fderiv(func,x,1)
+}
+
+par(mfrow=c(1,1))
+
+plot(x, sqrt(func(x)^2+abs(zp-z)^2*fder(x)^2)/abs(zeta(zp)), col="blue", xlim = c(minx, maxx), ylim=c(0,2),type="l",
+          xlab = "", ylab = "ratio of function values",
+     main = paste("ratio of Z(t) 1st order series & abs(zeta(0.2 + I*t))"))
+# lines(x, fr, col="blue")
+# lines(x, fi, col="darkgreen")
+grid(lwd = 2,col="black") # grid only in y-direction
+
+
+
+legend(min(x), max(sqrt(func(x)^2+abs(zp-z)^2*fder(x)^2)/fa), c("ratio abs(sqrt(Z(t)^2+abs(Re(s)-0.5)^2Z'(t)^2)/abs(Riemann Zeta)"),
+       lty = 1,cex=.6, lwd = c(2, 2, 2), col = c("blue", "brown","black"))
+
+
+
+grid()## End(Not run)
+
+}
+
+plotzeta(.1,60,.2,3)
+
+# plotzeta(58,62,.2,3)
+
+```
+
+
+Given that 
+
+(i) the minimum of the Riemann Zeta function $abs(\zeta(s))$ appear above the zeroes of the rescaled Riemann Siegel function $abs(Z(t))$ from (5),
+
+(ii) the minimum of the Riemann Zeta function $abs(\zeta(s))$ for Re(s) < 0.5, appear above the strictly positive minima of the 1st order Riemann Siegel derivative series expansion eqn \eqref{eq:1storder} and
+
+(iii) zeroes off the critical line are expected to occur in pairs (1-3), 
+
+indicates that the Riemann Hypothesis is valid.
+
+While the 1st order expansion gives a conservative lower estimate and hence can be used a lower bound of the actual Riemann Zeta magnitude, it underestimates the the magnitudes of the Riemann Zeta peaks In the following section, higher order derivatives are added to the expansion.
+
+###A nominal rescaled 4th order Riemann Siegel derivative series expansion###
+
+Using higher order derivatives, noting the symmetry of lineshape for Abs(Re(s)) mentioned in (5) and identifying an appropriate rescaling factor from the Riemann Zeta conjugate pair ratio function. A rescaled 4th order Riemann Siegel derivative series expansion that gives approximate Riemann Zeta estimates in the critical strip is
+
+\begin{equation}
+abs(\zeta(s)) \approx A \cdot \sqrt{Z(t)^2+B^2Z^\prime(t)^2+ B^3Z^{\prime\prime}(t)^2 + B^4Z^{\prime\prime\prime}(t)^2+....}   \qquad for \thinspace Re(s) \thinspace < \thinspace 0.5 \label{eq:4thorder}
+\end{equation}
+
+where 
+
+\begin{equation}
+A = abs(2^s\pi^{(s-1)}sin(\frac{s}{2}\pi)\Gamma(1-s))
+\end{equation}
+
+and
+
+\begin{equation}
+B = abs(Re(s)-0.5)
+\end{equation}
+
+```{r, rs4, echo=FALSE, cache=FALSE, fig.width=6, fig.height=4, fig.keep='high', warning=FALSE}
+
+
+#install.packages("pracma")
+library(pracma)
+
+plotzeta <- function(minx,maxx,xval,scale) {
+x <- seq(minx, maxx, len=1001)
+z <- 0.5 + x*1i
+zp <- xval + x*1i
+zn <- 1-xval - x*1i
+
+
+fr <- Re(zeta(z))
+fi <- Im(zeta(z))
+fa <- abs(zeta(z))
+fat <- abs((2^zp*pi^(zp-1)*sin(0.5*zp*pi)*gammaz(1-zp)))
+func <- function(x) {
+  Re(zeta(0.5+1i*x)*exp(1i*(Im(log(gammaz(0.25+0.5i*x)))-0.5*x*log(pi))))
+}
+funcy <- function(x) {
+  Im(zeta(0.5+1i*x)*exp(1i*(Im(log(gammaz(0.25+0.5i*x)))-0.5*x*log(pi))))
+}
+fder <- function(x) {
+  fderiv(func,x,1)
+}
+fder2 <- function(x) {
+  fderiv(func,x,2)
+}
+fder3 <- function(x) {
+  fderiv(func,x,3)
+}
+fder4 <- function(x) {
+  fderiv(func,x,4)
+}
+fac <- abs((2^zp*pi^(zp-1)*sin(0.5*zp*pi)*gammaz(1-zp)))
+
+par(mfrow=c(1,1))
+
+plot(x, func(x), type="n", xlim = c(minx, maxx), 
+     ylim = c(0, scale),
+          xlab = "", ylab = "Function value",
+     main = paste("Riemann Siegel derivative based series expansion","\n and Riemann Zeta Fn for Re(s) = ",xval))
+# lines(x, fr, col="blue")
+# lines(x, fi, col="darkgreen")
+grid(lwd = 2,col="black") # grid only in y-direction
+abline(h=0)
+lines(x, fa, col="blue",lwd=2)
+
+# lines(x, func(x), col = "brown", lwd = 2,lty=2)
+lines(x, abs(zeta(zp)), col = "black", lwd = 2)
+lines(x, sqrt(fac)*sqrt(func(x)^2+abs(zp-z)^2*fder(x)^2+abs(zp-z)^3*fder2(x)^2+abs(zp-z)^4*fder3(x)^2+abs(zp-z)^5*fder4(x)^2), col = "magenta",
+      lwd = 2,lty=2)
+
+
+
+points(14.1347, 0, col = "darkred")
+legend(min(x), 3, c("Critical line Riemann Zeta", "4th order Z(t) derivative series expansion","Riemann Zeta"),
+       lty = 1,cex=.6, lwd = c(2, 2, 2), col = c("blue", "brown","black"))
+
+
+
+grid()## End(Not run)
+
+}
+
+plotzeta(.1,30,0,3)
+
+plotzeta(58,62,0,3)
+
+plotzeta(.1,30,.2,3)
+
+plotzeta(58,62,.2,3)
+
+plotzeta(.1,30,.4,3)
+
+plotzeta(58,62,.4,3)
+
+plotzeta(.1,30,.6,3)
+
+plotzeta(58,62,.6,3)
+
+plotzeta(.1,30,.8,3)
+
+plotzeta(58,62,.8,3)
+
+plotzeta(.1,30,1,3)
+
+plotzeta(58,62,1,3)
+
+
+```
+
+***Figure 4: 4th order Riemann Siegel series expansion and Riemann Zeta function behaviour, across the critical strip***
+
+
+###Conclusions
+
+An useful series expansion estimator for the Riemann Zeta function has constructed from the real part of the Riemann Siegel Z function and its derivatives and indicates the validity of the Riemann Hypothesis. 
+
+###References
+
+1. Edwards, H.M. (1974). Riemann's zeta function. Pure and Applied Mathematics 58. New York-London: Academic Press. ISBN 0-12-232750-0. Zbl 0315.10035.
+
+2. Riemann, Bernhard (1859). "Über die Anzahl der Primzahlen unter einer gegebenen Grösse". Monatsberichte der Berliner Akademie.. In Gesammelte Werke, Teubner, Leipzig (1892), Reprinted by Dover, New York (1953).
+
+3. Berry, M. V. "The Riemann-Siegel Expansion for the Zeta Function: High Orders and Remainders." Proc. Roy. Soc. London A 450, 439-462, 1995.
+
+4. The exact behaviour of the Reimann Zeta conjugate pair ratio function
+Martin, John (2016)
+http://dx.doi.org/10.6084/m9.figshare.3490955
+
+5. Identifying the Riemann Zeta function as a smoothed version of the Riemann Siegel function off the critical line
+Martin, John (2016)
+http://dx.doi.org/10.6084/m9.figshare.3502166
+
+6. Borchers H. W., "Pracma r package" v1.9.3 https://cran.r-project.org/web/packages/pracma/pracma.pdf 2016
+
