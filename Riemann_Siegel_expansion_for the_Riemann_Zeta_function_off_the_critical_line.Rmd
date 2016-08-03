@@ -293,7 +293,7 @@ While the 1st order expansion gives a conservative lower estimate and hence can 
 Using higher order derivatives, noting the symmetry of lineshape for Abs(Re(s)) mentioned in (5) and identifying an appropriate rescaling factor from the Riemann Zeta conjugate pair ratio function. A rescaled 4th order Riemann Siegel derivative series expansion that gives approximate Riemann Zeta estimates in the critical strip is
 
 \begin{equation}
-abs(\zeta(s)) \approx A \cdot \sqrt{Re(Z(t))^2+B^2Re(Z)^\prime(t)^2+ B^3Re(Z)^{\prime\prime}(t)^2 + B^4Re(Z)^{\prime\prime\prime}(t)^2+....}   \qquad for \thinspace Re(s) \thinspace < \thinspace 0.5 \label{eq:4thorder}
+abs(\zeta(s)) \approx A \cdot \sqrt{Re(Z(t))^2+B^2Re(Z)^\prime(t)^2+ B^3Re(Z)^{\prime\prime}(t)^2 + B^4Re(Z)^{\prime\prime\prime}(t)^2+....}    \label{eq:4thorder}
 \end{equation}
 
 where 
