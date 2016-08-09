@@ -246,9 +246,9 @@ It exhibits, at least three regions of behaviour as shown in Figure 2, for
 
 1. Re(s) = 0.5, zetatangent(s) = 1
 
-2. abs(Re(s)-0.5), zetatangent(s) has minima at the same Im(s) values for Riemann Zeta critical line zeroes
+2. abs(Re(s)-0.5) <= 0.5, zetatangent(s) has minima at the same Im(s) values for Riemann Zeta critical line zeroes
 
-3. abs(Re(s)-0.5) > 0, the positions of at least some of the zetatangent(s) minima are impacted by the Riemann Zeta roots at Re(s)= -2, -4, -6 etc.
+3. abs(Re(s)-0.5) > 0.5, the positions of at least some of the zetatangent(s) minima are impacted by the Riemann Zeta roots at Re(s)= -2, -4, -6 etc.
  
 
 ```{r, zetatan, echo=FALSE, cache=FALSE, fig.width=6, fig.height=3,  fig.keep='high', warning=FALSE}
