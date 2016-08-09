@@ -1,0 +1,851 @@
+---
+title: "A hypertrigonometric family of functions expressed using ratios of the Riemann Zeta function."
+author: "John Martin"
+date: "Tuesday, August 9, 2016"
+output: pdf_document
+---
+
+
+##Executive Summary
+
+A hypertrigonometric family of functions bounded by [-1,1] can be defined using ratios of Riemann Zeta functions. Using this approach, the Riemann Zeta critical line zeroes can be understood as finding the minimum of one particular hypertrigonometric function (zetatangent(s)), in the bounded region $0 <= Re(s) <= 1$, $Im(s) > 2\pi$.   
+
+```{r, exec, echo=FALSE, cache=FALSE, fig.width=6, fig.height=6,  fig.keep='high', warning=FALSE}
+
+par(mfrow=c(3,3))
+
+
+
+library(pracma)
+
+plotzeta <- function(minx,maxx,xval,line) {
+x <- seq(minx, maxx, len=5001)
+z <- 0.5 + x*1i
+zc <- 0.5 - x*1i
+zp <- xval + x*1i
+zpc <- xval - x*1i
+zn <- 1-xval + x*1i
+znc <- 1-xval - x*1i
+ fat <- abs((2^zp*pi^(zp-1)*sin(0.5*zp*pi)*gammaz(1-zp)))
+fan <- abs(zeta(zp)/zeta(znc))/fat
+far <- Re(zeta(zp)/zeta(znc))/fat
+fai <- Im(zeta(zp)/zeta(znc))/fat
+
+fapn <- abs(zeta(zp)*zeta(zc)/(zeta(zpc)*zeta(z)))/1
+fapnr <- Re(zeta(zp)*zeta(zc)/(zeta(zpc)*zeta(z)))/1
+fapni <- Im(zeta(zp)*zeta(zc)/(zeta(zpc)*zeta(z)))/1
+
+fap <- abs(zeta(zp)*zeta(znc)/(zeta(zpc)*zeta(zn)))/1
+fapr <- Re(zeta(zp)*zeta(znc)/(zeta(zpc)*zeta(zn)))/1
+fapi <- Im(zeta(zp)*zeta(znc)/(zeta(zpc)*zeta(zn)))/1
+
+par(fig=c(0,0.5,0.6,1))
+
+plot(x, abs(zeta(zp)), type="n", xlim = c(minx, maxx), 
+     ylim = c(-1,1),#ylim = c(0,.1),#
+          xlab = "", ylab = "value",
+     main = paste0("zetacos",line),cex.main=0.9)
+grid(lwd = 2,col="black") # grid only in y-direction
+lines(x, fan, col = "red", lwd = 1)
+lines(x, far, col = "blue", lwd = 2)
+points(14.1347, 0, col = "darkred")
+# legend(1, -0., c("abs(hcos(s)^2+hsin(s)^2)",  "hcos(s)"),
+#        lty = 1,cex=.4, lwd = c(2,  2), col = c("red", "blue"))
+
+par(fig=c(0.5,1,0.6,1), new=TRUE)
+
+plot(x, abs(zeta(zp)), type="n", xlim = c(minx, maxx), 
+     ylim = c(-1,1),#ylim = c(0,.1),#
+          xlab = "", ylab = "value",
+     main = paste0("zetasin",line),cex.main=0.9)
+grid(lwd = 2,col="black") # grid only in y-direction
+lines(x, fan, col = "red", lwd = 1)
+lines(x, fai, col = "blue", lwd = 2)
+points(14.1347, 0, col = "darkred")
+# legend(1, -0., c("abs(hcos(s)^2+hsin(s)^2)",  "hsin(s)"),
+#        lty = 1,cex=.4, lwd = c(2,  2), col = c("red", "blue"))
+
+par(fig=c(0,0.5,0.3,0.7), new=TRUE)
+
+plot(x, abs(zeta(zp)), type="n", xlim = c(minx, maxx), 
+     ylim = c(-1,1),#ylim = c(0,.1),#
+          xlab = "", ylab = "value",
+     main = paste0("zetatangent",line),cex.main=0.9)
+grid(lwd = 2,col="black") # grid only in y-direction
+lines(x, fapn, col = "red", lwd = 1)
+lines(x, fapnr, col = "blue", lwd = 2)
+points(14.1347, 0, col = "darkred")
+# legend(1, -0., c("abs(htan(s)^2+hcot(s)^2)",  "htan(s)"),
+#        lty = 1,cex=.4, lwd = c(2,  2), col = c("red", "blue"))
+
+par(fig=c(0.5,1,0.3,0.7), new=TRUE)
+
+plot(x, abs(zeta(zp)), type="n", xlim = c(minx, maxx), 
+     ylim = c(-1,1),#ylim = c(0,.1),#
+          xlab = "", ylab = "Function value",
+     main = paste0("zetacotangent",line),cex.main=0.9)
+grid(lwd = 2,col="black") # grid only in y-direction
+lines(x, fapn, col = "red", lwd = 1)
+lines(x, fapni, col = "blue", lwd = 2)
+points(14.1347, 0, col = "darkred")
+# legend(1, -0., c("abs(htan(s)^2+hcot(s)^2)",  "hcot(s)"),
+#        lty = 1,cex=.4, lwd = c(2,  2), col = c("red", "blue"))
+
+par(fig=c(0,0.5,0.,0.4), new=TRUE)
+
+plot(x, abs(zeta(zp)), type="n", xlim = c(minx, maxx), 
+     ylim = c(-1,1),#ylim = c(0,.1),#
+          xlab = "Imaginary part", ylab = "value",
+     main = paste0("zetacostangent",line),cex.main=0.9)
+grid(lwd = 2,col="black") # grid only in y-direction
+lines(x, fap, col = "red", lwd = 1)
+lines(x, fapr, col = "blue", lwd = 2)
+points(14.1347, 0, col = "darkred")
+# legend(1, -0., c("abs(hcostan(s)^2+hsintan(s)^2)",  "hcostan(s)"),
+#        lty = 1,cex=.4, lwd = c(2,  2), col = c("red", "blue"))
+
+par(fig=c(0.5,1,0.,0.4), new=TRUE)
+
+plot(x, abs(zeta(zp)), type="n", xlim = c(minx, maxx), 
+     ylim = c(-1,1),#ylim = c(0,.1),#
+          xlab = "Imaginary part", ylab = "value",
+     main = paste0("zetasincotangent",line),cex.main=0.9)
+grid(lwd = 2,col="black") # grid only in y-direction
+lines(x, fap, col = "red", lwd = 1)
+lines(x, fapi, col = "blue", lwd = 2)
+points(14.1347, 0, col = "darkred")
+# legend(1, -0., c("abs(htan(s)^2+hcot(s)^2)",  "hcot(s)"),
+#        lty = 1,cex=.4, lwd = c(2,  2), col = c("red", "blue"))
+
+mtext("hypertrigonometric family of functions", side=3, outer=TRUE, line=-1.5)
+
+}
+
+plotzeta(.1,50,0.2," (0.2+i*t)")
+
+```
+
+
+##Introduction
+
+The Riemann Zeta function is defined (1), in the complex plane by the integral 
+
+\begin{equation}
+\zeta(s) = \frac{\prod(-s)}{2\pi i}\int_{C_{\epsilon,\delta}} \frac{(-x)^s}{(e^{x}-1)x}dx
+\end{equation}
+
+
+where $s \thinspace \epsilon \thinspace \mathbb{C}$ and $C_{\epsilon,\delta}$ is the contour about the imaginary poles.
+
+The Riemann Zeta function has been shown to obey the functional equation (2)
+
+\begin{equation}
+\zeta(s) = 2^s\pi^{s-1}sin(\frac{\pi s}{2})\Gamma(1-s)\zeta(1-s) \label{eq:func}
+\end{equation}
+
+Following directly from the form of the functional equation and the properties of the coefficients on the RHS of eqn \eqref{eq:func} it has been shown that any zeroes off the critical line would be paired, ie. if $\zeta(s)$ = 0 was true then $\zeta(1-s) = 0$.
+
+The Riemann Siegel function is an exact function (3) for the magnitude of the Riemann Zeta function along the critical line (0.5+it) of the form
+
+\begin{equation}
+Z(t) = \zeta(0.5+it)e^{i\theta(t)} \label{eq:rs}
+\end{equation}
+
+where 
+
+\begin{equation}
+\theta(t) = Im(ln(\Gamma(\frac{1}{4}+\frac{1}{2}it)))-\frac{t}{2}ln(\pi) \label{eq:theta}
+\end{equation}
+
+The transformation $e^{i\theta(t)}$, rotates $\zeta(0.5+it)$ such that Re(Z(t)) contains the entire Riemann Zeta critical line waveform energy and the zeroes of Z(t) correspond with the zeroes of $abs(\zeta(0.5+it))$.
+
+In Martin (4), the properties of the Riemann Zeta conjugate pair ratio function was examined. It is obtained from eqn \eqref{eq:func} by dividing by sides by $\zeta(1-s)$.
+
+\begin{equation}
+\frac{\zeta(s)}{\zeta(1-s)} = 2^s\pi^{s-1}sin(\frac{\pi s}{2})\Gamma(1-s) \label{eq:ratio}
+\end{equation}
+
+As well as showing that the Riemann Zeta conjugate pair ratio function has a simple AM-FM lineshape. It was also illustrated that the absolute magnitude of the Riemann Zeta conjugate pair ratio function is an accurate estimate of the average growth of the Riemann Zeta function, for Re(s) <= 0.5. 
+
+In Martin (5,6), the above ratio was used to help show 
+
+(i) the absolute value of the Riemann Zeta function clearly appears to be a smoothed version of the absolute value of the rescaled Riemann Siegel function,
+
+(ii) the Im(s) behaviour of $\zeta(s)$ is equivalent for the same abs(Re(s)-0.5) except  
+
+(iii) the amplitude of Im(s) is asymmetric above and below the critical line, given by the relationship
+
+(iv) a lower bound > 0 can be shown for zeroes in the Riemann Zeta function originating from the critical line,
+
+\begin{equation}
+abs(\zeta(s)) \approx (1) \cdot \sqrt{Re(Z(t))^2+abs(Re(s)-0.5)^2Re(Z)^\prime(t)^2+ ....}   \qquad for \thinspace Re(s) \thinspace < \thinspace 0.5 \label{eq:1storder}
+\end{equation}
+
+and
+
+(v) a 4th order series expansion based on the Riemann Siegel function and its derivatives can approximate many behaviours of the Riemann Zeta function off the critical line 
+
+\begin{equation}
+abs(\zeta(s)) \approx A \cdot \sqrt{Re(Z(t))^2+B^2Re(Z)^\prime(t)^2+ B^3Re(Z)^{\prime\prime}(t)^2 + B^4Re(Z)^{\prime\prime\prime}(t)^2+....}    \label{eq:4thorder}
+\end{equation}
+
+where 
+
+\begin{equation}
+A = \sqrt{abs(2^s\pi^{(s-1)}sin(\frac{s}{2}\pi)\Gamma(1-s))}
+\end{equation}
+
+and
+
+\begin{equation}
+B = abs(Re(s)-0.5)
+\end{equation}
+
+Thanks to advice received from (3), a significant flaw in claiming the above results validate the Riemann Hypothesis is that if a root is present in the critical strip off the critical line, eqn \eqref{eq:4thorder} would fail to include its effect as it is based solely on critical line behaviour. So the results in (5,6) can only be regarded as being consistent with the Riemann Hypothesis.
+
+In this paper, various ratios of Riemann Zeta functions and its derivatives were initially investigated for sensitivity to the presence of any potential roots in the critical strip off the critical line. 
+
+However, in compiling the list of ratios of Riemann Zeta functions, it became obvious that the list formed a family of hypertrigonometric functions, bounded in magnitude to the interval [-1,1] and with pairs of functions having identity relations.
+
+### Hypertrigonometric family of functions
+
+Collecting the results described in the appendix, for s = Re(s)+I*t
+
+The zetacosine function is defined by
+
+\begin{align}
+zetacosine(s) &= Re(\frac{\zeta(s)}{\zeta(1-s)}\frac{1}{abs(2^s\pi^{s-1}sin(\frac{\pi s}{2})\Gamma(1-s))}) \\
+&= \cos(2\theta(t)) \label{eq:zcos}
+\end{align}
+
+and labelled as "zetacosine" due to the equivalence with cosine of Riemann Siegel Theta function.
+
+The zetasine function is defined by
+
+\begin{align}
+zetacosine(s) &= Im(\frac{\zeta(s)}{\zeta(1-s)}\frac{1}{abs(2^s\pi^{s-1}sin(\frac{\pi s}{2})\Gamma(1-s))}) \\
+&= \sin(2\theta(t)) \label{eq:zsin}
+\end{align}
+
+and labelled as "zetasine" due to the equivalence with sine of Riemann Siegel Theta function.
+
+These pair of functions have the identity
+
+\begin{align}
+zetacosine(s)^2+zetasine(s)^2 &= \cos(2\theta(t))^2 + \sin(2\theta(t))^2  \\
+&= 1 \label{eq:zsinid}
+\end{align}
+
+The zetatangent function is defined by
+
+\begin{align}
+zetatangent(s) &= Re(\frac{\zeta(s)}{\zeta(\bar{s})}\frac{\zeta(0.5-it)}{\zeta(0.5+it)})  \label{eq:ztan}
+\end{align}
+
+It exhibits, at least three regions of behaviour as shown in Figure 2, for
+
+1. Re(s) = 0.5, zetatangent(s) = 1
+
+2. abs(Re(s)-0.5), zetatangent(s) has minima at the same Im(s) values for Riemann Zeta critical line zeroes
+
+3. abs(Re(s)-0.5) > 0, the positions of at least some of the zetatangent(s) minima are impacted by the Riemann Zeta roots at Re(s)= -2, -4, -6 etc.
+ 
+
+```{r, zetatan, echo=FALSE, cache=FALSE, fig.width=6, fig.height=3,  fig.keep='high', warning=FALSE}
+
+library(pracma)
+
+plotzeta <- function(minx,maxx,xval,line) {
+x <- seq(minx, maxx, len=1001)
+z <- 0.5 + x*1i
+zc <- 0.5 - x*1i
+zp <- xval + x*1i
+zpc <- xval - x*1i
+zn <- 1-xval + x*1i
+znc <- 1-xval - x*1i
+# fat <- abs((2^zp*pi^(zp-1)*sin(0.5*zp*pi)*gammaz(1-zp)))
+fapn <- abs(zeta(zp)*zeta(zc)/(zeta(zpc)*zeta(z)))/1
+fapnr <- Re(zeta(zp)*zeta(zc)/(zeta(zpc)*zeta(z)))/1
+fapni <- Im(zeta(zp)*zeta(zc)/(zeta(zpc)*zeta(z)))/1
+
+plot(x, fapn, type="n", xlim = c(minx, maxx), 
+     ylim = c(-1,1),
+          xlab = "Imaginary part", ylab = "Function value",
+     main = paste0("zetatangent",line))
+grid(lwd = 2,col="black") # grid only in y-direction
+lines(x, fapnr, col = "blue", lwd = 2)
+lines(x, fapn, col = "red", lwd = 2,lty=3)
+lines(x, abs(zeta(z))-1, col = "green", lwd = 1,lty=2)
+points(14.1347, 0, col = "darkred")
+legend(1, -0., c("real part",  "absolute value","abs(zeta(0.5+it))-1"),
+       lty = 1,cex=.6, lwd = c(2,  2,2), col = c("blue",  "red","green"))
+
+
+}
+
+plotzeta(.1,30,0.5," (0.5+i*t)")
+plotzeta(.1,30,0.25," (0.25+i*t)")
+plotzeta(.1,30,0.," (0+i*t)")
+plotzeta(.1,30,-2," (-2+i*t)")
+
+```
+
+***Figure 1: zetatangent behaviour for abs(Re(s)-0.5) =0, <= 0.5, > 0.5***
+
+The zetacotangent function is defined by
+
+\begin{align}
+zetacotangent(s) &= Im(\frac{\zeta(s)}{\zeta(\bar{s})}\frac{\zeta(0.5-it)}{\zeta(0.5+it)})  \label{eq:zcot}
+\end{align}
+
+
+The zetacosinetangent function is defined by
+
+\begin{align}
+zetacostangent(s) &= Re(\frac{\zeta(s)}{\zeta(\bar{s})})  \label{eq:zcostan}
+\end{align}
+
+The zetasinecotangent function is defined by
+
+\begin{align}
+zetasincotangent(s) &= Im(\frac{\zeta(s)}{\zeta(\bar{s})})  \label{eq:zcostan}
+\end{align}
+
+where these last pair of hypertrigonometric functions contain information on the Riemann Siegel Theta function behaviour mixed with the Riemann Zeta zeroes. This mixed behaviour hypertrigonometric functions justifies considering all three pairs as a family of functions.
+
+From $abs(\zeta(s)) = abs(\zeta(\bar{s}))$ the zetatangent, zetacotangent pair have the identity
+
+\begin{align}
+zetatangent(s)^2+zetacotangent(s)^2 = 1 \label{eq:ztanid}
+\end{align}
+
+and likewise the zetacosinetangent, zetasinecotangent pair have the identity
+
+\begin{align}
+zetacostangent(s)^2+zetasincotangent(s)^2 = 1 \label{eq:zcostanid}
+\end{align}
+
+
+
+###Conclusions
+
+A family of hypertrigonometric functions can be formed from ratios of Riemann Zeta functions. Similar families of functions may be considered from ratios of derivatives of Riemann Zeta functions. 
+
+Given the mixed form of the zetacostangent(s) and zetasincotangent(s) functions other identities linking the functions should be investigated.
+
+###References
+
+1. Edwards, H.M. (1974). Riemann's zeta function. Pure and Applied Mathematics 58. New York-London: Academic Press. ISBN 0-12-232750-0. Zbl 0315.10035.
+
+2. Riemann, Bernhard (1859). "Über die Anzahl der Primzahlen unter einer gegebenen Grösse". Monatsberichte der Berliner Akademie.. In Gesammelte Werke, Teubner, Leipzig (1892), Reprinted by Dover, New York (1953).
+
+3. Berry, M. V. "The Riemann-Siegel Expansion for the Zeta Function: High Orders and Remainders." Proc. Roy. Soc. London A 450, 439-462, 1995.
+
+4. The exact behaviour of the Reimann Zeta conjugate pair ratio function
+Martin, John (2016)
+http://dx.doi.org/10.6084/m9.figshare.3490955
+
+5. Identifying the Riemann Zeta function as a smoothed version of the Riemann Siegel function off the critical line
+Martin, John (2016)
+http://dx.doi.org/10.6084/m9.figshare.3502166
+
+6. Improved lower bounds > 0 for Riemann Zeta function off the critical line using derivatives of Re(Riemann Siegel Z function).
+Martin, John (2016)
+http://dx.doi.org/10.6084/m9.figshare.351022
+
+7. Borchers H. W., "Pracma r package" v1.9.3 https://cran.r-project.org/web/packages/pracma/pracma.pdf 2016
+
+
+## Appendix A:Ratios of Riemann Zeta functions and their sensitivity to Riemann Zeta zeroes
+
+This appendix illustrates the filtering and transformation behaviour occurring with various ratios of the Riemann Zeta function and its derivatives. The main tenet of ratio estimation is that common multiplicative elements of the numerator and denominator are cancelled and only scaled correlated behaviours remain.
+
+Of interest in detecting roots, it appears, from the results, that roots common or symmetric to the functions in the numerator and denomimator are removed.  
+
+### 1. $\frac{\zeta(s)}{\zeta(1-s)}$ scaled by growth factor
+
+As described in (4) and shown in Figure A1, within the critical strip, the scaled ratio 
+
+\begin{equation}
+\frac{\zeta(s)}{\zeta(1-s)}\frac{1}{abs(2^s\pi^{(s-1)}sin(\frac{s}{2}\pi)\Gamma(1-s))}
+\end{equation}
+
+is well described by the trigonometric functions. 
+
+
+\begin{equation}
+Re(\frac{\zeta(s)}{\zeta(1-s)}\frac{1}{abs(2^s\pi^{(s-1)}sin(\frac{s}{2}\pi)\Gamma(1-s))}) \approx \cos(2*\theta(t)) \label{eq:real}
+\end{equation}
+
+\begin{equation}
+Im(\frac{\zeta(s)}{\zeta(1-s)}\frac{1}{abs(2^s\pi^{(s-1)}sin(\frac{s}{2}\pi)\Gamma(1-s))}) \approx -\sin(2*\theta(t)) \label{eq:imag}
+\end{equation}
+
+```{r, ratio1a, echo=FALSE, cache=FALSE, fig.width=6, fig.height=4,  fig.keep='high', warning=FALSE}
+
+
+library(pracma)
+
+plotzeta <- function(minx,maxx,xval,line) {
+x <- seq(minx, maxx, len=1001)
+z <- 0.5 + x*1i
+zp <- xval + x*1i
+zn <- 1-xval - x*1i
+fat <- abs((2^zp*pi^(zp-1)*sin(0.5*zp*pi)*gammaz(1-zp)))
+fapn <- abs(zeta(zp)/zeta(zn))/fat
+fapnr <- Re(zeta(zp)/zeta(zn))/fat
+fapni <- Im(zeta(zp)/zeta(zn))/fat
+plot(x, fapn, type="n", xlim = c(minx, maxx), 
+     ylim = c(min(-1.5,-max(fapn)), 
+              max(max(fapn),1.5)),#ylim = c(0,.1),#
+          xlab = "Imaginary part", ylab = "Function value",
+     main = paste("Riemann Zeta conjugate pair ratio ",line))
+grid(lwd = 2,col="black") # grid only in y-direction
+lines(x, fapn*cos(2*(Im(log(gammaz(0.25+0.5i*x)))-0.5*x*log(pi))), col = "red", lwd = 2)
+lines(x, -fapn*sin(2*(Im(log(gammaz(0.25+0.5i*x)))-0.5*x*log(pi))), col = "red", lwd = 2)
+lines(x, fapn, col = "magenta", lwd = 2)
+lines(x, fapnr, col = "blue", lwd = 2,lty=2)
+lines(x, fapni, col = "green", lwd = 2,lty=2)
+# lines(x, 1-log(2*pi/x)*(.5-xval)+x/scale, col = "brown", lwd = 2) # approx lower bound
+# lines(x, fapn/(1-log(2*pi/x)*(.5-xval))+x/scale, col = "red", lwd = 2) # ratio wrt lower bound
+lines(x, fat, col = "black", lwd = 2,lty=2) # RHS of ratio function 
+# lines(x, abs(gammaz(zn/2)/gammaz(zp/2)), col = "black", lwd = 2,lty=2) # approx upper bound
+points(14.1347, 0, col = "darkred")
+legend(3, -0.75, c("real part", "imaginary part", "absolute value","scaling factor"),
+       lty = 1,cex=.6, lwd = c(2, 2, 2,2), col = c("blue", "darkgreen", "magenta","black"))
+
+
+grid()
+
+
+}
+
+plotzeta(.1,50,.5,"critical line")
+
+plotzeta(.1,50,0,"lower edge of critical strip")
+
+
+
+
+plotzeta(.1,50,1,"upper edge of critical strip")
+
+```
+
+***Figure A1: Riemann Zeta conjugate pair ratio function behaviour within the critical strip***
+
+\hfill \break
+The use of $\approx$ has been included in eqn \eqref{eq:real} & \eqref{eq:imag} in contrast to the conclusions in (4) because beyond the critical strip, as shown in figure 2 below, the Riemann Zeta zeroes at Re(s) = -2, -4 etc are contributing to the ratio behaviour, in a quickly diminishing manner for small imaginary values.
+
+
+```{r, ratio1b, echo=FALSE, cache=FALSE, fig.width=6, fig.height=4,  fig.keep='high', warning=FALSE}
+
+
+library(pracma)
+
+plotzeta <- function(minx,maxx,xval,line) {
+x <- seq(minx, maxx, len=1001)
+z <- 0.5 + x*1i
+zp <- xval + x*1i
+zn <- 1-xval - x*1i
+fat <- abs((2^zp*pi^(zp-1)*sin(0.5*zp*pi)*gammaz(1-zp)))
+fapn <- abs(zeta(zp)/zeta(zn))/fat
+fapnr <- Re(zeta(zp)/zeta(zn))/fat
+fapni <- Im(zeta(zp)/zeta(zn))/fat
+plot(x, fapn, type="n", xlim = c(minx, maxx), 
+     ylim = c(min(-1.5,-max(fapn)), 
+              max(max(fapn),1.5)),#ylim = c(0,.1),#
+          xlab = "Imaginary part", ylab = "Function value",
+     main = paste("Riemann Zeta conjugate pair ratio ",line))
+grid(lwd = 2,col="black") # grid only in y-direction
+lines(x, fapn*cos(2*(Im(log(gammaz(0.25+0.5i*x)))-0.5*x*log(pi))), col = "red", lwd = 2)
+lines(x, -fapn*sin(2*(Im(log(gammaz(0.25+0.5i*x)))-0.5*x*log(pi))), col = "red", lwd = 2)
+lines(x, fapn, col = "magenta", lwd = 2)
+lines(x, fapnr, col = "blue", lwd = 2,lty=2)
+lines(x, fapni, col = "green", lwd = 2,lty=2)
+# lines(x, 1-log(2*pi/x)*(.5-xval)+x/scale, col = "brown", lwd = 2) # approx lower bound
+# lines(x, fapn/(1-log(2*pi/x)*(.5-xval))+x/scale, col = "red", lwd = 2) # ratio wrt lower bound
+lines(x, fat, col = "black", lwd = 2,lty=2) # RHS of ratio function 
+# lines(x, abs(gammaz(zn/2)/gammaz(zp/2)), col = "black", lwd = 2,lty=2) # approx upper bound
+points(14.1347, 0, col = "darkred")
+legend(3, -0.75, c("real part", "imaginary part", "absolute value","scaling factor"),
+       lty = 1,cex=.6, lwd = c(2, 2, 2,2), col = c("blue", "darkgreen", "magenta","black"))
+
+
+
+grid()
+
+
+}
+
+plotzeta(.1,30,2,"(1-Re(s))=-1")
+
+plotzeta(.1,30,-2,"on Re(s)=-2 line")
+
+
+
+
+plotzeta(.1,30,3,"on (1-Re(s))=-2 line")
+
+```
+
+***Figure A2: Riemann Zeta conjugate pair ratio function behaviour outside the critical strip***
+
+\hfill \break
+It is important to note, that since the roots at -2, -4, etc are not paired they do not contribute symmetrically to $\zeta(s)/\zeta(1-s)$ whereas the effect of the Riemann Zeta critical line zeroes is symmetric and is cancelled.
+
+The calculations in this paper involving zeta and its numerical derivatives used the "pracma" r package (7). 
+
+
+### 2. ratio fn of conjugate pairs $\frac{\zeta(s)}{\zeta(\bar{s})}$ 
+
+Figure A3 illustrates the behaviour of the ratio of the Riemann Zeta functions for s and its conjugate $\bar{s}$.
+
+It is well described by the functions. 
+
+
+\begin{equation}
+Re(\frac{\zeta(s)}{\zeta(\bar{s})} \approx -\sin(2*\theta(t)) * Im(Riemann \thinspace Zeta \thinspace zeroes,s) \label{eq:realconj}
+\end{equation}
+
+\begin{equation}
+Im(\frac{\zeta(s)}{\zeta(\bar{s})} \approx \cos(2*\theta(t)) * Re(Riemann \thinspace Zeta \thinspace zeroes,s)\label{eq:imag}
+\end{equation}
+
+where Im(Riemann Zeta zeroes,s)(Re(Riemann Zeta zeroes,s)) implies a function solely describing the imaginary (real) component of the Riemann Zeta zeroes for the value s. The Riemann Zeta zeroes can be anywhere on the critical strip except s & $\bar{s}$. An nominal form for this function will be shown in the next two subsections using double ratios. 
+
+```{r, ratio2a, echo=FALSE, cache=FALSE, fig.width=6, fig.height=4,  fig.keep='high', warning=FALSE}
+
+
+library(pracma)
+
+plotzeta <- function(minx,maxx,xval,line) {
+x <- seq(minx, maxx, len=1001)
+z <- 0.5 + x*1i
+zp <- xval + x*1i
+zn <- xval - x*1i
+# fat <- abs((2^zp*pi^(zp-1)*sin(0.5*zp*pi)*gammaz(1-zp)))
+fapn <- abs(zeta(zp)/zeta(zn))/1
+fapnr <- Re(zeta(zp)/zeta(zn))/1
+fapni <- Im(zeta(zp)/zeta(zn))/1
+plot(x, fapn, type="n", xlim = c(minx, maxx), 
+     ylim = c(min(-1.5,-max(fapn)), 
+              max(max(fapn),1.5)),#ylim = c(0,.1),#
+          xlab = "Imaginary part", ylab = "Function value",
+     main = paste("ratio fn of conjugate pair, numerator arg ",line))
+grid(lwd = 2,col="black") # grid only in y-direction
+lines(x, fapn, col = "magenta", lwd = 2)
+lines(x, fapnr, col = "blue", lwd = 2)
+lines(x, fapni, col = "green", lwd = 2)
+lines(x, -fapn*sin(2*(Im(log(gammaz(0.25+0.5i*x)))-0.5*x*log(pi))+0*pi/4), col = "cyan", lwd = 2,lty=2)
+lines(x, fapn*cos(2*(Im(log(gammaz(0.25+0.5i*x)))-0.5*x*log(pi))+0*pi/4), col = "red", lwd = 2,lty=2)
+# lines(x, 1-log(2*pi/x)*(.5-xval)+x/scale, col = "brown", lwd = 2) # approx lower bound
+# lines(x, fapn/(1-log(2*pi/x)*(.5-xval))+x/scale, col = "red", lwd = 2) # ratio wrt lower bound
+# lines(x, fat, col = "black", lwd = 2,lty=2) # RHS of ratio function 
+# lines(x, abs(gammaz(zn/2)/gammaz(zp/2)), col = "black", lwd = 2,lty=2) # approx upper bound
+points(14.1347, 0, col = "darkred")
+legend(3, -0.75, c("real part", "imaginary part", "absolute value"),
+       lty = 1,cex=.6, lwd = c(2, 2, 2), col = c("blue", "darkgreen", "magenta"))
+
+
+grid()
+
+
+}
+
+plotzeta(.1,30,0.2," 0.2+i*t")
+plotzeta(.1,30,0.4," 0.4+i*t")
+plotzeta(.1,30,0.6," 0.6+i*t")
+plotzeta(.1,30,0.8," 0.8+i*t")
+
+```
+
+***Figure A3: Riemann Zeta ratio of conjugate pairs function behaviour***
+
+\hfill \break
+Figure A3 is interpreted as containing Riemann Zeta zeroes (on critical line and otherwise) because the influence of the Riemann Zeta critical line zeroes for example are not symmetric between the numerator and denominator of $\zeta(s)/\zeta(\bar{s})$. Considering just the critical line zeroes, as the value of Re(s) moves further critical line, the bandwidth of the Riemann Zeta zero component of the ratio widens consistent with the higher value of the Riemann Zeta minimum.
+
+In principle, other zeroes not on the critical line would also be present in this ratio function except for any zeroes on s or $\bar{s}$. The lineshape however is complex so makes detection of these other zeroes difficult.
+
+
+### 3. double ratio fn of conjugate pairs and Riemann Zeta conjugate pairs $\frac{\zeta(s)\zeta(1-\bar{s})}{\zeta(\bar{s})\zeta(1-s)}$ 
+
+Figure A4 illustrates the behaviour of the double ratio of the Riemann Zeta conjugate pairs functions and the arguments s and its conjugate $\bar{s}$. This is a useful function filtering out the continuous contributions to the Riemann Zeta function.
+
+It can be nominally described as filtering the Riemann Zeta function such that only the interaction of the Riemann Zeta function zeroes and the input values s, $\bar{s}$, 1-s & 1-$\bar{s}$ remains. The only zeroes not expected to be present in this double ratio function are those located on the lines s, $\bar{s}$, 1-s & 1-$\bar{s}$. Hence this ratio estimator could be used to detect other Riemann Zeta zeroes other than on the critical line (see Appendix for simulation).
+
+The spikes can be associated in with functions Re(Riemann zeta zeroes,s) & Im(Riemann zeta zeroes,s) required for the ratio estimator in the previous subsection. 
+
+
+```{r, ratio3a, echo=FALSE, cache=FALSE, fig.width=6, fig.height=4,  fig.keep='high', warning=FALSE}
+
+
+library(pracma)
+
+plotzeta <- function(minx,maxx,xval,line) {
+x <- seq(minx, maxx, len=5001)
+z <- 0.5 + x*1i
+zp <- xval + x*1i
+zpc <- xval - x*1i
+zn <- 1-xval + x*1i
+znc <- 1-xval - x*1i
+# fat <- abs((2^zp*pi^(zp-1)*sin(0.5*zp*pi)*gammaz(1-zp)))
+fapn <- abs(zeta(zp)*zeta(znc)/(zeta(zpc)*zeta(zn)))/1
+fapnr <- Re(zeta(zp)*zeta(znc)/(zeta(zpc)*zeta(zn)))/1
+fapni <- Im(zeta(zp)*zeta(znc)/(zeta(zpc)*zeta(zn)))/1
+
+plot(x, fapn, type="n", xlim = c(minx, maxx), 
+     ylim = c(min(-1.5,-max(fapn)), 
+              max(max(fapn),1.5)),#ylim = c(0,.1),#
+          xlab = "Imaginary part", ylab = "Function value",
+     main = paste("real(double ratio fn) , lines ",line))
+grid(lwd = 2,col="black") # grid only in y-direction
+lines(x, fapn, col = "magenta", lwd = 2)
+lines(x, fapnr, col = "blue", lwd = 2)
+points(14.1347, 0, col = "darkred")
+legend(1, -0.5, c("real part",  "absolute value"),
+       lty = 1,cex=.6, lwd = c(2,  2), col = c("blue",  "magenta"))
+
+plot(x, fapn, type="n", xlim = c(minx, maxx), 
+     ylim = c(min(-1.5,-max(fapn)), 
+              max(max(fapn),1.5)),#ylim = c(0,.1),#
+          xlab = "Imaginary part", ylab = "Function value",
+     main = paste("imag(double ratio fn), lines ",line))
+grid(lwd = 2,col="black") # grid only in y-direction
+lines(x, fapn, col = "magenta", lwd = 2)
+lines(x, fapni, col = "green", lwd = 2)
+points(14.1347, 0, col = "darkred")
+legend(3, -0.75, c("imaginary part", "absolute value"),
+       lty = 1,cex=.6, lwd = c(2, 2, 2), col = c( "darkgreen", "magenta"))
+
+
+
+}
+
+plotzeta(.1,50,0.2," (0.2+i*t) & (0.8+i*t)")
+plotzeta(.1,50,0.4," (0.4+i*t) & (0.6+i*t)")
+
+```
+
+***Figure A4: Riemann Zeta double ratio of conjugate pairs function and conjugate pair arguments***
+
+\hfill \break
+The real component has a double spike lineshape for each Riemann Zero zero. As shown in Figure 5, the double spike width corresponds well with the width of the curvature in the Riemann Zeta minimum.
+
+```{r, ratio3b, echo=FALSE, cache=FALSE, fig.width=6, fig.height=4,  fig.keep='high', warning=FALSE}
+
+
+library(pracma)
+
+plotzeta <- function(minx,maxx,xval,line) {
+x <- seq(minx, maxx, len=1001)
+z <- 0.5 + x*1i
+zp <- xval + x*1i
+zpc <- xval - x*1i
+zn <- 1-xval + x*1i
+znc <- 1-xval - x*1i
+fat <- abs((2^zp*pi^(zp-1)*sin(0.5*zp*pi)*gammaz(1-zp)))
+fapn <- abs(zeta(zp)*zeta(znc)/(zeta(zpc)*zeta(zn)))/1
+fapnr <- Re(zeta(zp)*zeta(znc)/(zeta(zpc)*zeta(zn)))/1
+fapni <- Im(zeta(zp)*zeta(znc)/(zeta(zpc)*zeta(zn)))/1
+
+plot(x, fapn, type="n", xlim = c(minx, maxx), 
+     ylim = c(0,1),#ylim = c(0,.1),#
+          xlab = "Imaginary part", ylab = "Function value",
+     main = paste("1+real(double ratio fn) , lines ",line))
+grid(lwd = 2,col="black") # grid only in y-direction
+# lines(x, fapn, col = "magenta", lwd = 2)
+lines(x, (1+fapnr)/2, col = "blue", lwd = 2)
+lines(x, abs(zeta(zp)), col = "red", lwd = 2)
+lines(x, abs(zeta(z)), col = "black", lwd = 2)
+abline(h=0)
+abline(h=.075)
+abline(v=14.035)
+abline(v=14.235)
+points(14.1347, 0, col = "darkred")
+legend(14.3, 1, c("1+(real part double ratio)","abs(Riemann Zeta)","abs(zeta(0.5+i*t))"),
+       lty = 1,cex=.6, lwd = c(2, 2, 2), col = c( "blue", "red","black"))
+
+
+
+}
+
+plotzeta(14,14.5,0.4," (0.4+i*t) & (0.6+i*t)")
+
+```
+
+***Figure A5: Closeup of (1+Riemann Zeta double ratio) and known Riemann Zeta minimum***
+
+### 4. double conjugate ratio fn of conjugate pairs and Riemann Zeta critical line conjugates $\frac{\zeta(s)\zeta(0.5-i*t)}{\zeta(\bar{s})\zeta(0.5+i*t)}$ 
+
+Figure A6 illustrates the behaviour of the double conjugate ratio of the Riemann Zeta conjugate pairs functions and the Riemann Zeta critical line conjugate pairs functions. This is a useful function filtering out the continuous contributions to the Riemann Zeta function while giving pure aborption and dispersion lineshapes for Riemann Zeta critical line zeroes.
+
+This double conjugate ratio can be nominally described as filtering the Riemann Zeta function such that only the interaction of the Riemann Zeta function zeroes and the input values s, $\bar{s}$ remains. The only zeroes not expected to be present in this double ratio function are those located on the lines s, $\bar{s}$. Hence this ratio estimator could be used to detect other Riemann Zeta zeroes other than on the critical line (see Appendix for simulation). A possible distinction predicted in the appendix is that roots off the critical line would have different lineshapes (double spikes) compared to the Riemann Zeta critical line zeroes.
+
+
+```{r, ratio4a, echo=FALSE, cache=FALSE, fig.width=6, fig.height=4,  fig.keep='high', warning=FALSE}
+
+
+library(pracma)
+
+plotzeta <- function(minx,maxx,xval,line) {
+x <- seq(minx, maxx, len=5001)
+z <- 0.5 + x*1i
+zc <- 0.5 - x*1i
+zp <- xval + x*1i
+zpc <- xval - x*1i
+zn <- 1-xval + x*1i
+znc <- 1-xval - x*1i
+# fat <- abs((2^zp*pi^(zp-1)*sin(0.5*zp*pi)*gammaz(1-zp)))
+fapn <- abs(zeta(zp)*zeta(zc)/(zeta(zpc)*zeta(z)))/1
+fapnr <- Re(zeta(zp)*zeta(zc)/(zeta(zpc)*zeta(z)))/1
+fapni <- Im(zeta(zp)*zeta(zc)/(zeta(zpc)*zeta(z)))/1
+
+plot(x, fapn, type="n", xlim = c(minx, maxx), 
+     ylim = c(min(-1.5,-max(fapn)), 
+              max(max(fapn),1.5)),#ylim = c(0,.1),#
+          xlab = "Imaginary part", ylab = "Function value",
+     main = paste("real(double conjugate ratio fn) , lines ",line))
+grid(lwd = 2,col="black") # grid only in y-direction
+lines(x, fapn, col = "magenta", lwd = 2)
+lines(x, fapnr, col = "blue", lwd = 2)
+points(14.1347, 0, col = "darkred")
+legend(1, -0.5, c("real part",  "absolute value"),
+       lty = 1,cex=.6, lwd = c(2,  2), col = c("blue",  "magenta"))
+
+plot(x, fapn, type="n", xlim = c(minx, maxx), 
+     ylim = c(min(-1.5,-max(fapn)), 
+              max(max(fapn),1.5)),#ylim = c(0,.1),#
+          xlab = "Imaginary part", ylab = "Function value",
+     main = paste("imag(double conjugate ratio fn), lines ",line))
+grid(lwd = 2,col="black") # grid only in y-direction
+lines(x, fapn, col = "magenta", lwd = 2)
+lines(x, fapni, col = "green", lwd = 2)
+points(14.1347, 0, col = "darkred")
+legend(1, -0.75, c("imaginary part", "absolute value"),
+       lty = 1,cex=.6, lwd = c(2, 2, 2), col = c( "darkgreen", "magenta"))
+
+
+
+}
+
+plotzeta(.1,50,0.2," (0.2+i*t)")
+plotzeta(.1,50,0.4," (0.4+i*t)")
+
+```
+
+***Figure 6: Riemann Zeta double conjugate ratio of conjugate pairs function and Riemann Zeta critical line conjugate pair***
+
+\hfill \break
+Figures A7 & A8 show the Re(double conjugate ratio) for Re(s) = -1 & -2, opening out like a FM version of concertina (but impacted by the root at -2) into a modulation very similar to Riemann Siegel Theta function periodicity.
+
+
+```{r, ratio4b, echo=FALSE, cache=FALSE, fig.width=6, fig.height=4,  fig.keep='high', warning=FALSE}
+
+
+library(pracma)
+
+plotzeta <- function(minx,maxx,xval,line) {
+x <- seq(minx, maxx, len=5001)
+z <- 0.5 + x*1i
+zc <- 0.5 - x*1i
+zp <- xval + x*1i
+zpc <- xval - x*1i
+zn <- 1-xval + x*1i
+znc <- 1-xval - x*1i
+# fat <- abs((2^zp*pi^(zp-1)*sin(0.5*zp*pi)*gammaz(1-zp)))
+fapn <- abs(zeta(zp)*zeta(zc)/(zeta(zpc)*zeta(z)))/1
+fapnr <- Re(zeta(zp)*zeta(zc)/(zeta(zpc)*zeta(z)))/1
+fapni <- Im(zeta(zp)*zeta(zc)/(zeta(zpc)*zeta(z)))/1
+
+plot(x, fapn, type="n", xlim = c(minx, maxx), 
+     ylim = c(min(-1.5,-max(fapn)), 
+              max(max(fapn),1.5)),#ylim = c(0,.1),#
+          xlab = "Imaginary part", ylab = "Function value",
+     main = paste("real(double conjugate ratio fn) , lines ",line))
+grid(lwd = 2,col="black") # grid only in y-direction
+lines(x, fapn, col = "magenta", lwd = 2)
+lines(x, fapnr, col = "blue", lwd = 2)
+lines(x, cos(2*(Im(log(gammaz(0.25+0.5i*x)))-0.5*x*log(pi))), col = "red", lwd = 2,lty=2)
+points(14.1347, 0, col = "darkred")
+legend(1, -0.5, c("real part",  "absolute value"),
+       lty = 1,cex=.6, lwd = c(2,  2), col = c("blue",  "magenta"))
+
+plot(x, fapn, type="n", xlim = c(minx, maxx), 
+     ylim = c(min(-1.5,-max(fapn)), 
+              max(max(fapn),1.5)),#ylim = c(0,.1),#
+          xlab = "Imaginary part", ylab = "Function value",
+     main = paste("imag(double conjugate ratio fn), lines ",line))
+grid(lwd = 2,col="black") # grid only in y-direction
+lines(x, fapn, col = "magenta", lwd = 2)
+lines(x, fapni, col = "green", lwd = 2)
+lines(x, -1*sin(2*(Im(log(gammaz(0.25+0.5i*x)))-0.5*x*log(pi))), col = "red", lwd = 2,lty=2)
+
+points(14.1347, 0, col = "darkred")
+legend(1, -0.75, c("imaginary part", "absolute value"),
+       lty = 1,cex=.6, lwd = c(2, 2, 2), col = c( "darkgreen", "magenta"))
+
+
+
+}
+
+plotzeta(.1,50,-1," (-1+i*t)")
+
+```
+
+***Figure A7: double conjugate ratio for Re(s) = -1***
+
+```{r, ratio4c, echo=FALSE, cache=FALSE, fig.width=6, fig.height=4,  fig.keep='high', warning=FALSE}
+
+
+library(pracma)
+
+plotzeta <- function(minx,maxx,xval,line) {
+x <- seq(minx, maxx, len=5001)
+z <- 0.5 + x*1i
+zc <- 0.5 - x*1i
+zp <- xval + x*1i
+zpc <- xval - x*1i
+zn <- 1-xval + x*1i
+znc <- 1-xval - x*1i
+# fat <- abs((2^zp*pi^(zp-1)*sin(0.5*zp*pi)*gammaz(1-zp)))
+fapn <- abs(zeta(zp)*zeta(zc)/(zeta(zpc)*zeta(z)))/1
+fapnr <- Re(zeta(zp)*zeta(zc)/(zeta(zpc)*zeta(z)))/1
+fapni <- Im(zeta(zp)*zeta(zc)/(zeta(zpc)*zeta(z)))/1
+
+plot(x, fapn, type="n", xlim = c(minx, maxx), 
+     ylim = c(min(-1.5,-max(fapn)), 
+              max(max(fapn),1.5)),#ylim = c(0,.1),#
+          xlab = "Imaginary part", ylab = "Function value",
+     main = paste("real(double conjugate ratio fn) , lines ",line))
+grid(lwd = 2,col="black") # grid only in y-direction
+lines(x, fapn, col = "magenta", lwd = 2)
+lines(x, fapnr, col = "blue", lwd = 2)
+lines(x, cos(2*(Im(log(gammaz(0.25+0.5i*x)))-0.5*x*log(pi))), col = "red", lwd = 2,lty=2)
+points(14.1347, 0, col = "darkred")
+legend(1, -0.5, c("real part",  "absolute value"),
+       lty = 1,cex=.6, lwd = c(2,  2), col = c("blue",  "magenta"))
+
+plot(x, fapn, type="n", xlim = c(minx, maxx), 
+     ylim = c(min(-1.5,-max(fapn)), 
+              max(max(fapn),1.5)),#ylim = c(0,.1),#
+          xlab = "Imaginary part", ylab = "Function value",
+     main = paste("imag(double conjugate ratio fn), lines ",line))
+grid(lwd = 2,col="black") # grid only in y-direction
+lines(x, fapn, col = "magenta", lwd = 2)
+lines(x, fapni, col = "green", lwd = 2)
+lines(x, -1*sin(2*(Im(log(gammaz(0.25+0.5i*x)))-0.5*x*log(pi))), col = "red", lwd = 2,lty=2)
+
+points(14.1347, 0, col = "darkred")
+legend(1, -0.75, c("imaginary part", "absolute value"),
+       lty = 1,cex=.6, lwd = c(2, 2, 2), col = c( "darkgreen", "magenta"))
+
+
+
+}
+
+plotzeta(.1,50,-2," (-2+i*t)")
+
+```
+
+***Figure A8: double conjugate ratio for Re(s) = -2***
+
