@@ -8,7 +8,7 @@ output: pdf_document
 
 ##Executive Summary
 
-A hypertrigonometric family of functions bounded by [-1,1] can be defined using ratios of Riemann Zeta functions. Using this approach, the Riemann Zeta critical line zeroes can be understood as finding the minimum of one particular hypertrigonometric function (zetatangent(s)), in the bounded region $0 <= Re(s) <= 1$, $Im(s) > 2\pi$.   
+A hypertrigonometric family of functions bounded by [-1,1] can be defined using ratios of Riemann Zeta functions. The minima of one particular hypertrigonometric function (zetatangent(s)), in the bounded region $0 <= Re(s) <= 1$, $Im(s) > 2\pi$ are similar to the position of the Riemann Zeta critical line zeroes.   
 
 ```{r, exec, echo=FALSE, cache=FALSE, fig.width=6, fig.height=6,  fig.keep='high', warning=FALSE}
 
@@ -246,7 +246,7 @@ It exhibits, at least three regions of behaviour as shown in Figure 2, for
 
 1. Re(s) = 0.5, zetatangent(s) = 1
 
-2. abs(Re(s)-0.5) <= 0.5, zetatangent(s) has minima at the same Im(s) values for Riemann Zeta critical line zeroes
+2. abs(Re(s)-0.5) <= 0.5, zetatangent(s) has minima close to the Im(s) values for Riemann Zeta critical line zeroes
 
 3. abs(Re(s)-0.5) > 0.5, the positions of at least some of the zetatangent(s) minima are impacted by the Riemann Zeta roots at Re(s)= -2, -4, -6 etc.
  
@@ -573,7 +573,7 @@ Figure A4 illustrates the behaviour of the double ratio of the Riemann Zeta conj
 
 It can be nominally described as filtering the Riemann Zeta function such that only the interaction of the Riemann Zeta function zeroes and the input values s, $\bar{s}$, 1-s & 1-$\bar{s}$ remains. The only zeroes not expected to be present in this double ratio function are those located on the lines s, $\bar{s}$, 1-s & 1-$\bar{s}$. Hence this ratio estimator could be used to detect other Riemann Zeta zeroes other than on the critical line (see Appendix for simulation).
 
-The spikes can be associated in with functions Re(Riemann zeta zeroes,s) & Im(Riemann zeta zeroes,s) required for the ratio estimator in the previous subsection. 
+The spikes can be approximately associated in with functions Re(Riemann zeta zeroes,s) & Im(Riemann zeta zeroes,s) required for the ratio estimator in the previous subsection. 
 
 
 ```{r, ratio3a, echo=FALSE, cache=FALSE, fig.width=6, fig.height=4,  fig.keep='high', warning=FALSE}
