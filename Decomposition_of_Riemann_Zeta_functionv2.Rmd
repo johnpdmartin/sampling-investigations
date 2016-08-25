@@ -65,16 +65,16 @@ sc <- sqrt(zeta(res+1i*x)*zeta(1-(res+1i*x))*rawratio(res,x))
 rsc <- (Re(sc)+Im(sc))/sqrt(2);isc <- (Re(sc)-Im(sc))/sqrt(2)
 usc <- zeta(res+1i*x)*exp(0.5i*(2*((Im(log(gammaz(0.25+0.5i*x)))-0.5*x*log(pi))+add)))
 rusc <- (Re(usc)+Im(usc))/sqrt(2);iusc <- (Re(usc)-Im(usc))/sqrt(2)
-plot(x=x,y=abs(Re(sc)),col="blue",xlim=c(start-abs(.5-res)/0.5,finish+abs(.5-res)/0.5),typ="l", ylim=c(0,3),lwd=1,xlab = "imaginary part", ylab = "abs(function) value",main = paste0("on critical line (0.5+i*t)"),cex.xlab=0.9,cex.main=.8,cex.legend=0.8)
+plot(x=x,y=abs(rsc),col="blue",xlim=c(start-abs(.5-res)/0.5,finish+abs(.5-res)/0.5),typ="l", ylim=c(0,3),lwd=2,xlab = "imaginary part", ylab = "abs(function) value",main = paste0("on critical line (0.5+i*t)"),cex.xlab=0.9,cex.main=.8,cex.legend=0.8)
 # plot(x=x,y=abs(rsc),col="blue",xlim=c(z_zero-abs(.5-res)/0.5,z_zero+abs(.5-res)/0.5),typ="l",
 #      ylim=c(0,max(abs(.5-res)/0.4,.0001)),lwd=2)
-lines(x=x,y=abs(Im(sc)),col="green",lwd=2)
-lines(x=x,y=abs(zeta(res+1i*x)),col="red",lwd=2,lty=2)
+lines(x=x,y=abs(isc),col="green",lwd=2,lty=2)
+lines(x=x,y=abs(zeta(res+1i*x)),col="red",lwd=2)
 abline(h=0)
 abline(v=z_zero-abs(0.5-res),lty=3)
 abline(v=z_zero+abs(0.5-res),lty=3)
 abline(h=1,lty=3)
-legend(25, 3, c("abs(zeta(0.5+i*t))", "standard real(Z(0.5+i*t))","standard imag(Z(0.5+i*t))"),
+legend(25, 3, c("abs(zeta(0.5+i*t))", "rotated real(Z(0.5+i*t))","rotated imag(Z(0.5+i*t))"),
        lty = 1,cex=.6, lwd = c(2,  2,2,2), col = c("red",  "blue","green"))
 
 par(fig=c(0.5,1,0.5,1), new=TRUE)
@@ -101,16 +101,16 @@ sc <- sqrt(zeta(res+1i*x)*zeta(1-(res+1i*x))*rawratio(res,x))
 rsc <- (Re(sc)+Im(sc))/sqrt(2);isc <- (Re(sc)-Im(sc))/sqrt(2)
 usc <- zeta(res+1i*x)*exp(0.5i*(2*((Im(log(gammaz(0.25+0.5i*x)))-0.5*x*log(pi))+add)))
 rusc <- (Re(usc)+Im(usc))/sqrt(2);iusc <- (Re(usc)-Im(usc))/sqrt(2)
-plot(x=x,y=abs(Re(sc)),col="blue",xlim=c(start-abs(.5-res)/0.5,finish+abs(.5-res)/0.5),typ="l", ylim=c(0,3),lwd=1,xlab = "imaginary part", ylab = "abs(function) value",main = paste0("high on critical strip (0.9+i*t)"),cex.xlab=0.9,cex.main=.8,cex.legend=0.8)
+plot(x=x,y=abs(rsc),col="blue",xlim=c(start-abs(.5-res)/0.5,finish+abs(.5-res)/0.5),typ="l", ylim=c(0,3),lwd=1,xlab = "imaginary part", ylab = "abs(function) value",main = paste0("high on critical strip (0.9+i*t)"),cex.xlab=0.9,cex.main=.8,cex.legend=0.8)
 # plot(x=x,y=abs(rsc),col="blue",xlim=c(z_zero-abs(.5-res)/0.5,z_zero+abs(.5-res)/0.5),typ="l",
 #      ylim=c(0,max(abs(.5-res)/0.4,.0001)),lwd=2)
-lines(x=x,y=abs(Im(sc)),col="green",lwd=1)
+lines(x=x,y=abs(isc),col="green",lwd=1)
 lines(x=x,y=abs(zeta(res+1i*x)),col="red",lwd=2)
 abline(h=0)
 abline(v=z_zero-abs(0.5-res),lty=3)
 abline(v=z_zero+abs(0.5-res),lty=3)
 abline(h=1,lty=3)
-legend(25, 3, c("abs(zeta(0.9+i*t))", "standard real(Z(0.9+i*t))","standard imag(Z(0.9+i*t))"),
+legend(25, 3, c("abs(zeta(0.9+i*t))", "rotated real(Z(0.9+i*t))","rotated imag(Z(0.9+i*t))"),
        lty = 1,cex=.6, lwd = c(2,  2,2,2), col = c("red",  "blue","green"))
 
 par(fig=c(0.5,1,0.,0.55), new=TRUE)
@@ -131,7 +131,7 @@ abline(h=1,lty=3)
 legend(25, 3, c("abs(zeta(1+i*t))", "rotated real(Z(1+i*t))","rotated imag(Z(1+i*t))"),
        lty = 1,cex=.6, lwd = c(2,  2,2,2), col = c("red",  "blue","green"))
 
-mtext("weakly & strongly coupled representations of real and imag Z(s) parts", side=3, outer=TRUE, line=-1.5)
+mtext("strongly coupled representations of real and imag Z(s) parts", side=3, outer=TRUE, line=-1.5)
 
 ```
 
