@@ -212,7 +212,7 @@ The zetasin1 function is defined by
 
 \begin{align}
 zetasin1(s) &= Im(\frac{\zeta(s)}{\zeta(1-s)}\frac{1}{abs(2^s\pi^{s-1}sin(\frac{\pi s}{2})\Gamma(1-s))}) \\
-&\approx \sin(2\theta(t)) \qquad for \thinspace 0 <= Re(s) <= 1 \thinspace , \thinspace t > 2\pi \label{eq:zsin}
+&\approx -\sin(2\theta(t)) \qquad for \thinspace 0 <= Re(s) <= 1 \thinspace , \thinspace t > 2\pi \label{eq:zsin}
 \end{align}
 
 These pair of functions have the identity

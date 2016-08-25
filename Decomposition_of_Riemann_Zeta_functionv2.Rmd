@@ -1,0 +1,1441 @@
+---
+title: "Symmetry splitting behaviour of extended Riemann Siegel Z function components off the critical line"
+author: "John Martin"
+date: "Wednesday, August 22, 2016"
+output: pdf_document
+---
+
+
+##Executive Summary
+
+Using the Riemann Zeta generating function, the Riemann Siegel functions can be formally defined off the critical line. It is then simply shown that rotating the Riemann Siegel Z function results in a tightly coupled representation of real and imaginary parts of similar magnitude. The first order splitting of the tightly coupled components along the imaginary axis, scales approximately as the distance from the critical line ~abs(Re(s)-0.5) and indicates geometrical identification of symmetry splitting as the cause and shift in nonzero Riemann Zeta minima off the critical line, away from the positions of the known Riemann Zeta zeroes. 
+
+```{r, exec, echo=FALSE, cache=FALSE, fig.width=6, fig.height=5.5,  fig.keep='high', warning=FALSE}
+
+library(pracma)
+
+
+rawratio <- function(res,x) {
+    abs(2^(res+1i*x)*pi^(res+1i*x-1)*sin(pi/2*(res+1i*x))*gammaz(1-(res+1i*x)))
+}
+
+func <- function(x) {  cos(2*(Im(log(gammaz(0.25+0.5i*x)))-0.5*x*log(pi)))}
+
+fsder <- function(x) {  sin(2*(Im(log(gammaz(0.25+0.5i*x)))-0.5*x*log(pi)))}
+
+x <- seq(0,35,l=10001)
+
+sum <- 0
+add_pos <- 0
+for (i in 1:length(x)) {
+  if(x[i] < 10 ) {add_pos[i] <- 0}
+  else { 
+    test <- floor((Im(log(gammaz(0.25+0.5i*x[i]))))/2/pi)
+    if (test == 0) {flag <- 0;add_pos[i] <- sum}
+      else if (test == -1 & flag == 0 ) {flag <- 1; sum <- sum+2*pi;add_pos[i] <- sum}
+        else add_pos[i] <- sum
+  }
+  }
+sum <- 0
+add_neg <- 0
+for (i in 1:length(x)) {
+  if(x[length(x)+1-i] > -10 ) {add_neg[i] <- 0}
+  else { 
+    test <- floor((Im(log(gammaz(0.25+0.5i*x[length(x)+1-i]))))/2/pi)
+    if (test == -1) {flag <- 0;add_neg[length(x)+1-i] <- sum}
+    else if (test == 0 & flag == 0 ) {flag <- 1; sum <- sum-2*pi;add_neg[length(x)+1-i] <- sum}
+    else add_neg[length(x)+1-i] <- sum
+  }
+}
+
+add <- 0
+for (i in 1:length(x)) {
+  if (x[i] < 0) add[i] <- add_neg[i]
+    else add[i] <- add_pos[i]
+}
+
+
+start <- 19;finish <- 35;z_zero <- 21.022
+
+par(mfrow=c(2,2))
+
+par(fig=c(0,0.5,0.5,1))
+res <- .5;
+sc <- sqrt(zeta(res+1i*x)*zeta(1-(res+1i*x))*rawratio(res,x))
+rsc <- (Re(sc)+Im(sc))/sqrt(2);isc <- (Re(sc)-Im(sc))/sqrt(2)
+usc <- zeta(res+1i*x)*exp(0.5i*(2*((Im(log(gammaz(0.25+0.5i*x)))-0.5*x*log(pi))+add)))
+rusc <- (Re(usc)+Im(usc))/sqrt(2);iusc <- (Re(usc)-Im(usc))/sqrt(2)
+plot(x=x,y=abs(Re(sc)),col="blue",xlim=c(start-abs(.5-res)/0.5,finish+abs(.5-res)/0.5),typ="l", ylim=c(0,3),lwd=1,xlab = "imaginary part", ylab = "abs(function) value",main = paste0("on critical line (0.5+i*t)"),cex.xlab=0.9,cex.main=.8,cex.legend=0.8)
+# plot(x=x,y=abs(rsc),col="blue",xlim=c(z_zero-abs(.5-res)/0.5,z_zero+abs(.5-res)/0.5),typ="l",
+#      ylim=c(0,max(abs(.5-res)/0.4,.0001)),lwd=2)
+lines(x=x,y=abs(Im(sc)),col="green",lwd=2)
+lines(x=x,y=abs(zeta(res+1i*x)),col="red",lwd=2,lty=2)
+abline(h=0)
+abline(v=z_zero-abs(0.5-res),lty=3)
+abline(v=z_zero+abs(0.5-res),lty=3)
+abline(h=1,lty=3)
+legend(25, 3, c("abs(zeta(0.5+i*t))", "standard real(Z(0.5+i*t))","standard imag(Z(0.5+i*t))"),
+       lty = 1,cex=.6, lwd = c(2,  2,2,2), col = c("red",  "blue","green"))
+
+par(fig=c(0.5,1,0.5,1), new=TRUE)
+res <- .6;
+sc <- sqrt(zeta(res+1i*x)*zeta(1-(res+1i*x))*rawratio(res,x))
+rsc <- (Re(sc)+Im(sc))/sqrt(2);isc <- (Re(sc)-Im(sc))/sqrt(2)
+usc <- zeta(res+1i*x)*exp(0.5i*(2*((Im(log(gammaz(0.25+0.5i*x)))-0.5*x*log(pi))+add)))
+rusc <- (Re(usc)+Im(usc))/sqrt(2);iusc <- (Re(usc)-Im(usc))/sqrt(2)
+plot(x=x,y=abs(rsc),col="blue",xlim=c(start-abs(.5-res)/0.5,finish+abs(.5-res)/0.5),typ="l", ylim=c(0,3),lwd=1,xlab = "imaginary part", ylab = "abs(function) value",main = paste0("just above critical line (0.6+i*t)"),cex.xlab=0.9,cex.main=.8,cex.legend=0.8)
+# plot(x=x,y=abs(rsc),col="blue",xlim=c(z_zero-abs(.5-res)/0.5,z_zero+abs(.5-res)/0.5),typ="l",
+#      ylim=c(0,max(abs(.5-res)/0.4,.0001)),lwd=2)
+lines(x=x,y=abs(isc),col="green",lwd=1)
+lines(x=x,y=abs(zeta(res+1i*x)),col="red",lwd=2)
+abline(h=0)
+abline(v=z_zero-abs(0.5-res),lty=3)
+abline(v=z_zero+abs(0.5-res),lty=3)
+abline(h=1,lty=3)
+legend(25, 3, c("abs(zeta(0.6+i*t))", "rotated real(Z(0.6+i*t))","rotated imag(Z(0.6+i*t))"),
+       lty = 1,cex=.6, lwd = c(2,  2,2,2), col = c("red",  "blue","green"))
+
+par(fig=c(0,0.5,0.,0.55), new=TRUE)
+res <- .9;
+sc <- sqrt(zeta(res+1i*x)*zeta(1-(res+1i*x))*rawratio(res,x))
+rsc <- (Re(sc)+Im(sc))/sqrt(2);isc <- (Re(sc)-Im(sc))/sqrt(2)
+usc <- zeta(res+1i*x)*exp(0.5i*(2*((Im(log(gammaz(0.25+0.5i*x)))-0.5*x*log(pi))+add)))
+rusc <- (Re(usc)+Im(usc))/sqrt(2);iusc <- (Re(usc)-Im(usc))/sqrt(2)
+plot(x=x,y=abs(Re(sc)),col="blue",xlim=c(start-abs(.5-res)/0.5,finish+abs(.5-res)/0.5),typ="l", ylim=c(0,3),lwd=1,xlab = "imaginary part", ylab = "abs(function) value",main = paste0("high on critical strip (0.9+i*t)"),cex.xlab=0.9,cex.main=.8,cex.legend=0.8)
+# plot(x=x,y=abs(rsc),col="blue",xlim=c(z_zero-abs(.5-res)/0.5,z_zero+abs(.5-res)/0.5),typ="l",
+#      ylim=c(0,max(abs(.5-res)/0.4,.0001)),lwd=2)
+lines(x=x,y=abs(Im(sc)),col="green",lwd=1)
+lines(x=x,y=abs(zeta(res+1i*x)),col="red",lwd=2)
+abline(h=0)
+abline(v=z_zero-abs(0.5-res),lty=3)
+abline(v=z_zero+abs(0.5-res),lty=3)
+abline(h=1,lty=3)
+legend(25, 3, c("abs(zeta(0.9+i*t))", "standard real(Z(0.9+i*t))","standard imag(Z(0.9+i*t))"),
+       lty = 1,cex=.6, lwd = c(2,  2,2,2), col = c("red",  "blue","green"))
+
+par(fig=c(0.5,1,0.,0.55), new=TRUE)
+res <- 1;
+sc <- sqrt(zeta(res+1i*x)*zeta(1-(res+1i*x))*rawratio(res,x))
+rsc <- (Re(sc)+Im(sc))/sqrt(2);isc <- (Re(sc)-Im(sc))/sqrt(2)
+usc <- zeta(res+1i*x)*exp(0.5i*(2*((Im(log(gammaz(0.25+0.5i*x)))-0.5*x*log(pi))+add)))
+rusc <- (Re(usc)+Im(usc))/sqrt(2);iusc <- (Re(usc)-Im(usc))/sqrt(2)
+plot(x=x,y=abs(rsc),col="blue",xlim=c(start-abs(.5-res)/0.5,finish+abs(.5-res)/0.5),typ="l", ylim=c(0,3),lwd=1,xlab = "imaginary part", ylab = "abs(function) value",main = paste0("upper edge of critical strip (1+i*t)"),cex.xlab=0.9,cex.main=.8,cex.legend=0.8)
+# plot(x=x,y=abs(rsc),col="blue",xlim=c(z_zero-abs(.5-res)/0.5,z_zero+abs(.5-res)/0.5),typ="l",
+#      ylim=c(0,max(abs(.5-res)/0.4,.0001)),lwd=2)
+lines(x=x,y=abs(isc),col="green",lwd=1)
+lines(x=x,y=abs(zeta(res+1i*x)),col="red",lwd=2)
+abline(h=0)
+abline(v=z_zero-abs(0.5-res),lty=3)
+abline(v=z_zero+abs(0.5-res),lty=3)
+abline(h=1,lty=3)
+legend(25, 3, c("abs(zeta(1+i*t))", "rotated real(Z(1+i*t))","rotated imag(Z(1+i*t))"),
+       lty = 1,cex=.6, lwd = c(2,  2,2,2), col = c("red",  "blue","green"))
+
+mtext("weakly & strongly coupled representations of real and imag Z(s) parts", side=3, outer=TRUE, line=-1.5)
+
+```
+
+***Figure 1. Riemann Zeta function behaviour on the critical strip displayed as a splitting of symmetry using a strongly coupled representation of Riemann Siegel Z function components***
+
+
+##Introduction
+
+The Riemann Zeta function is defined (1), in the complex plane by the integral 
+
+\begin{equation}
+\zeta(s) = \frac{\prod(-s)}{2\pi i}\int_{C_{\epsilon,\delta}} \frac{(-x)^s}{(e^{x}-1)x}dx
+\end{equation}
+
+
+where $s \thinspace \epsilon \thinspace \mathbb{C}$ and $C_{\epsilon,\delta}$ is the contour about the imaginary poles.
+
+The Riemann Zeta function has been shown to obey the functional equation (2)
+
+\begin{equation}
+\zeta(s) = 2^s\pi^{s-1}sin(\frac{\pi s}{2})\Gamma(1-s)\zeta(1-s) \label{eq:func}
+\end{equation}
+
+Following directly from the form of the functional equation and the properties of the coefficients on the RHS of eqn \eqref{eq:func} it has been shown that any zeroes off the critical line would be paired, ie. if $\zeta(s)$ = 0 was true then $\zeta(1-s) = 0$.
+
+The Riemann Siegel function is an exact function (3) for the magnitude of the Riemann Zeta function along the critical line (0.5+it) of the form
+
+\begin{equation}
+Z(t) = \zeta(0.5+it)e^{i\theta(t)} \label{eq:rs}
+\end{equation}
+
+where 
+
+\begin{equation}
+\theta(t) = Im(ln(\Gamma(\frac{1}{4}+\frac{1}{2}it)))-\frac{t}{2}ln(\pi) \label{eq:theta}
+\end{equation}
+
+The transformation $e^{i\theta(t)}$, rotates $\zeta(0.5+it)$ such that Re(Z(t)) contains the entire Riemann Zeta critical line waveform energy and the zeroes of Z(t) correspond with the zeroes of $abs(\zeta(0.5+it))$.
+
+In Martin (4-7), the properties of the Riemann Zeta generating function, 
+
+\begin{equation}
+\frac{\zeta(s)}{\zeta(1-s)} = 2^s\pi^{s-1}sin(\frac{\pi s}{2})\Gamma(1-s) \label{eq:ratio}
+\end{equation}
+
+was examined and used to understand (i) the trend behaviour of the Riemann Zeta function along the critical strip, (ii) the abs(Re(s)-0.5) dependence of $abs(\zeta(s))$ across the imaginary axis, (iii) a nonzero lower bound for Riemann Zeta minima away from the critical line, asymptotic to known Riemann Zeta critical line zeroes and (iv) a hypertrigonometric family of ratios of Riemann Zeta functions containing features arising from Riemann Siegel Theta function and asymptotic approaches to Riemann Zeta critical line zero positions.
+
+In this paper, an extended Riemann Siegel Theta function off the critical line is first presented from (7). The complementary extended Riemann Siegel Z function is then defined. Using these extended Riemann Siegel functions and a tightly coupled representation of the real and imaginary components, 
+
+(i) good agreement is found between crossings of the real and imaginary components of the subsequent modified Riemann Siegel Z function and the minima of the $abs(\zeta(s))$ across the complex plane and 
+
+(ii) the first order splittings between the components is closely related to abs(Re(s)-0.5)
+
+### Riemann Siegel functions extended off the critical line
+
+As described in component form in (7), using the generating function \eqref {eq:ratio} an extended form of the Riemann Siegel Theta function is simply given by 
+
+\begin{align}
+e^{-i*2\theta_{ext}(s)} &= \frac{\zeta(s)}{\zeta(1-s)}\frac{1}{abs(2^s\pi^{s-1}sin(\frac{\pi s}{2})\Gamma(1-s))}) \label{eq:ztheta} \\
+&\approx e^{-i*2\theta(t)} 
+\end{align}
+
+Since $\theta_{ext}(s)$ and $\theta(s)$ are bounded by [-1,1] (4), the largest differences occur around $\theta_{ext}(s) \approx 0$ and become vanishing as $t \rightarrow \infty$ and small $Re(s)$. In Appendix A, a simple unnormalised first order expansion of the differences is demonstrated, related to the distance from the critical line abs(Re(s)-0.5).
+
+\begin{align}
+cos(2\theta_{ext}(s)) &\sim cos(2\theta(t)) + \frac{1}{2t}*abs(Re(s)-0.5)^2*sin(2\theta(t)) + ... \qquad for \thinspace t > 0 \label{eq:theta_approx}
+\end{align}
+
+Following on from eqn \eqref {eq:ztheta}, the $\theta_{ext}(s)$ definition and eqn \eqref {eq:rs}, the extended Riemann Siegel Z function is given by 
+
+\begin{align}
+Z_{ext}(s) &\equiv \zeta(s)*e^{i\theta_{ext}(s)} \\
+&= \zeta(s)*\sqrt{e^{i*2*\theta_{ext}(s)}} \\
+&= {\zeta(s)}*\sqrt{\frac{\zeta(1-s)*abs(2^s\pi^{s-1}sin(\frac{\pi s}{2})\Gamma(1-s))}{\zeta(s)}} \\
+&= \sqrt{\zeta(s)*\zeta(1-s)*abs(2^s\pi^{s-1}sin(\frac{\pi s}{2})\Gamma(1-s))} \label{eq:zz}
+\end{align}
+
+As shown in Appendix B for the real axis, and later in this paper, there is an arbitrariness to the chosen phases of the real and imaginary components of $Z_{ext}(s)$. Conveniently for understanding the critical line behaviour, the existing Z(t) components estimates from eqn \eqref {eq:rs} are weakly coupled, whereby $Im(Z(0.5+i*t)) = 0$, all the signal magnitude is in $Re(Z(0.5+i*t))$ and the zeroes of $Re(Z(0.5+i*t))$ coincide with the known non-trivial Riemann Zeta zeroes. 
+
+However, inspired by Appendix B results detrending $log(abs(\zeta(Re(s)))$ and $log(abs(\zeta(Re(s))/\zeta(Re(1-s)))$ on the real axis, in reality, any linear combination of the real and imaginary parts of $Z_{ext}(s)$ are sufficient for computation. An alternative linear combination is the strongly coupled pairing
+
+\begin{equation}
+Z_{ext,coupled}(s) = \frac{Re(Z_{ext}(s))+Im(Z_{ext}(s))}{\sqrt{2}} \label {eq:coup_symm}
+\end{equation}
+
+\begin{equation}
+Z_{ext,coupled}(s) = \frac{Re(Z_{ext}(s))-Im(Z_{ext}(s))}{\sqrt{2}} \label {eq:coup_antisymm}
+\end{equation}
+
+and this description appears more useful in understanding the Riemann Zeta behaviour off the critical line.
+
+The calculations in this paper involving zeta and the generating function used the "pracma" r package (8). The calculated sqrt(complex numbers) for eqn \eqref {eq:zz} are subject to branch cuts so the displayed data uses absolute values for clarity. 
+
+### Weakly & strongly coupled representations of the extended Riemann Siegel Z function components
+
+Figure 2 belows contrasts the weakly & strongly coupled versions of the extended Riemann Siegel Z components. As noted, the standard output is the weakly coupled representation and to create the strongly coupled representation the output is combined using eqns \eqref {eq:coup_symm} & \eqref {eq:coup_antisymm}. The absolute value of the total is the same but the strongly coupled representation is indicating a splitting of symmetry behaviour off the critical line.
+
+```{r, fig2, echo=FALSE, cache=FALSE, fig.width=6, fig.height=5.5,  fig.keep='high', warning=FALSE}
+
+library(pracma)
+
+
+rawratio <- function(res,x) {
+    abs(2^(res+1i*x)*pi^(res+1i*x-1)*sin(pi/2*(res+1i*x))*gammaz(1-(res+1i*x)))
+}
+
+func <- function(x) {  cos(2*(Im(log(gammaz(0.25+0.5i*x)))-0.5*x*log(pi)))}
+
+fsder <- function(x) {  sin(2*(Im(log(gammaz(0.25+0.5i*x)))-0.5*x*log(pi)))}
+
+x <- seq(0,35,l=10001)
+
+sum <- 0
+add_pos <- 0
+for (i in 1:length(x)) {
+  if(x[i] < 10 ) {add_pos[i] <- 0}
+  else { 
+    test <- floor((Im(log(gammaz(0.25+0.5i*x[i]))))/2/pi)
+    if (test == 0) {flag <- 0;add_pos[i] <- sum}
+      else if (test == -1 & flag == 0 ) {flag <- 1; sum <- sum+2*pi;add_pos[i] <- sum}
+        else add_pos[i] <- sum
+  }
+  }
+sum <- 0
+add_neg <- 0
+for (i in 1:length(x)) {
+  if(x[length(x)+1-i] > -10 ) {add_neg[i] <- 0}
+  else { 
+    test <- floor((Im(log(gammaz(0.25+0.5i*x[length(x)+1-i]))))/2/pi)
+    if (test == -1) {flag <- 0;add_neg[length(x)+1-i] <- sum}
+    else if (test == 0 & flag == 0 ) {flag <- 1; sum <- sum-2*pi;add_neg[length(x)+1-i] <- sum}
+    else add_neg[length(x)+1-i] <- sum
+  }
+}
+
+add <- 0
+for (i in 1:length(x)) {
+  if (x[i] < 0) add[i] <- add_neg[i]
+    else add[i] <- add_pos[i]
+}
+
+
+start <- 14;finish <- 26;z_zero <- 21.022
+
+par(mfrow=c(2,2))
+
+par(fig=c(0,0.5,0.5,1))
+res <- .5;
+sc <- sqrt(zeta(res+1i*x)*zeta(1-(res+1i*x))*rawratio(res,x))
+rsc <- (Re(sc)+Im(sc))/sqrt(2);isc <- (Re(sc)-Im(sc))/sqrt(2)
+usc <- zeta(res+1i*x)*exp(0.5i*(2*((Im(log(gammaz(0.25+0.5i*x)))-0.5*x*log(pi))+add)))
+rusc <- (Re(usc)+Im(usc))/sqrt(2);iusc <- (Re(usc)-Im(usc))/sqrt(2)
+plot(x=x,y=abs(Re(sc)),col="blue",xlim=c(start-abs(.5-res)/0.5,finish+abs(.5-res)/0.5),typ="l", ylim=c(0,3),lwd=2,xlab = "imaginary part", ylab = "abs(function) value",main = paste0("weakly coupled (standard) Z(s) ","\n representation on critical line (0.5+i*t)"),cex.xlab=0.9,cex.main=.8,cex.legend=0.8)
+# plot(x=x,y=abs(rsc),col="blue",xlim=c(z_zero-abs(.5-res)/0.5,z_zero+abs(.5-res)/0.5),typ="l",
+#      ylim=c(0,max(abs(.5-res)/0.4,.0001)),lwd=2)
+lines(x=x,y=abs(Im(sc)),col="green",lwd=2)
+lines(x=x,y=abs(zeta(res+1i*x)),col="red",lwd=2,lty=2)
+abline(h=0)
+abline(v=z_zero-abs(0.5-res),lty=3)
+abline(v=z_zero+abs(0.5-res),lty=3)
+abline(h=1,lty=3)
+legend(18, 3, c("abs(zeta(0.5+i*t))", "std real(Z(0.5+i*t))","std imag(Z(0.5+i*t))"),
+       lty = 1,cex=.6, lwd = c(2,  2,2,2), col = c("red",  "blue","green"))
+
+par(fig=c(0.5,1,0.5,1), new=TRUE)
+res <- .5;
+sc <- sqrt(zeta(res+1i*x)*zeta(1-(res+1i*x))*rawratio(res,x))
+rsc <- (Re(sc)+Im(sc))/sqrt(2);isc <- (Re(sc)-Im(sc))/sqrt(2)
+usc <- zeta(res+1i*x)*exp(0.5i*(2*((Im(log(gammaz(0.25+0.5i*x)))-0.5*x*log(pi))+add)))
+rusc <- (Re(usc)+Im(usc))/sqrt(2);iusc <- (Re(usc)-Im(usc))/sqrt(2)
+plot(x=x,y=abs(rsc),col="blue",xlim=c(start-abs(.5-res)/0.5,finish+abs(.5-res)/0.5),typ="l", ylim=c(0,3),lwd=2,xlab = "imaginary part", ylab = "abs(function) value",main = paste0("strongly coupled Z(s) ","\n representation on critical line (0.5+i*t)"),cex.xlab=0.9,cex.main=.8,cex.legend=0.8)
+# plot(x=x,y=abs(rsc),col="blue",xlim=c(z_zero-abs(.5-res)/0.5,z_zero+abs(.5-res)/0.5),typ="l",
+#      ylim=c(0,max(abs(.5-res)/0.4,.0001)),lwd=2)
+lines(x=x,y=abs(isc),col="green",lwd=2,lty=2)
+lines(x=x,y=abs(zeta(res+1i*x)),col="red",lwd=2)
+abline(h=0)
+abline(v=z_zero-abs(0.5-res),lty=3)
+abline(v=z_zero+abs(0.5-res),lty=3)
+abline(h=1,lty=3)
+legend(18, 3, c("abs(zeta(0.5+i*t))", "rotated real(Z(0.5+i*t))","rotated imag(Z(0.5+i*t))"),
+       lty = 1,cex=.6, lwd = c(2,  2,2,2), col = c("red",  "blue","green"))
+
+par(fig=c(0,0.5,0.,0.55), new=TRUE)
+res <- .75;
+sc <- sqrt(zeta(res+1i*x)*zeta(1-(res+1i*x))*rawratio(res,x))
+rsc <- (Re(sc)+Im(sc))/sqrt(2);isc <- (Re(sc)-Im(sc))/sqrt(2)
+usc <- zeta(res+1i*x)*exp(0.5i*(2*((Im(log(gammaz(0.25+0.5i*x)))-0.5*x*log(pi))+add)))
+rusc <- (Re(usc)+Im(usc))/sqrt(2);iusc <- (Re(usc)-Im(usc))/sqrt(2)
+plot(x=x,y=abs(Re(sc)),col="blue",xlim=c(start-abs(.5-res)/0.5,finish+abs(.5-res)/0.5),typ="l", ylim=c(0,3),lwd=2,xlab = "imaginary part", ylab = "abs(function) value",main = paste0("weakly coupled (standard) Z(s) ","\n representation on critical line (0.75+i*t)"),cex.xlab=0.9,cex.main=.8,cex.legend=0.8)
+# plot(x=x,y=abs(rsc),col="blue",xlim=c(z_zero-abs(.5-res)/0.5,z_zero+abs(.5-res)/0.5),typ="l",
+#      ylim=c(0,max(abs(.5-res)/0.4,.0001)),lwd=2)
+lines(x=x,y=abs(Im(sc)),col="green",lwd=2)
+lines(x=x,y=abs(zeta(res+1i*x)),col="red",lwd=2)
+abline(h=0)
+abline(v=z_zero-abs(0.5-res),lty=3)
+abline(v=z_zero+abs(0.5-res),lty=3)
+abline(h=1,lty=3)
+legend(18, 3, c("abs(zeta(0.5+i*t))", "rotated real(Z(0.5+i*t))","rotated imag(Z(0.5+i*t))"),
+       lty = 1,cex=.6, lwd = c(2,  2,2,2), col = c("red",  "blue","green"))
+
+par(fig=c(0.5,1,0.,0.55), new=TRUE)
+res <- .75;
+sc <- sqrt(zeta(res+1i*x)*zeta(1-(res+1i*x))*rawratio(res,x))
+rsc <- (Re(sc)+Im(sc))/sqrt(2);isc <- (Re(sc)-Im(sc))/sqrt(2)
+usc <- zeta(res+1i*x)*exp(0.5i*(2*((Im(log(gammaz(0.25+0.5i*x)))-0.5*x*log(pi))+add)))
+rusc <- (Re(usc)+Im(usc))/sqrt(2);iusc <- (Re(usc)-Im(usc))/sqrt(2)
+plot(x=x,y=abs(rsc),col="blue",xlim=c(start-abs(.5-res)/0.5,finish+abs(.5-res)/0.5),typ="l", ylim=c(0,3),lwd=2,xlab = "imaginary part", ylab = "abs(function) value",main = paste0("strongly coupled Z(s) ","\n representation on critical line (0.75+i*t)"),cex.xlab=0.9,cex.main=.8,cex.legend=0.8)
+# plot(x=x,y=abs(rsc),col="blue",xlim=c(z_zero-abs(.5-res)/0.5,z_zero+abs(.5-res)/0.5),typ="l",
+#      ylim=c(0,max(abs(.5-res)/0.4,.0001)),lwd=2)
+lines(x=x,y=abs(isc),col="green",lwd=2)
+lines(x=x,y=abs(zeta(res+1i*x)),col="red",lwd=2)
+abline(h=0)
+abline(v=z_zero-abs(0.5-res),lty=3)
+abline(v=z_zero+abs(0.5-res),lty=3)
+abline(h=1,lty=3)
+legend(18, 3, c("abs(zeta(0.75+i*t))", "rotated real(Z(0.75+i*t))","rotated imag(Z(0.75+i*t))"),
+       lty = 1,cex=.6, lwd = c(2,  2,2,2), col = c("red",  "blue","green"))
+
+# mtext("abs(zeta(x+i*t)) and weakly & tightly coupled representations", side=3, outer=TRUE, line=-1)
+# mtext("of abs(real) and abs(imag) Z(x+i*t) parts", side=3, outer=TRUE, line=-2)
+
+```
+
+***Figure 2. Differences in extended Riemann Siegel Z function components for weakly and strongly coupled representations***
+
+Figure 3 illustrates several Riemann Zeta zero positions and the size of the splittings. A first order approximation of the splitting is achieved using the relationship
+
+\begin{equation}
+Im(s+i*t)_{zero position} \pm abs(0.5-Re(s))   \label {eq:split}
+\end{equation}
+
+These values have been shown on the figures as vertical lines. The agreement on position is not exact (see the example for zero at 32.484 below) and a better approximation would include information on the magnitude of the slope of the zeta function and the closeness of adjacent Riemann Zeta zeroes. Note that examples above the critical line have been used, as in this region, the Riemann Zeta function shrinks closer to the function value = 1. Thus the scales change little across the examples.
+
+The strongly coupled components are shown in blue, the weakly coupled components in green and the abs(zeta(s)) in red.
+
+```{r, fig3, echo=FALSE, cache=FALSE, fig.width=6, fig.height=3,  fig.keep='high', warning=FALSE}
+
+library(pracma)
+
+
+rawratio <- function(res,x) {
+    abs(2^(res+1i*x)*pi^(res+1i*x-1)*sin(pi/2*(res+1i*x))*gammaz(1-(res+1i*x)))
+}
+
+func <- function(x) {  cos(2*(Im(log(gammaz(0.25+0.5i*x)))-0.5*x*log(pi)))}
+
+fsder <- function(x) {  sin(2*(Im(log(gammaz(0.25+0.5i*x)))-0.5*x*log(pi)))}
+
+x <- seq(0,60,l=30001)
+
+sum <- 0
+add_pos <- 0
+for (i in 1:length(x)) {
+  if(x[i] < 10 ) {add_pos[i] <- 0}
+  else { 
+    test <- floor((Im(log(gammaz(0.25+0.5i*x[i]))))/2/pi)
+    if (test == 0) {flag <- 0;add_pos[i] <- sum}
+      else if (test == -1 & flag == 0 ) {flag <- 1; sum <- sum+2*pi;add_pos[i] <- sum}
+        else add_pos[i] <- sum
+  }
+  }
+sum <- 0
+add_neg <- 0
+for (i in 1:length(x)) {
+  if(x[length(x)+1-i] > -10 ) {add_neg[i] <- 0}
+  else { 
+    test <- floor((Im(log(gammaz(0.25+0.5i*x[length(x)+1-i]))))/2/pi)
+    if (test == -1) {flag <- 0;add_neg[length(x)+1-i] <- sum}
+    else if (test == 0 & flag == 0 ) {flag <- 1; sum <- sum-2*pi;add_neg[length(x)+1-i] <- sum}
+    else add_neg[length(x)+1-i] <- sum
+  }
+}
+
+add <- 0
+for (i in 1:length(x)) {
+  if (x[i] < 0) add[i] <- add_neg[i]
+    else add[i] <- add_pos[i]
+}
+
+
+start <- 14;finish <- 26;z_zero <- 21.022
+
+res <- .6;
+sc <- sqrt(zeta(res+1i*x)*zeta(1-(res+1i*x))*rawratio(res,x))
+rsc <- (Re(sc)+Im(sc))/sqrt(2);isc <- (Re(sc)-Im(sc))/sqrt(2)
+usc <- zeta(res+1i*x)*exp(0.5i*(2*((Im(log(gammaz(0.25+0.5i*x)))-0.5*x*log(pi))+add)))
+rusc <- (Re(usc)+Im(usc))/sqrt(2);iusc <- (Re(usc)-Im(usc))/sqrt(2)
+plot(x=x,y=abs(rsc),col="blue",xlim=c(z_zero-abs(.5-res)/0.3,z_zero+abs(.5-res)/0.3),typ="l",
+     ylim=c(0,max(abs(.5-res)/0.4,.0001)),lwd=2,xlab = "imaginary part", ylab = "abs(function) value",main = paste0("s = (0.6+i*t)"),cex.xlab=0.9,cex.main=.8,cex.legend=0.8)
+lines(x=x,y=abs(isc),col="blue",lwd=2)
+lines(x=x,y=abs(Re(sc)),col="green",lwd=2)
+lines(x=x,y=abs(Im(sc)),col="green",lwd=2)
+lines(x=x,y=abs(zeta(res+1i*x)),col="red",lwd=2)
+abline(h=0)
+abline(v=z_zero-abs(0.5-res),lty=3)
+abline(v=z_zero+abs(0.5-res),lty=3)
+abline(h=1,lty=3)
+legend(z_zero-abs(.5-res)/.3, abs(.5-res)/0.4, c("abs(zeta(0.6+i*t))", "coupled (Z(0.6+i*t))","standard (Z(0.6+i*t))"),
+       lty = 1,cex=.6, lwd = c(2,  2,2,2), col = c("red",  "blue","green"))
+
+start <- 14;finish <- 26;z_zero <- 37.586
+
+res <- .7;
+sc <- sqrt(zeta(res+1i*x)*zeta(1-(res+1i*x))*rawratio(res,x))
+rsc <- (Re(sc)+Im(sc))/sqrt(2);isc <- (Re(sc)-Im(sc))/sqrt(2)
+usc <- zeta(res+1i*x)*exp(0.5i*(2*((Im(log(gammaz(0.25+0.5i*x)))-0.5*x*log(pi))+add)))
+rusc <- (Re(usc)+Im(usc))/sqrt(2);iusc <- (Re(usc)-Im(usc))/sqrt(2)
+plot(x=x,y=abs(rsc),col="blue",xlim=c(z_zero-abs(.5-res)/0.3,z_zero+abs(.5-res)/0.3),typ="l",
+     ylim=c(0,max(abs(.5-res)/0.4,.0001)),lwd=2,xlab = "imaginary part", ylab = "abs(function) value",main = paste0("s = (0.7+i*t)"),cex.xlab=0.9,cex.main=.8,cex.legend=0.8)
+lines(x=x,y=abs(isc),col="blue",lwd=2)
+lines(x=x,y=abs(Re(sc)),col="green",lwd=2)
+lines(x=x,y=abs(Im(sc)),col="green",lwd=2)
+lines(x=x,y=abs(zeta(res+1i*x)),col="red",lwd=2)
+abline(h=0)
+abline(v=z_zero-abs(0.5-res),lty=3)
+abline(v=z_zero+abs(0.5-res),lty=3)
+abline(h=1,lty=3)
+legend(z_zero-abs(.5-res)/.3, abs(.5-res)/0.4, c("abs(zeta(0.7+i*t))", "coupled (Z(0.7+i*t))","standard (Z(0.7+i*t))"),
+       lty = 1,cex=.6, lwd = c(2,  2,2,2), col = c("red",  "blue","green"))
+
+
+start <- 14;finish <- 26;z_zero <- 48.005
+
+res <- .8;
+sc <- sqrt(zeta(res+1i*x)*zeta(1-(res+1i*x))*rawratio(res,x))
+rsc <- (Re(sc)+Im(sc))/sqrt(2);isc <- (Re(sc)-Im(sc))/sqrt(2)
+usc <- zeta(res+1i*x)*exp(0.5i*(2*((Im(log(gammaz(0.25+0.5i*x)))-0.5*x*log(pi))+add)))
+rusc <- (Re(usc)+Im(usc))/sqrt(2);iusc <- (Re(usc)-Im(usc))/sqrt(2)
+plot(x=x,y=abs(rsc),col="blue",xlim=c(z_zero-abs(.5-res)/0.3,z_zero+abs(.5-res)/0.3),typ="l",
+     ylim=c(0,max(abs(.5-res)/0.4,.0001)),lwd=2,xlab = "imaginary part", ylab = "abs(function) value",main = paste0("s = (0.8+i*t)"),cex.xlab=0.9,cex.main=.8,cex.legend=0.8)
+lines(x=x,y=abs(isc),col="blue",lwd=2)
+lines(x=x,y=abs(Re(sc)),col="green",lwd=2)
+lines(x=x,y=abs(Im(sc)),col="green",lwd=2)
+lines(x=x,y=abs(zeta(res+1i*x)),col="red",lwd=2)
+abline(h=0)
+abline(v=z_zero-abs(0.5-res),lty=3)
+abline(v=z_zero+abs(0.5-res),lty=3)
+abline(h=1,lty=3)
+legend(z_zero-abs(.5-res)/.3, abs(.5-res)/0.4, c("abs(zeta(0.8+i*t))", "coupled (Z(0.8+i*t))","standard (Z(0.8+i*t))"),
+       lty = 1,cex=.6, lwd = c(2,  2,2,2), col = c("red",  "blue","green"))
+
+start <- 14;finish <- 26;z_zero <- 32.484
+
+res <- .9;
+sc <- sqrt(zeta(res+1i*x)*zeta(1-(res+1i*x))*rawratio(res,x))
+rsc <- (Re(sc)+Im(sc))/sqrt(2);isc <- (Re(sc)-Im(sc))/sqrt(2)
+usc <- zeta(res+1i*x)*exp(0.5i*(2*((Im(log(gammaz(0.25+0.5i*x)))-0.5*x*log(pi))+add)))
+rusc <- (Re(usc)+Im(usc))/sqrt(2);iusc <- (Re(usc)-Im(usc))/sqrt(2)
+plot(x=x,y=abs(rsc),col="blue",xlim=c(z_zero-abs(.5-res)/0.3,z_zero+abs(.5-res)/0.3),typ="l",
+     ylim=c(0,max(abs(.5-res)/0.4,.0001)),lwd=2,xlab = "imaginary part", ylab = "abs(function) value",main = paste0("s = (0.9+i*t)"),cex.xlab=0.9,cex.main=.8,cex.legend=0.8)
+lines(x=x,y=abs(isc),col="blue",lwd=2)
+lines(x=x,y=abs(Re(sc)),col="green",lwd=2)
+lines(x=x,y=abs(Im(sc)),col="green",lwd=2)
+lines(x=x,y=abs(zeta(res+1i*x)),col="red",lwd=2)
+abline(h=0)
+abline(v=z_zero-abs(0.5-res),lty=3)
+abline(v=z_zero+abs(0.5-res),lty=3)
+abline(h=1,lty=3)
+legend(z_zero-abs(.5-res)/0.3, abs(.5-res)/0.4, c("abs(zeta(0.9+i*t))", "coupled (Z(0.9+i*t))","standard (Z(0.9+i*t))"),
+       lty = 1,cex=.6, lwd = c(2,  2,2,2), col = c("red",  "blue","green"))
+
+start <- 14;finish <- 26;z_zero <- 32.484
+
+res <- 5;
+sc <- sqrt(zeta(res+1i*x)*zeta(1-(res+1i*x))*rawratio(res,x))
+rsc <- (Re(sc)+Im(sc))/sqrt(2);isc <- (Re(sc)-Im(sc))/sqrt(2)
+usc <- zeta(res+1i*x)*exp(0.5i*(2*((Im(log(gammaz(0.25+0.5i*x)))-0.5*x*log(pi))+add)))
+rusc <- (Re(usc)+Im(usc))/sqrt(2);iusc <- (Re(usc)-Im(usc))/sqrt(2)
+plot(x=x,y=abs(rsc),col="blue",xlim=c(z_zero-abs(.5-res)/0.3,z_zero+abs(.5-res)/0.3),typ="l",
+     ylim=c(0,min(abs(.5-res)/0.4,1.1)),lwd=2,xlab = "imaginary part", ylab = "abs(function) value",main = paste0("s = (5+i*t)"),cex.xlab=0.9,cex.main=.8,cex.legend=0.8)
+lines(x=x,y=abs(isc),col="blue",lwd=2)
+lines(x=x,y=abs(Re(sc)),col="green",lwd=2)
+lines(x=x,y=abs(Im(sc)),col="green",lwd=2)
+lines(x=x,y=abs(zeta(res+1i*x)),col="red",lwd=2)
+abline(h=0)
+abline(v=z_zero-abs(0.5-res),lty=1)
+abline(v=z_zero+abs(0.5-res),lty=1)
+abline(h=1,lty=3)
+legend(z_zero-abs(.5-res)/0.3, abs(.5-res)/0.4, c("abs(zeta(5+i*t))", "coupled (Z(5+i*t))","standard (Z(5+i*t))"),
+       lty = 1,cex=.6, lwd = c(2,  2,2,2), col = c("red",  "blue","green"))
+
+```
+
+***Figure 3. Examples of actual and predicted splittings of zero crossings of strongly coupled Z(s) components, with approximate first order splitting given by $\pm$abs(Re(s)-0.5)***
+
+It can be seen that the abs(zeta(s)) is bound by the strongly coupled crossings (blue) and the peak of the imaginary part of the weakly coupled component. In physics parlance, the abs(zeta(s)) exhibits anticrossing behaviour for the coupled representation. The height of the minima of the crossing point seems relatively consistent with ~abs(Re(s)-0.5) but that is false comfort from a small sample. If the nearby peak is ~abs(Re(s)-0.5), then some examples of 0.5*abs(Re(s)-0.5) or lower can and do appear. From the geometry of the anticrossing behaviour however, no currently known Riemann Zeta critical line zeroes are expected to remain zero off the critical line, consistent with the lower bound > 0 found in (6) and the Riemann Hypothesis. 
+
+Since the distance between peaks diminishes with $t \rightarrow \infty$, for a given splitting abs(Re(s)-0.5) the Riemann Zeta features will be smoothed very quickly at large t. Figure 5 shows how at even small values off the critical line abs(0.6-0.5)=0.1 & abs(0.65-0.5)=0.15 and t~ 17183, with peaks ~0.5 apart, the smoothing is significant, in contrast to low t situation. Pari-gp software (9) was used for these higher t value calculations.
+
+![My Figure](splitting_0_6_strong.pdf)
+![My Figure](splitting_0_65_strong.pdf)
+***Figure 4: For two low Re(s) = 0.6 & 0.65 values, the splitting of the strongly coupled Z(s) components ~ $\pm 0.1$ & $\pm 0.15$ (red) is quickly smearing the Riemann Zeta function  (red) due to shortening distance between peaks at Im(s) range ~$17,182-17,185$***
+
+In figure 5, the behaviour of the peaks for the strongly coupled representation are considered. Near the critical line, they are essentially opposite in phase. Further from the critical line the peaks move away but are bounded by adjacent Riemann Zeta zero positions.
+
+```{r, fig5, echo=FALSE, cache=FALSE, fig.width=6, fig.height=3,  fig.keep='high', warning=FALSE}
+
+library(pracma)
+
+
+rawratio <- function(res,x) {
+    abs(2^(res+1i*x)*pi^(res+1i*x-1)*sin(pi/2*(res+1i*x))*gammaz(1-(res+1i*x)))
+}
+
+func <- function(x) {  cos(2*(Im(log(gammaz(0.25+0.5i*x)))-0.5*x*log(pi)))}
+
+fsder <- function(x) {  sin(2*(Im(log(gammaz(0.25+0.5i*x)))-0.5*x*log(pi)))}
+
+x <- seq(0,60,l=30001)
+
+sum <- 0
+add_pos <- 0
+for (i in 1:length(x)) {
+  if(x[i] < 10 ) {add_pos[i] <- 0}
+  else { 
+    test <- floor((Im(log(gammaz(0.25+0.5i*x[i]))))/2/pi)
+    if (test == 0) {flag <- 0;add_pos[i] <- sum}
+      else if (test == -1 & flag == 0 ) {flag <- 1; sum <- sum+2*pi;add_pos[i] <- sum}
+        else add_pos[i] <- sum
+  }
+  }
+sum <- 0
+add_neg <- 0
+for (i in 1:length(x)) {
+  if(x[length(x)+1-i] > -10 ) {add_neg[i] <- 0}
+  else { 
+    test <- floor((Im(log(gammaz(0.25+0.5i*x[length(x)+1-i]))))/2/pi)
+    if (test == -1) {flag <- 0;add_neg[length(x)+1-i] <- sum}
+    else if (test == 0 & flag == 0 ) {flag <- 1; sum <- sum-2*pi;add_neg[length(x)+1-i] <- sum}
+    else add_neg[length(x)+1-i] <- sum
+  }
+}
+
+add <- 0
+for (i in 1:length(x)) {
+  if (x[i] < 0) add[i] <- add_neg[i]
+    else add[i] <- add_pos[i]
+}
+
+
+start <- 14;finish <- 26;z_zero <- 23
+
+res <- .6;
+sc <- sqrt(zeta(res+1i*x)*zeta(1-(res+1i*x))*rawratio(res,x))
+rsc <- (Re(sc)+Im(sc))/sqrt(2);isc <- (Re(sc)-Im(sc))/sqrt(2)
+usc <- zeta(res+1i*x)*exp(0.5i*(2*((Im(log(gammaz(0.25+0.5i*x)))-0.5*x*log(pi))+add)))
+rusc <- (Re(usc)+Im(usc))/sqrt(2);iusc <- (Re(usc)-Im(usc))/sqrt(2)
+plot(x=x,y=abs(rsc),col="blue",xlim=c(z_zero-4,z_zero+4),typ="l",
+     ylim=c(0,1.5),lwd=2,xlab = "imaginary part", ylab = "abs(function) value",main = paste0("s = (0.6+i*t)"),cex.xlab=0.9,cex.main=.8,cex.legend=0.8)
+lines(x=x,y=abs(isc),col="blue",lwd=2)
+lines(x=x,y=abs(Re(sc)),col="green",lwd=2)
+lines(x=x,y=abs(Im(sc)),col="green",lwd=2)
+lines(x=x,y=abs(zeta(res+1i*x)),col="red",lwd=2)
+abline(h=0)
+abline(v=z_zero-abs(0.5-res))
+abline(v=z_zero+abs(0.5-res))
+abline(h=1,lty=3)
+legend(19,1.5,  c("abs(zeta(0.6+i*t))", "coupled (Z(0.6+i*t))","standard (Z(0.6+i*t))","approx splitting"),
+       lty = 1,cex=.6, lwd = c(2,  2,2,2), col = c("red",  "blue","green","black"))
+
+start <- 14;finish <- 26;z_zero <- 23
+
+res <- .7;
+sc <- sqrt(zeta(res+1i*x)*zeta(1-(res+1i*x))*rawratio(res,x))
+rsc <- (Re(sc)+Im(sc))/sqrt(2);isc <- (Re(sc)-Im(sc))/sqrt(2)
+usc <- zeta(res+1i*x)*exp(0.5i*(2*((Im(log(gammaz(0.25+0.5i*x)))-0.5*x*log(pi))+add)))
+rusc <- (Re(usc)+Im(usc))/sqrt(2);iusc <- (Re(usc)-Im(usc))/sqrt(2)
+plot(x=x,y=abs(rsc),col="blue",xlim=c(z_zero-4,z_zero+4),typ="l",
+     ylim=c(0,1.5),lwd=2,xlab = "imaginary part", ylab = "abs(function) value",main = paste0("s = (0.7+i*t)"),cex.xlab=0.9,cex.main=.8,cex.legend=0.8)
+lines(x=x,y=abs(isc),col="blue",lwd=2)
+lines(x=x,y=abs(Re(sc)),col="green",lwd=2)
+lines(x=x,y=abs(Im(sc)),col="green",lwd=2)
+lines(x=x,y=abs(zeta(res+1i*x)),col="red",lwd=2)
+abline(h=0)
+abline(v=z_zero-abs(0.5-res))
+abline(v=z_zero+abs(0.5-res))
+abline(h=1,lty=3)
+legend(19,1.5, c("abs(zeta(0.7+i*t))", "coupled (Z(0.7+i*t))","standard (Z(0.7+i*t)","approx splitting"),
+       lty = 1,cex=.6, lwd = c(2,  2,2,2), col = c("red",  "blue","green","black"))
+
+
+start <- 14;finish <- 26;z_zero <- 23
+
+res <- .8;
+sc <- sqrt(zeta(res+1i*x)*zeta(1-(res+1i*x))*rawratio(res,x))
+rsc <- (Re(sc)+Im(sc))/sqrt(2);isc <- (Re(sc)-Im(sc))/sqrt(2)
+usc <- zeta(res+1i*x)*exp(0.5i*(2*((Im(log(gammaz(0.25+0.5i*x)))-0.5*x*log(pi))+add)))
+rusc <- (Re(usc)+Im(usc))/sqrt(2);iusc <- (Re(usc)-Im(usc))/sqrt(2)
+plot(x=x,y=abs(rsc),col="blue",xlim=c(z_zero-4,z_zero+4),typ="l",
+     ylim=c(0,1.5),lwd=2,xlab = "imaginary part", ylab = "abs(function) value",main = paste0("s = (0.8+i*t)"),cex.xlab=0.9,cex.main=.8,cex.legend=0.8)
+lines(x=x,y=abs(isc),col="blue",lwd=2)
+lines(x=x,y=abs(Re(sc)),col="green",lwd=2)
+lines(x=x,y=abs(Im(sc)),col="green",lwd=2)
+lines(x=x,y=abs(zeta(res+1i*x)),col="red",lwd=2)
+abline(h=0)
+abline(v=z_zero-abs(0.5-res))
+abline(v=z_zero+abs(0.5-res))
+abline(h=1,lty=3)
+legend(19,1.5, c("abs(zeta(0.8+i*t))", "coupled (Z(0.8+i*t))","standard (Z(0.8+i*t)","app splitting"),
+       lty = 1,cex=.6, lwd = c(2,  2,2,2), col = c("red",  "blue","green","black"))
+
+start <- 14;finish <- 26;z_zero <- 23
+
+res <- .9;
+sc <- sqrt(zeta(res+1i*x)*zeta(1-(res+1i*x))*rawratio(res,x))
+rsc <- (Re(sc)+Im(sc))/sqrt(2);isc <- (Re(sc)-Im(sc))/sqrt(2)
+usc <- zeta(res+1i*x)*exp(0.5i*(2*((Im(log(gammaz(0.25+0.5i*x)))-0.5*x*log(pi))+add)))
+rusc <- (Re(usc)+Im(usc))/sqrt(2);iusc <- (Re(usc)-Im(usc))/sqrt(2)
+plot(x=x,y=abs(rsc),col="blue",xlim=c(z_zero-4,z_zero+4),typ="l",
+     ylim=c(0,1.5),lwd=2,xlab = "imaginary part", ylab = "abs(function) value",main = paste0("s = (0.9+i*t)"),cex.xlab=0.9,cex.main=.8,cex.legend=0.8)
+lines(x=x,y=abs(isc),col="blue",lwd=2)
+lines(x=x,y=abs(Re(sc)),col="green",lwd=2)
+lines(x=x,y=abs(Im(sc)),col="green",lwd=2)
+lines(x=x,y=abs(zeta(res+1i*x)),col="red",lwd=2)
+abline(h=0)
+abline(v=z_zero-abs(0.5-res))
+abline(v=z_zero+abs(0.5-res))
+abline(h=1,lty=3)
+legend(19,1.5, c("abs(zeta(0.9+i*t))", "coupled (Z(0.9+i*t))","standard (Z(0.9+i*t)","app splitting"),
+       lty = 1,cex=.6, lwd = c(2,  2,2,2), col = c("red",  "blue","green","black"))
+
+start <- 14;finish <- 26;z_zero <- 23
+
+res <- 2;
+sc <- sqrt(zeta(res+1i*x)*zeta(1-(res+1i*x))*rawratio(res,x))
+rsc <- (Re(sc)+Im(sc))/sqrt(2);isc <- (Re(sc)-Im(sc))/sqrt(2)
+usc <- zeta(res+1i*x)*exp(0.5i*(2*((Im(log(gammaz(0.25+0.5i*x)))-0.5*x*log(pi))+add)))
+rusc <- (Re(usc)+Im(usc))/sqrt(2);iusc <- (Re(usc)-Im(usc))/sqrt(2)
+plot(x=x,y=abs(rsc),col="blue",xlim=c(z_zero-4,z_zero+4),typ="l",
+     ylim=c(0,1.5),lwd=2,xlab = "imaginary part", ylab = "abs(function) value",main = paste0("s = (2+i*t)"),cex.xlab=0.9,cex.main=.8,cex.legend=0.8)
+lines(x=x,y=abs(isc),col="blue",lwd=2)
+lines(x=x,y=abs(Re(sc)),col="green",lwd=2)
+lines(x=x,y=abs(Im(sc)),col="green",lwd=2)
+lines(x=x,y=abs(zeta(res+1i*x)),col="red",lwd=2)
+abline(h=0)
+abline(v=z_zero-abs(0.5-res))
+abline(v=z_zero+abs(0.5-res))
+abline(h=1,lty=3)
+legend(19,1.5, c("abs(zeta(2+i*t))", "coupled (Z(2+i*t))","standard (Z(2+i*t)","app splitting"),
+       lty = 1,cex=.6, lwd = c(2,  2,2,2), col = c("red",  "blue","green","black"))
+
+```
+
+***Figure 5. Example of strongly coupled Z(s) component peak movement as Re(s) moves from critical line, for imag part ~ 23***
+
+
+
+###Conclusions
+
+Definitions of extended Riemann Siegel functions off the critical line have been presented and examined. The use of a strongly coupled representation for the Riemann Siegel Z function real and imaginary components usefully illustrates the anticrossing behaviour of the Riemann Zeta function minima off the critical line, with the first order splitting of the components related to abs(Re(s)-0.5).
+
+
+###References
+
+1. Edwards, H.M. (1974). Riemann's zeta function. Pure and Applied Mathematics 58. New York-London: Academic Press. ISBN 0-12-232750-0. Zbl 0315.10035.
+
+2. Riemann, Bernhard (1859). "Über die Anzahl der Primzahlen unter einer gegebenen Grösse". Monatsberichte der Berliner Akademie.. In Gesammelte Werke, Teubner, Leipzig (1892), Reprinted by Dover, New York (1953).
+
+3. Berry, M. V. "The Riemann-Siegel Expansion for the Zeta Function: High Orders and Remainders." Proc. Roy. Soc. London A 450, 439-462, 1995.
+
+4. The exact behaviour of the Reimann Zeta conjugate pair ratio function
+Martin, John (2016)
+http://dx.doi.org/10.6084/m9.figshare.3490955
+
+5. Identifying the Riemann Zeta function as a smoothed version of the Riemann Siegel function off the critical line
+Martin, John (2016)
+http://dx.doi.org/10.6084/m9.figshare.3502166
+
+6. Improved lower bounds > 0 for Riemann Zeta function off the critical line using derivatives of Re(Riemann Siegel Z function).
+Martin, John (2016)
+http://dx.doi.org/10.6084/m9.figshare.3510221
+
+7. A hypertrigonometric family of functions expressed using ratios of the Riemann Zeta function.
+Martin, John (2016)
+http://dx.doi.org/10.6084/m9.figshare.3556152
+
+8. Borchers H. W., "Pracma r package" v1.9.3 https://cran.r-project.org/web/packages/pracma/pracma.pdf 2016
+
+9. PARI/GP version 2.7.0, The PARI~Group, Bordeaux 2014, available from \url{http://pari.math.u-bordeaux.fr}
+
+##Appendix A: Unnormalised expansion for the extended Riemann Siegel Theta function
+
+Figure 1A illustrates the differences between the extended Riemann Siegel function in eqn \eqref {eq:ztheta} and the exact Riemann Siegel theta function for $real(e^{-2\theta_{ext}(s)})$.
+
+
+```{r, fig1A, echo=FALSE, cache=FALSE, fig.width=6, fig.height=6,  fig.keep='high', warning=FALSE}
+
+library(pracma)
+
+fratio <- function(res,x) {
+  2^(res+1i*x)*pi^(res+1i*x)*sin(pi/2*(res+1i*x))*gammaz(1-(res+1i*x))/
+    abs(2^(res+1i*x)*pi^(res+1i*x-1)*sin(pi/2*(res+1i*x))*gammaz(1-(res+1i*x)))
+}
+rawratio <- function(res,x) {
+    abs(2^(res+1i*x)*pi^(res+1i*x-1)*sin(pi/2*(res+1i*x))*gammaz(1-(res+1i*x)))
+}
+
+func <- function(x) {  cos(2*(Im(log(gammaz(0.25+0.5i*x)))-0.5*x*log(pi)))}
+
+fder <- function(x) {  fderiv(func,x,1)}
+fder2 <- function(x) {  fderiv(func,x,2)}
+fder3 <- function(x) {  fderiv(func,x,3)}
+
+fsder <- function(x) {  sin(2*(Im(log(gammaz(0.25+0.5i*x)))-0.5*x*log(pi)))}
+
+x <- seq(0,50,l=10001)
+
+
+par(mfrow=c(2,1))
+
+par(fig=c(0,1,0.45,0.95))
+plot(x=x,y=Re(zeta(0.9+1i*x)/zeta(1-(0.9+1i*x))/rawratio(0.9,x))-func(x),typ="l",col="blue",xlim=c(0,50),xlab = "",ylim=c(-.03,.03), ylab = "difference",main = paste0("difference between cos(2*theta_ext) & cos(2*theta)","\n on the line (0.9+i*t) "),lwd=2)
+
+
+par(fig=c(0,1,0,0.50), new=TRUE)
+plot(x=Re(zeta(0.6+1i*x)/zeta(1-(0.6+1i*x))/rawratio(0.6,x)),y=Re(zeta(0.6+1i*x)/zeta(1-(0.6+1i*x))/rawratio(0.6,x))-func(x),typ="l",col="blue",xlab = "cos(2*theta_ext) value",ylim=c(-.001,.001), ylab = "difference values",lwd=2,main = paste0("xy plot of difference"),)
+
+
+```
+
+***Figure 1A. Differences between $cos(2\theta_{ext}(s))$ and $cos(2\theta(s))$***
+
+Noticing (i) the decay of the differences, (ii) the phase of the residual differences, (iii) the increase of differences with abs(Re(s)-0.5) and (iv) findings from (6) on series expansions of zeta(0.5+i*t) and its derivatives, it was quickly identified that a good first order correction was 
+
+\begin{align}
+cos(2\theta_{ext}(s)) &\sim cos(2\theta(t)) + \frac{1}{2t}*abs(Re(s)-0.5)^2*sin(2\theta(t)) + ... \qquad for \thinspace t > 0 \label{eq:theta_approx}
+\end{align}
+
+The excellent performance of this unnormalised first order series for $t > 2\pi$ along the critical strip is shown in figure 1B. The last figure for line (2+i*t), indicates the approximation is less reliable outside the critical strip. 
+
+
+```{r, fig1B, echo=FALSE, cache=FALSE, fig.width=6, fig.height=6,  fig.keep='high', warning=FALSE}
+
+library(pracma)
+
+fratio <- function(res,x) {
+  2^(res+1i*x)*pi^(res+1i*x)*sin(pi/2*(res+1i*x))*gammaz(1-(res+1i*x))/
+    abs(2^(res+1i*x)*pi^(res+1i*x-1)*sin(pi/2*(res+1i*x))*gammaz(1-(res+1i*x)))
+}
+rawratio <- function(res,x) {
+    abs(2^(res+1i*x)*pi^(res+1i*x-1)*sin(pi/2*(res+1i*x))*gammaz(1-(res+1i*x)))
+}
+
+func <- function(x) {  cos(2*(Im(log(gammaz(0.25+0.5i*x)))-0.5*x*log(pi)))}
+
+fder <- function(x) {  fderiv(func,x,1)}
+fder2 <- function(x) {  fderiv(func,x,2)}
+fder3 <- function(x) {  fderiv(func,x,3)}
+
+fsder <- function(x) {  sin(2*(Im(log(gammaz(0.25+0.5i*x)))-0.5*x*log(pi)))}
+
+x <- seq(0,50,l=10001)
+
+
+par(mfrow=c(2,2))
+
+par(fig=c(0,0.5,0.45,0.95))
+plot(x=x,y=Re(zeta(0.6+1i*x)/zeta(1-(0.6+1i*x))/rawratio(0.6,x))-func(x)-0.5/x*abs(0.6-0.5)^2*fsder(x),typ="l",col="blue",xlim=c(0,50),xlab = "",ylim=c(-.01,.01), ylab = "difference",main = paste0("residual difference","\n on the line (0.6+i*t) "),lwd=2)
+
+
+par(fig=c(0,0.5,0,0.50), new=TRUE)
+plot(x=x,y=Re(zeta(0.75+1i*x)/zeta(1-(0.75+1i*x))/rawratio(0.75,x))-func(x)-0.5/x*abs(0.75-0.5)^2*fsder(x),typ="l",col="blue",xlim=c(0,50),xlab = "",ylim=c(-.01,.01), ylab = "difference",main = paste0("residual difference","\n on the line (0.75+i*t) "),lwd=2)
+
+par(fig=c(0.5,1,0.45,0.95),new=TRUE)
+plot(x=x,y=Re(zeta(1+1i*x)/zeta(1-(1+1i*x))/rawratio(1,x))-func(x)-
+       0.5/x*abs(1-0.5)^2*fsder(x),typ="l",col="blue",xlim=c(0,50),xlab = "",ylim=c(-.01,.01), ylab = "difference",main = paste0("residual difference","\n on the line (1+i*t) "),lwd=2)
+
+
+par(fig=c(0.5,1,0,0.50), new=TRUE)
+plot(x=x,y=Re(zeta(2+1i*x)/zeta(1-(2+1i*x))/rawratio(2,x))-func(x)-
+       0.5/x*abs(2-0.5)^2*fsder(x),typ="l",col="blue",xlim=c(0,50),xlab = "",ylim=c(-.01,.01), ylab = "difference",main = paste0("residual difference","\n on the line (2+i*t) "),lwd=2)
+
+```
+
+***Figure 2A. Differences between $cos(2\theta_{ext}(s))$ and first order series expansion***
+
+## Appendix B: Detrending $log(abs(\zeta(Re(s)))$ for Re(s) < 1 and $log(abs(\zeta(Re(s))/\zeta(Re(1-s)))$ on the real axis
+
+To investigate the sensitivity of detecting Riemann Zeta zeroes not on the same line in the complex plane. An investigation was initiated into understanding the potential impact of the critical line zeroes on the Riemann Zeta function for the real axis (the second critical line). The first part of the research was to approximate the Riemann Zeta function(s) along the real axis, which is described in this appendix.  
+
+### Asymptotic formula for $\zeta(x+0i)$ using generating function on the negative real axis < -2
+
+Along the real axis, the Riemann Zeta function exhibits a pole at 1+0i and zeroes at negative even integers -2, -4, -6 etc. Figure 2 shows the behaviour of the real, imaginary and absolute magnitude parts of $\zeta(x+0i)$ & $abs(2^{(x+0i)}\pi^{(x+0i)-1}sin(\frac{\pi (x+0i)}{2})\Gamma(1-(x+0i))) = abs(\frac{\zeta(x+0i)}{\zeta(1-(x+0i))}$ using eqn \eqref{eq:ratio} 
+
+
+```{r, fig2B, echo=FALSE, cache=FALSE, fig.width=6, fig.height=6,  fig.keep='high', warning=FALSE}
+
+library(pracma)
+
+fratio <- function(res,x) {
+  2^(res+1i*x)*pi^(res+1i*x)*sin(pi/2*(res+1i*x))*gammaz(1-(res+1i*x))/
+    abs(2^(res+1i*x)*pi^(res+1i*x-1)*sin(pi/2*(res+1i*x))*gammaz(1-(res+1i*x)))
+}
+rawratio <- function(res,x) {
+    abs(2^(res+1i*x)*pi^(res+1i*x-1)*sin(pi/2*(res+1i*x))*gammaz(1-(res+1i*x)))
+}
+
+func <- function(x) {  cos(2*(Im(log(gammaz(0.25+0.5i*x)))-0.5*x*log(pi)))}
+
+fder <- function(x) {  fderiv(func,x,1)}
+fder2 <- function(x) {  fderiv(func,x,2)}
+fder3 <- function(x) {  fderiv(func,x,3)}
+
+fsder <- function(x) {  sin(2*(Im(log(gammaz(0.25+0.5i*x)))-0.5*x*log(pi)))}
+
+x <- seq(-50,50,l=20001)
+res=1
+sum <- 0
+add_pos <- 0
+for (i in 1:length(x)) {
+  if(x[i] < 10 ) {add_pos[i] <- 0}
+  else { 
+    test <- floor((Im(log(gammaz(0.25+0.5i*x[i]))))/2/pi)
+    if (test == 0) {flag <- 0;add_pos[i] <- sum}
+      else if (test == -1 & flag == 0 ) {flag <- 1; sum <- sum+2*pi;add_pos[i] <- sum}
+        else add_pos[i] <- sum
+  }
+  }
+sum <- 0
+add_neg <- 0
+for (i in 1:length(x)) {
+  if(x[length(x)+1-i] > -10 ) {add_neg[i] <- 0}
+  else { 
+    test <- floor((Im(log(gammaz(0.25+0.5i*x[length(x)+1-i]))))/2/pi)
+    if (test == -1) {flag <- 0;add_neg[length(x)+1-i] <- sum}
+    else if (test == 0 & flag == 0 ) {flag <- 1; sum <- sum-2*pi;add_neg[length(x)+1-i] <- sum}
+    else add_neg[length(x)+1-i] <- sum
+  }
+}
+
+add <- 0
+for (i in 1:length(x)) {
+  if (x[i] < 0) add[i] <- add_neg[i]
+    else add[i] <- add_pos[i]
+}
+
+shift_max <- ifelse(x <= 1, pi/4,-7*pi/8)
+shift_mid <- ifelse(x <= 1, -pi/2,-pi/8)
+
+par(mfrow=c(2,1))
+
+par(fig=c(0,1,0.35,0.95))
+plot(x=x,y=Re(zeta(x)),typ="l",col="blue",xlim=c(-22,22),ylim=c(-5,5),xlab = "", ylab = "zeta(x) values",main = paste0("components of zeta(x) and abs(zeta(x)/zeta(1-x)) on","\n the real axis "),lwd=2)
+
+lines(x=x,y=Im(zeta(x+1i*0)),typ="l",col="red",lwd=2)
+lines(x=x,y=abs(zeta(x+1i*0)),typ="l",col="black",lwd=2,lty=2)
+
+ grid(lwd = 2,col="black") # grid only in y-direction
+legend(2, -1, c("real(zeta(x+i*0))", "imag(zeta(x+i*0))","abs(zeta(x+i*0))"),
+       lty = 1,cex=.6, lwd = c(2,  2,2), col = c("blue",  "red","black"))
+
+
+par(fig=c(0,1,0,0.55), new=TRUE)
+plot(x=x,y=Re(2^(x+1i*0)*pi^(x+1i*0-1)*sin(pi/2*(x+1i*0))*gammaz(1-(x+1i*0))),typ="l",col="blue",xlim=c(-22,22),ylim=c(-5,5),xlab = "real axis value", ylab = "abs(ratio) value",lwd=2)
+
+lines(x=x,y=Im(2^(x+1i*0)*pi^(x+1i*0-1)*sin(pi/2*(x+1i*0))*gammaz(1-(x+1i*0))),typ="l",col="red",lwd=2)
+lines(x=x,y=abs(2^(x+1i*0)*pi^(x+1i*0-1)*sin(pi/2*(x+1i*0))*gammaz(1-(x+1i*0))),typ="l",col="black",lwd=2,lty=2)
+
+
+
+
+ grid(lwd = 2,col="black") # grid only in y-direction
+legend(0, -1, c("real(zeta(x+i*0)/zeta(1-(x)))", "imag(zeta(x+i*0)/zeta(1-x))","abs(zeta(x+i*0)/zeta(1-x))"),
+       lty = 1,cex=.6, lwd = c(2,  2,2), col = c("blue",  "red","black"))
+```
+
+***Figure 2B. $\zeta(x+0*i)$ and $abs(\frac{\zeta(x+0*i)}{\zeta(1-(x+0*i))})$ behaviour on the real axis***
+
+It can be seen that the height of the functions are highly nonlinear except for $imag(\zeta(x+0*i))$ which is zero. Using eqn \eqref{eq:ratio} and the mirror behaviour for $real(\zeta((x+i*0)) > 2$ shown in figure 2B 
+
+\begin{equation}
+real(\zeta(1-(x+i*0)) \thinspace \rightarrow \thinspace 1 \qquad for \qquad (x+i*0) \le -2 
+\end{equation}
+
+gives the rapidly asymptotic formula
+
+\begin{equation}
+real(\zeta(x+i*0)) \approx real(2^{(x+i*0)}\pi^{(x+i*0)-1}sin(\frac{\pi (x+i*0)}{2})\Gamma(1-(x+i*0))) \qquad for \qquad (x+i*0) \le -2 
+\end{equation}
+
+where 
+
+\begin{equation}
+imag(\zeta(x+i*0)) = 0
+\end{equation}
+
+\begin{equation}
+imag(2^{(x+i*0)}\pi^{(x+i*0)-1}sin(\frac{\pi (x+i*0)}{2})\Gamma(1-(x+i*0))) = 0 
+\end{equation}
+
+
+```{r, fig3B, echo=FALSE, cache=FALSE, fig.width=6, fig.height=3,  fig.keep='high', warning=FALSE}
+
+library(pracma)
+
+fratio <- function(res,x) {
+  2^(res+1i*x)*pi^(res+1i*x)*sin(pi/2*(res+1i*x))*gammaz(1-(res+1i*x))/
+    abs(2^(res+1i*x)*pi^(res+1i*x-1)*sin(pi/2*(res+1i*x))*gammaz(1-(res+1i*x)))
+}
+rawratio <- function(res,x) {
+    (2^(res+1i*x)*pi^(res+1i*x-1)*sin(pi/2*(res+1i*x))*gammaz(1-(res+1i*x)))
+}
+
+comb_ratio <- function(res,x) {
+   ifelse(res < 0 ,rawratio(res,x), 1 )
+}
+func <- function(x) {  cos(2*(Im(log(gammaz(0.25+0.5i*x)))-0.5*x*log(pi)))}
+
+fder <- function(x) {  fderiv(func,x,1)}
+fder2 <- function(x) {  fderiv(func,x,2)}
+fder3 <- function(x) {  fderiv(func,x,3)}
+
+fsder <- function(x) {  sin(2*(Im(log(gammaz(0.25+0.5i*x)))-0.5*x*log(pi)))}
+
+x <- seq(-50,50,l=20001)
+res=1
+sum <- 0
+add_pos <- 0
+for (i in 1:length(x)) {
+  if(x[i] < 10 ) {add_pos[i] <- 0}
+  else { 
+    test <- floor((Im(log(gammaz(0.25+0.5i*x[i]))))/2/pi)
+    if (test == 0) {flag <- 0;add_pos[i] <- sum}
+      else if (test == -1 & flag == 0 ) {flag <- 1; sum <- sum+2*pi;add_pos[i] <- sum}
+        else add_pos[i] <- sum
+  }
+  }
+sum <- 0
+add_neg <- 0
+for (i in 1:length(x)) {
+  if(x[length(x)+1-i] > -10 ) {add_neg[i] <- 0}
+  else { 
+    test <- floor((Im(log(gammaz(0.25+0.5i*x[length(x)+1-i]))))/2/pi)
+    if (test == -1) {flag <- 0;add_neg[length(x)+1-i] <- sum}
+    else if (test == 0 & flag == 0 ) {flag <- 1; sum <- sum-2*pi;add_neg[length(x)+1-i] <- sum}
+    else add_neg[length(x)+1-i] <- sum
+  }
+}
+
+add <- 0
+for (i in 1:length(x)) {
+  if (x[i] < 0) add[i] <- add_neg[i]
+    else add[i] <- add_pos[i]
+}
+
+shift_max <- ifelse(x <= 1, pi/4,-7*pi/8)
+shift_mid <- ifelse(x <= 1, -pi/2,-pi/8)
+
+par(mfrow=c(1,1))
+
+plot(x=x,y=comb_ratio(x,0),typ="l",col="blue",xlim=c(-45,0),ylim=c(-100,100),xlab = "", ylab = "zeta(x) values",main = paste0("real(zeta(x)) & RHS of eqn (5) on the negative real axis"),lwd=2)
+
+lines(x=x,y=Re(zeta(x)),typ="l",col="red",lwd=2,lty=2)
+ grid(lwd = 2,col="black") # grid only in y-direction
+
+
+legend(-18, -40, c("real(zeta(x+i*0)/zeta(1-(x+i*0))) for X < -1","real(zeta(x+i*0))"),
+       lty = 1,cex=.6, lwd = c(2,  2), col = c("blue",  "red"))
+
+
+```
+
+***Figure 3B. Asymptotic agreement between $real(\zeta(x+0*i))$ and RHS of eqn (5) on the negative real axis***
+
+### Detrending the Riemann Zeta function and conjugate pair ratio function along the real axis
+
+A second approximation for $log(\zeta(x+i*0))$ along the negative real axis and for $log(\frac{\zeta(x+i*0)}{\zeta(1-(x+i*0))})$ on the whole real axis, can be obtained by use of the detrending, the known periodicity on the real axis and RHS of eqn eqref{eq:ratio}. 
+
+Figure 4B illustrates $log(abs(\zeta(x+i*0)))$ and $log(abs((2^{(x+i*0)}\pi^{(x+i*0)-1}sin(\frac{\pi (x+i*0)}{2})\Gamma(1-(x+i*0))))$. The average trend of these curves along the negative real axis can be well described by using the Riemann Siegel Theta function $\theta(x)$ with the argument of the function being x - the real value of 
+
+\begin{equation}
+s = (x+i*t)
+\end{equation}
+
+rather than the t - imaginary value for $\theta(t)$ used for the Riemann Siegel Theta function along the critical line (0.5+i*t). 
+
+```{r, fig4B, echo=FALSE, cache=FALSE, fig.width=6, fig.height=6,  fig.keep='high', warning=FALSE}
+
+library(pracma)
+
+fratio <- function(res,x) {
+  2^(res+1i*x)*pi^(res+1i*x)*sin(pi/2*(res+1i*x))*gammaz(1-(res+1i*x))/
+    abs(2^(res+1i*x)*pi^(res+1i*x-1)*sin(pi/2*(res+1i*x))*gammaz(1-(res+1i*x)))
+}
+rawratio <- function(res,x) {
+    abs(2^(res+1i*x)*pi^(res+1i*x-1)*sin(pi/2*(res+1i*x))*gammaz(1-(res+1i*x)))
+}
+
+func <- function(x) {  cos(2*(Im(log(gammaz(0.25+0.5i*x)))-0.5*x*log(pi)))}
+
+fder <- function(x) {  fderiv(func,x,1)}
+fder2 <- function(x) {  fderiv(func,x,2)}
+fder3 <- function(x) {  fderiv(func,x,3)}
+
+fsder <- function(x) {  sin(2*(Im(log(gammaz(0.25+0.5i*x)))-0.5*x*log(pi)))}
+
+x <- seq(-50,50,l=20001)
+res=1
+sum <- 0
+add_pos <- 0
+for (i in 1:length(x)) {
+  if(x[i] < 10 ) {add_pos[i] <- 0}
+  else { 
+    test <- floor((Im(log(gammaz(0.25+0.5i*x[i]))))/2/pi)
+    if (test == 0) {flag <- 0;add_pos[i] <- sum}
+      else if (test == -1 & flag == 0 ) {flag <- 1; sum <- sum+2*pi;add_pos[i] <- sum}
+        else add_pos[i] <- sum
+  }
+  }
+sum <- 0
+add_neg <- 0
+for (i in 1:length(x)) {
+  if(x[length(x)+1-i] > -10 ) {add_neg[i] <- 0}
+  else { 
+    test <- floor((Im(log(gammaz(0.25+0.5i*x[length(x)+1-i]))))/2/pi)
+    if (test == -1) {flag <- 0;add_neg[length(x)+1-i] <- sum}
+    else if (test == 0 & flag == 0 ) {flag <- 1; sum <- sum-2*pi;add_neg[length(x)+1-i] <- sum}
+    else add_neg[length(x)+1-i] <- sum
+  }
+}
+
+add <- 0
+for (i in 1:length(x)) {
+  if (x[i] < 0) add[i] <- add_neg[i]
+    else add[i] <- add_pos[i]
+}
+
+shift_max <- ifelse(x <= 1, pi/4,-7*pi/8)
+shift_mid <- ifelse(x <= 1, -pi/2,-pi/8)
+
+par(mfrow=c(2,1))
+
+par(fig=c(0,1,0.35,0.95))
+plot(x=x,y=log(abs(zeta(x))),typ="l",col="blue",xlim=c(-22,22),ylim=c(-10,10),xlab = "", ylab = "log(abs(zeta(x)) values",main = paste0("logarithm of abs(zeta(x)) & abs(zeta(x)/zeta(1-x))","\n on the real axis compared to -2*theta(x) "),lwd=2)
+
+lines(x=x,y=-2*((Im(log(gammaz(0.25+0.5i*x)))-0.5*x*log(pi))+add),typ="l",col="red",lwd=2)
+ grid(lwd = 2,col="black") # grid only in y-direction
+
+legend(2, -1, c("abs(zeta(x+i*0))","-2*theta(x+i*0)"),
+       lty = 1,cex=.6, lwd = c(2,  2), col = c("blue",  "red"))
+
+
+par(fig=c(0,1,0,0.55), new=TRUE)
+plot(x=x,y=log(abs(2^(x+1i*0)*pi^(x+1i*0-1)*sin(pi/2*(x+1i*0))*gammaz(1-(x+1i*0)))),typ="l",col="blue",xlim=c(-22,22),ylim=c(-10,10),xlab = "real axis value", ylab = "log(abs(ratio)) value",lwd=2)
+
+lines(x=x,y=-2*((Im(log(gammaz(0.25+0.5i*x)))-0.5*x*log(pi))+add),typ="l",col="red",lwd=2)
+
+
+ grid(lwd = 2,col="black") # grid only in y-direction
+legend(2, -1, c("abs(zeta(x+i*0)/zeta(1-x))","-2*theta(x+i*0)"),
+       lty = 1,cex=.6, lwd = c(2,  2,2), col = c("blue",  "red"))
+```
+
+***Figure 4B. $log(\zeta(x+0*i))$ and $log(abs(\frac{\zeta(x+0*i)}{\zeta(1-(x+0*i))}))$ behaviour on the real axis***
+
+Figure 5B presents the approximate detrended values of $log(\zeta(x+0*i))$ and $log(abs(\frac{\zeta(x+0*i)}{\zeta(1-(x+0*i))}))$ using $-2\theta(x)$. 
+
+
+```{r, fig5B, echo=FALSE, cache=FALSE, fig.width=6, fig.height=6,  fig.keep='high', warning=FALSE}
+
+library(pracma)
+
+fratio <- function(res,x) {
+  2^(res+1i*x)*pi^(res+1i*x)*sin(pi/2*(res+1i*x))*gammaz(1-(res+1i*x))/
+    abs(2^(res+1i*x)*pi^(res+1i*x-1)*sin(pi/2*(res+1i*x))*gammaz(1-(res+1i*x)))
+}
+rawratio <- function(res,x) {
+    abs(2^(res+1i*x)*pi^(res+1i*x-1)*sin(pi/2*(res+1i*x))*gammaz(1-(res+1i*x)))
+}
+
+func <- function(x) {  cos(2*(Im(log(gammaz(0.25+0.5i*x)))-0.5*x*log(pi)))}
+
+fder <- function(x) {  fderiv(func,x,1)}
+fder2 <- function(x) {  fderiv(func,x,2)}
+fder3 <- function(x) {  fderiv(func,x,3)}
+
+fsder <- function(x) {  sin(2*(Im(log(gammaz(0.25+0.5i*x)))-0.5*x*log(pi)))}
+
+x <- seq(-50,50,l=20001)
+res=1
+sum <- 0
+add_pos <- 0
+for (i in 1:length(x)) {
+  if(x[i] < 10 ) {add_pos[i] <- 0}
+  else { 
+    test <- floor((Im(log(gammaz(0.25+0.5i*x[i]))))/2/pi)
+    if (test == 0) {flag <- 0;add_pos[i] <- sum}
+      else if (test == -1 & flag == 0 ) {flag <- 1; sum <- sum+2*pi;add_pos[i] <- sum}
+        else add_pos[i] <- sum
+  }
+  }
+sum <- 0
+add_neg <- 0
+for (i in 1:length(x)) {
+  if(x[length(x)+1-i] > -10 ) {add_neg[i] <- 0}
+  else { 
+    test <- floor((Im(log(gammaz(0.25+0.5i*x[length(x)+1-i]))))/2/pi)
+    if (test == -1) {flag <- 0;add_neg[length(x)+1-i] <- sum}
+    else if (test == 0 & flag == 0 ) {flag <- 1; sum <- sum-2*pi;add_neg[length(x)+1-i] <- sum}
+    else add_neg[length(x)+1-i] <- sum
+  }
+}
+
+add <- 0
+for (i in 1:length(x)) {
+  if (x[i] < 0) add[i] <- add_neg[i]
+    else add[i] <- add_pos[i]
+}
+
+plot(x=x,y=log(abs(2^(x+1i*0)*pi^(x+1i*0-1)*sin(pi/2*(x+1i*0))*gammaz(1-(x+1i*0))))+2*((Im(log(gammaz(0.25+0.5i*x)))-0.5*x*log(pi))+add),typ="l",col="green",xlim=c(-25,25),ylim=c(-10,5),xlab = "Real axis value", ylab = "De-Trended value",main=paste0("Approximately detrended log(abs(zeta(x+i*0))) and ","\n log(abs(zeta(x)/zeta(1-x))) on real axis"))
+
+lines(x=x,y=log(abs(zeta(x+1i*0)))+2*((Im(log(gammaz(0.25+0.5i*x)))-0.5*x*log(pi))+add),col="blue")
+lines(x=x,y=log(abs(x))/2,col="magenta")
+
+ grid(lwd = 2,col="black") # grid only in y-direction
+legend(5, -7, c("log(abs(zeta(x+i*0)))", "log(abs(zeta(x)/zeta(1-x)))","log(abs(x))/2"),
+       lty = 1,cex=.6, lwd = c(2,  2,2), col = c("blue",  "green","magenta"))
+```
+
+***Figure 5B. Detrending the $log(abs(\zeta(x+0*i)))$ for $x \le 1$ and $log(abs(\frac{\zeta(x+0*i)}{\zeta(1-(x+0*i))}))$ using $-2\theta(x+0*i)$***
+
+The residual curvature was then investigated through curve fitting of the negative real axis. As shown in Appendix C, importantly on the negative real axis, the period of the function(s) is exactly 2, and so the odd negative integers (excluding x=1) have finite maxima. Curve fitting using only the odd integer function values as data points, quickly reveals that the detrended curves have a very strong log(abs(x))/2 dependence (shown in figure 5B).
+
+Using these results, a combined Riemann Siegel Theta function/log(abs(Re(s))) function can be created
+
+\begin{equation}
+2\theta_P = 2\theta(x)-\frac{log(abs(x))}{2} \label {eq:thetaplus}
+\end{equation}
+
+
+```{r, fig6B, echo=FALSE, cache=FALSE, fig.width=6, fig.height=6,  fig.keep='high', warning=FALSE}
+
+library(pracma)
+
+fratio <- function(res,x) {
+  2^(res+1i*x)*pi^(res+1i*x)*sin(pi/2*(res+1i*x))*gammaz(1-(res+1i*x))/
+    abs(2^(res+1i*x)*pi^(res+1i*x-1)*sin(pi/2*(res+1i*x))*gammaz(1-(res+1i*x)))
+}
+rawratio <- function(res,x) {
+    abs(2^(res+1i*x)*pi^(res+1i*x-1)*sin(pi/2*(res+1i*x))*gammaz(1-(res+1i*x)))
+}
+
+func <- function(x) {  cos(2*(Im(log(gammaz(0.25+0.5i*x)))-0.5*x*log(pi)))}
+
+fder <- function(x) {  fderiv(func,x,1)}
+fder2 <- function(x) {  fderiv(func,x,2)}
+fder3 <- function(x) {  fderiv(func,x,3)}
+
+fsder <- function(x) {  sin(2*(Im(log(gammaz(0.25+0.5i*x)))-0.5*x*log(pi)))}
+
+x <- seq(-50,150,l=20001)
+res=1
+sum <- 0
+add_pos <- 0
+for (i in 1:length(x)) {
+  if(x[i] < 10 ) {add_pos[i] <- 0}
+  else { 
+    test <- floor((Im(log(gammaz(0.25+0.5i*x[i]))))/2/pi)
+    if (test == 0) {flag <- 0;add_pos[i] <- sum}
+      else if (test == -1 & flag == 0 ) {flag <- 1; sum <- sum+2*pi;add_pos[i] <- sum}
+        else add_pos[i] <- sum
+  }
+  }
+sum <- 0
+add_neg <- 0
+for (i in 1:length(x)) {
+  if(x[length(x)+1-i] > -10 ) {add_neg[i] <- 0}
+  else { 
+    test <- floor((Im(log(gammaz(0.25+0.5i*x[length(x)+1-i]))))/2/pi)
+    if (test == -1) {flag <- 0;add_neg[length(x)+1-i] <- sum}
+    else if (test == 0 & flag == 0 ) {flag <- 1; sum <- sum-2*pi;add_neg[length(x)+1-i] <- sum}
+    else add_neg[length(x)+1-i] <- sum
+  }
+}
+
+add <- 0
+for (i in 1:length(x)) {
+  if (x[i] < 0) add[i] <- add_neg[i]
+    else add[i] <- add_pos[i]
+}
+
+thetaplus <- 2*((Im(log(gammaz(0.25+0.5i*x)))-0.5*x*log(pi))+add)-log(abs(x))/2
+
+
+plot(x=x,y=log(abs(2^(x+1i*0)*pi^(x+1i*0-1)*sin(pi/2*(x+1i*0))*gammaz(1-(x+1i*0))))+thetaplus,typ="l",col="green",xlim=c(-25,25),ylim=c(-2.5,2),xlab = "Real axis value", ylab = "zeta value",main=paste0("improved detrended log(abs(zeta(x+i*0)))","\n and log(abs(zeta(x)/zeta(1-x))) on real axis"))
+lines(x=x,y=log(abs(zeta(x+1i*0)))+thetaplus,col="blue")
+abline(h=0)
+abline(v=0.5)
+
+ grid(lwd = 2,col="black") # grid only in y-direction
+legend(-20, 2, c("log(abs(zeta(x+i*0)))", "log(abs(zeta(x)/zeta(1-x)))"),
+       lty = 1,cex=.6, lwd = c(2,  2), col = c("blue",  "red"))
+
+```
+
+***Figure 6B. improved detrending of $log(abs(\zeta(x+0*i)))$ for $x \le 1$ and $log(abs(\frac{\zeta(x+0*i)}{\zeta(1-(x+0*i))}))$ using $2\theta _P$***
+
+With the trend component identified for each function, the following approximations for the functions (within the specified real axis region) can be obtained.
+
+\begin{equation}
+real(\zeta(x+i*0)) \approx \exp(2\theta(x)-log(abs(x))/2+0.44)sin(\frac{\pi (x+i*0)}{2}) \qquad for \qquad (x+i*0) < -2 \label {eq:app1}
+\end{equation}
+
+
+\begin{align}
+real(\frac{\zeta(x+i*0)}{\zeta(1-(x+i*0)))} &= real(2^{(x+i*0)}\pi^{(x+i*0)-1}sin(\frac{\pi (x+i*0)}{2})\Gamma(1-(x+i*0))) \\ 
+&\approx (\exp(2\theta(x)-log(abs(x))/2+0.44)sin(\frac{\pi (x+i*0)}{2}) \qquad for \qquad (x+i*0) < 0 \label {eq:app2} \\
+&\approx (\exp(2\theta(x)-log(abs(x))/2-1.25)sin(\frac{\pi (x+i*0)}{2}) \qquad for \qquad (x+i*0) > 1 \label {eq:app3}
+\end{align}
+
+It is important to note the role of this combined Riemann Siegel Theta function/log(abs(Re(s))) function along the real axis is to scale the function, ie. $e^{2\theta_P(x)}$ rather than rotate the real and imaginary components $e^{i\theta(t)}$ of the Riemann Siegel Z function.
+
+### Using the combined Riemann Siegel Theta function/log(abs(x)) function on the critical strip
+
+Given the usefulness of an additional term to the Riemann Siegel Theta function along the real axis. It is an obvious question whether the same term is beneficial when applied to the critical strip (or complex plane)  
+
+Figure 7B below illustrates the performance of the combined Riemann Siegel Theta function/ log(abs(x)) function $e^{i\theta_P(t)}$ for several points on the critical strip.
+
+It can be seen that when using $e^{i\theta_P(t)}$, the real and imaginary components of the resulting Riemann Siegel Z type function exhibit the behaviour that 
+
+(i) on the critical line both are zero at the position of the known Riemann Zeta zeroes,
+
+(ii) the two components are ~$180^{\circ}$ out of phase at Re(s)=0.5 for low t, but of slightly differing magnitude and then vary out of phase amount as Re(s) differs from 0.5
+
+(iii) the crossings of the components agree reasonably with the positions of the Riemann Zeta minima
+
+(iv) the crossings do not appear to occur at 0 except for Re(s)=0.5. 
+
+```{r, fig7, echo=FALSE, cache=FALSE, fig.width=6, fig.height=6,  fig.keep='high', warning=FALSE}
+
+library(pracma)
+
+fratio <- function(res,x) {
+  2^(res+1i*x)*pi^(res+1i*x)*sin(pi/2*(res+1i*x))*gammaz(1-(res+1i*x))/
+    abs(2^(res+1i*x)*pi^(res+1i*x-1)*sin(pi/2*(res+1i*x))*gammaz(1-(res+1i*x)))
+}
+rawratio <- function(res,x) {
+    abs(2^(res+1i*x)*pi^(res+1i*x-1)*sin(pi/2*(res+1i*x))*gammaz(1-(res+1i*x)))
+}
+
+func <- function(x) {  cos(2*(Im(log(gammaz(0.25+0.5i*x)))-0.5*x*log(pi)))}
+
+fder <- function(x) {  fderiv(func,x,1)}
+fder2 <- function(x) {  fderiv(func,x,2)}
+fder3 <- function(x) {  fderiv(func,x,3)}
+
+fsder <- function(x) {  sin(2*(Im(log(gammaz(0.25+0.5i*x)))-0.5*x*log(pi)))}
+
+x <- seq(-50,150,l=20001)
+res=1
+sum <- 0
+add_pos <- 0
+for (i in 1:length(x)) {
+  if(x[i] < 10 ) {add_pos[i] <- 0}
+  else { 
+    test <- floor((Im(log(gammaz(0.25+0.5i*x[i]))))/2/pi)
+    if (test == 0) {flag <- 0;add_pos[i] <- sum}
+      else if (test == -1 & flag == 0 ) {flag <- 1; sum <- sum+2*pi;add_pos[i] <- sum}
+        else add_pos[i] <- sum
+  }
+  }
+sum <- 0
+add_neg <- 0
+for (i in 1:length(x)) {
+  if(x[length(x)+1-i] > -10 ) {add_neg[i] <- 0}
+  else { 
+    test <- floor((Im(log(gammaz(0.25+0.5i*x[length(x)+1-i]))))/2/pi)
+    if (test == -1) {flag <- 0;add_neg[length(x)+1-i] <- sum}
+    else if (test == 0 & flag == 0 ) {flag <- 1; sum <- sum-2*pi;add_neg[length(x)+1-i] <- sum}
+    else add_neg[length(x)+1-i] <- sum
+  }
+}
+
+add <- 0
+for (i in 1:length(x)) {
+  if (x[i] < 0) add[i] <- add_neg[i]
+    else add[i] <- add_pos[i]
+}
+
+thetaplus <- 2*((Im(log(gammaz(0.25+0.5i*x)))-0.5*x*log(pi))+add)-log(abs(x))/2
+
+plot(x=x,y=Re(zeta(0.1+1i*x)*exp(1i*thetaplus/2)),typ="l",col="blue",xlim=c(0.1,60),ylim=c(-5,5),xlab = "imaginary part", ylab = "zeta value",main="Critical strip behaviour on line (0.1+i*t)")
+lines(x=x,y=Im(zeta(0.1+1i*x)*exp(1i*thetaplus/2)),col="red")
+lines(x=x,y=abs(zeta(0.15+1i*x)*exp(1i*thetaplus/2)))
+abline(h=0)
+
+ grid(lwd = 2,col="black") # grid only in y-direction
+legend(17, -2, c("new real(Z(0.1+i*t))", "new imag(Z(0.1+i*t))","abs(zeta(0.1+i*t))"),
+       lty = 1,cex=.6, lwd = c(2,2,2), col = c("blue","red","black"))
+
+plot(x=x,y=Re(zeta(0.5+1i*x)*exp(1i*thetaplus/2)),typ="l",col="blue",xlim=c(0.1,60),xlab = "imaginary part", ylab = "zeta value",main="Critical strip behaviour on line (0.5+i*t)")
+lines(x=x,y=Im(zeta(0.5+1i*x)*exp(1i*thetaplus/2)),col="red")
+lines(x=x,y=abs(zeta(0.5+1i*x)*exp(1i*thetaplus/2)))
+abline(h=0)
+
+ grid(lwd = 2,col="black") # grid only in y-direction
+legend(17, -2, c("new real(Z(0.5+i*t))", "new imag(Z(0.5+i*t))","abs(zeta(0.5+i*t))"),
+       lty = 1,cex=.6, lwd = c(2,2,2), col = c("blue","red","black"))
+
+plot(x=x,y=Re(zeta(0.6+1i*x)*exp(1i*thetaplus/2)),typ="l",col="blue",xlim=c(0.1,60),xlab = "imaginary part", ylab = "zeta value",main="Critical strip behaviour on line (0.6+i*t)")
+lines(x=x,y=Im(zeta(0.6+1i*x)*exp(1i*thetaplus/2)),col="red")
+lines(x=x,y=abs(zeta(0.6+1i*x)*exp(1i*thetaplus/2)))
+abline(h=0)
+
+ grid(lwd = 2,col="black") # grid only in y-direction
+legend(17, -2, c("new real(Z(0.6+i*t))", "new imag(Z(0.6+i*t))","abs(zeta(0.6+i*t))"),
+       lty = 1,cex=.6, lwd = c(2,2,2), col = c("blue","red","black"))
+
+plot(x=x,y=Re(zeta(1+1i*x)*exp(1i*thetaplus/2)),typ="l",col="blue",xlim=c(0,60),ylim=c(-3,3),xlab = "imaginary part", ylab = "zeta value",main="Critical strip behaviour on line (1+i*t)")
+lines(x=x,y=Im(zeta(1+1i*x)*exp(1i*thetaplus/2)),col="red")
+lines(x=x,y=abs(zeta(1+1i*x)*exp(1i*thetaplus/2)))
+abline(h=0)
+
+ grid(lwd = 2,col="black") # grid only in y-direction
+legend(17, -2, c("new real(Z(1+i*t))", "new imag(Z(1+i*t))","abs(zeta(1+i*t))"),
+       lty = 1,cex=.6, lwd = c(2,2,2), col = c("blue","red","black"))
+
+plot(x=x,y=Re(zeta(2+1i*x)*exp(1i*thetaplus/2)),typ="l",col="blue",xlim=c(0.1,60),xlab = "imaginary part", ylab = "zeta value",main="Critical strip behaviour on line (2+i*t)")
+lines(x=x,y=Im(zeta(2+1i*x)*exp(1i*thetaplus/2)),col="red")
+lines(x=x,y=abs(zeta(2+1i*x)*exp(1i*thetaplus/2)))
+abline(h=0)
+ grid(lwd = 2,col="black") # grid only in y-direction
+legend(17, -2, c("new real(Z(2+i*t))", "new imag(Z(2+i*t))","abs(zeta(2+i*t))"),
+       lty = 1,cex=.6, lwd = c(2,2,2), col = c("blue","red","black"))
+
+
+```
+
+***Figure 7B. Modified Riemann Siegel Z functions using combined Riemann Siegel Theta function/log(abs(Im(s))) function***
+
+Further research, using pari-gp software (9) indicated that eventually for modestly increased t (> 500), log(abs(Im(s)))/2 only changes the phase of the function $e^{i\theta_P(t)}$ very slowly and the real and imaginary components of the Riemann Siegel Z type function converge to the regular Riemann Siegel Z function behaviour using only $\theta$. 
+
+The behaviour observed, however, with the real and imaginary components $180^{\circ}$ out of phase then inspired the strong coupling approach eqns \eqref {eq:coup_symm} & \eqref {eq:coup_antisymm} described in the main body of this paper. The strong coupling approach will maintain the anti-phase behaviour for large t.
+
+
+## Appendix C: Curve fitting using only the negative integers on the negative real axis. 
+
+As shown in figure 5B, after approximately detrending the $\frac{log(abs(zeta(x+i*0)}{\zeta(1-(x+i*0))}$ with $-2\theta(x)$ there is a residual curvature. Noting that the peaks along the negative real axis occur at negative odd integers and the known sine function dependence. It is a straightforward to only curve fit these peak data points.
+
+As shown in the linear modelling output below, the slope coefficient is 0.5 to high accuracy. The use of the intercept values from curve fitting was included in eqns \eqref{eq:app1},\eqref{eq:app2}  & \eqref{eq:app3} once the slope term log(abs(x))/2 was shown to have a strong positive detrending effect. 
+
+The use of log(abs(x)) rather than log(x) was necessary to get curve fitting for the positive real axis part of $\frac{log(abs(zeta(x+i*0)}{\zeta(1-(x+i*0))}$.
+
+
+
+```{r, appC, echo=FALSE, cache=FALSE, fig.width=6, fig.height=6,  fig.keep='high', warning=FALSE, error=FALSE}
+
+library(pracma)
+x <- seq(-151,-1,l=1501)
+res=1
+sum <- 0
+add_pos <- 0
+for (i in 1:length(x)) {
+  if(x[i] < 10 ) {add_pos[i] <- 0}
+  else { 
+    test <- floor((Im(log(gammaz(0.25+0.5i*x[i]))))/2/pi)
+    if (test == 0) {flag <- 0;add_pos[i] <- sum}
+      else if (test == -1 & flag == 0 ) {flag <- 1; sum <- sum+2*pi;add_pos[i] <- sum}
+        else add_pos[i] <- sum
+  }
+  }
+sum <- 0
+add_neg <- 0
+for (i in 1:length(x)) {
+  if(x[length(x)+1-i] > -10 ) {add_neg[i] <- 0}
+  else { 
+    test <- floor((Im(log(gammaz(0.25+0.5i*x[length(x)+1-i]))))/2/pi)
+    if (test == -1) {flag <- 0;add_neg[length(x)+1-i] <- sum}
+    else if (test == 0 & flag == 0 ) {flag <- 1; sum <- sum-2*pi;add_neg[length(x)+1-i] <- sum}
+    else add_neg[length(x)+1-i] <- sum
+  }
+}
+
+add <- 0
+for (i in 1:length(x)) {
+  if (x[i] < 0) add[i] <- add_neg[i]
+    else add[i] <- add_pos[i]
+}
+
+y2 <- log(abs(zeta(x+1i*0)))+2*((Im(log(gammaz(0.25+0.5i*x)))-0.5*x*log(pi))+add)
+
+c <- as.data.frame(cbind(x,y2))
+d <- c[c[,"x"]==floor(c[,"x"]),]# & !isna(c[,x]),]
+d <- d[d[,"y2"] > -100 & (d[,"x"]) < -9,]
+
+summary(lm(y2~log(-x),data=d))
+
+plot(x=x,y=y2,typ="l",xlim=c(-50,0),ylab="log(ratio) on real axis",xlab="real axis value",main="curve fitting using only negative odd integer points")
+lines(x=d[,"x"],y=fitted.values(lm(y2~log(abs(x)),data=d)),col="red",lwd=2)
+
+
+# plot(x=x,y=-2*((Im(log(gammaz(0.25+0.5i*x)))-0.5*x*log(pi))+add),typ="l",xlim=c(-2,2),ylim=c(-10,10))
+#  # lines(x=x,y=-2*((Im(log(gammaz(0.25+0.5i*x)))-log(pi)*x/2)+add)+x*4,typ="l",col="red")
+# lines(x=x,y=log(abs(2^(x+1i*0)*pi^(x+1i*0-1)*sin(pi/2*(x+1i*0))*gammaz(1-(x+1i*0))))+0*x*4,typ="l",col="green")
+# lines(x=x,y=log(abs(zeta(x+1i*0))),typ="l",col="blue")
+# lines(x=x,y=log(abs(zeta(x+1i*0)))+2*((Im(log(gammaz(0.25+0.5i*x)))-0.5*x*log(pi))+add),typ="l",col="blue")
+# lines(x=x,y=log(-x+1)/2+pi/4,typ="l",col="magenta")
+# abline(v=0.0,lty=3)
+# abline(h=1.0,lty=3)
+# head(c)
+# d <- c[c[,"x"]==floor(c[,"x"]),]# & !isna(c[,x]),]
+# d <- d[d[,"y2"] > -100 & (d[,"x"]) < -9,]
+# d
+# summary(lm(y2~log(-x+1),data=d))
+# summary(lm(y2~log(-x),data=d))
+
+```
