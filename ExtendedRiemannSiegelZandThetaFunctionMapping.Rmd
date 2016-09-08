@@ -1,0 +1,1044 @@
+---
+title: Mapping the Extended Riemann Siegel Z & Theta Functions about branch points
+  in the complex plane
+author: "John Martin"
+date: "Monday, September 5th, 2016"
+output:
+  pdf_document:
+    fig_crop: no
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+##Executive Summary
+
+The extended Riemann Siegel Z & Theta functions involve square root and logarithm functions respectively in the complex plane. As such, to produce single valued, phase continuous real and imaginary components, careful mapping of the critical points for phase ambiguities is required. This phase issue is irrelevant for $abs(\zeta(s))$ and $e^{i\theta_{ext}}$ calculations. The $\theta_{ext}$ function is found to be discontinuous, at the origin, for increasing real values outside the critical strip, but remains asymptotic to the critical line $\theta$ function at large imaginary values. The discontinuity in the $\theta_{ext}$ function appears related to the Riemann Zeta real axis zeroes which introduce additional oscillations in the $Z_{ext}$ function components. Finally, the $Z_{ext}$ function components exhibit different phase behaviour inside and outside the critical strip analogous to ordering behaviour.  
+
+```{r, exec, echo=FALSE, cache=TRUE, fig.width=6, fig.height=5,  fig.keep='high', warning=FALSE }
+
+library(pracma)
+
+
+rawratio <- function(res,x) {
+    abs(2^(res+1i*x)*pi^(res+1i*x-1)*sin(pi/2*(res+1i*x))*gammaz(1-(res+1i*x)))
+}
+
+x <- seq(-50,50,l=30001)
+
+add_phase <- function(x) {
+
+sum <- 0
+add_pos <- 0
+
+xfac <- 0.25
+
+for (i in 1:length(x)) {
+  if(x[i] < 10 ) {add_pos[i] <- 0}
+  else { 
+    test <- floor((Im(log(gammaz(xfac+0.5i*x[i]))))/2/pi)
+    if (test == 0) {flag <- 0;add_pos[i] <- sum}
+      else if (test == -1 & flag == 0 ) {flag <- 1; sum <- sum+2*pi;add_pos[i] <- sum}
+        else add_pos[i] <- sum
+  }
+  }
+sum <- 0
+add_neg <- 0
+for (i in 1:length(x)) {
+  if(x[length(x)+1-i] > -10 ) {add_neg[i] <- 0}
+  else { 
+    test <- floor((Im(log(gammaz(xfac+0.5i*x[length(x)+1-i]))))/2/pi)
+    if (test == -1) {flag <- 0;add_neg[length(x)+1-i] <- sum}
+    else if (test == 0 & flag == 0 ) {flag <- 1; sum <- sum-2*pi;add_neg[length(x)+1-i] <- sum}
+    else add_neg[length(x)+1-i] <- sum
+  }
+}
+
+add <- 0
+for (i in 1:length(x)) {
+  if (x[i] < 0) add[i] <- add_neg[i]
+    else add[i] <- add_pos[i]
+}
+
+add
+}
+
+sqadd_phase <- function(res,x)  {
+
+sum <- ifelse(abs(res) < sqrt(2),-pi,ifelse(abs(res)<5.73,-pi,ifelse(abs(res)<10.17,-2*pi,
+                  ifelse(abs(res)<14.297,-3*pi,ifelse(abs(res)<18.38,-4*pi,
+                  ifelse(abs(res)<22.428,-5*pi,ifelse(abs(res)<26.47,-6*pi,-7*pi)))))))
+sqadd_pos <- 0
+
+xfac <- 0.25
+
+for (i in 1:length(x)) {
+  if(x[i] <= .002 ) {sqadd_pos[i] <- sum}
+  else { 
+    test <- Im(log(sqrt(zeta(res+1i*x[i])*zeta(1-(res+1i*x[i]))*rawratio(res,x[i]))/
+            sqrt(abs(zeta(res+1i*x[i])*zeta(1-(res+1i*x[i]))*rawratio(res,x[i])))))
+    testp <- ifelse(x[i-1] != 0,
+            Im(log(sqrt(zeta(res+1i*x[i-1])*zeta(1-(res+1i*x[i-1]))*rawratio(res,x[i-1]))/
+             sqrt(abs(zeta(res+1i*x[i-1])*zeta(1-(res+1i*x[i-1]))*rawratio(res,x[i-1]))))),
+                    test)
+    # if (test-testp > pi/4 & x[i] <= 5) {flag <- 1;sum <- sum-1*pi;sadd_pos[i] <- sum}
+    if (test-testp < -pi/4) {flag <- 1;sum <- sum+1*pi;sqadd_pos[i] <- sum}
+    else {flag <- 0; sqadd_pos[i] <- sum}
+  }
+}
+sum <- -ifelse(abs(res) < sqrt(2),-pi,ifelse(abs(res)<5.73,-pi,ifelse(abs(res)<10.17,-2*pi,
+              ifelse(abs(res)<14.297,-3*pi,ifelse(abs(res)<18.38,-4*pi,
+              ifelse(abs(res)<22.428,-5*pi,ifelse(abs(res)<26.47,-6*pi,-7*pi)))))))
+sqadd_neg <- 0
+for (i in 1:length(x)) {
+  if(x[length(x)+1-i] >= -.002 ) {sqadd_neg[length(x)+1-i] <- sum}
+  else { 
+    test <- Im(log(sqrt(zeta(res+1i*x[length(x)+1-i])*zeta(1-(res+1i*x[length(x)+1-i]))*rawratio(res,x[length(x)+1-i]))/
+          sqrt(abs(zeta(res+1i*x[length(x)+1-i])*zeta(1-(res+1i*x[length(x)+1-i]))*rawratio(res,x[length(x)+1-i])))))
+    testp <- ifelse(x[length(x)+1-i+1] != 0,Im(log(sqrt(zeta(res+1i*x[length(x)+1-i+1])*zeta(1-(res+1i*x[length(x)+1-i+1]))*rawratio(res,x[length(x)+1-i+1]))/
+  sqrt(abs(zeta(res+1i*x[length(x)+1-i+1])*zeta(1-(res+1i*x[length(x)+1-i+1]))*rawratio(res,x[length(x)+1-i+1]))))),
+                    test)
+    if (test-testp < -pi/4 & x[length(x)+1-i] >= -5) {flag <- 1;sum <- sum+1*pi;ladd_neg[length(x)+1-i] <- sum}
+    if (test-testp > pi/4) {flag <- 1;sum <- sum-1*pi;sqadd_neg[length(x)+1-i] <- sum}
+    else {flag <- 0; sqadd_neg[length(x)+1-i] <- sum}
+  }
+}
+
+sqadd <- 0
+for (i in 1:length(x)) {
+  if (x[i] < 0) sqadd[i] <- sqadd_neg[i]
+  else sqadd[i] <- sqadd_pos[i]
+}
+
+sqadd}
+
+
+ladd_phase <- function(res,x) {
+
+sum <- ifelse(abs(res) < sqrt(2),0,ifelse(abs(res)<5.73,-pi,ifelse(abs(res)<10.17,-2*pi,
+              ifelse(abs(res)<14.297,-3*pi,ifelse(abs(res)<18.38,-4*pi,
+              ifelse(abs(res)<22.428,-5*pi,ifelse(abs(res)<26.47,-6*pi,-7*pi)))))))
+
+ladd_pos <- 0
+
+for (i in 1:length(x)) {
+  if(x[i] <= 0.002 ) {ladd_pos[i] <- sum}
+  else { 
+    test <- (-0.5*Im(log(zeta(res+1i*x[i])/zeta(1-(res+1i*x[i]))/rawratio(res,x[i]))))
+    testp <- ifelse(x[i-1] != 0,(-0.5*Im(log(zeta(res+1i*x[i-1])/zeta(1-(res+1i*x[i-1]))/
+                                               rawratio(res,x[i-1])))),test)
+    if (test-testp > pi/4 & x[i] <= 5) {flag <- 1;sum <- sum-1*pi;ladd_pos[i] <- sum}
+     if (test-testp < -pi/4) {flag <- 1;sum <- sum+1*pi;ladd_pos[i] <- sum}
+    else {flag <- 0; ladd_pos[i] <- sum}
+  }
+}
+sum <- ifelse(abs(res) < sqrt(2),0,ifelse(abs(res)<5.73,pi,ifelse(abs(res)<10.17,2*pi,
+              ifelse(abs(res)<14.297,3*pi,ifelse(abs(res)<18.38,4*pi,
+              ifelse(abs(res)<22.428,5*pi,ifelse(abs(res)<26.47,6*pi,7*pi)))))))
+ladd_neg <- 0
+for (i in 1:length(x)) {
+  if(x[length(x)+1-i] >= -.002 ) {ladd_neg[length(x)+1-i] <- sum}
+  else { 
+    test <- (-0.5*Im(log(zeta(res+1i*x[length(x)+1-i])/zeta(1-(res+1i*x[length(x)+1-i]))/rawratio(res,x[length(x)+1-i]))))
+    testp <- ifelse(x[length(x)+1-i+1] != 0,(-0.5*Im(log(zeta(res+1i*x[length(x)+1-i+1])/
+                      zeta(1-(res+1i*x[length(x)+1-i+1]))/rawratio(res,x[length(x)+1-i+1])))),test)
+    if (test-testp < -pi/4 & x[length(x)+1-i] >= -5) {flag <- 1;sum <- sum+1*pi;ladd_neg[length(x)+1-i] <- sum}
+     if (test-testp > pi/4) {flag <- 1;sum <- sum-1*pi;ladd_neg[length(x)+1-i] <- sum}
+    else {flag <- 0; ladd_neg[length(x)+1-i] <- sum}
+  }
+}
+
+ladd <- 0
+for (i in 1:length(x)) {
+  if (x[i] <= 0) ladd[i] <- ladd_neg[i]
+  else ladd[i] <- ladd_pos[i]
+}
+
+
+ladd}
+
+
+par(mfrow=c(2,2))
+
+par(fig=c(0,0.5,0.45,1))
+res <- .5;
+start <- -25;finish <- 25
+add_f <- add_phase(x)
+
+sqadd_f <- sqadd_phase(res,x)
+
+ladd_f <- ladd_phase(res,x)
+
+rot_z_fn <- sqrt(zeta(res+1i*x)*zeta(1-(res+1i*x))*rawratio(res,x))*exp(1i*3*pi/4)*cos(sqadd_f)
+plot(x=x,y=Im(rot_z_fn),col="red",xlim=c(start,finish),typ="l",ylim=c(-4,pi),xlab="",ylab = "function value",main = paste0("critical line (0.5+i*t)"),cex.xlab=0.9,cex.main=.8)
+lines(x=x,y=Re(rot_z_fn),col="blue")
+lines(x=x,y=abs(rot_z_fn),col="black")
+abline(h=0)
+
+
+# plot(x=x,y=abs(rsc),col="blue",xlim=c(start-abs(.5-res)/0.5,finish+abs(.5-res)/0.5),typ="l", ylim=c(0,3),lwd=2,xlab = "imaginary part", ylab = "abs(function) value",main = paste0("on critical line (0.5+i*t)"),cex.xlab=0.9,cex.main=.8,cex.legend=0.8)
+# 
+legend(-20, -2, c("abs(zeta(0.5+i*t))", "coupled real(Z(0.5+i*t))","coupled imag(Z(0.5+i*t))"),
+       lty = 1,cex=.6, lwd = c(2,  2,2,2), col = c("black",  "blue","red"))
+
+par(fig=c(0.5,1,0.45,1), new=TRUE)
+theta <- (-0.5*Im(log(zeta(res+1i*x)/zeta(1-(res+1i*x))/rawratio(res,x))))+1*ladd_f
+plot(x=x,y=theta,xlim=c(start,finish),ylim=c(-10,10),typ="l",lwd=2,xlab="",ylab = "function value",main = paste0("critical line (0.5+i*t)"),cex.xlab=0.9,cex.main=.8,cex.legend=0.8)
+lines(x=x,y=Im(log(gammaz(0.25+0.5i*x)))-0.5*x*log(pi)+1*add_f,col="green",lwd=2,lty=2)
+abline(h=0)
+
+# plot(x=x,y=abs(rsc),col="blue",xlim=c(start-abs(.5-res)/0.5,finish+abs(.5-res)/0.5),typ="l", ylim=c(0,3),lwd=1,xlab = "imaginary part", ylab = "abs(function) value",main = paste0("just above critical line (0.6+i*t)"),cex.xlab=0.9,cex.main=.8,cex.legend=0.8)
+
+legend(-20, -5, c("Im(Theta_ext)", "Im(Theta)"),
+       lty = 1,cex=.6, lwd = c(2,  2,2,2), col = c("black","green"))
+
+par(fig=c(0,0.5,0.,0.55), new=TRUE)
+res <- .9;
+
+add_f <- add_phase(x)
+
+sqadd_f <- sqadd_phase(res,x)
+
+ladd_f <- ladd_phase(res,x)
+
+rot_z_fn <- sqrt(zeta(res+1i*x)*zeta(1-(res+1i*x))*rawratio(res,x))*exp(1i*3*pi/4)*cos(sqadd_f)
+plot(x=x,y=Im(rot_z_fn),col="red",xlim=c(start,finish),typ="l",ylim=c(-4,pi),xlab="imaginary part",ylab = "function value",main = paste0("just inside critical strip (0.9+i*t)"),cex.xlab=0.9,cex.main=.8)
+lines(x=x,y=Re(rot_z_fn),col="blue")
+lines(x=x,y=abs(rot_z_fn),col="black")
+abline(h=0)
+
+# plot(x=x,y=abs(rsc),col="blue",xlim=c(start-abs(.5-res)/0.5,finish+abs(.5-res)/0.5),typ="l", ylim=c(0,3),lwd=1,xlab = "imaginary part", ylab = "abs(function) value",main = paste0("high on critical strip (0.9+i*t)"),cex.xlab=0.9,cex.main=.8,cex.legend=0.8)
+
+legend(-20, -2, c("abs(zeta(0.9+i*t))", "coupled real(Z(0.9+i*t))","coupled imag(Z(0.9+i*t))"),
+       lty = 1,cex=.6, lwd = c(2,  2,2,2), col = c("black",  "blue","red"))
+
+par(fig=c(0.5,1,0.,0.55), new=TRUE)
+
+theta <- (-0.5*Im(log(zeta(res+1i*x)/zeta(1-(res+1i*x))/rawratio(res,x))))+1*ladd_f
+plot(x=x,y=theta,xlim=c(start,finish),ylim=c(-10,10),typ="l",lwd=2,xlab="imaginary part",ylab = "function value",main = paste0("just inside critical strip (0.9+i*t)"),cex.xlab=0.9,cex.main=.8,cex.legend=0.8)
+lines(x=x,y=Im(log(gammaz(0.25+0.5i*x)))-0.5*x*log(pi)+1*add_f,col="green",lwd=2,lty=2)
+abline(h=0)
+
+# plot(x=x,y=abs(rsc),col="blue",xlim=c(start-abs(.5-res)/0.5,finish+abs(.5-res)/0.5),typ="l", ylim=c(0,3),lwd=1,xlab = "imaginary part", ylab = "abs(function) value",main = paste0("upper edge of critical strip (1+i*t)"),cex.xlab=0.9,cex.main=.8,cex.legend=0.8)
+
+legend(-20, -5, c("Im(Theta_ext)", "Im(Theta)"),
+       lty = 1,cex=.6, lwd = c(2,  2,2,2), col = c("black","green"))
+mtext("behaviour of real and imag Riemann Siegel Z_ext(s) parts and Theta_ext(s), Theta(s) functions ", side=3, outer=TRUE, line=-1,cex=0.8)
+
+```
+
+***Figure 1. Extended Riemann Siegel Z and $\theta$ function behaviour inside the critical strip***
+
+```{r, exec2, echo=FALSE, cache=TRUE, fig.width=6, fig.height=5,  fig.keep='high',warning=FALSE }
+
+
+par(mfrow=c(2,2))
+par(fig=c(0,0.5,0.45,1))
+res <- 2;
+start <- -25;finish <- 25
+add_f <- add_phase(x)
+
+sqadd_f <- sqadd_phase(res,x)
+
+ladd_f <- ladd_phase(res,x)
+
+rot_z_fn <- sqrt(zeta(res+1i*x)*zeta(1-(res+1i*x))*rawratio(res,x))*exp(1i*3*pi/4)*cos(sqadd_f)
+plot(x=x,y=Im(rot_z_fn),col="red",xlim=c(start,finish),typ="l",ylim=c(-4,pi),xlab="",ylab = "function value",main = paste0("near critical strip (2+i*t)"),cex.xlab=0.9,cex.main=.8)
+lines(x=x,y=Re(rot_z_fn),col="blue")
+lines(x=x,y=abs(rot_z_fn),col="black")
+abline(h=0)
+
+
+# plot(x=x,y=abs(rsc),col="blue",xlim=c(start-abs(.5-res)/0.5,finish+abs(.5-res)/0.5),typ="l", ylim=c(0,3),lwd=2,xlab = "imaginary part", ylab = "abs(function) value",main = paste0("on critical line (0.5+i*t)"),cex.xlab=0.9,cex.main=.8,cex.legend=0.8)
+# 
+legend(-20, -2, c("abs(zeta(2+i*t))", "coupled real(Z(2+i*t))","coupled imag(Z(2+i*t))"),
+       lty = 1,cex=.6, lwd = c(2,  2,2,2), col = c("black",  "blue","red"))
+
+par(fig=c(0.5,1,0.45,1), new=TRUE)
+theta <- (-0.5*Im(log(zeta(res+1i*x)/zeta(1-(res+1i*x))/rawratio(res,x))))+1*ladd_f
+plot(x=x,y=theta,xlim=c(start,finish),ylim=c(-10,10),typ="l",lwd=2,xlab="",ylab = "function value",main = paste0("near critical strip (2+i*t)"),cex.xlab=0.9,cex.main=.8,cex.legend=0.8)
+lines(x=x,y=Im(log(gammaz(0.25+0.5i*x)))-0.5*x*log(pi)+1*add_f,col="green",lwd=2,lty=2)
+abline(h=0)
+
+# plot(x=x,y=abs(rsc),col="blue",xlim=c(start-abs(.5-res)/0.5,finish+abs(.5-res)/0.5),typ="l", ylim=c(0,3),lwd=1,xlab = "imaginary part", ylab = "abs(function) value",main = paste0("just above critical line (0.6+i*t)"),cex.xlab=0.9,cex.main=.8,cex.legend=0.8)
+
+legend(-20, -5, c("Im(Theta_ext)", "Im(Theta)"),
+       lty = 1,cex=.6, lwd = c(2,  2,2,2), col = c("black","green"))
+
+par(fig=c(0,0.5,0.,0.55), new=TRUE)
+res <- 13;
+
+add_f <- add_phase(x)
+
+sqadd_f <- sqadd_phase(res,x)
+
+ladd_f <- ladd_phase(res,x)
+
+rot_z_fn <- sqrt(zeta(res+1i*x)*zeta(1-(res+1i*x))*rawratio(res,x))*exp(1i*3*pi/4)*cos(sqadd_f)
+plot(x=x,y=Im(rot_z_fn),col="red",xlim=c(start,finish),typ="l",ylim=c(-4,pi),xlab="imaginary part",ylab = "function value",main = paste0("well above the critical strip (13+i*t)"),cex.xlab=0.9,cex.main=.8)
+lines(x=x,y=Re(rot_z_fn),col="blue")
+lines(x=x,y=abs(rot_z_fn),col="black")
+abline(h=0)
+
+# plot(x=x,y=abs(rsc),col="blue",xlim=c(start-abs(.5-res)/0.5,finish+abs(.5-res)/0.5),typ="l", ylim=c(0,3),lwd=1,xlab = "imaginary part", ylab = "abs(function) value",main = paste0("high on critical strip (0.9+i*t)"),cex.xlab=0.9,cex.main=.8,cex.legend=0.8)
+
+legend(-20, -2, c("abs(zeta(13+i*t))", "coupled real(Z(13+i*t))","coupled imag(Z(13+i*t))"),
+       lty = 1,cex=.6, lwd = c(2,  2,2,2), col = c("black",  "blue","red"))
+
+par(fig=c(0.5,1,0.,0.55), new=TRUE)
+
+theta <- (-0.5*Im(log(zeta(res+1i*x)/zeta(1-(res+1i*x))/rawratio(res,x))))+1*ladd_f
+plot(x=x,y=theta,xlim=c(start,finish),ylim=c(-10,10),typ="l",lwd=2,xlab="imaginary part",ylab = "function value",main = paste0("well above the critical strip (13+i*t)"),cex.xlab=0.9,cex.main=.8,cex.legend=0.8)
+lines(x=x,y=Im(log(gammaz(0.25+0.5i*x)))-0.5*x*log(pi)+1*add_f,col="green",lwd=2,lty=2)
+abline(h=0)
+
+# plot(x=x,y=abs(rsc),col="blue",xlim=c(start-abs(.5-res)/0.5,finish+abs(.5-res)/0.5),typ="l", ylim=c(0,3),lwd=1,xlab = "imaginary part", ylab = "abs(function) value",main = paste0("upper edge of critical strip (1+i*t)"),cex.xlab=0.9,cex.main=.8,cex.legend=0.8)
+
+legend(-20, -5, c("Im(Theta_ext)", "Im(Theta)"),
+       lty = 1,cex=.6, lwd = c(2,  2,2,2), col = c("black","green"))
+mtext("behaviour of real and imag Riemann Siegel Z_ext(s) parts and Theta_ext(s), Theta(s) functions ", side=3, outer=TRUE, line=-1,cex=0.8)
+
+```
+ 
+
+***Figure 2. Extended Riemann Siegel Z and $\theta$ function behaviour outside the critical strip***
+
+
+##Introduction
+
+The Riemann Zeta function is defined (1), in the complex plane by the integral 
+
+\begin{equation}
+\zeta(s) = \frac{\prod(-s)}{2\pi i}\int_{C_{\epsilon,\delta}} \frac{(-x)^s}{(e^{x}-1)x}dx
+\end{equation}
+
+
+where $s \thinspace \epsilon \thinspace \mathbb{C}$ and $C_{\epsilon,\delta}$ is the contour about the imaginary poles.
+
+The Riemann Zeta function has been shown to obey the functional equation (2)
+
+\begin{equation}
+\zeta(s) = 2^s\pi^{s-1}sin(\frac{\pi s}{2})\Gamma(1-s)\zeta(1-s) \label{eq:func}
+\end{equation}
+
+Following directly from the form of the functional equation and the properties of the coefficients on the RHS of eqn \eqref{eq:func} it has been shown that any zeroes off the critical line would be paired, ie. if $\zeta(s)$ = 0 was true then $\zeta(1-s) = 0$.
+
+The Riemann Siegel function is an exact function (3) for the magnitude of the Riemann Zeta function along the critical line (0.5+it) of the form
+
+\begin{equation}
+Z(t) = \zeta(0.5+it)e^{i\theta(t)} \label{eq:rs}
+\end{equation}
+
+where 
+
+\begin{equation}
+\theta(t) = Im(ln(\Gamma(\frac{1}{4}+\frac{1}{2}it)))-\frac{t}{2}ln(\pi) \label{eq:theta}
+\end{equation}
+
+The transformation $e^{i\theta(t)}$, rotates $\zeta(0.5+it)$ such that Re(Z(t)) contains the entire Riemann Zeta critical line waveform energy and the zeroes of Z(t) correspond with the zeroes of $abs(\zeta(0.5+it))$. This is a weakly coupled representation of the Z(t) real and imaginary components.
+
+In Martin (4) and earlier work, the properties of the Riemann Zeta generating function were investigated and used to develop the extended Riemann Siegel $Z_{ext}(s)$ and $\theta_{ext}(s)$ definitions away from the critical line, 
+
+\begin{align}
+e^{-i*2\theta_{ext}(s)} &= \frac{\zeta(s)}{\zeta(1-s)}\frac{1}{abs(2^s\pi^{s-1}sin(\frac{\pi s}{2})\Gamma(1-s))}) \label{eq:ztheta} \\
+&\approx e^{-i*2\theta(t)} 
+\end{align}
+
+\begin{align}
+Z_{ext}(s) &= \sqrt{\zeta(s)*\zeta(1-s)*abs(2^s\pi^{s-1}sin(\frac{\pi s}{2})\Gamma(1-s))} \label{eq:zweak} \qquad \qquad  \qquad \qquad (weakly \thinspace coupled \thinspace parts) \\
+&= \sqrt{\zeta(s)*\zeta(1-s)*abs(2^s\pi^{s-1}sin(\frac{\pi s}{2})\Gamma(1-s))}e^{(i*\frac{3\pi}{4})} \label{eq:zstrong} \qquad \qquad (strongly \thinspace coupled \thinspace parts) \\
+&\rightarrow \sqrt{\zeta(0.5+i*t)*\zeta(0.5-i*t)} \equiv \zeta(0.5+it)e^{i\theta(t)} \qquad \qquad \qquad \qquad on \thinspace the \thinspace critical \thinspace line
+\end{align}
+
+The first definition of the $Z_{ext}(s)$ gives the usual weakly coupled representation of the real and imaginary parts of the critical line Riemann Siegel Z function, the second definition, using a phase shift, produces the strong coupled representation found useful in Martin (4) for understanding the symmetry splitting of $Z_{ext}(s)$ real and imaginary components away from the critical line and the final definition shows the limiting value of $Z_{ext}(s) = Z(t)$ on the critical line.
+
+In this paper, the branch points that arise with square root & logarithms of complex numbers are investigated with respect to the extended Riemann Siegel $Z_{ext}(s)$ and $\theta_{ext}(s)$ functions. This enables single valued, phase continuous calculations of the real and imaginary components of $Z_{ext}(s)$ and $\theta_{ext}(s)$ to be obtained and studied. 
+
+##Obtaining phase continuous $Z_{ext}(s)$ components
+
+In calculating $Z_{ext}(s)$ using eqn \eqref {eq:zstrong}, the square root of complex numbers is required and to obtain $\theta_{ext}(s)$ taking the complex logarithm of eqn \eqref {eq:ztheta}
+
+\begin{align}
+\theta_{ext}(s) &= -0.5*Im(log(e^{-i2\theta_{ext}(s)})) \label {eq:log_th_ext} \\
+&= -0.5*Im(log(\frac{\zeta(s)}{\zeta(1-s)}\frac{1}{abs(2^s\pi^{s-1}sin(\frac{\pi s}{2})\Gamma(1-s))}))
+\end{align}
+
+is required.
+
+For square root calculations, the phase increment may be obtained using polar co-ordinates via
+
+\begin{align}
+Im(log(sqrt(z)/sqrt(abs(z)))) &=  Im(log(sqrt(r*exp{(i*(\phi+2*k*\pi))}/sqrt(r)))  \\
+                                     &=   Im(log(r^{0.5}*exp{(i*(\phi/2+k*\pi))}/r^{0.5})) \\
+                                     &=   Im((i*(\phi/2+k*\pi))) \\
+                                     &=   (\phi/2+k*\pi) \\
+                                     &\rightarrow   +\pi         \qquad  \qquad  \qquad each \thinspace time \thinspace \phi \thinspace cycles
+                                     \end{align}
+                                     
+In practice, the above term means that a phase continuous complex square root function is constructed from the numeric single valued output, in the form
+                                     
+\begin{equation}
+Re(sqrt(z))_{analytic} = cos({\Sigma_{i=0}^{Im(s)} \pi_{i}}) Re(sqrt(z))_{numeric} \label {eq:sqrt_phase1}
+\end{equation}
+                                                                                           
+\begin{equation}
+Im(sqrt(z))_{analytic} = cos({\Sigma_{i=0}^{Im(s)} \pi_{i}}) Im(sqrt(z))_{numeric} \label {eq:sqrt_phase2}
+\end{equation}
+
+where the summation is the accumulated sum of the $\pi_{i}=\pm\pi$ phase increments from Im(s)=0 to Im(s). It is important to note these phase change increments are determined as $\pm\pi$ based on the direction of the discontinuous change in Im(log(sqrt(z)/sqrt(abs(z)))), shown in figure 3, ($\pi/2$ to $-\pi/2$ or $-\pi/2$ to $+\pi/2$).
+
+Using $Z_{ext}(s)$ explicitly, figure 3 illustrates the points (blue lines intersecting imaginary value axis) where an extra $\pm\pi$ radians should be added to the $\Sigma_{i=0}^{Im(s)} \pi_{i}$ function value for every cycle in $Im(log(sqrt(Z_{ext}(s))/sqrt(abs(Z_{ext}(s))))$. For comparison, the analogous term arising in the critical line $\theta(t)$ function eqn \eqref {eq:theta}, $Im(log(\Gamma(\frac{1}{4}+\frac{1}{2}it)))$ and the location of the Riemann Zeta function Gram points are also shown.
+
+The calculations in this paper involving Riemann Zeta function and the generating function used the "pracma" r package (5).
+
+
+
+```{r, fig3, echo=FALSE, cache=TRUE, fig.width=6, fig.height=5.5,  fig.keep='high',warning=FALSE }
+
+
+par(mfrow=c(2,1))
+par(fig=c(0,1,0.4,1))
+res <- 0.51;
+start <- -25;finish <- 25
+# add_f <- add_phase(x)
+# 
+# sqadd_f <- sqadd_phase(res,x)
+# 
+# ladd_f <- ladd_phase(res,x)
+plot(x=x,y=Im(log(sqrt(zeta(res+1i*x)*zeta(1-(res+1i*x))*rawratio(res,x))/
+                    sqrt(abs(zeta(res+1i*x)*zeta(1-(res+1i*x))*rawratio(res,x))))),col="blue",xlim=c(start,finish),typ="l",ylim=c(-4,pi),xlab="",ylab = "function value",main = paste0("near critical line (0.51+i*t)"),cex.xlab=0.9,cex.main=.8,xaxt='n')
+lines(x=x,y=Im(log(gammaz(0.25+0.5i*x))),col="green")
+abline(h=0)
+abline(v=17.8455995404,lty=3);abline(v=23.1702827012,lty=3);abline(v=27.6701822178,lty=3)
+abline(v=-17.8455995404,lty=3);abline(v=-23.1702827012,lty=3);abline(v=-27.6701822178,lty=3)
+axis(1,labels=c(" "," "," "," "," "),at=c(-20,-10,0,10,20))
+legend(-10, -2, c("Im(log(sqrt(Z_ext(s))/sqrt(abs(Z_ext(s))))", "Im(log(gamma(0.25+0.5i*t)))","Gram Points"),
+       lty = c(1,1,3,1),cex=.5, lwd = c(2,  2,2,2), col = c("blue",  "green","black"))
+
+par(fig=c(0,1,0,0.6),new=TRUE)
+res <- 2;
+start <- -25;finish <- 25
+# add_f <- add_phase(x)
+# 
+# sqadd_f <- sqadd_phase(res,x)
+# 
+# ladd_f <- ladd_phase(res,x)
+plot(x=x,y=Im(log(sqrt(zeta(res+1i*x)*zeta(1-(res+1i*x))*rawratio(res,x))/
+                    sqrt(abs(zeta(res+1i*x)*zeta(1-(res+1i*x))*rawratio(res,x))))),col="blue",xlim=c(start,finish),typ="l",ylim=c(-4,pi),xlab="",ylab = "function value",main = paste0("above critical strip (2+i*t)"),cex.xlab=0.9,cex.main=.8,xval="")
+lines(x=x,y=Im(log(gammaz(0.25+0.5i*x))),col="green")
+abline(h=0)
+abline(v=17.8455995404,lty=3);abline(v=23.1702827012,lty=3);abline(v=27.6701822178,lty=3)
+abline(v=-17.8455995404,lty=3);abline(v=-23.1702827012,lty=3);abline(v=-27.6701822178,lty=3)
+
+legend(-10, -2, c("Im(log(sqrt(Z_ext(s))/sqrt(abs(Z_ext(s))))", "Im(log(gamma(0.25+0.5i*t)))","Gram Points"),
+       lty = c(1,1,3,1),cex=.5, lwd = c(2,  2,2,2), col = c("blue",  "green","black"))
+
+
+```
+
+
+***Figure 3. Comparison of $Z_{ext}(s)$ branch points, Gram points and the gamma term of $\theta(t)$ behaviour near the critical line and just above the critical strip***
+  
+These additional $\pm\pi$ increments in $Z_{ext}(s)$ occur at 
+
+(i) Im(s) = 0 starting above the critical strip, for Re(s) values at 1.414, 5.73, 10.17, 14.297, 18.38, 22.428, 26.47, ... ), where the series appears to be asymptotically approaching a interval of 4 between successive phase increments. 
+
+(ii) at the position of the Riemann Zeta function minima along the imaginary axis. 
+
+(iii) for low Re(s) values, at positions along the imaginary axis approximately bisected by Gram points
+
+##Obtaining phase continuous $\theta_{ext}(s)$ components
+
+For complex logarithm calculations, the phase increment may also be obtained using polar co-ordinates via
+
+\begin{align}
+-0.5*Im(log(z)) &=  -0.5*Im(log(r*exp{(-i*(2*\phi+2*k*\pi))}))  \\
+&=   -0.5*(Im(log(r)+(-i*(2*\phi+2*k*\pi)))) \\
+&=   -0.5*(0-2*\phi-2*k*\pi) \\
+&=   (\phi+k*\pi) \\
+&\rightarrow   \pi         \qquad  \qquad  \qquad each \thinspace time \thinspace \phi \thinspace cycles
+\end{align}
+
+where -0.5 & $2\phi$ were explicitly used in recognition of the specifics of eqn \eqref {eq:log_th_ext}. In practice, the above term means that a phase continuous complex logarithm function is constructed from the numeric single valued output, in the form
+
+\begin{equation}
+Re(log(z))_{analytic} = cos({\Sigma_{i=0}^{Im(s)} \pi_{i}^*}) Re(log(z))_{numeric}
+\end{equation}
+
+\begin{equation}
+Im(log(z))_{analytic} = cos({\Sigma_{i=0}^{Im(s)} \pi_{i}^*}) Re(log(z))_{numeric}
+\end{equation}
+
+where the summation is the accumulated sum of the $\pi_{i}^*=\pm\pi$ phase increments from Im(s)=0 to Im(s). It is important to note these phase change increments are determined as $\pm\pi$ based on the direction of the discontinuous change in -0.5*Im(log(z)), shown in figure 4, ($\pi/2$ to $-\pi/2$ or $-\pi/2$ to $+\pi/2$).
+ 
+Using $\theta_{ext}(s)$ explicitly, figure 4 illustrates the points (blue lines intersecting imaginary value axis) where an extra $\pm\pi$ radians should be added to the $\Sigma_{i=0}^{Im(s)} \pi_{i}^*$ function value for every cycle in $-0.5*Im(log(exp{-i*2\theta_{ext}(s)}))$. For comparison, the analogous term arising in the critical line $\theta(t)$ function eqn \eqref {eq:theta}, $Im(log(\Gamma(\frac{1}{4}+\frac{1}{2}it)))$ and the location of the Riemann Zeta function Gram points are also shown. 
+
+```{r, fig4, echo=FALSE, cache=TRUE, fig.width=6, fig.height=5.5,  fig.keep='high',warning=FALSE }
+
+par(mfrow=c(2,1))
+
+par(fig=c(0,1,0.4,1))
+
+res <- 0.51;
+start <- -25;finish <- 25
+
+# add_f <- add_phase(x)
+# 
+# sqadd_f <- sqadd_phase(res,x)
+# ladd_f <- ladd_phase(res,x)
+
+plot(x=x,y=-0.5*Im(log(zeta(res+1i*x)/zeta(1-(res+1i*x))/rawratio(res,x))),col="blue",xlim=c(start,finish),typ="l",ylim=c(-4,pi),xlab="",ylab = "function value",main = paste0("near critical line (0.51+i*t)"),cex.xlab=0.9,cex.main=.8,xaxt='n')
+
+lines(x=x,y=Im(log(gammaz(0.25+0.5i*x))),col="green")
+
+abline(h=0)
+abline(v=17.8455995404,lty=3);abline(v=23.1702827012,lty=3);abline(v=27.6701822178,lty=3)
+abline(v=-17.8455995404,lty=3);abline(v=-23.1702827012,lty=3);abline(v=-27.6701822178,lty=3)
+axis(1,labels=c(" "," "," "," "," "),at=c(-20,-10,0,10,20))
+legend(-10, -2, c("-0.5*Im(log(exp(-i*2*theta_ext(s))))", "Im(log(gamma(0.25+0.5i*t)))","Gram Points"),
+       lty = c(1,1,3,1),cex=.5, lwd = c(2,  2,2,2), col = c("blue",  "green","black"))
+
+par(fig=c(0,1,0,0.6),new=TRUE)
+res <- 2;
+start <- -25;finish <- 25
+# add_f <- add_phase(x)
+# 
+# sqadd_f <- sqadd_phase(res,x)
+# 
+# ladd_f <- ladd_phase(res,x)
+plot(x=x,y=-0.5*Im(log(zeta(res+1i*x)/zeta(1-(res+1i*x))/rawratio(res,x))),col="blue",xlim=c(start,finish),typ="l",ylim=c(-4,pi),xlab="",ylab = "function value",main = paste0("above critical strip (2+i*t)"),cex.xlab=0.9,cex.main=.8,xval="")
+lines(x=x,y=Im(log(gammaz(0.25+0.5i*x))),col="green")
+abline(h=0)
+abline(v=17.8455995404,lty=3);abline(v=23.1702827012,lty=3);abline(v=27.6701822178,lty=3)
+abline(v=-17.8455995404,lty=3);abline(v=-23.1702827012,lty=3);abline(v=-27.6701822178,lty=3)
+
+legend(-10, -2, c("-0.5*Im(log(exp(-i*2*theta_ext(s))))", "Im(log(gamma(0.25+0.5i*t)))","Gram Points"),
+       lty = c(1,1,3,1),cex=.5, lwd = c(2,  2,2,2), col = c("blue",  "green","black"))
+
+
+```
+
+***Figure 4. Comparison of $\theta_{ext}(s)$ branch points, Gram points and the gamma term of $\theta(t)$ behaviour near the critical line and just above the critical strip***
+  
+These additional $\pm\pi$ increments in $\theta_{ext}(s)$ occur at
+
+(i) Im(s) = 0 starting above the critical strip, for Re(s) values at 1.414, 5.73, 10.17, 14.297, 18.38, 22.428, 26.47, ... ), where the series appears to be asymptotically approaching a interval of 4 between successive phase increments. Inside the critical strip, there is a $\mp\pi$ step change at the $\pm\pi/4$ Im(s) positions. This $\pm\pi/4$ boundary enables $\theta_{ext}(s)$ to be continuous inside the critical strip. 
+
+(ii) at the position of the Riemann Zeta critical line zeroes along the imaginary axis. 
+
+(iii) at positions along the imaginary axis approximately bisected by Gram points
+
+The phase change points for $\Sigma_{i=0}^{Im(s)} \pi_{i}$ for $Z_{ext}(s)$ and $\Sigma_{i=0}^{Im(s)} \pi_{i}^*$ for $\theta_{ext}(s)$ 
+
+(i) only agree on the critical line for Im(s) > 14, otherwise the phase change points for $Z_{ext}(s)$ follow the Riemann Zeta minima positions off the critical line,
+
+(ii) there are differences near the origin, inside the critical strip with the $\pm\pi/4$ boundary appearing in $-0.5*Im(log(exp{-i2\theta_{ext}(s)}))$ and 
+
+(iii) the shape of $-0.5*Im(log(exp{-i2\theta_{ext}(s)}))$ (figure 4) remains consistent whereas $Im(log(sqrt(Z_{ext}(s))/sqrt(abs(Z_{ext}(s))))$ (figure 3) diminishes to sharp discontinuities near the critical line. 
+
+##Comparing $\theta_{ext}(s)$ and $\theta(t)$ behaviour
+
+With proper phase accounting accomplished, figures 1,2 & 5 compare $\theta_{ext}(s)$ and $\theta(t)$ for several values of Re(s). Included in figure 5, is the accumulated phase changes as a step function envelope. 
+
+```{r, fig5_1, echo=FALSE, cache=TRUE, fig.width=6, fig.height=3,  fig.keep='high',warning=FALSE }
+
+res <- 0.51;
+start <- -25;finish <- 25
+
+add_f <- add_phase(x)
+# sqadd_f <- sqadd_phase(res,x)
+ladd_f <- ladd_phase(res,x)
+
+plot(x=x,y=-0.5*Im(log(zeta(res+1i*x)/zeta(1-(res+1i*x))/rawratio(res,x)))+ladd_f,col="blue",xlim=c(start,finish),typ="l",ylim=c(-4,4),xlab="",ylab = "function value",main = paste0("near critical line (0.51+i*t)"),cex.xlab=0.9,cex.main=.8,lwd=2)
+
+lines(x=x,y=Im(log(gammaz(0.25+0.5i*x)))-0.5*x*log(pi)+add_f,col="green",lwd=2,lty=2)
+lines(x=x,y=ladd_f,col="red")
+
+abline(h=0)
+abline(v=17.8455995404,lty=3);abline(v=23.1702827012,lty=3);abline(v=27.6701822178,lty=3)
+abline(v=-17.8455995404,lty=3);abline(v=-23.1702827012,lty=3);abline(v=-27.6701822178,lty=3)
+legend(-17, -0.7, c("theta_ext(s)", "theta(t)","accumulated phase changes","Gram Points"),
+       lty = c(1,1,1,3),cex=.5, lwd = c(2,  2,2,2), col = c("blue",  "green","red","black"))
+
+```
+
+```{r, fig5_2, echo=FALSE, cache=TRUE, fig.width=6, fig.height=3,  fig.keep='high',warning=FALSE }
+
+res <- 0.9;
+start <- -25;finish <- 25
+add_f <- add_phase(x)
+
+# sqadd_f <- sqadd_phase(res,x)
+
+ladd_f <- ladd_phase(res,x)
+plot(x=x,y=-0.5*Im(log(zeta(res+1i*x)/zeta(1-(res+1i*x))/rawratio(res,x)))+ladd_f,col="blue",xlim=c(start,finish),typ="l",ylim=c(-4,4),xlab="",ylab = "function value",main = paste0("below critical strip boundary (0.9+i*t)"),cex.xlab=0.9,cex.main=.8,lwd=2)
+lines(x=x,y=Im(log(gammaz(0.25+0.5i*x)))-0.5*x*log(pi)+add_f,col="green",lwd=2,lty=2)
+lines(x=x,y=ladd_f,col="red")
+abline(h=0)
+abline(v=17.8455995404,lty=3);abline(v=23.1702827012,lty=3);abline(v=27.6701822178,lty=3)
+abline(v=-17.8455995404,lty=3);abline(v=-23.1702827012,lty=3);abline(v=-27.6701822178,lty=3)
+
+legend(-17, -0.7, c("theta_ext(s)", "theta(t)","accumulated phase changes","Gram Points"),
+       lty = c(1,1,1,3),cex=.5, lwd = c(2,  2,2,2), col = c("blue",  "green","red","black"))
+
+
+```
+
+
+```{r, fig5_3, echo=FALSE, cache=TRUE, fig.width=6, fig.height=3,  fig.keep='high',warning=FALSE }
+
+res <- 2;
+start <- -20;finish <- 50
+add_f <- add_phase(x)
+
+# sqadd_f <- sqadd_phase(res,x)
+
+ladd_f <- ladd_phase(res,x)
+plot(x=x,y=-0.5*Im(log(zeta(res+1i*x)/zeta(1-(res+1i*x))/rawratio(res,x)))+ladd_f,col="blue",xlim=c(start,finish),typ="l",ylim=c(-4,25),xlab="",ylab = "function value",main = paste0("above critical strip (2+i*t)"),cex.xlab=0.9,cex.main=.8,lwd=2)
+lines(x=x,y=Im(log(gammaz(0.25+0.5i*x)))-0.5*x*log(pi)+add_f,col="green",lwd=2,lty=2)
+lines(x=x,y=ladd_f,col="red")
+abline(h=0)
+abline(v=17.8455995404,lty=3);abline(v=23.1702827012,lty=3);abline(v=27.6701822178,lty=3)
+abline(v=31.7179799547,lty=3);abline(v=35.4671842971,lty=3);abline(v=38.9992099640,lty=3)
+abline(v=42.3635503920,lty=3);abline(v=45.5930289815,lty=3);abline(v=48.7107766217,lty=3)
+abline(v=-17.8455995404,lty=3);abline(v=-23.1702827012,lty=3);abline(v=-27.6701822178,lty=3)
+
+legend(0, 25, c("theta_ext(s)", "theta(t)","accumulated phase changes","Gram Points"),
+       lty = c(1,1,1,3),cex=.5, lwd = c(2,  2,2,2), col = c("blue",  "green","red","black"))
+
+
+```
+
+
+```{r, fig5_4, echo=FALSE, cache=TRUE, fig.width=6, fig.height=3,  fig.keep='high',warning=FALSE }
+
+res <- 6;
+start <- -20;finish <- 50
+add_f <- add_phase(x)
+
+# sqadd_f <- sqadd_phase(res,x)
+
+ladd_f <- ladd_phase(res,x)
+plot(x=x,y=-0.5*Im(log(zeta(res+1i*x)/zeta(1-(res+1i*x))/rawratio(res,x)))+ladd_f,col="blue",xlim=c(start,finish),typ="l",ylim=c(-5,25),xlab="",ylab = "function value",main = paste0("away from critical strip (6+i*t)"),cex.xlab=0.9,cex.main=.8,lwd=2)
+lines(x=x,y=Im(log(gammaz(0.25+0.5i*x)))-0.5*x*log(pi)+add_f,col="green",lwd=2,lty=2)
+lines(x=x,y=ladd_f,col="red")
+abline(h=0)
+abline(v=17.8455995404,lty=3);abline(v=23.1702827012,lty=3);abline(v=27.6701822178,lty=3)
+abline(v=31.7179799547,lty=3);abline(v=35.4671842971,lty=3);abline(v=38.9992099640,lty=3)
+abline(v=42.3635503920,lty=3);abline(v=45.5930289815,lty=3);abline(v=48.7107766217,lty=3)
+abline(v=-17.8455995404,lty=3);abline(v=-23.1702827012,lty=3);abline(v=-27.6701822178,lty=3)
+
+legend(0, 25, c("theta_ext(s)", "theta(t)","accumulated phase changes","Gram Points"),
+       lty = c(1,1,1,3),cex=.5, lwd = c(2,  2,2,2), col = c("blue",  "green","red","black"))
+
+
+```
+
+
+
+```{r, fig5_5, echo=FALSE, cache=TRUE, fig.width=6, fig.height=3,  fig.keep='high',warning=FALSE }
+
+res <- 17;
+start <- -20;finish <- 50
+add_f <- add_phase(x)
+
+# sqadd_f <- sqadd_phase(res,x)
+
+ladd_f <- ladd_phase(res,x)
+plot(x=x,y=-0.5*Im(log(zeta(res+1i*x)/zeta(1-(res+1i*x))/rawratio(res,x)))+ladd_f,col="blue",xlim=c(start,finish),typ="l",ylim=c(-15,25),xlab="",ylab = "function value",main = paste0("well away from critical strip (17+i*t)"),cex.xlab=0.9,cex.main=.8,lwd=2)
+lines(x=x,y=Im(log(gammaz(0.25+0.5i*x)))-0.5*x*log(pi)+add_f,col="green",lwd=2,lty=2)
+lines(x=x,y=ladd_f,col="red")
+abline(h=0)
+abline(v=17.8455995404,lty=3);abline(v=23.1702827012,lty=3);abline(v=27.6701822178,lty=3)
+abline(v=31.7179799547,lty=3);abline(v=35.4671842971,lty=3);abline(v=38.9992099640,lty=3)
+abline(v=42.3635503920,lty=3);abline(v=45.5930289815,lty=3);abline(v=48.7107766217,lty=3)
+abline(v=-17.8455995404,lty=3);abline(v=-23.1702827012,lty=3);abline(v=-27.6701822178,lty=3)
+
+legend(1, 25, c("theta_ext(s)", "theta(t)","accumulated phase changes","Gram Points"),
+       lty = c(1,1,1,3),cex=.4, lwd = c(2,  2,2,2), col = c("blue",  "green","red","black"))
+
+
+```
+
+
+***Figure 5. Comparison of $\theta_{ext}(s)$ and $\theta(t)$ behaviour***
+
+As can be seen, the major differences between $\theta(t)$ & $\theta_{ext}(s)$ occurs near the origin, with the growth of a discontinuity in $\theta_{ext}(s)$ as Re(s) $\rightarrow \infty$. The growth of the discontinuity occurs in intervals of $\Delta Re(s) \approx 4$ outside the critical strip, for large imaginary values. 
+
+The origin of the discontinuity is likely to be related to the Riemann Zeta zeroes on the negative real axis, with every two consecutive zeroes, a spacing of $\Delta Re(s) ~ 4$ resulting in an increase in the $\theta_{ext}(s)$ discontinuity. In Martin (4), the periodicity of $log(\zeta(x+i*0))$ on the negative real axis was also $\Delta Re(s) = 4$. Away from the origin, $\theta_{ext}(s)$ asymptotically approaches $\theta(t)$.
+
+In Martin (4), an approximate expression for the difference between cosines of $2\theta_{ext}(s)$ and $2\theta(t)$ within the critical strip was given
+
+\begin{align}
+cos(2\theta_{ext}(s)) &\sim cos(2\theta(t)) + \frac{1}{2t}*abs(Re(s)-0.5)^2*sin(2\theta(t)) + ... \qquad for \thinspace t > 0 \label{eq:theta_approx}
+\end{align}
+
+Figure 6, shows agreement with the 1/t behaviour of eqn \eqref {eq:theta_approx} for Re(s) = 0.9, predicted for the asymptotic approach of $\theta_{ext}(s)$ to $\theta(t)$ inside the critical strip. Indeed the difference between the formula eqn \eqref {eq:theta_approx} and for straight $\theta_{ext}(s) - theta(t)$ case appears to be a simple factor of 0.5, such that
+
+\begin{align}
+\theta_{ext}(s) - \theta(t) &\approx  0.5*\frac{1}{2t}*abs(Re(s)-0.5)^2 + ... \qquad for \thinspace t > 2 \qquad and \qquad abs(Re(s)) < 1 \label{eq:theta_diffapprox}
+\end{align}
+
+
+However, as the Re(s) is increased, the second graph in figure 6 shows that a 4th order series polynomial in 1/t is required to fit the asymptotic approach. 
+
+```{r, fig6_1, echo=FALSE, cache=TRUE, fig.width=6, fig.height=3,  fig.keep='high',warning=FALSE }
+library(pracma)
+res <- 0.9;
+add_f <- add_phase(x)
+ladd_f <- ladd_phase(res,x)
+
+y1 <- -0.5*Im(log(zeta(res+1i*x)/zeta(1-(res+1i*x))/rawratio(res,x)))+ladd_f
+y2 <- (Im(log(gammaz(0.25+0.5i*x)))-0.5*x*log(pi)+add_f)
+ynet <- y2[x>2]-y1[x>2]
+xinv <- 1/x[x>2]
+# sqadd_f <- sqadd_phase(res,x)
+
+start <- 0;finish <- 12
+plot(x=x[x>2],y=ynet,col="blue",xlim=c(start,finish),typ="l",xlab="imaginary part of zeta(s)",ylab = "theta(t) - theta_ext(s)",main = paste0("just inside critical strip (0.9+i*t)"),cex.xlab=0.9,cex.main=.8,lwd=2)
+lines(x=x[x > 2],y=fitted.values(lm(ynet~xinv)),col="red",lwd=2,lty=2)
+lines(x=x[x > 2],y=0.25*xinv*abs(res-0.5)^2,col="green",lwd=2,lty=3)
+abline(h=0)
+
+legend(6, .02, c("diff(theta(t)-theta_ext(s))","1/t curve fit","0.5/(2t)*abs(Re(s)-0.5)^2 formula"),
+       lty = c(1,2,3,3),cex=.7, lwd = c(2,  2,2,2), col = c("blue",  "red","green"))
+
+
+```
+
+
+```{r, fig6_2, echo=FALSE, cache=TRUE, fig.width=6, fig.height=3,  fig.keep='high',warning=FALSE }
+
+res <- 17;
+add_f <- add_phase(x)
+ladd_f <- ladd_phase(res,x)
+
+y1 <- -0.5*Im(log(zeta(res+1i*x)/zeta(1-(res+1i*x))/rawratio(res,x)))+ladd_f
+y2 <- (Im(log(gammaz(0.25+0.5i*x)))-0.5*x*log(pi)+add_f)
+ynet <- y2[x>2]-y1[x>2]
+xinv <- 1/x[x>2]
+# sqadd_f <- sqadd_phase(res,x)
+
+start <- 0;finish <- 50
+plot(x=x[x>2],y=ynet,col="blue",xlim=c(start,finish),typ="l",xlab="imaginary part of zeta(s)",ylab = "theta(t) - theta_ext(s)",main = paste0("well above critical strip (17+i*t)"),cex.xlab=0.9,cex.main=.8,lwd=2,ylim=c(0,10))
+lines(x=x[x > 2],y=fitted.values(lm(ynet~poly(xinv,4))),col="red",lwd=2,lty=2)
+lines(x=x[x > 2],y=fitted.values(lm(ynet~poly(xinv,1))),col="green",lwd=2,lty=2)
+abline(h=0)
+legend(25, 10, c("diff(theta(t)-theta_ext(s))","4th order polynomial 1/t curve fit","1/t curve fit"),
+       lty = c(1,2,2,3),cex=.7, lwd = c(2,  2,2,2), col = c("blue",  "red","green"))
+
+
+```
+
+***Figure 6. 1/t power dependence of $(\theta(t) - \theta_{ext}(s))$ for large imaginary values***
+
+
+
+##Comparing $Z_{ext}(s)$ and $Z(t)$ behaviour
+
+With comprehensive phase accounting accomplished for $\sqrt{\zeta(s)*\zeta(1-s)*abs(2^s\pi^{s-1}sin(\frac{\pi s}{2})\Gamma(1-s))}$, figures 1,2 & 7 exhibit the $abs(Z_{ext}(s))$, $real(Z_{ext}(s))$ & $imag(Z_{ext}(s))$ phase continuous analytic behaviour for several values Re(s), except for a single discontinuity at the origin. In these figures, the strongly coupled representation of the real and imaginary components of $Z_{ext}(s)$ is used, eqn \eqref {eq:zstrong}. Figure 8, has a sole example of the $abs(Z_{ext}(s))$, $real(Z_{ext}(s))$ & $imag(Z_{ext}(s))$ using the weakly coupled representation for Re(s) = 30. This figure also has a single phase discontinuity at the origin. 
+
+To achieve phase continuous functions, the cosine of the accumulated phase increments eqns \eqref {eq:sqrt_phase1} & \eqref {eq:sqrt_phase2} are used as a multiplicative factor
+
+\begin{equation}
+abs(Z_{ext}(s))_{analytic} = abs(Z_{ext}(s))_{numeric}
+\end{equation}
+                                                                                           
+\begin{equation}
+Re(Z_{ext}(s))_{analytic} = cos({\Sigma_{i=0}^{Im(s)} \pi_{i}}) Re(Z_{ext}(s))_{numeric}
+\end{equation}
+
+\begin{equation}
+Im(Z_{ext}(s))_{analytic} = cos({\Sigma_{i=0}^{Im(s)} \pi_{i}}) Im(Z_{ext}(s))_{numeric}
+\end{equation}
+
+
+```{r, fig7_1, echo=FALSE, cache=TRUE, fig.width=6, fig.height=3,  fig.keep='high',warning=FALSE }
+library(pracma)
+res <- 0.51;
+start <- -35;finish <- 35
+
+add_f <- add_phase(x)
+sqadd_f <- sqadd_phase(res,x)
+# ladd_f <- ladd_phase(res,x)
+zext <- sqrt((zeta(res+1i*x)*zeta(1-(res+1i*x))*rawratio(res,x)))*exp(1i*3*pi/4)
+
+plot(x=x,y=Im(zext)*cos(sqadd_f),col="red",xlim=c(start,finish),typ="l",ylim=c(-pi,pi),xlab="",ylab = "function value",main = paste0("near critical line (0.51+i*t)"),cex.xlab=0.9,cex.main=.8,lwd=2)
+
+lines(x=x,y=Re(zext)*cos(sqadd_f),col="blue",lwd=2)
+lines(x=x,y=abs(zext),col="black")
+lines(x=x,y=cos(sqadd_f),col="green")
+
+abline(h=0)
+abline(v=17.8455995404,lty=3);abline(v=23.1702827012,lty=3);abline(v=27.6701822178,lty=3)
+abline(v=31.7179799547,lty=3);abline(v=35.4671842971,lty=3);abline(v=38.9992099640,lty=3)
+abline(v=42.3635503920,lty=3);abline(v=45.5930289815,lty=3);abline(v=48.7107766217,lty=3)
+abline(v=-17.8455995404,lty=3);abline(v=-23.1702827012,lty=3);abline(v=-27.6701822178,lty=3)
+abline(v=-31.7179799547,lty=3);abline(v=-35.4671842971,lty=3);abline(v=-38.9992099640,lty=3)
+legend(-30, -1.5, c("abs(Z_ext(s))", "real(Z_ext(s))","imag(Z_ext(s))","Gram Points","cos(accumulated phase changes)"),
+       lty = c(1,1,1,3,1),cex=.5, lwd = c(2,  2,2,2,2), col = c("black",  "blue","red","black","green"), ncol=2)
+
+```
+
+```{r, fig7_2, echo=FALSE, cache=TRUE, fig.width=6, fig.height=3,  fig.keep='high',warning=FALSE }
+
+res <- 0.9;
+start <- -35;finish <- 35
+
+add_f <- add_phase(x)
+sqadd_f <- sqadd_phase(res,x)
+# ladd_f <- ladd_phase(res,x)
+zext <- sqrt((zeta(res+1i*x)*zeta(1-(res+1i*x))*rawratio(res,x)))*exp(1i*3*pi/4)
+
+plot(x=x,y=Im(zext)*cos(sqadd_f),col="red",xlim=c(start,finish),typ="l",ylim=c(-pi,2.5),xlab="",ylab = "function value",main = paste0("just inside critical strip (0.9+i*t)"),cex.xlab=0.9,cex.main=.8,lwd=2)
+
+lines(x=x,y=Re(zext)*cos(sqadd_f),col="blue",lwd=2)
+lines(x=x,y=abs(zext),col="black")
+lines(x=x,y=cos(sqadd_f),col="green")
+
+abline(h=0)
+abline(v=17.8455995404,lty=3);abline(v=23.1702827012,lty=3);abline(v=27.6701822178,lty=3)
+abline(v=31.7179799547,lty=3);abline(v=35.4671842971,lty=3);abline(v=38.9992099640,lty=3)
+abline(v=42.3635503920,lty=3);abline(v=45.5930289815,lty=3);abline(v=48.7107766217,lty=3)
+abline(v=-17.8455995404,lty=3);abline(v=-23.1702827012,lty=3);abline(v=-27.6701822178,lty=3)
+abline(v=-31.7179799547,lty=3);abline(v=-35.4671842971,lty=3);abline(v=-38.9992099640,lty=3)
+legend(-30, -1.5, c("abs(Z_ext(s))", "real(Z_ext(s))","imag(Z_ext(s))","Gram Points","cos(accumulated phase changes)"),
+       lty = c(1,1,1,3,1),cex=.5, lwd = c(2,  2,2,2,2), col = c("black",  "blue","red","black","green"), ncol=2)
+```
+
+
+```{r, fig7_3, echo=FALSE, cache=TRUE, fig.width=6, fig.height=3,  fig.keep='high',warning=FALSE }
+
+res <- 2;
+start <- -20;finish <- 50
+
+add_f <- add_phase(x)
+sqadd_f <- sqadd_phase(res,x)
+# ladd_f <- ladd_phase(res,x)
+zext <- sqrt((zeta(res+1i*x)*zeta(1-(res+1i*x))*rawratio(res,x)))*exp(1i*3*pi/4)
+
+plot(x=x,y=Im(zext)*cos(sqadd_f),col="red",xlim=c(start,finish),typ="l",ylim=c(-pi,1.5),xlab="",ylab = "function value",main = paste0("above critical strip (2+i*t)"),cex.xlab=0.9,cex.main=.8,lwd=2)
+
+lines(x=x,y=Re(zext)*cos(sqadd_f),col="blue",lwd=2)
+lines(x=x,y=abs(zext),col="black")
+lines(x=x,y=cos(sqadd_f),col="green")
+
+abline(h=0)
+abline(v=17.8455995404,lty=3);abline(v=23.1702827012,lty=3);abline(v=27.6701822178,lty=3)
+abline(v=31.7179799547,lty=3);abline(v=35.4671842971,lty=3);abline(v=38.9992099640,lty=3)
+abline(v=42.3635503920,lty=3);abline(v=45.5930289815,lty=3);abline(v=48.7107766217,lty=3)
+abline(v=-17.8455995404,lty=3);abline(v=-23.1702827012,lty=3);abline(v=-27.6701822178,lty=3)
+abline(v=-31.7179799547,lty=3);abline(v=-35.4671842971,lty=3);abline(v=-38.9992099640,lty=3)
+legend(-20, -1.5, c("abs(Z_ext(s))", "real(Z_ext(s))","imag(Z_ext(s))","Gram Points","cos(accumulated phase changes)"),
+       lty = c(1,1,1,3,1),cex=.5, lwd = c(2,  2,2,2,2), col = c("black",  "blue","red","black","green"), ncol=2)
+
+```
+
+
+```{r, fig7_4, echo=FALSE, cache=TRUE, fig.width=6, fig.height=3,  fig.keep='high',warning=FALSE }
+library(pracma)
+res <- 6;
+start <- -20;finish <- 50
+
+add_f <- add_phase(x)
+sqadd_f <- sqadd_phase(res,x)
+# ladd_f <- ladd_phase(res,x)
+zext <- sqrt((zeta(res+1i*x)*zeta(1-(res+1i*x))*rawratio(res,x)))*exp(1i*3*pi/4)
+
+plot(x=x,y=Im(zext)*cos(sqadd_f),col="red",xlim=c(start,finish),typ="l",ylim=c(-pi,1.25),xlab="",ylab = "function value",main = paste0("away from critical strip (6+i*t)"),cex.xlab=0.9,cex.main=.8,lwd=2)
+
+lines(x=x,y=Re(zext)*cos(sqadd_f),col="blue",lwd=2)
+lines(x=x,y=abs(zext),col="black")
+lines(x=x,y=cos(sqadd_f),col="green")
+
+abline(h=0)
+abline(v=17.8455995404,lty=3);abline(v=23.1702827012,lty=3);abline(v=27.6701822178,lty=3)
+abline(v=31.7179799547,lty=3);abline(v=35.4671842971,lty=3);abline(v=38.9992099640,lty=3)
+abline(v=42.3635503920,lty=3);abline(v=45.5930289815,lty=3);abline(v=48.7107766217,lty=3)
+abline(v=-17.8455995404,lty=3);abline(v=-23.1702827012,lty=3);abline(v=-27.6701822178,lty=3)
+abline(v=-31.7179799547,lty=3);abline(v=-35.4671842971,lty=3);abline(v=-38.9992099640,lty=3)
+legend(-20, -1.5, c("abs(Z_ext(s))", "real(Z_ext(s))","imag(Z_ext(s))","Gram Points","cos(accumulated phase changes)"),
+       lty = c(1,1,1,3,1),cex=.5, lwd = c(2,  2,2,2,2), col = c("black",  "blue","red","black","green"), ncol=2)
+
+```
+
+
+
+```{r, fig7_5, echo=FALSE, cache=TRUE, fig.width=6, fig.height=3,  fig.keep='high',warning=FALSE }
+
+res <- 17;
+start <- -20;finish <- 50
+
+add_f <- add_phase(x)
+sqadd_f <- sqadd_phase(res,x)
+# ladd_f <- ladd_phase(res,x)
+zext <- sqrt((zeta(res+1i*x)*zeta(1-(res+1i*x))*rawratio(res,x)))*exp(1i*3*pi/4)
+
+plot(x=x,y=Im(zext)*cos(sqadd_f),col="red",xlim=c(start,finish),typ="l",ylim=c(-3,1.25),xlab="",ylab = "function value",main = paste0("well away from critical strip (17+i*t)"),cex.xlab=0.9,cex.main=.8,lwd=2)
+
+lines(x=x,y=Re(zext)*cos(sqadd_f),col="blue",lwd=2)
+lines(x=x,y=abs(zext),col="black")
+lines(x=x,y=cos(sqadd_f),col="green")
+
+abline(h=0)
+abline(v=17.8455995404,lty=3);abline(v=23.1702827012,lty=3);abline(v=27.6701822178,lty=3)
+abline(v=31.7179799547,lty=3);abline(v=35.4671842971,lty=3);abline(v=38.9992099640,lty=3)
+abline(v=42.3635503920,lty=3);abline(v=45.5930289815,lty=3);abline(v=48.7107766217,lty=3)
+abline(v=-17.8455995404,lty=3);abline(v=-23.1702827012,lty=3);abline(v=-27.6701822178,lty=3)
+abline(v=-31.7179799547,lty=3);abline(v=-35.4671842971,lty=3);abline(v=-38.9992099640,lty=3)
+legend(-20, -1.5, c("abs(Z_ext(s))", "real(Z_ext(s))","imag(Z_ext(s))","Gram Points","cos(accumulated phase changes)"),
+       lty = c(1,1,1,3,1),cex=.5, lwd = c(2,  2,2,2,2), col = c("black",  "blue","red","black","green"), ncol=2)
+
+```
+
+```{r, fig7_6, echo=FALSE, cache=TRUE, fig.width=6, fig.height=3,  fig.keep='high',warning=FALSE }
+
+res <- 30;
+start <- -20;finish <- 50
+
+add_f <- add_phase(x)
+sqadd_f <- sqadd_phase(res,x)
+# ladd_f <- ladd_phase(res,x)
+zext <- sqrt((zeta(res+1i*x)*zeta(1-(res+1i*x))*rawratio(res,x)))*exp(1i*3*pi/4)
+
+plot(x=x,y=Im(zext)*cos(sqadd_f),col="red",xlim=c(start,finish),typ="l",ylim=c(-3,1.25),xlab="",ylab = "function value",main = paste0("far away from critical strip (30+i*t)"),cex.xlab=0.9,cex.main=.8,lwd=2)
+
+lines(x=x,y=Re(zext)*cos(sqadd_f),col="blue",lwd=2)
+lines(x=x,y=abs(zext),col="black")
+lines(x=x,y=cos(sqadd_f),col="green")
+
+abline(h=0)
+abline(v=17.8455995404,lty=3);abline(v=23.1702827012,lty=3);abline(v=27.6701822178,lty=3)
+abline(v=31.7179799547,lty=3);abline(v=35.4671842971,lty=3);abline(v=38.9992099640,lty=3)
+abline(v=42.3635503920,lty=3);abline(v=45.5930289815,lty=3);abline(v=48.7107766217,lty=3)
+abline(v=-17.8455995404,lty=3);abline(v=-23.1702827012,lty=3);abline(v=-27.6701822178,lty=3)
+abline(v=-31.7179799547,lty=3);abline(v=-35.4671842971,lty=3);abline(v=-38.9992099640,lty=3)
+legend(-20, -1.5, c("abs(Z_ext(s))", "real(Z_ext(s))","imag(Z_ext(s))","Gram Points","cos(accumulated phase changes)"),
+       lty = c(1,1,1,3,1),cex=.5, lwd = c(2,  2,2,2,2), col = c("black",  "blue","red","black","green"), ncol=2)
+
+```
+
+
+***Figure 7. $Z_{ext}(s)$ behaviour using strongly coupled representation of real and imaginary $Z_{ext}(s)$ components***
+
+```{r, fig8_1, echo=FALSE, cache=TRUE, fig.width=6, fig.height=3,  fig.keep='high',warning=FALSE }
+
+res <- 30;
+start <- -20;finish <- 50
+
+add_f <- add_phase(x)
+sqadd_f <- sqadd_phase(res,x)
+# ladd_f <- ladd_phase(res,x)
+zext <- sqrt((zeta(res+1i*x)*zeta(1-(res+1i*x))*rawratio(res,x)))*exp(1i*0*pi/4)
+
+plot(x=x,y=Im(zext)*cos(sqadd_f),col="red",xlim=c(start,finish),typ="l",ylim=c(-3,1.25),xlab="",ylab = "function value",main = paste0("far away from critical strip (30+i*t)"),cex.xlab=0.9,cex.main=.8,lwd=2)
+
+lines(x=x,y=Re(zext)*cos(sqadd_f),col="blue",lwd=2)
+lines(x=x,y=abs(zext),col="black")
+lines(x=x,y=cos(sqadd_f),col="green")
+
+abline(h=0)
+abline(v=17.8455995404,lty=3);abline(v=23.1702827012,lty=3);abline(v=27.6701822178,lty=3)
+abline(v=31.7179799547,lty=3);abline(v=35.4671842971,lty=3);abline(v=38.9992099640,lty=3)
+abline(v=42.3635503920,lty=3);abline(v=45.5930289815,lty=3);abline(v=48.7107766217,lty=3)
+abline(v=-17.8455995404,lty=3);abline(v=-23.1702827012,lty=3);abline(v=-27.6701822178,lty=3)
+abline(v=-31.7179799547,lty=3);abline(v=-35.4671842971,lty=3);abline(v=-38.9992099640,lty=3)
+legend(-20, -1.5, c("abs(Z_ext(s))", "real(Z_ext(s))","imag(Z_ext(s))","Gram Points","cos(accumulated phase changes)"),
+       lty = c(1,1,1,3,1),cex=.5, lwd = c(2,  2,2,2,2), col = c("black",  "blue","red","black","green"), ncol=2)
+
+```
+
+***Figure 8. $Z_{ext}(s)$ behaviour using weakly coupled representation of real and imaginary $Z_{ext}(s)$ components for high Re(s)***
+
+It can be seen that under the strongly coupled representation
+
+(i) The real and imaginary components are continuous at Re(s) = 0.5 and $180^{\circ}$ out of phase, on the critical line.
+
+(ii) Inside the critical strip, the real and imaginary components are slanted but quasi-even functions through the origin $\sim 180^{\circ}$ out of phase, and there is a discontinuity at the origin.
+
+(iii) Outside but near the critical strip, the real and imaginary components become $90^{\circ}$ out of phase. This is a shift from coupled antiphase behaviour inside the critical strip to uncoupled behaviour outside the critical strip analogous to an ordering behaviour transition, with the critical strip boundary as the phase transition boundary. 
+
+(iv) Outside the critical strip, the phase change points (green) can be observed to be shifting from bisecting the Gram points. The phase change points correspond to the minima in the Riemann Zeta function for a given Re(s) and have their origin in the critical line Riemann Zeta zeroes. Above particular Re(s) values, eg. 5.73, 10.17, ... an additional oscillation in the real and imaginary components is introduced close to the origin which forces the existing oscillations in the real and imaginary components further out the imaginary axis. This can be interpreted as the Riemann Zeta negative real axis zeroes exerting an detectable influence on the Riemann Zeta function $\zeta(Re(s)+i*t)$ along the line (Re(s)+i*t), parallel to the imaginary axis.
+                                                                                            
+##Estimating approximate bounds for the magnitude of $abs(zeta(s))$ 
+
+Combining $\theta_{ext}$ & $Z_{ext}$ additively gives geometrical ideas for approximating the magnitude of $abs(zeta(s))$. Figure 9 shows the additive function and the step function envelope of $\Sigma_{i=0}^{Im(s)} \pi_{i}$ for the phase increments in $Z_{ext}$. Also included is a detrended version of the accumulated phase changes.
+
+It can be seen that the largest Riemann Zeta peaks (black line) when combined with $\theta_{ext}$
+
+(i) occur when the crossing of the $Z_{ext}$ and $\theta_{ext}$ is in the middle of phase increment step,
+
+(ii) for the low imaginary values shown, the largest peak approximately reaches the height of the adjacent low Riemann Zeta peak
+
+
+```{r, fig9_1, echo=FALSE, cache=FALSE, fig.width=6, fig.height=5.5,  fig.keep='high',warning=FALSE }
+library(pracma)
+res <- 0.501;
+start <- -10;finish <- 50
+
+add_f <- add_phase(x)
+sqadd_f <- sqadd_phase(res,x)
+ladd_f <- ladd_phase(res,x)
+
+thetaext <- -0.5*Im(log(zeta(res+1i*x)/zeta(1-(res+1i*x))/rawratio(res,x)))+ladd_f
+zext <- sqrt((zeta(res+1i*x)*zeta(1-(res+1i*x))*rawratio(res,x)))*exp(1i*3*pi/4)
+
+plot(x=x,y=Im(zext)*cos(sqadd_f)+thetaext,col="green",xlim=c(start,finish),typ="l",ylim=c(-pi,30),xlab="",ylab = "function value",main = paste0("near critical line (0.501+i*t)"),cex.xlab=0.9,cex.main=.8,lwd=2)
+
+lines(x=x,y=Re(zext)*cos(sqadd_f)+thetaext,col="blue",lwd=2)
+lines(x=x,y=abs(zext)+thetaext,col="black")
+lines(x=x,y=sqadd_f,col="red")
+lines(x=x,y=sqadd_f-(-x/2*log(2*pi/x)-x/2-pi/8),col="red")
+lines(x=x,y=Im(log(gammaz(0.25+0.5i*x)))-0.5*x*log(pi)+add_f,col="brown",lwd=2)
+
+abline(h=0)
+
+legend(-10, 30, c("abs(Z_ext(s))+theta_ext", "real(Z_ext(s))+theta_ext","imag(Z_ext(s))+theta_ext","accumulated Z_ext phase changes","detrended acc Z_ext phase changes"),
+       lty = c(1,1,1,1,1),cex=.5, lwd = c(2,2,2,2,2), col = c("black",  "blue","green","red","red"), ncol=2)
+
+```
+
+Given successive phase increments are $\pi$, this behaviour gives the idea that for low imaginary numbers the largest peaks are ~$\pi$ extra in height. Using pari-gp software (6) to investigate larger imaginary values, shown in figures 10 & 11, it becomes apparent as Im(s) increases, the largest Riemann Zeta peaks combined with $\theta_{ext}$ signal become approximately equal in height to the 2nd adjacent peak, 3rd adjacent peak etc for higher ranges of Im(s). So there is a dependence on the Riemann Zeta peak height on $\pi$ the phase increment size and the magnitude of $\theta_{ext}(s)$.
+
+In the figures below, the green line is $\theta_{ext}(s)$, the complex red line is $\theta_{ext}(s)+abs(\zeta(s))$ and the straight red line is $\theta_{ext}(s)+\sqrt{2}*\pi*\theta_{ext}^\prime(s)$
+
+![My Figure](zeta_height_1150.pdf)
+***Figure 10: The largest Riemann Zeta peaks at Im(s) range ~$1150-1200$ when combined with $\theta_{ext}(s)$ are approximately as high as $3-4\pi$***
+
+![My Figure](zeta_height_211150.pdf)
+***Figure 11: The largest Riemann Zeta peaks at Im(s) range ~$211150-211200$ when combined with $\theta_{ext}(s)$ are approximately as high as $4-5\pi$***
+
+A simple geometrical argument, based on two parallel lines separately by $\pi$ suggests that the maximum height bound of any Riemann Zeta maxima piggybacked on the $\theta_{ext}(s)$ curve would be proportional to (i) the slope of $\theta_{ext}(s)$ and (ii) the phase increment step $\pi$ between adjacent $\zeta(s)$ minima. Noting that at large imaginary values $\theta_{ext}(s) \rightarrow \theta(t)$
+
+\begin{align}
+\Delta ((\theta_{ext}(s)+abs(\zeta(s))_{max}) - \theta_{ext}(s)) &< \alpha *\pi * slope(\theta_{ext}(s))    \\
+&\approx 2 *\pi *\theta_{ext}^\prime(s)   \qquad \qquad by \thinspace inspection \thinspace of \thinspace figs.9-11 \\
+&\approx 2 *\pi * (-0.5*log(\frac{2\pi}{t}))  \thinspace \thinspace using \thinspace Stirling's \thinspace approximation \\
+&= -\pi*log(\frac{2\pi}{t}) \\
+&\approx \pi*log(t)
+\end{align}
+
+This approximate bound is shown as the red line in figure 11. If desired the bound value could be lowered to $\pi/\sqrt{2} * (-0.5*log(\frac{2\pi}{t}))$ to accomodate the variance measure approach of Selberg's theorem (1).
+
+###Conclusions
+
+Phase continuous versions of the extended Riemann Siegel Z and $\theta$ functions have been constructed and discussed using the strongly coupled representation of the $Z_{ext}$ function. The $Z_{ext}$ function components exhibit ordering behaviour with a phase transition at the critical strip boundary. The Riemann Zeta negative real axis zeroes influence the size of the discontinuity in the $Z_{ext}$ function dependent on Re(s).
+
+An approximate upper bound for Riemann Zeta function maxima has been constructed using the slope of $\theta_{ext}$ as a scaling factor. 
+
+###References
+
+1. Edwards, H.M. (1974). Riemann's zeta function. Pure and Applied Mathematics 58. New York-London: Academic Press. ISBN 0-12-232750-0. Zbl 0315.10035.
+
+2. Riemann, Bernhard (1859). "$\ddot{U}$ber die Anzahl der Primzahlen unter einer gegebenen Gr$\ddot{o}$sse". Monatsberichte der Berliner Akademie.. In Gesammelte Werke, Teubner, Leipzig (1892), Reprinted by Dover, New York (1953).
+
+3. Berry, M. V. "The Riemann-Siegel Expansion for the Zeta Function: High Orders and Remainders." Proc. Roy. Soc. London A 450, 439-462, 1995.
+
+4. Martin, J.P.D. "Symmetry splitting behaviour of extended Riemann Siegel Z function components off the critical line" (2016)
+http://dx.doi.org/10.6084/m9.figshare.3756960
+
+5. Borchers H. W., "Pracma r package" v1.9.3 https://cran.r-project.org/web/packages/pracma/pracma.pdf 2016
+
+6. PARI/GP version 2.7.0, The PARI~Group, Bordeaux 2014, available from \url{http://pari.math.u-bordeaux.fr}
