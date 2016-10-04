@@ -410,12 +410,13 @@ start <- -25;finish <- 25
 plot(x=x,y=Im(log(sqrt(zeta(res+1i*x)*zeta(1-(res+1i*x))*rawratio(res,x))/
                     sqrt(abs(zeta(res+1i*x)*zeta(1-(res+1i*x))*rawratio(res,x))))),col="blue",xlim=c(start,finish),typ="l",ylim=c(-4,pi),xlab="",ylab = "function value",main = paste0("near critical line (0.51+i*t)"),cex.xlab=0.9,cex.main=.8,xaxt='n')
 lines(x=x,y=Im(log(gammaz(0.25+0.5i*x))),col="green")
+lines(x=x,y=((Im(log(gammaz(0.25+0.5i*x)))-0.5*x*log(pi))/pi-floor((Im(log(gammaz(0.25+0.5i*x)))-0.5*x*log(pi))/pi))*pi,col="red")
 abline(h=0)
-abline(v=17.8455995404,lty=3);abline(v=23.1702827012,lty=3);abline(v=27.6701822178,lty=3)
+abline(v=9.667,lty=3);abline(v=17.8455995404,lty=3);abline(v=23.1702827012,lty=3);abline(v=27.6701822178,lty=3)
 abline(v=-17.8455995404,lty=3);abline(v=-23.1702827012,lty=3);abline(v=-27.6701822178,lty=3)
 axis(1,labels=c(" "," "," "," "," "),at=c(-20,-10,0,10,20))
-legend(-10, -2, c("Im(log(sqrt(Z_ext(s))/sqrt(abs(Z_ext(s))))", "Im(log(gamma(0.25+0.5i*t)))","Gram Points"),
-       lty = c(1,1,3,1),cex=.5, lwd = c(2,  2,2,2), col = c("blue",  "green","black"))
+legend(-10, -1.8, c("Im(log(sqrt(Z_ext(s))/sqrt(abs(Z_ext(s))))", "Im(log(gamma(0.25+0.5i*t)))","Gram Points","theta(t) as mod(theta(t),pi)"),
+       lty = c(1,1,3,1),cex=.5, lwd = c(2,  2,2,2), col = c("blue",  "green","black","red"))
 
 par(fig=c(0,1,0,0.6),new=TRUE)
 res <- 2;
@@ -428,18 +429,19 @@ start <- -25;finish <- 25
 plot(x=x,y=Im(log(sqrt(zeta(res+1i*x)*zeta(1-(res+1i*x))*rawratio(res,x))/
                     sqrt(abs(zeta(res+1i*x)*zeta(1-(res+1i*x))*rawratio(res,x))))),col="blue",xlim=c(start,finish),typ="l",ylim=c(-4,pi),xlab="",ylab = "function value",main = paste0("above critical strip (2+i*t)"),cex.xlab=0.9,cex.main=.8,xval="")
 lines(x=x,y=Im(log(gammaz(0.25+0.5i*x))),col="green")
+lines(x=x,y=((Im(log(gammaz(0.25+0.5i*x)))-0.5*x*log(pi))/pi-floor((Im(log(gammaz(0.25+0.5i*x)))-0.5*x*log(pi))/pi))*pi,col="red")
 abline(h=0)
-abline(v=17.8455995404,lty=3);abline(v=23.1702827012,lty=3);abline(v=27.6701822178,lty=3)
+abline(v=9.667,lty=3);abline(v=17.8455995404,lty=3);abline(v=23.1702827012,lty=3);abline(v=27.6701822178,lty=3)
 abline(v=-17.8455995404,lty=3);abline(v=-23.1702827012,lty=3);abline(v=-27.6701822178,lty=3)
 
-legend(-10, -2, c("Im(log(sqrt(Z_ext(s))/sqrt(abs(Z_ext(s))))", "Im(log(gamma(0.25+0.5i*t)))","Gram Points"),
-       lty = c(1,1,3,1),cex=.5, lwd = c(2,  2,2,2), col = c("blue",  "green","black"))
+legend(-10, -1.8, c("Im(log(sqrt(Z_ext(s))/sqrt(abs(Z_ext(s))))", "Im(log(gamma(0.25+0.5i*t)))","Gram Points","theta(t) as mod(theta(t),pi)"),
+       lty = c(1,1,3,1),cex=.5, lwd = c(2,  2,2,2), col = c("blue",  "green","black","red"))
 
 
 ```
 
 
-***Figure 3. Comparison of $Z_{ext}(s)$ branch points, Gram points and the gamma term of $\theta(t)$ behaviour near the critical line and just above the critical strip***
+***Figure 3. Comparison of $Z_{ext}(s)$ branch points, Gram points, mod($\theta(t)$,$\pi$) and the gamma term of $\theta(t)$ behaviour near the critical line and just above the critical strip***
   
 These additional $\pm\pi$ increments in $Z_{ext}(s)$ occur at 
 
@@ -492,13 +494,14 @@ start <- -25;finish <- 25
 plot(x=x,y=-0.5*Im(log(zeta(res+1i*x)/zeta(1-(res+1i*x))/rawratio(res,x))),col="blue",xlim=c(start,finish),typ="l",ylim=c(-4,pi),xlab="",ylab = "function value",main = paste0("near critical line (0.51+i*t)"),cex.xlab=0.9,cex.main=.8,xaxt='n')
 
 lines(x=x,y=Im(log(gammaz(0.25+0.5i*x))),col="green")
+lines(x=x,y=((Im(log(gammaz(0.25+0.5i*x)))-0.5*x*log(pi))/pi-floor((Im(log(gammaz(0.25+0.5i*x)))-0.5*x*log(pi))/pi))*pi,col="red")
 
 abline(h=0)
-abline(v=17.8455995404,lty=3);abline(v=23.1702827012,lty=3);abline(v=27.6701822178,lty=3)
+abline(v=9.667,lty=3);abline(v=17.8455995404,lty=3);abline(v=23.1702827012,lty=3);abline(v=27.6701822178,lty=3)
 abline(v=-17.8455995404,lty=3);abline(v=-23.1702827012,lty=3);abline(v=-27.6701822178,lty=3)
 axis(1,labels=c(" "," "," "," "," "),at=c(-20,-10,0,10,20))
-legend(-10, -2, c("-0.5*Im(log(exp(-i*2*theta_ext(s))))", "Im(log(gamma(0.25+0.5i*t)))","Gram Points"),
-       lty = c(1,1,3,1),cex=.5, lwd = c(2,  2,2,2), col = c("blue",  "green","black"))
+legend(-10, -1.8, c("-0.5*Im(log(exp(-i*2*theta_ext(s))))", "Im(log(gamma(0.25+0.5i*t)))","Gram Points","theta(t) as mod(theta(t),pi)"),
+       lty = c(1,1,3,1),cex=.5, lwd = c(2,  2,2,2), col = c("blue",  "green","black","red"))
 
 par(fig=c(0,1,0,0.6),new=TRUE)
 res <- 2;
@@ -510,17 +513,17 @@ start <- -25;finish <- 25
 # ladd_f <- ladd_phase(res,x)
 plot(x=x,y=-0.5*Im(log(zeta(res+1i*x)/zeta(1-(res+1i*x))/rawratio(res,x))),col="blue",xlim=c(start,finish),typ="l",ylim=c(-4,pi),xlab="",ylab = "function value",main = paste0("above critical strip (2+i*t)"),cex.xlab=0.9,cex.main=.8,xval="")
 lines(x=x,y=Im(log(gammaz(0.25+0.5i*x))),col="green")
+lines(x=x,y=((Im(log(gammaz(0.25+0.5i*x)))-0.5*x*log(pi))/pi-floor((Im(log(gammaz(0.25+0.5i*x)))-0.5*x*log(pi))/pi))*pi,col="red")
 abline(h=0)
-abline(v=17.8455995404,lty=3);abline(v=23.1702827012,lty=3);abline(v=27.6701822178,lty=3)
+abline(v=9.667,lty=3);abline(v=17.8455995404,lty=3);abline(v=23.1702827012,lty=3);abline(v=27.6701822178,lty=3)
 abline(v=-17.8455995404,lty=3);abline(v=-23.1702827012,lty=3);abline(v=-27.6701822178,lty=3)
 
-legend(-10, -2, c("-0.5*Im(log(exp(-i*2*theta_ext(s))))", "Im(log(gamma(0.25+0.5i*t)))","Gram Points"),
-       lty = c(1,1,3,1),cex=.5, lwd = c(2,  2,2,2), col = c("blue",  "green","black"))
-
+legend(-10, -1.8, c("-0.5*Im(log(exp(-i*2*theta_ext(s))))", "Im(log(gamma(0.25+0.5i*t)))","Gram Points","theta(t) as mod(theta(t),pi)"),
+       lty = c(1,1,3,1),cex=.5, lwd = c(2,  2,2,2), col = c("blue",  "green","black","red"))
 
 ```
 
-***Figure 4. Comparison of $\theta_{ext}(s)$ branch points, Gram points and the gamma term of $\theta(t)$ behaviour near the critical line and just above the critical strip***
+***Figure 4. Comparison of $\theta_{ext}(s)$ branch points, Gram points, mod($\theta(t)$,$\pi$) and the gamma term of $\theta(t)$ behaviour near the critical line and just above the critical strip***
   
 These additional $\pm\pi$ increments in $\theta_{ext}(s)$ occur at
 
@@ -557,7 +560,7 @@ lines(x=x,y=Im(log(gammaz(0.25+0.5i*x)))-0.5*x*log(pi)+add_f,col="green",lwd=2,l
 lines(x=x,y=ladd_f,col="red")
 
 abline(h=0)
-abline(v=17.8455995404,lty=3);abline(v=23.1702827012,lty=3);abline(v=27.6701822178,lty=3)
+abline(v=9.667,lty=3);abline(v=17.8455995404,lty=3);abline(v=23.1702827012,lty=3);abline(v=27.6701822178,lty=3)
 abline(v=-17.8455995404,lty=3);abline(v=-23.1702827012,lty=3);abline(v=-27.6701822178,lty=3)
 legend(-17, -0.7, c("theta_ext(s)", "theta(t)","accumulated phase changes","Gram Points"),
        lty = c(1,1,1,3),cex=.5, lwd = c(2,  2,2,2), col = c("blue",  "green","red","black"))
@@ -577,7 +580,7 @@ plot(x=x,y=-0.5*Im(log(zeta(res+1i*x)/zeta(1-(res+1i*x))/rawratio(res,x)))+ladd_
 lines(x=x,y=Im(log(gammaz(0.25+0.5i*x)))-0.5*x*log(pi)+add_f,col="green",lwd=2,lty=2)
 lines(x=x,y=ladd_f,col="red")
 abline(h=0)
-abline(v=17.8455995404,lty=3);abline(v=23.1702827012,lty=3);abline(v=27.6701822178,lty=3)
+abline(v=9.667,lty=3);abline(v=17.8455995404,lty=3);abline(v=23.1702827012,lty=3);abline(v=27.6701822178,lty=3)
 abline(v=-17.8455995404,lty=3);abline(v=-23.1702827012,lty=3);abline(v=-27.6701822178,lty=3)
 
 legend(-17, -0.7, c("theta_ext(s)", "theta(t)","accumulated phase changes","Gram Points"),
@@ -600,7 +603,7 @@ plot(x=x,y=-0.5*Im(log(zeta(res+1i*x)/zeta(1-(res+1i*x))/rawratio(res,x)))+ladd_
 lines(x=x,y=Im(log(gammaz(0.25+0.5i*x)))-0.5*x*log(pi)+add_f,col="green",lwd=2,lty=2)
 lines(x=x,y=ladd_f,col="red")
 abline(h=0)
-abline(v=17.8455995404,lty=3);abline(v=23.1702827012,lty=3);abline(v=27.6701822178,lty=3)
+abline(v=9.667,lty=3);abline(v=17.8455995404,lty=3);abline(v=23.1702827012,lty=3);abline(v=27.6701822178,lty=3)
 abline(v=31.7179799547,lty=3);abline(v=35.4671842971,lty=3);abline(v=38.9992099640,lty=3)
 abline(v=42.3635503920,lty=3);abline(v=45.5930289815,lty=3);abline(v=48.7107766217,lty=3)
 abline(v=-17.8455995404,lty=3);abline(v=-23.1702827012,lty=3);abline(v=-27.6701822178,lty=3)
@@ -625,7 +628,7 @@ plot(x=x,y=-0.5*Im(log(zeta(res+1i*x)/zeta(1-(res+1i*x))/rawratio(res,x)))+ladd_
 lines(x=x,y=Im(log(gammaz(0.25+0.5i*x)))-0.5*x*log(pi)+add_f,col="green",lwd=2,lty=2)
 lines(x=x,y=ladd_f,col="red")
 abline(h=0)
-abline(v=17.8455995404,lty=3);abline(v=23.1702827012,lty=3);abline(v=27.6701822178,lty=3)
+abline(v=9.667,lty=3);abline(v=17.8455995404,lty=3);abline(v=23.1702827012,lty=3);abline(v=27.6701822178,lty=3)
 abline(v=31.7179799547,lty=3);abline(v=35.4671842971,lty=3);abline(v=38.9992099640,lty=3)
 abline(v=42.3635503920,lty=3);abline(v=45.5930289815,lty=3);abline(v=48.7107766217,lty=3)
 abline(v=-17.8455995404,lty=3);abline(v=-23.1702827012,lty=3);abline(v=-27.6701822178,lty=3)
@@ -651,7 +654,7 @@ plot(x=x,y=-0.5*Im(log(zeta(res+1i*x)/zeta(1-(res+1i*x))/rawratio(res,x)))+ladd_
 lines(x=x,y=Im(log(gammaz(0.25+0.5i*x)))-0.5*x*log(pi)+add_f,col="green",lwd=2,lty=2)
 lines(x=x,y=ladd_f,col="red")
 abline(h=0)
-abline(v=17.8455995404,lty=3);abline(v=23.1702827012,lty=3);abline(v=27.6701822178,lty=3)
+abline(v=9.667,lty=3);abline(v=17.8455995404,lty=3);abline(v=23.1702827012,lty=3);abline(v=27.6701822178,lty=3)
 abline(v=31.7179799547,lty=3);abline(v=35.4671842971,lty=3);abline(v=38.9992099640,lty=3)
 abline(v=42.3635503920,lty=3);abline(v=45.5930289815,lty=3);abline(v=48.7107766217,lty=3)
 abline(v=-17.8455995404,lty=3);abline(v=-23.1702827012,lty=3);abline(v=-27.6701822178,lty=3)
@@ -678,7 +681,7 @@ cos(2\theta_{ext}(s)) &\sim cos(2\theta(t)) + \frac{1}{2t}*abs(Re(s)-0.5)^2*sin(
 Figure 6, shows agreement with the 1/t behaviour of eqn \eqref {eq:theta_approx} for Re(s) = 0.9, predicted for the asymptotic approach of $\theta_{ext}(s)$ to $\theta(t)$ inside the critical strip. Indeed the difference between the formula eqn \eqref {eq:theta_approx} and for straight $\theta_{ext}(s) - theta(t)$ case appears to be a simple factor of 0.5, such that
 
 \begin{align}
-\theta_{ext}(s) - \theta(t) &\approx  0.5*\frac{1}{2t}*abs(Re(s)-0.5)^2 + ... \qquad for \thinspace t > 2 \qquad and \qquad abs(Re(s)) < 1 \label{eq:theta_diffapprox}
+\theta_{ext}(s) - \theta(t) &\approx  -0.5*\frac{1}{2t}*abs(Re(s)-0.5)^2 + ... \qquad for \thinspace t > 2 \qquad and \qquad abs(Re(s)) < 1 \label{eq:theta_diffapprox}
 \end{align}
 
 
@@ -772,7 +775,7 @@ lines(x=x,y=abs(zext),col="black")
 lines(x=x,y=cos(sqadd_f),col="green")
 
 abline(h=0)
-abline(v=17.8455995404,lty=3);abline(v=23.1702827012,lty=3);abline(v=27.6701822178,lty=3)
+abline(v=9.667,lty=3);abline(v=17.8455995404,lty=3);abline(v=23.1702827012,lty=3);abline(v=27.6701822178,lty=3)
 abline(v=31.7179799547,lty=3);abline(v=35.4671842971,lty=3);abline(v=38.9992099640,lty=3)
 abline(v=42.3635503920,lty=3);abline(v=45.5930289815,lty=3);abline(v=48.7107766217,lty=3)
 abline(v=-17.8455995404,lty=3);abline(v=-23.1702827012,lty=3);abline(v=-27.6701822178,lty=3)
@@ -799,7 +802,7 @@ lines(x=x,y=abs(zext),col="black")
 lines(x=x,y=cos(sqadd_f),col="green")
 
 abline(h=0)
-abline(v=17.8455995404,lty=3);abline(v=23.1702827012,lty=3);abline(v=27.6701822178,lty=3)
+abline(v=9.667,lty=3);abline(v=17.8455995404,lty=3);abline(v=23.1702827012,lty=3);abline(v=27.6701822178,lty=3)
 abline(v=31.7179799547,lty=3);abline(v=35.4671842971,lty=3);abline(v=38.9992099640,lty=3)
 abline(v=42.3635503920,lty=3);abline(v=45.5930289815,lty=3);abline(v=48.7107766217,lty=3)
 abline(v=-17.8455995404,lty=3);abline(v=-23.1702827012,lty=3);abline(v=-27.6701822178,lty=3)
@@ -826,7 +829,7 @@ lines(x=x,y=abs(zext),col="black")
 lines(x=x,y=cos(sqadd_f),col="green")
 
 abline(h=0)
-abline(v=17.8455995404,lty=3);abline(v=23.1702827012,lty=3);abline(v=27.6701822178,lty=3)
+abline(v=9.667,lty=3);abline(v=17.8455995404,lty=3);abline(v=23.1702827012,lty=3);abline(v=27.6701822178,lty=3)
 abline(v=31.7179799547,lty=3);abline(v=35.4671842971,lty=3);abline(v=38.9992099640,lty=3)
 abline(v=42.3635503920,lty=3);abline(v=45.5930289815,lty=3);abline(v=48.7107766217,lty=3)
 abline(v=-17.8455995404,lty=3);abline(v=-23.1702827012,lty=3);abline(v=-27.6701822178,lty=3)
@@ -854,7 +857,7 @@ lines(x=x,y=abs(zext),col="black")
 lines(x=x,y=cos(sqadd_f),col="green")
 
 abline(h=0)
-abline(v=17.8455995404,lty=3);abline(v=23.1702827012,lty=3);abline(v=27.6701822178,lty=3)
+abline(v=9.667,lty=3);abline(v=17.8455995404,lty=3);abline(v=23.1702827012,lty=3);abline(v=27.6701822178,lty=3)
 abline(v=31.7179799547,lty=3);abline(v=35.4671842971,lty=3);abline(v=38.9992099640,lty=3)
 abline(v=42.3635503920,lty=3);abline(v=45.5930289815,lty=3);abline(v=48.7107766217,lty=3)
 abline(v=-17.8455995404,lty=3);abline(v=-23.1702827012,lty=3);abline(v=-27.6701822178,lty=3)
@@ -883,7 +886,7 @@ lines(x=x,y=abs(zext),col="black")
 lines(x=x,y=cos(sqadd_f),col="green")
 
 abline(h=0)
-abline(v=17.8455995404,lty=3);abline(v=23.1702827012,lty=3);abline(v=27.6701822178,lty=3)
+abline(v=9.667,lty=3);abline(v=17.8455995404,lty=3);abline(v=23.1702827012,lty=3);abline(v=27.6701822178,lty=3)
 abline(v=31.7179799547,lty=3);abline(v=35.4671842971,lty=3);abline(v=38.9992099640,lty=3)
 abline(v=42.3635503920,lty=3);abline(v=45.5930289815,lty=3);abline(v=48.7107766217,lty=3)
 abline(v=-17.8455995404,lty=3);abline(v=-23.1702827012,lty=3);abline(v=-27.6701822178,lty=3)
@@ -910,7 +913,7 @@ lines(x=x,y=abs(zext),col="black")
 lines(x=x,y=cos(sqadd_f),col="green")
 
 abline(h=0)
-abline(v=17.8455995404,lty=3);abline(v=23.1702827012,lty=3);abline(v=27.6701822178,lty=3)
+abline(v=9.667,lty=3);abline(v=17.8455995404,lty=3);abline(v=23.1702827012,lty=3);abline(v=27.6701822178,lty=3)
 abline(v=31.7179799547,lty=3);abline(v=35.4671842971,lty=3);abline(v=38.9992099640,lty=3)
 abline(v=42.3635503920,lty=3);abline(v=45.5930289815,lty=3);abline(v=48.7107766217,lty=3)
 abline(v=-17.8455995404,lty=3);abline(v=-23.1702827012,lty=3);abline(v=-27.6701822178,lty=3)
@@ -940,7 +943,7 @@ lines(x=x,y=abs(zext),col="black")
 lines(x=x,y=cos(sqadd_f),col="green")
 
 abline(h=0)
-abline(v=17.8455995404,lty=3);abline(v=23.1702827012,lty=3);abline(v=27.6701822178,lty=3)
+abline(v=9.667,lty=3);abline(v=17.8455995404,lty=3);abline(v=23.1702827012,lty=3);abline(v=27.6701822178,lty=3)
 abline(v=31.7179799547,lty=3);abline(v=35.4671842971,lty=3);abline(v=38.9992099640,lty=3)
 abline(v=42.3635503920,lty=3);abline(v=45.5930289815,lty=3);abline(v=48.7107766217,lty=3)
 abline(v=-17.8455995404,lty=3);abline(v=-23.1702827012,lty=3);abline(v=-27.6701822178,lty=3)
