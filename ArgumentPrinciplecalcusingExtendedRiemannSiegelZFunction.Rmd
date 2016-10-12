@@ -113,17 +113,17 @@ N(T) - P(T) = [\frac{1}{2\pi} (-\Im(log(\zeta(s))) \Big|_{a}) ] \\
 
 Firstly, from Martin (4) it should be noted that the terms for the extended Riemann Siegel functions can be expressed with and without analytic continuation. In terms of contour integrals, the analytic continuation version provides a sum of zeroes (and poles) along the contour integral.
 
-As will be shown graphically, in the positive quadrant of the complex plane above the negative real axis zeroes
+As will be shown graphically and using results from (4), in the positive quadrant of the complex plane above the negative real axis zeroes
 
 \begin{equation}
-[\frac{1}{2\pi} (\theta_{ext}(s)) \Big|_{\sigma+i*t}] = \frac{(\theta(t) + 1)}{2}
+[\frac{1}{2\pi} (\theta_{ext}(s)) \Big|_{\sigma+i*t}] \approx \frac{(\theta(t) + 1)}{2} \qquad -2 <  \sigma < 2 
 \end{equation}
 
 
 \begin{equation}
 [\frac{1}{2\pi} (- \Im(log(Z_{ext}(s)))) \Big|_{\sigma+i*t}) ] \approx 
 \begin{cases}
-- \frac{(\theta(t) + 1)}{2} \qquad \sigma > 0.5 \label {eq:an_Z} \\
+- \frac{(\theta(t) + 1)}{2} \qquad 0.5 < \sigma < 2 \label {eq:an_Z} \\
 0 \qquad \qquad \qquad \sigma = 0.5 \\
  \frac{(\theta(t) + 1)}{2} \qquad \qquad -2 < \sigma < 0.5 
 \end{cases}
@@ -139,7 +139,7 @@ Hence, the argument principle behaviour of the Riemann Zeta function, in the pos
 \begin{equation}
 [\frac{1}{2\pi} (- \Im(log(\zeta(s)))) \Big|_{\sigma+i*t}) ] \approx 
 \begin{cases}
-0 \qquad \sigma > 0.5 \label {eq:an_Z} \\
+0 \qquad \qquad \qquad \qquad 0.5 < \sigma < 2 \label {eq:an_Z} \\
 \frac{(\theta(t) + 1)}{2} \qquad \qquad \qquad \sigma = 0.5 \\
  (\theta(t) + 1) \qquad \qquad -2 < \sigma < 0.5 
 \end{cases}
