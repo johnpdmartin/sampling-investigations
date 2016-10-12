@@ -1,0 +1,712 @@
+---
+title: Applying the Argument Principle to the extended Riemann Siegel function components of the Riemann Zeta function 
+
+author: "John Martin"
+date: "Wednesday, October 12th, 2016"
+output:
+  pdf_document:
+    fig_crop: no
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+##Executive Summary
+
+Applying the argument principle for contour integration of the Riemann Zeta function, using the extended Riemann Siegel function components for various $s=\sigma+i*t$ lines in the positive quadrant of the complex plane gives results explaining the Riemann Hypothesis. In particular, given the relationship $-\Im(log(\zeta(s))) = \theta_{ext}(s)-\Im(log(Z_{ext}(s)))$, and that $\theta_{ext}(s)$ ($\Im(log(Z_{ext}(s)))$) are even(odd) functions respectively about the critical line, excludes any Riemann Zeta zeroes in the upper half of the critical strip. 
+
+##Introduction
+
+The Riemann Zeta function is defined (1), in the complex plane by the integral 
+
+\begin{equation}
+\zeta(s) = \frac{\prod(-s)}{2\pi i}\int_{C_{\epsilon,\delta}} \frac{(-x)^s}{(e^{x}-1)x}dx
+\end{equation}
+
+
+where $s \thinspace \epsilon \thinspace \mathbb{C}$ and $C_{\epsilon,\delta}$ is the contour about the imaginary poles.
+
+The Riemann Zeta function has been shown to obey the functional equation (2)
+
+\begin{equation}
+\zeta(s) = 2^s\pi^{s-1}sin(\frac{\pi s}{2})\Gamma(1-s)\zeta(1-s) \label{eq:func}
+\end{equation}
+
+Following directly from the form of the functional equation and the properties of the coefficients on the RHS of eqn \eqref{eq:func} it has been shown that any zeroes off the critical line would be paired, ie. if $\zeta(s)$ = 0 was true then $\zeta(1-s) = 0$.
+
+The Riemann Siegel function is an exact function (3) for the magnitude of the Riemann Zeta function along the critical line (0.5+it) of the form
+
+\begin{equation}
+Z(t) = \zeta(0.5+it)e^{i\theta(t)} \label{eq:rs}
+\end{equation}
+
+where 
+
+\begin{equation}
+\theta(t) = \Im(ln(\Gamma(\frac{1}{4}+\frac{1}{2}it)))-\frac{t}{2}ln(\pi) \label{eq:theta}
+\end{equation}
+
+In Martin (4) and earlier work, the properties of the Riemann Zeta generating function were investigated and used to develop/map the extended Riemann Siegel $Z_{ext}(s)$ and $\theta_{ext}(s)$ definitions away from the critical line, 
+
+\begin{align}
+e^{-i*2\theta_{ext}(s)} &= \frac{\zeta(s)}{\zeta(1-s)}\frac{1}{abs(2^s\pi^{s-1}sin(\frac{\pi s}{2})\Gamma(1-s))} \label{eq:thetaratio} \\
+&\approx e^{-i*2\theta(t)} 
+\end{align}
+
+Therefore
+
+\begin{align}
+e^{i\theta_{ext}(s)} &= \sqrt{\frac{\zeta(1-s)abs(2^s\pi^{s-1}sin(\frac{\pi s}{2})\Gamma(1-s))}{\zeta(s)}}  \\ \theta_{ext}(s) &= \Im(log(e^{i*\theta_{ext}(s)})) \\
+\\ &= \Im(log(\sqrt{\frac{\zeta(1-s)abs(2^s\pi^{s-1}sin(\frac{\pi s}{2})\Gamma(1-s))}{\zeta(s)}})) \label{eq:ztheta} 
+\end{align}
+
+\begin{align}
+Z_{ext}(s) &= \sqrt{\zeta(s)*\zeta(1-s)*abs(2^s\pi^{s-1}sin(\frac{\pi s}{2})\Gamma(1-s))} \label{eq:zweak}
+\end{align}
+
+In this paper, the argument principle is applied to the extended Riemann Siegel function form of the Riemann zeta function to calculate the net number of zeroes and poles . 
+
+##Argument principle calculation of the difference in zeroes and poles for Riemann Zeta function surrounding the critical strip
+
+In complex analysis, the difference in zeroes and poles for a meromorphic function, such as Riemann Zeta function can be calculated using a contour integral surrounding the region of the zeroes and poles.
+
+\begin{align}
+\oint{\frac{f^\prime(s)}{f(s)}ds} &= 2\pi i (N-P) \\
+&= log(f(s)) \Big|_a^a 
+\end{align}
+
+where (i) N is number of zeroes, (ii) P is the number of poles and (iii) the definite integral is a given contour integral.
+
+Equating the last two RHS lines of the above equation
+
+\begin{equation}
+2\pi i (N(T)-P(T)) =  log(f(s)) \Big|_{a} 
+\end{equation}
+
+Therefore,
+ 
+\begin{equation}
+N(T) - P(T) = [\frac{1}{2\pi} (- \Im ( (log(f(s)) \Big|_{a}) ] \label {eq:generic_eqn}
+\end{equation}
+
+where [ ] indicates the nearest integer is taken.
+
+For the Riemann Zeta function, from (4), it can be expressed in terms of the extended Riemann Siegel functions as
+
+\begin{align}
+\zeta(s) &= e^{-i\theta_{ext}(s)} Z_{ext}(s) \label {eq:zeta_ext} \\
+&= e^{-i\theta_{ext}(s)} \sqrt{\zeta(s)*\zeta(1-s)*abs(2^s\pi^{s-1}sin(\frac{\pi s}{2})\Gamma(1-s))} \label {eq:zeta_ext} \\
+\end{align}
+
+Hence, the antiderivative of the Riemann Zeta contour integral as given in eqn \eqref {eq:generic_eqn} and the net count of zeroes and poles, in terms of the extended Riemann Siegel functions, is the imaginary part of the negative logarithm shown below
+
+\begin{align}
+N(T) - P(T) = [\frac{1}{2\pi} (-\Im(log(\zeta(s))) \Big|_{a}) ] \\
+ = [\frac{1}{2\pi} (-\Im(-i\theta_{ext}(s) + log(Z_{ext}(s)))) \Big|_{a}) ]  \\
+= [\frac{1}{2\pi} (\theta_{ext}(s) - \Im(log(Z_{ext}(s)))) \Big|_{a}) ] \label {eq:logzeta_ext} \\
+\end{align}
+
+
+##Properties of the antiderivative for the contour path
+
+Firstly, from Martin (4) it should be noted that the terms for the extended Riemann Siegel functions can be expressed with and without analytic continuation. In terms of contour integrals, the analytic continuation version provides a sum of zeroes (and poles) along the contour integral.
+
+As will be shown graphically, in the positive quadrant of the complex plane above the negative real axis zeroes
+
+\begin{equation}
+[\frac{1}{2\pi} (\theta_{ext}(s)) \Big|_{\sigma+i*t}] = \frac{(\theta(t) + 1)}{2}
+\end{equation}
+
+
+\begin{equation}
+[\frac{1}{2\pi} (- \Im(log(Z_{ext}(s)))) \Big|_{\sigma+i*t}) ] \approx 
+\begin{cases}
+- \frac{(\theta(t) + 1)}{2} \qquad \sigma > 0.5 \label {eq:an_Z} \\
+0 \qquad \qquad \qquad \sigma = 0.5 \\
+ \frac{(\theta(t) + 1)}{2} \qquad \qquad -2 < \sigma < 0.5 
+\end{cases}
+\end{equation}
+
+
+where the analytic continuation of $\Im(log(Z_{ext}(s)))$ is a quasi-step function near the critical line, whereas the analytic continuation of $\theta_{ext}(s)$ is continuous (except near the origin away from the critical strip).
+
+By lowering the bottom of the contour integral, in the positive quadrant of the complex plane, progressively from above $\sigma = 1$, the contour integral along the path $\sigma+i*t$ is sufficient by argument principle to count the zeroes (and poles) of the Riemann Zeta function.
+
+Hence, the argument principle behaviour of the Riemann Zeta function, in the positive quadrant of the complex plane is
+
+\begin{equation}
+[\frac{1}{2\pi} (- \Im(log(\zeta(s)))) \Big|_{\sigma+i*t}) ] \approx 
+\begin{cases}
+0 \qquad \sigma > 0.5 \label {eq:an_Z} \\
+\frac{(\theta(t) + 1)}{2} \qquad \qquad \qquad \sigma = 0.5 \\
+ (\theta(t) + 1) \qquad \qquad -2 < \sigma < 0.5 
+\end{cases}
+\end{equation}
+
+This behaviour can be interpreted as arising from the destructive/constructive interference between the extended Riemann Siegel function components of the Riemann function across the critical strip. In the figure below, the imaginary parts of the logarithms of the Riemann Siegel components are sharp and large magnitude for all s, about points bisecting all the Gram points, whereas $-\Im(log(\zeta(s))$ becomes small away from the critical line as it arises through interference effects. As shown, in the figure, with the intersection of red and dashed black lines, the Gram points bisect the $\theta_ext(s)$ zeroes (not the $\zeta(s)$ minima)
+
+
+```{r, exec, echo=FALSE, cache=TRUE, fig.width=6, fig.height=5,  fig.keep='high', warning=FALSE }
+
+library(pracma)
+
+
+rawratio <- function(res,x) {
+    abs(2^(res+1i*x)*pi^(res+1i*x-1)*sin(pi/2*(res+1i*x))*gammaz(1-(res+1i*x)))
+}
+
+x <- seq(-10,65,l=60001)
+
+res <- .9;
+start <- -10;finish <- 65
+
+theta <- (log(sqrt(zeta(1-(res+1i*x))*rawratio(res,x)/zeta(res+1i*x))))
+
+rot_z_fn <- sqrt(zeta(res+1i*x)*zeta(1-(res+1i*x))*rawratio(res,x))
+
+par(mfrow=c(1,1))
+
+plot(x=x,y=1*(-Im(log(zeta(res+1i*x)))),typ="l",ylim=c(-pi,pi),xlim=c(0,30),ylab="modulus value",
+     xlab="imaginary part",main=paste0("Important lines shown below are","\n mod(-Im(log(zeta(s))),pi)-green/brown      theta_ext(s)-red","\n Im(log(Z_ext(s)))-blue                 theta(t)-dashed black "),cex.main=0.6)
+lines(x=x,y=Im(theta),col="red")
+lines(x=x,y=Im(log(rot_z_fn)),col="blue")
+lines(x=x,y=1*(Im(theta)-Im(log(rot_z_fn))),col="magenta",lty=2)
+lines(x=x,y=1*(((Im(theta)-Im(log(rot_z_fn))+pi/2)/pi-
+               floor((Im(theta)-Im(log(rot_z_fn))+pi/2)/pi))*pi-pi/2),col="green",lwd=2)
+lines(x=x,y=1*((-Im(log(zeta(res+1i*x)))+pi/2)/pi-
+               floor((-Im(log(zeta(res+1i*x)))+pi/2)/pi))*pi-pi/2,col="brown",lty=2)
+first_adj <- ((Im(log(gammaz(0.25+0.5i*x)))-0.5*x*log(pi))/pi/2-1*floor((Im(log(gammaz(0.25+0.5i*x)))-0.5*x*log(pi))/pi/2))*pi*2-pi
+lines(x=x,y=first_adj,col="green",lty=2)
+lines(x=x,y=((first_adj+pi)/pi-floor((first_adj+pi)/pi))*pi-pi/2,col="black",lty=2)
+
+abline(h=pi/2,lty=3);abline(h=-pi/2,lty=3);abline(h=0,lty=3)
+```
+
+***Extended Riemann Siegel Components of Riemann Zeta function in mod(,$\pi$) form for s=(0.9+i*t)***
+
+Looking at profile for several lines ($s=\sigma+i*t$) in the positive quadrant of the complex plane, figures 1-6 show below the behaviour of 
+
+(i) the extended Riemann Siegel function components of the antiderivative,
+(ii) the modulus version of the total derivative mod($-\Im(log(\zeta(s))),\pi$) based on the components, 
+(iii) the analytic continuation version,
+(iv) the nearest integer version of thw analytic continuation 
+
+of the antiderivative $-\Im(log(\zeta(s))$ for the Riemann Zeta argument principle calculation.
+
+It can be observed that the nearest integer version of the analytic continuation provides the argument principle contour integral result, for roots/poles lying above the line ($s=\sigma+i*t$) in the positve quadrant of the complex plane.
+
+
+```{r, fig1, echo=FALSE, cache=TRUE, fig.width=6, fig.height=4,  fig.keep='high', warning=FALSE }
+
+library(pracma)
+
+
+rawratio <- function(res,x) {
+    abs(2^(res+1i*x)*pi^(res+1i*x-1)*sin(pi/2*(res+1i*x))*gammaz(1-(res+1i*x)))
+}
+
+x <- seq(-10,65,l=60001)
+
+add_phase <- function(x) {
+
+sum <- 0
+add_pos <- 0
+
+xfac <- 0.25
+
+for (i in 1:length(x)) {
+  if(x[i] < 10 ) {add_pos[i] <- 0}
+  else { 
+    test <- floor((Im(log(gammaz(xfac+0.5i*x[i]))))/2/pi)
+    if (test == 0) {flag <- 0;add_pos[i] <- sum}
+      else if (test == -1 & flag == 0 ) {flag <- 1; sum <- sum+2*pi;add_pos[i] <- sum}
+        else add_pos[i] <- sum
+  }
+  }
+sum <- 0
+add_neg <- 0
+for (i in 1:length(x)) {
+  if(x[length(x)+1-i] > -10 ) {add_neg[i] <- 0}
+  else { 
+    test <- floor((Im(log(gammaz(xfac+0.5i*x[length(x)+1-i]))))/2/pi)
+    if (test == -1) {flag <- 0;add_neg[length(x)+1-i] <- sum}
+    else if (test == 0 & flag == 0 ) {flag <- 1; sum <- sum-2*pi;add_neg[length(x)+1-i] <- sum}
+    else add_neg[length(x)+1-i] <- sum
+  }
+}
+
+add <- 0
+for (i in 1:length(x)) {
+  if (x[i] < 0) add[i] <- add_neg[i]
+    else add[i] <- add_pos[i]
+}
+
+add
+}
+
+sqadd_phase <- function(res,x)  {
+
+sum <- ifelse(abs(res) < sqrt(2),-pi,ifelse(abs(res)<5.73,-pi,ifelse(abs(res)<10.17,-2*pi,
+                  ifelse(abs(res)<14.297,-3*pi,ifelse(abs(res)<18.38,-4*pi,
+                  ifelse(abs(res)<22.428,-5*pi,ifelse(abs(res)<26.47,-6*pi,-7*pi)))))))
+sqadd_pos <- -pi
+
+xfac <- 0.25
+
+for (i in 1:length(x)) {
+  if(x[i] <= .002 ) {sqadd_pos[i] <- sum}
+  else { 
+    # test <- Im(log(sqrt(zeta(res+1i*x[i])*zeta(1-(res+1i*x[i]))*rawratio(res,x[i]))/
+    #         abs(sqrt(zeta(res+1i*x[i])*zeta(1-(res+1i*x[i]))*rawratio(res,x[i])))))
+    # testp <- ifelse(x[i-1] != 0,
+    #         Im(log(sqrt(zeta(res+1i*x[i-1])*zeta(1-(res+1i*x[i-1]))*rawratio(res,x[i-1]))/
+    #          abs(sqrt(zeta(res+1i*x[i-1])*zeta(1-(res+1i*x[i-1]))*rawratio(res,x[i-1]))))),
+    #                 test)
+    test <- Im(log(sqrt(zeta(res+1i*x[i])*zeta(1-(res+1i*x[i]))*rawratio(res,x[i]))))
+    testp <- ifelse(x[i-1] != 0,
+            Im(log(sqrt(zeta(res+1i*x[i-1])*zeta(1-(res+1i*x[i-1]))*rawratio(res,x[i-1])))),
+                    test)
+    # if (test-testp > pi/4 & x[i] <= 5) {flag <- 1;sum <- sum-1*pi;sadd_pos[i] <- sum}
+    if (test-testp > pi/4 ) {flag <- 1;sum <- sum-1*pi;sqadd_pos[i] <- sum}
+    if (test-testp < -pi/4) {flag <- 1;sum <- sum+1*pi;sqadd_pos[i] <- sum}
+    else {flag <- 0; sqadd_pos[i] <- sum}
+  }
+}
+sum <- -ifelse(abs(res) < sqrt(2),-pi,ifelse(abs(res)<5.73,-pi,ifelse(abs(res)<10.17,-2*pi,
+              ifelse(abs(res)<14.297,-3*pi,ifelse(abs(res)<18.38,-4*pi,
+              ifelse(abs(res)<22.428,-5*pi,ifelse(abs(res)<26.47,-6*pi,-7*pi)))))))
+sqadd_neg <- -pi
+for (i in 1:length(x)) {
+  if(x[length(x)+1-i] >= -.002 ) {sqadd_neg[length(x)+1-i] <- sum}
+  else { 
+  #   test <- Im(log(sqrt(zeta(res+1i*x[length(x)+1-i])*zeta(1-(res+1i*x[length(x)+1-i]))*rawratio(res,x[length(x)+1-i]))/
+  #         abs(sqrt(zeta(res+1i*x[length(x)+1-i])*zeta(1-(res+1i*x[length(x)+1-i]))*rawratio(res,x[length(x)+1-i])))))
+  #   testp <- ifelse(x[length(x)+1-i+1] != 0,Im(log(sqrt(zeta(res+1i*x[length(x)+1-i+1])*zeta(1-(res+1i*x[length(x)+1-i+1]))*rawratio(res,x[length(x)+1-i+1]))/
+  # abs(sqrt(zeta(res+1i*x[length(x)+1-i+1])*zeta(1-(res+1i*x[length(x)+1-i+1]))*rawratio(res,x[length(x)+1-i+1]))))),
+  #                   test)
+    test <- Im(log(sqrt(zeta(res+1i*x[length(x)+1-i])*zeta(1-(res+1i*x[length(x)+1-i]))*rawratio(res,x[length(x)+1-i]))))
+    testp <- ifelse(x[length(x)+1-i+1] != 0,Im(log(sqrt(zeta(res+1i*x[length(x)+1-i+1])*zeta(1-(res+1i*x[length(x)+1-i+1]))*rawratio(res,x[length(x)+1-i+1])))),
+                    test)
+    # if (test-testp < -pi/4 & x[length(x)+1-i] >= -5) {flag <- 1;sum <- sum+1*pi;ladd_neg[length(x)+1-i] <- sum}
+    if (test-testp < -pi/4 ) {flag <- 1;sum <- sum+1*pi;sqadd_neg[length(x)+1-i] <- sum}
+    if (test-testp > pi/4) {flag <- 1;sum <- sum-1*pi;sqadd_neg[length(x)+1-i] <- sum}
+    else {flag <- 0; sqadd_neg[length(x)+1-i] <- sum}
+  }
+}
+
+sqadd <- 0
+for (i in 1:length(x)) {
+  if (x[i] < 0) sqadd[i] <- sqadd_neg[i]
+  else sqadd[i] <- sqadd_pos[i]
+}
+
+sqadd}
+
+
+ladd_phase <- function(res,x) {
+
+sum <- ifelse(abs(res) < sqrt(2),0,ifelse(abs(res)<5.73,-pi,ifelse(abs(res)<10.17,-2*pi,
+              ifelse(abs(res)<14.297,-3*pi,ifelse(abs(res)<18.38,-4*pi,
+              ifelse(abs(res)<22.428,-5*pi,ifelse(abs(res)<26.47,-6*pi,-7*pi)))))))
+
+ladd_pos <- 0
+
+for (i in 1:length(x)) {
+  if(x[i] <= 0.00 ) {ladd_pos[i] <- sum}
+  else { 
+    # test <- (Im(log(sqrt(zeta(1-(res+1i*x[i]))*rawratio(res,x[i])/zeta(res+1i*x[i]))/
+    #         abs(sqrt(zeta(1-(res+1i*x[i]))*rawratio(res,x[i])/zeta(res+1i*x[i]))))))
+    # testp <- ifelse(x[i-1] != 0,(Im(log(sqrt(zeta(1-(res+1i*x[i-1]))*rawratio(res,x[i-1])/zeta(res+1i*x[i-1]))/
+    #         abs(sqrt(zeta(1-(res+1i*x[i-1]))*rawratio(res,x[i-1])/zeta(res+1i*x[i-1])))))),test)
+    test <- (Im(log(sqrt(zeta(1-(res+1i*x[i]))*rawratio(res,x[i])/zeta(res+1i*x[i])))))
+    testp <- ifelse(x[i-1] != 0,(Im(log(sqrt(zeta(1-(res+1i*x[i-1]))*rawratio(res,x[i-1])/zeta(res+1i*x[i-1]))))),test)
+    if (test-testp > pi/4 & x[i] <= 5) {flag <- 1;sum <- sum-1*pi;ladd_pos[i] <- sum}
+     if (test-testp < -pi/4) {flag <- 1;sum <- sum+1*pi;ladd_pos[i] <- sum}
+    else {flag <- 0; ladd_pos[i] <- sum}
+  }
+}
+sum <- ifelse(abs(res) < sqrt(2),0,ifelse(abs(res)<5.73,pi,ifelse(abs(res)<10.17,2*pi,
+              ifelse(abs(res)<14.297,3*pi,ifelse(abs(res)<18.38,4*pi,
+              ifelse(abs(res)<22.428,5*pi,ifelse(abs(res)<26.47,6*pi,7*pi)))))))
+ladd_neg <- 0
+for (i in 1:length(x)) {
+  if(x[length(x)+1-i] >= -.00 ) {ladd_neg[length(x)+1-i] <- sum}
+  else { 
+    # test <- (Im(log(sqrt(zeta(1-(res+1i*x[length(x)+1-i]))*rawratio(res,x[length(x)+1-i])/zeta(res+1i*x[length(x)+1-i]))/(abs(sqrt(zeta(1-(res+1i*x[length(x)+1-i]))*rawratio(res,x[length(x)+1-i])/zeta(res+1i*x[length(x)+1-i])))))))
+    # testp <- ifelse(x[length(x)+1-i+1] != 0,(Im(log(sqrt(zeta(1-(res+1i*x[length(x)+1-i+1]))*rawratio(res,x[length(x)+1-i+1])/zeta(res+1i*x[length(x)+1-i+1]))/(abs(sqrt(zeta(1-(res+1i*x[length(x)+1-i+1]))*rawratio(res,x[length(x)+1-i+1])/zeta(res+1i*x[length(x)+1-i+1]))))))),test)
+    test <- (Im(log(sqrt(zeta(1-(res+1i*x[length(x)+1-i]))*rawratio(res,x[length(x)+1-i])/zeta(res+1i*x[length(x)+1-i])))))
+    testp <- ifelse(x[length(x)+1-i+1] != 0,(Im(log(sqrt(zeta(1-(res+1i*x[length(x)+1-i+1]))*rawratio(res,x[length(x)+1-i+1])/zeta(res+1i*x[length(x)+1-i+1]))))),test)
+    if (test-testp < -pi/4 & x[length(x)+1-i] >= -5) {flag <- 1;sum <- sum+1*pi;ladd_neg[length(x)+1-i] <- sum}
+     if (test-testp > pi/4) {flag <- 1;sum <- sum-1*pi;ladd_neg[length(x)+1-i] <- sum}
+    else {flag <- 0; ladd_neg[length(x)+1-i] <- sum}
+  }
+}
+
+ladd <- 0
+for (i in 1:length(x)) {
+  if (x[i] <= 0) ladd[i] <- ladd_neg[i]
+  else ladd[i] <- ladd_pos[i]
+}
+
+
+ladd}
+
+res <- 1.2;
+start <- -10;finish <- 65
+add_f <- add_phase(x)
+
+sqadd_f <- sqadd_phase(res,x)
+
+ladd_f <- ladd_phase(res,x)
+
+par(mfrow=c(1,2))
+par(fig=c(0,0.5,0,1))
+
+theta <- (log(sqrt(zeta(1-(res+1i*x))*rawratio(res,x)/zeta(res+1i*x))))+0*ladd_f
+plot(x=x,y=Im(theta)+ladd_f,col="blue",xlim=c(start,finish),typ="l",xlab="",ylab = "function value",main = paste0("just above critical strip (1.2+i*t)"),cex.main=.8,cex.legend=0.8)
+lines(x=x,y=Re(theta),col="green")
+lines(x=x,y=Im(theta)+0*ladd_f,col="red")
+lines(x=x,y=ladd_f,col="black")
+abline(h=0)
+
+legend(-10, max(Im(theta)+ladd_f), c("Theta_ext(s)", "analytic continuation","phase accumulation","Im(Theta_ext(s))"),
+       lty = 1,cex=.5, lwd = c(2,  2,2,2), col = c("red","blue","black","green"))
+
+
+par(fig=c(0.5,1,0,1), new=TRUE)
+
+rot_z_fn <- sqrt(zeta(res+1i*x)*zeta(1-(res+1i*x))*rawratio(res,x))
+plot(x=x,y=Im(log(rot_z_fn))+1*sqadd_f,col="blue",xlim=c(start,finish),typ="l",xlab="",ylab = "function value",main = paste0("just above critical strip (1.1+i*t)"),cex.main=.8)
+lines(x=x,y=Re(log(rot_z_fn)),col="green")
+lines(x=x,y=Im(log(rot_z_fn))+0*sqadd_f,col="red")
+lines(x=x,y=sqadd_f,col="black")
+abline(h=0)
+
+legend(-10, max(Im(log(rot_z_fn))+1*sqadd_f), c("Im(log(Z_ext(s)))","analytic continuation","phase accumulation","Re(log(Z_ext(s)))"),
+       lty = 1,cex=.5, lwd = c(2,  2,2,2), col = c("red",  "blue","black","green"))
+
+par(mfrow=c(1,1))
+
+plot(x=x,y=((Im(theta)+ladd_f)-(Im(log(rot_z_fn))+sqadd_f))/2/pi,col="blue",xlim=c(start,finish),typ="l",xlab="",ylab = "total residue",main = paste0("argument principle total -Im(log(zeta(s))) = Theta_ext(s)-Im(log(Z_ext(s))"),cex.main=.8,ylim=c(min(-4,((Im(theta)+ladd_f)-(Im(log(rot_z_fn))+sqadd_f))/2/pi),max(4,((Im(theta)+ladd_f)-(Im(log(rot_z_fn))+sqadd_f))/2/pi)))
+lines(x=x,y=round(((Im(theta)+ladd_f)-(Im(log(rot_z_fn))+sqadd_f))/2/pi),col="green",lwd=2)
+lines(x=x,y=1*(((Im(theta)-Im(log(rot_z_fn))+pi/2)/pi-
+               floor((Im(theta)-Im(log(rot_z_fn))+pi/2)/pi))*pi-pi/2),col="red")
+abline(h=0,lty=3);abline(h=pi/2,lty=3);abline(h=-pi/2,lty=3)
+
+legend(-12, max(4,((Im(theta)+ladd_f)-(Im(log(rot_z_fn))+sqadd_f))/2/pi), c("mod(Theta_ext(s)-Im(log(Z_ext(s))),pi)-pi/2","(analytic continuation)/pi","floor((analytic continuation)/pi)"),
+       lty = 1,cex=.5, lwd = c(2,  2,2,2), col = c("red",  "blue","green"))
+
+# mtext("behaviour of log(zeta(s)) components and total residue", side=3, outer=TRUE, line=-1,cex=0.8)
+
+
+
+```
+
+***Figure 1. Behaviour of different versions and components of the antiderivative for Riemann Zeta argument principle calculation just above critical strip***
+
+
+```{r, fig2, echo=FALSE, cache=TRUE, fig.width=6, fig.height=4,  fig.keep='high', warning=FALSE }
+
+res <- .9;
+start <- -10;finish <- 65
+add_f <- add_phase(x)
+
+sqadd_f <- sqadd_phase(res,x)
+
+ladd_f <- ladd_phase(res,x)
+
+par(mfrow=c(1,2))
+par(fig=c(0,0.5,0,1))
+
+theta <- (log(sqrt(zeta(1-(res+1i*x))*rawratio(res,x)/zeta(res+1i*x))))+0*ladd_f
+plot(x=x,y=Im(theta)+ladd_f,col="blue",xlim=c(start,finish),typ="l",xlab="",ylab = "function value",main = paste0("just inside critical strip (0.9+i*t)"),cex.main=.8,cex.legend=0.8)
+lines(x=x,y=Re(theta),col="green")
+lines(x=x,y=Im(theta)+0*ladd_f,col="red")
+lines(x=x,y=ladd_f,col="black")
+abline(h=0)
+
+legend(-10, max(Im(theta)+ladd_f), c("Theta_ext(s)", "analytic continuation","phase accumulation","Im(Theta_ext(s))"),
+       lty = 1,cex=.5, lwd = c(2,  2,2,2), col = c("red","blue","black","green"))
+
+
+par(fig=c(0.5,1,0,1), new=TRUE)
+
+rot_z_fn <- sqrt(zeta(res+1i*x)*zeta(1-(res+1i*x))*rawratio(res,x))
+plot(x=x,y=Im(log(rot_z_fn))+1*sqadd_f,col="blue",xlim=c(start,finish),typ="l",xlab="",ylab = "function value",main = paste0("just inside critical strip (0.9+i*t)"),cex.main=.8)
+lines(x=x,y=Re(log(rot_z_fn)),col="green")
+lines(x=x,y=Im(log(rot_z_fn))+0*sqadd_f,col="red")
+lines(x=x,y=sqadd_f,col="black")
+abline(h=0)
+
+legend(-10, max(Im(log(rot_z_fn))+1*sqadd_f), c("Im(log(Z_ext(s)))","analytic continuation","phase accumulation","Re(log(Z_ext(s)))"),
+       lty = 1,cex=.5, lwd = c(2,  2,2,2), col = c("red",  "blue","black","green"))
+
+par(mfrow=c(1,1))
+
+plot(x=x,y=((Im(theta)+ladd_f)-(Im(log(rot_z_fn))+sqadd_f))/2/pi,col="blue",xlim=c(start,finish),typ="l",xlab="",ylab = "total residue",main = paste0("argument principle total -Im(log(zeta(s))) = Theta_ext(s)-Im(log(Z_ext(s))"),cex.main=.8,ylim=c(min(-4,((Im(theta)+ladd_f)-(Im(log(rot_z_fn))+sqadd_f))/2/pi),max(4,((Im(theta)+ladd_f)-(Im(log(rot_z_fn))+sqadd_f))/2/pi)))
+lines(x=x,y=round(((Im(theta)+ladd_f)-(Im(log(rot_z_fn))+sqadd_f))/2/pi),col="green",lwd=2)
+lines(x=x,y=1*(((Im(theta)-Im(log(rot_z_fn))+pi/2)/pi-
+               floor((Im(theta)-Im(log(rot_z_fn))+pi/2)/pi))*pi-pi/2),col="red")
+abline(h=0,lty=3);abline(h=pi/2,lty=3);abline(h=-pi/2,lty=3)
+
+legend(-12, max(4,((Im(theta)+ladd_f)-(Im(log(rot_z_fn))+sqadd_f))/2/pi), c("mod(Theta_ext(s)-Im(log(Z_ext(s))),pi)-pi/2","(analytic continuation)/pi","floor((analytic continuation)/pi)"),
+       lty = 1,cex=.5, lwd = c(2,  2,2,2), col = c("red",  "blue","green"))
+
+# mtext("behaviour of log(zeta(s)) components and total residue", side=3, outer=TRUE, line=-1,cex=0.8)
+
+```
+
+***Figure 2. Behaviour of different versions and components of the antiderivative for Riemann Zeta argument principle calculation just inside critical strip***
+
+
+
+```{r, fig3, echo=FALSE, cache=TRUE, fig.width=6, fig.height=4,  fig.keep='high', warning=FALSE }
+
+res <- .51;
+start <- -10;finish <- 65
+add_f <- add_phase(x)
+
+sqadd_f <- sqadd_phase(res,x)
+
+ladd_f <- ladd_phase(res,x)
+
+par(mfrow=c(1,2))
+par(fig=c(0,0.5,0,1))
+
+theta <- (log(sqrt(zeta(1-(res+1i*x))*rawratio(res,x)/zeta(res+1i*x))))+0*ladd_f
+plot(x=x,y=Im(theta)+ladd_f,col="blue",xlim=c(start,finish),typ="l",xlab="",ylab = "function value",main = paste0("just above critical line (0.51+i*t)"),cex.main=.8,cex.legend=0.8)
+lines(x=x,y=Re(theta),col="green")
+lines(x=x,y=Im(theta)+0*ladd_f,col="red")
+lines(x=x,y=ladd_f,col="black")
+abline(h=0)
+
+legend(-10, max(Im(theta)+ladd_f), c("Theta_ext(s)", "analytic continuation","phase accumulation","Im(Theta_ext(s))"),
+       lty = 1,cex=.5, lwd = c(2,  2,2,2), col = c("red","blue","black","green"))
+
+
+par(fig=c(0.5,1,0,1), new=TRUE)
+
+rot_z_fn <- sqrt(zeta(res+1i*x)*zeta(1-(res+1i*x))*rawratio(res,x))
+plot(x=x,y=Im(log(rot_z_fn))+1*sqadd_f,col="blue",xlim=c(start,finish),typ="l",xlab="",ylab = "function value",main = paste0("just above critical line (0.51+i*t)"),cex.main=.8)
+lines(x=x,y=Re(log(rot_z_fn)),col="green")
+lines(x=x,y=Im(log(rot_z_fn))+0*sqadd_f,col="red")
+lines(x=x,y=sqadd_f,col="black")
+abline(h=0)
+
+legend(-10, max(Im(log(rot_z_fn))+1*sqadd_f), c("Im(log(Z_ext(s)))","analytic continuation","phase accumulation","Re(log(Z_ext(s)))"),
+       lty = 1,cex=.5, lwd = c(2,  2,2,2), col = c("red",  "blue","black","green"))
+
+par(mfrow=c(1,1))
+
+
+plot(x=x,y=((Im(theta)+ladd_f)-(Im(log(rot_z_fn))+sqadd_f))/2/pi,col="blue",xlim=c(start,finish),typ="l",xlab="",ylab = "total residue",main = paste0("argument principle total -Im(log(zeta(s))) = Theta_ext(s)-Im(log(Z_ext(s))"),cex.main=.8,ylim=c(min(-4,((Im(theta)+ladd_f)-(Im(log(rot_z_fn))+sqadd_f))/2/pi),max(4,((Im(theta)+ladd_f)-(Im(log(rot_z_fn))+sqadd_f))/2/pi)))
+lines(x=x,y=round(((Im(theta)+ladd_f)-(Im(log(rot_z_fn))+sqadd_f))/2/pi),col="green",lwd=2)
+lines(x=x,y=1*(((Im(theta)-Im(log(rot_z_fn))+pi/2)/pi-
+               floor((Im(theta)-Im(log(rot_z_fn))+pi/2)/pi))*pi-pi/2),col="red")
+abline(h=0,lty=3);abline(h=pi/2,lty=3);abline(h=-pi/2,lty=3)
+
+legend(-12, max(4,((Im(theta)+ladd_f)-(Im(log(rot_z_fn))+sqadd_f))/2/pi), c("mod(Theta_ext(s)-Im(log(Z_ext(s))),pi)-pi/2","(analytic continuation)/pi","floor((analytic continuation)/pi)"),
+       lty = 1,cex=.5, lwd = c(2,  2,2,2), col = c("red",  "blue","green"))
+
+# mtext("behaviour of log(zeta(s)) components and total residue", side=3, outer=TRUE, line=-1,cex=0.8)
+
+```
+
+***Figure 3. Behaviour of different versions and components of the antiderivative for Riemann Zeta argument principle calculation just above critical line***
+
+
+
+```{r, fig4, echo=FALSE, cache=TRUE, fig.width=6, fig.height=4,  fig.keep='high', warning=FALSE }
+
+res <- .49;
+start <- -10;finish <- 65
+add_f <- add_phase(x)
+
+sqadd_f <- sqadd_phase(res,x)
+
+ladd_f <- ladd_phase(res,x)
+
+par(mfrow=c(1,2))
+par(fig=c(0,0.5,0,1))
+
+theta <- (log(sqrt(zeta(1-(res+1i*x))*rawratio(res,x)/zeta(res+1i*x))))+0*ladd_f
+plot(x=x,y=Im(theta)+ladd_f,col="blue",xlim=c(start,finish),typ="l",xlab="",ylab = "function value",main = paste0("just below critical line (0.49+i*t)"),cex.main=.8,cex.legend=0.8)
+lines(x=x,y=Re(theta),col="green")
+lines(x=x,y=Im(theta)+0*ladd_f,col="red")
+lines(x=x,y=ladd_f,col="black")
+abline(h=0)
+
+legend(-10, max(Im(theta)+ladd_f), c("Theta_ext(s)", "analytic continuation","phase accumulation","Im(Theta_ext(s))"),
+       lty = 1,cex=.5, lwd = c(2,  2,2,2), col = c("red","blue","black","green"))
+
+
+par(fig=c(0.5,1,0,1), new=TRUE)
+
+rot_z_fn <- sqrt(zeta(res+1i*x)*zeta(1-(res+1i*x))*rawratio(res,x))
+plot(x=x,y=Im(log(rot_z_fn))+1*sqadd_f,col="blue",xlim=c(start,finish),typ="l",xlab="",ylab = "function value",main = paste0("just below critical strip (0.49+i*t)"),cex.main=.8)
+lines(x=x,y=Re(log(rot_z_fn)),col="green")
+lines(x=x,y=Im(log(rot_z_fn))+0*sqadd_f,col="red")
+lines(x=x,y=sqadd_f,col="black")
+abline(h=0)
+
+legend(-10, 13+min(Im(log(rot_z_fn))+1*sqadd_f), c("Im(log(Z_ext(s)))","analytic continuation","phase accumulation","Re(log(Z_ext(s)))"),
+       lty = 1,cex=.5, lwd = c(2,  2,2,2), col = c("red",  "blue","black","green"))
+
+par(mfrow=c(1,1))
+
+plot(x=x,y=((Im(theta)+ladd_f)-(Im(log(rot_z_fn))+sqadd_f))/2/pi,col="blue",xlim=c(start,finish),typ="l",xlab="",ylab = "total residue",main = paste0("argument principle total -Im(log(zeta(s))) = Theta_ext(s)-Im(log(Z_ext(s))"),cex.main=.8,ylim=c(min(-pi,((Im(theta)+ladd_f)-(Im(log(rot_z_fn))+sqadd_f))/2/pi),max(pi,((Im(theta)+ladd_f)-(Im(log(rot_z_fn))+sqadd_f))/2/pi)))
+lines(x=x,y=round(((Im(theta)+ladd_f)-(Im(log(rot_z_fn))+sqadd_f))/2/pi),col="green",lwd=2)
+lines(x=x,y=1*(((Im(theta)-Im(log(rot_z_fn))+pi/2)/pi-
+               floor((Im(theta)-Im(log(rot_z_fn))+pi/2)/pi))*pi-pi/2),col="red")
+abline(h=0,lty=3);abline(h=pi/2,lty=3);abline(h=-pi/2,lty=3)
+
+legend(-12, max(4,((Im(theta)+ladd_f)-(Im(log(rot_z_fn))+sqadd_f))/2/pi), c("mod(Theta_ext(s)-Im(log(Z_ext(s))),pi)-pi/2","(analytic continuation)/pi","floor((analytic continuation)/pi)"),
+       lty = 1,cex=.5, lwd = c(2,  2,2,2), col = c("red",  "blue","green"))
+
+# mtext("behaviour of log(zeta(s)) components and total residue", side=3, outer=TRUE, line=-1,cex=0.8)
+
+```
+
+
+***Figure 4. Behaviour of different versions and components of the antiderivative for Riemann Zeta argument principle calculation just below critical line***
+
+
+```{r, fig5, echo=FALSE, cache=TRUE, fig.width=6, fig.height=4,  fig.keep='high', warning=FALSE }
+
+res <- .1;
+start <- -10;finish <- 65
+add_f <- add_phase(x)
+
+sqadd_f <- sqadd_phase(res,x)
+
+ladd_f <- ladd_phase(res,x)
+
+par(mfrow=c(1,2))
+par(fig=c(0,0.5,0,1))
+
+theta <- (log(sqrt(zeta(1-(res+1i*x))*rawratio(res,x)/zeta(res+1i*x))))+0*ladd_f
+plot(x=x,y=Im(theta)+ladd_f,col="blue",xlim=c(start,finish),typ="l",xlab="",ylab = "function value",main = paste0("near lower end of critical strip (0.1+i*t)"),cex.main=.8,cex.legend=0.8)
+lines(x=x,y=Re(theta),col="green")
+lines(x=x,y=Im(theta)+0*ladd_f,col="red")
+lines(x=x,y=ladd_f,col="black")
+abline(h=0)
+
+legend(-10, max(Im(theta)+ladd_f), c("Theta_ext(s)", "analytic continuation","phase accumulation","Im(Theta_ext(s))"),
+       lty = 1,cex=.5, lwd = c(2,  2,2,2), col = c("red","blue","black","green"))
+
+
+par(fig=c(0.5,1,0,1), new=TRUE)
+
+rot_z_fn <- sqrt(zeta(res+1i*x)*zeta(1-(res+1i*x))*rawratio(res,x))
+plot(x=x,y=Im(log(rot_z_fn))+1*sqadd_f,col="blue",xlim=c(start,finish),typ="l",xlab="",ylab = "function value",main = paste0("near lower end of critical strip (0.1+i*t)"),cex.main=.8)
+lines(x=x,y=Re(log(rot_z_fn)),col="green")
+lines(x=x,y=Im(log(rot_z_fn))+0*sqadd_f,col="red")
+lines(x=x,y=sqadd_f,col="black")
+abline(h=0)
+
+legend(-10, 13+min(Im(log(rot_z_fn))+1*sqadd_f), c("Im(log(Z_ext(s)))","analytic continuation","phase accumulation","Re(log(Z_ext(s)))"),
+       lty = 1,cex=.5, lwd = c(2,  2,2,2), col = c("red",  "blue","black","green"))
+
+par(mfrow=c(1,1))
+
+plot(x=x,y=((Im(theta)+ladd_f)-(Im(log(rot_z_fn))+sqadd_f))/2/pi,col="blue",xlim=c(start,finish),typ="l",xlab="",ylab = "total residue",main = paste0("argument principle total -Im(log(zeta(s))) = Theta_ext(s)-Im(log(Z_ext(s))"),cex.main=.8,ylim=c(min(-pi,((Im(theta)+ladd_f)-(Im(log(rot_z_fn))+sqadd_f))/2/pi),max(pi,((Im(theta)+ladd_f)-(Im(log(rot_z_fn))+sqadd_f))/2/pi)))
+lines(x=x,y=round(((Im(theta)+ladd_f)-(Im(log(rot_z_fn))+sqadd_f))/2/pi),col="green",lwd=2)
+lines(x=x,y=1*(((Im(theta)-Im(log(rot_z_fn))+pi/2)/pi-
+               floor((Im(theta)-Im(log(rot_z_fn))+pi/2)/pi))*pi-pi/2),col="red")
+abline(h=0,lty=3);abline(h=pi/2,lty=3);abline(h=-pi/2,lty=3)
+
+legend(-12, max(pi,((Im(theta)+ladd_f)-(Im(log(rot_z_fn))+sqadd_f))/2/pi), c("mod(Theta_ext(s)-Im(log(Z_ext(s))),pi)-pi/2","(analytic continuation)/pi","floor((analytic continuation)/pi)"),
+       lty = 1,cex=.5, lwd = c(2,  2,2,2), col = c("red",  "blue","green"))
+
+# mtext("behaviour of log(zeta(s)) components and total residue", side=3, outer=TRUE, line=-1,cex=0.8)
+
+```
+
+***Figure 5. Behaviour of different versions and components of the antiderivative for Riemann Zeta argument principle calculation near lower end of critical strip***
+
+
+
+```{r, fig6, echo=FALSE, cache=TRUE, fig.width=6, fig.height=4,  fig.keep='high', warning=FALSE }
+
+res <- -7.1;
+start <- -10;finish <- 65
+add_f <- add_phase(x)
+
+sqadd_f <- sqadd_phase(res,x)
+
+ladd_f <- ladd_phase(res,x)
+
+par(mfrow=c(1,2))
+par(fig=c(0,0.5,0,1))
+
+theta <- (log(sqrt(zeta(1-(res+1i*x))*rawratio(res,x)/zeta(res+1i*x))))+0*ladd_f
+plot(x=x,y=Im(theta)+ladd_f,col="blue",xlim=c(start,finish),typ="l",xlab="",ylab = "function value",main = paste0("well below critical strip (-7.1+i*t)"),cex.main=.8,cex.legend=0.8)
+lines(x=x,y=Re(theta),col="green")
+lines(x=x,y=Im(theta)+0*ladd_f,col="red")
+lines(x=x,y=ladd_f,col="black")
+abline(h=0)
+
+legend(-10, max(Im(theta)+ladd_f), c("Theta_ext(s)", "analytic continuation","phase accumulation","Im(Theta_ext(s))"),
+       lty = 1,cex=.5, lwd = c(2,  2,2,2), col = c("red","blue","black","green"))
+
+
+par(fig=c(0.5,1,0,1), new=TRUE)
+
+rot_z_fn <- sqrt(zeta(res+1i*x)*zeta(1-(res+1i*x))*rawratio(res,x))
+plot(x=x,y=Im(log(rot_z_fn))+1*sqadd_f,col="blue",xlim=c(start,finish),typ="l",xlab="",ylab = "function value",main = paste0("well below critical strip (-7.1+i*t)"),cex.main=.8)
+lines(x=x,y=Re(log(rot_z_fn)),col="green")
+lines(x=x,y=Im(log(rot_z_fn))+0*sqadd_f,col="red")
+lines(x=x,y=sqadd_f,col="black")
+abline(h=0)
+
+legend(-10, 13+min(Im(log(rot_z_fn))+1*sqadd_f), c("Im(log(Z_ext(s)))","analytic continuation","phase accumulation","Re(log(Z_ext(s)))"),
+       lty = 1,cex=.5, lwd = c(2,  2,2,2), col = c("red",  "blue","black","green"))
+
+par(mfrow=c(1,1))
+
+plot(x=x,y=((Im(theta)+ladd_f)-(Im(log(rot_z_fn))+sqadd_f))/2/pi,col="blue",xlim=c(start,finish),typ="l",xlab="",ylab = "total residue",main = paste0("argument principle total -Im(log(zeta(s))) = Theta_ext(s)-Im(log(Z_ext(s))"),cex.main=.8,ylim=c(min(-pi,((Im(theta)+ladd_f)-(Im(log(rot_z_fn))+sqadd_f))/2/pi),max(pi,((Im(theta)+ladd_f)-(Im(log(rot_z_fn))+sqadd_f))/2/pi)))
+lines(x=x,y=round(((Im(theta)+ladd_f)-(Im(log(rot_z_fn))+sqadd_f))/2/pi),col="green",lwd=2)
+lines(x=x,y=1*(((Im(theta)-Im(log(rot_z_fn))+pi/2)/pi-
+               floor((Im(theta)-Im(log(rot_z_fn))+pi/2)/pi))*pi-pi/2),col="red")
+abline(h=0,lty=3);abline(h=pi/2,lty=3);abline(h=-pi/2,lty=3)
+
+legend(-12, max(4,((Im(theta)+ladd_f)-(Im(log(rot_z_fn))+sqadd_f))/2/pi), c("mod(Theta_ext(s)-Im(log(Z_ext(s))),pi)-pi/2","(analytic continuation)/pi","floor((analytic continuation)/pi)"),
+       lty = 1,cex=.5, lwd = c(2,  2,2,2), col = c("red",  "blue","green"))
+
+# mtext("behaviour of log(zeta(s)) components and total residue", side=3, outer=TRUE, line=-1,cex=0.8)
+
+```
+
+***Figure 6. Behaviour of different versions and components of the antiderivative for Riemann Zeta argument principle calculation well below critical strip***
+
+
+Figure 6 which shows the contour integral sum for s=-7.1+i*t, which covers several negative real axis zeroes in the integral. In the figure, the effect of the negative real zeroes can be seen as one additional step close to t=10. This effect was discussed in (4) as the negative real axis zeroes impacting on $\zeta(s)$ resulting in an additional oscillation in the extended Riemann Siegel functions for every $\delta s \approx 4$ (ie. every 2 negative real axis zeroes that are added).
+
+Using, the argument principle sum, noting there are three zeroes at (-2,-4,-6) covered by s=-7.1+i*t
+
+\begin{align}
+[\frac{1}{2\pi} (- \Im(log(\zeta(s)))) \Big|_{-7.1+i*t}) ] &= 
+(\theta(t) + 1) + [ \frac{3*\pi}{2*\pi} ] \\
+&= (\theta(t) + 2)
+\end{align}
+
+The behaviour shows the Riemann Zeta zeroes are counted in pairs in the contour integral (with rounding) which is consistent with number of additional oscillations in the extended Riemann Siegel functions away from the critical strip. 
+
+
+###Conclusions
+
+The Riemann Hypothesis behaviour can be understood as interference effects between the extended Riemann Siegel functions damping the oscillations in $\Im(\zeta(s))$ away from the critical line. The logarithms of the extended Riemann Siegel functions have strong discontinuities located near each Riemann Zeta critical line zero position, hence these features belong to all s (in the critical strip) not just the critical line s=0.5+i*t. Only on the critical line is the cancellation perfect resulting in Riemann Zeta zeroes.
+
+
+###References
+
+1. Edwards, H.M. (1974). Riemann's zeta function. Pure and Applied Mathematics 58. New York-London: Academic Press. ISBN 0-12-242750-0. Zbl 0315.10035.
+
+2. Riemann, Bernhard (1859). "$\ddot{U}$ber die Anzahl der Primzahlen unter einer gegebenen Gr$\ddot{o}$sse". Monatsberichte der Berliner Akademie.. In Gesammelte Werke, Teubner, Leipzig (1892), Reprinted by Dover, New York (1953).
+
+3. Berry, M. V. "The Riemann-Siegel Expansion for the Zeta Function: High Orders and Remainders." Proc. Roy. Soc. London A 450, 439-462, 1995.
+
+4. Martin, J.P.D. "Mapping the Extended Riemann Siegel Z Theta Functions about branch points in the complex plane" (2016)
+http://dx.doi.org/10.6084/m9.figshare.3813999
