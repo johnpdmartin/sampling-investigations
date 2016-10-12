@@ -116,16 +116,16 @@ Firstly, from Martin (4) it should be noted that the terms for the extended Riem
 As will be shown graphically and using results from (4), in the positive quadrant of the complex plane above the negative real axis zeroes
 
 \begin{equation}
-[\frac{1}{2\pi} (\theta_{ext}(s)) \Big|_{\sigma+i*t}] \approx \frac{(\theta(t) + 1)}{2} \qquad -2 <  \sigma < 2 
+[\frac{1}{2\pi} (\theta_{ext}(s)) \Big|_{\sigma+i*t}] \approx \frac{(\frac{\theta(t)}{\pi} + 1)}{2} \qquad -2 <  \sigma < 2 
 \end{equation}
 
 
 \begin{equation}
 [\frac{1}{2\pi} (- \Im(log(Z_{ext}(s)))) \Big|_{\sigma+i*t}) ] \approx 
 \begin{cases}
-- \frac{(\theta(t) + 1)}{2} \qquad 0.5 < \sigma < 2 \label {eq:an_Z} \\
+- \frac{(\frac{\theta(t)}{\pi} + 1)}{2} \qquad 0.5 < \sigma < 2 \label {eq:an_Z} \\
 0 \qquad \qquad \qquad \sigma = 0.5 \\
- \frac{(\theta(t) + 1)}{2} \qquad \qquad -2 < \sigma < 0.5 
+ \frac{(\frac{\theta(t)}{\pi} + 1)}{2} \qquad \qquad -2 < \sigma < 0.5 
 \end{cases}
 \end{equation}
 
@@ -140,8 +140,8 @@ Hence, the argument principle behaviour of the Riemann Zeta function, in the pos
 [\frac{1}{2\pi} (- \Im(log(\zeta(s)))) \Big|_{\sigma+i*t}) ] \approx 
 \begin{cases}
 0 \qquad \qquad \qquad \qquad 0.5 < \sigma < 2 \label {eq:an_Z} \\
-\frac{(\theta(t) + 1)}{2} \qquad \qquad \qquad \sigma = 0.5 \\
- (\theta(t) + 1) \qquad \qquad -2 < \sigma < 0.5 
+\frac{(\frac{\theta(t)}{\pi} + 1)}{2} \qquad \qquad \qquad \sigma = 0.5 \\
+ (\frac{\theta(t)}{\pi} + 1) \qquad \qquad -2 < \sigma < 0.5 
 \end{cases}
 \end{equation}
 
@@ -688,8 +688,8 @@ Using, the argument principle sum, noting there are three zeroes at (-2,-4,-6) c
 
 \begin{align}
 [\frac{1}{2\pi} (- \Im(log(\zeta(s)))) \Big|_{-7.1+i*t}) ] &= 
-(\theta(t) + 1) + [ \frac{3*\pi}{2*\pi} ] \\
-&= (\theta(t) + 2)
+(\frac{\theta(t)}{\pi} + 1) + [ \frac{3*\pi}{2*\pi} ] \\
+&= (\frac{\theta(t)}{\pi} + 2)
 \end{align}
 
 The behaviour shows the Riemann Zeta zeroes are counted in pairs in the contour integral (with rounding) which is consistent with number of additional oscillations in the extended Riemann Siegel functions away from the critical strip. 
