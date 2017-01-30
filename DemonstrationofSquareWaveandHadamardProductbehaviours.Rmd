@@ -221,7 +221,7 @@ This square wave behaviour allows the positive odd integers to be identified wit
 This function when extended with a quotient argument s/n where n the denominator is the integer,
 
 \begin{align}
-\frac{Z_{ext}(\frac{s}{n})^2}{\zeta(\frac{s}{n})} = Z_{ext}(s)*e^{+i\theta_{ext}(s)} &= \zeta(1-\frac{s}{n})*abs(2^\frac{s}{n}\pi^{\frac{s}{n}-1}sin(\frac{\pi \frac{s}{n}}{2})\Gamma(1-\frac{s}{n})), \qquad \text{where } n \in \mathbb{N}  \label{eq:qsq}
+\frac{Z_{ext}(\frac{s}{n})^2}{\zeta(\frac{s}{n})} = Z_{ext}(\frac{s}{n})*e^{+i\theta_{ext}(\frac{s}{n})} &= \zeta(1-\frac{s}{n})*abs(2^\frac{s}{n}\pi^{\frac{s}{n}-1}sin(\frac{\pi \frac{s}{n}}{2})\Gamma(1-\frac{s}{n})), \qquad \text{where } n \in \mathbb{N}  \label{eq:qsq}
 \end{align}
 
 can be used to test for prime numbers (inefficiently).
