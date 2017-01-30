@@ -238,7 +238,7 @@ legend(26, 2, c("n=1","n=2","n=3","n=5","n=7"),
 
 ###Conclusions
 
-The ratio $\frac{Z_{ext}(\frac{s}{n})^2}{\zeta(\frac{s}{n})}$ can be used to identify the positive odd integers and prime numbers. This function which allows input values off the postive real axis may give useful insights to the prime-counting function. 
+The ratio $\frac{Z_{ext}(\frac{s}{n})^2}{\zeta(\frac{s}{n})}$ can be used to identify the positive odd integers and prime numbers. This function which allows input values off the positive real axis may give useful insights to the prime-counting function. 
 
 
 ###References
