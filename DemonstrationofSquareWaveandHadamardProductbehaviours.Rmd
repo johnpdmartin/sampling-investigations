@@ -57,16 +57,28 @@ e^{i\theta_{ext}(s)} &= \sqrt{\frac{\zeta(1-s)abs(2^s\pi^{s-1}sin(\frac{\pi s}{2
 Z_{ext}(s) &= \sqrt{\zeta(s)*\zeta(1-s)*abs(2^s\pi^{s-1}sin(\frac{\pi s}{2})\Gamma(1-s))} \label{eq:zext}
 \end{align}
 
+where consistent with eqn \eqref{eq:rs}
+
+\begin{align}
+\zeta(s) &= Z_{ext}(s)*e^{-i\theta_{ext}(s)} 
+\end{align}
+
 In particular, only on the critical line s=(0.5+i*t) is the cancellation exact between the coupled, extended Riemann Siegel functions eqns \eqref{eq:exptheta} and \eqref{eq:zext}, resulting in Riemann Zeta zeroes. 
 
-In this paper, $\frac{Z_{ext}(s)^2}{\zeta(s)}$ is used to create a square wave Riemann Zeta generating function, which highlights and identifies the odd positive integers and prime numbers. 
+In this paper from eqns \eqref{eq:exptheta}-\eqref{eq:zext}, 
+
+\begin{align}
+\frac{Z_{ext}(s)^2}{\zeta(s)} &= Z_{ext}(s)*e^{+i\theta_{ext}(s)}
+\end{align}
+
+is used to create a square wave Riemann Zeta generating function, which highlights and identifies the odd positive integers and prime numbers. 
 
 ##Square wave version of Riemann Zeta generating function
 
-Using eqn \eqref{eq:zext} it can be shown that
+Using eqn eqns \eqref{eq:exptheta}-\eqref{eq:zext} it can be shown that
 
 \begin{align}
-\frac{Z_{ext}(s)^2}{\zeta(s)} &= \zeta(1-s)*abs(2^s\pi^{s-1}sin(\frac{\pi s}{2})\Gamma(1-s)) \label{eq:zetasq}
+\frac{Z_{ext}(s)^2}{\zeta(s)} = Z_{ext}(s)*e^{+i\theta_{ext}(s)} &= \zeta(1-s)*abs(2^s\pi^{s-1}sin(\frac{\pi s}{2})\Gamma(1-s)) \label{eq:zetasq}
 \end{align}
 
 which is almost the Riemann Zeta generating function eqn \eqref{eq:func} except for the use of the absolute value for the second term in eqn \eqref{eq:zetasq}.
@@ -204,12 +216,12 @@ legend(10, -1.2, c("Riemann Zeta fn", "Re(square wave Riemann Zeta generating fn
 
 The identification of the positive odd integers occurs trivally because of the $sin(\frac{\pi s}{2})$ term but interestingly the product of $\zeta(1-s)$ and $abs(2^s\pi^{s-1}sin(\frac{\pi s}{2})\Gamma(1-s))$ plus $\zeta(s)$ rapidly tending to 1 produces the square wave behaviour.
 
-This square wave behaviour allows the positive odd integers to be identified without recourse to a arbitrarily defining a staircase function. That is, the function values for the real numbers between the odd positive integers now have an independent function defining their values.
+This square wave behaviour allows the positive odd integers to be identified without recourse to arbitrarily defining a staircase function. That is, the function values for $\Re$ between the odd positive integers now have a piecewise continuous function defining their values.
 
 This function when extended with a quotient argument s/n where n the denominator is the integer,
 
 \begin{align}
-\frac{Z_{ext}(\frac{s}{n})^2}{\zeta(\frac{s}{n})} &= \zeta(1-\frac{s}{n})*abs(2^\frac{s}{n}\pi^{\frac{s}{n}-1}sin(\frac{\pi \frac{s}{n}}{2})\Gamma(1-\frac{s}{n})), \qquad \text{where } n \in \mathbb{N}  \label{eq:qsq}
+\frac{Z_{ext}(\frac{s}{n})^2}{\zeta(\frac{s}{n})} = Z_{ext}(s)*e^{+i\theta_{ext}(s)} &= \zeta(1-\frac{s}{n})*abs(2^\frac{s}{n}\pi^{\frac{s}{n}-1}sin(\frac{\pi \frac{s}{n}}{2})\Gamma(1-\frac{s}{n})), \qquad \text{where } n \in \mathbb{N}  \label{eq:qsq}
 \end{align}
 
 can be used to test for prime numbers (inefficiently).
@@ -238,7 +250,13 @@ legend(26, 2, c("n=1","n=2","n=3","n=5","n=7"),
 
 ###Conclusions
 
-The ratio $\frac{Z_{ext}(\frac{s}{n})^2}{\zeta(\frac{s}{n})}$ can be used to identify the positive odd integers and prime numbers. This function which allows input values off the positive real axis may give useful insights to the prime-counting function. 
+The extended Riemann Siegel functions, can be used to define 
+
+(i) the Riemann Zeta function as an interference pattern $\zeta(s) = Z_{ext}(s)*e^{-i\theta_{ext}(s)}$, 
+(ii) the square wave Riemann Zeta function $Z_{ext}(s)*e^{+i\theta_{ext}(s)} = \zeta(1-s)*abs(2^s\pi^{s-1}sin(\frac{\pi s}{2})\Gamma(1-s))$ which identifies the positive odd integers and 
+(iii) through quotient argument form (where the denominator n is integer) $\frac{Z_{ext}(\frac{s}{n})^2}{\zeta(\frac{s}{n})}=Z_{ext}(\frac{s}{n})*e^{+i\theta_{ext}(\frac{s}{n})}$ which identifies (inefficiently) prime numbers. 
+
+This square wave function which allows input values (analytical continuation) off the positive real axis may give useful insights to the prime-counting function. 
 
 
 ###References
