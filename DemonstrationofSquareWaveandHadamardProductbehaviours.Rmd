@@ -1,0 +1,254 @@
+---
+title: "Identification of the odd positive integers and prime numbers using a square wave version of Riemann Zeta generating function"
+author: "John P. D. Martin"
+date: "January 29, 2017"
+output: pdf_document
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+##Executive Summary
+
+Using a modified version of the Riemann Zeta generating function (based on the extended Riemann Siegel functional form) produces a square wave version of the Riemann Zeta function along the positive real axis. This function can be used to highlight and identify the positive odd integers and prime numbers.
+
+
+##Introduction
+
+The Riemann Zeta function is defined (1), in the complex plane by the integral 
+
+\begin{equation}
+\zeta(s) = \frac{\prod(-s)}{2\pi i}\int_{C_{\epsilon,\delta}} \frac{(-x)^s}{(e^{x}-1)x}dx
+\end{equation}
+
+
+where $s \thinspace \epsilon \thinspace \mathbb{C}$ and $C_{\epsilon,\delta}$ is the contour about the imaginary poles.
+
+The Riemann Zeta function has been shown to obey the functional equation (2)
+
+\begin{equation}
+\zeta(s) = \zeta(1-s)*(2^s\pi^{s-1}sin(\frac{\pi s}{2})\Gamma(1-s)) \label{eq:func}
+\end{equation}
+
+Following directly from the form of the functional equation and the properties of the coefficients on the RHS of eqn \eqref{eq:func} it has been shown that any zeroes off the critical line would be paired, ie. if $\zeta(s)$ = 0 was true then $\zeta(1-s) = 0$.
+
+The Riemann Siegel function is an exact function (3) for the magnitude of the Riemann Zeta function along the critical line (0.5+it) of the form
+
+\begin{equation}
+Z(t) = \zeta(0.5+it)e^{i\theta(t)} \label{eq:rs}
+\end{equation}
+
+where 
+
+\begin{equation}
+\theta(t) = \Im(ln(\Gamma(\frac{1}{4}+\frac{1}{2}it)))-\frac{t}{2}ln(\pi) \label{eq:theta}
+\end{equation}
+
+In Martin (4) and earlier work, the properties of the Riemann Zeta generating function were investigated and used to define and investigate the extended Riemann Siegel $Z_{ext}(s)$ and $\theta_{ext}(s)$ functions away from the critical line. 
+
+\begin{align}
+e^{i\theta_{ext}(s)} &= \sqrt{\frac{\zeta(1-s)abs(2^s\pi^{s-1}sin(\frac{\pi s}{2})\Gamma(1-s))}{\zeta(s)}}  \label{eq:exptheta} \\ \theta_{ext}(s) &= \Im(log(e^{i*\theta_{ext}(s)})) \\
+\\ &= \Im(log(\sqrt{\frac{\zeta(1-s)abs(2^s\pi^{s-1}sin(\frac{\pi s}{2})\Gamma(1-s))}{\zeta(s)}}))  
+\end{align}
+
+\begin{align}
+Z_{ext}(s) &= \sqrt{\zeta(s)*\zeta(1-s)*abs(2^s\pi^{s-1}sin(\frac{\pi s}{2})\Gamma(1-s))} \label{eq:zext}
+\end{align}
+
+In particular, only on the critical line s=(0.5+i*t) is the cancellation exact between the coupled, extended Riemann Siegel functions eqns \eqref{eq:exptheta} and \eqref{eq:zext}, resulting in Riemann Zeta zeroes. 
+
+In this paper, $\frac{Z_{ext}(s)^2}{\zeta(s)}$ is used to create a square wave Riemann Zeta generating function, which highlights and identifies the odd positive integers and prime numbers. 
+
+##Square wave version of Riemann Zeta generating function
+
+Using eqn \eqref{eq:zext} it can be shown that
+
+\begin{align}
+\frac{Z_{ext}(s)^2}{\zeta(s)} &= \zeta(1-s)*abs(2^s\pi^{s-1}sin(\frac{\pi s}{2})\Gamma(1-s)) \label{eq:zetasq}
+\end{align}
+
+which is almost the Riemann Zeta generating function eqn \eqref{eq:func} except for the use of the absolute value for the second term in eqn \eqref{eq:zetasq}.
+
+As shown in figure 1, the waveform generated is asymptotically a square wave, along the positive x axis since $\zeta(s)$ rapidly tends to 1 on that line. 
+
+
+```{r, square, echo=FALSE, cache=TRUE, fig.width=6, fig.height=5,  fig.keep='high', warning=FALSE }
+# [42] The LMFDB Collaboration, 
+# The L-functions and Modular Forms Database, 
+# Home page → L-functions → Zeros of ζ(s)
+# http://www.lmfdb.org/zeros/zeta/?limit=100000&t=14.134725141734695 [Online; accessed 22 October 2016].
+
+library(pracma)
+
+# lis_z <- read.csv("/home/john/Downloads/zeroes_16000.tsv",sep=" ")
+lis_z <- read.csv("/home/john/Downloads/zeroes_100000.tsv",sep=" ")
+
+fratio <- function(res,x) {
+  (2^(res+1i*x)*pi^(res+1i*x-1)*sin(pi/2*(res+1i*x))*gammaz(1-(res+1i*x)))
+}
+
+rawratio <- function(res,x) {
+  abs(2^(res+1i*x)*pi^(res+1i*x-1)*sin(pi/2*(res+1i*x))*gammaz(1-(res+1i*x)))
+}
+
+otherfn <- function(res,x) {
+  0.5*(res+1i*x)*(res+1i*x-1)*pi^(-(res+1i*x)/2)*gammaz((res+1i*x)/2)
+}
+
+otherfn2 <- function(res,x) {
+  pi^(-(res+1i*x)/2)*(res+1i*x-1)*gammaz((res+1i*x)/2+1)
+}
+
+
+theta <- function(res,x) {
+  sqrt(zeta(1-(res+1i*x))*rawratio(res,x)/zeta(res+1i*x))
+}
+
+zed <- function(res,x) {
+  sqrt(zeta(1-(res+1i*x))*rawratio(res,x)*zeta(res+1i*x))
+}
+
+rawratio_fn <- function(x) {
+  rawratio(res,x)
+}
+
+der_rawratio_fn <- function(x) {fderiv(rawratio_fn,x,1)}
+
+zeta_fn <- function(x) {
+  zeta(x)
+}
+
+
+der_zeta_fn <- function(x) {fderiv(zeta_fn,x,1)}
+
+gamma_fn <- function(x) {
+  gammaz(x)
+}
+
+der_gamma_fn <- function(x) {fderiv(gamma_fn,x,1)}
+
+bern_fn <- function(x) {
+  -1*zeta(1-x)*(2*pi)^(x)/2/gammaz(x)
+}
+
+der_bern_fn <- function(x) {fderiv(bern_fn,x,1)}
+
+dzeta_fn <- function(x) {
+  Re(zeta(x)/exp(pi*1i*(-x))*(-x+1))
+}
+
+der_dzeta_fn <- function(x) {
+  fderiv(dzeta_fn,x,1)
+}
+
+rawratio <- function(res,x) {
+  abs(2^(res+1i*x)*pi^(res+1i*x-1)*sin(pi/2*(res+1i*x))*gammaz(1-(res+1i*x)))
+}
+theta <- function(res,x) {
+  sqrt(zeta(1-(res+1i*x))*rawratio(res,x)/zeta(res+1i*x))
+}
+
+x3 <- seq(0,199,l=19801);im_arg <- -0.00000000i
+x4 <- floor(x3/2+0.5)
+
+par(mfrow=c(1,1))
+
+z1 <- function(z,im_arg) {
+  ifelse(x3>1*z,1*Re(0+(zeta(1-1/z*(x3+im_arg))*abs(2^(1/z*(x3+im_arg))*
+    pi^(1/z*(x3+im_arg)-1)*sin(pi/2*(1/z*(x3+im_arg)))*gammaz(1-1/z*(x3+im_arg))))),
+    0)
+}
+z1_i <- function(z,im_arg) {
+  ifelse(x3>1*z,1*Im(0+(zeta(1-1/z*(x3+im_arg))*abs(2^(1/z*(x3+im_arg))*
+    pi^(1/z*(x3+im_arg)-1)*sin(pi/2*(1/z*(x3+im_arg)))*gammaz(1-1/z*(x3+im_arg))))),
+    0)
+}
+
+z1_s <- function(z,im_arg) {
+  ifelse(x3>2*z,2/2*Re(0+(zeta(1-1/z*(x3+im_arg))*abs(2^(1/z*(x3+im_arg))*
+    pi^(1/z*(x3+im_arg)-1)*sin(pi/2*(1/z*(x3+im_arg)))*gammaz(1-1/z*(x3+im_arg))))),
+    0)
+}
+z1_der <- function(x3) {
+  fderiv(z1_s,x3,1)
+}
+
+z1log <- function(z,im_arg) {
+  ifelse(x3>1*z,log(zeta(1-1/z*(x3+im_arg)))+log(abs(1/x3*2^(1/z*(x3+im_arg))*
+    pi^(1/z*(x3+im_arg)-1)*sin(pi/2*(1/z*(x3+im_arg)))*gammaz(1-1/z*(x3+im_arg)))),
+         0)
+}
+
+im_ar <- 0i
+
+plot(x=(x3),y=(z1(1,im_ar)),typ="l",lwd=2,lty=2,xlim=c(0,30),ylim=c(-2,2),
+     xlab="positive real axis",ylab="function value")
+lines(x=(x3),y=(z1_i(1,im_ar)),col=2,lwd=2,lty=2)
+# lines(x=(x3),y=(z1(3,im_ar)),col=2);lines(x=(x3),y=(z1(5,im_ar)),col=3);
+# lines(x=(x3),y=(z1(7,im_ar)),col=4);lines(x=(x3),y=(z1(9,im_ar)),col=5);
+# lines(x=(x3),y=(zeta(x3+1i*im_ar)),col=4)
+# lines(x=(x3),y=z1_der(x3),col=5)
+# lines(x=(x3),y=log(abs(z1_der(x3))),col=6)
+lines(x=(x3),y=((zeta(x3))),col=4)
+# lines(x=(x3),y=0.5*(1+z1(1,im_ar)),col=8)
+
+legend(10, -1.2, c("Riemann Zeta fn", "Re(square wave Riemann Zeta generating fn)","Im(square wave Riemann Zeta generating fn)"),
+       lty = 2,cex=.5, lwd = c(2,2,2), col = c("blue","black","red"))
+
+
+```
+
+***Fig.1:Riemann Zeta fn and a square wave Riemann Zeta generating fn on positive real axis.***
+
+The identification of the positive odd integers occurs trivally because of the $sin(\frac{\pi s}{2})$ term but interestingly the product of $\zeta(1-s)$ and $abs(2^s\pi^{s-1}sin(\frac{\pi s}{2})\Gamma(1-s))$ plus $\zeta(s)$ rapidly tending to 1 produces the square wave behaviour.
+
+This square wave behaviour allows the positive odd integers to be identified without recourse to a arbitrarily defining a staircase function. That is, the function values for the real numbers between the odd positive integers now have an independent function defining their values.
+
+This function when extended with a quotient argument s/n where n the denominator is the integer,
+
+\begin{align}
+\frac{Z_{ext}(\frac{s}{n})^2}{\zeta(\frac{s}{n})} &= \zeta(1-\frac{s}{n})*abs(2^\frac{s}{n}\pi^{\frac{s}{n}-1}sin(\frac{\pi \frac{s}{n}}{2})\Gamma(1-\frac{s}{n})), \qquad \text{where } n \in \mathbb{N}  \label{eq:qsq}
+\end{align}
+
+can be used to test for prime numbers (inefficiently).
+
+
+```{r, prime, echo=FALSE, cache=TRUE, fig.width=6, fig.height=5,  fig.keep='high', warning=FALSE }
+
+plot(x=(x3),y=(z1_s(1,im_ar)),typ="l",lwd=2,lty=2,xlim=c(0,30),ylim=c(-2,2),
+     xlab="positive real axis",ylab="function value")
+lines(x=(x3),y=(z1_s(2,im_ar)),col=2)
+lines(x=(x3),y=(z1_s(3,im_ar)),col=3)
+lines(x=(x3),y=(z1_s(5,im_ar)),col=4)
+lines(x=(x3),y=(z1_s(7,im_ar)),col=5)
+# lines(x=(x3),y=(zeta(x3+1i*im_ar)),col=4)
+# lines(x=(x3),y=z1_der(x3),col=5)
+# lines(x=(x3),y=log(abs(z1_der(x3))),col=6)
+# lines(x=(x3),y=0.5*(1+z1(1,im_ar)),col=8)
+
+legend(26, 2, c("n=1","n=2","n=3","n=5","n=7"),
+       lty = 2,cex=.5, lwd = c(2,2,2,2,2), col = c("black","red","green","blue","cyan"))
+
+
+```
+
+***Fig.2:Testing for prime numbers, dashed black lines without overlap of coloured lines are primes***
+
+###Conclusions
+
+The ratio $\frac{Z_{ext}(\frac{s}{n})^2}{\zeta(\frac{s}{n})}$ can be used to identify the positive odd integers and prime numbers. This function which allows input values off the postive real axis may give useful insights to the prime-counting function. 
+
+
+###References
+
+1. Edwards, H.M. (1974). Riemann's zeta function. Pure and Applied Mathematics 58. New York-London: Academic Press. ISBN 0-12-242750-0. Zbl 0315.10035.
+
+2. Riemann, Bernhard (1859). "$\ddot{U}$ber die Anzahl der Primzahlen unter einer gegebenen Gr$\ddot{o}$sse". Monatsberichte der Berliner Akademie.. In Gesammelte Werke, Teubner, Leipzig (1892), Reprinted by Dover, New York (1953).
+
+3. Berry, M. V. "The Riemann-Siegel Expansion for the Zeta Function: High Orders and Remainders." Proc. Roy. Soc. London A 450, 439-462, 1995.
+
+4. Martin, J.P.D. "Applying the Argument Principle to the extended Riemann Siegel function components of the Riemann Zeta function" (2016)
+http://dx.doi.org/10.6084/m9.figshare.4012290
+
