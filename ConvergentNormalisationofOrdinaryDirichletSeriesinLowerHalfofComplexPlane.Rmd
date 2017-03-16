@@ -1,0 +1,1037 @@
+---
+title: "A normalisation of the ordinary Dirichlet Series in the lower half complex plane that has the equivalent normalised Riemann Zeta function as an detrended envelope function."
+author: "John P. D. Martin"
+date: "March 14, 2017"
+output: pdf_document
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+##Executive Summary
+
+In the lower half complex plane, $\Re(s)<1$, a convergent normalisation of the ordinary dirichlet series $\sum_{n=1}^\infty (\frac{1}{n^s})$ on the real line is given by $\underset{N \rightarrow \infty}{\lim} \frac{1}{N^{(1-\Re(s))}}\sum_{n=1}^N (\frac{1}{n^{\Re(s)}}) = \frac{1}{1-\Re(s)}$. Elsewhere, across the lower half complex plane, the absolute value of the normalised series $|\frac{1}{N^{(1-\Re(s))}}\sum_{n=1}^N (\frac{1}{n^s})|$ has an upper (lower) detrended envelope function of the form $\pm|\frac{\zeta(s)}{N^{(1-\Re(s))}}|$, for $10000 < N < \infty$.
+
+```{r, exec, echo=FALSE, cache=TRUE, fig.width=6, fig.height=5,  fig.keep='high', warning=FALSE }
+
+library(pracma)
+x <- seq(0,70,l=3501)
+
+rawratio <- function(res,x) {
+  abs(2^(res+1i*x)*pi^(res+1i*x-1)*sin(pi/2*(res+1i*x))*gammaz(1-(res+1i*x)))
+}
+theta <- function(res,x) {
+  -0.5*Im(log(1/(zeta(1-(res+1i*x))*rawratio(res,x)/zeta(res+1i*x))))
+}
+
+d_realp <- function(xo,xl,rp) {
+  sum(1/xl^(rp+1i*xo))
+}
+
+xr <- c(-20,-19,-18,-17,-16,-15,-14,-13,-12,-11,-10,-9,-8,-7,-6,-5,-4,-3,-2,-1,0,.2,.4,.6,.7)
+drpreal <- 0
+for (i in 1:length(xr)) {
+  drpreal[i] <- d_realp(0,seq(1,10^8,l=10^8),xr[i])*(10^8)^min((xr[i]-1),0)
+}
+xrs <- c(seq(-20,.9,l=186),.95,.99,1.01,1.05,1.1,seq(1.2,3,15))
+par(mfrow=c(2,2))
+
+par(fig=c(0,1,0.5,1))
+plot(x=xrs,y=abs(zeta(xrs)),col=4,typ="l",main="\n \n normalised ordinary Dirichlet series on real axis Re(s) < 1",
+     xlab="real axis",ylab="function value",cex.xlab=0.8,cex.main=.7,cex.ylab=0.7,ylim=c(0,35))
+points(x=xr,y=(drpreal),col=2)
+lines(x=xrs,y=abs(1/(1-xrs)),col=1,lty=2,lwd=1)
+
+legend(-15, 30, c("1/(1-Re(s))","abs(zeta(Re(s)))", "normalised ordinary dirichlet series"),
+       lty = c(2,1,1,1),cex=.6, lwd = c(2,  2,2,2), col = c("black",  "blue","red"))
+
+
+realpart <- 0.2
+lzeroes <- 10000
+xl <- seq(1,lzeroes,l=lzeroes)
+
+d_seriesp <- function(xo,xl) {
+ # sum(exp(-1i*xo*log(xl))/xl^realpart)
+  sum(1/xl^(realpart+1i*xo)*(lzeroes)^(0i*xo))*(lzeroes)^(realpart-1)
+}
+
+dplus <- 0.
+for (i in 1:length(x)) {
+  dplus[i] <- d_seriesp(x[i],xl)
+}
+
+par(fig=c(0.5,1,0.,0.55), new=TRUE)
+# plot(x=x,y=(abs(dplus)*(lzeroes)^min((realpart-1),0))*x,col=6,typ="l")
+plot(x=x,y=abs(dplus)-(dplus[1])*((1-realpart)/x-1/2*(1-realpart)^3/x^3+1/2*(1-realpart)^5/x^5-1/8*(1-realpart)^5/x^5+1/8*(1-realpart)^7/x^7),col=6,typ="l",ylim=c(1*min(-abs(zeta(realpart+x*1i)*(lzeroes)^(realpart+0i*x-1))),1*max(abs(zeta(realpart+x*1i)*(lzeroes)^(realpart+0i*x-1)))),main=paste0("\n detrended normalised dirichlet series Re(s)=0.2","\n with scaled abs(zeta(s)) function as envelope"),
+     xlab="imaginary axis",ylab="function value",cex.xlab=0.8,cex.main=.7,cex.ylab=0.7)
+lines(x=x,y=abs(zeta(realpart+x*1i)*(lzeroes)^(realpart+0i*x-1)),typ="l",lty=1,lwd=2,col=1,ylim=c(-2,2))
+lines(x=x,y=-abs(zeta(realpart+x*1i)*(lzeroes)^(realpart+0i*x-1)),typ="l",lty=1,lwd=2,col=1,ylim=c(-2,2))
+abline(h=1,lty=3)
+
+legend(0, .004, c("detrended norm ord dirichlet series","abs(zeta(0.5+i*t))/N^(1-Re(s))"),
+       lty = 1,cex=.6, lwd = c(2,2,2,2), col = c("purple",  "black"))
+
+par(fig=c(0,0.5,0.,0.55), new=TRUE)
+
+plot(x=x,y=(abs(dplus)),col=6,typ="l",ylim=c(0,.1),main="\n normalised dirichlet series Re(s)=0.2",
+     xlab="imaginary axis",ylab="function value",cex.xlab=0.8,cex.main=.7,cex.ylab=0.7)
+abline(h=0,lty=3)
+
+
+
+```
+
+***Figure 1. Normalised ordinary dirichlet series ($\Re(s) < 1$) along (i) real axis, (ii) imaginary line s=0.2+it and (iii) overlay of equivalent normalised Riemann Zeta function as an envelope function of the detrended series***
+
+##Introduction
+
+The ordinary dirichlet series is given by
+
+\begin{equation} \label{eq:ord_ser}
+\mathfrak{D}_{id}^\mathbb{N} = \sum_{n=1}^\infty(\frac{1}{n^s}) 
+\end{equation}
+
+On the real positive axis $\Re(s)>1$, the ordinary dirichlet series is equivalent to the Riemann Zeta function 
+
+\begin{equation} \label{eq:pos_axis}
+\mathfrak{D}_{id}^\mathbb{N} \equiv \zeta(\Re(s)) \qquad \Re(s) > 1 
+\end{equation}
+
+where the Riemann Zeta function is defined (1), in the complex plane by the integral 
+
+\begin{equation}
+\zeta(s) = \frac{\prod(-s)}{2\pi i}\int_{C_{\epsilon,\delta}} \frac{(-x)^s}{(e^{x}-1)x}dx
+\end{equation}
+
+where $s \thinspace \epsilon \thinspace \mathbb{C}$ and $C_{\epsilon,\delta}$ is the contour about the imaginary poles.
+
+The Riemann Zeta function has been shown to obey the functional equation (2)
+
+\begin{equation}
+\zeta(s) = \zeta(1-s)*(2^s\pi^{s-1}sin(\frac{\pi s}{2})\Gamma(1-s)) \label{eq:func}
+\end{equation}
+
+and is convergent on the whole complex plane except for the pole at s=1. In contrast, on the lower half of the real axis $\Re(s)\le1$ the ordinary dirichlet series diverges.
+
+\begin{equation} \label{eq:ord_serlower}
+\mathfrak{D}_{id}^\mathbb{N} = \sum_{n=1}^\infty(\frac{1}{n^s}) \rightarrow \infty \qquad \Re(s) \le 1
+\end{equation}
+
+In this paper, the strong role of the Riemann Zeta function as an detrended envelope function of the normalised $\mathfrak{D}_{id}^\mathbb{N}$ series is reported, confirming the applicability of use of the Riemann Zeta function for the analytic continuation of $\mathfrak{D}_{id}^\mathbb{N}$ in the lower half of the complex plane (except perhaps for the negative real axis itself). 
+
+##Continuation in the lower half complex plane using the normalised $\mathfrak{D}_{id}^\mathbb{N}$ series
+
+A continuation of the $\mathfrak{D}_{id}^\mathbb{N}$ series can be constructed in the whole complex plane, using the function
+
+\begin{equation} 
+\mathfrak{D}_{id}^\mathbb{N} = 
+\begin{cases}
+\sum_{n=1}^\infty(\frac{1}{n^s}) \rightarrow \infty \qquad \qquad \qquad \Re(s) > 1 \\
+\underset{N \rightarrow \infty}{\lim} \frac{1}{N^{(1-\Re(s))}}\sum_{n=1}^N (\frac{1}{n^{s}}) \qquad \Re(s) \le 1 \label {eq:limit}
+\end{cases}
+\end{equation}
+
+In the strict limit, $N \rightarrow \infty$ on the real axis, in the lower half complex plane
+
+\begin{equation} 
+\underset{N \rightarrow \infty}{\lim} \frac{1}{N^{(1-\Re(s))}}\sum_{n=1}^N (\frac{1}{n^{s}}) 
+= \frac{1}{1-\Re(s)} \qquad \qquad \Re(s) \le 1, \Im(s) = 0 \label {eq:real_axis} 
+\end{equation}
+
+For finite N, an analytic continuation in the lower half complex plane can be summarised,
+
+on the real axis as
+
+\begin{equation} 
+0 < [\frac{1}{N^{(1-\Re(s))}}\sum_{n=1}^N (\frac{1}{n^{s}})] \le \frac{1}{1-\Re(s)} \qquad \Re(s) \le 1, \Im(s) = 0 \label {eq:finite_n_real_axis}
+\end{equation}
+
+Off the real axis, the absolute magnitude of the normalised series can be fit with an envelope function including an equivalent $\frac{1}{N^{(1-\Re(s))}}$ normalised version of the Riemann Zeta function
+
+\begin{equation}
+Envelope[|\frac{1}{N^{(1-\Re(s))}}\sum_{n=1}^N (\frac{1}{n^{s}})|] \approx trend \pm|\frac{\zeta(s)}{N^{(1-\Re(s))}}| \qquad \Re(s) \le 1, \Im(s) \ne 0 \label {eq:imag_axis} 
+\end{equation}
+
+where for small values of $|\Re(s)|$, at least covering the Riemann Zeta function critical strip and near below, the trend component behaves as a nonlinear decaying version of the real axis normalised ordinary dirichlet series value given by eqn \eqref{eq:finite_n_real_axis}
+
+\begin{equation} \label {eq:approx}
+trend \sim [\frac{1}{N^{(1-\Re(s))}}\sum_{n=1}^N (\frac{1}{n^{\Re(s)}})]*[\sum_{i=1} \frac{-1^{(n+1)}}{n!}\frac{(1-\Re(s))^{2n-1}}{\Im(s)^{2n-1}}] \qquad -1 < \Re(s) < 1
+\end{equation}
+
+###Convergence of normalised $\frac{\mathfrak{D}_{id}^\mathbb{N}}{N^{(1-\Re(s))}}$ series on the real axis
+
+Figure 2 illustrates a comparison of finite convergence results of the normalised $\frac{\mathfrak{D}_{id}^\mathbb{N}}{N^{(1-\Re(s))}}$ series for various values along the real axis above and below s=1 pole. 
+
+The s=1 case highlighted in red, with constant slope is not convergent. 
+
+The s=0 case, is trivally convergent
+
+\begin{equation} 
+\underset{N \rightarrow \infty}{\lim} \frac{1}{N^{(1-\Re(0))}}\sum_{n=1}^N (\frac{1}{n^{0}}) =
+\frac{N}{N} = 1
+\end{equation}
+
+Figure 3, illustrates the striking $\frac{1}{1-\Re(s)}$ result given in eqn \eqref{eq:real_axis} for the normalised ordinary Dirichlet series, along the lower real axis $\mathbb{N} < 1$, which appears to be a new series expansion.
+
+
+```{r, fig2, echo=FALSE, cache=TRUE, fig.width=6, fig.height=5,  fig.keep='high', warning=FALSE }
+
+library(pracma)
+x <- seq(0,70,l=3501)
+
+rawratio <- function(res,x) {
+  abs(2^(res+1i*x)*pi^(res+1i*x-1)*sin(pi/2*(res+1i*x))*gammaz(1-(res+1i*x)))
+}
+theta <- function(res,x) {
+  -0.5*Im(log(1/(zeta(1-(res+1i*x))*rawratio(res,x)/zeta(res+1i*x))))
+}
+
+d_realp <- function(xo,xl,rp) {
+  sum(1/xl^(rp+1i*xo))
+}
+
+realpart <- 0.5
+d_realp <- function(xo,xl,rp) {
+  # sum(exp(-1i*xo*log(xl))/xl^realpart)
+  sum(1/xl^(rp+1i*xo))
+}
+
+
+xs <- seq(1,8,l=8)
+drplus1 <- 0
+for (i in 1:length(xs)) {
+  drplus1[i] <- d_realp(0,seq(1,10^xs[i],l=10^xs[i]),1)
+}
+drplus2 <- 0
+for (i in 1:length(xs)) {
+  drplus2[i] <- d_realp(0,seq(1,10^xs[i],l=10^xs[i]),2)
+}
+drplus1p5 <- 0
+for (i in 1:length(xs)) {
+  drplus1p5[i] <- d_realp(0,seq(1,10^xs[i],l=10^xs[i]),1.5)
+}
+drplus05 <- 0
+for (i in 1:length(xs)) {
+  drplus05[i] <- d_realp(0,seq(1,10^xs[i],l=10^xs[i]),0.5)
+}
+drplus0 <- 0
+for (i in 1:length(xs)) {
+  drplus0[i] <- d_realp(0,seq(1,10^xs[i],l=10^xs[i]),0)
+}
+drplusm1 <- 0
+for (i in 1:length(xs)) {
+  drplusm1[i] <- d_realp(0,seq(1,10^xs[i],l=10^xs[i]),-1)
+}
+drplusm3 <- 0
+for (i in 1:length(xs)) {
+  drplusm3[i] <- d_realp(0,seq(1,10^xs[i],l=10^xs[i]),-3)
+}
+drplusm6 <- 0
+for (i in 1:length(xs)) {
+  drplusm6[i] <- d_realp(0,seq(1,10^xs[i],l=10^xs[i]),-6)
+}
+drplusm20 <- 0
+for (i in 1:length(xs)) {
+  drplusm20[i] <- d_realp(0,seq(1,10^xs[i],l=10^xs[i]),-20)
+}
+
+par(mfrow=c(3,3))
+plot(x=log(10^xs,10),y=drplus2*(10^xs)^min((2-1),0),typ="b",main=paste0("s=2"),
+     xlab="log(N,10)",ylab="sum",cex.xlab=0.8,cex.main=.7,cex.ylab=0.7,col=4)
+plot(x=log(10^xs,10),y=drplus1p5*(10^xs)^min((1.5-1),0),typ="b",main=paste0("s=1.5"),
+     xlab="log(N,10)",ylab="sum",cex.xlab=0.8,cex.main=.7,cex.ylab=0.7,col=4)
+plot(x=log(10^xs,10),y=drplus1*(10^xs)^min((1-1),0),typ="b",main=paste0("s=1"),
+     xlab="log(N,10)",ylab="sum",cex.xlab=0.8,cex.main=.7,cex.ylab=0.7,col=2)
+plot(x=log(10^xs,10),y=drplus05*(10^xs)^min((0.5-1),0),typ="b",main=paste0("s=0.5"),
+     xlab="log(N,10)",ylab="sum",cex.xlab=0.8,cex.main=.7,cex.ylab=0.7,col=4,ylim=c(1.5,2.1))
+plot(x=log(10^xs,10),y=drplus0*(10^xs)^min((0-1),0),typ="b",main=paste0("s=0.0"),
+     xlab="log(N,10)",ylab="sum",cex.xlab=0.8,cex.main=.7,cex.ylab=0.7,col=4,ylim=c(0.9,1.1))
+plot(x=log(10^xs,10),y=drplusm1*(10^xs)^min((-1-1),0),typ="b",main=paste0("s=-1"),
+     xlab="log(N,10)",ylab="sum",cex.xlab=0.8,cex.main=.7,cex.ylab=0.7,col=4,ylim=c(0.48,0.56))
+plot(x=log(10^xs,10),y=drplusm3*(10^xs)^min((-3-1),0),typ="b",main=paste0("s=-3"),
+     xlab="log(N,10)",ylab="sum",cex.xlab=0.8,cex.main=.7,cex.ylab=0.7,col=4,ylim=c(0.245,0.3))
+plot(x=log(10^xs,10),y=drplusm6*(10^xs)^min((-6-1),0),typ="b",main=paste0("s=-6"),
+     xlab="log(N,10)",ylab="sum",cex.xlab=0.8,cex.main=.7,cex.ylab=0.7,col=4,ylim=c(0.135,0.2))
+plot(x=log(10^xs,10),y=drplusm20*(10^xs)^min((-20-1),0),typ="b",main=paste0("s=-20"),
+     xlab="log(N,10)",ylab="sum",cex.xlab=0.8,cex.main=.7,cex.ylab=0.7,col=4,ylim=c(0.045,0.15))
+
+
+# plot(x=x,y=(abs(dplus)),col=6,typ="l",ylim=c(0,.1),main="\n normalised dirichlet series Re(s)=0.2",
+#      xlab="imaginary axis",ylab="function value",cex.xlab=0.8,cex.main=.7,cex.ylab=0.7)
+# abline(h=0,lty=3)
+
+
+```
+
+***Figure 2. Convergence of normalised ordinary dirichlet series***
+
+
+```{r, fig3, echo=FALSE, cache=TRUE, fig.width=6, fig.height=5,  fig.keep='high', warning=FALSE }
+
+xr1 <- c(-20,-19,-18,-17,-16,-15,-14,-13,-12,-11,-10,-9,-8,-7,-6,-5,-4,-3,-2,-1,0,.2,.4,.6,.7)
+
+plot(x=1/(1-xr1),y=(drpreal),typ="l",lwd=2,lty=2,main=paste0("normalised dirichlet series on lower real axis, Re(s) < 1","\n as function of 1/(1-Re(s))"),
+     xlab="1/(1-Re(s))",ylab="function value",cex.xlab=0.8,cex.main=.7,cex.ylab=0.7,col=4)
+lines(x=1/(1-xr1),y=1/(1-xr1),col=3)
+
+legend(0, 3, c("detrended normalised ordinary dirichlet series","1/(1-Re(s))"),
+       lty = c(2,1,1,1),cex=.6, lwd = c(2,2,2,2), col = c("blue",  "green"))
+
+
+
+```
+
+***Figure 3. $\frac{1}{1-\Re(s)}$ dependence of normalised ordinary dirichlet series***
+
+
+###Lower half complex plane real axis behaviour of the normalised ordinary dirichlet series
+
+Figure 4, illustrates the behaviour of magnitude of  $|\frac{\mathfrak{D}_{id}^\mathbb{N}}{N^{(1-\Re(s))}}|$ series for various $\Re(s)$ values in the complex plane. The left hand figure, shows the $\frac{\mathfrak{D}_{id}^\mathbb{N}}{N^{(1-\Re(s))}}$ for N =100,000 which is comfortably accurate in estimating the real axis value (see figure 2). The right hand figure is the approximately detrended version of $|\frac{\mathfrak{D}_{id}^\mathbb{N}}{N^{(1-\Re(s))}}|$ overlayed by $\pm|\zeta(s)|$ as an envelope function. As $\Im(s) -> \infty$, the normalisation limit, N needs to rise rapdily to get accurate results for the symmetry of the detrended function. 
+
+```{r, fig4a, echo=FALSE, cache=TRUE, fig.width=6, fig.height=5,  fig.keep='high', warning=FALSE }
+
+library(pracma)
+x <- seq(0,70,l=3501)
+
+rawratio <- function(res,x) {
+  abs(2^(res+1i*x)*pi^(res+1i*x-1)*sin(pi/2*(res+1i*x))*gammaz(1-(res+1i*x)))
+}
+theta <- function(res,x) {
+  -0.5*Im(log(1/(zeta(1-(res+1i*x))*rawratio(res,x)/zeta(res+1i*x))))
+}
+
+d_realp <- function(xo,xl,rp) {
+  sum(1/xl^(rp+1i*xo))
+}
+
+par(mfrow=c(2,2))
+
+realpart <- -1
+lzeroes <- 100000
+xl <- seq(1,lzeroes,l=lzeroes)
+
+d_seriesp <- function(xo,xl) {
+ # sum(exp(-1i*xo*log(xl))/xl^realpart)
+  sum(1/xl^(realpart+1i*xo)*(lzeroes)^(0i*xo))*(lzeroes)^(realpart-1)
+}
+
+dplus <- 0.
+for (i in 1:length(x)) {
+  dplus[i] <- d_seriesp(x[i],xl)
+}
+
+par(fig=c(0.5,1,0.,0.55))
+# plot(x=x,y=(abs(dplus)*(lzeroes)^min((realpart-1),0))*x,col=6,typ="l")
+plot(x=x,y=abs(dplus)-(dplus[1])*((1-realpart)/x-1/2*(1-realpart)^3/x^3+1/2*(1-realpart)^5/x^5-1/8*(1-realpart)^5/x^5+1/8*(1-realpart)^7/x^7),col=6,typ="l",ylim=c(1*min(-abs(zeta(realpart+x*1i)*(lzeroes)^(realpart+0i*x-1))),1*max(abs(zeta(realpart+x*1i)*(lzeroes)^(realpart+0i*x-1)))),main=paste0("\n detrended normalised dirichlet series Re(s)=-1","\n with scaled abs(zeta(s)) function as envelope"),
+     xlab="imaginary axis",ylab="function value",cex.xlab=0.8,cex.main=.7,cex.ylab=0.7)
+lines(x=x,y=abs(zeta(realpart+x*1i)*(lzeroes)^(realpart+0i*x-1)),typ="l",lty=1,lwd=2,col=1,ylim=c(-2,2))
+lines(x=x,y=-abs(zeta(realpart+x*1i)*(lzeroes)^(realpart+0i*x-1)),typ="l",lty=1,lwd=2,col=1,ylim=c(-2,2))
+abline(h=1,lty=3)
+
+legend(0, .004, c("detrended norm ord dirichlet series","abs(zeta(0.5+i*t))/N^(1-Re(s))"),
+       lty = 1,cex=.6, lwd = c(2,2,2,2), col = c("purple",  "black"))
+
+par(fig=c(0,0.5,0.,0.55), new=TRUE)
+
+plot(x=x,y=(abs(dplus)),col=6,typ="l",ylim=c(0,.1),main="\n normalised dirichlet series Re(s)=-1",
+     xlab="imaginary axis",ylab="function value",cex.xlab=0.8,cex.main=.7,cex.ylab=0.7)
+abline(h=0,lty=3)
+
+
+
+```
+
+```{r, fig4b, echo=FALSE, cache=TRUE, fig.width=6, fig.height=5,  fig.keep='high', warning=FALSE }
+
+library(pracma)
+x <- seq(0,70,l=3501)
+
+rawratio <- function(res,x) {
+  abs(2^(res+1i*x)*pi^(res+1i*x-1)*sin(pi/2*(res+1i*x))*gammaz(1-(res+1i*x)))
+}
+theta <- function(res,x) {
+  -0.5*Im(log(1/(zeta(1-(res+1i*x))*rawratio(res,x)/zeta(res+1i*x))))
+}
+
+d_realp <- function(xo,xl,rp) {
+  sum(1/xl^(rp+1i*xo))
+}
+
+par(mfrow=c(2,2))
+
+realpart <- -0
+lzeroes <- 100000
+xl <- seq(1,lzeroes,l=lzeroes)
+
+d_seriesp <- function(xo,xl) {
+ # sum(exp(-1i*xo*log(xl))/xl^realpart)
+  sum(1/xl^(realpart+1i*xo)*(lzeroes)^(0i*xo))*(lzeroes)^(realpart-1)
+}
+
+dplus <- 0.
+for (i in 1:length(x)) {
+  dplus[i] <- d_seriesp(x[i],xl)
+}
+
+par(fig=c(0.5,1,0.,0.55))
+# plot(x=x,y=(abs(dplus)*(lzeroes)^min((realpart-1),0))*x,col=6,typ="l")
+plot(x=x,y=abs(dplus)-(dplus[1])*((1-realpart)/x-1/2*(1-realpart)^3/x^3+1/2*(1-realpart)^5/x^5-1/8*(1-realpart)^5/x^5+1/8*(1-realpart)^7/x^7),col=6,typ="l",ylim=c(1*min(-abs(zeta(realpart+x*1i)*(lzeroes)^(realpart+0i*x-1))),1*max(abs(zeta(realpart+x*1i)*(lzeroes)^(realpart+0i*x-1)))),main=paste0("\n detrended normalised dirichlet series Re(s)=0","\n with scaled abs(zeta(s)) function as envelope"),
+     xlab="imaginary axis",ylab="function value",cex.xlab=0.8,cex.main=.7,cex.ylab=0.7)
+lines(x=x,y=abs(zeta(realpart+x*1i)*(lzeroes)^(realpart+0i*x-1)),typ="l",lty=1,lwd=2,col=1,ylim=c(-2,2))
+lines(x=x,y=-abs(zeta(realpart+x*1i)*(lzeroes)^(realpart+0i*x-1)),typ="l",lty=1,lwd=2,col=1,ylim=c(-2,2))
+abline(h=1,lty=3)
+
+legend(0, .004, c("detrended norm ord dirichlet series","abs(zeta(0.5+i*t))/N^(1-Re(s))"),
+       lty = 1,cex=.6, lwd = c(2,2,2,2), col = c("purple",  "black"))
+
+par(fig=c(0,0.5,0.,0.55), new=TRUE)
+
+plot(x=x,y=(abs(dplus)),col=6,typ="l",ylim=c(0,.1),main="\n normalised dirichlet series Re(s)=0",
+     xlab="imaginary axis",ylab="function value",cex.xlab=0.8,cex.main=.7,cex.ylab=0.7)
+abline(h=0,lty=3)
+
+
+
+```
+
+```{r, fig4c, echo=FALSE, cache=TRUE, fig.width=6, fig.height=5,  fig.keep='high', warning=FALSE }
+
+library(pracma)
+x <- seq(0,70,l=3501)
+
+rawratio <- function(res,x) {
+  abs(2^(res+1i*x)*pi^(res+1i*x-1)*sin(pi/2*(res+1i*x))*gammaz(1-(res+1i*x)))
+}
+theta <- function(res,x) {
+  -0.5*Im(log(1/(zeta(1-(res+1i*x))*rawratio(res,x)/zeta(res+1i*x))))
+}
+
+d_realp <- function(xo,xl,rp) {
+  sum(1/xl^(rp+1i*xo))
+}
+
+par(mfrow=c(2,2))
+
+realpart <- 0.25
+lzeroes <- 100000
+xl <- seq(1,lzeroes,l=lzeroes)
+
+d_seriesp <- function(xo,xl) {
+ # sum(exp(-1i*xo*log(xl))/xl^realpart)
+  sum(1/xl^(realpart+1i*xo)*(lzeroes)^(0i*xo))*(lzeroes)^(realpart-1)
+}
+
+dplus <- 0.
+for (i in 1:length(x)) {
+  dplus[i] <- d_seriesp(x[i],xl)
+}
+
+par(fig=c(0.5,1,0.,0.55))
+# plot(x=x,y=(abs(dplus)*(lzeroes)^min((realpart-1),0))*x,col=6,typ="l")
+plot(x=x,y=abs(dplus)-(dplus[1])*((1-realpart)/x-1/2*(1-realpart)^3/x^3+1/2*(1-realpart)^5/x^5-1/8*(1-realpart)^5/x^5+1/8*(1-realpart)^7/x^7),col=6,typ="l",ylim=c(1*min(-abs(zeta(realpart+x*1i)*(lzeroes)^(realpart+0i*x-1))),1*max(abs(zeta(realpart+x*1i)*(lzeroes)^(realpart+0i*x-1)))),main=paste0("\n detrended normalised dirichlet series Re(s)=0.25","\n with scaled abs(zeta(s)) function as envelope"),
+     xlab="imaginary axis",ylab="function value",cex.xlab=0.8,cex.main=.7,cex.ylab=0.7)
+lines(x=x,y=abs(zeta(realpart+x*1i)*(lzeroes)^(realpart+0i*x-1)),typ="l",lty=1,lwd=2,col=1,ylim=c(-2,2))
+lines(x=x,y=-abs(zeta(realpart+x*1i)*(lzeroes)^(realpart+0i*x-1)),typ="l",lty=1,lwd=2,col=1,ylim=c(-2,2))
+abline(h=1,lty=3)
+
+
+par(fig=c(0,0.5,0.,0.55), new=TRUE)
+
+plot(x=x,y=(abs(dplus)),col=6,typ="l",ylim=c(0,.1),main="\n normalised dirichlet series Re(s)=0.25",
+     xlab="imaginary axis",ylab="function value",cex.xlab=0.8,cex.main=.7,cex.ylab=0.7)
+abline(h=0,lty=3)
+
+
+
+```
+
+```{r, fig4d, echo=FALSE, cache=TRUE, fig.width=6, fig.height=5,  fig.keep='high', warning=FALSE }
+
+library(pracma)
+x <- seq(0,70,l=3501)
+
+rawratio <- function(res,x) {
+  abs(2^(res+1i*x)*pi^(res+1i*x-1)*sin(pi/2*(res+1i*x))*gammaz(1-(res+1i*x)))
+}
+theta <- function(res,x) {
+  -0.5*Im(log(1/(zeta(1-(res+1i*x))*rawratio(res,x)/zeta(res+1i*x))))
+}
+
+d_realp <- function(xo,xl,rp) {
+  sum(1/xl^(rp+1i*xo))
+}
+
+par(mfrow=c(2,2))
+
+realpart <- 0.5
+lzeroes <- 100000
+xl <- seq(1,lzeroes,l=lzeroes)
+
+d_seriesp <- function(xo,xl) {
+ # sum(exp(-1i*xo*log(xl))/xl^realpart)
+  sum(1/xl^(realpart+1i*xo)*(lzeroes)^(0i*xo))*(lzeroes)^(realpart-1)
+}
+
+dplus <- 0.
+for (i in 1:length(x)) {
+  dplus[i] <- d_seriesp(x[i],xl)
+}
+
+par(fig=c(0.5,1,0.,0.55))
+# plot(x=x,y=(abs(dplus)*(lzeroes)^min((realpart-1),0))*x,col=6,typ="l")
+plot(x=x,y=abs(dplus)-(dplus[1])*((1-realpart)/x-1/2*(1-realpart)^3/x^3+1/2*(1-realpart)^5/x^5-1/8*(1-realpart)^5/x^5+1/8*(1-realpart)^7/x^7),col=6,typ="l",ylim=c(1*min(-abs(zeta(realpart+x*1i)*(lzeroes)^(realpart+0i*x-1))),1*max(abs(zeta(realpart+x*1i)*(lzeroes)^(realpart+0i*x-1)))),main=paste0("\n detrended normalised dirichlet series Re(s)=0.5","\n with scaled abs(zeta(s)) function as envelope"),
+     xlab="imaginary axis",ylab="function value",cex.xlab=0.8,cex.main=.7,cex.ylab=0.7)
+lines(x=x,y=abs(zeta(realpart+x*1i)*(lzeroes)^(realpart+0i*x-1)),typ="l",lty=1,lwd=2,col=1,ylim=c(-2,2))
+lines(x=x,y=-abs(zeta(realpart+x*1i)*(lzeroes)^(realpart+0i*x-1)),typ="l",lty=1,lwd=2,col=1,ylim=c(-2,2))
+abline(h=1,lty=3)
+
+
+par(fig=c(0,0.5,0.,0.55), new=TRUE)
+
+plot(x=x,y=(abs(dplus)),col=6,typ="l",ylim=c(0,.1),main="\n normalised dirichlet series Re(s)=0.5",
+     xlab="imaginary axis",ylab="function value",cex.xlab=0.8,cex.main=.7,cex.ylab=0.7)
+abline(h=0,lty=3)
+
+
+
+```
+
+
+```{r, fig4e, echo=FALSE, cache=TRUE, fig.width=6, fig.height=5,  fig.keep='high', warning=FALSE }
+
+library(pracma)
+x <- seq(0,70,l=3501)
+
+rawratio <- function(res,x) {
+  abs(2^(res+1i*x)*pi^(res+1i*x-1)*sin(pi/2*(res+1i*x))*gammaz(1-(res+1i*x)))
+}
+theta <- function(res,x) {
+  -0.5*Im(log(1/(zeta(1-(res+1i*x))*rawratio(res,x)/zeta(res+1i*x))))
+}
+
+d_realp <- function(xo,xl,rp) {
+  sum(1/xl^(rp+1i*xo))
+}
+
+par(mfrow=c(2,2))
+
+realpart <- 0.75
+lzeroes <- 100000
+xl <- seq(1,lzeroes,l=lzeroes)
+
+d_seriesp <- function(xo,xl) {
+ # sum(exp(-1i*xo*log(xl))/xl^realpart)
+  sum(1/xl^(realpart+1i*xo)*(lzeroes)^(0i*xo))*(lzeroes)^(realpart-1)
+}
+
+dplus <- 0.
+for (i in 1:length(x)) {
+  dplus[i] <- d_seriesp(x[i],xl)
+}
+
+par(fig=c(0.5,1,0.,0.55))
+# plot(x=x,y=(abs(dplus)*(lzeroes)^min((realpart-1),0))*x,col=6,typ="l")
+plot(x=x,y=abs(dplus)-(dplus[1])*((1-realpart)/x-1/2*(1-realpart)^3/x^3+1/2*(1-realpart)^5/x^5-1/8*(1-realpart)^5/x^5+1/8*(1-realpart)^7/x^7),col=6,typ="l",ylim=c(1*min(-abs(zeta(realpart+x*1i)*(lzeroes)^(realpart+0i*x-1))),1*max(abs(zeta(realpart+x*1i)*(lzeroes)^(realpart+0i*x-1)))),main=paste0("\n detrended normalised dirichlet series Re(s)=0.75","\n with scaled abs(zeta(s)) function as envelope"),
+     xlab="imaginary axis",ylab="function value",cex.xlab=0.8,cex.main=.7,cex.ylab=0.7)
+lines(x=x,y=abs(zeta(realpart+x*1i)*(lzeroes)^(realpart+0i*x-1)),typ="l",lty=1,lwd=2,col=1,ylim=c(-2,2))
+lines(x=x,y=-abs(zeta(realpart+x*1i)*(lzeroes)^(realpart+0i*x-1)),typ="l",lty=1,lwd=2,col=1,ylim=c(-2,2))
+abline(h=1,lty=3)
+
+
+par(fig=c(0,0.5,0.,0.55), new=TRUE)
+
+plot(x=x,y=(abs(dplus)),col=6,typ="l",ylim=c(0,.5),main="\n normalised dirichlet series Re(s)=0.75",
+     xlab="imaginary axis",ylab="function value",cex.xlab=0.8,cex.main=.7,cex.ylab=0.7)
+abline(h=0,lty=3)
+
+
+
+```
+
+```{r, fig4f, echo=FALSE, cache=TRUE, fig.width=6, fig.height=5,  fig.keep='high', warning=FALSE }
+
+library(pracma)
+x <- seq(0,70,l=3501)
+
+rawratio <- function(res,x) {
+  abs(2^(res+1i*x)*pi^(res+1i*x-1)*sin(pi/2*(res+1i*x))*gammaz(1-(res+1i*x)))
+}
+theta <- function(res,x) {
+  -0.5*Im(log(1/(zeta(1-(res+1i*x))*rawratio(res,x)/zeta(res+1i*x))))
+}
+
+d_realp <- function(xo,xl,rp) {
+  sum(1/xl^(rp+1i*xo))
+}
+
+par(mfrow=c(2,2))
+
+realpart <- 1
+lzeroes <- 100000
+xl <- seq(1,lzeroes,l=lzeroes)
+
+d_seriesp <- function(xo,xl) {
+ # sum(exp(-1i*xo*log(xl))/xl^realpart)
+  sum(1/xl^(realpart+1i*xo)*(lzeroes)^(0i*xo))*(lzeroes)^(realpart-1)
+}
+
+dplus <- 0.
+for (i in 1:length(x)) {
+  dplus[i] <- d_seriesp(x[i],xl)
+}
+
+par(fig=c(0.5,1,0.,0.55))
+# plot(x=x,y=(abs(dplus)*(lzeroes)^min((realpart-1),0))*x,col=6,typ="l")
+plot(x=x,y=abs(dplus)-(dplus[1])*((1-realpart)/x-1/2*(1-realpart)^3/x^3+1/2*(1-realpart)^5/x^5-1/8*(1-realpart)^5/x^5+1/8*(1-realpart)^7/x^7),col=6,typ="l",ylim=c(0,3),main=paste0("\n detrended normalised dirichlet series Re(s)=1","\n with scaled abs(zeta(s)) function as envelope"),
+     xlab="imaginary axis",ylab="function value",cex.xlab=0.8,cex.main=.7,cex.ylab=0.7)
+lines(x=x,y=abs(zeta(realpart+x*1i)*(lzeroes)^(realpart+0i*x-1)),typ="l",lty=1,lwd=2,col=1,ylim=c(-2,2))
+lines(x=x,y=-abs(zeta(realpart+x*1i)*(lzeroes)^(realpart+0i*x-1)),typ="l",lty=1,lwd=2,col=1,ylim=c(-2,2))
+abline(h=1,lty=3)
+
+
+par(fig=c(0,0.5,0.,0.55), new=TRUE)
+
+plot(x=x,y=(abs(dplus)),col=6,typ="l",ylim=c(0,3),main="\n normalised dirichlet series Re(s)=1",
+     xlab="imaginary axis",ylab="function value",cex.xlab=0.8,cex.main=.7,cex.ylab=0.7)
+abline(h=0,lty=3)
+
+
+
+```
+
+***Figure 4. Lower half complex plane behaviour of the normalised ordinary dirichlet series and its detrended version with an overlay of the equivalent normalised Riemann Zeta function as an envelope function***
+
+It can be observed there is excellent correspondence with the normalised Riemann Zeta function as an envelope function gives strong direct confirmation of the Riemann Zeta analytical continuation. The discrepancy for values close to the real axis may be due to (i) inaccuracies in the detrending approximation eqn \eqref {eq:approx} and/or (ii) possible differences between applicability of Riemann Zeta function to the prime counting function for $\Im(s) < 2$ which could be related to the differences between $\zeta(\Re(s))$ and $|\frac{\mathfrak{D}_{id}^\mathbb{N}}{N^{(1-\Re(s))}}|$ in the critical strip.
+
+###Behaviour of real and imaginary components of $\frac{\mathfrak{D}_{id}^\mathbb{N}}{N^{(1-\Re(s))}}$
+
+Given the above information, does it add any further insight into the Riemann Hypothesis (1,3). The following graphs, show the real and imaginary components of the absolute value function results discussed above. 
+
+From, figure 5, the first observation is the "ringing" behaviour of the lineshapes away from the real axis. 
+
+From figure 6, above the critical value $\Re(s)=0.5$, the ringing is clearly asymmetric for the real component. Secondly, the small modulation on top of the ringing is the normalised Riemann Zeta function. 
+
+From figure 7, this modulation will reduce as $\mathbb{N} \rightarrow \infty$ the normalisation limit increases (in this case from 10^5 to 10^6 compared to figure 6). 
+
+
+```{r, fig5a, echo=FALSE, cache=TRUE, fig.width=6, fig.height=5,  fig.keep='high', warning=FALSE }
+
+library(pracma)
+x <- seq(0,70,l=3501)
+
+rawratio <- function(res,x) {
+  abs(2^(res+1i*x)*pi^(res+1i*x-1)*sin(pi/2*(res+1i*x))*gammaz(1-(res+1i*x)))
+}
+theta <- function(res,x) {
+  -0.5*Im(log(1/(zeta(1-(res+1i*x))*rawratio(res,x)/zeta(res+1i*x))))
+}
+
+d_realp <- function(xo,xl,rp) {
+  sum(1/xl^(rp+1i*xo))
+}
+
+par(mfrow=c(2,2))
+
+realpart <- 0.75
+lzeroes <- 100000
+xl <- seq(1,lzeroes,l=lzeroes)
+
+d_seriesp <- function(xo,xl) {
+ # sum(exp(-1i*xo*log(xl))/xl^realpart)
+  sum(1/xl^(realpart+1i*xo)*(lzeroes)^(0i*xo))*(lzeroes)^(realpart-1)
+}
+
+dplus <- 0.
+for (i in 1:length(x)) {
+  dplus[i] <- d_seriesp(x[i],xl)
+}
+
+par(fig=c(0.5,1,0.,0.55))
+plot(x=x,y=(Im(dplus)),col=6,typ="l",main="\n imag(normalised dirichlet series) Re(s)=0.75",
+     xlab="imaginary axis",ylab="function value",cex.xlab=0.8,cex.main=.7,cex.ylab=0.7)
+abline(h=0,lty=3)
+
+
+
+par(fig=c(0,0.5,0.,0.55), new=TRUE)
+
+plot(x=x,y=(Re(dplus)),col=6,typ="l",main="\n real(normalised dirichlet series) Re(s)=0.75",
+     xlab="imaginary axis",ylab="function value",cex.xlab=0.8,cex.main=.7,cex.ylab=0.7)
+abline(h=0,lty=3)
+
+
+
+```
+
+```{r, fig5b, echo=FALSE, cache=TRUE, fig.width=6, fig.height=5,  fig.keep='high', warning=FALSE }
+
+library(pracma)
+x <- seq(0,70,l=3501)
+
+rawratio <- function(res,x) {
+  abs(2^(res+1i*x)*pi^(res+1i*x-1)*sin(pi/2*(res+1i*x))*gammaz(1-(res+1i*x)))
+}
+theta <- function(res,x) {
+  -0.5*Im(log(1/(zeta(1-(res+1i*x))*rawratio(res,x)/zeta(res+1i*x))))
+}
+
+d_realp <- function(xo,xl,rp) {
+  sum(1/xl^(rp+1i*xo))
+}
+
+par(mfrow=c(2,2))
+
+realpart <- 0.5
+lzeroes <- 100000
+xl <- seq(1,lzeroes,l=lzeroes)
+
+d_seriesp <- function(xo,xl) {
+ # sum(exp(-1i*xo*log(xl))/xl^realpart)
+  sum(1/xl^(realpart+1i*xo)*(lzeroes)^(0i*xo))*(lzeroes)^(realpart-1)
+}
+
+dplus <- 0.
+for (i in 1:length(x)) {
+  dplus[i] <- d_seriesp(x[i],xl)
+}
+
+par(fig=c(0.5,1,0.,0.55))
+plot(x=x,y=(Im(dplus)),col=6,typ="l",main="\n imag(normalised dirichlet series) Re(s)=0.5",
+     xlab="imaginary axis",ylab="function value",cex.xlab=0.8,cex.main=.7,cex.ylab=0.7)
+abline(h=0,lty=3)
+
+
+
+par(fig=c(0,0.5,0.,0.55), new=TRUE)
+
+plot(x=x,y=(Re(dplus)),col=6,typ="l",main="\n real(normalised dirichlet series) Re(s)=0.5",
+     xlab="imaginary axis",ylab="function value",cex.xlab=0.8,cex.main=.7,cex.ylab=0.7)
+abline(h=0,lty=3)
+
+
+
+```
+
+
+```{r, fig5c, echo=FALSE, cache=TRUE, fig.width=6, fig.height=5,  fig.keep='high', warning=FALSE }
+
+library(pracma)
+x <- seq(0,70,l=3501)
+
+rawratio <- function(res,x) {
+  abs(2^(res+1i*x)*pi^(res+1i*x-1)*sin(pi/2*(res+1i*x))*gammaz(1-(res+1i*x)))
+}
+theta <- function(res,x) {
+  -0.5*Im(log(1/(zeta(1-(res+1i*x))*rawratio(res,x)/zeta(res+1i*x))))
+}
+
+d_realp <- function(xo,xl,rp) {
+  sum(1/xl^(rp+1i*xo))
+}
+
+par(mfrow=c(2,2))
+
+realpart <- 0.25
+lzeroes <- 100000
+xl <- seq(1,lzeroes,l=lzeroes)
+
+d_seriesp <- function(xo,xl) {
+ # sum(exp(-1i*xo*log(xl))/xl^realpart)
+  sum(1/xl^(realpart+1i*xo)*(lzeroes)^(0i*xo))*(lzeroes)^(realpart-1)
+}
+
+dplus <- 0.
+for (i in 1:length(x)) {
+  dplus[i] <- d_seriesp(x[i],xl)
+}
+
+par(fig=c(0.5,1,0.,0.55))
+plot(x=x,y=(Im(dplus)),col=6,typ="l",main="\n imag(normalised dirichlet series) Re(s)=0.25",
+     xlab="imaginary axis",ylab="function value",cex.xlab=0.8,cex.main=.7,cex.ylab=0.7)
+abline(h=0,lty=3)
+
+
+
+par(fig=c(0,0.5,0.,0.55), new=TRUE)
+
+plot(x=x,y=(Re(dplus)),col=6,typ="l",main="\n real(normalised dirichlet series) Re(s)=0.25",
+     xlab="imaginary axis",ylab="function value",cex.xlab=0.8,cex.main=.7,cex.ylab=0.7)
+abline(h=0,lty=3)
+
+
+
+```
+
+
+***Fig.5:real and imaginary components of $|\frac{\mathfrak{D}_{id}^\mathbb{N}}{N^{(1-\Re(s))}}|$ at full scale, $\mathbb{N}=10^5$***
+
+```{r, fig6a, echo=FALSE, cache=TRUE, fig.width=6, fig.height=5,  fig.keep='high', warning=FALSE }
+
+library(pracma)
+x <- seq(0,70,l=3501)
+
+rawratio <- function(res,x) {
+  abs(2^(res+1i*x)*pi^(res+1i*x-1)*sin(pi/2*(res+1i*x))*gammaz(1-(res+1i*x)))
+}
+theta <- function(res,x) {
+  -0.5*Im(log(1/(zeta(1-(res+1i*x))*rawratio(res,x)/zeta(res+1i*x))))
+}
+
+d_realp <- function(xo,xl,rp) {
+  sum(1/xl^(rp+1i*xo))
+}
+
+par(mfrow=c(2,2))
+
+realpart <- 0.75
+lzeroes <- 100000
+xl <- seq(1,lzeroes,l=lzeroes)
+
+d_seriesp <- function(xo,xl) {
+ # sum(exp(-1i*xo*log(xl))/xl^realpart)
+  sum(1/xl^(realpart+1i*xo)*(lzeroes)^(0i*xo))*(lzeroes)^(realpart-1)
+}
+
+dplus <- 0.
+for (i in 1:length(x)) {
+  dplus[i] <- d_seriesp(x[i],xl)
+}
+
+par(fig=c(0.5,1,0.,0.55))
+plot(x=x,y=(Im(dplus)),col=6,typ="l",ylim=c(-.1,.1),main="\n imag(normalised dirichlet series) Re(s)=0.75",
+     xlab="imaginary axis",ylab="function value",cex.xlab=0.8,cex.main=.7,cex.ylab=0.7)
+abline(h=0,lty=3)
+
+
+
+par(fig=c(0,0.5,0.,0.55), new=TRUE)
+
+plot(x=x,y=(Re(dplus)),col=6,typ="l",ylim=c(-.1,.1),main="\n real(normalised dirichlet series) Re(s)=0.75",
+     xlab="imaginary axis",ylab="function value",cex.xlab=0.8,cex.main=.7,cex.ylab=0.7)
+abline(h=0,lty=3)
+
+
+
+```
+
+```{r, fig6b, echo=FALSE, cache=TRUE, fig.width=6, fig.height=5,  fig.keep='high', warning=FALSE }
+
+library(pracma)
+x <- seq(0,70,l=3501)
+
+rawratio <- function(res,x) {
+  abs(2^(res+1i*x)*pi^(res+1i*x-1)*sin(pi/2*(res+1i*x))*gammaz(1-(res+1i*x)))
+}
+theta <- function(res,x) {
+  -0.5*Im(log(1/(zeta(1-(res+1i*x))*rawratio(res,x)/zeta(res+1i*x))))
+}
+
+d_realp <- function(xo,xl,rp) {
+  sum(1/xl^(rp+1i*xo))
+}
+
+par(mfrow=c(2,2))
+
+realpart <- 0.5
+lzeroes <- 100000
+xl <- seq(1,lzeroes,l=lzeroes)
+
+d_seriesp <- function(xo,xl) {
+ # sum(exp(-1i*xo*log(xl))/xl^realpart)
+  sum(1/xl^(realpart+1i*xo)*(lzeroes)^(0i*xo))*(lzeroes)^(realpart-1)
+}
+
+dplus <- 0.
+for (i in 1:length(x)) {
+  dplus[i] <- d_seriesp(x[i],xl)
+}
+
+par(fig=c(0.5,1,0.,0.55))
+plot(x=x,y=(Im(dplus)),col=6,typ="l",ylim=c(-.1,.1),main="\n imag(normalised dirichlet series) Re(s)=0.5",
+     xlab="imaginary axis",ylab="function value",cex.xlab=0.8,cex.main=.7,cex.ylab=0.7)
+abline(h=0,lty=3)
+
+
+
+par(fig=c(0,0.5,0.,0.55), new=TRUE)
+
+plot(x=x,y=(Re(dplus)),col=6,typ="l",ylim=c(-.1,.1),main="\n real(normalised dirichlet series) Re(s)=0.5",
+     xlab="imaginary axis",ylab="function value",cex.xlab=0.8,cex.main=.7,cex.ylab=0.7)
+abline(h=0,lty=3)
+
+
+
+```
+
+
+```{r, fig6c, echo=FALSE, cache=TRUE, fig.width=6, fig.height=5,  fig.keep='high', warning=FALSE }
+
+library(pracma)
+x <- seq(0,70,l=3501)
+
+rawratio <- function(res,x) {
+  abs(2^(res+1i*x)*pi^(res+1i*x-1)*sin(pi/2*(res+1i*x))*gammaz(1-(res+1i*x)))
+}
+theta <- function(res,x) {
+  -0.5*Im(log(1/(zeta(1-(res+1i*x))*rawratio(res,x)/zeta(res+1i*x))))
+}
+
+d_realp <- function(xo,xl,rp) {
+  sum(1/xl^(rp+1i*xo))
+}
+
+par(mfrow=c(2,2))
+
+realpart <- 0.25
+lzeroes <- 100000
+xl <- seq(1,lzeroes,l=lzeroes)
+
+d_seriesp <- function(xo,xl) {
+ # sum(exp(-1i*xo*log(xl))/xl^realpart)
+  sum(1/xl^(realpart+1i*xo)*(lzeroes)^(0i*xo))*(lzeroes)^(realpart-1)
+}
+
+dplus <- 0.
+for (i in 1:length(x)) {
+  dplus[i] <- d_seriesp(x[i],xl)
+}
+
+par(fig=c(0.5,1,0.,0.55))
+plot(x=x,y=(Im(dplus)),col=6,typ="l",ylim=c(-.1,.1),main="\n imag(normalised dirichlet series) Re(s)=0.25",
+     xlab="imaginary axis",ylab="function value",cex.xlab=0.8,cex.main=.7,cex.ylab=0.7)
+abline(h=0,lty=3)
+
+
+
+par(fig=c(0,0.5,0.,0.55), new=TRUE)
+
+plot(x=x,y=(Re(dplus)),col=6,typ="l",ylim=c(-.1,.1),main="\n real(normalised dirichlet series) Re(s)=0.25",
+     xlab="imaginary axis",ylab="function value",cex.xlab=0.8,cex.main=.7,cex.ylab=0.7)
+abline(h=0,lty=3)
+
+
+
+```
+
+
+***Fig.6:real and imaginary components of $\frac{\mathfrak{D}_{id}^\mathbb{N}}{N^{(1-\Re(s))}}$ at magnified scale, $\mathbb{N}=10^5$***
+
+```{r, fig7b, echo=FALSE, cache=TRUE, fig.width=6, fig.height=5,  fig.keep='high', warning=FALSE }
+
+library(pracma)
+x <- seq(0,70,l=3501)
+
+rawratio <- function(res,x) {
+  abs(2^(res+1i*x)*pi^(res+1i*x-1)*sin(pi/2*(res+1i*x))*gammaz(1-(res+1i*x)))
+}
+theta <- function(res,x) {
+  -0.5*Im(log(1/(zeta(1-(res+1i*x))*rawratio(res,x)/zeta(res+1i*x))))
+}
+
+d_realp <- function(xo,xl,rp) {
+  sum(1/xl^(rp+1i*xo))
+}
+
+par(mfrow=c(2,2))
+
+realpart <- 0.75
+lzeroes <- 1000000
+xl <- seq(1,lzeroes,l=lzeroes)
+
+d_seriesp <- function(xo,xl) {
+ # sum(exp(-1i*xo*log(xl))/xl^realpart)
+  sum(1/xl^(realpart+1i*xo)*(lzeroes)^(0i*xo))*(lzeroes)^(realpart-1)
+}
+
+dplus <- 0.
+for (i in 1:length(x)) {
+  dplus[i] <- d_seriesp(x[i],xl)
+}
+
+par(fig=c(0.5,1,0.,0.55))
+plot(x=x,y=(Im(dplus)),col=6,typ="l",ylim=c(-.1,.1),main="\n imag(normalised dirichlet series) Re(s)=0.75",
+     xlab="imaginary axis",ylab="function value",cex.xlab=0.8,cex.main=.7,cex.ylab=0.7)
+abline(h=0,lty=3)
+
+
+
+par(fig=c(0,0.5,0.,0.55), new=TRUE)
+
+plot(x=x,y=(Re(dplus)),col=6,typ="l",ylim=c(-.1,.1),main="\n real(normalised dirichlet series) Re(s)=0.75",
+     xlab="imaginary axis",ylab="function value",cex.xlab=0.8,cex.main=.7,cex.ylab=0.7)
+abline(h=0,lty=3)
+
+
+
+```
+
+
+```{r, fig7, echo=FALSE, cache=TRUE, fig.width=6, fig.height=5,  fig.keep='high', warning=FALSE }
+
+library(pracma)
+x <- seq(0,70,l=3501)
+
+rawratio <- function(res,x) {
+  abs(2^(res+1i*x)*pi^(res+1i*x-1)*sin(pi/2*(res+1i*x))*gammaz(1-(res+1i*x)))
+}
+theta <- function(res,x) {
+  -0.5*Im(log(1/(zeta(1-(res+1i*x))*rawratio(res,x)/zeta(res+1i*x))))
+}
+
+d_realp <- function(xo,xl,rp) {
+  sum(1/xl^(rp+1i*xo))
+}
+
+par(mfrow=c(2,2))
+
+realpart <- 0.5
+lzeroes <- 1000000
+xl <- seq(1,lzeroes,l=lzeroes)
+
+d_seriesp <- function(xo,xl) {
+ # sum(exp(-1i*xo*log(xl))/xl^realpart)
+  sum(1/xl^(realpart+1i*xo)*(lzeroes)^(0i*xo))*(lzeroes)^(realpart-1)
+}
+
+dplus <- 0.
+for (i in 1:length(x)) {
+  dplus[i] <- d_seriesp(x[i],xl)
+}
+
+par(fig=c(0.5,1,0.,0.55))
+plot(x=x,y=(Im(dplus)),col=6,typ="l",ylim=c(-.1,.1),main="\n imag(normalised dirichlet series) Re(s)=0.5",
+     xlab="imaginary axis",ylab="function value",cex.xlab=0.8,cex.main=.7,cex.ylab=0.7)
+abline(h=0,lty=3)
+
+
+
+par(fig=c(0,0.5,0.,0.55), new=TRUE)
+
+plot(x=x,y=(Re(dplus)),col=6,typ="l",ylim=c(-.1,.1),main="\n real(normalised dirichlet series) Re(s)=0.5",
+     xlab="imaginary axis",ylab="function value",cex.xlab=0.8,cex.main=.7,cex.ylab=0.7)
+abline(h=0,lty=3)
+
+
+
+```
+
+***Fig.7:Effect of increasing $\mathbb{N}$ from ($10^5 \rightarrow 10^6$) on decreasing the Riemann Zeta envelope function, with the real and imaginary components of $\frac{\mathfrak{D}_{id}^\mathbb{N}}{N^{(1-\Re(s))}}$***
+
+###Conclusions
+
+The normalised Riemann Zeta function presenting as an envelope function for the normalised ordinary Dirichlet series $\frac{\mathfrak{D}_{id}^\mathbb{N}}{N^{(1-\Re(s))}}$ gives strong direct confirmation of the Riemann Zeta analytical continuation of  $\mathfrak{D}_{id}^\mathbb{N}$ across the lower half complex plane.
+
+The lower half plane real axis values of the normalised ordinary Dirichlet series gives (i) an interesting series expansion which may have other potential uses and (ii) an alternative regularisation of divergent sums to zeta function regularization.
+
+
+###References
+
+1. Edwards, H.M. (1974). Riemann's zeta function. Pure and Applied Mathematics 58. New York-London: Academic Press. ISBN 0-12-242750-0. Zbl 0315.10035.
+
+2. Riemann, Bernhard (1859). "$\ddot{U}$ber die Anzahl der Primzahlen unter einer gegebenen Gr$\ddot{o}$sse". Monatsberichte der Berliner Akademie.. In Gesammelte Werke, Teubner, Leipzig (1892), Reprinted by Dover, New York (1953).
+
+3. Martin, J.P.D. "Applying the Argument Principle to the extended Riemann Siegel function components of the Riemann Zeta function" (2016)
+http://dx.doi.org/10.6084/m9.figshare.4012290
+
