@@ -70,7 +70,7 @@ lines(x=x,y=abs(zeta(realpart+x*1i)*(lzeroes)^(realpart+0i*x-1)),typ="l",lty=1,l
 lines(x=x,y=-abs(zeta(realpart+x*1i)*(lzeroes)^(realpart+0i*x-1)),typ="l",lty=1,lwd=2,col=1,ylim=c(-2,2))
 abline(h=1,lty=3)
 
-legend(0, .004, c("detrended norm ord dirichlet series","abs(zeta(0.5+i*t))/N^(1-Re(s))"),
+legend(0, .004, c("detrended norm ord dirichlet series","abs(zeta(s))/N^(1-Re(s))"),
        lty = 1,cex=.6, lwd = c(2,2,2,2), col = c("purple",  "black"))
 
 par(fig=c(0,0.5,0.,0.55), new=TRUE)
@@ -330,7 +330,7 @@ lines(x=x,y=abs(zeta(realpart+x*1i)*(lzeroes)^(realpart+0i*x-1)),typ="l",lty=1,l
 lines(x=x,y=-abs(zeta(realpart+x*1i)*(lzeroes)^(realpart+0i*x-1)),typ="l",lty=1,lwd=2,col=1,ylim=c(-2,2))
 abline(h=1,lty=3)
 
-legend(0, .004, c("detrended norm ord dirichlet series","abs(zeta(0.5+i*t))/N^(1-Re(s))"),
+legend(0, .004, c("detrended norm ord dirichlet series","abs(zeta(s))/N^(1-Re(s))"),
        lty = 1,cex=.6, lwd = c(2,2,2,2), col = c("purple",  "black"))
 
 par(fig=c(0,0.5,0.,0.55), new=TRUE)
@@ -383,7 +383,7 @@ lines(x=x,y=abs(zeta(realpart+x*1i)*(lzeroes)^(realpart+0i*x-1)),typ="l",lty=1,l
 lines(x=x,y=-abs(zeta(realpart+x*1i)*(lzeroes)^(realpart+0i*x-1)),typ="l",lty=1,lwd=2,col=1,ylim=c(-2,2))
 abline(h=1,lty=3)
 
-legend(0, .004, c("detrended norm ord dirichlet series","abs(zeta(0.5+i*t))/N^(1-Re(s))"),
+legend(0, .004, c("detrended norm ord dirichlet series","abs(zeta(s))/N^(1-Re(s))"),
        lty = 1,cex=.6, lwd = c(2,2,2,2), col = c("purple",  "black"))
 
 par(fig=c(0,0.5,0.,0.55), new=TRUE)
