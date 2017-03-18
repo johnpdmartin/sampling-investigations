@@ -128,7 +128,7 @@ A continuation of the $\mathfrak{D}_{id}^\mathbb{N}$ series can be constructed i
 \begin{equation} 
 \mathfrak{D}_{id}^\mathbb{N} = 
 \begin{cases}
-\sum_{n=1}^\infty(\frac{1}{n^s}) \rightarrow \infty \qquad \qquad \qquad \Re(s) > 1 \\
+\sum_{n=1}^\infty(\frac{1}{n^s})  \qquad \qquad \qquad \qquad \Re(s) > 1 \\
 \underset{N \rightarrow \infty}{\lim} \frac{1}{N^{(1-\Re(s))}}\sum_{n=1}^N (\frac{1}{n^{s}}) \qquad \Re(s) \le 1 \label {eq:limit}
 \end{cases}
 \end{equation}
@@ -288,7 +288,7 @@ legend(0, 3, c("detrended normalised ordinary dirichlet series","1/(1-Re(s))"),
 
 ###Lower half complex plane real axis behaviour of the normalised ordinary dirichlet series
 
-Figure 4, illustrates the behaviour of magnitude of  $|\frac{\mathfrak{D}_{id}^\mathbb{N}}{N^{(1-\Re(s))}}|$ series for various $\Re(s)$ values in the complex plane. The left hand figure, shows the $\frac{\mathfrak{D}_{id}^\mathbb{N}}{N^{(1-\Re(s))}}$ for N =100,000 which is comfortably accurate in estimating the real axis value (see figure 2). The right hand figure is the approximately detrended version of $|\frac{\mathfrak{D}_{id}^\mathbb{N}}{N^{(1-\Re(s))}}|$ overlayed by $\pm|\zeta(s)|$ as an envelope function. As $\Im(s) -> \infty$, the normalisation limit, N needs to rise rapdily to get accurate results for the symmetry of the detrended function. 
+Figure 4, illustrates the behaviour of magnitude of  $|\frac{\mathfrak{D}_{id}^\mathbb{N}}{N^{(1-\Re(s))}}|$ series for various $\Re(s)$ values in the complex plane. The left hand figure, shows the $\frac{\mathfrak{D}_{id}^\mathbb{N}}{N^{(1-\Re(s))}}$ for N =100,000 which is comfortably accurate in estimating the real axis value (see figure 2). The right hand figure is the approximately detrended version of $|\frac{\mathfrak{D}_{id}^\mathbb{N}}{N^{(1-\Re(s))}}|$ overlayed by $\pm|\frac{\zeta(s)}{N^{(1-\Re(s))}}|$ as an envelope function. As $\Im(s) -> \infty$, the normalisation limit, N needs to rise rapdily to get accurate results for the symmetry of the detrended function. 
 
 ```{r, fig4a, echo=FALSE, cache=TRUE, fig.width=6, fig.height=5,  fig.keep='high', warning=FALSE }
 
