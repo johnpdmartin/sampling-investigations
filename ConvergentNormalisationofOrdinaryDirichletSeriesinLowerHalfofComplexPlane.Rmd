@@ -133,14 +133,14 @@ A continuation of the $\mathfrak{D}_{id}^\mathbb{N}$ series can be constructed i
 \end{cases}
 \end{equation}
 
-In the strict limit, $N \rightarrow \infty$ on the real axis, in the lower half complex plane
+In the strict limit, $N \rightarrow \infty$ on the real axis, it is proposed using the Laurent series of the $\zeta$ function, in the lower half complex plane
 
 \begin{equation} 
-\underset{N \rightarrow \infty}{\lim} \frac{1}{N^{(1-\Re(s))}}\sum_{n=1}^N (\frac{1}{n^{s}}) 
+\underset{N \rightarrow \infty}{\lim} \frac{1}{N^{(1-\Re(s))}}[\sum_{n=1}^N (\frac{1}{n^{s}}) - \gamma - \sum_{n=1}^N (\gamma_n(1-\Re(s))^n)]
 = \frac{1}{1-\Re(s)} \qquad \qquad \Re(s) \le 1, \Im(s) = 0 \label {eq:real_axis} 
 \end{equation}
 
-For finite N, an analytic continuation in the lower half complex plane can be summarised,
+For finite N and $\Re(s)$ < 1, an analytic continuation in the lower half complex plane can be summarised,
 
 on the real axis as
 
