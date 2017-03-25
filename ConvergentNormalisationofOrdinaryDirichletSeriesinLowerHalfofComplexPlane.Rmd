@@ -64,7 +64,7 @@ for (i in 1:length(x)) {
 
 par(fig=c(0.5,1,0.,0.55), new=TRUE)
 # plot(x=x,y=(abs(dplus)*(lzeroes)^min((realpart-1),0))*x,col=6,typ="l")
-plot(x=x,y=abs(dplus)-(dplus[1])*((1-realpart)/x-1/2*(1-realpart)^3/x^3+1/2*(1-realpart)^5/x^5-1/8*(1-realpart)^5/x^5+1/8*(1-realpart)^7/x^7),col=6,typ="l",ylim=c(1*min(-abs(zeta(realpart+x*1i)*(lzeroes)^(realpart+0i*x-1))),1*max(abs(zeta(realpart+x*1i)*(lzeroes)^(realpart+0i*x-1)))),main=paste0("\n detrended normalised dirichlet series Re(s)=0.2","\n with scaled abs(zeta(s)) function as envelope"),
+plot(x=x,y=abs(dplus)-(dplus[1])*((1-realpart)/x-1/2*(1-realpart)^3/x^3+3/8*(1-realpart)^5/x^5),col=6,typ="l",ylim=c(1*min(-abs(zeta(realpart+x*1i)*(lzeroes)^(realpart+0i*x-1))),1*max(abs(zeta(realpart+x*1i)*(lzeroes)^(realpart+0i*x-1)))),main=paste0("\n detrended normalised dirichlet series Re(s)=0.2","\n with scaled abs(zeta(s)) function as envelope"),
      xlab="imaginary axis",ylab="function value",cex.xlab=0.8,cex.main=.7,cex.ylab=0.7)
 lines(x=x,y=abs(zeta(realpart+x*1i)*(lzeroes)^(realpart+0i*x-1)),typ="l",lty=1,lwd=2,col=1,ylim=c(-2,2))
 lines(x=x,y=-abs(zeta(realpart+x*1i)*(lzeroes)^(realpart+0i*x-1)),typ="l",lty=1,lwd=2,col=1,ylim=c(-2,2))
@@ -140,12 +140,12 @@ In the strict limit, $N \rightarrow \infty$ on the real axis, it is proposed usi
 = \frac{1}{1-\Re(s)} \qquad \qquad \Re(s) \le 1, \Im(s) = 0 \label {eq:real_axis} 
 \end{equation}
 
-For finite N and $\Re(s)$ < 1, an analytic continuation in the lower half complex plane can be summarised,
+For $10^4 < N < \infty$ and $\Re(s)$ < 1, an analytic continuation in the lower half complex plane can be summarised,
 
 on the real axis as
 
 \begin{equation} 
-0 < [\frac{1}{N^{(1-\Re(s))}}\sum_{n=1}^N (\frac{1}{n^{s}})] \le \frac{1}{1-\Re(s)} \qquad \Re(s) \le 1, \Im(s) = 0 \label {eq:finite_n_real_axis}
+\frac{1}{N^{(1-\Re(s))}}\sum_{n=1}^N (\frac{1}{n^{s}}) \rightarrow \frac{1}{1-\Re(s)} \qquad \Re(s) < 1, \Im(s) = 0 \label {eq:finite_n_real_axis}
 \end{equation}
 
 Off the real axis, the absolute magnitude of the normalised series can be fit with an envelope function including an equivalent $\frac{1}{N^{(1-\Re(s))}}$ normalised version of the Riemann Zeta function
@@ -157,7 +157,7 @@ Envelope[|\frac{1}{N^{(1-\Re(s))}}\sum_{n=1}^N (\frac{1}{n^{s}})|] \approx trend
 where for small values of $|\Re(s)|$, at least covering the Riemann Zeta function critical strip and near below, the trend component behaves as a nonlinear decaying version of the real axis normalised ordinary dirichlet series value given by eqn \eqref{eq:finite_n_real_axis}
 
 \begin{equation} \label {eq:approx}
-trend \sim [\frac{1}{N^{(1-\Re(s))}}\sum_{n=1}^N (\frac{1}{n^{\Re(s)}})]*[\sum_{i=1} \frac{-1^{(n+1)}}{n!}\frac{(1-\Re(s))^{2n-1}}{\Im(s)^{2n-1}}] \qquad -1 < \Re(s) < 1
+trend \sim [\frac{1}{N^{(1-\Re(s))}}\sum_{n=1}^N (\frac{1}{n^{\Re(s)}})]*[\frac{(1-\Re(s))}{\Im(s)}-\frac{(1-\Re(s))^3}{2\Im(s)^3}+\frac{3(1-\Re(s))^5}{8\Im(s)^5}] \qquad -1 < \Re(s) < 1
 \end{equation}
 
 ###Convergence of normalised $\frac{\mathfrak{D}_{id}^\mathbb{N}}{N^{(1-\Re(s))}}$ series on the real axis
@@ -276,14 +276,14 @@ plot(x=1/(1-xr1),y=(drpreal),typ="l",lwd=2,lty=2,main=paste0("normalised dirichl
      xlab="1/(1-Re(s))",ylab="function value",cex.xlab=0.8,cex.main=.7,cex.ylab=0.7,col=4)
 lines(x=1/(1-xr1),y=1/(1-xr1),col=3)
 
-legend(0, 3, c("detrended normalised ordinary dirichlet series","1/(1-Re(s))"),
+legend(0, 3, c("normalised ordinary dirichlet series","1/(1-Re(s))"),
        lty = c(2,1,1,1),cex=.6, lwd = c(2,2,2,2), col = c("blue",  "green"))
 
 
 
 ```
 
-***Figure 3. $\frac{1}{1-\Re(s)}$ dependence of normalised ordinary dirichlet series***
+***Figure 3. $\frac{1}{1-\Re(s)}$ dependence of normalised ordinary dirichlet series on real axis $\Re(s) < 1$***
 
 
 ###Lower half complex plane real axis behaviour of the normalised ordinary dirichlet series
@@ -324,7 +324,7 @@ for (i in 1:length(x)) {
 
 par(fig=c(0.5,1,0.,0.55))
 # plot(x=x,y=(abs(dplus)*(lzeroes)^min((realpart-1),0))*x,col=6,typ="l")
-plot(x=x,y=abs(dplus)-(dplus[1])*((1-realpart)/x-1/2*(1-realpart)^3/x^3+1/2*(1-realpart)^5/x^5-1/8*(1-realpart)^5/x^5+1/8*(1-realpart)^7/x^7),col=6,typ="l",ylim=c(1*min(-abs(zeta(realpart+x*1i)*(lzeroes)^(realpart+0i*x-1))),1*max(abs(zeta(realpart+x*1i)*(lzeroes)^(realpart+0i*x-1)))),main=paste0("\n detrended normalised dirichlet series Re(s)=-1","\n with scaled abs(zeta(s)) function as envelope"),
+plot(x=x,y=abs(dplus)-(dplus[1])*((1-realpart)/x-1/2*(1-realpart)^3/x^3+3/8*(1-realpart)^5/x^5),col=6,typ="l",ylim=c(1*min(-abs(zeta(realpart+x*1i)*(lzeroes)^(realpart+0i*x-1))),1*max(abs(zeta(realpart+x*1i)*(lzeroes)^(realpart+0i*x-1)))),main=paste0("\n detrended normalised dirichlet series Re(s)=-1","\n with scaled abs(zeta(s)) function as envelope"),
      xlab="imaginary axis",ylab="function value",cex.xlab=0.8,cex.main=.7,cex.ylab=0.7)
 lines(x=x,y=abs(zeta(realpart+x*1i)*(lzeroes)^(realpart+0i*x-1)),typ="l",lty=1,lwd=2,col=1,ylim=c(-2,2))
 lines(x=x,y=-abs(zeta(realpart+x*1i)*(lzeroes)^(realpart+0i*x-1)),typ="l",lty=1,lwd=2,col=1,ylim=c(-2,2))
@@ -377,7 +377,7 @@ for (i in 1:length(x)) {
 
 par(fig=c(0.5,1,0.,0.55))
 # plot(x=x,y=(abs(dplus)*(lzeroes)^min((realpart-1),0))*x,col=6,typ="l")
-plot(x=x,y=abs(dplus)-(dplus[1])*((1-realpart)/x-1/2*(1-realpart)^3/x^3+1/2*(1-realpart)^5/x^5-1/8*(1-realpart)^5/x^5+1/8*(1-realpart)^7/x^7),col=6,typ="l",ylim=c(1*min(-abs(zeta(realpart+x*1i)*(lzeroes)^(realpart+0i*x-1))),1*max(abs(zeta(realpart+x*1i)*(lzeroes)^(realpart+0i*x-1)))),main=paste0("\n detrended normalised dirichlet series Re(s)=0","\n with scaled abs(zeta(s)) function as envelope"),
+plot(x=x,y=abs(dplus)-(dplus[1])*((1-realpart)/x-1/2*(1-realpart)^3/x^3+3/8*(1-realpart)^5/x^5),col=6,typ="l",ylim=c(1*min(-abs(zeta(realpart+x*1i)*(lzeroes)^(realpart+0i*x-1))),1*max(abs(zeta(realpart+x*1i)*(lzeroes)^(realpart+0i*x-1)))),main=paste0("\n detrended normalised dirichlet series Re(s)=0","\n with scaled abs(zeta(s)) function as envelope"),
      xlab="imaginary axis",ylab="function value",cex.xlab=0.8,cex.main=.7,cex.ylab=0.7)
 lines(x=x,y=abs(zeta(realpart+x*1i)*(lzeroes)^(realpart+0i*x-1)),typ="l",lty=1,lwd=2,col=1,ylim=c(-2,2))
 lines(x=x,y=-abs(zeta(realpart+x*1i)*(lzeroes)^(realpart+0i*x-1)),typ="l",lty=1,lwd=2,col=1,ylim=c(-2,2))
@@ -430,7 +430,7 @@ for (i in 1:length(x)) {
 
 par(fig=c(0.5,1,0.,0.55))
 # plot(x=x,y=(abs(dplus)*(lzeroes)^min((realpart-1),0))*x,col=6,typ="l")
-plot(x=x,y=abs(dplus)-(dplus[1])*((1-realpart)/x-1/2*(1-realpart)^3/x^3+1/2*(1-realpart)^5/x^5-1/8*(1-realpart)^5/x^5+1/8*(1-realpart)^7/x^7),col=6,typ="l",ylim=c(1*min(-abs(zeta(realpart+x*1i)*(lzeroes)^(realpart+0i*x-1))),1*max(abs(zeta(realpart+x*1i)*(lzeroes)^(realpart+0i*x-1)))),main=paste0("\n detrended normalised dirichlet series Re(s)=0.25","\n with scaled abs(zeta(s)) function as envelope"),
+plot(x=x,y=abs(dplus)-(dplus[1])*((1-realpart)/x-1/2*(1-realpart)^3/x^3+3/8*(1-realpart)^5/x^5),col=6,typ="l",ylim=c(1*min(-abs(zeta(realpart+x*1i)*(lzeroes)^(realpart+0i*x-1))),1*max(abs(zeta(realpart+x*1i)*(lzeroes)^(realpart+0i*x-1)))),main=paste0("\n detrended normalised dirichlet series Re(s)=0.25","\n with scaled abs(zeta(s)) function as envelope"),
      xlab="imaginary axis",ylab="function value",cex.xlab=0.8,cex.main=.7,cex.ylab=0.7)
 lines(x=x,y=abs(zeta(realpart+x*1i)*(lzeroes)^(realpart+0i*x-1)),typ="l",lty=1,lwd=2,col=1,ylim=c(-2,2))
 lines(x=x,y=-abs(zeta(realpart+x*1i)*(lzeroes)^(realpart+0i*x-1)),typ="l",lty=1,lwd=2,col=1,ylim=c(-2,2))
@@ -481,7 +481,7 @@ for (i in 1:length(x)) {
 
 par(fig=c(0.5,1,0.,0.55))
 # plot(x=x,y=(abs(dplus)*(lzeroes)^min((realpart-1),0))*x,col=6,typ="l")
-plot(x=x,y=abs(dplus)-(dplus[1])*((1-realpart)/x-1/2*(1-realpart)^3/x^3+1/2*(1-realpart)^5/x^5-1/8*(1-realpart)^5/x^5+1/8*(1-realpart)^7/x^7),col=6,typ="l",ylim=c(1*min(-abs(zeta(realpart+x*1i)*(lzeroes)^(realpart+0i*x-1))),1*max(abs(zeta(realpart+x*1i)*(lzeroes)^(realpart+0i*x-1)))),main=paste0("\n detrended normalised dirichlet series Re(s)=0.5","\n with scaled abs(zeta(s)) function as envelope"),
+plot(x=x,y=abs(dplus)-(dplus[1])*((1-realpart)/x-1/2*(1-realpart)^3/x^3+3/8*(1-realpart)^5/x^5),col=6,typ="l",ylim=c(1*min(-abs(zeta(realpart+x*1i)*(lzeroes)^(realpart+0i*x-1))),1*max(abs(zeta(realpart+x*1i)*(lzeroes)^(realpart+0i*x-1)))),main=paste0("\n detrended normalised dirichlet series Re(s)=0.5","\n with scaled abs(zeta(s)) function as envelope"),
      xlab="imaginary axis",ylab="function value",cex.xlab=0.8,cex.main=.7,cex.ylab=0.7)
 lines(x=x,y=abs(zeta(realpart+x*1i)*(lzeroes)^(realpart+0i*x-1)),typ="l",lty=1,lwd=2,col=1,ylim=c(-2,2))
 lines(x=x,y=-abs(zeta(realpart+x*1i)*(lzeroes)^(realpart+0i*x-1)),typ="l",lty=1,lwd=2,col=1,ylim=c(-2,2))
@@ -533,7 +533,7 @@ for (i in 1:length(x)) {
 
 par(fig=c(0.5,1,0.,0.55))
 # plot(x=x,y=(abs(dplus)*(lzeroes)^min((realpart-1),0))*x,col=6,typ="l")
-plot(x=x,y=abs(dplus)-(dplus[1])*((1-realpart)/x-1/2*(1-realpart)^3/x^3+1/2*(1-realpart)^5/x^5-1/8*(1-realpart)^5/x^5+1/8*(1-realpart)^7/x^7),col=6,typ="l",ylim=c(1*min(-abs(zeta(realpart+x*1i)*(lzeroes)^(realpart+0i*x-1))),1*max(abs(zeta(realpart+x*1i)*(lzeroes)^(realpart+0i*x-1)))),main=paste0("\n detrended normalised dirichlet series Re(s)=0.75","\n with scaled abs(zeta(s)) function as envelope"),
+plot(x=x,y=abs(dplus)-(dplus[1])*((1-realpart)/x-1/2*(1-realpart)^3/x^3+3/8*(1-realpart)^5/x^5),col=6,typ="l",ylim=c(1*min(-abs(zeta(realpart+x*1i)*(lzeroes)^(realpart+0i*x-1))),1*max(abs(zeta(realpart+x*1i)*(lzeroes)^(realpart+0i*x-1)))),main=paste0("\n detrended normalised dirichlet series Re(s)=0.75","\n with scaled abs(zeta(s)) function as envelope"),
      xlab="imaginary axis",ylab="function value",cex.xlab=0.8,cex.main=.7,cex.ylab=0.7)
 lines(x=x,y=abs(zeta(realpart+x*1i)*(lzeroes)^(realpart+0i*x-1)),typ="l",lty=1,lwd=2,col=1,ylim=c(-2,2))
 lines(x=x,y=-abs(zeta(realpart+x*1i)*(lzeroes)^(realpart+0i*x-1)),typ="l",lty=1,lwd=2,col=1,ylim=c(-2,2))
@@ -584,7 +584,7 @@ for (i in 1:length(x)) {
 
 par(fig=c(0.5,1,0.,0.55))
 # plot(x=x,y=(abs(dplus)*(lzeroes)^min((realpart-1),0))*x,col=6,typ="l")
-plot(x=x,y=abs(dplus)-(dplus[1])*((1-realpart)/x-1/2*(1-realpart)^3/x^3+1/2*(1-realpart)^5/x^5-1/8*(1-realpart)^5/x^5+1/8*(1-realpart)^7/x^7),col=6,typ="l",ylim=c(0,3),main=paste0("\n detrended normalised dirichlet series Re(s)=1","\n with scaled abs(zeta(s)) function as envelope"),
+plot(x=x,y=abs(dplus)-(dplus[1])*((1-realpart)/x-1/2*(1-realpart)^3/x^3+3/8*(1-realpart)^5/x^5),col=6,typ="l",ylim=c(0,3),main=paste0("\n detrended normalised dirichlet series Re(s)=1","\n with scaled abs(zeta(s)) function as envelope"),
      xlab="imaginary axis",ylab="function value",cex.xlab=0.8,cex.main=.7,cex.ylab=0.7)
 lines(x=x,y=abs(zeta(realpart+x*1i)*(lzeroes)^(realpart+0i*x-1)),typ="l",lty=1,lwd=2,col=1,ylim=c(-2,2))
 lines(x=x,y=-abs(zeta(realpart+x*1i)*(lzeroes)^(realpart+0i*x-1)),typ="l",lty=1,lwd=2,col=1,ylim=c(-2,2))
