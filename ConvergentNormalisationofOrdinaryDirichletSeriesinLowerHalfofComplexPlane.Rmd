@@ -119,7 +119,10 @@ and is convergent on the whole complex plane except for the pole at s=1. In cont
 \mathfrak{D}_{id}^\mathbb{N} = \sum_{n=1}^\infty(\frac{1}{n^s}) \rightarrow \infty \qquad \Re(s) \le 1
 \end{equation}
 
-In this paper, the strong role of the Riemann Zeta function as an detrended envelope function of the normalised $\mathfrak{D}_{id}^\mathbb{N}$ series is reported, confirming the applicability of use of the Riemann Zeta function for the analytic continuation of $\mathfrak{D}_{id}^\mathbb{N}$ in the lower half of the complex plane (except perhaps for the negative real axis itself). 
+In this paper, 
+(i) the strong role of the Riemann Zeta function as an detrended envelope function of the normalised $\mathfrak{D}_{id}^\mathbb{N}$ series is reported, confirming the applicability of use of the Riemann Zeta function for the analytic continuation of $\mathfrak{D}_{id}^\mathbb{N}$ in the lower half of the complex plane (except perhaps for the negative real axis itself) and 
+(ii) a simple derivation of the leading terms of the sum of the logarithms of the positive integers is given using the simple limiting function for the normalised $\mathfrak{D}_{id}^\mathbb{N}$ series on the lower half real axis.
+\enditemize
 
 ##Continuation in the lower half complex plane using the normalised $\mathfrak{D}_{id}^\mathbb{N}$ series
 
@@ -605,6 +608,42 @@ abline(h=0,lty=3)
 
 It can be observed there is excellent correspondence with the normalised Riemann Zeta function as an envelope function gives strong direct confirmation of the Riemann Zeta analytical continuation. The discrepancy for values close to the real axis may be due to (i) inaccuracies in the detrending approximation eqn \eqref {eq:approx} and/or (ii) possible differences between applicability of Riemann Zeta function to the prime counting function for $\Im(s) < 2$ which could be related to the differences between $\zeta(\Re(s))$ and $|\frac{\mathfrak{D}_{id}^\mathbb{N}}{N^{(1-\Re(s))}}|$ in the critical strip.
 
+###An alternative derivation of the leading terms of the sum of logarithms of the positive integers
+
+Using eqn \eqref {eq:finite_n_real_axis}, it is straightforward to derive the leading terms of the sum of the logarithm of the positive integers.
+
+Firstly, the derivative of the LHS and RHS of eqn \eqref {eq:finite_n_real_axis} are obtained on the lower half real axis
+
+\begin{equation} 
+\frac{d}{d\Re(s)} (\frac{1}{N^{(1-\Re(s))}}\sum_{n=1}^N (\frac{1}{n^{\Re(s)}}) ) =  \frac{ln(N)}{N^{(1-\Re(s))}}\sum_{n=1}^N (\frac{1}{n^{\Re(s)}}) - \frac{1}{N^{(1-\Re(s))}}\sum_{n=1}^N (\frac{ln(n)}{n^{\Re(s)}}) \label {eq:der_LHS}
+\end{equation}
+
+\begin{equation} 
+\frac{d}{d\Re(s)} (\frac{1}{1-\Re(s)}) = \frac{1}{(1-\Re(s))^2} \label {eq:der_RHS}
+\end{equation}
+
+in the limit of $\mathbb{N} \rightarrow \infty$ for $\Im(s) = 0$ and $\Re(s) < 1$ therefore, equating the two derivatives
+
+\begin{equation} 
+\frac{ln(N)}{N^{(1-\Re(s))}}\sum_{n=1}^N (\frac{1}{n^{\Re(s)}}) - \frac{1}{N^{(1-\Re(s))}}\sum_{n=1}^N (\frac{ln(n)}{n^{\Re(s)}}) \rightarrow \frac{1}{(1-\Re(s))^2} \qquad ,\mathbb{N} \rightarrow \infty \label {eq:der_result}
+\end{equation}
+
+For the particular value s=0, the equation simplifies to 
+
+
+\begin{equation} 
+ln(N) - \frac{1}{N}\sum_{n=1}^N ln(n) \rightarrow 1 \qquad ,\mathbb{N} \rightarrow \infty \label {eq:der_s_zero}
+\end{equation}
+
+which can be rearranged to give the leading terms of the sum of the logarithm of the positive integers
+
+\begin{equation} 
+\sum_{n=1}^N ln(n) \rightarrow Nln(N) - N \qquad ,\mathbb{N} \rightarrow \infty \label {eq:der_s_zero_final}
+\end{equation}
+
+which agrees with the leading terms, of the known Stirling formula and Euler-Maclaurin Sum Formula expansions.
+
+
 ###Behaviour of real and imaginary components of $\frac{\mathfrak{D}_{id}^\mathbb{N}}{N^{(1-\Re(s))}}$
 
 Given the above information, does it add any further insight into the Riemann Hypothesis (1,3). The following graphs, show the real and imaginary components of the absolute value function results discussed above. 
@@ -1034,4 +1073,7 @@ The lower half plane real axis values of the normalised ordinary Dirichlet serie
 
 3. Martin, J.P.D. "Applying the Argument Principle to the extended Riemann Siegel function components of the Riemann Zeta function" (2016)
 http://dx.doi.org/10.6084/m9.figshare.4012290
+
+
+
 
