@@ -643,6 +643,45 @@ which can be rearranged to give the leading terms of the sum of the logarithm of
 
 which agrees with the leading terms, of the known Stirling formula and Euler-Maclaurin Sum Formula expansions.
 
+Eqn \eqref{eq:der_result} can be differentiated a second time, to yield
+
+\begin{align}
+ln(N)&[\frac{ln(N)}{N^{(1-\Re(s))}}\sum_{n=1}^N (\frac{1}{n^{\Re(s)}}) - \frac{1}{N^{(1-\Re(s))}}\sum_{n=1}^N (\frac{ln(n)}{n^{\Re(s)}})] \notag \\ - &[\frac{ln(N)}{N^{(1-\Re(s))}}\sum_{n=1}^N (\frac{ln(n)}{n^{\Re(s)}}) - \frac{1}{N^{(1-\Re(s))}}\sum_{n=1}^N (\frac{ln(n)^2}{n^{\Re(s)}})] \rightarrow \frac{2}{(1-\Re(s))^3} \qquad ,\mathbb{N} \rightarrow \infty 
+\end{align}
+
+which when simplified has the form
+
+\begin{equation} 
+\frac{ln(N)^2}{N^{(1-\Re(s))}}\sum_{n=1}^N (\frac{1}{n^{\Re(s)}}) - 2\frac{ln(N)}{N^{(1-\Re(s))}}\sum_{n=1}^N (\frac{ln(n)}{n^{\Re(s)}}) + \frac{1}{N^{(1-\Re(s))}}\sum_{n=1}^N (\frac{ln(n)^2}{n^{\Re(s)}}) \rightarrow \frac{2}{(1-\Re(s))^3} \qquad ,\mathbb{N} \rightarrow \infty \label
+{eq:2ndder_result}
+\end{equation}
+
+For the particular value s=0, eqn \eqref{eq:2ndder_result} simplifies to
+
+\begin{equation} 
+ln(N)^2 - 2\frac{ln(N)}{N}\sum_{n=1}^N (ln(n)) + \frac{1}{N}\sum_{n=1}^N (ln(n)^2) \rightarrow 2 \qquad ,\mathbb{N} \rightarrow \infty \label
+{eq:2ndder_zero}
+\end{equation}
+
+which can be rearranged, using eqn \eqref{eq:der_s_zero_final} for $\sum_{n=1}^N (ln(n))$ to give the asymptotic leading terms of the sum of the square of the logarithms of the positive integers
+
+\begin{align} 
+\sum_{n=1}^N ln(n)^2 &\rightarrow N(2 -ln(N)^2 + 2 \frac{ln(N)}{N}\sum_{n=1}^N (ln(n)) ) \notag \\ &\rightarrow N(2 -ln(N)^2 + 2 \frac{ln(N)}{N} (Nln(N) - N) ) \notag \\ &\rightarrow Nln(N)^2-2Nln(N)+2N \qquad ,\mathbb{N} \rightarrow \infty \label {eq:2ndder_s_zero_final} 
+\end{align} 
+
+This result agrees with the known terms of the indefinite integral of $\int ln(x)^2dx$ excluding the integration constant 
+
+###General formulae for positive integer sums of $\sum_{n=1}^N \frac{ln(n)}{n^{\Re(s)}}$ and $\sum_{n=1}^N \frac{ln(n)^2}{n^{\Re(s)}}$, in the lower half real axis of $\Re(s)$
+
+
+In the limit of $\mathbb{N} \rightarrow \infty$ for $\Im(s) = 0$ and $\Re(s) < 1$, where  $\sigma \equiv \Re(s)$, using the first and second derivatives of eqn \eqref {eq:finite_n_real_axis}, ie. eqns \eqref {eq:der_result} & \eqref {eq:2ndder_result}, the following general formulae apply
+
+\begin{equation} \sum_{n=1}^N \frac{ln(n)}{n^\sigma} \rightarrow N^{(1-\sigma)}(\frac{ln(N)}{(1-\sigma)} - \frac{1}{(1-\sigma)^2}) \qquad ,\mathbb{N} \rightarrow \infty, \qquad \sigma < 1 \label {eq:gender_s_zero_final} \end{equation}
+
+\begin{align} \sum_{n=1}^N \frac{ln(n)^2}{n^{\sigma}} &\rightarrow N^{(1-\sigma)}(\frac{2}{(1-\sigma)^3}-\frac{ln(N)^2}{(1-\sigma)} + 2\frac{ln(N)}{N^{(1-\sigma)}}\sum_{n=1}^N \frac{ln(n)}{n^{\sigma}}) \\ &\rightarrow N^{(1-\sigma)}(\frac{ln(N)^2}{(1-\sigma)}- 2\frac{ln(N)}{(1-\sigma)^2}+\frac{2}{(1-\sigma)^3} ) \qquad ,\mathbb{N} \rightarrow \infty, \qquad \sigma < 1 \label {eq:gen2ndder_s_zero_final} \end{align}
+
+which saves a bit of effort, compared to integrating by parts, when deriving the equivalent looking results (excluding integration constant),  for $\int \frac{ln(x)}{x^\sigma}dx$ and $\int \frac{ln(x)^2}{x^\sigma}dx$
+
 
 ###Behaviour of real and imaginary components of $\frac{\mathfrak{D}_{id}^\mathbb{N}}{N^{(1-\Re(s))}}$
 
