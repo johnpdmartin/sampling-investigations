@@ -1,0 +1,950 @@
+---
+title: "A normalised extension of the first Chebyshev function in the lower half complex plane."
+author: "John P. D. Martin"
+date: "May 22, 2017"
+output: pdf_document
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+##Executive Summary
+
+In the lower half complex plane, $\Re(s)<1$, an extension of the first Chebyshev function $\sum_{p \le N} (\frac{log(p)}{1})$ is given by $\underset{P \le N \rightarrow \infty}{\lim} \frac{1}{P^{(1-\Re(s))}}\sum_{p \le N} \Big(\frac{log(p)}{p^{s}}\Big)$. Along the real line, $\underset{P \le N \rightarrow \infty}{\lim} \frac{1}{P^{(1-\Re(s))}}\sum_{p \le N} \Big(\frac{log(p)}{p^{\Re(s)}}\Big) \rightarrow \frac{1}{1-\Re(s)}$. Elsewhere, across the Riemann Zeta critical strip, the absolute value of the full normalised function $\Big|\frac{1}{P^{(1-\Re(s))}}\sum_{p=2}^P \Big(\frac{log(p)}{p^{\Re(s)}}\Big)\Big|$ has spikes at the location of the non-trivial Riemann Zeta zeroes.
+
+```{r, exec, echo=FALSE, cache=TRUE, fig.width=6, fig.height=5,  fig.keep='high', warning=FALSE }
+
+library(pracma)
+x <- seq(0,70,l=3501)
+
+rawratio <- function(res,x) {
+  abs(2^(res+1i*x)*pi^(res+1i*x-1)*sin(pi/2*(res+1i*x))*gammaz(1-(res+1i*x)))
+}
+theta <- function(res,x) {
+  -0.5*Im(log(1/(zeta(1-(res+1i*x))*rawratio(res,x)/zeta(res+1i*x))))
+}
+
+d_realp <- function(xo,xl,rp) {
+  sum(1/xl^(rp+1i*xo))
+}
+
+d_reallog <- function(xo,xl,rp) {
+  sum(log(xl)/xl^(rp+1i*xo))
+}
+
+all <- as.integer(seq(1,500000000,l=500000000))
+
+primelist <- as.integer(read.csv("primelist_50M.csv",header=FALSE,skip=1,blank.lines.skip=TRUE,col.names=c("1","x"))[,2])
+
+
+xr <- c(-20,-19,-18,-17,-16,-15,-14,-13,-12,-11,-10,-9,-8,-7,-6,-5,-4,-3,-2,-1,0,.2,.3,.4,.5,.6,.7)
+drpreal <- 0
+for (i in 1:length(xr)) {
+  drpreal[i] <- d_realp(0,primelist,xr[i])*(max(primelist))^min((xr[i]-1),0)
+}
+xrs <- c(seq(-20,.9,l=186),.95,.99,1.01,1.05,1.1,seq(1.2,3,15))
+par(mfrow=c(1,2))
+
+realpart <- 0.5
+lzeroes <- 100000
+xl <- primelist[2:lzeroes]
+
+d_seriesp <- function(xo,xl) {
+ # sum(exp(-1i*xo*log(xl))/xl^realpart)
+  sum(log(xl)/xl^(realpart+1i*xo))*(primelist[lzeroes])^(realpart-1)
+}
+
+dplus <- 0.
+for (i in 1:length(x)) {
+  dplus[i] <- d_seriesp(x[i],xl)
+}
+
+par(fig=c(0.5,1,0.,0.55), new=TRUE)
+# plot(x=x,y=(abs(dplus)*(lzeroes)^min((realpart-1),0))*x,col=6,typ="l")
+plot(x=x,y=abs(dplus)-1/x,col=6,typ="l",main=paste0("detrended normalised","\n abs(1st Chebyshev fn)","\n Re(s)=0.5"),
+     ylim=c(-1*max((abs(dplus)-1/x)[500:length(x)]),1*max((abs(dplus)-1/x)[500:length(x)])),
+     xlab="imaginary axis",ylab="function value",cex.xlab=0.8,cex.main=.7,cex.ylab=0.7)
+# lines(x=x,y=abs(zeta(0.5+x*1i))/lzeroes^(1-0.5),typ="l",lty=1,lwd=2,col=1,ylim=c(-2,2))
+# lines(x=x,y=-abs(zeta(0.5+x*1i))/lzeroes^(1-0.5),typ="l",lty=1,lwd=2,col=1,ylim=c(-2,2))
+abline(h=1,lty=3)
+# 
+# legend(0, 1.5*max((abs(dplus)-1/x)[500:length(x)]), c("detrended norm 1st chebyshev series","abs(zeta(s))/N^(1-Re(s))"),
+#        lty = 1,cex=.4, lwd = c(2,2,2,2), col = c("purple",  "black"))
+
+par(fig=c(0,0.5,0.,0.55), new=TRUE)
+
+plot(x=x,y=(abs(dplus)),col=6,typ="l",main=paste0("normalised","\n abs(1st Chebyshev fn)","\n Re(s)=0.5"),
+     xlab="imaginary axis",ylab="function value",cex.xlab=0.8,cex.main=.7,cex.ylab=0.7,
+     ylim=c(0,max(abs(dplus)[500:length(x)])))
+lines(x=x,y=1/x,lty=2)
+abline(h=0,lty=3)
+
+
+
+```
+
+***Figure 1. (i) Normalised absolute value of the extended first Chebyshev function ($\Re(s) < 1$) along the Riemann Zeta critical line s=0.5+it and (ii) as a detrended function revealing features coincident with the Riemann Zeta zero positions***
+
+##Introduction
+
+The first Chebyshev function is given by the sum of the logarithms of the primes less than a given number x
+
+\begin{equation} \label{eq:1st_cheb}
+\theta(x) = \sum_{p \le x} ln(p) 
+\end{equation}
+
+This function is closely related to the second Chebyshev function 
+
+\begin{equation} \label{eq:2nd_cheb}
+\psi(x) = \sum_{k=2}^{\lfloor ln(ln(x)) \rfloor} \theta(x^{\frac{1}{k}})  
+\end{equation}
+
+and hence the prime counting function $\pi(x)$ (1,2). Asymptotic series and bounds have been derived for the first Chebyshev function (3,4), where the kth prime p_k behaves as
+
+\begin{align} \label{eq:series}
+p_k &\le k(ln(k) + ln(ln(k)) - 0.9484) \qquad &\text{for } k \ge 39017  \notag \\
+p_k &\le k(ln(k) + ln(ln(k)) - 1 + \frac{ln(ln(k))-1.8}{ln(k)}) \qquad &\text{for } k \ge 27076   \\
+p_k &\ge k(ln(k) + ln(ln(k)) - 1 + \frac{ln(ln)(k))-2.25}{ln(k)}) \qquad &\text{for } k \ge 2  \notag
+\end{align}
+
+In a study of the normalised ordinary Dirichlet series (5), convergent in the lower half complex plane, the derivative of the normalised ordinary Dirichlet series includes the normalised sum of the ratio of the logarithm of the integers divided by integer to the power of the complex co-ordinates ,   
+
+\begin{equation} \label{eq:log_int}
+\frac{1}{N^{(1-\Re(s))}}\sum_{n=2}^N \Big(\frac{ln(n)}{n^{s}}\Big)
+\end{equation}
+
+Recognising that on restricting the sum to just the primes, the \textit{primes only} version of the above function eqn \eqref{eq:log_int} forms a normalised extension of the first Chebyshev function, defined by
+
+\begin{equation} \label{eq:1st_cheb_ext}
+\theta_{norm}(N,s) = \frac{1}{P^{(1-\Re(s))}}\sum_{p \le N} \Big(\frac{ln(p)}{p^s}\Big) \qquad \qquad \Re(s) \le 1 
+\end{equation}
+
+where P is the largest prime $\le$ N. 
+
+This normalised extended first Chebyshev function is also applicable to the lower half complex plane $\Re(s) \le 1$. In this paper, some properties of the function are presented, in particular, (i) noting the presence of the non-trivial Riemann Zeta zeroes (5) discontinuously modulating the function along the critical strip and (ii) a derivation of the leading term(s) of the asymptotic series expansion for eqn \eqref{eq:1st_cheb_ext} and its first derivative which contains the sum of the square of the logarithm of the primes for s=0. 
+
+
+##Behaviour of the normalised extended first Chebyshev function in the lower half complex plane 
+
+From Hardy & Wright (6), the first Chebyshev function has the asymptotic behaviour
+
+\begin{equation} 
+\underset{N \rightarrow \infty}{\lim} \frac{\theta(N)}{N} = 1
+\end{equation}
+
+For the normalised extended first Chebyshev function, at s=0, therefore
+
+\begin{align} \label {eq:std_cheb}
+\underset{N \rightarrow \infty}{\lim} \theta_{norm}(N,0) &= \underset{N \rightarrow \infty}{\lim} \frac{1}{P^{(1-0)}}\sum_{p \le N} \Big(\frac{ln(p)}{p^0}\Big) \qquad P = \max(p \le N) \notag \\
+&= \underset{N \rightarrow \infty}{\lim} \frac{\sum_{p \le N} ln(p)}{P} \qquad \qquad \qquad P = \max(p \le N) \notag \\
+&= \underset{N \rightarrow \infty}{\lim} \frac{\theta(N)}{N} \notag \\
+& = 1
+\end{align}
+
+As will be seen graphically, the normalised extended first Chebyshev function (i) along the real axis for $\Re(s) < 1$ has the limiting behaviour
+
+\begin{equation} \label {eq:1st_cheb_real} 
+\underset{P \le N \rightarrow \infty}{\lim} \Big[\theta_{norm}(P,\Re(s))\Big] \rightarrow \frac{1}{1-\Re(s)} \qquad  \Re(s) < 1, \Im(s) =0
+\end{equation}
+
+which includes the ordinary first Chebyshev function result eqn \eqref {eq:std_cheb}, and (ii) across the lower half complex plane for $10^5 < N < \infty$
+
+\begin{equation} \label {eq:1st_cheb_plane} 
+|\theta_{norm}(N,s)| \approx \Big( \frac{1}{\Im(s)}\Big)*(\text{small modulation})  \qquad  \Re(s) < 1, \Im(s) > 9
+\end{equation}
+
+As $\Re(s) \rightarrow 1^-$ the convergence to RHS of eqn \eqref {eq:1st_cheb_real} becomes slower. Interestingly, the small modulation features in the Riemann Zeta critical strip of the complex plane for the normalised first Chebyshev function, are sharp absorptive or dispersive features at the positions of the non-trivial Riemann Zeta zeroes. This behaviour, summing over the primes for the summand $ln(p)/p^s$ is in contrast to the scaled full Riemann Zeta function modulation present for the normalised ordinary Dirichlet series (5) which uses all integers and the summand $1/n^s$.
+
+Figure 2, illustrates the $\frac{1}{1-\Re(s)}$ behaviour as given in eqn \eqref{eq:1st_cheb_real} for calculations using the first 50*10^6 primes (7). 
+
+
+```{r, fig3, echo=FALSE, cache=TRUE, fig.width=6, fig.height=5,  fig.keep='high', warning=FALSE }
+
+xr1 <- c(-20,-19,-18,-17,-16,-15,-14,-13,-12,-11,-10,-9,-8,-7,-6,-5,-4,-3,-2,-1,0,.2,.3,.4,.5,.6,.7)
+drpreallog <- 0
+for (i in 1:length(xr1)) {
+  drpreallog[i] <- d_reallog(0,primelist,xr1[i])*(max(primelist))^min((xr1[i]-1),0)
+}
+
+
+plot(x=1/(1-xr1),y=(drpreallog),typ="l",lwd=2,lty=2,main=paste0("normalised first Chebyshev function on lower real axis, Re(s) < 1","\n as function of 1/(1-Re(s))"),
+     xlab="1/(1-Re(s))",ylab="function value",cex.xlab=0.8,cex.main=.7,cex.ylab=0.7,col=4)
+lines(x=1/(1-xr1),y=1/(1-xr1),col=3)
+
+legend(0, 3, c("normalised first Chebyshev function","1/(1-Re(s))"),
+       lty = c(2,1,1,1),cex=.6, lwd = c(2,2,2,2), col = c("blue",  "green"))
+
+
+
+```
+
+***Figure 2. $\frac{1}{1-\Re(s)}$ dependence of normalised first Chebyshev function on real axis $\Re(s) < 1$***
+
+Combining the result from (5) for the normalised ordinary Dirichlet series gives the following conjectured asymptotic relationship between the harmonic series sum of all integers and the harmonic series sum of all primes where the logarithm of each prime is included in the numerator of the summand  
+
+\begin{equation} \label {eq:combined}
+\underset{N \rightarrow \infty}{\lim} (\frac{1}{N^{(1-\Re(s))}}\sum_{n=1}^N (\frac{1}{n^{\Re(s)}}) ) \sim \underset{P \le N \rightarrow \infty}{\lim} \frac{1}{P^{(1-\Re(s))}}\sum_{p \le N} \Big(\frac{ln(p)}{p^{\Re(s)}}\Big) \rightarrow \frac{1}{1-\Re(s)} \qquad  \Re(s) < 1, \Im(s) =0 
+\end{equation}
+
+and it follows just using eqn \eqref {eq:1st_cheb_real} or eqn \eqref {eq:combined} that the asymptotic behaviour for the extended first Chebyshev function is given by
+
+\begin{equation} \label {eq:general_real}
+\underset{P \le N \rightarrow \infty}{\lim} \sum_{p \le N} \Big(\frac{ln(p)}{p^{\Re(s)}}\Big) \rightarrow \frac{P^{(1-\Re(s))}}{1-\Re(s)} \qquad \qquad  \Re(s) < 1, \Im(s) =0 
+\end{equation}
+
+where for s=0
+
+\begin{equation} \label {eq:general_s_zero}
+\underset{P \le N \rightarrow \infty}{\lim} \sum_{p \le N} ln(p) \rightarrow P \qquad \qquad  \Re(s) < 1, \Im(s) =0 
+\end{equation}
+
+Using eqn \eqref {eq:1st_cheb_real}, it is straightforward to derive the leading terms of the sum of the square of the logarithm of the primes.
+
+Firstly, the derivative of the LHS and RHS of eqn \eqref {eq:1st_cheb_real} are obtained on the lower half real axis
+
+\begin{equation} 
+\frac{d}{d\Re(s)} (\frac{1}{P^{(1-\Re(s))}}\sum_{p \le N} (\frac{ln(p)}{p^{\Re(s)}}) ) =  \frac{ln(P)}{P^{(1-\Re(s))}}\sum_{p \le N} \Big(\frac{ln(p)}{p^{\Re(s)}}\Big) - \frac{1}{P^{(1-\Re(s))}}\sum_{p \le N}\Big(\frac{ln(p)^2}{p^{\Re(s)}}\Big) \label {eq:der_LHS}
+\end{equation}
+
+\begin{equation} 
+\frac{d}{d\Re(s)} \Big(\frac{1}{1-\Re(s)}\Big) = \frac{1}{(1-\Re(s))^2} \label {eq:der_RHS}
+\end{equation}
+
+in the limit of $\mathbb{N} \rightarrow \infty$ for $\Im(s) = 0$ and $\Re(s) < 1$ therefore, equating the two derivatives
+
+\begin{equation} 
+\frac{ln(P)}{P^{(1-\Re(s))}}\sum_{p \le N} \Big(\frac{ln(p)}{p^{\Re(s)}}\Big) - \frac{1}{P^{(1-\Re(s))}}\sum_{p \le N} \Big(\frac{ln(p)^2}{p^{\Re(s)}}\Big) \rightarrow \frac{1}{(1-\Re(s))^2} \qquad ,\mathbb{N} \rightarrow \infty \label {eq:der_result}
+\end{equation}
+
+For the particular value s=0, the equation simplifies to 
+
+
+\begin{equation} 
+\frac{ln(P)}{P}\sum_{p \le N} ln(p) - \frac{1}{P}\sum_{p \le N} ln(p)^2 \rightarrow 1 \qquad ,\mathbb{N} \rightarrow \infty, P = \max(p \le N) \label {eq:der_s_zero}
+\end{equation}
+
+which can be rearranged using eqn \eqref {eq:general_s_zero} to give the leading asymptotic terms of the sum of the square of the logarithm of the primes
+
+\begin{equation} \label {eq:logp_sq_final}
+\sum_{p \le N} ln(p)^2 \rightarrow Pln(P) - P \qquad \qquad \qquad \mathbb{N} \rightarrow \infty, P = \max(p \le N) 
+\end{equation}
+
+In the limit of $\mathbb{N} \rightarrow \infty$ for $\Im(s) = 0$ and $\Re(s) < 1$, where  $\sigma \equiv \Re(s)$, using eqn \eqref {eq:1st_cheb_real} and the first derivative, the following general formulae apply to the leading term(s) of the asymptotic expansions
+
+\begin{equation} \sum_{p \le N} \frac{ln(p)}{p^\sigma} \rightarrow \frac{P^{(1-\sigma)}}{(1-\sigma)} \qquad \qquad \qquad\text{when }\mathbb{N} \rightarrow \infty \text{, } \sigma < 1 \text{ and } P = \max(p \le N) \label {eq:logp_gen} \end{equation}
+
+\begin{equation} \sum_{p \le N} \frac{ln(p)^2}{p^\sigma} \rightarrow P^{(1-\sigma)}\bigg(\frac{ln(P)}{(1-\sigma)} - \frac{1}{(1-\sigma)^2}\bigg) \qquad \text{when }\mathbb{N} \rightarrow \infty \text{, } \sigma < 1 \text{ and } P = \max(p \le N) \label {eq:logp_sq_gen} \end{equation}
+
+
+
+###Lower half complex plane real axis behaviour of the normalised extended first Chebyshev function for the first 10^5 primes & 5*10^7 primes
+
+Figure 3, illustrates the behaviour of magnitude of  $|\frac{1}{P^{(1-\sigma)}}\sum_{p \le N} \frac{ln(p)}{p^\sigma}|$ for various $\Re(s)$ values in the complex plane. The left hand figure, shows the $|\frac{1}{P^{(1-\sigma)}}\sum_{p \le N} \frac{ln(p)}{p^\sigma}|$ for the first 10^5 primes, with P = 12,195,149 which is a low number of primes but this allows a better direct view of the features of modulation on the absolute value of the function, across the complex plane. As the number of primes increases, the modulation reduces to a negligible component of the function. The right hand figure is the approximately detrended version of the absolute value of the function. 
+
+```{r, fig4a, echo=FALSE, cache=TRUE, fig.width=6, fig.height=5,  fig.keep='high', warning=FALSE }
+
+library(pracma)
+x <- seq(0,70,l=3501)
+
+rawratio <- function(res,x) {
+  abs(2^(res+1i*x)*pi^(res+1i*x-1)*sin(pi/2*(res+1i*x))*gammaz(1-(res+1i*x)))
+}
+theta <- function(res,x) {
+  -0.5*Im(log(1/(zeta(1-(res+1i*x))*rawratio(res,x)/zeta(res+1i*x))))
+}
+
+d_realp <- function(xo,xl,rp) {
+  sum(1/xl^(rp+1i*xo))
+}
+
+par(mfrow=c(2,2))
+
+realpart <- -1
+lzeroes <- 100000
+xl <- primelist[2:lzeroes]
+
+d_seriesp <- function(xo,xl) {
+ # sum(exp(-1i*xo*log(xl))/xl^realpart)
+  sum(log(xl)/xl^(realpart+1i*xo))*(primelist[lzeroes])^(realpart-1)
+}
+
+dplus <- 0.
+for (i in 1:length(x)) {
+  dplus[i] <- d_seriesp(x[i],xl)
+}
+
+par(fig=c(0.5,1,0.,0.55), new=TRUE)
+# plot(x=x,y=(abs(dplus)*(lzeroes)^min((realpart-1),0))*x,col=6,typ="l")
+plot(x=x,y=abs(dplus)-1/x,col=6,typ="l",main=paste0("detrended normalised abs(1st Chebyshev fn)","\n Re(s)=-1"),
+     ylim=c(-1*max((abs(dplus)-1/x)[500:length(x)]),1*max((abs(dplus)-1/x)[500:length(x)])),
+     xlab="imaginary axis",ylab="function value",cex.xlab=0.8,cex.main=.7,cex.ylab=0.7)
+# lines(x=x,y=abs(zeta(0.5+x*1i))/lzeroes^(1-0.5),typ="l",lty=1,lwd=2,col=1,ylim=c(-2,2))
+# lines(x=x,y=-abs(zeta(0.5+x*1i))/lzeroes^(1-0.5),typ="l",lty=1,lwd=2,col=1,ylim=c(-2,2))
+abline(h=0,lty=3)
+# 
+# legend(0, 1.5*max((abs(dplus)-1/x)[500:length(x)]), c("detrended norm 1st chebyshev series","abs(zeta(s))/N^(1-Re(s))"),
+#        lty = 1,cex=.4, lwd = c(2,2,2,2), col = c("purple",  "black"))
+
+par(fig=c(0,0.5,0.,0.55), new=TRUE)
+
+plot(x=x,y=(abs(dplus)),col=6,typ="l",main=paste0("normalised abs(1st Chebyshev fn)","\n Re(s)=-1"),
+     xlab="imaginary axis",ylab="function value",cex.xlab=0.8,cex.main=.7,cex.ylab=0.7,
+     ylim=c(0,max(abs(dplus)[500:length(x)])))
+lines(x=x,y=1/x,lty=2)
+abline(h=0,lty=3)
+
+
+
+```
+
+```{r, fig4b, echo=FALSE, cache=TRUE, fig.width=6, fig.height=5,  fig.keep='high', warning=FALSE }
+
+library(pracma)
+x <- seq(0,70,l=3501)
+
+rawratio <- function(res,x) {
+  abs(2^(res+1i*x)*pi^(res+1i*x-1)*sin(pi/2*(res+1i*x))*gammaz(1-(res+1i*x)))
+}
+theta <- function(res,x) {
+  -0.5*Im(log(1/(zeta(1-(res+1i*x))*rawratio(res,x)/zeta(res+1i*x))))
+}
+
+d_realp <- function(xo,xl,rp) {
+  sum(1/xl^(rp+1i*xo))
+}
+
+par(mfrow=c(2,2))
+
+realpart <- 0
+lzeroes <- 100000
+xl <- primelist[2:lzeroes]
+
+d_seriesp <- function(xo,xl) {
+ # sum(exp(-1i*xo*log(xl))/xl^realpart)
+  sum(log(xl)/xl^(realpart+1i*xo))*(primelist[lzeroes])^(realpart-1)
+}
+
+dplus <- 0.
+for (i in 1:length(x)) {
+  dplus[i] <- d_seriesp(x[i],xl)
+}
+
+par(fig=c(0.5,1,0.,0.55), new=TRUE)
+# plot(x=x,y=(abs(dplus)*(lzeroes)^min((realpart-1),0))*x,col=6,typ="l")
+plot(x=x,y=abs(dplus)-1/x,col=6,typ="l",main=paste0("detrended normalised abs(1st Chebyshev fn)","\n Re(s)=0"),
+     ylim=c(-1*max((abs(dplus)-1/x)[500:length(x)]),1*max((abs(dplus)-1/x)[500:length(x)])),
+     xlab="imaginary axis",ylab="function value",cex.xlab=0.8,cex.main=.7,cex.ylab=0.7)
+# lines(x=x,y=abs(zeta(0.5+x*1i))/lzeroes^(1-0.5),typ="l",lty=1,lwd=2,col=1,ylim=c(-2,2))
+# lines(x=x,y=-abs(zeta(0.5+x*1i))/lzeroes^(1-0.5),typ="l",lty=1,lwd=2,col=1,ylim=c(-2,2))
+abline(h=0,lty=3)
+# 
+# legend(0, 1.5*max((abs(dplus)-1/x)[500:length(x)]), c("detrended norm 1st chebyshev series","abs(zeta(s))/N^(1-Re(s))"),
+#        lty = 1,cex=.4, lwd = c(2,2,2,2), col = c("purple",  "black"))
+
+par(fig=c(0,0.5,0.,0.55), new=TRUE)
+
+plot(x=x,y=(abs(dplus)),col=6,typ="l",main=paste0("normalised abs(1st Chebyshev fn)","\n Re(s)=0"),
+     xlab="imaginary axis",ylab="function value",cex.xlab=0.8,cex.main=.7,cex.ylab=0.7,
+     ylim=c(0,max(abs(dplus)[500:length(x)])))
+lines(x=x,y=1/x,lty=2)
+abline(h=0,lty=3)
+
+
+
+```
+
+```{r, fig4c, echo=FALSE, cache=TRUE, fig.width=6, fig.height=5,  fig.keep='high', warning=FALSE }
+
+library(pracma)
+x <- seq(0,70,l=3501)
+
+rawratio <- function(res,x) {
+  abs(2^(res+1i*x)*pi^(res+1i*x-1)*sin(pi/2*(res+1i*x))*gammaz(1-(res+1i*x)))
+}
+theta <- function(res,x) {
+  -0.5*Im(log(1/(zeta(1-(res+1i*x))*rawratio(res,x)/zeta(res+1i*x))))
+}
+
+d_realp <- function(xo,xl,rp) {
+  sum(1/xl^(rp+1i*xo))
+}
+
+par(mfrow=c(2,2))
+
+realpart <- 0.25
+lzeroes <- 100000
+xl <- primelist[2:lzeroes]
+
+d_seriesp <- function(xo,xl) {
+ # sum(exp(-1i*xo*log(xl))/xl^realpart)
+  sum(log(xl)/xl^(realpart+1i*xo))*(primelist[lzeroes])^(realpart-1)
+}
+
+dplus <- 0.
+for (i in 1:length(x)) {
+  dplus[i] <- d_seriesp(x[i],xl)
+}
+
+par(fig=c(0.5,1,0.,0.55), new=TRUE)
+# plot(x=x,y=(abs(dplus)*(lzeroes)^min((realpart-1),0))*x,col=6,typ="l")
+plot(x=x,y=abs(dplus)-1/x,col=6,typ="l",main=paste0("detrended normalised abs(1st Chebyshev fn)","\n Re(s)=0.25"),
+     ylim=c(-1*max((abs(dplus)-1/x)[500:length(x)]),1*max((abs(dplus)-1/x)[500:length(x)])),
+     xlab="imaginary axis",ylab="function value",cex.xlab=0.8,cex.main=.7,cex.ylab=0.7)
+# lines(x=x,y=abs(zeta(0.5+x*1i))/lzeroes^(1-0.5),typ="l",lty=1,lwd=2,col=1,ylim=c(-2,2))
+# lines(x=x,y=-abs(zeta(0.5+x*1i))/lzeroes^(1-0.5),typ="l",lty=1,lwd=2,col=1,ylim=c(-2,2))
+abline(h=0,lty=3)
+# 
+# legend(0, 1.5*max((abs(dplus)-1/x)[500:length(x)]), c("detrended norm 1st chebyshev series","abs(zeta(s))/N^(1-Re(s))"),
+#        lty = 1,cex=.4, lwd = c(2,2,2,2), col = c("purple",  "black"))
+
+par(fig=c(0,0.5,0.,0.55), new=TRUE)
+
+plot(x=x,y=(abs(dplus)),col=6,typ="l",main=paste0("normalised abs(1st Chebyshev fn)","\n Re(s)=0.25"),
+     xlab="imaginary axis",ylab="function value",cex.xlab=0.8,cex.main=.7,cex.ylab=0.7,
+     ylim=c(0,max(abs(dplus)[500:length(x)])))
+lines(x=x,y=1/x,lty=2)
+abline(h=0,lty=3)
+
+
+
+```
+
+```{r, fig4d, echo=FALSE, cache=TRUE, fig.width=6, fig.height=5,  fig.keep='high', warning=FALSE }
+
+library(pracma)
+x <- seq(0,70,l=3501)
+
+rawratio <- function(res,x) {
+  abs(2^(res+1i*x)*pi^(res+1i*x-1)*sin(pi/2*(res+1i*x))*gammaz(1-(res+1i*x)))
+}
+theta <- function(res,x) {
+  -0.5*Im(log(1/(zeta(1-(res+1i*x))*rawratio(res,x)/zeta(res+1i*x))))
+}
+
+d_realp <- function(xo,xl,rp) {
+  sum(1/xl^(rp+1i*xo))
+}
+
+par(mfrow=c(2,2))
+
+realpart <- 0.5
+lzeroes <- 100000
+xl <- primelist[2:lzeroes]
+
+d_seriesp <- function(xo,xl) {
+ # sum(exp(-1i*xo*log(xl))/xl^realpart)
+  sum(log(xl)/xl^(realpart+1i*xo))*(primelist[lzeroes])^(realpart-1)
+}
+
+dplus <- 0.
+for (i in 1:length(x)) {
+  dplus[i] <- d_seriesp(x[i],xl)
+}
+
+par(fig=c(0.5,1,0.,0.55), new=TRUE)
+# plot(x=x,y=(abs(dplus)*(lzeroes)^min((realpart-1),0))*x,col=6,typ="l")
+plot(x=x,y=abs(dplus)-1/x,col=6,typ="l",main=paste0("detrended normalised abs(1st Chebyshev fn)","\n Re(s)=0.5"),
+     ylim=c(-1*max((abs(dplus)-1/x)[500:length(x)]),1*max((abs(dplus)-1/x)[500:length(x)])),
+     xlab="imaginary axis",ylab="function value",cex.xlab=0.8,cex.main=.7,cex.ylab=0.7)
+# lines(x=x,y=abs(zeta(0.5+x*1i))/lzeroes^(1-0.5),typ="l",lty=1,lwd=2,col=1,ylim=c(-2,2))
+# lines(x=x,y=-abs(zeta(0.5+x*1i))/lzeroes^(1-0.5),typ="l",lty=1,lwd=2,col=1,ylim=c(-2,2))
+abline(h=0,lty=3)
+# 
+# legend(0, 1.5*max((abs(dplus)-1/x)[500:length(x)]), c("detrended norm 1st chebyshev series","abs(zeta(s))/N^(1-Re(s))"),
+#        lty = 1,cex=.4, lwd = c(2,2,2,2), col = c("purple",  "black"))
+
+par(fig=c(0,0.5,0.,0.55), new=TRUE)
+
+plot(x=x,y=(abs(dplus)),col=6,typ="l",main=paste0("normalised abs(1st Chebyshev fn)","\n Re(s)=0.5"),
+     xlab="imaginary axis",ylab="function value",cex.xlab=0.8,cex.main=.7,cex.ylab=0.7,
+     ylim=c(0,max(abs(dplus)[500:length(x)])))
+lines(x=x,y=1/x,lty=2)
+abline(h=0,lty=3)
+
+
+
+```
+
+
+```{r, fig4e, echo=FALSE, cache=TRUE, fig.width=6, fig.height=5,  fig.keep='high', warning=FALSE }
+
+library(pracma)
+x <- seq(0,70,l=3501)
+
+rawratio <- function(res,x) {
+  abs(2^(res+1i*x)*pi^(res+1i*x-1)*sin(pi/2*(res+1i*x))*gammaz(1-(res+1i*x)))
+}
+theta <- function(res,x) {
+  -0.5*Im(log(1/(zeta(1-(res+1i*x))*rawratio(res,x)/zeta(res+1i*x))))
+}
+
+d_realp <- function(xo,xl,rp) {
+  sum(1/xl^(rp+1i*xo))
+}
+
+par(mfrow=c(2,2))
+
+realpart <- 0.75
+lzeroes <- 100000
+xl <- primelist[2:lzeroes]
+
+d_seriesp <- function(xo,xl) {
+ # sum(exp(-1i*xo*log(xl))/xl^realpart)
+  sum(log(xl)/xl^(realpart+1i*xo))*(primelist[lzeroes])^(realpart-1)
+}
+
+dplus <- 0.
+for (i in 1:length(x)) {
+  dplus[i] <- d_seriesp(x[i],xl)
+}
+
+par(fig=c(0.5,1,0.,0.55), new=TRUE)
+# plot(x=x,y=(abs(dplus)*(lzeroes)^min((realpart-1),0))*x,col=6,typ="l")
+plot(x=x,y=abs(dplus)-1/x,col=6,typ="l",main=paste0("detrended normalised abs(1st Chebyshev fn)","\n Re(s)=0.75"),
+     ylim=c(-1*max((abs(dplus)-1/x)[500:length(x)]),1*max((abs(dplus)-1/x)[500:length(x)])),
+     xlab="imaginary axis",ylab="function value",cex.xlab=0.8,cex.main=.7,cex.ylab=0.7)
+# lines(x=x,y=abs(zeta(0.5+x*1i))/lzeroes^(1-0.5),typ="l",lty=1,lwd=2,col=1,ylim=c(-2,2))
+# lines(x=x,y=-abs(zeta(0.5+x*1i))/lzeroes^(1-0.5),typ="l",lty=1,lwd=2,col=1,ylim=c(-2,2))
+abline(h=0,lty=3)
+# 
+# legend(0, 1.5*max((abs(dplus)-1/x)[500:length(x)]), c("detrended norm 1st chebyshev series","abs(zeta(s))/N^(1-Re(s))"),
+#        lty = 1,cex=.4, lwd = c(2,2,2,2), col = c("purple",  "black"))
+
+par(fig=c(0,0.5,0.,0.55), new=TRUE)
+
+plot(x=x,y=(abs(dplus)),col=6,typ="l",main=paste0("normalised abs(1st Chebyshev fn)","\n Re(s)=0.75"),
+     xlab="imaginary axis",ylab="function value",cex.xlab=0.8,cex.main=.7,cex.ylab=0.7,
+     ylim=c(0,max(abs(dplus)[500:length(x)])))
+lines(x=x,y=1/x,lty=2)
+abline(h=0,lty=3)
+
+
+
+```
+
+```{r, fig4f, echo=FALSE, cache=TRUE, fig.width=6, fig.height=5,  fig.keep='high', warning=FALSE }
+
+library(pracma)
+x <- seq(0,70,l=3501)
+
+rawratio <- function(res,x) {
+  abs(2^(res+1i*x)*pi^(res+1i*x-1)*sin(pi/2*(res+1i*x))*gammaz(1-(res+1i*x)))
+}
+theta <- function(res,x) {
+  -0.5*Im(log(1/(zeta(1-(res+1i*x))*rawratio(res,x)/zeta(res+1i*x))))
+}
+
+d_realp <- function(xo,xl,rp) {
+  sum(1/xl^(rp+1i*xo))
+}
+
+par(mfrow=c(2,2))
+
+realpart <- 1
+lzeroes <- 100000
+xl <- primelist[2:lzeroes]
+
+d_seriesp <- function(xo,xl) {
+ # sum(exp(-1i*xo*log(xl))/xl^realpart)
+  sum(log(xl)/xl^(realpart+1i*xo))*(primelist[lzeroes])^(realpart-1)
+}
+
+dplus <- 0.
+for (i in 1:length(x)) {
+  dplus[i] <- d_seriesp(x[i],xl)
+}
+
+par(fig=c(0.5,1,0.,0.55), new=TRUE)
+# plot(x=x,y=(abs(dplus)*(lzeroes)^min((realpart-1),0))*x,col=6,typ="l")
+plot(x=x,y=abs(dplus)-1/x,col=6,typ="l",main=paste0("detrended normalised abs(1st Chebyshev fn)","\n Re(s)=1"),
+     ylim=c(-1*max((abs(dplus)-1/x)[500:length(x)]),1*max((abs(dplus)-1/x)[500:length(x)])),
+     xlab="imaginary axis",ylab="function value",cex.xlab=0.8,cex.main=.7,cex.ylab=0.7)
+# lines(x=x,y=abs(zeta(0.5+x*1i))/lzeroes^(1-0.5),typ="l",lty=1,lwd=2,col=1,ylim=c(-2,2))
+# lines(x=x,y=-abs(zeta(0.5+x*1i))/lzeroes^(1-0.5),typ="l",lty=1,lwd=2,col=1,ylim=c(-2,2))
+abline(h=0,lty=3)
+# 
+# legend(0, 1.5*max((abs(dplus)-1/x)[500:length(x)]), c("detrended norm 1st chebyshev series","abs(zeta(s))/N^(1-Re(s))"),
+#        lty = 1,cex=.4, lwd = c(2,2,2,2), col = c("purple",  "black"))
+
+par(fig=c(0,0.5,0.,0.55), new=TRUE)
+
+plot(x=x,y=(abs(dplus)),col=6,typ="l",main=paste0("normalised abs(1st Chebyshev fn)","\n Re(s)=1"),
+     xlab="imaginary axis",ylab="function value",cex.xlab=0.8,cex.main=.7,cex.ylab=0.7,
+     ylim=c(0,max(abs(dplus)[500:length(x)])))
+lines(x=x,y=1/x,lty=2)
+abline(h=0,lty=3)
+
+
+```
+
+***Figure 3. Lower half complex plane behaviour of the absolute value of the normalised extended first Chebyshev function and its detrended version for the first $10^5$ primes***
+
+```{r, fig3a, echo=FALSE, cache=TRUE, fig.width=6, fig.height=5,  fig.keep='high', warning=FALSE }
+
+library(pracma)
+x <- seq(0,70,l=3501)
+
+rawratio <- function(res,x) {
+  abs(2^(res+1i*x)*pi^(res+1i*x-1)*sin(pi/2*(res+1i*x))*gammaz(1-(res+1i*x)))
+}
+theta <- function(res,x) {
+  -0.5*Im(log(1/(zeta(1-(res+1i*x))*rawratio(res,x)/zeta(res+1i*x))))
+}
+
+d_realp <- function(xo,xl,rp) {
+  sum(1/xl^(rp+1i*xo))
+}
+
+par(mfrow=c(2,2))
+
+realpart <- 0.25
+lzeroes <- 50000000
+xl <- primelist[2:lzeroes]
+
+d_seriesp <- function(xo,xl) {
+ # sum(exp(-1i*xo*log(xl))/xl^realpart)
+  sum(log(xl)/xl^(realpart+1i*xo))*(primelist[lzeroes])^(realpart-1)
+}
+
+dplus <- 0.
+for (i in 1:length(x)) {
+  dplus[i] <- d_seriesp(x[i],xl)
+}
+
+par(fig=c(0.5,1,0.,0.55), new=TRUE)
+# plot(x=x,y=(abs(dplus)*(lzeroes)^min((realpart-1),0))*x,col=6,typ="l")
+plot(x=x,y=abs(dplus)-1/x,col=6,typ="l",main=paste0("detrended normalised abs(1st Chebyshev fn)","\n Re(s)=0.25"),
+     ylim=c(-1*max((abs(dplus)-1/x)[500:length(x)]),1*max((abs(dplus)-1/x)[500:length(x)])),
+     xlab="imaginary axis",ylab="function value",cex.xlab=0.8,cex.main=.7,cex.ylab=0.7)
+# lines(x=x,y=abs(zeta(0.5+x*1i))/lzeroes^(1-0.5),typ="l",lty=1,lwd=2,col=1,ylim=c(-2,2))
+# lines(x=x,y=-abs(zeta(0.5+x*1i))/lzeroes^(1-0.5),typ="l",lty=1,lwd=2,col=1,ylim=c(-2,2))
+abline(h=0,lty=3)
+# 
+# legend(0, 1.5*max((abs(dplus)-1/x)[500:length(x)]), c("detrended norm 1st chebyshev series","abs(zeta(s))/N^(1-Re(s))"),
+#        lty = 1,cex=.4, lwd = c(2,2,2,2), col = c("purple",  "black"))
+
+par(fig=c(0,0.5,0.,0.55), new=TRUE)
+
+plot(x=x,y=(abs(dplus)),col=6,typ="l",main=paste0("normalised abs(1st Chebyshev fn)","\n Re(s)=0.25"),
+     xlab="imaginary axis",ylab="function value",cex.xlab=0.8,cex.main=.7,cex.ylab=0.7,
+     ylim=c(0,max(abs(dplus)[500:length(x)])))
+lines(x=x,y=1/x,lty=2)
+abline(h=0,lty=3)
+
+
+
+```
+
+```{r, fig3b, echo=FALSE, cache=TRUE, fig.width=6, fig.height=5,  fig.keep='high', warning=FALSE }
+
+library(pracma)
+x <- seq(0,70,l=3501)
+
+rawratio <- function(res,x) {
+  abs(2^(res+1i*x)*pi^(res+1i*x-1)*sin(pi/2*(res+1i*x))*gammaz(1-(res+1i*x)))
+}
+theta <- function(res,x) {
+  -0.5*Im(log(1/(zeta(1-(res+1i*x))*rawratio(res,x)/zeta(res+1i*x))))
+}
+
+d_realp <- function(xo,xl,rp) {
+  sum(1/xl^(rp+1i*xo))
+}
+
+par(mfrow=c(2,2))
+
+realpart <- 0.5
+lzeroes <- 50000000
+xl <- primelist[2:lzeroes]
+
+d_seriesp <- function(xo,xl) {
+ # sum(exp(-1i*xo*log(xl))/xl^realpart)
+  sum(log(xl)/xl^(realpart+1i*xo))*(primelist[lzeroes])^(realpart-1)
+}
+
+dplus <- 0.
+for (i in 1:length(x)) {
+  dplus[i] <- d_seriesp(x[i],xl)
+}
+
+par(fig=c(0.5,1,0.,0.55), new=TRUE)
+# plot(x=x,y=(abs(dplus)*(lzeroes)^min((realpart-1),0))*x,col=6,typ="l")
+plot(x=x,y=abs(dplus)-1/x,col=6,typ="l",main=paste0("detrended normalised abs(1st Chebyshev fn)","\n Re(s)=0.5"),
+     ylim=c(-1*max((abs(dplus)-1/x)[500:length(x)]),1*max((abs(dplus)-1/x)[500:length(x)])),
+     xlab="imaginary axis",ylab="function value",cex.xlab=0.8,cex.main=.7,cex.ylab=0.7)
+# lines(x=x,y=abs(zeta(0.5+x*1i))/lzeroes^(1-0.5),typ="l",lty=1,lwd=2,col=1,ylim=c(-2,2))
+# lines(x=x,y=-abs(zeta(0.5+x*1i))/lzeroes^(1-0.5),typ="l",lty=1,lwd=2,col=1,ylim=c(-2,2))
+abline(h=0,lty=3)
+# 
+# legend(0, 1.5*max((abs(dplus)-1/x)[500:length(x)]), c("detrended norm 1st chebyshev series","abs(zeta(s))/N^(1-Re(s))"),
+#        lty = 1,cex=.4, lwd = c(2,2,2,2), col = c("purple",  "black"))
+
+par(fig=c(0,0.5,0.,0.55), new=TRUE)
+
+plot(x=x,y=(abs(dplus)),col=6,typ="l",main=paste0("normalised abs(1st Chebyshev fn)","\n Re(s)=0.5"),
+     xlab="imaginary axis",ylab="function value",cex.xlab=0.8,cex.main=.7,cex.ylab=0.7,
+     ylim=c(0,max(abs(dplus)[500:length(x)])))
+lines(x=x,y=1/x,lty=2)
+abline(h=0,lty=3)
+
+
+
+```
+
+
+```{r, fig3c, echo=FALSE, cache=TRUE, fig.width=6, fig.height=5,  fig.keep='high', warning=FALSE }
+
+library(pracma)
+x <- seq(0,70,l=3501)
+
+rawratio <- function(res,x) {
+  abs(2^(res+1i*x)*pi^(res+1i*x-1)*sin(pi/2*(res+1i*x))*gammaz(1-(res+1i*x)))
+}
+theta <- function(res,x) {
+  -0.5*Im(log(1/(zeta(1-(res+1i*x))*rawratio(res,x)/zeta(res+1i*x))))
+}
+
+d_realp <- function(xo,xl,rp) {
+  sum(1/xl^(rp+1i*xo))
+}
+
+par(mfrow=c(2,2))
+
+realpart <- 0.75
+lzeroes <- 50000000
+xl <- primelist[2:lzeroes]
+
+d_seriesp <- function(xo,xl) {
+ # sum(exp(-1i*xo*log(xl))/xl^realpart)
+  sum(log(xl)/xl^(realpart+1i*xo))*(primelist[lzeroes])^(realpart-1)
+}
+
+dplus <- 0.
+for (i in 1:length(x)) {
+  dplus[i] <- d_seriesp(x[i],xl)
+}
+
+par(fig=c(0.5,1,0.,0.55), new=TRUE)
+# plot(x=x,y=(abs(dplus)*(lzeroes)^min((realpart-1),0))*x,col=6,typ="l")
+plot(x=x,y=abs(dplus)-1/x,col=6,typ="l",main=paste0("detrended normalised abs(1st Chebyshev fn)","\n Re(s)=0.25"),
+     ylim=c(-1*max((abs(dplus)-1/x)[500:length(x)]),1*max((abs(dplus)-1/x)[500:length(x)])),
+     xlab="imaginary axis",ylab="function value",cex.xlab=0.8,cex.main=.7,cex.ylab=0.7)
+# lines(x=x,y=abs(zeta(0.5+x*1i))/lzeroes^(1-0.5),typ="l",lty=1,lwd=2,col=1,ylim=c(-2,2))
+# lines(x=x,y=-abs(zeta(0.5+x*1i))/lzeroes^(1-0.5),typ="l",lty=1,lwd=2,col=1,ylim=c(-2,2))
+abline(h=0,lty=3)
+# 
+# legend(0, 1.5*max((abs(dplus)-1/x)[500:length(x)]), c("detrended norm 1st chebyshev series","abs(zeta(s))/N^(1-Re(s))"),
+#        lty = 1,cex=.4, lwd = c(2,2,2,2), col = c("purple",  "black"))
+
+par(fig=c(0,0.5,0.,0.55), new=TRUE)
+
+plot(x=x,y=(abs(dplus)),col=6,typ="l",main=paste0("normalised abs(1st Chebyshev fn)","\n Re(s)=0.25"),
+     xlab="imaginary axis",ylab="function value",cex.xlab=0.8,cex.main=.7,cex.ylab=0.7,
+     ylim=c(0,max(abs(dplus)[500:length(x)])))
+lines(x=x,y=1/x,lty=2)
+abline(h=0,lty=3)
+
+
+
+```
+
+
+***Figure 4. Lower half complex plane behaviour of the absolute value of the normalised extended first Chebyshev function and its detrended version for the first $5*10^7$ primes***
+
+It can be observed there is excellent correspondence with 
+
+(i) $\frac{1}{\Im(s)}$ decay which sets in earlier for $\Re(s) \le 0.5$ (for first 10^5 primes, see figure 3) but requires summation over a increasing number of primes for $\Re(s) > 0.5$ as $\Im(s)$ increases (see figures 3 & 4 for $\Re(s) = 0.75$), 
+(ii) the presence of absorptive or dispersive modulation features about the positions of the non-trivial Riemann Zeta zeroes, scaling ~$1/P^{1-\Re(s)} \text{ as } \mathbb{N} \rightarrow \infty$ and
+(iii) a distinct lack of noise away from the non-trivial Riemann Zeta zeroes related modulation features when $\Re(s) < 0.5$
+
+
+
+
+###Behaviour of real and imaginary components of the normalised extended first Chebyshev function 
+
+The above graphs contained the real axis values and the absolute values of the the normalised extended first Chebyshev function. To complete the description of the behaviour of function, the following graph shows the real and imaginary components of the normalised extended first Chebyshev function for the first $10^5$ primes for values of s in the Riemann Zeta critical strip. 
+
+Similar to the normalised ordinary Dirichlet series in the lower half complex plane (5), the real and imaginary components of the normalised extended first Chebyshev function also display a "ringing" behaviour lineshape away from the real axis. This lineshape is then modulated according to eqn \eqref {eq:1st_cheb_plane} which has diminishing features (as $P \le N \rightarrow \infty$) about the positions of the non-trivial Riemann Zeta zeroes 
+
+
+```{r, fig5a, echo=FALSE, cache=TRUE, fig.width=6, fig.height=5,  fig.keep='high', warning=FALSE }
+
+library(pracma)
+x <- seq(0,70,l=3501)
+
+rawratio <- function(res,x) {
+  abs(2^(res+1i*x)*pi^(res+1i*x-1)*sin(pi/2*(res+1i*x))*gammaz(1-(res+1i*x)))
+}
+theta <- function(res,x) {
+  -0.5*Im(log(1/(zeta(1-(res+1i*x))*rawratio(res,x)/zeta(res+1i*x))))
+}
+
+d_realp <- function(xo,xl,rp) {
+  sum(1/xl^(rp+1i*xo))
+}
+
+par(mfrow=c(2,2))
+
+realpart <- 0.75
+lzeroes <- 100000
+xl <- primelist[2:lzeroes]
+
+d_seriesp <- function(xo,xl) {
+ # sum(exp(-1i*xo*log(xl))/xl^realpart)
+  sum(log(xl)/xl^(realpart+1i*xo))*(primelist[lzeroes])^(realpart-1)
+}
+
+dplus <- 0.
+for (i in 1:length(x)) {
+  dplus[i] <- d_seriesp(x[i],xl)
+}
+
+par(fig=c(0.5,1,0.,0.55))
+plot(x=x,y=(Im(dplus)),col=6,typ="l",main="\n imag(norm ext first Chebyshev fn) Re(s)=0.75",
+     xlab="imaginary axis",ylab="function value",cex.xlab=0.8,cex.main=.7,cex.ylab=0.7,
+     xlim=c(0,35),ylim=c(-1,1))
+abline(h=0,lty=3)
+
+
+
+par(fig=c(0,0.5,0.,0.55), new=TRUE)
+
+plot(x=x,y=(Re(dplus)),col=6,typ="l",main="\n real(norm ext first Chebyshev fn) Re(s)=0.75",
+     xlab="imaginary axis",ylab="function value",cex.xlab=0.8,cex.main=.7,cex.ylab=0.7,
+     xlim=c(0,35),ylim=c(-1,1))
+abline(h=0,lty=3)
+
+
+
+```
+
+```{r, fig5b, echo=FALSE, cache=TRUE, fig.width=6, fig.height=5,  fig.keep='high', warning=FALSE }
+
+library(pracma)
+x <- seq(0,70,l=3501)
+
+rawratio <- function(res,x) {
+  abs(2^(res+1i*x)*pi^(res+1i*x-1)*sin(pi/2*(res+1i*x))*gammaz(1-(res+1i*x)))
+}
+theta <- function(res,x) {
+  -0.5*Im(log(1/(zeta(1-(res+1i*x))*rawratio(res,x)/zeta(res+1i*x))))
+}
+
+d_realp <- function(xo,xl,rp) {
+  sum(1/xl^(rp+1i*xo))
+}
+
+par(mfrow=c(2,2))
+
+realpart <- 0.5
+lzeroes <- 100000
+xl <- primelist[2:lzeroes]
+
+d_seriesp <- function(xo,xl) {
+ # sum(exp(-1i*xo*log(xl))/xl^realpart)
+  sum(log(xl)/xl^(realpart+1i*xo))*(primelist[lzeroes])^(realpart-1)
+}
+
+dplus <- 0.
+for (i in 1:length(x)) {
+  dplus[i] <- d_seriesp(x[i],xl)
+}
+
+par(fig=c(0.5,1,0.,0.55))
+plot(x=x,y=(Im(dplus)),col=6,typ="l",main="\n imag(norm ext first Chebyshev fn) Re(s)=0.5",
+     xlab="imaginary axis",ylab="function value",cex.xlab=0.8,cex.main=.7,cex.ylab=0.7,
+     xlim=c(0,35),ylim=c(-1,1))
+abline(h=0,lty=3)
+
+
+
+par(fig=c(0,0.5,0.,0.55), new=TRUE)
+
+plot(x=x,y=(Re(dplus)),col=6,typ="l",main="\n real(norm ext first Chebyshev fn) Re(s)=0.5",
+     xlab="imaginary axis",ylab="function value",cex.xlab=0.8,cex.main=.7,cex.ylab=0.7,
+     xlim=c(0,35),ylim=c(-1,1))
+abline(h=0,lty=3)
+
+
+
+```
+
+
+```{r, fig5c, echo=FALSE, cache=TRUE, fig.width=6, fig.height=5,  fig.keep='high', warning=FALSE }
+
+library(pracma)
+x <- seq(0,70,l=3501)
+
+rawratio <- function(res,x) {
+  abs(2^(res+1i*x)*pi^(res+1i*x-1)*sin(pi/2*(res+1i*x))*gammaz(1-(res+1i*x)))
+}
+theta <- function(res,x) {
+  -0.5*Im(log(1/(zeta(1-(res+1i*x))*rawratio(res,x)/zeta(res+1i*x))))
+}
+
+d_realp <- function(xo,xl,rp) {
+  sum(1/xl^(rp+1i*xo))
+}
+
+par(mfrow=c(2,2))
+
+realpart <- 0.25
+lzeroes <- 100000
+xl <- primelist[2:lzeroes]
+
+d_seriesp <- function(xo,xl) {
+ # sum(exp(-1i*xo*log(xl))/xl^realpart)
+  sum(log(xl)/xl^(realpart+1i*xo))*(primelist[lzeroes])^(realpart-1)
+}
+
+dplus <- 0.
+for (i in 1:length(x)) {
+  dplus[i] <- d_seriesp(x[i],xl)
+}
+
+par(fig=c(0.5,1,0.,0.55))
+plot(x=x,y=(Im(dplus)),col=6,typ="l",main="\n imag(norm ext first Chebyshev fn) Re(s)=0.25",
+     xlab="imaginary axis",ylab="function value",cex.xlab=0.8,cex.main=.7,cex.ylab=0.7,
+     xlim=c(0,35),ylim=c(-1,1))
+abline(h=0,lty=3)
+
+
+
+par(fig=c(0,0.5,0.,0.55), new=TRUE)
+
+plot(x=x,y=(Re(dplus)),col=6,typ="l",main="\n real(norm ext first Chebyshev fn) Re(s)=0.25",
+     xlab="imaginary axis",ylab="function value",cex.xlab=0.8,cex.main=.7,cex.ylab=0.7,
+     xlim=c(0,35),ylim=c(-1,1))
+abline(h=0,lty=3)
+
+
+
+```
+
+
+***Fig.5:real and imaginary components of $\Big|\frac{1}{P^{(1-\Re(s))}}\sum_{p=2}^P \Big(\frac{log(p)}{p^{\Re(s)}}\Big)\Big|$, for the first $10^5$ primes***
+
+
+###Conclusions
+
+The function $\underset{P \le N \rightarrow \infty}{\lim} \frac{1}{P^{(1-\Re(s))}}\sum_{p \le N} \Big(\frac{log(p)}{p^{s}}\Big)$ represents a consistent normalised extension of first Chebyshev function across the lower half complex plane. In particular, (i) useful expressions for the leading terms of the sum of the harmonic series of the reciprocal of the primes with ln(p), $ln(p)^2$ (and in principle, for $ln(p)^n$) as numerators have been derived and (ii) the non-trivial Riemann Zeta zeroes can be observed as modulation features of a function just involving the primes rather than all integers.
+
+
+###References
+
+1. Edwards, H.M. (1974). Riemann's zeta function. Pure and Applied Mathematics 58. New York-London: Academic Press. ISBN 0-12-242750-0. Zbl 0315.10035.
+
+3. Riemann, Bernhard (1859). "$\ddot{U}$ber die Anzahl der Primzahlen unter einer gegebenen Gr$\ddot{o}$sse". Monatsberichte der Berliner Akademie.. In Gesammelte Werke, Teubner, Leipzig (1892), Reprinted by Dover, New York (1953).
+
+3. Dusart, P. "In$\acute{e}$galit$\acute{e}$s explicites pour $\psi(x)$, $\theta(x)$, $\pi(x)$ et les nombres premiers." C. R. Math. Rep. Acad. Sci. Canad 21, 53-59, 1999.
+
+4. Dusart, P. "The kth prime is greater than k(ln k + ln ln k - 1) for $k \ge 2$", Mathematics of Computation, Vol. 68, No. 225 (1999), pp. 411–415.
+
+5. Martin, J.P.D. "A normalisation of the ordinary Dirichlet Series in the lower half complex plane that has the equivalent normalised Riemann Zeta function as an detrended envelope function" (2017)
+http://dx.doi.org/10.6084/m9.figshare.4762339
+
+6. Hardy, G. H. and Wright, E. M. "The Functions $\theta(x)$ and $\psi(x)$" and "Proof that $\theta(x)$ and $\psi(x)$ are of Order x." §22.1-22.2 in An Introduction to the Theory of Numbers, 5th ed. Oxford, England: Clarendon Press, pp. 340-342, (1979)
+
+7. C. Caldwell, The Prime Pages © 1994-2016, The first 50 Million primes. https://primes.utm.edu/lists/small/millions/ 
