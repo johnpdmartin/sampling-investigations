@@ -155,7 +155,7 @@ which includes the ordinary first Chebyshev function result eqn \eqref {eq:std_c
 |\theta_{norm}(N,s)| \approx \Big( \frac{1}{\Im(s)}\Big)*(\text{small modulation})  \qquad  \Re(s) < 1, \Im(s) > 9
 \end{equation}
 
-As $\Re(s) \rightarrow 1^-$ the convergence to RHS of eqn \eqref {eq:1st_cheb_real} becomes slower. Interestingly, the small modulation features in the Riemann Zeta critical strip of the complex plane for the absolute magnitude of the normalised first Chebyshev function, are sharp absorptive or dispersive features at the positions of the non-trivial Riemann Zeta zeroes. They are sharp features in the absolute magnitude function because (i) the broader modulation in the real and imaginary components at the non-trivial Riemann Zeta zeroes locations are not exactly in balance for finite N and (ii) numerical precision in the computation. 
+As $\Re(s) \rightarrow 1^-$ the convergence to RHS of eqn \eqref {eq:1st_cheb_real} becomes slower. Interestingly, the small modulation features in the Riemann Zeta critical strip of the complex plane for the absolute magnitude of the normalised first Chebyshev function, are sharp absorptive or dispersive features at the positions of the non-trivial Riemann Zeta zeroes. They are sharp features in the absolute magnitude function because (i) the broader modulation features in the real and imaginary components at the non-trivial Riemann Zeta zeroes locations are not exactly in balance for finite N and (ii) numerical precision in the computation. 
 
 This behaviour, summing over the primes for the summand $ln(p)/p^s$ is in contrast to the scaled full Riemann Zeta function modulation present for the normalised ordinary Dirichlet series (5) which uses all integers and the summand $1/n^s$.
 
@@ -758,7 +758,7 @@ abline(h=0,lty=3)
 It can be observed there is excellent correspondence with 
 
 (i) $\frac{1}{\Im(s)}$ decay which sets in earlier for $\Re(s) \le 0.5$ (for first 10^5 primes, see figure 3) but requires summation over a increasing number of primes for $\Re(s) > 0.5$ as $\Im(s)$ increases (see figures 3 & 4 for $\Re(s) = 0.75$), 
-(ii) the presence of absorptive or dispersive modulation features in the absolute version of the function about the positions of the non-trivial Riemann Zeta zeroes, scaling ~$1/P^{1-\Re(s)} \text{ as } \mathbb{N} \rightarrow \infty$ which arise from imbalance between the modulation present in the real and imaginary components of the function for finite N (see next setion) and numerical imprecision in the computation. The smaller evenly distributedly noise feature away from the Riemann Zeta zeroes locations for $0.5 \Re(s) < 1$ would be due to numerical imprecision.
+(ii) the presence of absorptive or dispersive modulation features in the absolute version of the function about the positions of the non-trivial Riemann Zeta zeroes, scaling ~$1/P^{1-\Re(s)} \text{ as } \mathbb{N} \rightarrow \infty$ which arise from imbalance between the modulation present in the real and imaginary components of the function for finite N (see next setion) and numerical imprecision in the computation. The smaller magnitude broad noise features away from the Riemann Zeta zeroes locations for $0.5 < \Re(s) < 1$ would be due to numerical imprecision.
 (iii) a distinct lack of noise in the lineshape away from the non-trivial Riemann Zeta zeroes related modulation features when $\Re(s) < 0.5$
 
 
