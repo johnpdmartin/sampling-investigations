@@ -12,7 +12,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ##Executive Summary
 
-In the lower half complex plane, $\Re(s)<1$, an extension of the first Chebyshev function $\sum_{p \le N} (\frac{log(p)}{1})$ is given by $\underset{P \le N \rightarrow \infty}{\lim} \frac{1}{P^{(1-\Re(s))}}\sum_{p \le N} \Big(\frac{log(p)}{p^{s}}\Big)$. Along the real line, $\underset{P \le N \rightarrow \infty}{\lim} \frac{1}{P^{(1-\Re(s))}}\sum_{p \le N} \Big(\frac{log(p)}{p^{\Re(s)}}\Big) \rightarrow \frac{1}{1-\Re(s)}$. Elsewhere, across the Riemann Zeta critical strip, the absolute value of the full normalised function $\Big|\frac{1}{P^{(1-\Re(s))}}\sum_{p=2}^P \Big(\frac{log(p)}{p^{\Re(s)}}\Big)\Big|$ has spikes at the location of the non-trivial Riemann Zeta zeroes.
+In the lower half complex plane, $\Re(s)<1$, an extension of the first Chebyshev function $\sum_{p \le N} (\frac{log(p)}{1})$ is given by $\underset{P \le N \rightarrow \infty}{\lim} \frac{1}{P^{(1-\Re(s))}}\sum_{p \le N} \Big(\frac{log(p)}{p^{s}}\Big)$. Along the real line, $\underset{P \le N \rightarrow \infty}{\lim} \frac{1}{P^{(1-\Re(s))}}\sum_{p \le N} \Big(\frac{log(p)}{p^{\Re(s)}}\Big) \rightarrow \frac{1}{1-\Re(s)}$. Elsewhere, across the Riemann Zeta critical strip, the absolute value of the full normalised function $\Big|\frac{1}{P^{(1-\Re(s))}}\sum_{p=2}^P \Big(\frac{log(p)}{p^{\Re(s)}}\Big)\Big|$ has spikes at the location of the non-trivial Riemann Zeta zeroes arising from modulation features in the real and imaginary components of the function.
 
 ```{r, exec, echo=FALSE, cache=TRUE, fig.width=6, fig.height=5,  fig.keep='high', warning=FALSE }
 
@@ -123,7 +123,7 @@ Recognising that on restricting the sum to just the primes, the \textit{primes o
 
 where P is the largest prime $\le$ N. 
 
-This normalised extended first Chebyshev function is also applicable to the lower half complex plane $\Re(s) \le 1$. In this paper, some properties of the function are presented, in particular, (i) noting the presence of the non-trivial Riemann Zeta zeroes (5) discontinuously modulating the function along the critical strip and (ii) a derivation of the leading term(s) of the asymptotic series expansion for eqn \eqref{eq:1st_cheb_ext} and its first derivative which contains the sum of the square of the logarithm of the primes for s=0. 
+This normalised extended first Chebyshev function is also applicable to the lower half complex plane $\Re(s) \le 1$. In this paper, some properties of the function are presented, in particular, (i) noting the presence of the non-trivial Riemann Zeta zeroes (5) modulating the real part, imaginary part and the absolute magnitude versions of the function along the critical strip and (ii) a derivation of the leading term(s) of the asymptotic series expansion for eqn \eqref{eq:1st_cheb_ext} and its first derivative which contains the sum of the square of the logarithm of the primes for s=0. 
 
 
 ##Behaviour of the normalised extended first Chebyshev function in the lower half complex plane 
@@ -155,7 +155,9 @@ which includes the ordinary first Chebyshev function result eqn \eqref {eq:std_c
 |\theta_{norm}(N,s)| \approx \Big( \frac{1}{\Im(s)}\Big)*(\text{small modulation})  \qquad  \Re(s) < 1, \Im(s) > 9
 \end{equation}
 
-As $\Re(s) \rightarrow 1^-$ the convergence to RHS of eqn \eqref {eq:1st_cheb_real} becomes slower. Interestingly, the small modulation features in the Riemann Zeta critical strip of the complex plane for the normalised first Chebyshev function, are sharp absorptive or dispersive features at the positions of the non-trivial Riemann Zeta zeroes. This behaviour, summing over the primes for the summand $ln(p)/p^s$ is in contrast to the scaled full Riemann Zeta function modulation present for the normalised ordinary Dirichlet series (5) which uses all integers and the summand $1/n^s$.
+As $\Re(s) \rightarrow 1^-$ the convergence to RHS of eqn \eqref {eq:1st_cheb_real} becomes slower. Interestingly, the small modulation features in the Riemann Zeta critical strip of the complex plane for the absolute magnitude of the normalised first Chebyshev function, are sharp absorptive or dispersive features at the positions of the non-trivial Riemann Zeta zeroes. They are sharp features in the absolute magnitude function because (i) the broader modulation in the real and imaginary components at the non-trivial Riemann Zeta zeroes locations are not exactly in balance for finite N and (ii) numerical precision in the computation. 
+
+This behaviour, summing over the primes for the summand $ln(p)/p^s$ is in contrast to the scaled full Riemann Zeta function modulation present for the normalised ordinary Dirichlet series (5) which uses all integers and the summand $1/n^s$.
 
 Figure 2, illustrates the $\frac{1}{1-\Re(s)}$ behaviour as given in eqn \eqref{eq:1st_cheb_real} for calculations using the first 50*10^6 primes (7). 
 
@@ -756,8 +758,8 @@ abline(h=0,lty=3)
 It can be observed there is excellent correspondence with 
 
 (i) $\frac{1}{\Im(s)}$ decay which sets in earlier for $\Re(s) \le 0.5$ (for first 10^5 primes, see figure 3) but requires summation over a increasing number of primes for $\Re(s) > 0.5$ as $\Im(s)$ increases (see figures 3 & 4 for $\Re(s) = 0.75$), 
-(ii) the presence of absorptive or dispersive modulation features about the positions of the non-trivial Riemann Zeta zeroes, scaling ~$1/P^{1-\Re(s)} \text{ as } \mathbb{N} \rightarrow \infty$ and
-(iii) a distinct lack of noise away from the non-trivial Riemann Zeta zeroes related modulation features when $\Re(s) < 0.5$
+(ii) the presence of absorptive or dispersive modulation features in the absolute version of the function about the positions of the non-trivial Riemann Zeta zeroes, scaling ~$1/P^{1-\Re(s)} \text{ as } \mathbb{N} \rightarrow \infty$ which arise from imbalance between the modulation present in the real and imaginary components of the function for finite N (see next setion) and numerical imprecision in the computation. The smaller evenly distributedly noise feature away from the Riemann Zeta zeroes locations for $0.5 \Re(s) < 1$ would be due to numerical imprecision.
+(iii) a distinct lack of noise in the lineshape away from the non-trivial Riemann Zeta zeroes related modulation features when $\Re(s) < 0.5$
 
 
 
