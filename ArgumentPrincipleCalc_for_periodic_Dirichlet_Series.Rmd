@@ -1,0 +1,1759 @@
+---
+title: Counting the non-trivial zeroes, using extended Riemann Siegel function analogues, for 5-periodic Dirichlet Series which obey functional equations #and exhibit such zeroes off the critical line. 
+
+author: "John Martin" 
+date: "Tuesday, December 19th, 2017"
+output:
+  pdf_document:
+    fig_crop: no
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+##Executive Summary
+
+Argument principle calculations of zeroes using extended Riemann Siegel function analogues are investigated for the Davenport-Heilbronn function and another 5-periodic Dirichlet series. Both these 5-periodic Dirichlet series functions have previously been reported as possessing functional equations and not being expressable as Euler products.  Given the relationship $-\Im(log(L(s,f))) = -\Im(log(\sum_{n=1}^\infty(\frac{f(n)}{n^s}))) =  \theta_{L(s,f),ext}(s)-\Im(log(Z_{L(s,f),ext}(s)))$, where f(n) is periodic and $L(s,f)$ obeys a functional equation $L(s,f) = \alpha(s,f) L(1-s,f)$, informative counts of the non-trivial zeroes (including off the critical line) are obtained for various $s=\sigma+i*t$ lines in the positive quadrant of the complex plane. 
+
+
+```{r, exec_new, echo=FALSE, cache=TRUE, fig.width=7, fig.height=2.5,  fig.keep='high', warning=FALSE }
+
+dir_loc <- "/home/john/bear/Projects/sampling-investigations/julia/"
+
+read_fn <- function(dir_loc,filen){
+  
+  filenn <- paste0(dir_loc,filen)
+  
+  dread <- read.table(filenn,
+                       sep=",", header=F,row.names=NULL)
+}
+
+
+add_phase <- function(x,y)  {
+  
+  sum <- 0  
+  sqadd_pos <- 0
+  
+  
+  for (i in 1:length(x)) {
+    if(x[i] <= .002 ) {sqadd_pos[i] <- sum}
+    else { 
+      test <- Im(log(y[i]))
+      testp <- ifelse(x[i-1] != 0,Im(log(y[i-1])),test)
+      # print(test-testp)
+      if (test-testp > pi/8 ) {flag <- 1;sum <- sum-1*pi;sqadd_pos[i] <- sum}
+      if (test-testp < -pi/8) {flag <- 1;sum <- sum+1*pi;sqadd_pos[i] <- sum}
+      else {flag <- 0; sqadd_pos[i] <- sum}
+    }
+  }
+  sum <- pi
+  sqadd_neg <- -pi
+  
+  for (i in 1:length(x)) {
+    if(x[length(x)+1-i] >= -.002 ) {sqadd_neg[length(x)+1-i] <- sum}
+    else { 
+      
+      test <- Im(log(y[length(x)+1-i]))
+      testp <- ifelse(x[length(x)+1-i+1] != 0,Im(log(y[length(x)+1-i+1])),test)
+      
+      if (test-testp < -pi/8 ) {flag <- 1;sum <- sum+1*pi;sqadd_neg[length(x)+1-i] <- sum}
+      if (test-testp > pi/8) {flag <- 1;sum <- sum-1*pi;sqadd_neg[length(x)+1-i] <- sum}
+      else {flag <- 0; sqadd_neg[length(x)+1-i] <- sum}
+    }
+  }
+  
+  sqadd <- 0
+  for (i in 1:length(x)) {
+    if (x[i] < 0) sqadd[i] <- sqadd_neg[i]
+    else sqadd[i] <- sqadd_pos[i]
+  }
+  
+  sqadd}
+
+
+res <- 0.49
+df <- read_fn(dir_loc,"outfile_hurwitz_zeta_upper_0_49.dat")
+df[,"V1"] <- as.numeric(gsub("[^0-9\\.-]", "", df[,1]))
+df[,"V2"] <- as.numeric(df[,2]);df[,"V3"] <- as.numeric(df[,3]) 
+df[,"V4"] <- as.numeric(df[,4]);df[,"V5"] <- as.numeric(df[,5]) 
+df[,"V6"] <- as.numeric(df[,6]);df[,"V7"] <- as.numeric(df[,7]) 
+df[,"V8"] <- as.numeric(df[,8]);df[,"V9"] <- as.numeric(df[,9]) 
+df[,"V10"] <- as.numeric(df[,10]);df[,"V11"] <- as.numeric(df[,11]) 
+df[,"V12"] <- as.numeric(df[,12]);df[,"V13"] <- as.numeric(df[,13]) 
+df[,"V14"] <- as.numeric(gsub("[^0-9\\.-]", "", df[,14]) )
+
+df_l <- read_fn(dir_loc,"outfile_hurwitz_zeta_lower_0_49.dat")
+df_l[,"V1"] <- as.numeric(gsub("[^0-9\\.-]", "", df_l[,1]))
+df_l[,"V2"] <- as.numeric(df_l[,2]);df_l[,"V3"] <- as.numeric(df_l[,3]) 
+df_l[,"V4"] <- as.numeric(df_l[,4]);df_l[,"V5"] <- as.numeric(df_l[,5]) 
+df_l[,"V6"] <- as.numeric(df_l[,6]);df_l[,"V7"] <- as.numeric(df_l[,7]) 
+df_l[,"V8"] <- as.numeric(df_l[,8]);df_l[,"V9"] <- as.numeric(df_l[,9]) 
+df_l[,"V10"] <- as.numeric(df_l[,10]);df_l[,"V11"] <- as.numeric(df_l[,11]) 
+df_l[,"V12"] <- as.numeric(df_l[,12]);df_l[,"V13"] <- as.numeric(df_l[,13]) 
+df_l[,"V14"] <- as.numeric(gsub("[^0-9\\.-]", "", df_l[,14]) )
+
+tan_theta <- (sqrt(10-2*sqrt(5))-2)/(sqrt(5)-1)
+hz <- (df[,"V2"]+1i*df[,"V3"]) + 
+          tan_theta*(df[,"V4"]+1i*df[,"V5"]) -
+          tan_theta*(df[,"V6"]+1i*df[,"V7"]) -
+          (df[,"V8"]+1i*df[,"V9"])
+x_5u <- 1/5^(res+1i*df$V1)#(0.5-0.074356+1i*df$V1)#(0.574356+1i*df$V1)
+hzl <- (df_l[,"V2"]+1i*df_l[,"V3"]) + 
+  tan_theta*(df_l[,"V4"]+1i*df_l[,"V5"]) -
+  tan_theta*(df_l[,"V6"]+1i*df_l[,"V7"]) -
+  (df_l[,"V8"]+1i*df_l[,"V9"])
+x_5l <- 1/5^(1-(res+1i*df$V1))#(0.5-0.074356+1i*df$V1)#(0.574356+1i*df$V1)
+     
+xlimc <- c(0,20)
+
+par(mfrow=c(1,3))
+# ordinary form of f1(s)
+plot(x=df$V1,y=Re(x_5u*hz),typ="l",col=6,xlim=xlimc,ylim=c(-2,5),
+     xlab="imag value",ylab="function value",main="Davenport-Heilbronn fn \n - real & imag components ")
+# lines(x=df$V1,y=abs(x_5u*hz),typ="l",col=1,lty=3,lwd=2)
+lines(x=df$V1,y=Im(x_5u*hz),typ="l",col=3)
+abline(h=0,lty=3)
+
+rat_prop <- abs(df$V12+1i*df$V13)
+ratorg_prop <- abs(x_5u*hz/(x_5l*hzl))
+
+# hist(rat_prop-ratorg_prop,breaks=1000,ylim=c(0,10))
+theta_hd <- sqrt((x_5l*hzl)/(x_5u*hz)*rat_prop)
+z_hd <- sqrt((x_5l*hzl)*(x_5u*hz)*rat_prop)
+
+#calculating phase accumulation from breakpoints
+zadd_f <- add_phase(df$V1,z_hd)
+tadd_f <- add_phase(df$V1,theta_hd)
+
+# z_ext form of f1(s)  
+plot(x=df_l$V1,y=Re((z_hd))*exp(1i*zadd_f),col=6,typ="l",ylim=c(-2,5),xlim=xlimc,
+     xlab="imag value",ylab="function value",main="Z_f1(s)_ext \n - real & imag components \n with non-trivial zeroes count")
+lines(x=df_l$V1,y=Im((z_hd))*exp(1i*zadd_f),col=3)
+# lines(x=df_l$V1,y=abs(z_hd),typ="l",col=1,lty=3,lwd=2)
+lines(x=df$V1,y=(Im(log(theta_hd))+tadd_f-(Im(log(z_hd))+zadd_f))/2/pi,typ="l",col=2)
+lines(x=df$V1,y=1/2/pi*(tadd_f-zadd_f),typ="l",col=4)
+abline(h=0,lty=3)
+
+# theta_ext form of f1(s)
+plot(x=df$V1,y=Re(theta_hd)*exp(1i*tadd_f),typ="l",col=6,ylim=c(-2,5),xlim=xlimc,
+     xlab="imag value",ylab="function value",main="Theta_f1(s)_ext - abs, \n real & imag components")
+lines(x=df$V1,y=Im(theta_hd)*exp(1i*tadd_f),typ="l",col=3)
+lines(x=df$V1,y=abs(theta_hd),typ="l",col=1,lty=2)
+abline(h=0,lty=3)
+
+
+
+tan_theta <- (sqrt(10-2*sqrt(5))-2)/(sqrt(5)-1)
+hz2 <- (df[,"V2"]+1i*df[,"V3"]) - 
+  1/tan_theta*(df[,"V4"]+1i*df[,"V5"]) +
+  1/tan_theta*(df[,"V6"]+1i*df[,"V7"]) -
+  (df[,"V8"]+1i*df[,"V9"])
+x_5u <- 1/5^(res+1i*df$V1)#(0.5-0.074356+1i*df$V1)#(0.574356+1i*df$V1)
+hzl2 <- (df_l[,"V2"]+1i*df_l[,"V3"]) - 
+  1/tan_theta*(df_l[,"V4"]+1i*df_l[,"V5"]) +
+  1/tan_theta*(df_l[,"V6"]+1i*df_l[,"V7"]) -
+  (df_l[,"V8"]+1i*df_l[,"V9"])
+x_5l <- 1/5^(1-(res+1i*df$V1))#(0.5-0.074356+1i*df$V1)#(0.574356+1i*df$V1)
+
+
+
+# ordinary form of f2(s)
+plot(x=df$V1,y=Re(x_5u*hz2),typ="l",col=6,xlim=xlimc,ylim=c(-4.2,6),
+     xlab="imag value",ylab="function value",main="f2(s) 5-periodic Dirichlet fn \n - real & imag components ")
+# lines(x=df$V1,y=abs(x_5u*hz2),typ="l",col=1,lty=3,lwd=2)
+lines(x=df$V1,y=Im(x_5u*hz2),typ="l",col=3)
+abline(h=0,lty=3)
+
+rat_prop2 <- abs(df$V12+1i*df$V13)
+ratorg_prop2 <- abs(x_5u*hz2/(x_5l*hzl2))
+
+# hist(rat_prop-ratorg_prop,breaks=1000,ylim=c(0,10))
+theta_hd2 <- sqrt((x_5l*hzl2)/(x_5u*hz2)*rat_prop2)
+z_hd2 <- sqrt((x_5l*hzl2)*(x_5u*hz2)*rat_prop2)
+
+#calculating phase accumulation from breakpoints
+zadd_f2 <- add_phase(df$V1,z_hd2)
+tadd_f2 <- add_phase(df$V1,theta_hd2)
+
+# z_ext form of f2(s)  
+plot(x=df_l$V1,y=Re((z_hd2))*exp(1i*zadd_f2),col=6,typ="l",ylim=c(-4.2,6),xlim=xlimc,
+     xlab="imag value",ylab="function value",main="Z_f2(s)_ext \n - real & imag components \n with non-trivial zeroes count")
+lines(x=df_l$V1,y=Im((z_hd2))*exp(1i*zadd_f2),col=3)
+# lines(x=df_l$V1,y=abs(z_hd2),typ="l",col=1,lty=3,lwd=2)
+lines(x=df$V1,y=(Im(log(theta_hd2))+tadd_f2-(Im(log(z_hd2))+zadd_f2))/2/pi,typ="l",col=2)
+lines(x=df$V1,y=1/2/pi*(tadd_f2-zadd_f2),typ="l",col=4)
+abline(h=0,lty=3);abline(v=8.918,lty=3);abline(v=18.899,lty=3)
+
+# theta_ext form of f2(s)
+plot(x=df$V1,y=Re(theta_hd2)*exp(1i*tadd_f2),typ="l",col=6,ylim=c(-4.2,6),xlim=xlimc,
+     xlab="imag value",ylab="function value",main="Theta_f2(s)_ext - abs, \n real & imag components")
+lines(x=df$V1,y=Im(theta_hd2)*exp(1i*tadd_f2),typ="l",col=3)
+lines(x=df$V1,y=abs(theta_hd2),typ="l",col=1,lty=2)
+abline(h=0,lty=3)
+
+```
+
+***Extended Riemann Siegel Components of Davenport-Heilbronn function and another 5-periodic Dirichlet series f2(s) also with a functional equation, with counts of non-trivial zeroes for contour integral with lower piecewise segment along s=(0.49+$i*t$). The known zeroes off the critical line for f2(s) between t=(0,20) are indicated by dotted vertical lines.***
+
+##Introduction
+
+The extended Riemann Siegel functions and the general form for the Argument Principle calculation are firstly described with respect to the Riemann Zeta function (1-5). Then equivalent expressions for two example 5-periodic Dirichlet Series with functional equations are presented and evaulated. An important element of the analysis is mapping the breakpoints of the functions and applying the accumulated phase changes to create continuous versions of the function values. Similar to the Riemann Zeta function (4,5), the 5-periodic Dirichlet functions with functional equations can be interpreted as interference patterns of the extended Riemann Siegel function analogues and extra information is obtained by studying the behaviour of the analogue components themselves.
+
+In the first example of a 5-periodic Dirichlet Series with functional equation, the Davenport-Heilbronn function (6), there are non-trivial zeroes of the function both on the critical line and within the critical strip so the sensitivity of decomposing the Dirichlet Series into extended Riemann Siegel function for detecting Riemann Hypothesis violations can be measured. 
+
+In the second example, there are also non-trivial zeroes outside the critical strip which introduces a different signal impact on the contour integral value derived from the extended Riemann Siegel Z function value around non-trivial zero positions.     
+
+###The extended Riemann Siegel functions and usage for Argument Principle calculations on the Riemann Zeta function
+
+The Riemann Zeta function is defined (1), in the complex plane by the integral 
+
+\begin{equation}
+\zeta(s) = \frac{\prod(-s)}{2\pi i}\int_{C_{\epsilon,\delta}} \frac{(-x)^s}{(e^{x}-1)x}dx
+\end{equation}
+
+
+where $s \thinspace \epsilon \thinspace \mathbb{C}$ and $C_{\epsilon,\delta}$ is the contour about the imaginary poles.
+
+The Riemann Zeta function has been shown to obey the functional equation (2)
+
+\begin{equation}
+\zeta(s) = 2^s\pi^{s-1}sin(\frac{\pi s}{2})\Gamma(1-s)\zeta(1-s) \label{eq:func}
+\end{equation}
+
+Following directly from the form of the functional equation and the properties of the coefficients on the RHS of eqn \eqref{eq:func} it has been shown that any zeroes off the critical line would be paired, ie. if $\zeta(s)$ = 0 was true then $\zeta(1-s) = 0$.
+
+Along the critical line (0.5+it), the Riemann Siegel function is an exact function (3) for the magnitude of the Riemann Zeta function with two components Z(t) \& $\theta(t)$
+
+\begin{equation}
+Z(t) = \zeta(0.5+it)e^{i\theta(t)}  \label{eq:rs}
+\end{equation}
+
+and
+
+\begin{equation}
+\theta(t) = \Im(log(\Gamma(\frac{1}{4}+\frac{1}{2}it)))-\frac{t}{2}log(\pi) \label{eq:theta}
+\end{equation}
+
+In Martin (4,5) and earlier work, the properties of the Riemann Zeta generating function were investigated and used to develop/map the extended Riemann Siegel function $Z_{ext}(s)$ and $\theta_{ext}(s)$ definitions also applicable away from the critical line, 
+
+\begin{align}
+\theta_{ext}(s) = \Im(log(\sqrt{\frac{\zeta(1-s)abs(2^s\pi^{s-1}sin(\frac{\pi s}{2})\Gamma(1-s))}{\zeta(s)}})) \label{eq:thetaext} 
+\end{align}
+
+\begin{align}
+Z_{ext}(s) &= \sqrt{\zeta(s)*\zeta(1-s)*abs(2^s\pi^{s-1}sin(\frac{\pi s}{2})\Gamma(1-s))} \label{eq:zext}
+\end{align}
+
+A distinctive difference between the $\theta(t)$ \& $\theta_{ext}(s)$ functions being that the $\theta(t)$ branch points provide the Gram points which have the tendency of approximately bisecting Riemann Zeta zeroes (1) while the $\theta_{ext}(s)$ branch points are approximately at the position of Riemann Zeta zeroes, (see the figure in the introduction section of (4)). 
+
+Other important properties of $\theta_{ext}(s)$ \& $Z_{ext}(s)$ functions are that (i) the $Z_{ext}(s)$ branch points lie closest to the position of the Riemann Zeta zeroes (identically if on the critical line) (4,5) and (ii) the phase change at the $\theta_{ext}(s)$ \& $Z_{ext}(s)$ break points are $\pi/2$ (5). In contrast, the phase change at the break points of $\Im(log(\zeta(s)))$ is $\pi$.
+
+Finally, as shown in (4), the net count of zeroes and poles based on the argument principle, in terms of the extended Riemann Siegel functions using a contour integral surrounding the region of the zeroes and poles, is the imaginary part of the negative logarithm shown below
+
+\begin{align}
+N(T) - P(T) &= [\frac{1}{2\pi} (-\Im(log(\zeta(s))) \Big|_{a}) ] \\
+ &= [\frac{1}{2\pi} (-\Im(-i\theta_{ext}(s) + log(Z_{ext}(s)))) \Big|_{a}) ]  \\
+&= [\frac{1}{2\pi} (\theta_{ext}(s) - \Im(log(Z_{ext}(s)))) \Big|_{a}) ] \label {eq:logzeta_ext} \\
+\end{align}
+
+where (i) N is number of zeroes, (ii) P is the number of poles and (iii) the definite integral is a given contour integral (including along the imaginary axis from the real axis up to imaginary coordinate T).
+
+Importantly, the phase accumulation from the break points of the $\theta_{ext}(s)$ \& $Z_{ext}(s)$ is included in the contour integral calculation and gives accurate counts of the zeroes and poles (4) of the Riemann Zeta function. The $\theta_{ext}(s)$ \& $Z_{ext}(s)$ functions for the Riemann Zeta function are tightly coupled and give rise to the interference pattern that is $\zeta(s)$.
+
+##Deriving the extended Riemann Siegel function analogues for periodic Dirichlet series which obey functional equations
+
+From the above decomposition of the Riemann Zeta function, it is straightforward to perform the analogous decomposition of periodic Dirichlet series that also obey functional equations. For example, there are two 5-periodic Dirichlet series (6) which are not expressible as Euler products that obey the functional equations.
+
+Firstly, the Davenport-Heilbronn function (6) (also known as the Titchmarsh counterexample (7)), has non-trivial zeroes both on the critical line and within the critical strip, where in series and Hurwitz Zeta function notation respectively, the 5-periodic Dirichlet series can be written
+
+\begin{align}
+f_{1}(s) &= 1 + \frac{\xi}{2^s} - \frac{\xi}{3^s} - \frac{1}{4^s} + \frac{0}{5^s} + ... \label{eq:func1}\\ 
+&= 5^{-s}\Big ( \zeta(s,\frac{1}{5}) + \xi\cdot\zeta(s,\frac{2}{5}) - \xi\cdot\zeta(s,\frac{3}{5}) - \zeta(s,\frac{4}{5})\Big ) \label{eq:func1_hurwitz}
+\end{align}
+
+where 
+
+\begin{equation}
+\xi = \frac{(\sqrt{10-2\sqrt{5}}-2)}{(\sqrt{5}-1)} \label{eq:xi}
+\end{equation}
+
+The Davenport-Heilbronn function has the functional equation
+
+\begin{equation}
+f_{1}(s) = 5^{(\frac{1}{2}-s)}2(2\pi)^{(s-1)}cos(\frac{\pi s}{2})\Gamma(1-s)f_{1}(1-s) \label{eq:eq_func1}
+\end{equation}
+
+Following the above Riemann Zeta example, the Davenport-Heilbronn function extended Riemann Siegel function analogues are
+
+
+\begin{align}
+\theta_{f_{1}(s),ext}(s) = \Im(log(\sqrt{\frac{f_{1}(1-s)abs(5^{(\frac{1}{2}-s)}2(2\pi)^{(s-1)}cos(\frac{\pi s}{2})\Gamma(1-s))}{f_{1}(s)}})) \label{eq:thetaextf1} 
+\end{align}
+
+\begin{align}
+Z_{f_{1}(s),ext}(s) &= \sqrt{f_{1}(s)*f_{1}(1-s)*abs(5^{(\frac{1}{2}-s)}2(2\pi)^{(s-1)}cos(\frac{\pi s}{2})\Gamma(1-s))} \label{eq:zextf1}
+\end{align}
+
+and the count of zeroes and poles for the Davenport-Heilbronn function using contour integral calculation is
+
+\begin{align}
+N(T) - P(T) &= [\frac{1}{2\pi} (-\Im(log(f_{1}(s))) \Big|_{a}) ] \\
+&= [\frac{1}{2\pi} (\theta_{f_{1}(s),ext}(s) - \Im(log(Z_{f_{1}(s),ext}(s)))) \Big|_{a}) ] \label {eq:logzeta_extf1} \\
+\end{align}
+
+where [ ] indicates the nearest integer is taken (if integer values are desired). Of interest with the results in this paper is that the non-integer value behaviour is also informative.
+
+The second 5-periodic function example has similarities to the Davenport-Heilbronn function expression but uses the coefficient $\frac{1}{\xi}$ for the second and third periodic coefficients along with sign changes in those coefficients. As an important distinction from $f_{1}(s)$, this second function $f_{2}(s)$, has non-trivial zeroes also outside the critical strip (6) as well as on the critical line, and across the critical strip. Expressed in series and Hurwitz Zeta function notation respectively, 
+
+\begin{align}
+f_{2}(s) &= 1 - \big(\frac{1}{\xi}\big)\frac{1}{2^s} + \big(\frac{1}{\xi}\big)\frac{1}{3^s} - \frac{1}{4^s} + \frac{0}{5^s} + ... \label{eq:func2}\\ 
+&= 5^{-s}\Big ( \zeta(s,\frac{1}{5}) - \frac{1}{\xi}\cdot\zeta(s,\frac{2}{5}) + \frac{1}{\xi}\cdot\zeta(s,\frac{3}{5}) - \zeta(s,\frac{4}{5})\Big ) \label{eq:func2_hurwitz}
+\end{align}
+
+where $\xi$ is given in eqn \eqref {eq:xi}
+
+The $f_{2}(s)$ 5-periodic Dirichlet series function has the functional equation (6) 
+\begin{equation}
+f_{2}(s) = 5^{(\frac{1}{2}-s)}2(2\pi)^{(s-1)}cos(\frac{\pi s}{2})\Gamma(1-s)f_{2}(1-s) \label{eq:eq_func2}
+\end{equation}
+
+with interestingly, the same RHS multiplier function as in eqn \eqref{eq:eq_func1}.
+
+Following the above Riemann Zeta example, the $f_{2}(s)$ 5-periodic Dirichlet series function extended Riemann Siegel function analogues are
+
+
+\begin{align}
+\theta_{f_{2}(s),ext}(s) = \Im(log(\sqrt{\frac{f_{2}(1-s)abs(5^{(\frac{1}{2}-s)}2(2\pi)^{(s-1)}cos(\frac{\pi s}{2})\Gamma(1-s))}{f_{2}(s)}})) \label{eq:thetaextf2} 
+\end{align}
+
+\begin{align}
+Z_{f_{2}(s),ext}(s) &= \sqrt{f_{2}(s)*f_{2}(1-s)*abs(5^{(\frac{1}{2}-s)}2(2\pi)^{(s-1)}cos(\frac{\pi s}{2})\Gamma(1-s))} \label{eq:zextf2}
+\end{align}
+
+and the count of zeroes and poles for the $f_{2}(s)$ 5-periodic Dirichlet series function using contour integral calculation is 
+
+\begin{align}
+N(T) - P(T) &= [\frac{1}{2\pi} (-\Im(log(f_{2}(s))) \Big|_{a}) ] \\
+&= [\frac{1}{2\pi} (\theta_{f_{2}(s),ext}(s) - \Im(log(Z_{f_{2}(s),ext}(s)))) \Big|_{a}) ] \label {eq:logzeta_extf2} \\
+\end{align}
+
+In the following sections, the results for the two Dirichlet series functions along different imaginary lines in the positive complex plane are presented. The calculations of the Dirichlet series function components were performed using the Julia language (8) via the Hurwitz Zeta function expressions in eqns \eqref {eq:func1_hurwitz} \& \eqref {eq:func2_hurwitz} and also to calculate the multiplier function $5^{(\frac{1}{2}-s)}2(2\pi)^{(s-1)}cos(\frac{\pi s}{2})\Gamma(1-s)$. Combining the Hurwitz Zeta components and calculations of the contour integral (and graphing) was performed using the R language (9) and RStudio (10).
+ 
+Note that in principle, the multipler function representing the symmetrical relationship between $L(s,f)$and $L(1-s,f)$ for $f_{1}(s)$ \& $f_{2}(s)$ could be calculated directly from using $\Big (\frac{L(s,f)}{L(1-s,f)} \Big )$, however to be rigorous with respect to the existence of a known functional equation, the calculations in this paper use the explicit multiplier function $5^{(\frac{1}{2}-s)}2(2\pi)^{(s-1)}cos(\frac{\pi s}{2})\Gamma(1-s)$ applying to $f_{1}(s)$ \& $f_{2}(s)$ functional equations.
+
+##Extended Riemann Siegel function analogue behaviour and contour integral values for the Davenport-Heilbronn function
+
+###Behaviour of functions because of non-trivial zeroes on the critical line
+
+Figures 1-4 show below the behaviour of the extended Riemann Siegel function analogue behaviour for the Davenport-Heilbronn function for several lines ($s=\sigma+i*t$) in the positive quadrant of the complex plane, in the interval t=(0,20). This interval shows the impact of the contour integral component behaviour for the non-trivial zeroes on the critical line. Included in the figures are
+
+(i) the real and imaginary components of the Davenport-Heilbronn function
+(ii) the real and imaginary components of the extended Riemann Siegel function analogues of the Davenport-Heilbronn function,
+(iii) the continuous value of the contour integral covering the positive complex plane with the bottom contour line as specified, 
+(iv) the phase sum of the breakpoints for the contour integral antiderivatives $\theta_{f_{1}(s),ext}(s)$ \& $-\Im(log(Z_{f_{1}(s),ext}(s)))$ which gives a discrete count of the enclosed zeroes and poles. 
+
+
+```{r, fig1, echo=FALSE, cache=TRUE, fig.width=7, fig.height=4,  fig.keep='high', warning=FALSE }
+
+dir_loc <- "/home/john/bear/Projects/sampling-investigations/julia/"
+
+read_fn <- function(dir_loc,filen){
+  
+  filenn <- paste0(dir_loc,filen)
+  
+  dread <- read.table(filenn,
+                       sep=",", header=F,row.names=NULL)
+}
+
+
+add_phase <- function(x,y)  {
+  
+  sum <- 0  
+  sqadd_pos <- 0
+  
+  
+  for (i in 1:length(x)) {
+    if(x[i] <= .002 ) {sqadd_pos[i] <- sum}
+    else { 
+      test <- Im(log(y[i]))
+      testp <- ifelse(x[i-1] != 0,Im(log(y[i-1])),test)
+      # print(test-testp)
+      if (test-testp > pi/8 ) {flag <- 1;sum <- sum-1*pi;sqadd_pos[i] <- sum}
+      if (test-testp < -pi/8) {flag <- 1;sum <- sum+1*pi;sqadd_pos[i] <- sum}
+      else {flag <- 0; sqadd_pos[i] <- sum}
+    }
+  }
+  sum <- pi
+  sqadd_neg <- -pi
+  
+  for (i in 1:length(x)) {
+    if(x[length(x)+1-i] >= -.002 ) {sqadd_neg[length(x)+1-i] <- sum}
+    else { 
+      
+      test <- Im(log(y[length(x)+1-i]))
+      testp <- ifelse(x[length(x)+1-i+1] != 0,Im(log(y[length(x)+1-i+1])),test)
+      
+      if (test-testp < -pi/8 ) {flag <- 1;sum <- sum+1*pi;sqadd_neg[length(x)+1-i] <- sum}
+      if (test-testp > pi/8) {flag <- 1;sum <- sum-1*pi;sqadd_neg[length(x)+1-i] <- sum}
+      else {flag <- 0; sqadd_neg[length(x)+1-i] <- sum}
+    }
+  }
+  
+  sqadd <- 0
+  for (i in 1:length(x)) {
+    if (x[i] < 0) sqadd[i] <- sqadd_neg[i]
+    else sqadd[i] <- sqadd_pos[i]
+  }
+  
+  sqadd}
+
+
+res <- 0.808517
+df <- read_fn(dir_loc,"outfile_hurwitz_zeta_upper_0_808517.dat")
+df[,"V1"] <- as.numeric(gsub("[^0-9\\.-]", "", df[,1]))
+df[,"V2"] <- as.numeric(df[,2]);df[,"V3"] <- as.numeric(df[,3]) 
+df[,"V4"] <- as.numeric(df[,4]);df[,"V5"] <- as.numeric(df[,5]) 
+df[,"V6"] <- as.numeric(df[,6]);df[,"V7"] <- as.numeric(df[,7]) 
+df[,"V8"] <- as.numeric(df[,8]);df[,"V9"] <- as.numeric(df[,9]) 
+df[,"V10"] <- as.numeric(df[,10]);df[,"V11"] <- as.numeric(df[,11]) 
+df[,"V12"] <- as.numeric(df[,12]);df[,"V13"] <- as.numeric(df[,13]) 
+df[,"V14"] <- as.numeric(gsub("[^0-9\\.-]", "", df[,14]) )
+
+df_l <- read_fn(dir_loc,"outfile_hurwitz_zeta_lower_0_808517.dat")
+df_l[,"V1"] <- as.numeric(gsub("[^0-9\\.-]", "", df_l[,1]))
+df_l[,"V2"] <- as.numeric(df_l[,2]);df_l[,"V3"] <- as.numeric(df_l[,3]) 
+df_l[,"V4"] <- as.numeric(df_l[,4]);df_l[,"V5"] <- as.numeric(df_l[,5]) 
+df_l[,"V6"] <- as.numeric(df_l[,6]);df_l[,"V7"] <- as.numeric(df_l[,7]) 
+df_l[,"V8"] <- as.numeric(df_l[,8]);df_l[,"V9"] <- as.numeric(df_l[,9]) 
+df_l[,"V10"] <- as.numeric(df_l[,10]);df_l[,"V11"] <- as.numeric(df_l[,11]) 
+df_l[,"V12"] <- as.numeric(df_l[,12]);df_l[,"V13"] <- as.numeric(df_l[,13]) 
+df_l[,"V14"] <- as.numeric(gsub("[^0-9\\.-]", "", df_l[,14]) )
+
+tan_theta <- (sqrt(10-2*sqrt(5))-2)/(sqrt(5)-1)
+hz <- (df[,"V2"]+1i*df[,"V3"]) + 
+          tan_theta*(df[,"V4"]+1i*df[,"V5"]) -
+          tan_theta*(df[,"V6"]+1i*df[,"V7"]) -
+          (df[,"V8"]+1i*df[,"V9"])
+x_5u <- 1/5^(res+1i*df$V1)#(0.5-0.074356+1i*df$V1)#(0.574356+1i*df$V1)
+hzl <- (df_l[,"V2"]+1i*df_l[,"V3"]) + 
+  tan_theta*(df_l[,"V4"]+1i*df_l[,"V5"]) -
+  tan_theta*(df_l[,"V6"]+1i*df_l[,"V7"]) -
+  (df_l[,"V8"]+1i*df_l[,"V9"])
+x_5l <- 1/5^(1-(res+1i*df$V1))#(0.5-0.074356+1i*df$V1)#(0.574356+1i*df$V1)
+     
+xlimc <- c(0,20)
+
+par(mfrow=c(1,3))
+# ordinary form of f1(s)
+plot(x=df$V1,y=Re(x_5u*hz),typ="l",col=6,xlim=xlimc,ylim=c(-2,5),
+     xlab="imag value",ylab="function value",main="Davenport-Heilbronn fn \n - real & imag components ")
+# lines(x=df$V1,y=abs(x_5u*hz),typ="l",col=1,lty=3,lwd=2)
+lines(x=df$V1,y=Im(x_5u*hz),typ="l",col=3)
+abline(h=0,lty=3)
+
+legend("topleft", c("real( f1(s) )","imag( f1(s) )"),
+       lty = 1,cex=1, lwd = c(2,  2), col = c("magenta",  "green"))
+
+rat_prop <- abs(df$V12+1i*df$V13)
+ratorg_prop <- abs(x_5u*hz/(x_5l*hzl))
+
+# hist(rat_prop-ratorg_prop,breaks=1000,ylim=c(0,10))
+theta_hd <- sqrt((x_5l*hzl)/(x_5u*hz)*rat_prop)
+z_hd <- sqrt((x_5l*hzl)*(x_5u*hz)*rat_prop)
+
+#calculating phase accumulation from breakpoints
+zadd_f <- add_phase(df$V1,z_hd)
+tadd_f <- add_phase(df$V1,theta_hd)
+
+# z_ext form of f1(s)  
+plot(x=df_l$V1,y=Re((z_hd))*exp(1i*zadd_f),col=6,typ="l",ylim=c(-2,5),xlim=xlimc,
+     xlab="imag value",ylab="function value",main="Z_f1(s)_ext \n - real & imag components \n with non-trivial zeroes count")
+lines(x=df_l$V1,y=Im((z_hd))*exp(1i*zadd_f),col=3)
+# lines(x=df_l$V1,y=abs(z_hd),typ="l",col=1,lty=3,lwd=2)
+lines(x=df$V1,y=(Im(log(theta_hd))+tadd_f-(Im(log(z_hd))+zadd_f))/2/pi,typ="l",col=2)
+lines(x=df$V1,y=1/2/pi*(tadd_f-zadd_f),typ="l",col=4)
+abline(h=0,lty=3)
+legend("topleft", c("real(Z_f1_ext(s))","imag(Z_f1_ext(s))","contour integral","breakpoint phase sum \n component of integral"),
+       lty = 1,cex=0.8, lwd = c(2,  2,2,2), col = c("magenta",  "green","red","blue"))
+
+# theta_ext form of f1(s)
+plot(x=df$V1,y=Re(theta_hd)*exp(1i*tadd_f),typ="l",col=6,ylim=c(-2,5),xlim=xlimc,
+     xlab="imag value",ylab="function value",main="Theta_f1(s)_ext - abs, \n real & imag components")
+lines(x=df$V1,y=Im(theta_hd)*exp(1i*tadd_f),typ="l",col=3)
+lines(x=df$V1,y=abs(theta_hd),typ="l",col=1,lty=2)
+abline(h=0,lty=3)
+legend("topleft", c("real(Theta_f1_ext(s))","imag(Theta_f1_ext(s))","abs(Theta_f1_ext(s))"),
+       lty = c(1,1,2),cex=1, lwd = c(2,  2,2,2), col = c("magenta",  "green","black"))
+
+
+# mtext("Behaviour of Dirichlet series components and contour integral residue with bottom contour along s=(.808517+i*t)", side=3, outer=TRUE, line=1,cex=0.8)
+
+```
+
+***Figure 1. Behaviour of the Davenport-Heilbronn function, the extended Riemann Siegel function analogue and the antiderivative of the argument principle contour integral calculation with the bottom contour along s=(.808517+$i*t$), just inside the critical strip.***
+
+
+```{r, fig2, echo=FALSE, cache=TRUE, fig.width=7, fig.height=4,  fig.keep='high', warning=FALSE }
+
+res <- 0.51
+df <- read_fn(dir_loc,"outfile_hurwitz_zeta_upper_0_51.dat")
+df[,"V1"] <- as.numeric(gsub("[^0-9\\.-]", "", df[,1]))
+df[,"V2"] <- as.numeric(df[,2]);df[,"V3"] <- as.numeric(df[,3]) 
+df[,"V4"] <- as.numeric(df[,4]);df[,"V5"] <- as.numeric(df[,5]) 
+df[,"V6"] <- as.numeric(df[,6]);df[,"V7"] <- as.numeric(df[,7]) 
+df[,"V8"] <- as.numeric(df[,8]);df[,"V9"] <- as.numeric(df[,9]) 
+df[,"V10"] <- as.numeric(df[,10]);df[,"V11"] <- as.numeric(df[,11]) 
+df[,"V12"] <- as.numeric(df[,12]);df[,"V13"] <- as.numeric(df[,13]) 
+df[,"V14"] <- as.numeric(gsub("[^0-9\\.-]", "", df[,14]) )
+
+df_l <- read_fn(dir_loc,"outfile_hurwitz_zeta_lower_0_51.dat")
+df_l[,"V1"] <- as.numeric(gsub("[^0-9\\.-]", "", df_l[,1]))
+df_l[,"V2"] <- as.numeric(df_l[,2]);df_l[,"V3"] <- as.numeric(df_l[,3]) 
+df_l[,"V4"] <- as.numeric(df_l[,4]);df_l[,"V5"] <- as.numeric(df_l[,5]) 
+df_l[,"V6"] <- as.numeric(df_l[,6]);df_l[,"V7"] <- as.numeric(df_l[,7]) 
+df_l[,"V8"] <- as.numeric(df_l[,8]);df_l[,"V9"] <- as.numeric(df_l[,9]) 
+df_l[,"V10"] <- as.numeric(df_l[,10]);df_l[,"V11"] <- as.numeric(df_l[,11]) 
+df_l[,"V12"] <- as.numeric(df_l[,12]);df_l[,"V13"] <- as.numeric(df_l[,13]) 
+df_l[,"V14"] <- as.numeric(gsub("[^0-9\\.-]", "", df_l[,14]) )
+
+tan_theta <- (sqrt(10-2*sqrt(5))-2)/(sqrt(5)-1)
+hz <- (df[,"V2"]+1i*df[,"V3"]) + 
+          tan_theta*(df[,"V4"]+1i*df[,"V5"]) -
+          tan_theta*(df[,"V6"]+1i*df[,"V7"]) -
+          (df[,"V8"]+1i*df[,"V9"])
+x_5u <- 1/5^(res+1i*df$V1)#(0.5-0.074356+1i*df$V1)#(0.574356+1i*df$V1)
+hzl <- (df_l[,"V2"]+1i*df_l[,"V3"]) + 
+  tan_theta*(df_l[,"V4"]+1i*df_l[,"V5"]) -
+  tan_theta*(df_l[,"V6"]+1i*df_l[,"V7"]) -
+  (df_l[,"V8"]+1i*df_l[,"V9"])
+x_5l <- 1/5^(1-(res+1i*df$V1))#(0.5-0.074356+1i*df$V1)#(0.574356+1i*df$V1)
+     
+xlimc <- c(0,20)
+
+par(mfrow=c(1,3))
+# ordinary form of f1(s)
+plot(x=df$V1,y=Re(x_5u*hz),typ="l",col=6,xlim=xlimc,ylim=c(-2,5),
+     xlab="imag value",ylab="function value",main="Davenport-Heilbronn fn \n - real & imag components ")
+# lines(x=df$V1,y=abs(x_5u*hz),typ="l",col=1,lty=3,lwd=2)
+lines(x=df$V1,y=Im(x_5u*hz),typ="l",col=3)
+abline(h=0,lty=3)
+
+legend("topleft", c("real( f1(s) )","imag( f1(s) )"),
+       lty = 1,cex=1, lwd = c(2,  2), col = c("magenta",  "green"))
+
+rat_prop <- abs(df$V12+1i*df$V13)
+ratorg_prop <- abs(x_5u*hz/(x_5l*hzl))
+
+# hist(rat_prop-ratorg_prop,breaks=1000,ylim=c(0,10))
+theta_hd <- sqrt((x_5l*hzl)/(x_5u*hz)*rat_prop)
+z_hd <- sqrt((x_5l*hzl)*(x_5u*hz)*rat_prop)
+
+#calculating phase accumulation from breakpoints
+zadd_f <- add_phase(df$V1,z_hd)
+tadd_f <- add_phase(df$V1,theta_hd)
+
+# z_ext form of f1(s)  
+plot(x=df_l$V1,y=Re((z_hd))*exp(1i*zadd_f),col=6,typ="l",ylim=c(-2,5),xlim=xlimc,
+     xlab="imag value",ylab="function value",main="Z_f1(s)_ext \n - real & imag components \n with non-trivial zeroes count")
+lines(x=df_l$V1,y=Im((z_hd))*exp(1i*zadd_f),col=3)
+# lines(x=df_l$V1,y=abs(z_hd),typ="l",col=1,lty=3,lwd=2)
+lines(x=df$V1,y=(Im(log(theta_hd))+tadd_f-(Im(log(z_hd))+zadd_f))/2/pi,typ="l",col=2)
+lines(x=df$V1,y=1/2/pi*(tadd_f-zadd_f),typ="l",col=4)
+abline(h=0,lty=3)
+legend("topleft", c("real(Z_f1_ext(s))","imag(Z_f1_ext(s))","contour integral","breakpoint phase sum \n component of integral"),
+       lty = 1,cex=0.8, lwd = c(2,  2,2,2), col = c("magenta",  "green","red","blue"))
+
+# theta_ext form of f1(s)
+plot(x=df$V1,y=Re(theta_hd)*exp(1i*tadd_f),typ="l",col=6,ylim=c(-2,5),xlim=xlimc,
+     xlab="imag value",ylab="function value",main="Theta_f1(s)_ext - abs, \n real & imag components")
+lines(x=df$V1,y=Im(theta_hd)*exp(1i*tadd_f),typ="l",col=3)
+lines(x=df$V1,y=abs(theta_hd),typ="l",col=1,lty=2)
+abline(h=0,lty=3)
+legend("topleft", c("real(Theta_f1_ext(s))","imag(Theta_f1_ext(s))","abs(Theta_f1_ext(s))"),
+       lty = c(1,1,2),cex=1, lwd = c(2,  2,2,2), col = c("magenta",  "green","black"))
+
+```
+
+***Figure 2. Behaviour of the Davenport-Heilbronn function, the extended Riemann Siegel function analogue and the antiderivative of the argument principle contour integral calculation with the bottom contour along s=(.51+$i*t$), just above the critical line.***
+
+
+
+```{r, fig3, echo=FALSE, cache=TRUE, fig.width=7, fig.height=4,  fig.keep='high', warning=FALSE }
+
+res <- 0.49
+df <- read_fn(dir_loc,"outfile_hurwitz_zeta_upper_0_49.dat")
+df[,"V1"] <- as.numeric(gsub("[^0-9\\.-]", "", df[,1]))
+df[,"V2"] <- as.numeric(df[,2]);df[,"V3"] <- as.numeric(df[,3]) 
+df[,"V4"] <- as.numeric(df[,4]);df[,"V5"] <- as.numeric(df[,5]) 
+df[,"V6"] <- as.numeric(df[,6]);df[,"V7"] <- as.numeric(df[,7]) 
+df[,"V8"] <- as.numeric(df[,8]);df[,"V9"] <- as.numeric(df[,9]) 
+df[,"V10"] <- as.numeric(df[,10]);df[,"V11"] <- as.numeric(df[,11]) 
+df[,"V12"] <- as.numeric(df[,12]);df[,"V13"] <- as.numeric(df[,13]) 
+df[,"V14"] <- as.numeric(gsub("[^0-9\\.-]", "", df[,14]) )
+
+df_l <- read_fn(dir_loc,"outfile_hurwitz_zeta_lower_0_49.dat")
+df_l[,"V1"] <- as.numeric(gsub("[^0-9\\.-]", "", df_l[,1]))
+df_l[,"V2"] <- as.numeric(df_l[,2]);df_l[,"V3"] <- as.numeric(df_l[,3]) 
+df_l[,"V4"] <- as.numeric(df_l[,4]);df_l[,"V5"] <- as.numeric(df_l[,5]) 
+df_l[,"V6"] <- as.numeric(df_l[,6]);df_l[,"V7"] <- as.numeric(df_l[,7]) 
+df_l[,"V8"] <- as.numeric(df_l[,8]);df_l[,"V9"] <- as.numeric(df_l[,9]) 
+df_l[,"V10"] <- as.numeric(df_l[,10]);df_l[,"V11"] <- as.numeric(df_l[,11]) 
+df_l[,"V12"] <- as.numeric(df_l[,12]);df_l[,"V13"] <- as.numeric(df_l[,13]) 
+df_l[,"V14"] <- as.numeric(gsub("[^0-9\\.-]", "", df_l[,14]) )
+
+tan_theta <- (sqrt(10-2*sqrt(5))-2)/(sqrt(5)-1)
+hz <- (df[,"V2"]+1i*df[,"V3"]) + 
+          tan_theta*(df[,"V4"]+1i*df[,"V5"]) -
+          tan_theta*(df[,"V6"]+1i*df[,"V7"]) -
+          (df[,"V8"]+1i*df[,"V9"])
+x_5u <- 1/5^(res+1i*df$V1)#(0.5-0.074356+1i*df$V1)#(0.574356+1i*df$V1)
+hzl <- (df_l[,"V2"]+1i*df_l[,"V3"]) + 
+  tan_theta*(df_l[,"V4"]+1i*df_l[,"V5"]) -
+  tan_theta*(df_l[,"V6"]+1i*df_l[,"V7"]) -
+  (df_l[,"V8"]+1i*df_l[,"V9"])
+x_5l <- 1/5^(1-(res+1i*df$V1))#(0.5-0.074356+1i*df$V1)#(0.574356+1i*df$V1)
+     
+xlimc <- c(0,20)
+
+par(mfrow=c(1,3))
+# ordinary form of f1(s)
+plot(x=df$V1,y=Re(x_5u*hz),typ="l",col=6,xlim=xlimc,ylim=c(-2,5),
+     xlab="imag value",ylab="function value",main="Davenport-Heilbronn fn \n - real & imag components ")
+# lines(x=df$V1,y=abs(x_5u*hz),typ="l",col=1,lty=3,lwd=2)
+lines(x=df$V1,y=Im(x_5u*hz),typ="l",col=3)
+abline(h=0,lty=3)
+
+legend("topleft", c("real( f1(s) )","imag( f1(s) )"),
+       lty = 1,cex=1, lwd = c(2,  2), col = c("magenta",  "green"))
+
+rat_prop <- abs(df$V12+1i*df$V13)
+ratorg_prop <- abs(x_5u*hz/(x_5l*hzl))
+
+# hist(rat_prop-ratorg_prop,breaks=1000,ylim=c(0,10))
+theta_hd <- sqrt((x_5l*hzl)/(x_5u*hz)*rat_prop)
+z_hd <- sqrt((x_5l*hzl)*(x_5u*hz)*rat_prop)
+
+#calculating phase accumulation from breakpoints
+zadd_f <- add_phase(df$V1,z_hd)
+tadd_f <- add_phase(df$V1,theta_hd)
+
+# z_ext form of f1(s)  
+plot(x=df_l$V1,y=Re((z_hd))*exp(1i*zadd_f),col=6,typ="l",ylim=c(-2,5),xlim=xlimc,
+     xlab="imag value",ylab="function value",main="Z_f1(s)_ext \n - real & imag components \n with non-trivial zeroes count")
+lines(x=df_l$V1,y=Im((z_hd))*exp(1i*zadd_f),col=3)
+# lines(x=df_l$V1,y=abs(z_hd),typ="l",col=1,lty=3,lwd=2)
+lines(x=df$V1,y=(Im(log(theta_hd))+tadd_f-(Im(log(z_hd))+zadd_f))/2/pi,typ="l",col=2)
+lines(x=df$V1,y=1/2/pi*(tadd_f-zadd_f),typ="l",col=4)
+abline(h=0,lty=3)
+legend("topleft", c("real(Z_f1_ext(s))","imag(Z_f1_ext(s))","contour integral","breakpoint phase sum \n component of integral"),
+       lty = 1,cex=0.8, lwd = c(2,  2,2,2), col = c("magenta",  "green","red","blue"))
+
+# theta_ext form of f1(s)
+plot(x=df$V1,y=Re(theta_hd)*exp(1i*tadd_f),typ="l",col=6,ylim=c(-2,5),xlim=xlimc,
+     xlab="imag value",ylab="function value",main="Theta_f1(s)_ext - abs, \n real & imag components")
+lines(x=df$V1,y=Im(theta_hd)*exp(1i*tadd_f),typ="l",col=3)
+lines(x=df$V1,y=abs(theta_hd),typ="l",col=1,lty=2)
+abline(h=0,lty=3)
+legend("topleft", c("real(Theta_f1_ext(s))","imag(Theta_f1_ext(s))","abs(Theta_f1_ext(s))"),
+       lty = c(1,1,2),cex=1, lwd = c(2,  2,2,2), col = c("magenta",  "green","black"))
+
+```
+
+***Figure 3. Behaviour of the Davenport-Heilbronn function, the extended Riemann Siegel function analogue and the antiderivative of the argument principle contour integral calculation with the bottom contour along s=(.49+$i*t$), just below the critical line.***
+
+
+```{r, fig4, echo=FALSE, cache=TRUE, fig.width=7, fig.height=4,  fig.keep='high', warning=FALSE }
+
+res <- -1
+df <- read_fn(dir_loc,"outfile_hurwitz_zeta_upper_m1_0.dat")
+df[,"V1"] <- as.numeric(gsub("[^0-9\\.-]", "", df[,1]))
+df[,"V2"] <- as.numeric(df[,2]);df[,"V3"] <- as.numeric(df[,3]) 
+df[,"V4"] <- as.numeric(df[,4]);df[,"V5"] <- as.numeric(df[,5]) 
+df[,"V6"] <- as.numeric(df[,6]);df[,"V7"] <- as.numeric(df[,7]) 
+df[,"V8"] <- as.numeric(df[,8]);df[,"V9"] <- as.numeric(df[,9]) 
+df[,"V10"] <- as.numeric(df[,10]);df[,"V11"] <- as.numeric(df[,11]) 
+df[,"V12"] <- as.numeric(df[,12]);df[,"V13"] <- as.numeric(df[,13]) 
+df[,"V14"] <- as.numeric(gsub("[^0-9\\.-]", "", df[,14]) )
+
+df_l <- read_fn(dir_loc,"outfile_hurwitz_zeta_lower_m1_0.dat")
+df_l[,"V1"] <- as.numeric(gsub("[^0-9\\.-]", "", df_l[,1]))
+df_l[,"V2"] <- as.numeric(df_l[,2]);df_l[,"V3"] <- as.numeric(df_l[,3]) 
+df_l[,"V4"] <- as.numeric(df_l[,4]);df_l[,"V5"] <- as.numeric(df_l[,5]) 
+df_l[,"V6"] <- as.numeric(df_l[,6]);df_l[,"V7"] <- as.numeric(df_l[,7]) 
+df_l[,"V8"] <- as.numeric(df_l[,8]);df_l[,"V9"] <- as.numeric(df_l[,9]) 
+df_l[,"V10"] <- as.numeric(df_l[,10]);df_l[,"V11"] <- as.numeric(df_l[,11]) 
+df_l[,"V12"] <- as.numeric(df_l[,12]);df_l[,"V13"] <- as.numeric(df_l[,13]) 
+df_l[,"V14"] <- as.numeric(gsub("[^0-9\\.-]", "", df_l[,14]) )
+
+tan_theta <- (sqrt(10-2*sqrt(5))-2)/(sqrt(5)-1)
+hz <- (df[,"V2"]+1i*df[,"V3"]) + 
+          tan_theta*(df[,"V4"]+1i*df[,"V5"]) -
+          tan_theta*(df[,"V6"]+1i*df[,"V7"]) -
+          (df[,"V8"]+1i*df[,"V9"])
+x_5u <- 1/5^(res+1i*df$V1)#(0.5-0.074356+1i*df$V1)#(0.574356+1i*df$V1)
+hzl <- (df_l[,"V2"]+1i*df_l[,"V3"]) + 
+  tan_theta*(df_l[,"V4"]+1i*df_l[,"V5"]) -
+  tan_theta*(df_l[,"V6"]+1i*df_l[,"V7"]) -
+  (df_l[,"V8"]+1i*df_l[,"V9"])
+x_5l <- 1/5^(1-(res+1i*df$V1))#(0.5-0.074356+1i*df$V1)#(0.574356+1i*df$V1)
+     
+xlimc <- c(0,20)
+
+par(mfrow=c(1,3))
+# ordinary form of f1(s)
+plot(x=df$V1,y=Re(x_5u*hz),typ="l",col=6,xlim=xlimc,ylim=c(-2,5),
+     xlab="imag value",ylab="function value",main="Davenport-Heilbronn fn \n - real & imag components ")
+# lines(x=df$V1,y=abs(x_5u*hz),typ="l",col=1,lty=3,lwd=2)
+lines(x=df$V1,y=Im(x_5u*hz),typ="l",col=3)
+abline(h=0,lty=3)
+
+legend("topleft", c("real( f1(s) )","imag( f1(s) )"),
+       lty = 1,cex=1, lwd = c(2,  2), col = c("magenta",  "green"))
+
+rat_prop <- abs(df$V12+1i*df$V13)
+ratorg_prop <- abs(x_5u*hz/(x_5l*hzl))
+
+# hist(rat_prop-ratorg_prop,breaks=1000,ylim=c(0,10))
+theta_hd <- sqrt((x_5l*hzl)/(x_5u*hz)*rat_prop)
+z_hd <- sqrt((x_5l*hzl)*(x_5u*hz)*rat_prop)
+
+#calculating phase accumulation from breakpoints
+zadd_f <- add_phase(df$V1,z_hd)
+tadd_f <- add_phase(df$V1,theta_hd)
+
+# z_ext form of f1(s)  
+plot(x=df_l$V1,y=Re((z_hd))*exp(1i*zadd_f),col=6,typ="l",ylim=c(-2,5),xlim=xlimc,
+     xlab="imag value",ylab="function value",main="Z_f1(s)_ext \n - real & imag components \n with non-trivial zeroes count")
+lines(x=df_l$V1,y=Im((z_hd))*exp(1i*zadd_f),col=3)
+# lines(x=df_l$V1,y=abs(z_hd),typ="l",col=1,lty=3,lwd=2)
+lines(x=df$V1,y=(Im(log(theta_hd))+tadd_f-(Im(log(z_hd))+zadd_f))/2/pi,typ="l",col=2)
+lines(x=df$V1,y=1/2/pi*(tadd_f-zadd_f),typ="l",col=4)
+abline(h=0,lty=3)
+legend("topleft", c("real(Z_f1_ext(s))","imag(Z_f1_ext(s))","contour integral","breakpoint phase sum \n component of integral"),
+       lty = 1,cex=0.8, lwd = c(2,  2,2,2), col = c("magenta",  "green","red","blue"))
+
+# theta_ext form of f1(s)
+plot(x=df$V1,y=Re(theta_hd)*exp(1i*tadd_f),typ="l",col=6,ylim=c(-2,5),xlim=xlimc,
+     xlab="imag value",ylab="function value",main="Theta_f1(s)_ext - abs, \n real & imag components")
+lines(x=df$V1,y=Im(theta_hd)*exp(1i*tadd_f),typ="l",col=3)
+lines(x=df$V1,y=abs(theta_hd),typ="l",col=1,lty=2)
+abline(h=0,lty=3)
+legend("topleft", c("real(Theta_f1_ext(s))","imag(Theta_f1_ext(s))","abs(Theta_f1_ext(s))"),
+       lty = c(1,1,2),cex=1, lwd = c(2,  2,2,2), col = c("magenta",  "green","black"))
+
+```
+
+***Figure 4. Behaviour of the Davenport-Heilbronn function, the extended Riemann Siegel function analogue and the antiderivative of the argument principle contour integral calculation with the bottom contour along s=(-1+$i*t$), below the critical strip.***
+
+Firstly, comparing the lineshapes of the Davenport-Heilbron function (left graph) and the extended Riemann Siegel Z function (middle graph), the extended Riemann Siegel Z function are simpler with $Im(Z_{f_{1}(1/2),ext})=0$ on the critical line, this behaviour is very similar to the Riemann Zeta case. This behaviour may change near non-trivial zeroes off the critical line and is investigated in the next few figures. 
+
+Secondly, in contrast to the Riemann Zeta case, the extended Riemann Siegel Theta function analogue for the Davenport-Heilbron function (right graph) appears to be fairly unchanged through figures (1-4) except for the impact of the real axis zero at s=-1. The absolute value of the function appears to be approximately constant  $abs(\theta_{f_{1}(s),ext})\le 1$ being slightly lower near the real axis. 
+
+Thirdly, it can be observed that the argument principle contour integral results, gives accurate count for the roots/poles lying above the line ($s=\sigma+i*t$) contained on the critical line, in the positive quadrant of the complex plane. This behavior arises, given that $\theta_{f_{1}(s),ext}$ ($\Im(log(Z_{f_{1}(s),ext}))$) are even(odd) functions respectively about the critical line, as occurred for the Riemann Zeta function.
+
+###Impact of non-trivial zeroes off the critical line, elsewhere in the critical strip
+
+Figures 5-8 show below the behaviour of the extended Riemann Siegel function analogue behaviour for the Davenport-Heilbronn function for several lines ($s=\sigma+i*t$) in the positive quadrant of the complex plane, in the interval t=(80,120). This interval shows the additional impact on the contour integral component behaviour for the non-trivial zeroes off the critical line elsewhere in the critical strip. The figure content is the same as for figures (1-4) but in the interval t=(80,120), the Davenport-Heilbronn function had 4 non trivial zeroes off the critical line (6,7) at 0.808517+85.69938i, (1-0.808517)+85.69938i, 0.650830+114.163343i \& (1-0.650830)+114.163343i.
+
+```{r, fig5, echo=FALSE, cache=TRUE, fig.width=7, fig.height=4,  fig.keep='high', warning=FALSE }
+
+res <- .8
+df <- read_fn(dir_loc,"outfile_hurwitz_zeta_upper_0_8.dat")
+df[,"V1"] <- as.numeric(gsub("[^0-9\\.-]", "", df[,1]))
+df[,"V2"] <- as.numeric(df[,2]);df[,"V3"] <- as.numeric(df[,3]) 
+df[,"V4"] <- as.numeric(df[,4]);df[,"V5"] <- as.numeric(df[,5]) 
+df[,"V6"] <- as.numeric(df[,6]);df[,"V7"] <- as.numeric(df[,7]) 
+df[,"V8"] <- as.numeric(df[,8]);df[,"V9"] <- as.numeric(df[,9]) 
+df[,"V10"] <- as.numeric(df[,10]);df[,"V11"] <- as.numeric(df[,11]) 
+df[,"V12"] <- as.numeric(df[,12]);df[,"V13"] <- as.numeric(df[,13]) 
+df[,"V14"] <- as.numeric(gsub("[^0-9\\.-]", "", df[,14]) )
+
+df_l <- read_fn(dir_loc,"outfile_hurwitz_zeta_lower_0_8.dat")
+df_l[,"V1"] <- as.numeric(gsub("[^0-9\\.-]", "", df_l[,1]))
+df_l[,"V2"] <- as.numeric(df_l[,2]);df_l[,"V3"] <- as.numeric(df_l[,3]) 
+df_l[,"V4"] <- as.numeric(df_l[,4]);df_l[,"V5"] <- as.numeric(df_l[,5]) 
+df_l[,"V6"] <- as.numeric(df_l[,6]);df_l[,"V7"] <- as.numeric(df_l[,7]) 
+df_l[,"V8"] <- as.numeric(df_l[,8]);df_l[,"V9"] <- as.numeric(df_l[,9]) 
+df_l[,"V10"] <- as.numeric(df_l[,10]);df_l[,"V11"] <- as.numeric(df_l[,11]) 
+df_l[,"V12"] <- as.numeric(df_l[,12]);df_l[,"V13"] <- as.numeric(df_l[,13]) 
+df_l[,"V14"] <- as.numeric(gsub("[^0-9\\.-]", "", df_l[,14]) )
+
+tan_theta <- (sqrt(10-2*sqrt(5))-2)/(sqrt(5)-1)
+hz <- (df[,"V2"]+1i*df[,"V3"]) + 
+          tan_theta*(df[,"V4"]+1i*df[,"V5"]) -
+          tan_theta*(df[,"V6"]+1i*df[,"V7"]) -
+          (df[,"V8"]+1i*df[,"V9"])
+x_5u <- 1/5^(res+1i*df$V1)#(0.5-0.074356+1i*df$V1)#(0.574356+1i*df$V1)
+hzl <- (df_l[,"V2"]+1i*df_l[,"V3"]) + 
+  tan_theta*(df_l[,"V4"]+1i*df_l[,"V5"]) -
+  tan_theta*(df_l[,"V6"]+1i*df_l[,"V7"]) -
+  (df_l[,"V8"]+1i*df_l[,"V9"])
+x_5l <- 1/5^(1-(res+1i*df$V1))#(0.5-0.074356+1i*df$V1)#(0.574356+1i*df$V1)
+     
+xlimc <- c(80,120)
+
+par(mfrow=c(1,3))
+# ordinary form of f1(s)
+plot(x=df$V1,y=Re(x_5u*hz),typ="l",col=6,xlim=xlimc,ylim=c(-2,5),
+     xlab="imag value",ylab="function value",main="Davenport-Heilbronn fn \n - real & imag components ")
+# lines(x=df$V1,y=abs(x_5u*hz),typ="l",col=1,lty=3,lwd=2)
+lines(x=df$V1,y=Im(x_5u*hz),typ="l",col=3)
+abline(h=0,lty=3);abline(v=85.699348,lty=3);abline(v=114.163343,lty=3)
+
+legend("topleft", c("real( f1(s) )","imag( f1(s) )"),
+       lty = 1,cex=1, lwd = c(2,  2), col = c("magenta",  "green"))
+
+rat_prop <- abs(df$V12+1i*df$V13)
+ratorg_prop <- abs(x_5u*hz/(x_5l*hzl))
+
+# hist(rat_prop-ratorg_prop,breaks=1000,ylim=c(0,10))
+theta_hd <- sqrt((x_5l*hzl)/(x_5u*hz)*rat_prop)
+z_hd <- sqrt((x_5l*hzl)*(x_5u*hz)*rat_prop)
+
+#calculating phase accumulation from breakpoints
+zadd_f <- add_phase(df$V1,z_hd)
+tadd_f <- add_phase(df$V1,theta_hd)
+
+# z_ext form of f1(s)  
+plot(x=df_l$V1,y=Re((z_hd))*exp(1i*zadd_f),col=6,typ="l",ylim=c(-2,5),xlim=xlimc,
+     xlab="imag value",ylab="function value",main="Z_f1(s)_ext \n - real & imag components \n with non-trivial zeroes count")
+lines(x=df_l$V1,y=Im((z_hd))*exp(1i*zadd_f),col=3)
+# lines(x=df_l$V1,y=abs(z_hd),typ="l",col=1,lty=3,lwd=2)
+lines(x=df$V1,y=(Im(log(theta_hd))+tadd_f-(Im(log(z_hd))+zadd_f))/2/pi,typ="l",col=2)
+lines(x=df$V1,y=1/2/pi*(tadd_f-zadd_f),typ="l",col=4)
+abline(h=0,lty=3);abline(v=85.699348,lty=3);abline(v=114.163343,lty=3)
+legend("topleft", c("real(Z_f1_ext(s))","imag(Z_f1_ext(s))","contour integral","breakpoint phase sum \n component of integral"),
+       lty = 1,cex=0.8, lwd = c(2,  2,2,2), col = c("magenta",  "green","red","blue"))
+
+# theta_ext form of f1(s)
+plot(x=df$V1,y=Re(theta_hd)*exp(1i*tadd_f),typ="l",col=6,ylim=c(-2,5),xlim=xlimc,
+     xlab="imag value",ylab="function value",main="Theta_f1(s)_ext - abs, \n real & imag components")
+lines(x=df$V1,y=Im(theta_hd)*exp(1i*tadd_f),typ="l",col=3)
+lines(x=df$V1,y=abs(theta_hd),typ="l",col=1,lty=2)
+abline(h=0,lty=3)
+legend("topleft", c("real(Theta_f1_ext(s))","imag(Theta_f1_ext(s))","abs(Theta_f1_ext(s))"),
+       lty = c(1,1,2),cex=1, lwd = c(2,  2,2,2), col = c("magenta",  "green","black"))
+
+```
+
+***Figure 5. Near non-trivial zeroes off the critical line, the behaviour of the Davenport-Heilbronn function, the extended Riemann Siegel function analogue and the antiderivative of the argument principle contour integral calculation with the bottom contour along s=(0.8+$i*t$), inside the upper critical strip.***
+
+
+```{r, fig6, echo=FALSE, cache=TRUE, fig.width=7, fig.height=4,  fig.keep='high', warning=FALSE }
+
+res <- .64
+df <- read_fn(dir_loc,"outfile_hurwitz_zeta_upper_0_64.dat")
+df[,"V1"] <- as.numeric(gsub("[^0-9\\.-]", "", df[,1]))
+df[,"V2"] <- as.numeric(df[,2]);df[,"V3"] <- as.numeric(df[,3]) 
+df[,"V4"] <- as.numeric(df[,4]);df[,"V5"] <- as.numeric(df[,5]) 
+df[,"V6"] <- as.numeric(df[,6]);df[,"V7"] <- as.numeric(df[,7]) 
+df[,"V8"] <- as.numeric(df[,8]);df[,"V9"] <- as.numeric(df[,9]) 
+df[,"V10"] <- as.numeric(df[,10]);df[,"V11"] <- as.numeric(df[,11]) 
+df[,"V12"] <- as.numeric(df[,12]);df[,"V13"] <- as.numeric(df[,13]) 
+df[,"V14"] <- as.numeric(gsub("[^0-9\\.-]", "", df[,14]) )
+
+df_l <- read_fn(dir_loc,"outfile_hurwitz_zeta_lower_0_64.dat")
+df_l[,"V1"] <- as.numeric(gsub("[^0-9\\.-]", "", df_l[,1]))
+df_l[,"V2"] <- as.numeric(df_l[,2]);df_l[,"V3"] <- as.numeric(df_l[,3]) 
+df_l[,"V4"] <- as.numeric(df_l[,4]);df_l[,"V5"] <- as.numeric(df_l[,5]) 
+df_l[,"V6"] <- as.numeric(df_l[,6]);df_l[,"V7"] <- as.numeric(df_l[,7]) 
+df_l[,"V8"] <- as.numeric(df_l[,8]);df_l[,"V9"] <- as.numeric(df_l[,9]) 
+df_l[,"V10"] <- as.numeric(df_l[,10]);df_l[,"V11"] <- as.numeric(df_l[,11]) 
+df_l[,"V12"] <- as.numeric(df_l[,12]);df_l[,"V13"] <- as.numeric(df_l[,13]) 
+df_l[,"V14"] <- as.numeric(gsub("[^0-9\\.-]", "", df_l[,14]) )
+
+tan_theta <- (sqrt(10-2*sqrt(5))-2)/(sqrt(5)-1)
+hz <- (df[,"V2"]+1i*df[,"V3"]) + 
+          tan_theta*(df[,"V4"]+1i*df[,"V5"]) -
+          tan_theta*(df[,"V6"]+1i*df[,"V7"]) -
+          (df[,"V8"]+1i*df[,"V9"])
+x_5u <- 1/5^(res+1i*df$V1)#(0.5-0.074356+1i*df$V1)#(0.574356+1i*df$V1)
+hzl <- (df_l[,"V2"]+1i*df_l[,"V3"]) + 
+  tan_theta*(df_l[,"V4"]+1i*df_l[,"V5"]) -
+  tan_theta*(df_l[,"V6"]+1i*df_l[,"V7"]) -
+  (df_l[,"V8"]+1i*df_l[,"V9"])
+x_5l <- 1/5^(1-(res+1i*df$V1))#(0.5-0.074356+1i*df$V1)#(0.574356+1i*df$V1)
+     
+xlimc <- c(80,120)
+
+par(mfrow=c(1,3))
+# ordinary form of f1(s)
+plot(x=df$V1,y=Re(x_5u*hz),typ="l",col=6,xlim=xlimc,ylim=c(-2,5),
+     xlab="imag value",ylab="function value",main="Davenport-Heilbronn fn \n - real & imag components ")
+# lines(x=df$V1,y=abs(x_5u*hz),typ="l",col=1,lty=3,lwd=2)
+lines(x=df$V1,y=Im(x_5u*hz),typ="l",col=3)
+abline(h=0,lty=3);abline(v=85.699348,lty=3);abline(v=114.163343,lty=3)
+
+legend("topleft", c("real( f1(s) )","imag( f1(s) )"),
+       lty = 1,cex=1, lwd = c(2,  2), col = c("magenta",  "green"))
+
+rat_prop <- abs(df$V12+1i*df$V13)
+ratorg_prop <- abs(x_5u*hz/(x_5l*hzl))
+
+# hist(rat_prop-ratorg_prop,breaks=1000,ylim=c(0,10))
+theta_hd <- sqrt((x_5l*hzl)/(x_5u*hz)*rat_prop)
+z_hd <- sqrt((x_5l*hzl)*(x_5u*hz)*rat_prop)
+
+#calculating phase accumulation from breakpoints
+zadd_f <- add_phase(df$V1,z_hd)
+tadd_f <- add_phase(df$V1,theta_hd)
+
+# z_ext form of f1(s)  
+plot(x=df_l$V1,y=Re((z_hd))*exp(1i*zadd_f),col=6,typ="l",ylim=c(-2,5),xlim=xlimc,
+     xlab="imag value",ylab="function value",main="Z_f1(s)_ext \n - real & imag components \n with non-trivial zeroes count")
+lines(x=df_l$V1,y=Im((z_hd))*exp(1i*zadd_f),col=3)
+# lines(x=df_l$V1,y=abs(z_hd),typ="l",col=1,lty=3,lwd=2)
+lines(x=df$V1,y=(Im(log(theta_hd))+tadd_f-(Im(log(z_hd))+zadd_f))/2/pi,typ="l",col=2)
+lines(x=df$V1,y=1/2/pi*(tadd_f-zadd_f),typ="l",col=4)
+abline(h=0,lty=3);abline(v=85.699348,lty=3);abline(v=114.163343,lty=3)
+legend("topleft", c("real(Z_f1_ext(s))","imag(Z_f1_ext(s))","contour integral","breakpoint phase sum \n component of integral"),
+       lty = 1,cex=0.8, lwd = c(2,  2,2,2), col = c("magenta",  "green","red","blue"))
+
+# theta_ext form of f1(s)
+plot(x=df$V1,y=Re(theta_hd)*exp(1i*tadd_f),typ="l",col=6,ylim=c(-2,5),xlim=xlimc,
+     xlab="imag value",ylab="function value",main="Theta_f1(s)_ext - abs, \n real & imag components")
+lines(x=df$V1,y=Im(theta_hd)*exp(1i*tadd_f),typ="l",col=3)
+lines(x=df$V1,y=abs(theta_hd),typ="l",col=1,lty=2)
+abline(h=0,lty=3)
+legend("topleft", c("real(Theta_f1_ext(s))","imag(Theta_f1_ext(s))","abs(Theta_f1_ext(s))"),
+       lty = c(1,1,2),cex=1, lwd = c(2,  2,2,2), col = c("magenta",  "green","black"))
+
+```
+
+***Figure 6. Near non-trivial zeroes off the critical line, the behaviour of the Davenport-Heilbronn function, the extended Riemann Siegel function analogue and the antiderivative of the argument principle contour integral calculation with the bottom contour along s=(0.64+$i*t$), above the critical line.***
+
+
+```{r, fig7, echo=FALSE, cache=TRUE, fig.width=7, fig.height=4,  fig.keep='high', warning=FALSE }
+
+res <- .34
+df <- read_fn(dir_loc,"outfile_hurwitz_zeta_upper_0_34.dat")
+df[,"V1"] <- as.numeric(gsub("[^0-9\\.-]", "", df[,1]))
+df[,"V2"] <- as.numeric(df[,2]);df[,"V3"] <- as.numeric(df[,3]) 
+df[,"V4"] <- as.numeric(df[,4]);df[,"V5"] <- as.numeric(df[,5]) 
+df[,"V6"] <- as.numeric(df[,6]);df[,"V7"] <- as.numeric(df[,7]) 
+df[,"V8"] <- as.numeric(df[,8]);df[,"V9"] <- as.numeric(df[,9]) 
+df[,"V10"] <- as.numeric(df[,10]);df[,"V11"] <- as.numeric(df[,11]) 
+df[,"V12"] <- as.numeric(df[,12]);df[,"V13"] <- as.numeric(df[,13]) 
+df[,"V14"] <- as.numeric(gsub("[^0-9\\.-]", "", df[,14]) )
+
+df_l <- read_fn(dir_loc,"outfile_hurwitz_zeta_lower_0_34.dat")
+df_l[,"V1"] <- as.numeric(gsub("[^0-9\\.-]", "", df_l[,1]))
+df_l[,"V2"] <- as.numeric(df_l[,2]);df_l[,"V3"] <- as.numeric(df_l[,3]) 
+df_l[,"V4"] <- as.numeric(df_l[,4]);df_l[,"V5"] <- as.numeric(df_l[,5]) 
+df_l[,"V6"] <- as.numeric(df_l[,6]);df_l[,"V7"] <- as.numeric(df_l[,7]) 
+df_l[,"V8"] <- as.numeric(df_l[,8]);df_l[,"V9"] <- as.numeric(df_l[,9]) 
+df_l[,"V10"] <- as.numeric(df_l[,10]);df_l[,"V11"] <- as.numeric(df_l[,11]) 
+df_l[,"V12"] <- as.numeric(df_l[,12]);df_l[,"V13"] <- as.numeric(df_l[,13]) 
+df_l[,"V14"] <- as.numeric(gsub("[^0-9\\.-]", "", df_l[,14]) )
+
+tan_theta <- (sqrt(10-2*sqrt(5))-2)/(sqrt(5)-1)
+hz <- (df[,"V2"]+1i*df[,"V3"]) + 
+          tan_theta*(df[,"V4"]+1i*df[,"V5"]) -
+          tan_theta*(df[,"V6"]+1i*df[,"V7"]) -
+          (df[,"V8"]+1i*df[,"V9"])
+x_5u <- 1/5^(res+1i*df$V1)#(0.5-0.074356+1i*df$V1)#(0.574356+1i*df$V1)
+hzl <- (df_l[,"V2"]+1i*df_l[,"V3"]) + 
+  tan_theta*(df_l[,"V4"]+1i*df_l[,"V5"]) -
+  tan_theta*(df_l[,"V6"]+1i*df_l[,"V7"]) -
+  (df_l[,"V8"]+1i*df_l[,"V9"])
+x_5l <- 1/5^(1-(res+1i*df$V1))#(0.5-0.074356+1i*df$V1)#(0.574356+1i*df$V1)
+     
+xlimc <- c(110,118)
+
+par(mfrow=c(1,3))
+# ordinary form of f1(s)
+plot(x=df$V1,y=Re(x_5u*hz),typ="l",col=6,xlim=xlimc,ylim=c(-2,5),
+     xlab="imag value",ylab="function value",main="Davenport-Heilbronn fn \n - real & imag components ")
+# lines(x=df$V1,y=abs(x_5u*hz),typ="l",col=1,lty=3,lwd=2)
+lines(x=df$V1,y=Im(x_5u*hz),typ="l",col=3)
+abline(h=0,lty=3);abline(v=114.163343,lty=3)
+
+legend("topleft", c("real( f1(s) )","imag( f1(s) )"),
+       lty = 1,cex=1, lwd = c(2,  2), col = c("magenta",  "green"))
+
+rat_prop <- abs(df$V12+1i*df$V13)
+ratorg_prop <- abs(x_5u*hz/(x_5l*hzl))
+
+# hist(rat_prop-ratorg_prop,breaks=1000,ylim=c(0,10))
+theta_hd <- sqrt((x_5l*hzl)/(x_5u*hz)*rat_prop)
+z_hd <- sqrt((x_5l*hzl)*(x_5u*hz)*rat_prop)
+
+#calculating phase accumulation from breakpoints
+zadd_f <- add_phase(df$V1,z_hd)
+tadd_f <- add_phase(df$V1,theta_hd)
+
+# z_ext form of f1(s)  
+plot(x=df_l$V1,y=Re((z_hd))*exp(1i*zadd_f),col=6,typ="l",ylim=c(-2,5),xlim=xlimc,
+     xlab="imag value",ylab="function value",main="Z_f1(s)_ext \n - real & imag components \n with non-trivial zeroes count")
+lines(x=df_l$V1,y=Im((z_hd))*exp(1i*zadd_f),col=3)
+# lines(x=df_l$V1,y=abs(z_hd),typ="l",col=1,lty=3,lwd=2)
+lines(x=df$V1,y=(Im(log(theta_hd))+tadd_f-(Im(log(z_hd))+zadd_f))/2/pi,typ="l",col=2)
+lines(x=df$V1,y=1/2/pi*(tadd_f-zadd_f),typ="l",col=4)
+abline(h=0,lty=3);abline(v=114.163343,lty=3)
+legend("topleft", c("real(Z_f1_ext(s))","imag(Z_f1_ext(s))","contour integral","breakpoint phase sum \n component of integral"),
+       lty = 1,cex=0.8, lwd = c(2,  2,2,2), col = c("magenta",  "green","red","blue"))
+par(new=TRUE)
+plot(x=df$V1, y=(Im(log(theta_hd))+tadd_f-(Im(log(z_hd))+zadd_f))/2/pi, xlim=xlimc,axes=F, ylim=c(60,66), xlab="", ylab="", 
+type="l",lty=2, main="")
+axis(4, ylim=c(60,66))
+lines(x=df$V1,y=(Im(log(theta_hd))+tadd_f-(Im(log(z_hd))+zadd_f))/2/pi,typ="l",col=2)
+lines(x=df$V1,y=1/2/pi*(tadd_f-zadd_f),typ="l",col=4)
+mtext(4,cex=0.8,text="contour integral value")#,line=5.5)
+
+
+
+
+
+# theta_ext form of f1(s)
+plot(x=df$V1,y=Re(theta_hd)*exp(1i*tadd_f),typ="l",col=6,ylim=c(-2,5),xlim=xlimc,
+     xlab="imag value",ylab="function value",main="Theta_f1(s)_ext - abs, \n real & imag components")
+lines(x=df$V1,y=Im(theta_hd)*exp(1i*tadd_f),typ="l",col=3)
+lines(x=df$V1,y=abs(theta_hd),typ="l",col=1,lty=2)
+abline(h=0,lty=3)
+legend("topleft", c("real(Theta_f1_ext(s))","imag(Theta_f1_ext(s))","abs(Theta_f1_ext(s))"),
+       lty = c(1,1,2),cex=1, lwd = c(2,  2,2,2), col = c("magenta",  "green","black"))
+
+```
+
+***Figure 7. Near non-trivial zeroes off the critical line, the behaviour of the Davenport-Heilbronn function, the extended Riemann Siegel function analogue and the antiderivative of the argument principle contour integral calculation with the bottom contour along s=(0.34+$i*t$), below the critical line.***
+
+
+```{r, fig8, echo=FALSE, cache=TRUE, fig.width=7, fig.height=4,  fig.keep='high', warning=FALSE }
+
+res <- .18
+df <- read_fn(dir_loc,"outfile_hurwitz_zeta_upper_0_18.dat")
+df[,"V1"] <- as.numeric(gsub("[^0-9\\.-]", "", df[,1]))
+df[,"V2"] <- as.numeric(df[,2]);df[,"V3"] <- as.numeric(df[,3]) 
+df[,"V4"] <- as.numeric(df[,4]);df[,"V5"] <- as.numeric(df[,5]) 
+df[,"V6"] <- as.numeric(df[,6]);df[,"V7"] <- as.numeric(df[,7]) 
+df[,"V8"] <- as.numeric(df[,8]);df[,"V9"] <- as.numeric(df[,9]) 
+df[,"V10"] <- as.numeric(df[,10]);df[,"V11"] <- as.numeric(df[,11]) 
+df[,"V12"] <- as.numeric(df[,12]);df[,"V13"] <- as.numeric(df[,13]) 
+df[,"V14"] <- as.numeric(gsub("[^0-9\\.-]", "", df[,14]) )
+
+df_l <- read_fn(dir_loc,"outfile_hurwitz_zeta_lower_0_18.dat")
+df_l[,"V1"] <- as.numeric(gsub("[^0-9\\.-]", "", df_l[,1]))
+df_l[,"V2"] <- as.numeric(df_l[,2]);df_l[,"V3"] <- as.numeric(df_l[,3]) 
+df_l[,"V4"] <- as.numeric(df_l[,4]);df_l[,"V5"] <- as.numeric(df_l[,5]) 
+df_l[,"V6"] <- as.numeric(df_l[,6]);df_l[,"V7"] <- as.numeric(df_l[,7]) 
+df_l[,"V8"] <- as.numeric(df_l[,8]);df_l[,"V9"] <- as.numeric(df_l[,9]) 
+df_l[,"V10"] <- as.numeric(df_l[,10]);df_l[,"V11"] <- as.numeric(df_l[,11]) 
+df_l[,"V12"] <- as.numeric(df_l[,12]);df_l[,"V13"] <- as.numeric(df_l[,13]) 
+df_l[,"V14"] <- as.numeric(gsub("[^0-9\\.-]", "", df_l[,14]) )
+
+tan_theta <- (sqrt(10-2*sqrt(5))-2)/(sqrt(5)-1)
+hz <- (df[,"V2"]+1i*df[,"V3"]) + 
+          tan_theta*(df[,"V4"]+1i*df[,"V5"]) -
+          tan_theta*(df[,"V6"]+1i*df[,"V7"]) -
+          (df[,"V8"]+1i*df[,"V9"])
+x_5u <- 1/5^(res+1i*df$V1)#(0.5-0.074356+1i*df$V1)#(0.574356+1i*df$V1)
+hzl <- (df_l[,"V2"]+1i*df_l[,"V3"]) + 
+  tan_theta*(df_l[,"V4"]+1i*df_l[,"V5"]) -
+  tan_theta*(df_l[,"V6"]+1i*df_l[,"V7"]) -
+  (df_l[,"V8"]+1i*df_l[,"V9"])
+x_5l <- 1/5^(1-(res+1i*df$V1))#(0.5-0.074356+1i*df$V1)#(0.574356+1i*df$V1)
+     
+xlimc <- c(82,90)
+
+par(mfrow=c(1,3))
+# ordinary form of f1(s)
+plot(x=df$V1,y=Re(x_5u*hz),typ="l",col=6,xlim=xlimc,ylim=c(-2,5),
+     xlab="imag value",ylab="function value",main="Davenport-Heilbronn fn \n - real & imag components ")
+# lines(x=df$V1,y=abs(x_5u*hz),typ="l",col=1,lty=3,lwd=2)
+lines(x=df$V1,y=Im(x_5u*hz),typ="l",col=3)
+abline(h=0,lty=3);abline(v=85.699348,lty=3);abline(v=114.163343,lty=3)
+
+legend("topleft", c("real( f1(s) )","imag( f1(s) )"),
+       lty = 1,cex=1, lwd = c(2,  2), col = c("magenta",  "green"))
+
+rat_prop <- abs(df$V12+1i*df$V13)
+ratorg_prop <- abs(x_5u*hz/(x_5l*hzl))
+
+# hist(rat_prop-ratorg_prop,breaks=1000,ylim=c(0,10))
+theta_hd <- sqrt((x_5l*hzl)/(x_5u*hz)*rat_prop)
+z_hd <- sqrt((x_5l*hzl)*(x_5u*hz)*rat_prop)
+
+#calculating phase accumulation from breakpoints
+zadd_f <- add_phase(df$V1,z_hd)
+tadd_f <- add_phase(df$V1,theta_hd)
+
+# z_ext form of f1(s)  
+plot(x=df_l$V1,y=Re((z_hd))*exp(1i*zadd_f),col=6,typ="l",ylim=c(-2,5),xlim=xlimc,
+     xlab="imag value",ylab="function value",main="Z_f1(s)_ext \n - real & imag components \n with non-trivial zeroes count")
+lines(x=df_l$V1,y=Im((z_hd))*exp(1i*zadd_f),col=3)
+# lines(x=df_l$V1,y=abs(z_hd),typ="l",col=1,lty=3,lwd=2)
+lines(x=df$V1,y=(Im(log(theta_hd))+tadd_f-(Im(log(z_hd))+zadd_f))/2/pi,typ="l",col=2)
+lines(x=df$V1,y=1/2/pi*(tadd_f-zadd_f),typ="l",col=4)
+abline(h=0,lty=3);abline(v=85.699348,lty=3);abline(v=114.163343,lty=3)
+legend("topleft", c("real(Z_f1_ext(s))","imag(Z_f1_ext(s))","contour integral","breakpoint phase sum \n component of integral"),
+       lty = 1,cex=0.8, lwd = c(2,  2,2,2), col = c("magenta",  "green","red","blue"))
+par(new=TRUE)
+plot(x=df$V1, y=(Im(log(theta_hd))+tadd_f-(Im(log(z_hd))+zadd_f))/2/pi, xlim=xlimc,axes=F, ylim=c(41,48), xlab="", ylab="", 
+type="l",lty=2, main="")
+axis(4, ylim=c(41,48))
+lines(x=df$V1,y=(Im(log(theta_hd))+tadd_f-(Im(log(z_hd))+zadd_f))/2/pi,typ="l",col=2)
+lines(x=df$V1,y=1/2/pi*(tadd_f-zadd_f),typ="l",col=4)
+mtext(4,cex=0.8,text="contour integral value")#,line=5.5)
+
+
+
+
+
+# theta_ext form of f1(s)
+plot(x=df$V1,y=Re(theta_hd)*exp(1i*tadd_f),typ="l",col=6,ylim=c(-2,5),xlim=xlimc,
+     xlab="imag value",ylab="function value",main="Theta_f1(s)_ext - abs, \n real & imag components")
+lines(x=df$V1,y=Im(theta_hd)*exp(1i*tadd_f),typ="l",col=3)
+lines(x=df$V1,y=abs(theta_hd),typ="l",col=1,lty=2)
+abline(h=0,lty=3)
+legend("topleft", c("real(Theta_f1_ext(s))","imag(Theta_f1_ext(s))","abs(Theta_f1_ext(s))"),
+       lty = c(1,1,2),cex=1, lwd = c(2,  2,2,2), col = c("magenta",  "green","black"))
+
+```
+
+***Figure 8. Near non-trivial zeroes off the critical line, the behaviour of the Davenport-Heilbronn function, the extended Riemann Siegel function analogue and the antiderivative of the argument principle contour integral calculation with the bottom contour along s=(0.18+$i*t$), below the critical line.***
+
+
+Note that in figures 7 \& 8, the contour integral results in the middle graph have been represented using a second y axis as the critical line zeroes located nearby rapidly increase the contour integral sum of zeroes. Comparing the middle graph of figures 5-8, it can be observed that the argument principle contour integral results, do increase by one unit as the next off critical line zero is enclosed in turn by the contour integral. The contour integral becomes discontinuous very close around the non-trivial zero co-ordinate so typically the bottom contour segment real component needs to be .01 or more lower than the non-trivial co-ordinate real value for continuous behaviour to resume.
+
+###Observations on the magnitude of the Davenport-Heilbronn function around the non-trivial zero location for non-trivial zeroes off the critical line
+
+As shown in figure 9, during this investigation it has been observed that there is a minima in abs(f1(s)) close by the non-trivial zero location for non-trivial zeroes off the critical line. 
+
+For some of these minima, the absolute value of the Davenport_Heilbronn function on the critical line subtracted by 0.5, ie. abs(f1(s))-0.5, gives a first order estimate of the real component of the non-trivial zeroes in the upper critical strip, this is not a general rule.
+
+
+
+```{r, fig9, echo=FALSE, cache=TRUE, fig.width=7, fig.height=2,  fig.keep='high', warning=FALSE }
+
+res <- 0.5
+df <- read_fn(dir_loc,"outfile_hurwitz_zeta_upper.dat")
+df[,"V1"] <- as.numeric(gsub("[^0-9\\.-]", "", df[,1]))
+df[,"V2"] <- as.numeric(df[,2]);df[,"V3"] <- as.numeric(df[,3]) 
+df[,"V4"] <- as.numeric(df[,4]);df[,"V5"] <- as.numeric(df[,5]) 
+df[,"V6"] <- as.numeric(df[,6]);df[,"V7"] <- as.numeric(df[,7]) 
+df[,"V8"] <- as.numeric(df[,8]);df[,"V9"] <- as.numeric(df[,9]) 
+df[,"V10"] <- as.numeric(df[,10]);df[,"V11"] <- as.numeric(df[,11]) 
+df[,"V12"] <- as.numeric(df[,12]);df[,"V13"] <- as.numeric(df[,13]) 
+df[,"V14"] <- as.numeric(gsub("[^0-9\\.-]", "", df[,14]) )
+
+df_l <- read_fn(dir_loc,"outfile_hurwitz_zeta_lower.dat")
+df_l[,"V1"] <- as.numeric(gsub("[^0-9\\.-]", "", df_l[,1]))
+df_l[,"V2"] <- as.numeric(df_l[,2]);df_l[,"V3"] <- as.numeric(df_l[,3]) 
+df_l[,"V4"] <- as.numeric(df_l[,4]);df_l[,"V5"] <- as.numeric(df_l[,5]) 
+df_l[,"V6"] <- as.numeric(df_l[,6]);df_l[,"V7"] <- as.numeric(df_l[,7]) 
+df_l[,"V8"] <- as.numeric(df_l[,8]);df_l[,"V9"] <- as.numeric(df_l[,9]) 
+df_l[,"V10"] <- as.numeric(df_l[,10]);df_l[,"V11"] <- as.numeric(df_l[,11]) 
+df_l[,"V12"] <- as.numeric(df_l[,12]);df_l[,"V13"] <- as.numeric(df_l[,13]) 
+df_l[,"V14"] <- as.numeric(gsub("[^0-9\\.-]", "", df_l[,14]) )
+
+tan_theta <- (sqrt(10-2*sqrt(5))-2)/(sqrt(5)-1)
+hz <- (df[,"V2"]+1i*df[,"V3"]) + 
+          tan_theta*(df[,"V4"]+1i*df[,"V5"]) -
+          tan_theta*(df[,"V6"]+1i*df[,"V7"]) -
+          (df[,"V8"]+1i*df[,"V9"])
+x_5u <- 1/5^(res+1i*df$V1)#(0.5-0.074356+1i*df$V1)#(0.574356+1i*df$V1)
+hzl <- (df_l[,"V2"]+1i*df_l[,"V3"]) + 
+  tan_theta*(df_l[,"V4"]+1i*df_l[,"V5"]) -
+  tan_theta*(df_l[,"V6"]+1i*df_l[,"V7"]) -
+  (df_l[,"V8"]+1i*df_l[,"V9"])
+x_5l <- 1/5^(1-(res+1i*df$V1))#(0.5-0.074356+1i*df$V1)#(0.574356+1i*df$V1)
+     
+xlimc <- c(80,90)
+
+par(mfrow=c(1,3))
+
+rat_prop <- abs(df$V12+1i*df$V13)
+ratorg_prop <- abs(x_5u*hz/(x_5l*hzl))
+
+# hist(rat_prop-ratorg_prop,breaks=1000,ylim=c(0,10))
+theta_hd <- sqrt((x_5l*hzl)/(x_5u*hz)*rat_prop)
+z_hd <- sqrt((x_5l*hzl)*(x_5u*hz)*rat_prop)
+
+#calculating phase accumulation from breakpoints
+# zadd_f <- add_phase(df$V1,z_hd)
+# tadd_f <- add_phase(df$V1,theta_hd)
+
+# z_ext form of f1(s)  
+plot(x=df_l$V1,y=abs((x_5u*hz)),col=1,typ="l",ylim=c(0,2),xlim=c(82,90),
+     xlab="imag value",ylab="function value",main="")
+abline(h=0,lty=3);abline(v=85.699348,lty=3);abline(h=.808517-0.5,lty=3,col=3,lwd=2)
+legend("topleft", c("abs(f1(s))","non-trivial zero, real co-ord"),
+       lty = 1,cex=0.8, lwd = c(2,  2,2,2), col = c("black",  "green"))
+
+# z_ext form of f1(s)  
+plot(x=df_l$V1,y=abs((x_5u*hz)),col=1,typ="l",ylim=c(0,2),xlim=c(110,118),
+     xlab="imag value",ylab="function value",main="")
+abline(h=0,lty=3);abline(v=114.163343,lty=3);abline(h=.650830-0.5,lty=3,col=3,lwd=2)
+legend("topleft", c("abs(f1(s))","non-trivial zero, real co-ord"),
+       lty = 1,cex=0.8, lwd = c(2,  2,2,2), col = c("black",  "green"))
+
+# z_ext form of f1(s)  
+plot(x=df_l$V1,y=abs((x_5u*hz)),col=1,typ="l",ylim=c(0,2),xlim=c(162,170),
+     xlab="imag value",ylab="function value",main="")
+abline(h=0,lty=3);abline(v=166.479306,lty=3);abline(h=.574356-0.5,lty=3,col=3,lwd=2)
+legend("topleft", c("abs(f1(s))","non-trivial zero, real co-ord"),
+       lty = 1,cex=0.8, lwd = c(2,  2,2,2), col = c("black",  "green"))
+
+# z_ext form of f1(s)  
+plot(x=df_l$V1,y=abs((x_5u*hz)),col=1,typ="l",ylim=c(0,2),xlim=c(172,180),
+     xlab="imag value",ylab="function value",main="")
+abline(h=0,lty=3);abline(v=176.70246,lty=3);abline(h=.724258-0.5,lty=3,col=3,lwd=2)
+legend("topleft", c("abs(f1(s))","non-trivial zero, real co-ord"),
+       lty = 1,cex=0.8, lwd = c(2,  2,2,2), col = c("black",  "green"))
+
+# z_ext form of f1(s)  
+plot(x=df_l$V1,y=abs((x_5u*hz)),col=1,typ="l",ylim=c(0,3),xlim=c(236,244),
+     xlab="imag value",ylab="function value",main="")
+abline(h=0,lty=3);abline(v=240.4046,lty=3);abline(h=.86953-0.5,lty=3,col=3,lwd=2)
+legend("topleft", c("abs(f1(s))","non-trivial zero, real co-ord"),
+       lty = 1,cex=0.8, lwd = c(2,  2,2,2), col = c("black",  "green"))
+
+# z_ext form of f1(s)  
+plot(x=df_l$V1,y=abs((x_5u*hz)),col=1,typ="l",ylim=c(0,3),xlim=c(316,324),
+     xlab="imag value",ylab="function value",main="")
+abline(h=0,lty=3);abline(v=320.8764,lty=3);abline(h=.81955-0.5,lty=3,col=3,lwd=2)
+legend("topleft", c("abs(f1(s))","non-trivial zero, real co-ord"),
+       lty = 1,cex=0.8, lwd = c(2,  2,2,2), col = c("black",  "green"))
+
+# z_ext form of f1(s)  
+plot(x=df_l$V1,y=abs((x_5u*hz)),col=1,typ="l",ylim=c(0,2),xlim=c(362,370),
+     xlab="imag value",ylab="function value",main="")
+abline(h=0,lty=3);abline(v=366.6409,lty=3);abline(h=.6285-0.5,lty=3,col=3,lwd=2)
+legend("topleft", c("abs(f1(s))","non-trivial zero, real co-ord"),
+       lty = 1,cex=0.8, lwd = c(2,  2,2,2), col = c("black",  "green"))
+
+# z_ext form of f1(s)  
+plot(x=df_l$V1,y=abs((x_5u*hz)),col=1,typ="l",ylim=c(0,2),xlim=c(407,415),
+     xlab="imag value",ylab="function value",main="")
+abline(h=0,lty=3);abline(v=411.7967,lty=3);abline(h=.81587-0.5,lty=3,col=3,lwd=2)
+legend("topleft", c("abs(f1(s))","non-trivial zero, real co-ord"),
+       lty = 1,cex=0.8, lwd = c(2,  2,2,2), col = c("black",  "green"))
+
+# z_ext form of f1(s)  
+plot(x=df_l$V1,y=abs((x_5u*hz)),col=1,typ="l",ylim=c(0,2),xlim=c(436,444),
+     xlab="imag value",ylab="function value",main="")
+abline(h=0,lty=3);abline(v=440.4845,lty=3);abline(h=.70882-0.5,lty=3,col=3,lwd=2)
+legend("topleft", c("abs(f1(s))","non-trivial zero, real co-ord"),
+       lty = 1,cex=0.8, lwd = c(2,  2,2,2), col = c("black",  "green"))
+
+# z_ext form of f1(s)  
+plot(x=df_l$V1,y=abs((x_5u*hz)),col=1,typ="l",ylim=c(0,2),xlim=c(516,524),
+     xlab="imag value",ylab="function value",main="")
+abline(h=0,lty=3);abline(v=520.9438,lty=3);abline(h=.51591-0.5,lty=3,col=3,lwd=2)
+legend("topleft", c("abs(f1(s))","non-trivial zero, real co-ord"),
+       lty = 1,cex=0.8, lwd = c(2,  2,2,2), col = c("black",  "green"))
+
+# z_ext form of f1(s)  
+plot(x=df_l$V1,y=abs((x_5u*hz)),col=1,typ="l",ylim=c(0,3),xlim=c(527,535),
+     xlab="imag value",ylab="function value",main="")
+abline(h=0,lty=3);abline(v=531.2797,lty=3);abline(h=.84695-0.5,lty=3,col=3,lwd=2)
+legend("topleft", c("abs(f1(s))","non-trivial zero, real co-ord"),
+       lty = 1,cex=0.8, lwd = c(2,  2,2,2), col = c("black",  "green"))
+
+# z_ext form of f1(s)  
+plot(x=df_l$V1,y=abs((x_5u*hz)),col=1,typ="l",ylim=c(0,3),xlim=c(544,552),
+     xlab="imag value",ylab="function value",main="")
+abline(h=0,lty=3);abline(v=548.9067,lty=3);abline(h=.72953-0.5,lty=3,col=3,lwd=2)
+legend("topleft", c("abs(f1(s))","non-trivial zero, real co-ord"),
+       lty = 1,cex=0.8, lwd = c(2,  2,2,2), col = c("black",  "green"))
+```
+
+***Figure 9. Behaviour of the magnitude of the Davenport-Heilbronn function minima along s=(.5+$i*t$) compared to the difference (abs(f1(s))-0.5 for the non-trivial zeroes off the critical line.***
+
+##Extended Riemann Siegel function analogue behaviour and contour integral values for the second 5-periodic Dirichlet series function f_{2}(s)
+
+Figures 10-14 show below the behaviour of the extended Riemann Siegel function analogue behaviour for the $f_{2}(s)$ function for several lines ($s=\sigma+i*t$) in the positive quadrant of the complex plane, in the interval t=(0,22). Included in the figures are
+
+(i) the real and imaginary components of the $f_{2}(s)$ function
+(ii) the real and imaginary components of the extended Riemann Siegel function analogues of the $f_{2}(s)$ function,
+(iii) the continuous value of the contour integral covering the positive complex plane with the bottom contour line as specified, 
+(iv) the phase sum of the breakpoints for the contour integral antiderivatives $\theta_{f_{2}(s),ext}(s)$ \& $-\Im(log(Z_{f_{2}(s),ext}(s)))$ which gives a discrete count of the enclosed zeroes and poles. 
+
+From (6), the pairs of non-trivial zeroes at f_{2}(s) & f_{2}(1-s) respectively, in the interval t=(0,22i), are 2.30862+8.91836i, -1.30862+8.91836i, 1.94374+18.8994i \& -0.94374+18.8994i. Hence the bottom contour intervals used in figures 10-14 were
+
+\begin{itemize}
+\item s=(0.808,0.808+22i) which should enclose the 2 zeroes 2.30862+8.91836i \& 1.94374+18.8994i,
+\item s=(0.51,0.51+22i) which encloses no further zeroes in that interval,
+\item s=(0.49,0.49+22i) which should enclose two critical lines zeroes around t=14i \& 16i,
+\item s=(-1,-1+22i) which should enclose the zero at -0.94374+18.8994i,
+\item s=(-1.5,-1.5+22i) which should enclose the zero at -1.30862+8.91836i.
+\end{itemize}
+
+There is also a ~0.5 addition to the contour integral from the real axis zero at -1 for the contour integrals in figures 13 \& 14.
+
+
+
+
+```{r, fig10, echo=FALSE, cache=TRUE, fig.width=7, fig.height=4,  fig.keep='high', warning=FALSE }
+
+
+res <- 0.808517
+df <- read_fn(dir_loc,"outfile_hurwitz_zeta_upper_0_808517.dat")
+df[,"V1"] <- as.numeric(gsub("[^0-9\\.-]", "", df[,1]))
+df[,"V2"] <- as.numeric(df[,2]);df[,"V3"] <- as.numeric(df[,3]) 
+df[,"V4"] <- as.numeric(df[,4]);df[,"V5"] <- as.numeric(df[,5]) 
+df[,"V6"] <- as.numeric(df[,6]);df[,"V7"] <- as.numeric(df[,7]) 
+df[,"V8"] <- as.numeric(df[,8]);df[,"V9"] <- as.numeric(df[,9]) 
+df[,"V10"] <- as.numeric(df[,10]);df[,"V11"] <- as.numeric(df[,11]) 
+df[,"V12"] <- as.numeric(df[,12]);df[,"V13"] <- as.numeric(df[,13]) 
+df[,"V14"] <- as.numeric(gsub("[^0-9\\.-]", "", df[,14]) )
+
+df_l <- read_fn(dir_loc,"outfile_hurwitz_zeta_lower_0_808517.dat")
+df_l[,"V1"] <- as.numeric(gsub("[^0-9\\.-]", "", df_l[,1]))
+df_l[,"V2"] <- as.numeric(df_l[,2]);df_l[,"V3"] <- as.numeric(df_l[,3]) 
+df_l[,"V4"] <- as.numeric(df_l[,4]);df_l[,"V5"] <- as.numeric(df_l[,5]) 
+df_l[,"V6"] <- as.numeric(df_l[,6]);df_l[,"V7"] <- as.numeric(df_l[,7]) 
+df_l[,"V8"] <- as.numeric(df_l[,8]);df_l[,"V9"] <- as.numeric(df_l[,9]) 
+df_l[,"V10"] <- as.numeric(df_l[,10]);df_l[,"V11"] <- as.numeric(df_l[,11]) 
+df_l[,"V12"] <- as.numeric(df_l[,12]);df_l[,"V13"] <- as.numeric(df_l[,13]) 
+df_l[,"V14"] <- as.numeric(gsub("[^0-9\\.-]", "", df_l[,14]) )
+
+tan_theta <- (sqrt(10-2*sqrt(5))-2)/(sqrt(5)-1)
+hz <- (df[,"V2"]+1i*df[,"V3"]) - 
+          1/tan_theta*(df[,"V4"]+1i*df[,"V5"]) +
+          1/tan_theta*(df[,"V6"]+1i*df[,"V7"]) -
+          (df[,"V8"]+1i*df[,"V9"])
+x_5u <- 1/5^(res+1i*df$V1)#(0.5-0.074356+1i*df$V1)#(0.574356+1i*df$V1)
+hzl <- (df_l[,"V2"]+1i*df_l[,"V3"]) - 
+  1/tan_theta*(df_l[,"V4"]+1i*df_l[,"V5"]) +
+  1/tan_theta*(df_l[,"V6"]+1i*df_l[,"V7"]) -
+  (df_l[,"V8"]+1i*df_l[,"V9"])
+x_5l <- 1/5^(1-(res+1i*df$V1))#(0.5-0.074356+1i*df$V1)#(0.574356+1i*df$V1)
+     
+xlimc <- c(0,22)
+
+par(mfrow=c(1,3))
+# ordinary form of f1(s)
+plot(x=df$V1,y=Re(x_5u*hz),typ="l",col=6,xlim=xlimc,ylim=c(-3,7),
+     xlab="imag value",ylab="function value",main="f2(s) fn \n - real & imag components ")
+# lines(x=df$V1,y=abs(x_5u*hz),typ="l",col=1,lty=3,lwd=2)
+lines(x=df$V1,y=Im(x_5u*hz),typ="l",col=3)
+abline(h=0,lty=3)
+
+legend("topleft", c("real( f1(s) )","imag( f1(s) )"),
+       lty = 1,cex=1, lwd = c(2,  2), col = c("magenta",  "green"))
+
+rat_prop <- abs(df$V12+1i*df$V13)
+ratorg_prop <- abs(x_5u*hz/(x_5l*hzl))
+
+# hist(rat_prop-ratorg_prop,breaks=1000,ylim=c(0,10))
+theta_hd <- sqrt((x_5l*hzl)/(x_5u*hz)*rat_prop)
+z_hd <- sqrt((x_5l*hzl)*(x_5u*hz)*rat_prop)
+
+#calculating phase accumulation from breakpoints
+zadd_f <- add_phase(df$V1,z_hd)
+tadd_f <- add_phase(df$V1,theta_hd)
+
+# z_ext form of f1(s)  
+plot(x=df_l$V1,y=Re((z_hd))*exp(1i*zadd_f),col=6,typ="l",ylim=c(-3,7),xlim=xlimc,
+     xlab="imag value",ylab="function value",main="Z_f2(s)_ext \n - real & imag components \n with non-trivial zeroes count")
+lines(x=df_l$V1,y=Im((z_hd))*exp(1i*zadd_f),col=3)
+# lines(x=df_l$V1,y=abs(z_hd),typ="l",col=1,lty=3,lwd=2)
+lines(x=df$V1,y=(Im(log(theta_hd))+tadd_f-(Im(log(z_hd))+zadd_f))/2/pi,typ="l",col=2)
+lines(x=df$V1,y=1/2/pi*(tadd_f-zadd_f),typ="l",col=4)
+abline(h=0,lty=3);abline(v=8.91836,lwd=2,lty=3);abline(v=18.8994,lwd=2,lty=3)
+legend("bottomleft", c("real(Z_f2_ext(s))","imag(Z_f2_ext(s))","contour integral","breakpoint phase sum \n component of integral"),
+       lty = 1,cex=0.8, lwd = c(2,  2,2,2), col = c("magenta",  "green","red","blue"))
+
+# theta_ext form of f1(s)
+plot(x=df$V1,y=Re(theta_hd)*exp(1i*tadd_f),typ="l",col=6,ylim=c(-3,7),xlim=xlimc,
+     xlab="imag value",ylab="function value",main="Theta_f2(s)_ext - abs, \n real & imag components")
+lines(x=df$V1,y=Im(theta_hd)*exp(1i*tadd_f),typ="l",col=3)
+lines(x=df$V1,y=abs(theta_hd),typ="l",col=1,lty=2)
+abline(h=0,lty=3)
+legend("topleft", c("real(Theta_f2_ext(s))","imag(Theta_f2_ext(s))","abs(Theta_f2_ext(s))"),
+       lty = c(1,1,2),cex=1, lwd = c(2,  2,2,2), col = c("magenta",  "green","black"))
+
+
+
+```
+
+***Figure 10. Behaviour of $f_{2}(s)$, the 5-periodic Dirichlet series function, the extended Riemann Siegel function analogue and the antiderivative of the argument principle contour integral calculation with the bottom contour along s=(.808517+$i*t$), just inside the critical strip.***
+
+
+```{r, fig11, echo=FALSE, cache=TRUE, fig.width=7, fig.height=4,  fig.keep='high', warning=FALSE }
+
+res <- 0.51
+df <- read_fn(dir_loc,"outfile_hurwitz_zeta_upper_0_51.dat")
+df[,"V1"] <- as.numeric(gsub("[^0-9\\.-]", "", df[,1]))
+df[,"V2"] <- as.numeric(df[,2]);df[,"V3"] <- as.numeric(df[,3]) 
+df[,"V4"] <- as.numeric(df[,4]);df[,"V5"] <- as.numeric(df[,5]) 
+df[,"V6"] <- as.numeric(df[,6]);df[,"V7"] <- as.numeric(df[,7]) 
+df[,"V8"] <- as.numeric(df[,8]);df[,"V9"] <- as.numeric(df[,9]) 
+df[,"V10"] <- as.numeric(df[,10]);df[,"V11"] <- as.numeric(df[,11]) 
+df[,"V12"] <- as.numeric(df[,12]);df[,"V13"] <- as.numeric(df[,13]) 
+df[,"V14"] <- as.numeric(gsub("[^0-9\\.-]", "", df[,14]) )
+
+df_l <- read_fn(dir_loc,"outfile_hurwitz_zeta_lower_0_51.dat")
+df_l[,"V1"] <- as.numeric(gsub("[^0-9\\.-]", "", df_l[,1]))
+df_l[,"V2"] <- as.numeric(df_l[,2]);df_l[,"V3"] <- as.numeric(df_l[,3]) 
+df_l[,"V4"] <- as.numeric(df_l[,4]);df_l[,"V5"] <- as.numeric(df_l[,5]) 
+df_l[,"V6"] <- as.numeric(df_l[,6]);df_l[,"V7"] <- as.numeric(df_l[,7]) 
+df_l[,"V8"] <- as.numeric(df_l[,8]);df_l[,"V9"] <- as.numeric(df_l[,9]) 
+df_l[,"V10"] <- as.numeric(df_l[,10]);df_l[,"V11"] <- as.numeric(df_l[,11]) 
+df_l[,"V12"] <- as.numeric(df_l[,12]);df_l[,"V13"] <- as.numeric(df_l[,13]) 
+df_l[,"V14"] <- as.numeric(gsub("[^0-9\\.-]", "", df_l[,14]) )
+
+tan_theta <- (sqrt(10-2*sqrt(5))-2)/(sqrt(5)-1)
+hz <- (df[,"V2"]+1i*df[,"V3"]) - 
+          1/tan_theta*(df[,"V4"]+1i*df[,"V5"]) +
+          1/tan_theta*(df[,"V6"]+1i*df[,"V7"]) -
+          (df[,"V8"]+1i*df[,"V9"])
+x_5u <- 1/5^(res+1i*df$V1)#(0.5-0.074356+1i*df$V1)#(0.574356+1i*df$V1)
+hzl <- (df_l[,"V2"]+1i*df_l[,"V3"]) - 
+  1/tan_theta*(df_l[,"V4"]+1i*df_l[,"V5"]) +
+  1/tan_theta*(df_l[,"V6"]+1i*df_l[,"V7"]) -
+  (df_l[,"V8"]+1i*df_l[,"V9"])
+x_5l <- 1/5^(1-(res+1i*df$V1))#(0.5-0.074356+1i*df$V1)#(0.574356+1i*df$V1)
+     
+xlimc <- c(0,22)
+
+par(mfrow=c(1,3))
+# ordinary form of f1(s)
+plot(x=df$V1,y=Re(x_5u*hz),typ="l",col=6,xlim=xlimc,ylim=c(-3,7),
+     xlab="imag value",ylab="function value",main="f2(s) fn \n - real & imag components ")
+# lines(x=df$V1,y=abs(x_5u*hz),typ="l",col=1,lty=3,lwd=2)
+lines(x=df$V1,y=Im(x_5u*hz),typ="l",col=3)
+abline(h=0,lty=3)
+
+legend("topleft", c("real( f1(s) )","imag( f1(s) )"),
+       lty = 1,cex=1, lwd = c(2,  2), col = c("magenta",  "green"))
+
+rat_prop <- abs(df$V12+1i*df$V13)
+ratorg_prop <- abs(x_5u*hz/(x_5l*hzl))
+
+# hist(rat_prop-ratorg_prop,breaks=1000,ylim=c(0,10))
+theta_hd <- sqrt((x_5l*hzl)/(x_5u*hz)*rat_prop)
+z_hd <- sqrt((x_5l*hzl)*(x_5u*hz)*rat_prop)
+
+#calculating phase accumulation from breakpoints
+zadd_f <- add_phase(df$V1,z_hd)
+tadd_f <- add_phase(df$V1,theta_hd)
+
+# z_ext form of f1(s)  
+plot(x=df_l$V1,y=Re((z_hd))*exp(1i*zadd_f),col=6,typ="l",ylim=c(-3,7),xlim=xlimc,
+     xlab="imag value",ylab="function value",main="Z_f2(s)_ext \n - real & imag components \n with non-trivial zeroes count")
+lines(x=df_l$V1,y=Im((z_hd))*exp(1i*zadd_f),col=3)
+# lines(x=df_l$V1,y=abs(z_hd),typ="l",col=1,lty=3,lwd=2)
+lines(x=df$V1,y=(Im(log(theta_hd))+tadd_f-(Im(log(z_hd))+zadd_f))/2/pi,typ="l",col=2)
+lines(x=df$V1,y=1/2/pi*(tadd_f-zadd_f),typ="l",col=4)
+abline(h=0,lty=3);abline(v=8.91836,lwd=2,lty=3);abline(v=18.8994,lwd=2,lty=3)
+legend("bottomleft", c("real(Z_f2_ext(s))","imag(Z_f2_ext(s))","contour integral","breakpoint phase sum \n component of integral"),
+       lty = 1,cex=0.8, lwd = c(2,  2,2,2), col = c("magenta",  "green","red","blue"))
+
+# theta_ext form of f1(s)
+plot(x=df$V1,y=Re(theta_hd)*exp(1i*tadd_f),typ="l",col=6,ylim=c(-3,7),xlim=xlimc,
+     xlab="imag value",ylab="function value",main="Theta_f2(s)_ext - abs, \n real & imag components")
+lines(x=df$V1,y=Im(theta_hd)*exp(1i*tadd_f),typ="l",col=3)
+lines(x=df$V1,y=abs(theta_hd),typ="l",col=1,lty=2)
+abline(h=0,lty=3)
+legend("topleft", c("real(Theta_f2_ext(s))","imag(Theta_f2_ext(s))","abs(Theta_f2_ext(s))"),
+       lty = c(1,1,2),cex=1, lwd = c(2,  2,2,2), col = c("magenta",  "green","black"))
+
+
+```
+
+***Figure 11. Behaviour of $f_{2}(s)$, the 5-periodic Dirichlet series function, the extended Riemann Siegel function analogue and the antiderivative of the argument principle contour integral calculation with the bottom contour along s=(.51+$i*t$), just above the critical line.***
+
+
+
+```{r, fig12, echo=FALSE, cache=TRUE, fig.width=7, fig.height=4,  fig.keep='high', warning=FALSE }
+
+res <- 0.49
+df <- read_fn(dir_loc,"outfile_hurwitz_zeta_upper_0_49.dat")
+df[,"V1"] <- as.numeric(gsub("[^0-9\\.-]", "", df[,1]))
+df[,"V2"] <- as.numeric(df[,2]);df[,"V3"] <- as.numeric(df[,3]) 
+df[,"V4"] <- as.numeric(df[,4]);df[,"V5"] <- as.numeric(df[,5]) 
+df[,"V6"] <- as.numeric(df[,6]);df[,"V7"] <- as.numeric(df[,7]) 
+df[,"V8"] <- as.numeric(df[,8]);df[,"V9"] <- as.numeric(df[,9]) 
+df[,"V10"] <- as.numeric(df[,10]);df[,"V11"] <- as.numeric(df[,11]) 
+df[,"V12"] <- as.numeric(df[,12]);df[,"V13"] <- as.numeric(df[,13]) 
+df[,"V14"] <- as.numeric(gsub("[^0-9\\.-]", "", df[,14]) )
+
+df_l <- read_fn(dir_loc,"outfile_hurwitz_zeta_lower_0_49.dat")
+df_l[,"V1"] <- as.numeric(gsub("[^0-9\\.-]", "", df_l[,1]))
+df_l[,"V2"] <- as.numeric(df_l[,2]);df_l[,"V3"] <- as.numeric(df_l[,3]) 
+df_l[,"V4"] <- as.numeric(df_l[,4]);df_l[,"V5"] <- as.numeric(df_l[,5]) 
+df_l[,"V6"] <- as.numeric(df_l[,6]);df_l[,"V7"] <- as.numeric(df_l[,7]) 
+df_l[,"V8"] <- as.numeric(df_l[,8]);df_l[,"V9"] <- as.numeric(df_l[,9]) 
+df_l[,"V10"] <- as.numeric(df_l[,10]);df_l[,"V11"] <- as.numeric(df_l[,11]) 
+df_l[,"V12"] <- as.numeric(df_l[,12]);df_l[,"V13"] <- as.numeric(df_l[,13]) 
+df_l[,"V14"] <- as.numeric(gsub("[^0-9\\.-]", "", df_l[,14]) )
+
+tan_theta <- (sqrt(10-2*sqrt(5))-2)/(sqrt(5)-1)
+hz <- (df[,"V2"]+1i*df[,"V3"]) - 
+          1/tan_theta*(df[,"V4"]+1i*df[,"V5"]) +
+          1/tan_theta*(df[,"V6"]+1i*df[,"V7"]) -
+          (df[,"V8"]+1i*df[,"V9"])
+x_5u <- 1/5^(res+1i*df$V1)#(0.5-0.074356+1i*df$V1)#(0.574356+1i*df$V1)
+hzl <- (df_l[,"V2"]+1i*df_l[,"V3"]) - 
+  1/tan_theta*(df_l[,"V4"]+1i*df_l[,"V5"]) +
+  1/tan_theta*(df_l[,"V6"]+1i*df_l[,"V7"]) -
+  (df_l[,"V8"]+1i*df_l[,"V9"])
+x_5l <- 1/5^(1-(res+1i*df$V1))#(0.5-0.074356+1i*df$V1)#(0.574356+1i*df$V1)
+     
+xlimc <- c(0,22)
+
+par(mfrow=c(1,3))
+# ordinary form of f1(s)
+plot(x=df$V1,y=Re(x_5u*hz),typ="l",col=6,xlim=xlimc,ylim=c(-3,7),
+     xlab="imag value",ylab="function value",main="f2(s) fn \n - real & imag components ")
+# lines(x=df$V1,y=abs(x_5u*hz),typ="l",col=1,lty=3,lwd=2)
+lines(x=df$V1,y=Im(x_5u*hz),typ="l",col=3)
+abline(h=0,lty=3)
+
+legend("topleft", c("real( f1(s) )","imag( f1(s) )"),
+       lty = 1,cex=1, lwd = c(2,  2), col = c("magenta",  "green"))
+
+rat_prop <- abs(df$V12+1i*df$V13)
+ratorg_prop <- abs(x_5u*hz/(x_5l*hzl))
+
+# hist(rat_prop-ratorg_prop,breaks=1000,ylim=c(0,10))
+theta_hd <- sqrt((x_5l*hzl)/(x_5u*hz)*rat_prop)
+z_hd <- sqrt((x_5l*hzl)*(x_5u*hz)*rat_prop)
+
+#calculating phase accumulation from breakpoints
+zadd_f <- add_phase(df$V1,z_hd)
+tadd_f <- add_phase(df$V1,theta_hd)
+
+# z_ext form of f1(s)  
+plot(x=df_l$V1,y=Re((z_hd))*exp(1i*zadd_f),col=6,typ="l",ylim=c(-3,7),xlim=xlimc,
+     xlab="imag value",ylab="function value",main="Z_f2(s)_ext \n - real & imag components \n with non-trivial zeroes count")
+lines(x=df_l$V1,y=Im((z_hd))*exp(1i*zadd_f),col=3)
+# lines(x=df_l$V1,y=abs(z_hd),typ="l",col=1,lty=3,lwd=2)
+lines(x=df$V1,y=(Im(log(theta_hd))+tadd_f-(Im(log(z_hd))+zadd_f))/2/pi,typ="l",col=2)
+lines(x=df$V1,y=1/2/pi*(tadd_f-zadd_f),typ="l",col=4)
+abline(h=0,lty=3);abline(v=8.91836,lwd=2,lty=3);abline(v=18.8994,lwd=2,lty=3)
+legend("bottomleft", c("real(Z_f2_ext(s))","imag(Z_f2_ext(s))","contour integral","breakpoint phase sum \n component of integral"),
+       lty = 1,cex=0.8, lwd = c(2,  2,2,2), col = c("magenta",  "green","red","blue"))
+
+# theta_ext form of f1(s)
+plot(x=df$V1,y=Re(theta_hd)*exp(1i*tadd_f),typ="l",col=6,ylim=c(-3,7),xlim=xlimc,
+     xlab="imag value",ylab="function value",main="Theta_f2(s)_ext - abs, \n real & imag components")
+lines(x=df$V1,y=Im(theta_hd)*exp(1i*tadd_f),typ="l",col=3)
+lines(x=df$V1,y=abs(theta_hd),typ="l",col=1,lty=2)
+abline(h=0,lty=3)
+legend("topleft", c("real(Theta_f2_ext(s))","imag(Theta_f2_ext(s))","abs(Theta_f2_ext(s))"),
+       lty = c(1,1,2),cex=1, lwd = c(2,  2,2,2), col = c("magenta",  "green","black"))
+
+
+```
+
+***Figure 12. Behaviour of $f_{2}(s)$, the 5-periodic Dirichlet series function, the extended Riemann Siegel function analogue and the antiderivative of the argument principle contour integral calculation with the bottom contour along s=(.49+$i*t$), just below the critical line.***
+
+
+```{r, fig13, echo=FALSE, cache=TRUE, fig.width=7, fig.height=4,  fig.keep='high', warning=FALSE }
+
+res <- -1
+df <- read_fn(dir_loc,"outfile_hurwitz_zeta_upper_m1_0.dat")
+df[,"V1"] <- as.numeric(gsub("[^0-9\\.-]", "", df[,1]))
+df[,"V2"] <- as.numeric(df[,2]);df[,"V3"] <- as.numeric(df[,3]) 
+df[,"V4"] <- as.numeric(df[,4]);df[,"V5"] <- as.numeric(df[,5]) 
+df[,"V6"] <- as.numeric(df[,6]);df[,"V7"] <- as.numeric(df[,7]) 
+df[,"V8"] <- as.numeric(df[,8]);df[,"V9"] <- as.numeric(df[,9]) 
+df[,"V10"] <- as.numeric(df[,10]);df[,"V11"] <- as.numeric(df[,11]) 
+df[,"V12"] <- as.numeric(df[,12]);df[,"V13"] <- as.numeric(df[,13]) 
+df[,"V14"] <- as.numeric(gsub("[^0-9\\.-]", "", df[,14]) )
+
+df_l <- read_fn(dir_loc,"outfile_hurwitz_zeta_lower_m1_0.dat")
+df_l[,"V1"] <- as.numeric(gsub("[^0-9\\.-]", "", df_l[,1]))
+df_l[,"V2"] <- as.numeric(df_l[,2]);df_l[,"V3"] <- as.numeric(df_l[,3]) 
+df_l[,"V4"] <- as.numeric(df_l[,4]);df_l[,"V5"] <- as.numeric(df_l[,5]) 
+df_l[,"V6"] <- as.numeric(df_l[,6]);df_l[,"V7"] <- as.numeric(df_l[,7]) 
+df_l[,"V8"] <- as.numeric(df_l[,8]);df_l[,"V9"] <- as.numeric(df_l[,9]) 
+df_l[,"V10"] <- as.numeric(df_l[,10]);df_l[,"V11"] <- as.numeric(df_l[,11]) 
+df_l[,"V12"] <- as.numeric(df_l[,12]);df_l[,"V13"] <- as.numeric(df_l[,13]) 
+df_l[,"V14"] <- as.numeric(gsub("[^0-9\\.-]", "", df_l[,14]) )
+
+tan_theta <- (sqrt(10-2*sqrt(5))-2)/(sqrt(5)-1)
+hz <- (df[,"V2"]+1i*df[,"V3"]) - 
+          1/tan_theta*(df[,"V4"]+1i*df[,"V5"]) +
+          1/tan_theta*(df[,"V6"]+1i*df[,"V7"]) -
+          (df[,"V8"]+1i*df[,"V9"])
+x_5u <- 1/5^(res+1i*df$V1)#(0.5-0.074356+1i*df$V1)#(0.574356+1i*df$V1)
+hzl <- (df_l[,"V2"]+1i*df_l[,"V3"]) - 
+  1/tan_theta*(df_l[,"V4"]+1i*df_l[,"V5"]) +
+  1/tan_theta*(df_l[,"V6"]+1i*df_l[,"V7"]) -
+  (df_l[,"V8"]+1i*df_l[,"V9"])
+x_5l <- 1/5^(1-(res+1i*df$V1))#(0.5-0.074356+1i*df$V1)#(0.574356+1i*df$V1)
+     
+xlimc <- c(0,22)
+
+par(mfrow=c(1,3))
+# ordinary form of f1(s)
+plot(x=df$V1,y=Re(x_5u*hz),typ="l",col=6,xlim=xlimc,ylim=c(-3,7),
+     xlab="imag value",ylab="function value",main="f2(s) fn \n - real & imag components ")
+# lines(x=df$V1,y=abs(x_5u*hz),typ="l",col=1,lty=3,lwd=2)
+lines(x=df$V1,y=Im(x_5u*hz),typ="l",col=3)
+abline(h=0,lty=3)
+
+legend("topleft", c("real( f1(s) )","imag( f1(s) )"),
+       lty = 1,cex=1, lwd = c(2,  2), col = c("magenta",  "green"))
+
+rat_prop <- abs(df$V12+1i*df$V13)
+ratorg_prop <- abs(x_5u*hz/(x_5l*hzl))
+
+# hist(rat_prop-ratorg_prop,breaks=1000,ylim=c(0,10))
+theta_hd <- sqrt((x_5l*hzl)/(x_5u*hz)*rat_prop)
+z_hd <- sqrt((x_5l*hzl)*(x_5u*hz)*rat_prop)
+
+#calculating phase accumulation from breakpoints
+zadd_f <- add_phase(df$V1,z_hd)
+tadd_f <- add_phase(df$V1,theta_hd)
+
+# z_ext form of f1(s)  
+plot(x=df_l$V1,y=Re((z_hd))*exp(1i*zadd_f),col=6,typ="l",ylim=c(-3,7),xlim=xlimc,
+     xlab="imag value",ylab="function value",main="Z_f2(s)_ext \n - real & imag components \n with non-trivial zeroes count")
+lines(x=df_l$V1,y=Im((z_hd))*exp(1i*zadd_f),col=3)
+# lines(x=df_l$V1,y=abs(z_hd),typ="l",col=1,lty=3,lwd=2)
+lines(x=df$V1,y=(Im(log(theta_hd))+tadd_f-(Im(log(z_hd))+zadd_f))/2/pi,typ="l",col=2)
+lines(x=df$V1,y=1/2/pi*(tadd_f-zadd_f),typ="l",col=4)
+abline(h=0,lty=3);abline(v=8.91836,lwd=2,lty=3);abline(v=18.8994,lwd=2,lty=3)
+legend("bottomleft", c("real(Z_f2_ext(s))","imag(Z_f2_ext(s))","contour integral","breakpoint phase sum \n component of integral"),
+       lty = 1,cex=0.8, lwd = c(2,  2,2,2), col = c("magenta",  "green","red","blue"))
+
+# theta_ext form of f1(s)
+plot(x=df$V1,y=Re(theta_hd)*exp(1i*tadd_f),typ="l",col=6,ylim=c(-3,7),xlim=xlimc,
+     xlab="imag value",ylab="function value",main="Theta_f2(s)_ext - abs, \n real & imag components")
+lines(x=df$V1,y=Im(theta_hd)*exp(1i*tadd_f),typ="l",col=3)
+lines(x=df$V1,y=abs(theta_hd),typ="l",col=1,lty=2)
+abline(h=0,lty=3)
+legend("topleft", c("real(Theta_f2_ext(s))","imag(Theta_f2_ext(s))","abs(Theta_f2_ext(s))"),
+       lty = c(1,1,2),cex=1, lwd = c(2,  2,2,2), col = c("magenta",  "green","black"))
+
+
+```
+
+***Figure 13. Behaviour of $f_{2}(s)$, the 5-periodic Dirichlet series function, the extended Riemann Siegel function analogue and the antiderivative of the argument principle contour integral calculation with the bottom contour along s=(-1+$i*t$), below the critical strip.***
+
+
+```{r, fig14, echo=FALSE, cache=TRUE, fig.width=7, fig.height=4,  fig.keep='high', warning=FALSE }
+
+res <- -1.5
+df <- read_fn(dir_loc,"outfile_hurwitz_zeta_upper_m1_5.dat")
+df[,"V1"] <- as.numeric(gsub("[^0-9\\.-]", "", df[,1]))
+df[,"V2"] <- as.numeric(df[,2]);df[,"V3"] <- as.numeric(df[,3]) 
+df[,"V4"] <- as.numeric(df[,4]);df[,"V5"] <- as.numeric(df[,5]) 
+df[,"V6"] <- as.numeric(df[,6]);df[,"V7"] <- as.numeric(df[,7]) 
+df[,"V8"] <- as.numeric(df[,8]);df[,"V9"] <- as.numeric(df[,9]) 
+df[,"V10"] <- as.numeric(df[,10]);df[,"V11"] <- as.numeric(df[,11]) 
+df[,"V12"] <- as.numeric(df[,12]);df[,"V13"] <- as.numeric(df[,13]) 
+df[,"V14"] <- as.numeric(gsub("[^0-9\\.-]", "", df[,14]) )
+
+df_l <- read_fn(dir_loc,"outfile_hurwitz_zeta_lower_m1_5.dat")
+df_l[,"V1"] <- as.numeric(gsub("[^0-9\\.-]", "", df_l[,1]))
+df_l[,"V2"] <- as.numeric(df_l[,2]);df_l[,"V3"] <- as.numeric(df_l[,3]) 
+df_l[,"V4"] <- as.numeric(df_l[,4]);df_l[,"V5"] <- as.numeric(df_l[,5]) 
+df_l[,"V6"] <- as.numeric(df_l[,6]);df_l[,"V7"] <- as.numeric(df_l[,7]) 
+df_l[,"V8"] <- as.numeric(df_l[,8]);df_l[,"V9"] <- as.numeric(df_l[,9]) 
+df_l[,"V10"] <- as.numeric(df_l[,10]);df_l[,"V11"] <- as.numeric(df_l[,11]) 
+df_l[,"V12"] <- as.numeric(df_l[,12]);df_l[,"V13"] <- as.numeric(df_l[,13]) 
+df_l[,"V14"] <- as.numeric(gsub("[^0-9\\.-]", "", df_l[,14]) )
+
+tan_theta <- (sqrt(10-2*sqrt(5))-2)/(sqrt(5)-1)
+hz <- (df[,"V2"]+1i*df[,"V3"]) - 
+          1/tan_theta*(df[,"V4"]+1i*df[,"V5"]) +
+          1/tan_theta*(df[,"V6"]+1i*df[,"V7"]) -
+          (df[,"V8"]+1i*df[,"V9"])
+x_5u <- 1/5^(res+1i*df$V1)#(0.5-0.074356+1i*df$V1)#(0.574356+1i*df$V1)
+hzl <- (df_l[,"V2"]+1i*df_l[,"V3"]) - 
+  1/tan_theta*(df_l[,"V4"]+1i*df_l[,"V5"]) +
+  1/tan_theta*(df_l[,"V6"]+1i*df_l[,"V7"]) -
+  (df_l[,"V8"]+1i*df_l[,"V9"])
+x_5l <- 1/5^(1-(res+1i*df$V1))#(0.5-0.074356+1i*df$V1)#(0.574356+1i*df$V1)
+     
+xlimc <- c(0,22)
+
+par(mfrow=c(1,3))
+# ordinary form of f1(s)
+plot(x=df$V1,y=Re(x_5u*hz),typ="l",col=6,xlim=xlimc,ylim=c(-3,7),
+     xlab="imag value",ylab="function value",main="f2(s) fn \n - real & imag components ")
+# lines(x=df$V1,y=abs(x_5u*hz),typ="l",col=1,lty=3,lwd=2)
+lines(x=df$V1,y=Im(x_5u*hz),typ="l",col=3)
+abline(h=0,lty=3)
+
+legend("topleft", c("real( f1(s) )","imag( f1(s) )"),
+       lty = 1,cex=1, lwd = c(2,  2), col = c("magenta",  "green"))
+
+rat_prop <- abs(df$V12+1i*df$V13)
+ratorg_prop <- abs(x_5u*hz/(x_5l*hzl))
+
+# hist(rat_prop-ratorg_prop,breaks=1000,ylim=c(0,10))
+theta_hd <- sqrt((x_5l*hzl)/(x_5u*hz)*rat_prop)
+z_hd <- sqrt((x_5l*hzl)*(x_5u*hz)*rat_prop)
+
+#calculating phase accumulation from breakpoints
+zadd_f <- add_phase(df$V1,z_hd)
+tadd_f <- add_phase(df$V1,theta_hd)
+
+# z_ext form of f1(s)  
+plot(x=df_l$V1,y=Re((z_hd))*exp(1i*zadd_f),col=6,typ="l",ylim=c(-3,7),xlim=xlimc,
+     xlab="imag value",ylab="function value",main="Z_f2(s)_ext \n - real & imag components \n with non-trivial zeroes count")
+lines(x=df_l$V1,y=Im((z_hd))*exp(1i*zadd_f),col=3)
+# lines(x=df_l$V1,y=abs(z_hd),typ="l",col=1,lty=3,lwd=2)
+lines(x=df$V1,y=(Im(log(theta_hd))+tadd_f-(Im(log(z_hd))+zadd_f))/2/pi,typ="l",col=2)
+lines(x=df$V1,y=1/2/pi*(tadd_f-zadd_f),typ="l",col=4)
+abline(h=0,lty=3);abline(v=8.91836,lwd=2,lty=3);abline(v=18.8994,lwd=2,lty=3)
+legend("bottomleft", c("real(Z_f2_ext(s))","imag(Z_f2_ext(s))","contour integral","breakpoint phase sum \n component of integral"),
+       lty = 1,cex=0.8, lwd = c(2,  2,2,2), col = c("magenta",  "green","red","blue"))
+
+# theta_ext form of f1(s)
+plot(x=df$V1,y=Re(theta_hd)*exp(1i*tadd_f),typ="l",col=6,ylim=c(-3,7),xlim=xlimc,
+     xlab="imag value",ylab="function value",main="Theta_f2(s)_ext - abs, \n real & imag components")
+lines(x=df$V1,y=Im(theta_hd)*exp(1i*tadd_f),typ="l",col=3)
+lines(x=df$V1,y=abs(theta_hd),typ="l",col=1,lty=2)
+abline(h=0,lty=3)
+legend("topleft", c("real(Theta_f2_ext(s))","imag(Theta_f2_ext(s))","abs(Theta_f2_ext(s))"),
+       lty = c(1,1,2),cex=1, lwd = c(2,  2,2,2), col = c("magenta",  "green","black"))
+
+
+```
+
+***Figure 14. Behaviour of $f_{2}(s)$, the 5-periodic Dirichlet series function, the extended Riemann Siegel function analogue and the antiderivative of the argument principle contour integral calculation with the bottom contour along s=(-1.5+$i*t$), below the critical strip.***
+
+Firstly, comparing the lineshapes of the $f_{2}(s)$ function (left graph) and the extended Riemann Siegel Z function (middle graph), the extended Riemann Siegel Z function are simpler with $Im(Z_{f_{1}(1/2),ext})=0$ on the critical line. 
+
+Secondly, again in contrast to the Riemann Zeta case, the extended Riemann Siegel Theta function analogue also for the $f_{2}(s)$ function (right graph) appears to be fairly unchanged through figures 10-14 except for the impact of the real axis zero at s=-1. The absolute value of the $f_{2}(s)$ function also appears to be ~1. 
+
+Thirdly, based on counting the contour integral value, at s=18.8994i progressively through figures 10-14, there is consistent evidence of an accurate count for the roots/poles lying above the bottom contour line ($s=\sigma+i*t$) including non-trivial zeroes outside the critical strip.
+
+###Conclusions
+
+The extended Riemann Siegel function analogues of the 5-periodic Dirichlet series function behaviour can be successfully used to understand the contour integral behaviour. The logarithms of the extended Riemann Siegel function analogues have strong discontinuities located near each non-trivial zero of the two 5-periodic Dirichlet series function obeying a functional equation that were investigated. These breakpoint phase changes that result are then included in the contour integral calculation.
+
+Similar to the Riemann Zeta case, on the critical line, the extended Riemann Siegel Z function analogues of the two 5-periodic Dirichlet series function presents a simpler functional representation of the zero crossings. 
+
+The extended Riemann Siegel Theta function has the "right amount of zeroes" for these Dirichlet series now including the off critical line non-trivial zeroes which broadens the behaviour observed for the original Riemann Siegel Theta function (1,3) giving rise to Gram point usage except that the $\theta_{f(s),ext}(s)$ breakpoints are closely located around each non-trivial zero location.   
+
+
+###References
+
+1. Edwards, H.M. (1974). Riemann's zeta function. Pure and Applied Mathematics 58. New York-London: Academic Press. ISBN 0-12-242750-0. Zbl 0315.10035.
+
+2. Riemann, Bernhard (1859). "$\ddot{U}$ber die Anzahl der Primzahlen unter einer gegebenen Gr$\ddot{o}$sse". Monatsberichte der Berliner Akademie.. In Gesammelte Werke, Teubner, Leipzig (1892), Reprinted by Dover, New York (1953).
+
+3. Berry, M. V. "The Riemann-Siegel Expansion for the Zeta Function: High Orders and Remainders." Proc. Roy. Soc. London A 450, 439-462, 1995.
+
+4. Martin, J.P.D. "Applying the Argument Principle to the extended Riemann Siegel function components of the Riemann Zeta function" (2016)
+http://dx.doi.org/10.6084/m9.figshare.4012290
+
+5. Martin, J.P.D. "Mapping the Extended Riemann Siegel Z Theta Functions about branch points in the complex plane" (2016)
+http://dx.doi.org/10.6084/m9.figshare.3813999
+
+6. Balanzario, E.P. and Sanchez-Ortiz, J. Mathematics of Computation,
+Volume 76, Number 260, October 2007, Pages 2045–2049
+
+7. Spira, R. Mathematics of Computation, Volume 63, Number 208,
+October 1994, Pages 747-748
+
+8. Julia: A Fresh Approach to Numerical Computing. Jeff Bezanson, Alan Edelman, Stefan Karpinski and Viral B. Shah (2017) SIAM Review, 59: 65–98. 
+doi: 10.1137/141000671. http://julialang.org/publications/julia-fresh-approach-BEKS.pdf.
+
+9. R Core Team (2017). R: A language and environment for statistical computing.
+R Foundation for Statistical Computing, Vienna, Austria. URL
+https://www.R-project.org/.
+
+10. RStudio Team (2015). RStudio: Integrated Development for R. RStudio, Inc., Boston, MA URL http://www.rstudio.com/.
