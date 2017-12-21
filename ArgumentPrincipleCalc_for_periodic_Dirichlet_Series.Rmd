@@ -139,7 +139,7 @@ abline(h=0,lty=3)
 
 # theta_ext form of f1(s)
 plot(x=df$V1,y=Re(theta_hd)*exp(1i*tadd_f),typ="l",col=6,ylim=c(-2,5),xlim=xlimc,
-     xlab="imag value",ylab="function value",main="Theta_f1(s)_ext - abs, \n real & imag components")
+     xlab="imag value",ylab="function value",main="exp(i*Theta_f1(s)_ext) - abs, \n real & imag components")
 lines(x=df$V1,y=Im(theta_hd)*exp(1i*tadd_f),typ="l",col=3)
 lines(x=df$V1,y=abs(theta_hd),typ="l",col=1,lty=2)
 abline(h=0,lty=3)
@@ -189,7 +189,7 @@ abline(h=0,lty=3);abline(v=8.918,lty=3);abline(v=18.899,lty=3)
 
 # theta_ext form of f2(s)
 plot(x=df$V1,y=Re(theta_hd2)*exp(1i*tadd_f2),typ="l",col=6,ylim=c(-4.2,6),xlim=xlimc,
-     xlab="imag value",ylab="function value",main="Theta_f2(s)_ext - abs, \n real & imag components")
+     xlab="imag value",ylab="function value",main="exp(i*Theta_f2(s)_ext) - abs, \n real & imag components")
 lines(x=df$V1,y=Im(theta_hd2)*exp(1i*tadd_f2),typ="l",col=3)
 lines(x=df$V1,y=abs(theta_hd2),typ="l",col=1,lty=2)
 abline(h=0,lty=3)
@@ -351,7 +351,7 @@ Note that in principle, the multipler function representing the symmetrical rela
 Figures 1-4 show below the behaviour of the extended Riemann Siegel function analogue behaviour for the Davenport-Heilbronn function for several lines ($s=\sigma+i*t$) in the positive quadrant of the complex plane, in the interval t=(0,20). This interval shows the impact of the contour integral component behaviour for the non-trivial zeroes on the critical line. Included in the figures are
 
 (i) the real and imaginary components of the Davenport-Heilbronn function
-(ii) the real and imaginary components of the extended Riemann Siegel function analogues of the Davenport-Heilbronn function,
+(ii) tthe real and imaginary components of $Z_{f_{1}(s),ext}(s)$ and $e^{(i\theta_{f_{1}(s),ext}(s))}$analogues of the Davenport-Heilbronn function,
 (iii) the continuous value of the contour integral covering the positive complex plane with the bottom contour line as specified, 
 (iv) the phase sum of the breakpoints for the contour integral antiderivatives $\theta_{f_{1}(s),ext}(s)$ \& $-\Im(log(Z_{f_{1}(s),ext}(s)))$ which gives a discrete count of the enclosed zeroes and poles. 
 
@@ -481,7 +481,7 @@ legend("topleft", c("real(Z_f1_ext(s))","imag(Z_f1_ext(s))","contour integral","
 
 # theta_ext form of f1(s)
 plot(x=df$V1,y=Re(theta_hd)*exp(1i*tadd_f),typ="l",col=6,ylim=c(-2,5),xlim=xlimc,
-     xlab="imag value",ylab="function value",main="Theta_f1(s)_ext - abs, \n real & imag components")
+     xlab="imag value",ylab="function value",main="exp(i*Theta_f1(s)_ext) - abs, \n real & imag components")
 lines(x=df$V1,y=Im(theta_hd)*exp(1i*tadd_f),typ="l",col=3)
 lines(x=df$V1,y=abs(theta_hd),typ="l",col=1,lty=2)
 abline(h=0,lty=3)
@@ -493,7 +493,7 @@ legend("topleft", c("real(Theta_f1_ext(s))","imag(Theta_f1_ext(s))","abs(Theta_f
 
 ```
 
-***Figure 1. Behaviour of the Davenport-Heilbronn function, the extended Riemann Siegel function analogue and the antiderivative of the argument principle contour integral calculation with the bottom contour along s=(.808517+$i*t$), just inside the critical strip.***
+***Figure 1. Behaviour of the Davenport-Heilbronn function, $Z_{f1(s),ext}$, $\exp{(i\theta_{f1(s),ext})}$  and the antiderivative of the argument principle contour integral calculation with the bottom contour along s=(.808517+$i*t$), just inside the critical strip.***
 
 
 ```{r, fig2, echo=FALSE, cache=TRUE, fig.width=7, fig.height=4,  fig.keep='high', warning=FALSE }
@@ -568,7 +568,7 @@ legend("topleft", c("real(Z_f1_ext(s))","imag(Z_f1_ext(s))","contour integral","
 
 # theta_ext form of f1(s)
 plot(x=df$V1,y=Re(theta_hd)*exp(1i*tadd_f),typ="l",col=6,ylim=c(-2,5),xlim=xlimc,
-     xlab="imag value",ylab="function value",main="Theta_f1(s)_ext - abs, \n real & imag components")
+     xlab="imag value",ylab="function value",main="exp(i*Theta_f1(s)_ext) - abs, \n real & imag components")
 lines(x=df$V1,y=Im(theta_hd)*exp(1i*tadd_f),typ="l",col=3)
 lines(x=df$V1,y=abs(theta_hd),typ="l",col=1,lty=2)
 abline(h=0,lty=3)
@@ -577,7 +577,7 @@ legend("topleft", c("real(Theta_f1_ext(s))","imag(Theta_f1_ext(s))","abs(Theta_f
 
 ```
 
-***Figure 2. Behaviour of the Davenport-Heilbronn function, the extended Riemann Siegel function analogue and the antiderivative of the argument principle contour integral calculation with the bottom contour along s=(.51+$i*t$), just above the critical line.***
+***Figure 2. Behaviour of the Davenport-Heilbronn function, $Z_{f1(s),ext}$, $\exp{(i\theta_{f1(s),ext})}$  and the antiderivative of the argument principle contour integral calculation with the bottom contour along s=(.51+$i*t$), just above the critical line.***
 
 
 
@@ -653,7 +653,7 @@ legend("topleft", c("real(Z_f1_ext(s))","imag(Z_f1_ext(s))","contour integral","
 
 # theta_ext form of f1(s)
 plot(x=df$V1,y=Re(theta_hd)*exp(1i*tadd_f),typ="l",col=6,ylim=c(-2,5),xlim=xlimc,
-     xlab="imag value",ylab="function value",main="Theta_f1(s)_ext - abs, \n real & imag components")
+     xlab="imag value",ylab="function value",main="exp(i*Theta_f1(s)_ext) - abs, \n real & imag components")
 lines(x=df$V1,y=Im(theta_hd)*exp(1i*tadd_f),typ="l",col=3)
 lines(x=df$V1,y=abs(theta_hd),typ="l",col=1,lty=2)
 abline(h=0,lty=3)
@@ -662,7 +662,7 @@ legend("topleft", c("real(Theta_f1_ext(s))","imag(Theta_f1_ext(s))","abs(Theta_f
 
 ```
 
-***Figure 3. Behaviour of the Davenport-Heilbronn function, the extended Riemann Siegel function analogue and the antiderivative of the argument principle contour integral calculation with the bottom contour along s=(.49+$i*t$), just below the critical line.***
+***Figure 3. Behaviour of the Davenport-Heilbronn function, $Z_{f1(s),ext}$, $\exp{(i\theta_{f1(s),ext})}$  and the antiderivative of the argument principle contour integral calculation with the bottom contour along s=(.49+$i*t$), just below the critical line.***
 
 
 ```{r, fig4, echo=FALSE, cache=TRUE, fig.width=7, fig.height=4,  fig.keep='high', warning=FALSE }
@@ -737,7 +737,7 @@ legend("topleft", c("real(Z_f1_ext(s))","imag(Z_f1_ext(s))","contour integral","
 
 # theta_ext form of f1(s)
 plot(x=df$V1,y=Re(theta_hd)*exp(1i*tadd_f),typ="l",col=6,ylim=c(-2,5),xlim=xlimc,
-     xlab="imag value",ylab="function value",main="Theta_f1(s)_ext - abs, \n real & imag components")
+     xlab="imag value",ylab="function value",main="exp(i*Theta_f1(s)_ext) - abs, \n real & imag components")
 lines(x=df$V1,y=Im(theta_hd)*exp(1i*tadd_f),typ="l",col=3)
 lines(x=df$V1,y=abs(theta_hd),typ="l",col=1,lty=2)
 abline(h=0,lty=3)
@@ -746,11 +746,11 @@ legend("topleft", c("real(Theta_f1_ext(s))","imag(Theta_f1_ext(s))","abs(Theta_f
 
 ```
 
-***Figure 4. Behaviour of the Davenport-Heilbronn function, the extended Riemann Siegel function analogue and the antiderivative of the argument principle contour integral calculation with the bottom contour along s=(-1+$i*t$), below the critical strip.***
+***Figure 4. Behaviour of the Davenport-Heilbronn function, $Z_{f1(s),ext}$, $\exp{(i\theta_{f1(s),ext})}$  and the antiderivative of the argument principle contour integral calculation with the bottom contour along s=(-1+$i*t$), below the critical strip.***
 
 Firstly, comparing the lineshapes of the Davenport-Heilbron function (left graph) and the extended Riemann Siegel Z function (middle graph), the extended Riemann Siegel Z function are simpler with $Im(Z_{f_{1}(1/2),ext})=0$ on the critical line, this behaviour is very similar to the Riemann Zeta case. This behaviour may change near non-trivial zeroes off the critical line and is investigated in the next few figures. 
 
-Secondly, in contrast to the Riemann Zeta case, the extended Riemann Siegel Theta function analogue for the Davenport-Heilbron function (right graph) appears to be fairly unchanged through figures (1-4) except for the impact of the real axis zero at s=-1. The absolute value of the function appears to be approximately constant  $abs(\theta_{f_{1}(s),ext})\le 1$ being slightly lower near the real axis. 
+Secondly, in contrast to the Riemann Zeta case, the $\exp{(i\theta_{f1(s),ext})}$ analogue for the Davenport-Heilbron function (right graph) appears to be fairly unchanged through figures (1-4) except for the impact of the real axis zero at s=-1.  
 
 Thirdly, it can be observed that the argument principle contour integral results, gives accurate count for the roots/poles lying above the line ($s=\sigma+i*t$) contained on the critical line, in the positive quadrant of the complex plane. This behavior arises, given that $\theta_{f_{1}(s),ext}$ ($\Im(log(Z_{f_{1}(s),ext}))$) are even(odd) functions respectively about the critical line, as occurred for the Riemann Zeta function.
 
@@ -830,7 +830,7 @@ legend("topleft", c("real(Z_f1_ext(s))","imag(Z_f1_ext(s))","contour integral","
 
 # theta_ext form of f1(s)
 plot(x=df$V1,y=Re(theta_hd)*exp(1i*tadd_f),typ="l",col=6,ylim=c(-2,5),xlim=xlimc,
-     xlab="imag value",ylab="function value",main="Theta_f1(s)_ext - abs, \n real & imag components")
+     xlab="imag value",ylab="function value",main="exp(i*Theta_f1(s)_ext) - abs, \n real & imag components")
 lines(x=df$V1,y=Im(theta_hd)*exp(1i*tadd_f),typ="l",col=3)
 lines(x=df$V1,y=abs(theta_hd),typ="l",col=1,lty=2)
 abline(h=0,lty=3)
@@ -839,7 +839,7 @@ legend("topleft", c("real(Theta_f1_ext(s))","imag(Theta_f1_ext(s))","abs(Theta_f
 
 ```
 
-***Figure 5. Near non-trivial zeroes off the critical line, the behaviour of the Davenport-Heilbronn function, the extended Riemann Siegel function analogue and the antiderivative of the argument principle contour integral calculation with the bottom contour along s=(0.8+$i*t$), inside the upper critical strip.***
+***Figure 5. Near non-trivial zeroes off the critical line, the behaviour of the Davenport-Heilbronn function, $Z_{f1(s),ext}$, $\exp{(i\theta_{f1(s),ext})}$  and the antiderivative of the argument principle contour integral calculation with the bottom contour along s=(0.8+$i*t$), inside the upper critical strip.***
 
 
 ```{r, fig6, echo=FALSE, cache=TRUE, fig.width=7, fig.height=4,  fig.keep='high', warning=FALSE }
@@ -914,7 +914,7 @@ legend("topleft", c("real(Z_f1_ext(s))","imag(Z_f1_ext(s))","contour integral","
 
 # theta_ext form of f1(s)
 plot(x=df$V1,y=Re(theta_hd)*exp(1i*tadd_f),typ="l",col=6,ylim=c(-2,5),xlim=xlimc,
-     xlab="imag value",ylab="function value",main="Theta_f1(s)_ext - abs, \n real & imag components")
+     xlab="imag value",ylab="function value",main="exp(i*Theta_f1(s)_ext) - abs, \n real & imag components")
 lines(x=df$V1,y=Im(theta_hd)*exp(1i*tadd_f),typ="l",col=3)
 lines(x=df$V1,y=abs(theta_hd),typ="l",col=1,lty=2)
 abline(h=0,lty=3)
@@ -923,7 +923,7 @@ legend("topleft", c("real(Theta_f1_ext(s))","imag(Theta_f1_ext(s))","abs(Theta_f
 
 ```
 
-***Figure 6. Near non-trivial zeroes off the critical line, the behaviour of the Davenport-Heilbronn function, the extended Riemann Siegel function analogue and the antiderivative of the argument principle contour integral calculation with the bottom contour along s=(0.64+$i*t$), above the critical line.***
+***Figure 6. Near non-trivial zeroes off the critical line, the behaviour of the Davenport-Heilbronn function, $Z_{f1(s),ext}$, $\exp{(i\theta_{f1(s),ext})}$  and the antiderivative of the argument principle contour integral calculation with the bottom contour along s=(0.64+$i*t$), above the critical line.***
 
 
 ```{r, fig7, echo=FALSE, cache=TRUE, fig.width=7, fig.height=4,  fig.keep='high', warning=FALSE }
@@ -1009,7 +1009,7 @@ mtext(4,cex=0.8,text="contour integral value")#,line=5.5)
 
 # theta_ext form of f1(s)
 plot(x=df$V1,y=Re(theta_hd)*exp(1i*tadd_f),typ="l",col=6,ylim=c(-2,5),xlim=xlimc,
-     xlab="imag value",ylab="function value",main="Theta_f1(s)_ext - abs, \n real & imag components")
+     xlab="imag value",ylab="function value",main="exp(i*Theta_f1(s)_ext) - abs, \n real & imag components")
 lines(x=df$V1,y=Im(theta_hd)*exp(1i*tadd_f),typ="l",col=3)
 lines(x=df$V1,y=abs(theta_hd),typ="l",col=1,lty=2)
 abline(h=0,lty=3)
@@ -1018,7 +1018,7 @@ legend("topleft", c("real(Theta_f1_ext(s))","imag(Theta_f1_ext(s))","abs(Theta_f
 
 ```
 
-***Figure 7. Near non-trivial zeroes off the critical line, the behaviour of the Davenport-Heilbronn function, the extended Riemann Siegel function analogue and the antiderivative of the argument principle contour integral calculation with the bottom contour along s=(0.34+$i*t$), below the critical line.***
+***Figure 7. Near non-trivial zeroes off the critical line, the behaviour of the Davenport-Heilbronn function, $Z_{f1(s),ext}$, $\exp{(i\theta_{f1(s),ext})}$  and the antiderivative of the argument principle contour integral calculation with the bottom contour along s=(0.34+$i*t$), below the critical line.***
 
 
 ```{r, fig8, echo=FALSE, cache=TRUE, fig.width=7, fig.height=4,  fig.keep='high', warning=FALSE }
@@ -1104,7 +1104,7 @@ mtext(4,cex=0.8,text="contour integral value")#,line=5.5)
 
 # theta_ext form of f1(s)
 plot(x=df$V1,y=Re(theta_hd)*exp(1i*tadd_f),typ="l",col=6,ylim=c(-2,5),xlim=xlimc,
-     xlab="imag value",ylab="function value",main="Theta_f1(s)_ext - abs, \n real & imag components")
+     xlab="imag value",ylab="function value",main="exp(i*Theta_f1(s)_ext) - abs, \n real & imag components")
 lines(x=df$V1,y=Im(theta_hd)*exp(1i*tadd_f),typ="l",col=3)
 lines(x=df$V1,y=abs(theta_hd),typ="l",col=1,lty=2)
 abline(h=0,lty=3)
@@ -1113,7 +1113,7 @@ legend("topleft", c("real(Theta_f1_ext(s))","imag(Theta_f1_ext(s))","abs(Theta_f
 
 ```
 
-***Figure 8. Near non-trivial zeroes off the critical line, the behaviour of the Davenport-Heilbronn function, the extended Riemann Siegel function analogue and the antiderivative of the argument principle contour integral calculation with the bottom contour along s=(0.18+$i*t$), below the critical line.***
+***Figure 8. Near non-trivial zeroes off the critical line, the behaviour of the Davenport-Heilbronn function, $Z_{f1(s),ext}$, $\exp{(i\theta_{f1(s),ext})}$  and the antiderivative of the argument principle contour integral calculation with the bottom contour along s=(0.18+$i*t$), below the critical line.***
 
 
 Note that in figures 7 \& 8, the contour integral results in the middle graph have been represented using a second y axis as the critical line zeroes located nearby rapidly increase the contour integral sum of zeroes. Comparing the middle graph of figures 5-8, it can be observed that the argument principle contour integral results, do increase by one unit as the next off critical line zero is enclosed in turn by the contour integral. The contour integral becomes discontinuous very close around the non-trivial zero co-ordinate so typically the bottom contour segment real component needs to be .01 or more lower than the non-trivial co-ordinate real value for continuous behaviour to resume.
@@ -1268,7 +1268,7 @@ legend("topleft", c("abs(f1(s))","non-trivial zero, real co-ord"),
 Figures 10-14 show below the behaviour of the extended Riemann Siegel function analogue behaviour for the $f_{2}(s)$ function for several lines ($s=\sigma+i*t$) in the positive quadrant of the complex plane, in the interval t=(0,22). Included in the figures are
 
 (i) the real and imaginary components of the $f_{2}(s)$ function
-(ii) the real and imaginary components of the extended Riemann Siegel function analogues of the $f_{2}(s)$ function,
+(ii) the real and imaginary components of $Z_{f_{2}(s),ext}(s)$ and $e^{(i\theta_{f_{2}(s),ext}(s))}$ analogues of the $f_{2}(s)$ function,
 (iii) the continuous value of the contour integral covering the positive complex plane with the bottom contour line as specified, 
 (iv) the phase sum of the breakpoints for the contour integral antiderivatives $\theta_{f_{2}(s),ext}(s)$ \& $-\Im(log(Z_{f_{2}(s),ext}(s)))$ which gives a discrete count of the enclosed zeroes and poles. 
 
@@ -1360,7 +1360,7 @@ legend("bottomleft", c("real(Z_f2_ext(s))","imag(Z_f2_ext(s))","contour integral
 
 # theta_ext form of f1(s)
 plot(x=df$V1,y=Re(theta_hd)*exp(1i*tadd_f),typ="l",col=6,ylim=c(-3,7),xlim=xlimc,
-     xlab="imag value",ylab="function value",main="Theta_f2(s)_ext - abs, \n real & imag components")
+     xlab="imag value",ylab="function value",main="exp(i*Theta_f2(s)_ext) - abs, \n real & imag components")
 lines(x=df$V1,y=Im(theta_hd)*exp(1i*tadd_f),typ="l",col=3)
 lines(x=df$V1,y=abs(theta_hd),typ="l",col=1,lty=2)
 abline(h=0,lty=3)
@@ -1371,7 +1371,7 @@ legend("topleft", c("real(Theta_f2_ext(s))","imag(Theta_f2_ext(s))","abs(Theta_f
 
 ```
 
-***Figure 10. Behaviour of $f_{2}(s)$, the 5-periodic Dirichlet series function, the extended Riemann Siegel function analogue and the antiderivative of the argument principle contour integral calculation with the bottom contour along s=(.808517+$i*t$), just inside the critical strip.***
+***Figure 10. Behaviour of $f_{2}(s)$, the 5-periodic Dirichlet series function, $Z_{f2(s),ext}$, $\exp{(i\theta_{f2(s),ext})}$  and the antiderivative of the argument principle contour integral calculation with the bottom contour along s=(.808517+$i*t$), just inside the critical strip.***
 
 
 ```{r, fig11, echo=FALSE, cache=TRUE, fig.width=7, fig.height=4,  fig.keep='high', warning=FALSE }
@@ -1446,7 +1446,7 @@ legend("bottomleft", c("real(Z_f2_ext(s))","imag(Z_f2_ext(s))","contour integral
 
 # theta_ext form of f1(s)
 plot(x=df$V1,y=Re(theta_hd)*exp(1i*tadd_f),typ="l",col=6,ylim=c(-3,7),xlim=xlimc,
-     xlab="imag value",ylab="function value",main="Theta_f2(s)_ext - abs, \n real & imag components")
+     xlab="imag value",ylab="function value",main="exp(i*Theta_f2(s)_ext) - abs, \n real & imag components")
 lines(x=df$V1,y=Im(theta_hd)*exp(1i*tadd_f),typ="l",col=3)
 lines(x=df$V1,y=abs(theta_hd),typ="l",col=1,lty=2)
 abline(h=0,lty=3)
@@ -1456,7 +1456,7 @@ legend("topleft", c("real(Theta_f2_ext(s))","imag(Theta_f2_ext(s))","abs(Theta_f
 
 ```
 
-***Figure 11. Behaviour of $f_{2}(s)$, the 5-periodic Dirichlet series function, the extended Riemann Siegel function analogue and the antiderivative of the argument principle contour integral calculation with the bottom contour along s=(.51+$i*t$), just above the critical line.***
+***Figure 11. Behaviour of $f_{2}(s)$, the 5-periodic Dirichlet series function, $Z_{f2(s),ext}$, $\exp{(i\theta_{f2(s),ext})}$  and the antiderivative of the argument principle contour integral calculation with the bottom contour along s=(.51+$i*t$), just above the critical line.***
 
 
 
@@ -1532,7 +1532,7 @@ legend("bottomleft", c("real(Z_f2_ext(s))","imag(Z_f2_ext(s))","contour integral
 
 # theta_ext form of f1(s)
 plot(x=df$V1,y=Re(theta_hd)*exp(1i*tadd_f),typ="l",col=6,ylim=c(-3,7),xlim=xlimc,
-     xlab="imag value",ylab="function value",main="Theta_f2(s)_ext - abs, \n real & imag components")
+     xlab="imag value",ylab="function value",main="exp(i*Theta_f2(s)_ext) - abs, \n real & imag components")
 lines(x=df$V1,y=Im(theta_hd)*exp(1i*tadd_f),typ="l",col=3)
 lines(x=df$V1,y=abs(theta_hd),typ="l",col=1,lty=2)
 abline(h=0,lty=3)
@@ -1542,7 +1542,7 @@ legend("topleft", c("real(Theta_f2_ext(s))","imag(Theta_f2_ext(s))","abs(Theta_f
 
 ```
 
-***Figure 12. Behaviour of $f_{2}(s)$, the 5-periodic Dirichlet series function, the extended Riemann Siegel function analogue and the antiderivative of the argument principle contour integral calculation with the bottom contour along s=(.49+$i*t$), just below the critical line.***
+***Figure 12. Behaviour of $f_{2}(s)$, the 5-periodic Dirichlet series function, $Z_{f2(s),ext}$, $\exp{(i\theta_{f2(s),ext})}$  and the antiderivative of the argument principle contour integral calculation with the bottom contour along s=(.49+$i*t$), just below the critical line.***
 
 
 ```{r, fig13, echo=FALSE, cache=TRUE, fig.width=7, fig.height=4,  fig.keep='high', warning=FALSE }
@@ -1617,7 +1617,7 @@ legend("bottomleft", c("real(Z_f2_ext(s))","imag(Z_f2_ext(s))","contour integral
 
 # theta_ext form of f1(s)
 plot(x=df$V1,y=Re(theta_hd)*exp(1i*tadd_f),typ="l",col=6,ylim=c(-3,7),xlim=xlimc,
-     xlab="imag value",ylab="function value",main="Theta_f2(s)_ext - abs, \n real & imag components")
+     xlab="imag value",ylab="function value",main="exp(i*Theta_f2(s)_ext) - abs, \n real & imag components")
 lines(x=df$V1,y=Im(theta_hd)*exp(1i*tadd_f),typ="l",col=3)
 lines(x=df$V1,y=abs(theta_hd),typ="l",col=1,lty=2)
 abline(h=0,lty=3)
@@ -1627,7 +1627,7 @@ legend("topleft", c("real(Theta_f2_ext(s))","imag(Theta_f2_ext(s))","abs(Theta_f
 
 ```
 
-***Figure 13. Behaviour of $f_{2}(s)$, the 5-periodic Dirichlet series function, the extended Riemann Siegel function analogue and the antiderivative of the argument principle contour integral calculation with the bottom contour along s=(-1+$i*t$), below the critical strip.***
+***Figure 13. Behaviour of $f_{2}(s)$, the 5-periodic Dirichlet series function, $Z_{f2(s),ext}$, $\exp{(i\theta_{f2(s),ext})}$  and the antiderivative of the argument principle contour integral calculation with the bottom contour along s=(-1+$i*t$), below the critical strip.***
 
 
 ```{r, fig14, echo=FALSE, cache=TRUE, fig.width=7, fig.height=4,  fig.keep='high', warning=FALSE }
@@ -1702,7 +1702,7 @@ legend("bottomleft", c("real(Z_f2_ext(s))","imag(Z_f2_ext(s))","contour integral
 
 # theta_ext form of f1(s)
 plot(x=df$V1,y=Re(theta_hd)*exp(1i*tadd_f),typ="l",col=6,ylim=c(-3,7),xlim=xlimc,
-     xlab="imag value",ylab="function value",main="Theta_f2(s)_ext - abs, \n real & imag components")
+     xlab="imag value",ylab="function value",main="exp(i*Theta_f2(s)_ext) - abs, \n real & imag components")
 lines(x=df$V1,y=Im(theta_hd)*exp(1i*tadd_f),typ="l",col=3)
 lines(x=df$V1,y=abs(theta_hd),typ="l",col=1,lty=2)
 abline(h=0,lty=3)
@@ -1712,11 +1712,11 @@ legend("topleft", c("real(Theta_f2_ext(s))","imag(Theta_f2_ext(s))","abs(Theta_f
 
 ```
 
-***Figure 14. Behaviour of $f_{2}(s)$, the 5-periodic Dirichlet series function, the extended Riemann Siegel function analogue and the antiderivative of the argument principle contour integral calculation with the bottom contour along s=(-1.5+$i*t$), below the critical strip.***
+***Figure 14. Behaviour of $f_{2}(s)$, the 5-periodic Dirichlet series function, $Z_{f2(s),ext}$, $\exp{(i\theta_{f2(s),ext})}$  and the antiderivative of the argument principle contour integral calculation with the bottom contour along s=(-1.5+$i*t$), below the critical strip.***
 
 Firstly, comparing the lineshapes of the $f_{2}(s)$ function (left graph) and the extended Riemann Siegel Z function (middle graph), the extended Riemann Siegel Z function are simpler with $Im(Z_{f_{1}(1/2),ext})=0$ on the critical line. 
 
-Secondly, again in contrast to the Riemann Zeta case, the extended Riemann Siegel Theta function analogue also for the $f_{2}(s)$ function (right graph) appears to be fairly unchanged through figures 10-14 except for the impact of the real axis zero at s=-1. The absolute value of the $f_{2}(s)$ function also appears to be ~1. 
+Secondly, again in contrast to the Riemann Zeta case, $\exp{(i\theta_{f2(s),ext})}$ analogue also for the $f_{2}(s)$ function (right graph) appears to be fairly unchanged through figures 10-14 except for the impact of the real axis zero at s=-1. 
 
 Thirdly, based on counting the contour integral value, at s=18.8994i progressively through figures 10-14, there is consistent evidence of an accurate count for the roots/poles lying above the bottom contour line ($s=\sigma+i*t$) including non-trivial zeroes outside the critical strip.
 
@@ -1757,3 +1757,165 @@ R Foundation for Statistical Computing, Vienna, Austria. URL
 https://www.R-project.org/.
 
 10. RStudio Team (2015). RStudio: Integrated Development for R. RStudio, Inc., Boston, MA URL http://www.rstudio.com/.
+
+##Appendix A: Illustrating the $Z_{f(s),ext}(s)$ and $\theta_{f(s),ext}(s)$ functions with and without correction for breakpoints
+
+
+```{r, app_A, echo=FALSE, cache=TRUE, fig.width=7, fig.height=3,  fig.keep='high', warning=FALSE }
+
+res <- 0.34
+df <- read_fn(dir_loc,"outfile_hurwitz_zeta_upper_0_34.dat")
+df[,"V1"] <- as.numeric(gsub("[^0-9\\.-]", "", df[,1]))
+df[,"V2"] <- as.numeric(df[,2]);df[,"V3"] <- as.numeric(df[,3]) 
+df[,"V4"] <- as.numeric(df[,4]);df[,"V5"] <- as.numeric(df[,5]) 
+df[,"V6"] <- as.numeric(df[,6]);df[,"V7"] <- as.numeric(df[,7]) 
+df[,"V8"] <- as.numeric(df[,8]);df[,"V9"] <- as.numeric(df[,9]) 
+df[,"V10"] <- as.numeric(df[,10]);df[,"V11"] <- as.numeric(df[,11]) 
+df[,"V12"] <- as.numeric(df[,12]);df[,"V13"] <- as.numeric(df[,13]) 
+df[,"V14"] <- as.numeric(gsub("[^0-9\\.-]", "", df[,14]) )
+
+df_l <- read_fn(dir_loc,"outfile_hurwitz_zeta_lower_0_34.dat")
+df_l[,"V1"] <- as.numeric(gsub("[^0-9\\.-]", "", df_l[,1]))
+df_l[,"V2"] <- as.numeric(df_l[,2]);df_l[,"V3"] <- as.numeric(df_l[,3]) 
+df_l[,"V4"] <- as.numeric(df_l[,4]);df_l[,"V5"] <- as.numeric(df_l[,5]) 
+df_l[,"V6"] <- as.numeric(df_l[,6]);df_l[,"V7"] <- as.numeric(df_l[,7]) 
+df_l[,"V8"] <- as.numeric(df_l[,8]);df_l[,"V9"] <- as.numeric(df_l[,9]) 
+df_l[,"V10"] <- as.numeric(df_l[,10]);df_l[,"V11"] <- as.numeric(df_l[,11]) 
+df_l[,"V12"] <- as.numeric(df_l[,12]);df_l[,"V13"] <- as.numeric(df_l[,13]) 
+df_l[,"V14"] <- as.numeric(gsub("[^0-9\\.-]", "", df_l[,14]) )
+
+tan_theta <- (sqrt(10-2*sqrt(5))-2)/(sqrt(5)-1)
+hz <- (df[,"V2"]+1i*df[,"V3"]) + 
+          tan_theta*(df[,"V4"]+1i*df[,"V5"]) -
+          tan_theta*(df[,"V6"]+1i*df[,"V7"]) -
+          (df[,"V8"]+1i*df[,"V9"])
+x_5u <- 1/5^(res+1i*df$V1)#(0.5-0.074356+1i*df$V1)#(0.574356+1i*df$V1)
+hzl <- (df_l[,"V2"]+1i*df_l[,"V3"]) + 
+  tan_theta*(df_l[,"V4"]+1i*df_l[,"V5"]) -
+  tan_theta*(df_l[,"V6"]+1i*df_l[,"V7"]) -
+  (df_l[,"V8"]+1i*df_l[,"V9"])
+x_5l <- 1/5^(1-(res+1i*df$V1))#(0.5-0.074356+1i*df$V1)#(0.574356+1i*df$V1)
+     
+xlimc <- c(0,20)
+
+par(mfrow=c(1,2))
+
+rat_prop <- abs(df$V12+1i*df$V13)
+ratorg_prop <- abs(x_5u*hz/(x_5l*hzl))
+
+# hist(rat_prop-ratorg_prop,breaks=1000,ylim=c(0,10))
+theta_hd <- sqrt((x_5l*hzl)/(x_5u*hz)*rat_prop)
+z_hd <- sqrt((x_5l*hzl)*(x_5u*hz)*rat_prop)
+
+#calculating phase accumulation from breakpoints
+zadd_f <- add_phase(df$V1,z_hd)
+tadd_f <- add_phase(df$V1,theta_hd)
+
+# z_ext form of f1(s)  
+plot(x=df_l$V1,y=Re((z_hd))*exp(0*1i*zadd_f),col=6,typ="l",ylim=c(-3,4),xlim=xlimc,
+     xlab="imag value",ylab="function value",main="Z_f1(s)_ext \n with breakpoints")
+lines(x=df_l$V1,y=Im((z_hd))*exp(0*1i*zadd_f),col=3)
+abline(h=0,lty=3)
+
+# z_ext form of f1(s)  
+plot(x=df_l$V1,y=Re((z_hd))*exp(1i*zadd_f),col=6,typ="l",ylim=c(-3,4),xlim=xlimc,
+     xlab="imag value",ylab="function value",main="Z_f1(s)_ext \n - corrected for breakpoints")
+lines(x=df_l$V1,y=Im((z_hd))*exp(1i*zadd_f),col=3)
+abline(h=0,lty=3)
+
+# theta_ext form of f1(s)
+plot(x=df$V1,y=Im(log(theta_hd))*exp(0*1i*tadd_f),typ="l",col=6,ylim=c(-2,2),xlim=xlimc,
+     xlab="imag value",ylab="function value",main="Theta_f1(s)_ext \n with breakpoints")
+abline(h=0,lty=3)
+
+# theta_ext form of f1(s)
+plot(x=df$V1,y=Im(log(theta_hd))*exp(1i*tadd_f),typ="l",col=6,ylim=c(-2,2),xlim=xlimc,
+     xlab="imag value",ylab="function value",main="Theta_f1(s)_ext) \n corrected for breakpoints")
+abline(h=0,lty=3)
+
+
+tan_theta <- (sqrt(10-2*sqrt(5))-2)/(sqrt(5)-1)
+hz2 <- (df[,"V2"]+1i*df[,"V3"]) - 
+  1/tan_theta*(df[,"V4"]+1i*df[,"V5"]) +
+  1/tan_theta*(df[,"V6"]+1i*df[,"V7"]) -
+  (df[,"V8"]+1i*df[,"V9"])
+x_5u <- 1/5^(res+1i*df$V1)#(0.5-0.074356+1i*df$V1)#(0.574356+1i*df$V1)
+hzl2 <- (df_l[,"V2"]+1i*df_l[,"V3"]) - 
+  1/tan_theta*(df_l[,"V4"]+1i*df_l[,"V5"]) +
+  1/tan_theta*(df_l[,"V6"]+1i*df_l[,"V7"]) -
+  (df_l[,"V8"]+1i*df_l[,"V9"])
+x_5l <- 1/5^(1-(res+1i*df$V1))#(0.5-0.074356+1i*df$V1)#(0.574356+1i*df$V1)
+
+
+
+
+rat_prop2 <- abs(df$V12+1i*df$V13)
+ratorg_prop2 <- abs(x_5u*hz2/(x_5l*hzl2))
+
+# hist(rat_prop-ratorg_prop,breaks=1000,ylim=c(0,10))
+theta_hd2 <- sqrt((x_5l*hzl2)/(x_5u*hz2)*rat_prop2)
+z_hd2 <- sqrt((x_5l*hzl2)*(x_5u*hz2)*rat_prop2)
+
+#calculating phase accumulation from breakpoints
+zadd_f2 <- add_phase(df$V1,z_hd2)
+tadd_f2 <- add_phase(df$V1,theta_hd2)
+
+# z_ext form of f2(s)  
+plot(x=df_l$V1,y=Re((z_hd2))*exp(0*1i*zadd_f2),col=6,typ="l",ylim=c(-5,7),xlim=xlimc,
+     xlab="imag value",ylab="function value",main="Z_f2(s)_ext \n with breakpoints")
+lines(x=df_l$V1,y=Im((z_hd2))*exp(0*1i*zadd_f2),col=3)
+abline(h=0,lty=3);abline(v=8.918,lty=3);abline(v=18.899,lty=3)
+
+# z_ext form of f2(s)  
+plot(x=df_l$V1,y=Re((z_hd2))*exp(1i*zadd_f2),col=6,typ="l",ylim=c(-5,7),xlim=xlimc,
+     xlab="imag value",ylab="function value",main="Z_f2(s)_ext \n corrected for breakpoints")
+lines(x=df_l$V1,y=Im((z_hd2))*exp(1i*zadd_f2),col=3)
+abline(h=0,lty=3);abline(v=8.918,lty=3);abline(v=18.899,lty=3)
+
+# theta_ext form of f2(s)
+plot(x=df$V1,y=Im(log(theta_hd2))*exp(0*1i*tadd_f2),typ="l",col=6,ylim=c(-2,2),xlim=xlimc,
+     xlab="imag value",ylab="function value",main="Theta_f2(s)_ext) \n with breakpoints")
+abline(h=0,lty=3)
+
+# theta_ext form of f2(s)
+plot(x=df$V1,y=Im(log(theta_hd2))*exp(1i*tadd_f2),typ="l",col=6,ylim=c(-2,2),xlim=xlimc,
+     xlab="imag value",ylab="function value",main="Theta_f2(s)_ext \n corrected for breakpoints")
+abline(h=0,lty=3)
+
+```
+
+***Extended Riemann Siegel Components of Davenport-Heilbronn function and another 5-periodic Dirichlet series f2(s) along s=(0.34+$i*t$), with and without phase correction for breakpoints.***
+
+##Appendix B: Basic Julia code used to calculate real and imaginary Hurwitz Zeta components of 5-periodic Dirichlet series
+
+\begin{verbatim}
+outfile = "outfile_hurwitz_zeta_upper_m1_5.dat"
+f = open(outfile, "w")
+res = -1.5
+out = [[i/1000,real(zeta(res+i/1000*im,1/5)),imag(zeta(res+i/1000*im,1/5)),
+real(zeta(res+i/1000*im,2/5)),imag(zeta(res+i/1000*im,2/5)),
+real(zeta(res+i/1000*im,3/5)),imag(zeta(res+i/1000*im,3/5)),
+real(zeta(res+i/1000*im,4/5)),imag(zeta(res+i/1000*im,4/5)),
+real(zeta(res+i/1000*im)),imag(zeta(res+i/1000*im)),
+real((5^(-(res+i/1000*im)+1/2)*2*(2*pi)^(res+i/1000*im-1)*
+gamma(1-(res+i/1000*im))*cos((res+i/1000*im)*pi/2))),
+imag(5^(-(res+i/1000*im)+1/2)*2*(2*pi)^(res+i/1000*im-1)*
+gamma(1-(res+i/1000*im))*cos((res+i/1000*im)*pi/2)),i] for i in 1:200000]
+for i in 1:200000; println(f,out[i,]);end;
+close(f)
+
+outfile = "outfile_hurwitz_zeta_lower_m1_5.dat"
+f = open(outfile, "w")
+out = [[i/1000,real(zeta(1-(res+i/1000*im),1/5)),imag(zeta(1-(res+i/1000*im),1/5)),
+real(zeta(1-(res+i/1000*im),2/5)),imag(zeta(1-(res+i/1000*im),2/5)),
+real(zeta(1-(res+i/1000*im),3/5)),imag(zeta(1-(res+i/1000*im),3/5)),
+real(zeta(1-(res+i/1000*im),4/5)),imag(zeta(1-(res+i/1000*im),4/5)),
+real(zeta(1-(res+i/1000*im))),imag(zeta(1-(res+i/1000*im))),
+real(5^(-(1-(res+i/1000*im))+1/2)*2*(2*pi)^((1-(res+i/1000*im))-1)*
+gamma(1-(1-(res+i/1000*im)))*cos((1-(res+i/1000*im))*pi/2)),
+imag(5^(-(1-(res+i/1000*im))+1/2)*2*(2*pi)^((1-(res+i/1000*im))-1)*
+gamma(1-(1-(res+i/1000*im)))*cos((1-(res+i/1000*im))*pi/2)),i] for i in 1:200000]
+for i in 1:200000; println(f,out[i,]);end;
+close(f)
+\end{verbatim}
+
