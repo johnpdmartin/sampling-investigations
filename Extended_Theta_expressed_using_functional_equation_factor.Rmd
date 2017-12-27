@@ -1,0 +1,82 @@
+---
+title: Extended Riemann Siegel Theta function further simplified using functional equation factor, for the Riemann Zeta function.
+
+author: "John Martin" 
+date: "Wednesday, December 27th, 2017"
+output:
+  pdf_document:
+    fig_crop: no
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+
+
+
+###The extended Riemann Siegel functions on the Riemann Zeta function with further algebraic manipulation
+
+The Riemann Zeta function is defined (1), in the complex plane by the integral 
+
+\begin{equation}
+\zeta(s) = \frac{\prod(-s)}{2\pi i}\int_{C_{\epsilon,\delta}} \frac{(-x)^s}{(e^{x}-1)x}dx
+\end{equation}
+
+
+where $s \thinspace \epsilon \thinspace \mathbb{C}$ and $C_{\epsilon,\delta}$ is the contour about the imaginary poles.
+
+The Riemann Zeta function has been shown to obey the functional equation (2)
+
+\begin{equation}
+\zeta(s) = 2^s\pi^{s-1}sin(\frac{\pi s}{2})\Gamma(1-s)\zeta(1-s) \label{eq:func}
+\end{equation}
+
+Following directly from the form of the functional equation and the properties of the coefficients on the RHS of eqn \eqref{eq:func} it has been shown that any zeroes off the critical line would be paired, ie. if $\zeta(s)$ = 0 was true then $\zeta(1-s) = 0$.
+
+Along the critical line (0.5+it), the Riemann Siegel function is an exact function (3) for the magnitude of the Riemann Zeta function with two components Z(t) \& $\theta(t)$
+
+\begin{equation}
+Z(t) = \zeta(0.5+it)e^{i\theta(t)}  \label{eq:rs}
+\end{equation}
+
+and
+
+\begin{equation}
+\theta(t) = \Im(log(\Gamma(\frac{1}{4}+\frac{1}{2}it)))-\frac{t}{2}log(\pi) \label{eq:theta}
+\end{equation}
+
+In Martin (4) and earlier work, the properties of the Riemann Zeta generating function were investigated and used to develop/map the extended Riemann Siegel function $Z_{ext}(s)$ and $\theta_{ext}(s)$ definitions also applicable away from the critical line. 
+
+In the following derivation, the functional equation factor in eqn \eqref{eq:func} is reapplied to the ratio of Riemann Zeta funtions in $\theta_{ext}(s)$ to simplfy the expression along with the standard decompositon of the complex value, $s=\sigma+i*t$
+
+\begin{align}
+\theta_{ext}(s) &= \Im(log(\sqrt{\frac{\zeta(1-s)abs(2^s\pi^{s-1}sin(\frac{\pi s}{2})\Gamma(1-s))}{\zeta(s)}})) \label{eq:thetaext} \\
+&= \Im(log(\sqrt{\frac{abs(2^s\pi^{s-1}sin(\frac{\pi s}{2})\Gamma(1-s))}{2^s\pi^{s-1}sin(\frac{\pi s}{2})\Gamma(1-s))}})) \\
+&= \Im(log(\sqrt{\frac{\sqrt{(2^s\pi^{s-1}sin(\frac{\pi s}{2})\Gamma(1-s))\cdot(2^s\pi^{s-1}sin(\frac{\pi s}{2})\Gamma(1-s))^{*}}}{\sqrt{(2^s\pi^{s-1}sin(\frac{\pi s}{2})\Gamma(1-s))\cdot(2^s\pi^{s-1}sin(\frac{\pi s}{2})\Gamma(1-s))}}})) \\
+&= \Im(log(\sqrt{\frac{\sqrt{(2^s\pi^{s-1}sin(\frac{\pi s}{2})\Gamma(1-s))^{*}}}{\sqrt{(2^s\pi^{s-1}sin(\frac{\pi s}{2})\Gamma(1-s))}}})) \\
+&= \Im(log(\Big(\frac{(2^s\pi^{s-1}sin(\frac{\pi s}{2})\Gamma(1-s))^{*}}{(2^s\pi^{s-1}sin(\frac{\pi s}{2})\Gamma(1-s))}\Big)^{\frac{1}{4}})) \\
+&= \frac{1}{4}\Im(log((2^s\pi^{s-1}sin(\frac{\pi s}{2})\Gamma(1-s))^{*})-log((2^s\pi^{s-1}sin(\frac{\pi s}{2})\Gamma(1-s)))) \\
+&= \frac{1}{4}\Im( 2 \cdot -i \cdot \Im (log((2^s\pi^{s-1}sin(\frac{\pi s}{2})\Gamma(1-s))))) \\
+&= -\frac{1}{2} \Im (log((2^s\pi^{s-1}sin(\frac{\pi s}{2})\Gamma(1-s)))) \qquad \text{agrees by computation with eqn \eqref{eq:thetaext}}\\
+&= -\frac{1}{2} \Im (s\cdot log(2)+(s-1)log(\pi)+log(sin(\frac{\pi s}{2}))+log(\Gamma(1-s))) \\
+&= -\frac{t}{2} log(2)-\frac{t}{2}log(\pi)-\frac{1}{2}log(cos(\frac{\pi \sigma}{2})sinh(\frac{\pi t}{2}))-\frac{1}{2} \Im (log(\Gamma(1-s)))
+\end{align}
+
+This last expression should be compared to eqn \eqref{eq:theta}. A distinctive difference between the $\theta(t)$ \& $\theta_{ext}(s)$ functions being that the $\theta(t)$ branch points provide the Gram points which have the tendency of approximately bisecting Riemann Zeta zeroes (1) while the $\theta_{ext}(s)$ branch points are approximately at the position of Riemann Zeta zeroes.
+
+
+
+###References
+
+1. Edwards, H.M. (1974). Riemann's zeta function. Pure and Applied Mathematics 58. New York-London: Academic Press. ISBN 0-12-242750-0. Zbl 0315.10035.
+
+2. Riemann, Bernhard (1859). "$\ddot{U}$ber die Anzahl der Primzahlen unter einer gegebenen Gr$\ddot{o}$sse". Monatsberichte der Berliner Akademie.. In Gesammelte Werke, Teubner, Leipzig (1892), Reprinted by Dover, New York (1953).
+
+3. Berry, M. V. "The Riemann-Siegel Expansion for the Zeta Function: High Orders and Remainders." Proc. Roy. Soc. London A 450, 439-462, 1995.
+
+4. Martin, J.P.D. "Counting the non-trivial zeroes, using extended Riemann Siegel function analogues, for 5-periodic Dirichlet Series which obey functional equations" (2017)
+http://dx.doi.org/10.6084/m9.figshare.5721085
+
