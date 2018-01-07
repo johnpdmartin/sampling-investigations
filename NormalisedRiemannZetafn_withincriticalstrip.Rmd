@@ -2,7 +2,7 @@
 title: Exact functional dependence for the growth in the magnitude of the Riemann Zeta function within the critical strip. 
 
 author: "John Martin" 
-date: "Saturday, 6th January, 2018"
+date: "Sunday, 7th January, 2018"
 output:
   pdf_document:
     fig_crop: no
@@ -167,26 +167,26 @@ After inspecting the extended Riemann Siegel function behaviour of $\xi(s)$ usin
 This approach was fruitful and the following normalised Riemann Zeta function $\zeta_{norm}$ was thus defined
 
 \begin{equation}
-\zeta_{norm}(s) = e^{(-abs(\Re(s)-\frac{1}{2})+\Im(s)\frac{\pi}{4}+\frac{\gamma}{4\pi})}\pi^{-\frac{s}{2}}\Gamma(\frac{s}{2})\zeta(s) \label{eq:zetanorm}
+\zeta_{norm}(s) = e^{(-abs(\Re(s)-\frac{1}{2})+abs(\Im(s))\frac{\pi}{4}+\frac{\gamma}{4\pi})}\pi^{-\frac{s}{2}}\Gamma(\frac{s}{2})\zeta(s) \label{eq:zetanorm}
 \end{equation}
 
-which also obeys a simple functional equation
+which obeys the following approximate functional equation due to asymmetry caused by the pole at s=1+0t.
 
-\begin{equation}
-\zeta_{norm}(s) = \zeta_{norm}(1-s) \label{eq:normfunc}
-\end{equation}
+\begin{align}
+abs(\zeta_{norm}(s)) &\approx abs(\zeta_{norm}(1-s)) \label{eq:normfunc} \quad \text{for }0 \le \Re(s) \le 1 \text{, } \Im(s) > 2\pi
+\end{align}
 
 As shown in the next section, given the agreement with $\zeta(1)=\zeta_{norm}(1)$ for $\Im(s) > 2\pi$  and sharing the same non-trivial zeroes, the exact growth factor of the Reimann Zeta function, within the critical strip, can be obtained as the ratio of the two functions
 
 \begin{align}
-\zeta_{growth factor}(s)&=abs\Big(e^{(-abs(\Re(s)-\frac{1}{2})+\Im(s)\frac{\pi}{4}+\frac{\gamma}{4\pi})}\pi^{-\frac{s}{2}}\Gamma(\frac{s}{2})\Big) \quad \text{for }0 \le \Re(s) \le 1 \label {eq:growth}
+\zeta_{growth factor}(s)&=abs\Big(e^{(-abs(\Re(s)-\frac{1}{2})+abs(\Im(s))\frac{\pi}{4}+\frac{\gamma}{4\pi})}\pi^{-\frac{s}{2}}\Gamma(\frac{s}{2})\Big) \quad \text{for }0 \le \Re(s) \le 1 \label {eq:growth}
 \end{align}
 
 where using the Stirling Series behaviour (7) for $\Gamma(\frac{s}{2})$ , as $\Im(s) \rightarrow \infty$
 
 \begin{equation}
 \begin{split}
-\zeta_{growth factor}(s) =abs\Big(exp[-abs(\Re(s)-\frac{1}{2})+\Im(s)\frac{\pi}{4}+\frac{\gamma}{4\pi} -\frac{s}{2}log(\pi) \\+\frac{1}{2}log(2\pi)+(\frac{s}{2}-\frac{1}{2})log(\frac{s}{2})-\frac{s}{2}+\frac{1}{12(\frac{s}{2})}- ...])\Big) \quad \text{for }0 \le \Re(s) \le 1 \label {eq:growthseries}
+\zeta_{growth factor}(s) =abs\Big(exp[-abs(\Re(s)-\frac{1}{2})+abs(\Im(s))\frac{\pi}{4}+\frac{\gamma}{4\pi} -\frac{s}{2}log(\pi) \\+\frac{1}{2}log(2\pi)+(\frac{s}{2}-\frac{1}{2})log(\frac{s}{2})-\frac{s}{2}+\frac{1}{12(\frac{s}{2})}- ...])\Big) \quad \text{for }0 \le \Re(s) \le 1 \label {eq:growthseries}
 \end{split}
 \end{equation}
 
