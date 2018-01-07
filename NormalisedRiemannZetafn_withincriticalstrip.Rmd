@@ -1,0 +1,704 @@
+---
+title: Exact functional dependence for the growth in the magnitude of the Riemann Zeta function within the critical strip. 
+
+author: "John Martin" 
+date: "Saturday, 6th January, 2018"
+output:
+  pdf_document:
+    fig_crop: no
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+##Executive Summary
+
+The growth of the magnitude in the Riemann Zeta function has the exact dependence $\zeta_{growth factor}(s)=abs\Big(e^{(-abs(\Re(s)-\frac{1}{2})+\Im(s)\frac{\pi}{4}+\frac{\gamma}{4\pi})}\pi^{-\frac{s}{2}}\Gamma(\frac{s}{2})\Big)$ for $0 \le \Re(s) \le 1$, ie. within the critical strip. The growth factor $\zeta_{growth factor}(s)$ is $< log(\Im(s))$ in agreement with the Lindelof hypothesis. This result arises naturally from the normalised Riemann Zeta function $\zeta_{norm}(s)=e^{(-abs(\Re(s)-\frac{1}{2})+\Im(s)\frac{\pi}{4}+\frac{\gamma}{4\pi})}\pi^{-\frac{s}{2}}\Gamma(\frac{s}{2})\zeta(s)=e^{(-abs(\Re(s)-\frac{1}{2})+i\Im(s)\frac{\pi}{4}+\frac{\gamma}{4\pi})}\frac{\xi(s)}{\frac{1}{2}s(s-1)}$ for $0 \le \Re(s) \le 1$ which has finite magnitude ($\lesssim (1+\frac{\gamma}{2})\pi$ for $\Re(s)=\frac{1}{2}$) as $\Im(s) \rightarrow \infty$. 
+
+
+```{r, exec_new, echo=FALSE, cache=TRUE, fig.width=7, fig.height=5,  fig.keep='high', warning=FALSE }
+
+dir_loc <- "/home/john/bear/Projects/sampling-investigations/julia/"
+
+read_fn <- function(dir_loc,filen){
+  
+  filenn <- paste0(dir_loc,filen)
+  
+  dread <- read.table(filenn,
+                       sep=",", header=F,row.names=NULL)
+}
+
+res <- 0.5
+
+df <- read_fn(dir_loc,"outfile_hurwitz_zeta_upper_with_xi_0_5.dat")
+
+df[,"V1"] <- as.numeric(gsub("[^0-9\\.-]", "", df[,1]))
+df[,"V2"] <- as.numeric(df[,2])
+df[,"V3"] <- as.numeric(df[,3]) 
+df[,"V4"] <- as.numeric(df[,4]) 
+df[,"V5"] <- as.numeric(df[,5]) 
+df[,"V6"] <- as.numeric(df[,6]) 
+df[,"V7"] <- as.numeric(df[,7]) 
+df[,"V8"] <- as.numeric(df[,8]) 
+df[,"V9"] <- as.numeric(df[,9]) 
+df[,"V10"] <- as.numeric(gsub("[^0-9\\.-]", "", df[,10]) )
+
+df_l <- read_fn(dir_loc,"outfile_hurwitz_zeta_lower_with_xi_0_5.dat")
+
+df_l[,"V1"] <- as.numeric(gsub("[^0-9\\.-]", "", df_l[,1]))
+df_l[,"V2"] <- as.numeric(df_l[,2])
+df_l[,"V3"] <- as.numeric(df_l[,3]) 
+df_l[,"V4"] <- as.numeric(df_l[,4]) 
+df_l[,"V5"] <- as.numeric(df_l[,5]) 
+df_l[,"V6"] <- as.numeric(df_l[,6]) 
+df_l[,"V7"] <- as.numeric(df_l[,7]) 
+df_l[,"V8"] <- as.numeric(df_l[,8]) 
+df_l[,"V9"] <- as.numeric(df_l[,9]) 
+df_l[,"V10"] <- as.numeric(gsub("[^0-9\\.-]", "", df_l[,10]) )
+
+
+reg_prop <- abs((df[,"V2"]+1i*df[,"V3"])/(df_l[,"V2"]+1i*df_l[,"V3"]))
+theta <- sqrt((df[,"V2"]+1i*df[,"V3"])/(df_l[,"V2"]+1i*df_l[,"V3"])*reg_prop)
+z <- sqrt((df[,"V2"]+1i*df[,"V3"])*(df_l[,"V2"]+1i*df_l[,"V3"])*reg_prop)
+
+
+zet <- sqrt((df$V4+1i*df$V5)*(df_l$V4+1i*df_l$V5)*abs((df$V4+1i*df$V5)/(df_l$V4+1i*df_l$V5)))
+the <- sqrt(1/(df$V4+1i*df$V5)*(df_l$V4+1i*df_l$V5)*abs((df$V4+1i*df$V5)/(df_l$V4+1i*df_l$V5)))
+
+x_series <- c(1:400000)
+
+
+
+zet_2 <- sqrt((df$V6+1i*df$V7)*(df_l$V6+1i*df_l$V7)*abs((df$V6+1i*df$V7)/(df_l$V6+1i*df_l$V7)))
+the_2 <- sqrt(1/(df$V6+1i*df$V7)*(df_l$V6+1i*df_l$V7)*abs((df$V6+1i*df$V7)/(df_l$V6+1i*df_l$V7)))
+
+zet_3 <- sqrt((df$V8+1i*df$V9)*(df_l$V8+1i*df_l$V9)*abs((df$V8+1i*df$V9)/(df_l$V8+1i*df_l$V9)))
+the_3 <- sqrt(1/(df$V8+1i*df$V9)*(df_l$V8+1i*df_l$V9)*abs((df$V8+1i*df$V9)/(df_l$V8+1i*df_l$V9)))
+
+par(mfrow=c(1,2))
+plot(x=df$V1[x_series],y=abs((df$V8+1i*df$V9))[x_series],
+     main=paste("zeta and normalised(zeta) functions \n on critical line",res),ylab="function value",cex.main=0.8,cex.legend=0.8,
+     xlab="imag part",col=1,typ="l",ylim=c(-0*pi,3*pi))
+lines(x=df$V1[x_series],y=abs(z)[x_series],col=2)
+lines(x=df$V1[x_series],y=abs((df$V6+1i*df$V7))[x_series],
+      col=3,lty=2)
+lines(x=df$V1[x_series],y=abs((zet_2[x_series])),col=4)
+lines(x=df$V1[x_series],y=abs(z)[x_series]/abs((zet_3[x_series])),col=5,lwd=2)
+lines(x=df$V1[x_series],y=log(df$V1[x_series]),col=6)
+abline(h=0,lty=3);abline(h=(1+.57721/2)*pi,lty=3);
+legend("topleft", c("zeta(0.5+it)", "normalised(zeta(0.5+it))","log(t) growth rate","zeta(0.5+it) growth factor based on \n normalised(zeta(0.5+it)) behaviour "),
+       lty = 1,cex=.5, lwd = c(2,2,2,2), col = c("red","blue","magenta","cyan"))
+
+
+hist(abs(zet_2[2000:400000]),xlim=c(0,5),breaks=1000,main="distribution of abs(normalised(zeta(0.5+it)) \n function values for 2 < | t | < 400",cex.xlab=0.9,
+     xlab="abs(normalised(zeta(0.5+it))) values",col=2,cex.main=0.8)
+abline(v=0,lty=3)
+
+
+```
+
+***Behaviour of the normalised Riemann Zeta function magnitude and the growth factor of the Riemann Zeta function on the critical line.***
+
+##Introduction
+
+On the critical line, in the limit $\Im(0.5+it) \rightarrow \infty$, the magnitude of the Riemann Zeta $\zeta(0.5+it) \rightarrow \infty$ and the Riemann Zeta $\xi(0.5+it) \rightarrow 0$ (rapidly) (1-3). These functions also share the non-trivial zeroes within the critical strip and obey similar functional equations. Starting from inspection of the extended Riemann Siegel function behaviour (4-6) of the $\xi$ function, simple multiplicative factor adjustments were successfully made to the $\xi$ functional equation to decrease the rapid damping along the imaginary axis such that $\zeta(1+it)$ was recreated exactly (in the region of the critical lines) and the values for the other upper critical strip Re(s) values produced very similar Riemann Zeta function lineshapes but with deflated magnitudes. 
+
+In this paper, the normalised Riemann Zeta function $\zeta_{norm}(s)$ within the critical strip is defined, the behaviour is presented and the exact growth factor for the Riemann Zeta function obtained.
+
+###The extended Riemann Siegel functions and usage for Argument Principle calculations on the Riemann Zeta function
+
+The Riemann Zeta function is defined (1), in the complex plane by the integral 
+
+\begin{equation}
+\zeta(s) = \frac{\prod(-s)}{2\pi i}\int_{C_{\epsilon,\delta}} \frac{(-x)^s}{(e^{x}-1)x}dx
+\end{equation}
+
+
+where $s \thinspace \epsilon \thinspace \mathbb{C}$ and $C_{\epsilon,\delta}$ is the contour about the imaginary poles.
+
+The Riemann Zeta function has been shown to obey the functional equation (2)
+
+\begin{equation}
+\zeta(s) = 2^s\pi^{s-1}sin(\frac{\pi s}{2})\Gamma(1-s)\zeta(1-s) \label{eq:func}
+\end{equation}
+
+Following directly from the form of the functional equation and the properties of the coefficients on the RHS of eqn \eqref{eq:func} it has been shown that any zeroes off the critical line would be paired, ie. if $\zeta(s)$ = 0 was true then $\zeta(1-s) = 0$.
+
+Along the critical line (0.5+it), the Riemann Siegel function is an exact function (3) for the magnitude of the Riemann Zeta function with two components Z(t) \& $\theta(t)$
+
+\begin{equation}
+Z(t) = \zeta(0.5+it)e^{i\theta(t)}  \label{eq:rs}
+\end{equation}
+
+and
+
+\begin{equation}
+\theta(t) = \Im(log(\Gamma(\frac{1}{4}+\frac{1}{2}it)))-\frac{t}{2}log(\pi) \label{eq:theta}
+\end{equation}
+
+In Martin (4-6) and earlier work, the properties of the Riemann Zeta generating function were investigated and used to develop/map the extended Riemann Siegel function $Z_{ext}(s)$ and $\theta_{ext}(s)$ definitions also applicable away from the critical line, 
+
+\begin{align}
+\theta_{ext}(s) &= \Im(log(\sqrt{\frac{\zeta(1-s)abs(2^s\pi^{s-1}sin(\frac{\pi s}{2})\Gamma(1-s))}{\zeta(s)}})) \label{eq:thetaext} \\
+&= -\frac{1}{2} \Im (log((2^s\pi^{s-1}sin(\frac{\pi s}{2})\Gamma(1-s))))
+\end{align}
+
+\begin{align}
+Z_{ext}(s) &= \sqrt{\zeta(s)*\zeta(1-s)*abs(2^s\pi^{s-1}sin(\frac{\pi s}{2})\Gamma(1-s))} \label{eq:zext}
+\end{align}
+
+The Riemann Zeta $\xi(s)$ function was specifically defined as 
+
+\begin{equation}
+\xi(s) = \frac{1}{2}s(s-1)\pi^{-\frac{s}{2}}\Gamma(\frac{s}{2})\zeta(s) \label{eq:xi}
+\end{equation}
+
+to (i) remove the pole at $s=1$ and (ii) obey the simple functional equation
+
+\begin{equation}
+\xi(s) = \xi(1-s) \label{eq:xifunc}
+\end{equation}
+
+After inspecting the extended Riemann Siegel function behaviour of $\xi(s)$ using (4-6), further multiplicative factors were explicitly trialled to counteract the rapid damping of the $\xi(s)$ to get similar magnitudes more similar to the $\zeta(s)$ behaviour. 
+
+This approach was fruitful and the following normalised Riemann Zeta function $\zeta_{norm}$ was thus defined
+
+\begin{equation}
+\zeta_{norm}(s) = e^{(-abs(\Re(s)-\frac{1}{2})+\Im(s)\frac{\pi}{4}+\frac{\gamma}{4\pi})}\pi^{-\frac{s}{2}}\Gamma(\frac{s}{2})\zeta(s) \label{eq:zetanorm}
+\end{equation}
+
+which also obeys a simple functional equation
+
+\begin{equation}
+\zeta_{norm}(s) = \zeta_{norm}(1-s) \label{eq:normfunc}
+\end{equation}
+
+As shown in the next section, given the agreement with $\zeta(1)=\zeta_{norm}(1)$ for $\Im(s) > 2\pi$  and sharing the same non-trivial zeroes, the exact growth factor of the Reimann Zeta function, within the critical strip, can be obtained as the ratio of the two functions
+
+\begin{align}
+\zeta_{growth factor}(s)&=abs\Big(e^{(-abs(\Re(s)-\frac{1}{2})+\Im(s)\frac{\pi}{4}+\frac{\gamma}{4\pi})}\pi^{-\frac{s}{2}}\Gamma(\frac{s}{2})\Big) \quad \text{for }0 \le \Re(s) \le 1 \label {eq:growth}
+\end{align}
+
+where using the Stirling Series behaviour (7) for $\Gamma(\frac{s}{2})$ , as $\Im(s) \rightarrow \infty$
+
+\begin{equation}
+\begin{split}
+\zeta_{growth factor}(s) =abs\Big(exp[-abs(\Re(s)-\frac{1}{2})+\Im(s)\frac{\pi}{4}+\frac{\gamma}{4\pi} -\frac{s}{2}log(\pi) \\+\frac{1}{2}log(2\pi)+(\frac{s}{2}-\frac{1}{2})log(\frac{s}{2})-\frac{s}{2}+\frac{1}{12(\frac{s}{2})}- ...])\Big) \quad \text{for }0 \le \Re(s) \le 1 \label {eq:growthseries}
+\end{split}
+\end{equation}
+
+The fascinating property of the growth factor eqn \eqref{eq:growthseries} is that the real part of $log(\Gamma(\frac{s}{2}))$ is almost the same as $-abs(\Re(s)-\frac{1}{2})+\Im(s)\frac{\pi}{4}+\frac{\gamma}{4\pi} -\frac{s}{2}log(\pi)$ and determines the slow growth of the Riemann Zeta function. The Lindelof hypothesis (1) conjectures that the Riemann Zeta growth factor needs to be $< log(\Im(s))$ for the Riemann Hypothesis to be confirmed.
+
+###The behaviour of the normalised Riemann Zeta function across the critical strip
+
+The following graphs show the close correspondence of the normalised Riemann Zeta function eqn \eqref {eq:zetanorm} for $\Re(s) =1, 0.75, 0.5, 0.25, 0$ respectively. In the lefthand figures, the functions $\zeta(s)$, $\zeta_{norm}(s)$, $log(\Im(s))$ and $\zeta_{growth factor}(s)$ are displayed. In the righthand figure, the histogram of the $abs(\zeta_{norm}(s))$ is shown for $2 < \Im(s) < 200$. The calculations were perform using Julia language (8)
+
+In figure 1, the normalised Riemann Zeta function agrees closely to the Riemann Zeta function except near the pole at s=1+0t. The growth factor for this line in the critical strip is 1 in agreement with previous results.
+
+Comparing figures 1-5, 
+
+(i) the normalised Riemann Zeta function is symmetric in magnitude about the critical line,
+
+(ii) the largest spread of values in the normalised Riemann Zeta function (see righthand figures) occurs on the critical line and 
+
+(iii) the $\zeta_{growth factor}(s)$ rapidly grows below the critical line.
+
+```{r, fig_1, echo=FALSE, cache=TRUE, fig.width=7, fig.height=5,  fig.keep='high', warning=FALSE }
+
+dir_loc <- "/home/john/bear/Projects/sampling-investigations/julia/"
+
+read_fn <- function(dir_loc,filen){
+  
+  filenn <- paste0(dir_loc,filen)
+  
+  dread <- read.table(filenn,
+                       sep=",", header=F,row.names=NULL)
+}
+
+res <- 1
+
+df <- read_fn(dir_loc,"outfile_hurwitz_zeta_upper_with_xi_1_0.dat")
+
+df[,"V1"] <- as.numeric(gsub("[^0-9\\.-]", "", df[,1]))
+df[,"V2"] <- as.numeric(df[,2])
+df[,"V3"] <- as.numeric(df[,3]) 
+df[,"V4"] <- as.numeric(df[,4]) 
+df[,"V5"] <- as.numeric(df[,5]) 
+df[,"V6"] <- as.numeric(df[,6]) 
+df[,"V7"] <- as.numeric(df[,7]) 
+df[,"V8"] <- as.numeric(df[,8]) 
+df[,"V9"] <- as.numeric(df[,9]) 
+df[,"V10"] <- as.numeric(gsub("[^0-9\\.-]", "", df[,10]) )
+
+df_l <- read_fn(dir_loc,"outfile_hurwitz_zeta_lower_with_xi_1_0.dat")
+
+df_l[,"V1"] <- as.numeric(gsub("[^0-9\\.-]", "", df_l[,1]))
+df_l[,"V2"] <- as.numeric(df_l[,2])
+df_l[,"V3"] <- as.numeric(df_l[,3]) 
+df_l[,"V4"] <- as.numeric(df_l[,4]) 
+df_l[,"V5"] <- as.numeric(df_l[,5]) 
+df_l[,"V6"] <- as.numeric(df_l[,6]) 
+df_l[,"V7"] <- as.numeric(df_l[,7]) 
+df_l[,"V8"] <- as.numeric(df_l[,8]) 
+df_l[,"V9"] <- as.numeric(df_l[,9]) 
+df_l[,"V10"] <- as.numeric(gsub("[^0-9\\.-]", "", df_l[,10]) )
+
+
+reg_prop <- abs((df[,"V2"]+1i*df[,"V3"])/(df_l[,"V2"]+1i*df_l[,"V3"]))
+theta <- sqrt((df[,"V2"]+1i*df[,"V3"])/(df_l[,"V2"]+1i*df_l[,"V3"])*reg_prop)
+z <- sqrt((df[,"V2"]+1i*df[,"V3"])*(df_l[,"V2"]+1i*df_l[,"V3"])*reg_prop)
+
+
+zet <- sqrt((df$V4+1i*df$V5)*(df_l$V4+1i*df_l$V5)*abs((df$V4+1i*df$V5)/(df_l$V4+1i*df_l$V5)))
+the <- sqrt(1/(df$V4+1i*df$V5)*(df_l$V4+1i*df_l$V5)*abs((df$V4+1i*df$V5)/(df_l$V4+1i*df_l$V5)))
+
+x_series <- c(1:50000)
+
+
+
+zet_2 <- sqrt((df$V6+1i*df$V7)*(df_l$V6+1i*df_l$V7)*abs((df$V6+1i*df$V7)/(df_l$V6+1i*df_l$V7)))
+the_2 <- sqrt(1/(df$V6+1i*df$V7)*(df_l$V6+1i*df_l$V7)*abs((df$V6+1i*df$V7)/(df_l$V6+1i*df_l$V7)))
+
+zet_3 <- sqrt((df$V8+1i*df$V9)*(df_l$V8+1i*df_l$V9)*abs((df$V8+1i*df$V9)/(df_l$V8+1i*df_l$V9)))
+the_3 <- sqrt(1/(df$V8+1i*df$V9)*(df_l$V8+1i*df_l$V9)*abs((df$V8+1i*df$V9)/(df_l$V8+1i*df_l$V9)))
+
+par(mfrow=c(1,2))
+plot(x=df$V1[x_series],y=abs((df$V8+1i*df$V9))[x_series],
+     main=paste("zeta and normalised(zeta) functions \n on critical line",res),ylab="function value",cex.main=0.8,cex.legend=0.8,
+     xlab="imag part",col=1,typ="l",ylim=c(-0*pi,5.5))
+lines(x=df$V1[x_series],y=abs((df$V6+1i*df$V7))[x_series],
+      col=3,lty=2)
+lines(x=df$V1[x_series],y=abs((zet_2[x_series])),col=4,lwd=2)
+lines(x=df$V1[x_series],y=abs(z)[x_series],col=2,lty=2,lwd=2)
+lines(x=df$V1[x_series],y=abs(z)[x_series]/abs((zet_3[x_series])),col=5,lwd=2)
+lines(x=df$V1[x_series],y=log(df$V1[x_series]),col=6)
+abline(h=0,lty=3);abline(h=(1+.57721/2)*pi,lty=3);abline(h=1,lty=3);
+legend("topleft", c("zeta(1+it)", "normalised(zeta(1+it))","log(t) growth rate","zeta(1+it) growth factor based on \n normalised(zeta(1+it)) behaviour "),
+       lty = 1,cex=.5, lwd = c(2,2,2,2), col = c("red","blue","magenta","cyan"))
+
+
+hist(abs(zet_2[2000:200000]),xlim=c(0,5),breaks=1000,main="distribution of abs(normalised(zeta(1+it)) \n function values for 2 < | t | < 200",cex.xlab=0.9,
+     xlab="abs(normalised(zeta(1+it))) values",col=2,cex.main=0.8)
+abline(v=0,lty=3)
+
+
+```
+
+***Behaviour of the normalised Riemann Zeta function magnitude and the growth factor of the Riemann Zeta function on the line s=1+it***
+
+ 
+```{r, fig_2, echo=FALSE, cache=TRUE, fig.width=7, fig.height=5,  fig.keep='high', warning=FALSE }
+
+dir_loc <- "/home/john/bear/Projects/sampling-investigations/julia/"
+
+read_fn <- function(dir_loc,filen){
+  
+  filenn <- paste0(dir_loc,filen)
+  
+  dread <- read.table(filenn,
+                       sep=",", header=F,row.names=NULL)
+}
+
+res <- 0.75
+
+df <- read_fn(dir_loc,"outfile_hurwitz_zeta_upper_with_xi_0_75.dat")
+
+df[,"V1"] <- as.numeric(gsub("[^0-9\\.-]", "", df[,1]))
+df[,"V2"] <- as.numeric(df[,2])
+df[,"V3"] <- as.numeric(df[,3]) 
+df[,"V4"] <- as.numeric(df[,4]) 
+df[,"V5"] <- as.numeric(df[,5]) 
+df[,"V6"] <- as.numeric(df[,6]) 
+df[,"V7"] <- as.numeric(df[,7]) 
+df[,"V8"] <- as.numeric(df[,8]) 
+df[,"V9"] <- as.numeric(df[,9]) 
+df[,"V10"] <- as.numeric(gsub("[^0-9\\.-]", "", df[,10]) )
+
+df_l <- read_fn(dir_loc,"outfile_hurwitz_zeta_lower_with_xi_0_75.dat")
+
+df_l[,"V1"] <- as.numeric(gsub("[^0-9\\.-]", "", df_l[,1]))
+df_l[,"V2"] <- as.numeric(df_l[,2])
+df_l[,"V3"] <- as.numeric(df_l[,3]) 
+df_l[,"V4"] <- as.numeric(df_l[,4]) 
+df_l[,"V5"] <- as.numeric(df_l[,5]) 
+df_l[,"V6"] <- as.numeric(df_l[,6]) 
+df_l[,"V7"] <- as.numeric(df_l[,7]) 
+df_l[,"V8"] <- as.numeric(df_l[,8]) 
+df_l[,"V9"] <- as.numeric(df_l[,9]) 
+df_l[,"V10"] <- as.numeric(gsub("[^0-9\\.-]", "", df_l[,10]) )
+
+
+reg_prop <- abs((df[,"V2"]+1i*df[,"V3"])/(df_l[,"V2"]+1i*df_l[,"V3"]))
+theta <- sqrt((df[,"V2"]+1i*df[,"V3"])/(df_l[,"V2"]+1i*df_l[,"V3"])*reg_prop)
+z <- sqrt((df[,"V2"]+1i*df[,"V3"])*(df_l[,"V2"]+1i*df_l[,"V3"])*reg_prop)
+
+
+zet <- sqrt((df$V4+1i*df$V5)*(df_l$V4+1i*df_l$V5)*abs((df$V4+1i*df$V5)/(df_l$V4+1i*df_l$V5)))
+the <- sqrt(1/(df$V4+1i*df$V5)*(df_l$V4+1i*df_l$V5)*abs((df$V4+1i*df$V5)/(df_l$V4+1i*df_l$V5)))
+
+x_series <- c(1:50000)
+
+
+
+zet_2 <- sqrt((df$V6+1i*df$V7)*(df_l$V6+1i*df_l$V7)*abs((df$V6+1i*df$V7)/(df_l$V6+1i*df_l$V7)))
+the_2 <- sqrt(1/(df$V6+1i*df$V7)*(df_l$V6+1i*df_l$V7)*abs((df$V6+1i*df$V7)/(df_l$V6+1i*df_l$V7)))
+
+zet_3 <- sqrt((df$V8+1i*df$V9)*(df_l$V8+1i*df_l$V9)*abs((df$V8+1i*df$V9)/(df_l$V8+1i*df_l$V9)))
+the_3 <- sqrt(1/(df$V8+1i*df$V9)*(df_l$V8+1i*df_l$V9)*abs((df$V8+1i*df$V9)/(df_l$V8+1i*df_l$V9)))
+
+par(mfrow=c(1,2))
+plot(x=df$V1[x_series],y=abs((df$V8+1i*df$V9))[x_series],
+     main=paste("zeta and normalised(zeta) functions \n on line s=0.75+it",res),ylab="function value",cex.main=0.8,cex.legend=0.8,
+     xlab="imag part",col=1,typ="l",ylim=c(-0*pi,5.5))
+lines(x=df$V1[x_series],y=abs((df$V6+1i*df$V7))[x_series],
+      col=3,lty=2)
+lines(x=df$V1[x_series],y=abs((zet_2[x_series])),col=4,lwd=2)
+lines(x=df$V1[x_series],y=abs(z)[x_series],col=2,lty=2,lwd=2)
+lines(x=df$V1[x_series],y=abs(z)[x_series]/abs((zet_3[x_series])),col=5,lwd=2)
+lines(x=df$V1[x_series],y=log(df$V1[x_series]),col=6)
+abline(h=0,lty=3);abline(h=(1+.57721/2)*pi,lty=3);abline(h=1,lty=3);
+legend("topleft", c("zeta(0.75+it)", "normalised(zeta(0.75+it))","log(t) growth rate","zeta(0.75+it) growth factor based on \n normalised(zeta(0.75+it)) behaviour "),
+       lty = 1,cex=.5, lwd = c(2,2,2,2), col = c("red","blue","magenta","cyan"))
+
+
+hist(abs(zet_2[2000:200000]),xlim=c(0,5),breaks=1000,main="distribution of abs(normalised(zeta(0.75+it)) \n function values for 2 < | t | < 200",cex.xlab=0.9,
+     xlab="abs(normalised(zeta(0.75+it))) values",col=2,cex.main=0.8)
+abline(v=0,lty=3)
+
+
+```
+
+***Behaviour of the normalised Riemann Zeta function magnitude and the growth factor of the Riemann Zeta function on the line s=0.75+it***
+
+ 
+```{r, fig_3, echo=FALSE, cache=TRUE, fig.width=7, fig.height=5,  fig.keep='high', warning=FALSE }
+
+dir_loc <- "/home/john/bear/Projects/sampling-investigations/julia/"
+
+read_fn <- function(dir_loc,filen){
+  
+  filenn <- paste0(dir_loc,filen)
+  
+  dread <- read.table(filenn,
+                       sep=",", header=F,row.names=NULL)
+}
+
+res <- 0.5
+
+df <- read_fn(dir_loc,"outfile_hurwitz_zeta_upper_with_xi_0_5.dat")
+
+df[,"V1"] <- as.numeric(gsub("[^0-9\\.-]", "", df[,1]))
+df[,"V2"] <- as.numeric(df[,2])
+df[,"V3"] <- as.numeric(df[,3]) 
+df[,"V4"] <- as.numeric(df[,4]) 
+df[,"V5"] <- as.numeric(df[,5]) 
+df[,"V6"] <- as.numeric(df[,6]) 
+df[,"V7"] <- as.numeric(df[,7]) 
+df[,"V8"] <- as.numeric(df[,8]) 
+df[,"V9"] <- as.numeric(df[,9]) 
+df[,"V10"] <- as.numeric(gsub("[^0-9\\.-]", "", df[,10]) )
+
+df_l <- read_fn(dir_loc,"outfile_hurwitz_zeta_lower_with_xi_0_5.dat")
+
+df_l[,"V1"] <- as.numeric(gsub("[^0-9\\.-]", "", df_l[,1]))
+df_l[,"V2"] <- as.numeric(df_l[,2])
+df_l[,"V3"] <- as.numeric(df_l[,3]) 
+df_l[,"V4"] <- as.numeric(df_l[,4]) 
+df_l[,"V5"] <- as.numeric(df_l[,5]) 
+df_l[,"V6"] <- as.numeric(df_l[,6]) 
+df_l[,"V7"] <- as.numeric(df_l[,7]) 
+df_l[,"V8"] <- as.numeric(df_l[,8]) 
+df_l[,"V9"] <- as.numeric(df_l[,9]) 
+df_l[,"V10"] <- as.numeric(gsub("[^0-9\\.-]", "", df_l[,10]) )
+
+
+reg_prop <- abs((df[,"V2"]+1i*df[,"V3"])/(df_l[,"V2"]+1i*df_l[,"V3"]))
+theta <- sqrt((df[,"V2"]+1i*df[,"V3"])/(df_l[,"V2"]+1i*df_l[,"V3"])*reg_prop)
+z <- sqrt((df[,"V2"]+1i*df[,"V3"])*(df_l[,"V2"]+1i*df_l[,"V3"])*reg_prop)
+
+
+zet <- sqrt((df$V4+1i*df$V5)*(df_l$V4+1i*df_l$V5)*abs((df$V4+1i*df$V5)/(df_l$V4+1i*df_l$V5)))
+the <- sqrt(1/(df$V4+1i*df$V5)*(df_l$V4+1i*df_l$V5)*abs((df$V4+1i*df$V5)/(df_l$V4+1i*df_l$V5)))
+
+x_series <- c(1:50000)
+
+
+
+zet_2 <- sqrt((df$V6+1i*df$V7)*(df_l$V6+1i*df_l$V7)*abs((df$V6+1i*df$V7)/(df_l$V6+1i*df_l$V7)))
+the_2 <- sqrt(1/(df$V6+1i*df$V7)*(df_l$V6+1i*df_l$V7)*abs((df$V6+1i*df$V7)/(df_l$V6+1i*df_l$V7)))
+
+zet_3 <- sqrt((df$V8+1i*df$V9)*(df_l$V8+1i*df_l$V9)*abs((df$V8+1i*df$V9)/(df_l$V8+1i*df_l$V9)))
+the_3 <- sqrt(1/(df$V8+1i*df$V9)*(df_l$V8+1i*df_l$V9)*abs((df$V8+1i*df$V9)/(df_l$V8+1i*df_l$V9)))
+
+par(mfrow=c(1,2))
+plot(x=df$V1[x_series],y=abs((df$V8+1i*df$V9))[x_series],
+     main=paste("zeta and normalised(zeta) functions \n on line s=0.5+it",res),ylab="function value",cex.main=0.8,cex.legend=0.8,
+     xlab="imag part",col=1,typ="l",ylim=c(-0*pi,5.5))
+lines(x=df$V1[x_series],y=abs((df$V6+1i*df$V7))[x_series],
+      col=3,lty=2)
+lines(x=df$V1[x_series],y=abs((zet_2[x_series])),col=4,lwd=2)
+lines(x=df$V1[x_series],y=abs(z)[x_series],col=2,lty=2,lwd=2)
+lines(x=df$V1[x_series],y=abs(z)[x_series]/abs((zet_3[x_series])),col=5,lwd=2)
+lines(x=df$V1[x_series],y=log(df$V1[x_series]),col=6)
+abline(h=0,lty=3);abline(h=(1+.57721/2)*pi,lty=3);abline(h=1,lty=3);
+legend("topleft", c("zeta(0.5+it)", "normalised(zeta(0.5+it))","log(t) growth rate","zeta(0.5+it) growth factor based on \n normalised(zeta(0.5+it)) behaviour "),
+       lty = 1,cex=.5, lwd = c(2,2,2,2), col = c("red","blue","magenta","cyan"))
+
+
+hist(abs(zet_2[2000:400000]),xlim=c(0,5),breaks=1000,main="distribution of abs(normalised(zeta(0.5+it)) \n function values for 2 < | t | < 400",cex.xlab=0.9,
+     xlab="abs(normalised(zeta(0.5+it))) values",col=2,cex.main=0.8)
+abline(v=0,lty=3)
+
+
+```
+
+***Behaviour of the normalised Riemann Zeta function magnitude and the growth factor of the Riemann Zeta function on the line s=0.5+it***
+
+ 
+```{r, fig_4, echo=FALSE, cache=TRUE, fig.width=7, fig.height=5,  fig.keep='high', warning=FALSE }
+
+dir_loc <- "/home/john/bear/Projects/sampling-investigations/julia/"
+
+read_fn <- function(dir_loc,filen){
+  
+  filenn <- paste0(dir_loc,filen)
+  
+  dread <- read.table(filenn,
+                       sep=",", header=F,row.names=NULL)
+}
+
+res <- 0.25
+
+df <- read_fn(dir_loc,"outfile_hurwitz_zeta_upper_with_xi_0_25.dat")
+
+df[,"V1"] <- as.numeric(gsub("[^0-9\\.-]", "", df[,1]))
+df[,"V2"] <- as.numeric(df[,2])
+df[,"V3"] <- as.numeric(df[,3]) 
+df[,"V4"] <- as.numeric(df[,4]) 
+df[,"V5"] <- as.numeric(df[,5]) 
+df[,"V6"] <- as.numeric(df[,6]) 
+df[,"V7"] <- as.numeric(df[,7]) 
+df[,"V8"] <- as.numeric(df[,8]) 
+df[,"V9"] <- as.numeric(df[,9]) 
+df[,"V10"] <- as.numeric(gsub("[^0-9\\.-]", "", df[,10]) )
+
+df_l <- read_fn(dir_loc,"outfile_hurwitz_zeta_lower_with_xi_0_25.dat")
+
+df_l[,"V1"] <- as.numeric(gsub("[^0-9\\.-]", "", df_l[,1]))
+df_l[,"V2"] <- as.numeric(df_l[,2])
+df_l[,"V3"] <- as.numeric(df_l[,3]) 
+df_l[,"V4"] <- as.numeric(df_l[,4]) 
+df_l[,"V5"] <- as.numeric(df_l[,5]) 
+df_l[,"V6"] <- as.numeric(df_l[,6]) 
+df_l[,"V7"] <- as.numeric(df_l[,7]) 
+df_l[,"V8"] <- as.numeric(df_l[,8]) 
+df_l[,"V9"] <- as.numeric(df_l[,9]) 
+df_l[,"V10"] <- as.numeric(gsub("[^0-9\\.-]", "", df_l[,10]) )
+
+
+reg_prop <- abs((df[,"V2"]+1i*df[,"V3"])/(df_l[,"V2"]+1i*df_l[,"V3"]))
+theta <- sqrt((df[,"V2"]+1i*df[,"V3"])/(df_l[,"V2"]+1i*df_l[,"V3"])*reg_prop)
+z <- sqrt((df[,"V2"]+1i*df[,"V3"])*(df_l[,"V2"]+1i*df_l[,"V3"])*reg_prop)
+
+
+zet <- sqrt((df$V4+1i*df$V5)*(df_l$V4+1i*df_l$V5)*abs((df$V4+1i*df$V5)/(df_l$V4+1i*df_l$V5)))
+the <- sqrt(1/(df$V4+1i*df$V5)*(df_l$V4+1i*df_l$V5)*abs((df$V4+1i*df$V5)/(df_l$V4+1i*df_l$V5)))
+
+x_series <- c(1:50000)
+
+
+
+zet_2 <- sqrt((df$V6+1i*df$V7)*(df_l$V6+1i*df_l$V7)*abs((df$V6+1i*df$V7)/(df_l$V6+1i*df_l$V7)))
+the_2 <- sqrt(1/(df$V6+1i*df$V7)*(df_l$V6+1i*df_l$V7)*abs((df$V6+1i*df$V7)/(df_l$V6+1i*df_l$V7)))
+
+zet_3 <- sqrt((df$V8+1i*df$V9)*(df_l$V8+1i*df_l$V9)*abs((df$V8+1i*df$V9)/(df_l$V8+1i*df_l$V9)))
+the_3 <- sqrt(1/(df$V8+1i*df$V9)*(df_l$V8+1i*df_l$V9)*abs((df$V8+1i*df$V9)/(df_l$V8+1i*df_l$V9)))
+
+par(mfrow=c(1,2))
+plot(x=df$V1[x_series],y=abs((df$V8+1i*df$V9))[x_series],
+     main=paste("zeta and normalised(zeta) functions \n on line s=0.25+it",res),ylab="function value",cex.main=0.8,cex.legend=0.8,
+     xlab="imag part",col=1,typ="l",ylim=c(-0*pi,5.5))
+lines(x=df$V1[x_series],y=abs((df$V6+1i*df$V7))[x_series],
+      col=3,lty=2)
+lines(x=df$V1[x_series],y=abs((zet_2[x_series])),col=4,lwd=2)
+lines(x=df$V1[x_series],y=abs(z)[x_series],col=2,lty=2,lwd=2)
+lines(x=df$V1[x_series],y=abs(z)[x_series]/abs((zet_3[x_series])),col=5,lwd=2)
+lines(x=df$V1[x_series],y=log(df$V1[x_series]),col=6)
+abline(h=0,lty=3);abline(h=(1+.57721/2)*pi,lty=3);abline(h=1,lty=3);
+legend("topleft", c("zeta(0.25+it)", "normalised(zeta(0.25+it))","log(t) growth rate","zeta(0.25+it) growth factor based on \n normalised(zeta(0.25+it)) behaviour "),
+       lty = 1,cex=.5, lwd = c(2,2,2,2), col = c("red","blue","magenta","cyan"))
+
+
+hist(abs(zet_2[2000:200000]),xlim=c(0,5),breaks=1000,main="distribution of abs(normalised(zeta(0.25+it)) \n function values for 2 < | t | < 200",cex.xlab=0.9,
+     xlab="abs(normalised(zeta(0.25+it))) values",col=2,cex.main=0.8)
+abline(v=0,lty=3)
+
+
+```
+
+***Behaviour of the normalised Riemann Zeta function magnitude and the growth factor of the Riemann Zeta function on the line s=0.25+it***
+
+ 
+```{r, fig_5, echo=FALSE, cache=TRUE, fig.width=7, fig.height=5,  fig.keep='high', warning=FALSE }
+
+dir_loc <- "/home/john/bear/Projects/sampling-investigations/julia/"
+
+read_fn <- function(dir_loc,filen){
+  
+  filenn <- paste0(dir_loc,filen)
+  
+  dread <- read.table(filenn,
+                       sep=",", header=F,row.names=NULL)
+}
+
+res <- 0.
+
+df <- read_fn(dir_loc,"outfile_hurwitz_zeta_upper_with_xi_0_0.dat")
+
+df[,"V1"] <- as.numeric(gsub("[^0-9\\.-]", "", df[,1]))
+df[,"V2"] <- as.numeric(df[,2])
+df[,"V3"] <- as.numeric(df[,3]) 
+df[,"V4"] <- as.numeric(df[,4]) 
+df[,"V5"] <- as.numeric(df[,5]) 
+df[,"V6"] <- as.numeric(df[,6]) 
+df[,"V7"] <- as.numeric(df[,7]) 
+df[,"V8"] <- as.numeric(df[,8]) 
+df[,"V9"] <- as.numeric(df[,9]) 
+df[,"V10"] <- as.numeric(gsub("[^0-9\\.-]", "", df[,10]) )
+
+df_l <- read_fn(dir_loc,"outfile_hurwitz_zeta_lower_with_xi_0_0.dat")
+
+df_l[,"V1"] <- as.numeric(gsub("[^0-9\\.-]", "", df_l[,1]))
+df_l[,"V2"] <- as.numeric(df_l[,2])
+df_l[,"V3"] <- as.numeric(df_l[,3]) 
+df_l[,"V4"] <- as.numeric(df_l[,4]) 
+df_l[,"V5"] <- as.numeric(df_l[,5]) 
+df_l[,"V6"] <- as.numeric(df_l[,6]) 
+df_l[,"V7"] <- as.numeric(df_l[,7]) 
+df_l[,"V8"] <- as.numeric(df_l[,8]) 
+df_l[,"V9"] <- as.numeric(df_l[,9]) 
+df_l[,"V10"] <- as.numeric(gsub("[^0-9\\.-]", "", df_l[,10]) )
+
+
+reg_prop <- abs((df[,"V2"]+1i*df[,"V3"])/(df_l[,"V2"]+1i*df_l[,"V3"]))
+theta <- sqrt((df[,"V2"]+1i*df[,"V3"])/(df_l[,"V2"]+1i*df_l[,"V3"])*reg_prop)
+z <- sqrt((df[,"V2"]+1i*df[,"V3"])*(df_l[,"V2"]+1i*df_l[,"V3"])*reg_prop)
+
+
+zet <- sqrt((df$V4+1i*df$V5)*(df_l$V4+1i*df_l$V5)*abs((df$V4+1i*df$V5)/(df_l$V4+1i*df_l$V5)))
+the <- sqrt(1/(df$V4+1i*df$V5)*(df_l$V4+1i*df_l$V5)*abs((df$V4+1i*df$V5)/(df_l$V4+1i*df_l$V5)))
+
+x_series <- c(1:50000)
+
+
+
+zet_2 <- sqrt((df$V6+1i*df$V7)*(df_l$V6+1i*df_l$V7)*abs((df$V6+1i*df$V7)/(df_l$V6+1i*df_l$V7)))
+the_2 <- sqrt(1/(df$V6+1i*df$V7)*(df_l$V6+1i*df_l$V7)*abs((df$V6+1i*df$V7)/(df_l$V6+1i*df_l$V7)))
+
+zet_3 <- sqrt((df$V8+1i*df$V9)*(df_l$V8+1i*df_l$V9)*abs((df$V8+1i*df$V9)/(df_l$V8+1i*df_l$V9)))
+the_3 <- sqrt(1/(df$V8+1i*df$V9)*(df_l$V8+1i*df_l$V9)*abs((df$V8+1i*df$V9)/(df_l$V8+1i*df_l$V9)))
+
+par(mfrow=c(1,2))
+plot(x=df$V1[x_series],y=abs((df$V8+1i*df$V9))[x_series],
+     main=paste("zeta and normalised(zeta) functions \n on line s=0.0+it",res),ylab="function value",cex.main=0.8,cex.legend=0.8,
+     xlab="imag part",col=1,typ="l",ylim=c(-0*pi,5.5))
+lines(x=df$V1[x_series],y=abs((df$V6+1i*df$V7))[x_series],
+      col=3,lty=2)
+lines(x=df$V1[x_series],y=abs((zet_2[x_series])),col=4,lwd=2)
+lines(x=df$V1[x_series],y=abs(z)[x_series],col=2,lty=2,lwd=2)
+lines(x=df$V1[x_series],y=abs(z)[x_series]/abs((zet_3[x_series])),col=5,lwd=2)
+lines(x=df$V1[x_series],y=log(df$V1[x_series]),col=6)
+abline(h=0,lty=3);abline(h=(1+.57721/2)*pi,lty=3);abline(h=1,lty=3);
+legend("topleft", c("zeta(0.0+it)", "normalised(zeta(0.0+it))","log(t) growth rate","zeta(0.0+it) growth factor based on \n normalised(zeta(0.0+it)) behaviour "),
+       lty = 1,cex=.5, lwd = c(2,2,2,2), col = c("red","blue","magenta","cyan"))
+
+
+hist(abs(zet_2[2000:200000]),xlim=c(0,5),breaks=1000,main="distribution of abs(normalised(zeta(0.0+it)) \n function values for 2 < | t | < 200",cex.xlab=0.9,
+     xlab="abs(normalised(zeta(0.0+it))) values",col=2,cex.main=0.8)
+abline(v=0,lty=3)
+
+
+```
+
+***Behaviour of the normalised Riemann Zeta function magnitude and the growth factor of the Riemann Zeta function on the line s=0.0+it***
+
+Using a known list of $\zeta(s)$ maxima (9) and the series version of $\zeta_{growth factor}(s)$ eqn \eqref {eq:growthseries}, the $\zeta_{norm}(s)$ values remain consistent with the empirical bound $(1+\gamma/2)\pi$ in the figure 3 histogram for the critical line.
+
+s=1/2+1i*363991205.178840, $\zeta(s)$ = 114.446, $\zeta_{norm}(s)$ = 1.942389
+
+s=1/2+1i*18168214001.68199, $\zeta(s)$ = 190.043, $\zeta_{norm}(s)$ = 1.213477
+
+s=1/2+1i*1102897584486.13647, $\zeta(s)$ = 265.440, $\zeta_{norm}(s)$ = 0.60725
+
+s=1/2+1i*2430099556096.07812, $\zeta(s)$ = 322.062, $\zeta_{norm}(s)$ = 0.60570
+
+s=1/2+1i*2445745756408.35596, $\zeta(s)$ = 297.435, $\zeta_{norm}(s)$ = 0.55727
+
+
+###Conclusions
+
+The normalised Riemann Zeta function shares the Riemann Zeta function poles and zeroes and has a finite magnitude behaviour within the critical strip as $\Im(s) \rightarrow \infty$ and can be used to derive an exact growth factor estimate for the magnitude of the Riemann Zeta function. The exact growth factor grows more slowly than $log(\Im(s))$ on the upper critical strip including the critical line confirming the Lindelof Hypothesis. 
+
+
+###References
+
+1. Edwards, H.M. (1974). Riemann's zeta function. Pure and Applied Mathematics 58. New York-London: Academic Press. ISBN 0-12-242750-0. Zbl 0315.10035.
+
+2. Riemann, Bernhard (1859). "$\ddot{U}$ber die Anzahl der Primzahlen unter einer gegebenen Gr$\ddot{o}$sse". Monatsberichte der Berliner Akademie.. In Gesammelte Werke, Teubner, Leipzig (1892), Reprinted by Dover, New York (1953).
+
+3. Berry, M. V. "The Riemann-Siegel Expansion for the Zeta Function: High Orders and Remainders." Proc. Roy. Soc. London A 450, 439-462, 1995.
+
+4. Martin, J.P.D. "Counting the non-trivial zeroes using extended Riemann Siegel function analogues for 5-periodic Dirichlet Series which obey functional equations" (2016)
+http://dx.doi.org/10.6084/m9.figshare.5721085
+
+5. Martin, J.P.D. "Extended Riemann Siegel Theta function further simplified using functional equation factor for the Riemann Zeta function" (2016)
+http://dx.doi.org/10.6084/m9.figshare.5735268
+
+6. Martin, J.P.D. "Applying the Argument Principle to the extended Riemann Siegel function components of the Riemann Zeta function" (2016)
+http://dx.doi.org/10.6084/m9.figshare.4012290
+
+7. Weisstein, Eric W. "Stirling's Series." From MathWorld--A Wolfram Web Resource. http://mathworld.wolfram.com/StirlingsSeries.html
+
+8. Julia: A Fresh Approach to Numerical Computing. Jeff Bezanson, Alan Edelman, Stefan Karpinski and Viral B. Shah (2017) SIAM Review, 59: 65–98. 
+doi: 10.1137/141000671. http://julialang.org/publications/julia-fresh-approach-BEKS.pdf.
+
+9. numbers.computation.free.fr/Constants/Miscellaneous/MaxiZAll.txt
+Copyright © 1999-2010 by Xavier Gourdon & Pascal Sebah
+
+##Appendix A: Basic Julia code used to calculate real and imaginary components of $\zeta$, $\xi$ and $\zeta_{norm}$
+
+\tiny
+\begin{verbatim}
+outfile = "outfile_hurwitz_zeta_upper_with_xi_0_5.dat"
+f = open(outfile, "w")
+res = 0.5
+out = [[i/1000,real(zeta(res+i/1000*im)),imag(zeta(res+i/1000*im)),
+real((0.5*((res+i/1000*im))*((res+i/1000*im)-1)*(pi^(-(res+i/1000*im)/2)*gamma((res+i/1000*im)/2)))*zeta(res+i/1000*im)),
+imag((0.5*((res+i/1000*im))*((res+i/1000*im)-1)*(pi^(-(res+i/1000*im)/2)*gamma((res+i/1000*im)/2)))*zeta(res+i/1000*im)),
+real((exp((-abs(res-1/2)+abs(i)/1000)*pi/4+.57721/pi/4)*(pi^(-(res+i/1000*im)/2)*gamma((res+i/1000*im)/2)))*zeta(res+i/1000*im)),
+imag((exp((-abs(res-1/2)+abs(i)/1000)*pi/4+.57721/pi/4)*(pi^(-(res+i/1000*im)/2)*gamma((res+i/1000*im)/2)))*zeta(res+i/1000*im)),
+real((exp((-abs(res-1/2)+abs(i)/1000)*pi/4+.57721/pi/4+log(pi)*(-(res+i/1000*im)/2)+(1/2*log(2*pi)+
+((res+i/1000*im)/2-1/2)*log((res+i/1000*im)/2)-(res+i/1000*im)/2-1/12/(res+i/1000*im)*2-1/360/(res+i/1000*im)^3*8)))*zeta(res+i/1000*im)),
+imag((exp((-abs(res-1/2)+abs(i)/1000)*pi/4+.57721/pi/4+log(pi)*(-(res+i/1000*im)/2)+(1/2*log(2*pi)+
+((res+i/1000*im)/2-1/2)*log((res+i/1000*im)/2)-(res+i/1000*im)/2-1/12/(res+i/1000*im)*2-1/360/(res+i/1000*im)^3*8)))*zeta(res+i/1000*im)),i] for i in 1:400000]
+for i in 1:400000; println(f,out[i,]);end;
+close(f)
+
+outfile = "outfile_hurwitz_zeta_lower_with_xi_0_5.dat"
+f = open(outfile, "w")
+out = [[i/1000,real(zeta(1-(res+i/1000*im))),imag(zeta(1-(res+i/1000*im))),
+real((0.5*(1-(res+i/1000*im))*((1-(res+i/1000*im))-1)*(pi^(-(1-(res+i/1000)*im)/2)*gamma((1-(res+i/1000*im))/2)))*zeta(1-(res+i/1000*im))),
+imag((0.5*(1-(res+i/1000*im))*((1-(res+i/1000*im))-1)*(pi^(-(1-(res+i/1000)*im)/2)*gamma((1-(res+i/1000*im))/2)))*zeta(1-(res+i/1000*im))),
+real((exp((-abs(1-res-1/2)+abs(i)/1000)*pi/4+.57721/pi/4)*(pi^(-(1-(res+i/1000)*im)/2)*gamma((1-(res+i/1000*im))/2)))*zeta(1-(res+i/1000*im))),
+imag((exp((-abs(1-res-1/2)+abs(i)/1000)*pi/4+.57721/pi/4)*(pi^(-(1-(res+i/1000)*im)/2)*gamma((1-(res+i/1000*im))/2)))*zeta(1-(res+i/1000*im))),
+real((exp((-abs(res-1/2)+abs(i)/1000)*pi/4+.57721/pi/4+log(pi)*(-(1-(res+i/1000*im))/2)+(1/2*log(2*pi)+
+((1-(res+i/1000*im))/2-1/2)*log((1-(res+i/1000*im))/2)-(1-(res+i/1000*im))/2-1/12/(1-(res+i/1000*im))*2-1/360/(1-(res+i/1000*im))^3*8)))*zeta(1-(res+i/1000*im))),
+imag((exp((-abs(res-1/2)+abs(i)/1000)*pi/4+.57721/pi/4+log(pi)*(-(1-(res+i/1000*im))/2)+(1/2*log(2*pi)+
+((1-(res+i/1000*im))/2-1/2)*log((1-(res+i/1000*im))/2)-(1-(res+i/1000*im))/2-1/12/(1-(res+i/1000*im))*2-1/360/(1-(res+i/1000*im))^3*8)))*zeta(1-(res+i/1000*im))),i] for i in 1:400000]
+for i in 1:400000; println(f,out[i,]);end;
+close(f)
+\end{verbatim}
+
