@@ -16,7 +16,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ##Executive Summary
 
-The growth of the magnitude in the Riemann Zeta function has the exact dependence $\zeta_{growth factor}(s)=abs\Big(e^{(-abs(\Re(s)-\frac{1}{2})+\Im(s)\frac{\pi}{4}+\frac{\gamma}{4\pi})}\pi^{-\frac{s}{2}}\Gamma(\frac{s}{2})\Big)$ for $0 \le \Re(s) \le 1$, ie. within the critical strip. The growth factor $\zeta_{growth factor}(s)$ is $< log(\Im(s))$ in agreement with the Lindelof hypothesis. This result arises naturally from the normalised Riemann Zeta function $\zeta_{norm}(s)=e^{(-abs(\Re(s)-\frac{1}{2})+\Im(s)\frac{\pi}{4}+\frac{\gamma}{4\pi})}\pi^{-\frac{s}{2}}\Gamma(\frac{s}{2})\zeta(s)=e^{(-abs(\Re(s)-\frac{1}{2})+i\Im(s)\frac{\pi}{4}+\frac{\gamma}{4\pi})}\frac{\xi(s)}{\frac{1}{2}s(s-1)}$ for $0 \le \Re(s) \le 1$ which has finite magnitude ($\lesssim (1+\frac{\gamma}{2})\pi$ for $\Re(s)=\frac{1}{2}$) as $\Im(s) \rightarrow \infty$. 
+The normalised Riemann Zeta function $\zeta_{norm}(s)=e^{(-abs(\Re(s)-\frac{1}{2})+\Im(s)\frac{\pi}{4}+\frac{\gamma}{4\pi})}\pi^{-\frac{s}{2}}\Gamma(\frac{s}{2})\zeta(s)=e^{(-abs(\Re(s)-\frac{1}{2})+i\Im(s)\frac{\pi}{4}+\frac{\gamma}{4\pi})}\frac{\xi(s)}{\frac{1}{2}s(s-1)}$ for $0 \le \Re(s) \le 1$ has finite magnitude ($\lesssim (1+\frac{\gamma}{2})\pi$ for $\Re(s)=\frac{1}{2}$) as $\Im(s) \rightarrow \infty$. Using this function the growth of the magnitude in the Riemann Zeta function has the functional dependence $\zeta_{growth factor}(s)=abs\Big(e^{(-abs(\Re(s)-\frac{1}{2})+\Im(s)\frac{\pi}{4}+\frac{\gamma}{4\pi})}\pi^{-\frac{s}{2}}\Gamma(\frac{s}{2})\Big)$ for $0 \le \Re(s) \le 1$, ie. within the critical strip. 
 
 
 ```{r, exec_new, echo=FALSE, cache=TRUE, fig.width=7, fig.height=5,  fig.keep='high', warning=FALSE }
@@ -106,7 +106,7 @@ abline(v=0,lty=3)
 
 On the critical line, in the limit $\Im(0.5+it) \rightarrow \infty$, the magnitude of the Riemann Zeta $\zeta(0.5+it) \rightarrow \infty$ and the Riemann Zeta $\xi(0.5+it) \rightarrow 0$ (rapidly) (1-3). These functions also share the non-trivial zeroes within the critical strip and obey similar functional equations. Starting from inspection of the extended Riemann Siegel function behaviour (4-6) of the $\xi$ function, simple multiplicative factor adjustments were successfully made to the $\xi$ functional equation to decrease the rapid damping along the imaginary axis such that $\zeta(1+it)$ was recreated exactly (in the region of the critical lines) and the values for the other upper critical strip Re(s) values produced very similar Riemann Zeta function lineshapes but with deflated magnitudes. 
 
-In this paper, the normalised Riemann Zeta function $\zeta_{norm}(s)$ within the critical strip is defined, the behaviour is presented and the exact growth factor for the Riemann Zeta function obtained.
+In this paper, the normalised Riemann Zeta function $\zeta_{norm}(s)$ within the critical strip is defined, the behaviour is presented and an exact growth factor for the Riemann Zeta function obtained.
 
 ###The extended Riemann Siegel functions and usage for Argument Principle calculations on the Riemann Zeta function
 
@@ -190,7 +190,7 @@ where using the Stirling Series behaviour (7) for $\Gamma(\frac{s}{2})$ , as $\I
 \end{split}
 \end{equation}
 
-The fascinating property of the growth factor eqn \eqref{eq:growthseries} is that the real part of $log(\Gamma(\frac{s}{2}))$ is almost the same as $-abs(\Re(s)-\frac{1}{2})+\Im(s)\frac{\pi}{4}+\frac{\gamma}{4\pi} -\frac{s}{2}log(\pi)$ and determines the slow growth of the Riemann Zeta function. The Lindelof hypothesis (1) conjectures that the Riemann Zeta growth factor needs to be $< log(\Im(s))$ for the Riemann Hypothesis to be confirmed.
+The fascinating property of the growth factor eqn \eqref{eq:growthseries} is that the real part of $log(\Gamma(\frac{s}{2}))$ is almost the same as $-abs(\Re(s)-\frac{1}{2})+\Im(s)\frac{\pi}{4}+\frac{\gamma}{4\pi} -\frac{s}{2}log(\pi)$ and determines the slow growth of the Riemann Zeta function. The Lindelof hypothesis (1) conjectures that the Riemann Zeta growth factor needs to be $< log(\Im(s))$ for the Riemann Hypothesis to be confirmed so this exact growth factor needs to be checked against that hypothesis.
 
 ###The behaviour of the normalised Riemann Zeta function across the critical strip
 
@@ -640,7 +640,7 @@ s=1/2+1i*2445745756408.35596, $\zeta(s)$ = 297.435, $\zeta_{norm}(s)$ = 0.55727
 
 ###Conclusions
 
-The normalised Riemann Zeta function shares the Riemann Zeta function poles and zeroes and has a finite magnitude behaviour within the critical strip as $\Im(s) \rightarrow \infty$ and can be used to derive an exact growth factor estimate for the magnitude of the Riemann Zeta function. The exact growth factor grows more slowly than $log(\Im(s))$ on the upper critical strip including the critical line confirming the Lindelof Hypothesis. 
+The normalised Riemann Zeta function shares the Riemann Zeta function poles and zeroes and has a finite magnitude behaviour within the critical strip as $\Im(s) \rightarrow \infty$ and can be used to derive an exact growth factor estimate for the magnitude of the Riemann Zeta function. The exact growth factor appears to grow more slowly than $log(\Im(s))$ on the upper critical strip for small $\Im(s)$ but more work is needed to assess the growth factor against the Lindelof Hypothesis. 
 
 
 ###References
