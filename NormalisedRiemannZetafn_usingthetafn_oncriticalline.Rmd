@@ -1,0 +1,515 @@
+---
+title: A Riemann Zeta magnitude growth function based on the Riemann Siegel Theta function closely mirrors the $|t^{-0.1548}\zeta(0.5+it)|$ behaviour for t < 10000.
+
+author: "John Martin" 
+date: "created:11/01/2018, last modified: 12/01/2018"
+output:
+  pdf_document:
+    fig_crop: no
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+##Executive Summary
+
+Using the continuous composite function $\theta(t)+e^{i\theta(t)}\zeta(0.5+it)$ and imposing the condition that $max(|\zeta_{norm}(0.5+it)|) = \pi(1+\gamma/2)$, a growth factor expression for $\zeta(0.5+it)$ can be derived, $\zeta_{growth factor}(0.5+it) =\frac{\pi(1+\frac{\gamma}{2})\frac{1}{\sqrt{\theta^{\prime}(t)^2+1}}+\theta(t+\pi(1+\frac{\gamma}{2}))\frac{\theta^{\prime}(t)}{\sqrt{\theta^{\prime}(t)^2+1}}-\theta(t)}{\pi(1+\frac{\gamma}{2})} 
+\approx \frac{\theta(t+\pi(1+\frac{\gamma}{2}))-\theta(t)}{\pi(1+\frac{\gamma}{2})} = \theta^{\prime}(t) + \frac{\theta^{\prime\prime}(t)}{2}+...$. The growth factor closely mirrors, for low $t < 10000$ the current known Lindelof Hypothesis bound $t^{-0.1548}|\zeta(0.5+it)|$. The deviation for large t compared to $max(|\zeta_{norm}(0.5+it)|) = \pi(1+\gamma/2)$ for both growth estimates suggests extra functional dependence is required to improve both estimates or $max(|\zeta_{norm}(0.5+it)|) = \pi(1+\gamma/2) + f(t)$. 
+
+
+```{r, exec_new, echo=FALSE, cache=TRUE, fig.width=7, fig.height=5,  fig.keep='high', warning=FALSE }
+
+dir_loc <- "/home/john/bear/Projects/sampling-investigations/julia/"
+
+read_fn <- function(dir_loc,filen){
+  
+  filenn <- paste0(dir_loc,filen)
+  
+  dread <- read.table(filenn,
+                       sep=",", header=F,row.names=NULL)
+}
+
+res <- 0.5
+
+df <- read_fn(dir_loc,"outfile_hurwitz_zeta_upper_with_xi_0_5.dat")
+
+df[,"V1"] <- as.numeric(gsub("[^0-9\\.-]", "", df[,1]))
+df[,"V2"] <- as.numeric(df[,2])
+df[,"V3"] <- as.numeric(df[,3]) 
+df[,"V4"] <- as.numeric(df[,4]) 
+df[,"V5"] <- as.numeric(df[,5]) 
+df[,"V6"] <- as.numeric(df[,6]) 
+df[,"V7"] <- as.numeric(df[,7]) 
+df[,"V8"] <- as.numeric(df[,8]) 
+df[,"V9"] <- as.numeric(df[,9]) 
+df[,"V10"] <- as.numeric(gsub("[^0-9\\.-]", "", df[,10]) )
+
+df_l <- read_fn(dir_loc,"outfile_hurwitz_zeta_lower_with_xi_0_5.dat")
+
+df_l[,"V1"] <- as.numeric(gsub("[^0-9\\.-]", "", df_l[,1]))
+df_l[,"V2"] <- as.numeric(df_l[,2])
+df_l[,"V3"] <- as.numeric(df_l[,3]) 
+df_l[,"V4"] <- as.numeric(df_l[,4]) 
+df_l[,"V5"] <- as.numeric(df_l[,5]) 
+df_l[,"V6"] <- as.numeric(df_l[,6]) 
+df_l[,"V7"] <- as.numeric(df_l[,7]) 
+df_l[,"V8"] <- as.numeric(df_l[,8]) 
+df_l[,"V9"] <- as.numeric(df_l[,9]) 
+df_l[,"V10"] <- as.numeric(gsub("[^0-9\\.-]", "", df_l[,10]) )
+
+
+reg_prop <- abs((df[,"V2"]+1i*df[,"V3"])/(df_l[,"V2"]+1i*df_l[,"V3"]))
+theta <- sqrt((df[,"V2"]+1i*df[,"V3"])/(df_l[,"V2"]+1i*df_l[,"V3"])*reg_prop)
+z <- sqrt((df[,"V2"]+1i*df[,"V3"])*(df_l[,"V2"]+1i*df_l[,"V3"])*reg_prop)
+
+
+zet <- sqrt((df$V4+1i*df$V5)*(df_l$V4+1i*df_l$V5)*abs((df$V4+1i*df$V5)/(df_l$V4+1i*df_l$V5)))
+the <- sqrt(1/(df$V4+1i*df$V5)*(df_l$V4+1i*df_l$V5)*abs((df$V4+1i*df$V5)/(df_l$V4+1i*df_l$V5)))
+
+# x_series <- c(1:400000)
+
+
+
+zet_2 <- sqrt((df$V6+1i*df$V7)*(df_l$V6+1i*df_l$V7)*abs((df$V6+1i*df$V7)/(df_l$V6+1i*df_l$V7)))
+the_2 <- sqrt(1/(df$V6+1i*df$V7)*(df_l$V6+1i*df_l$V7)*abs((df$V6+1i*df$V7)/(df_l$V6+1i*df_l$V7)))
+
+zet_3 <- sqrt((df$V8+1i*df$V9)*(df_l$V8+1i*df_l$V9)*abs((df$V8+1i*df$V9)/(df_l$V8+1i*df_l$V9)))
+the_3 <- sqrt(1/(df$V8+1i*df$V9)*(df_l$V8+1i*df_l$V9)*abs((df$V8+1i*df$V9)/(df_l$V8+1i*df_l$V9)))
+
+fu <- (-df$V1*log(2*pi/df$V1)/2-df$V1/2-pi/8+1/48/df$V1+7/5760/df$V1^3)#.02*df$V1^2+df$V1#
+f1 <- (log(df$V1)/2-log(2*pi)/2-1*2/48/df$V1^2-7/5760*3/df$V1^4)#.04*df$V1^1+1*df$V1^0#
+f2 <- 1/2/df$V1+3*2/48/df$V1^3#.04*df$V1^0#
+ang_f1 <- atan(f1)
+dx <- pi*(1+.57721/2)*cos(pi/2-ang_f1)
+fu_shift <- (-(df$V1+abs(dx))*log(2*pi/(df$V1+abs(dx)))/2-(df$V1+abs(dx))/2-pi/8+1/48/(df$V1+abs(dx))+7/5760/(df$V1+abs(dx))^3)
+dy1 <-  pi*(1+.57721/2)*sin(pi/2-ang_f1)
+
+fdiff <- dy1+f1*abs(dx)+(dx)^2/2*f2
+fdiff_shift <- dy1+fu_shift-fu
+growth <- fdiff/(pi*(1+.57721/2))
+growth_shift <- fdiff_shift/(pi*(1+.57721/2))
+
+par(mfrow=c(1,2))
+plot(x=df$V1,y=fu,col=3,typ="l",xlim=c(1960,1980),ylim=c(4645,4720),xlab="imag part",ylab="function value")
+lines(x=df$V1,y=exp(1i*fu)*(df$V2+1i*df$V3)+fu,col=4,typ="l",xlim=c(0,40),ylim=c(0,100))
+lines(x=df$V1,y=fu+fdiff,col=1,lty=3,typ="l",xlim=c(0,100),ylim=c(0,100))
+lines(x=df$V1,y=fu-fdiff,col=1,lty=3,typ="l",xlim=c(0,100),ylim=c(0,100))
+lines(x=df$V1,y=fu+fdiff_shift,col=2,lty=3,typ="l",xlim=c(0,100),ylim=c(0,100))
+lines(x=df$V1,y=fu-fdiff_shift,col=2,lty=3,typ="l",xlim=c(0,100),ylim=c(0,100))
+# lines(x=df$V1,y=fu+growth,col=2)
+# lines(x=df$V1,y=fu+df$V1^(0.1548),col=5)
+# lines(x=df$V1,y=fu+pi,col=7,lty=6)
+abline(h=20,lty=3);abline(h=20+pi,lty=3);
+legend("topleft", c("Theta(t)+Z(0.5+it)","Theta(t)", "upper peak bound","lower peak bound"),
+       lty = c(1,1,3,3),cex=.8, lwd = c(2,2,2,2), col = c("blue","green","black","black"))
+
+
+plot(x=df$V1,y=df$V1^(0.1548),typ="l",ylim=c(1,3.5),xlab="imag part",ylab="function value")
+lines(x=df$V1,y=growth,col=3)
+lines(x=df$V1,y=log(df$V1)/2-log(2*pi)/2,col=2)
+lines(x=df$V1,y=abs(z)/abs((zet_3)),col=5)
+
+legend("bottomright", c("|t^(-0.1548)zeta(0.5+it)|", "Theta(t) based \n zeta_growthfactor(0.5+it)","curve fitted growth factor","(log(t)-log(2pi))/2"),
+       lty = c(1,1,1,1,2),cex=.7, lwd = c(2,2,2), col = c("black","green","cyan","red"))
+
+
+
+```
+
+***Behaviour of $\theta(t)+e^{i\theta(t)}\zeta(0.5+it)$ function highlighted by bounds on peak size and the current Lindelof Hypothesis bound $t^{-0.1548}$ and $\theta(t)$ based $\zeta_{growth factor}(0.5+it)$ magnitude for low t.***
+
+##Introduction
+
+On the critical line, in the limit $\Im(0.5+it) \rightarrow \infty$, the magnitude of the Riemann Zeta $\zeta(0.5+it) \rightarrow \infty$ (1-3). The Riemann Zeta function is defined (1), in the complex plane by the integral 
+
+\begin{equation}
+\zeta(s) = \frac{\prod(-s)}{2\pi i}\int_{C_{\epsilon,\delta}} \frac{(-x)^s}{(e^{x}-1)x}dx
+\end{equation}
+
+
+where $s \thinspace \epsilon \thinspace \mathbb{C}$ and $C_{\epsilon,\delta}$ is the contour about the imaginary poles.
+
+The Riemann Zeta function has been shown to obey the functional equation (2)
+
+\begin{equation}
+\zeta(s) = 2^s\pi^{s-1}sin(\frac{\pi s}{2})\Gamma(1-s)\zeta(1-s) \label{eq:func}
+\end{equation}
+
+Following directly from the form of the functional equation and the properties of the coefficients on the RHS of eqn \eqref{eq:func} it has been shown that any zeroes off the critical line would be paired, ie. if $\zeta(s)$ = 0 was true then $\zeta(1-s) = 0$.
+
+Along the critical line (0.5+it), the Riemann Siegel function is an exact function (3) for the magnitude of the Riemann Zeta function with two components Z(t) \& $\theta(t)$
+
+\begin{equation}
+Z(t) = \zeta(0.5+it)e^{i\theta(t)}  \label{eq:rs}
+\end{equation}
+
+and
+
+\begin{align}
+\theta(t) &= \Im(log(\Gamma(\frac{1}{4}+\frac{1}{2}it)))-\frac{t}{2}log(\pi) \nonumber \\
+&= -\frac{t}{2}log(\frac{2\pi}{t})-\frac{t}{2}-\frac{\pi}{8}+\frac{1}{48t}+\frac{7}{7560t}+...\qquad \text{for } t \rightarrow \infty\label{eq:theta}
+\end{align}
+
+In Martin (4) the normalised Riemann Zeta function $\zeta_{norm}(s)$ within the critical strip was investigated using an exact curve fitted expression. This expression was shown numerically only to be valid for low $\Im(s)$, within the critical strip, however the following relationship and bounds were identified that could be applicable to all $\Im(s)$
+
+\begin{align}
+abs(\zeta_{norm}(s)) &\approx abs(\zeta_{norm}(1-s)) \label{eq:normfunc} \quad \text{for }0 \le \Re(s) \le 1 \text{, } \Im(s) > 2\pi
+\end{align}
+
+
+\begin{align}
+max|\zeta_{norm}(s)| &= \pi(1+\frac{\gamma}{2}) \qquad \text{for } s=0.5+it \\
+&\approx \pi \qquad \qquad \qquad \text{for } s=\pm1+it \label{eq:zetanormbdmax}
+\end{align}
+
+\begin{align}
+min|\zeta_{norm}(s)| &\approx \frac{\gamma}{2} \qquad \qquad \text{for } s=\pm1+it \label{eq:zetanormbdmin}
+\end{align}
+
+Given the bounded nature of $\zeta_{norm}(s)$ for $\Im(s) > 2\pi$  and sharing the same non-trivial zeroes, the growth factor of the Reimann Zeta function magnitude, within the critical strip, can in principle be obtained as the ratio of the two functions
+
+\begin{align}
+\zeta_{growth factor}(s)&= \frac{maxbound|\zeta(s)|}{maxbound|\zeta_{norm}(s)|} \quad \text{for }0 \le \Re(s) \le 1 \label {eq:growth}
+\end{align}
+
+using curve fitting for low $\Im(s)$ (4), the growth factor estimate was 
+
+\begin{equation}
+\begin{split}
+\zeta_{growth factor}(s) =abs\Big(e^{(-abs(\Re(s)-\frac{1}{2})+abs(\Im(s))\frac{\pi}{4}+\frac{\gamma}{4\pi})}\pi^{-\frac{s}{2}}\Gamma(\frac{s}{2})\Big) \quad \text{for }0 \le \Re(s) \le 1 \label {eq:growthseries}
+\end{split}
+\end{equation}
+
+which had similar $\Im(s)$ behaviour to the current lowest bound $t^{-0.158}|\zeta(0.5+i\Im(s))|$ for the Lindelof hypothesis (5), for low $\Im(s)$ but eventually the $\zeta_{growth factor}(s)$ exhibited much higher estimates for growth at higher $\Im(s)$. That is, when comparing the calculated $max|\zeta_{norm}(s)|$ values at larger $\Im(s)$ for known large peaks (6)  $max(|\zeta_{norm}(s)|) \ll \pi, \Im(s) \rightarrow \infty$. Indeed, for very large $\Im(s)$ using data from (7), it is also the case that $t^{-0.158}|\zeta(0.5+i\Im(s))|$ exhibits diminishing values for large peaks as $\Im(s) \rightarrow \infty$.
+
+In this paper, an alternate growth factor estimate based on the composite function $\theta(t)+\zeta(0.5+it)$ has been presented using eqn \eqref {eq:zetanormbdmax}, the previous observation that because the maximum peak height of $\zeta(0.5+it)$ tended to increase in increments of $\pi$ as $\Im(s)$ increased (8)
+
+\begin{equation}
+\Delta(max(\theta_{ext}(0.5+it)+|\zeta(0.5+it)|)-\theta_{ext}(0.5+it))) \approx \pi log(t)
+\end{equation}
+
+and a taylor series for the bounds of $\theta(t)+\zeta(0.5+it)$ .
+
+##Deriving the $\theta(t)$ based growth factor on the critical line
+
+As shown in (8), the imaginary logarithm of the Riemann Siegel Z function $\Im(log(Z_{ext}(s)))$ can be turned into a continuous function by careful mapping of the branch points which add $\pi$ around the position of each non-trivial zero. 
+On the critical line, a similar function can easily be constructed by simply adding $\theta_{ext}(0.5+it)+|\zeta(0.5+it)|$ since $Z_{ext}(0.5+it)$ and $\theta_{ext}(0.5+it)+|\zeta(0.5+it)|$ share a $\theta_{ext}(0.5+it)$ dependence.
+
+The other relevant idea from (8) is that the highest peaks of the Riemann Zeta function are bounded when expressed as $\theta_{ext}(0.5+it)+|\zeta(0.5+it)|$. 
+
+Using calculations of the slope and normal of $\theta_{ext}(0.5+it)$ the upper and lower bounds of $\theta_{ext}(0.5+it)+|\zeta(0.5+it)|$ based on $\zeta_{norm}(0.5+it)$ are simply translated versions of $\theta_{ext}(0.5+it)$ separated by a constant distance of $\pi(1+\gamma/2)$ along the normal vector from $\theta_{ext}(0.5+it)$.
+
+This means that vertical and horizontal displacement of the upper and lower bounds along the normal vector are  
+
+
+\begin{align}
+vertical displacement(\theta(t)+|\zeta(0.5+it)|)_{UB} = \Delta(y) &= \pi(1+\frac{\gamma}{2})sin(\frac{\pi}{2}-atan(\theta^{\prime}(t))) \\
+vertical displacement(\theta(t)+|\zeta(0.5+it)|)_{LB} = -\Delta(y) &= -\pi(1+\frac{\gamma}{2})sin(\frac{\pi}{2}-atan(\theta^{\prime}(t)))
+\end{align}
+
+\begin{align}
+horizontal displacement(\theta(t)+|\zeta(0.5+it)|)_{UB} = -\Delta(t) &= -\pi(1+\frac{\gamma}{2})cos(\frac{\pi}{2}-atan(\theta^{\prime}(t))) \\
+horizontal displacement(\theta(t)+|\zeta(0.5+it)|)_{LB} = \Delta(t) &= +\pi(1+\frac{\gamma}{2})cos(\frac{\pi}{2}-atan(\theta^{\prime}(t)))
+\end{align}
+
+This mixed spacial displacement means that the function value of the upper and lower bounds vertically above any particular function point will be complex since $\theta(t)$ has curvature. 
+
+Using, the known displacements and that the bound curves are parallel to $\theta(t)$ gives the formal functional behaviour 
+
+\begin{align}
+(\theta(t)+e^{i\theta(t)}\zeta(0.5+it))_{UB,LB} = \pm\Delta(y)+\theta(t\pm\Delta(t)) \label {eq:thetabds}
+\end{align}
+
+The growth factor is then derived from the ratio
+
+\begin{align}
+\zeta_{growth factor}(0.5+it) &= \frac{(\theta(t)+e^{i\theta(t)}\zeta(0.5+it))_{UB}-\theta(t)}{(\theta(t)+\pi(1+\frac{\gamma}{2}))-\theta(t)} \nonumber \\
+&= \frac{(\theta(t)+e^{i\theta(t)}\zeta(0.5+it))_{UB}-\theta(t)}{\pi(1+\frac{\gamma}{2})} \label {eq:ratiodef}
+\end{align}
+
+using eqn \eqref {eq:thetabds} and geometrical relationships
+
+\begin{align}
+\zeta_{growth factor}(0.5+it) &= \frac{\Delta(y)+\theta(t+\Delta(t))-\theta(t)}{\pi(1+\frac{\gamma}{2})} \label {eq:ratiodef2} \\
+&= \frac{\pi(1+\frac{\gamma}{2})sin(\frac{\pi}{2}-atan(\theta^{\prime}(t)))+\theta(t+\pi(1+\frac{\gamma}{2})cos(\frac{\pi}{2}-atan(\theta^{\prime}(t))))-\theta(t)}{\pi(1+\frac{\gamma}{2})} \\
+&= \frac{\pi(1+\frac{\gamma}{2})cos(atan(\theta^{\prime}(t)))+\theta(t+\pi(1+\frac{\gamma}{2})sin(atan(\theta^{\prime}(t))))-\theta(t)}{\pi(1+\frac{\gamma}{2})} \\
+&= \frac{\pi(1+\frac{\gamma}{2})\frac{1}{\sqrt{\theta^{\prime}(t)^2+1}}+\theta(t+\pi(1+\frac{\gamma}{2}))\frac{\theta^{\prime}(t)}{\sqrt{\theta^{\prime}(t)^2+1}}-\theta(t)}{\pi(1+\frac{\gamma}{2})} \label {eq:fullratio} \\
+&\approx \frac{\theta(t+\pi(1+\frac{\gamma}{2}))-\theta(t)}{\pi(1+\frac{\gamma}{2})} = \theta^{\prime}(t) \qquad \text{for } t \rightarrow \infty
+\end{align}
+
+
+The ratio can also be expressed using second order taylor series to reveal additional series terms for low t
+
+\begin{align}
+(\theta(t)+|\zeta(0.5+it)|)_{UB,LB} &= \theta(t)\pm\pi*(1+\frac{\gamma}{2})\Big(\theta^{\prime}(t)cos(\frac{\pi}{2}-atan(\theta^{\prime}(t)))+... \nonumber \\ &+\frac{\theta^{\prime\prime}(t)}{2}cos(\frac{\pi}{2}-atan(\theta^{\prime}(t)))^2+sin(\frac{\pi}{2}-atan(\theta^{\prime}(t)))\Big) \\
+&\approx\theta(t)\pm\pi*(1+\frac{\gamma}{2})\Big(\theta^{\prime}(t)sin(atan(\theta^{\prime}(t)))+\frac{\theta^{\prime\prime}(t)}{2}sin(atan(\theta^{\prime}(t)))^2+cos(atan(\theta^{\prime}(t)))\Big) \\
+&\approx\theta(t)\pm\pi*(1+\frac{\gamma}{2})\Big(\theta^{\prime}(t)\frac{\theta^{\prime}(t)}{\sqrt{\theta^{\prime}(t)^2+1}}+\frac{\theta^{\prime\prime}(t)}{2}(\frac{\theta^{\prime}(t)}{\sqrt{\theta^{\prime}(t)^2+1}})^2+\frac{1}{\sqrt{\theta^{\prime}(t)^2+1}}\Big) \\
+&\approx\theta(t)\pm\pi*(1+\frac{\gamma}{2})\Big(\theta^{\prime}(t)+\frac{\theta^{\prime\prime}(t)}{2}+...\Big)\end{align}
+
+The resultant growth factor is then the ratio estimate
+
+\begin{align}
+\zeta_{growth factor}(0.5+it) &= \frac{\big((\theta(t)+|\zeta(0.5+it)|)_{UB}-\theta(t)\big)}{max|\zeta_{norm}(0.5+it)|} \nonumber \\ &\approx\theta^{\prime}(t)+\frac{\theta^{\prime\prime}(t)}{2}+... \label {eq:tsgrowth}
+\end{align}
+
+It is also noted that $\theta(t)$ is very suitable for second order taylor series expansion away from real axis given
+
+\begin{align}
+\theta(t) &= -\frac{t}{2}log(\frac{2\pi}{t})-\frac{t}{2}-\frac{\pi}{8}+\frac{1}{48t}+\frac{7}{7560t}+...\qquad \text{for } t \rightarrow \infty\label{eq:thetafn}
+\end{align}
+
+\begin{align}
+\theta^{\prime}(t) &= \frac{log(t)}{2}-\frac{log(2\pi)}{2}+... \qquad \text{for } t \rightarrow \infty\label{eq:thetaprime}
+\end{align}
+
+\begin{align}
+\theta^{\prime\prime}(t) &= \frac{1}{2t}+... \qquad \text{for } t \rightarrow \infty\label{eq:thetaprime2}
+\end{align}
+
+Collecting the leading terms 
+\begin{align}
+\zeta_{growth factor}(0.5+it) &\approx \frac{(log(t)-log(2\pi))}{2} +\frac{1}{4t}+... \label {eq:tsgrowth}
+\end{align}
+
+##Results
+
+The following two graphs plus the executive summary graph show the close correspondence of the $\theta(t)$ growth factor of the Riemann Zeta magnitude along the critical line to the current Lindelof Hypothesis bound $t^{-0.1548}|\zeta(0.5+it)|$ for low t and the curved fitted growth factor from (4)
+
+Comparing the three figures, 
+
+(i) the change of frame of reference from the unscaled presentation of  $|\zeta(0.5+it)|$ to the scaled sloping function $\theta(t)+e^{i\theta(t)}\zeta(0.5+it)$ with integral scaling by $\pi$ allows the highest peaks of the Riemann Zeta function to be recognised as bounded features. The gradual growth of large peaks by $\pi$ can now be understood arising from $\theta(t)$ influencing the bounds of the function amplitude as well as the periodicity of the zeroes. 
+
+(ii) the $\theta(t)+e^{i\theta(t)}\zeta(0.5+it)$ based growth factor is closer to the Lindelof Hypothesis upper bound result than the curve fitted growth factor from (4) reflecting the deeper concept that $\theta(t)+e^{i\theta(t)}\zeta(0.5+it)$ represents compared to curve fitting at low t
+
+(iii) the executive summary figure, in particular shows that the $\theta(t)+e^{i\theta(t)}\zeta(0.5+it)$ growth factor is actually very similar to the Lindelof Hypothesis upper bound and may represent a natural limiting value for the t^{-0.1458} estimate methodology.
+
+
+```{r, fig_1, echo=FALSE, cache=TRUE, fig.width=7, fig.height=5,  fig.keep='high', warning=FALSE }
+
+dir_loc <- "/home/john/bear/Projects/sampling-investigations/julia/"
+
+read_fn <- function(dir_loc,filen){
+  
+  filenn <- paste0(dir_loc,filen)
+  
+  dread <- read.table(filenn,
+                       sep=",", header=F,row.names=NULL)
+}
+
+res <- 0.5
+
+df <- read_fn(dir_loc,"outfile_hurwitz_zeta_upper_with_xi_0_5.dat")
+
+df[,"V1"] <- as.numeric(gsub("[^0-9\\.-]", "", df[,1]))
+df[,"V2"] <- as.numeric(df[,2])
+df[,"V3"] <- as.numeric(df[,3]) 
+df[,"V4"] <- as.numeric(df[,4]) 
+df[,"V5"] <- as.numeric(df[,5]) 
+df[,"V6"] <- as.numeric(df[,6]) 
+df[,"V7"] <- as.numeric(df[,7]) 
+df[,"V8"] <- as.numeric(df[,8]) 
+df[,"V9"] <- as.numeric(df[,9]) 
+df[,"V10"] <- as.numeric(gsub("[^0-9\\.-]", "", df[,10]) )
+
+df_l <- read_fn(dir_loc,"outfile_hurwitz_zeta_lower_with_xi_0_5.dat")
+
+df_l[,"V1"] <- as.numeric(gsub("[^0-9\\.-]", "", df_l[,1]))
+df_l[,"V2"] <- as.numeric(df_l[,2])
+df_l[,"V3"] <- as.numeric(df_l[,3]) 
+df_l[,"V4"] <- as.numeric(df_l[,4]) 
+df_l[,"V5"] <- as.numeric(df_l[,5]) 
+df_l[,"V6"] <- as.numeric(df_l[,6]) 
+df_l[,"V7"] <- as.numeric(df_l[,7]) 
+df_l[,"V8"] <- as.numeric(df_l[,8]) 
+df_l[,"V9"] <- as.numeric(df_l[,9]) 
+df_l[,"V10"] <- as.numeric(gsub("[^0-9\\.-]", "", df_l[,10]) )
+
+
+reg_prop <- abs((df[,"V2"]+1i*df[,"V3"])/(df_l[,"V2"]+1i*df_l[,"V3"]))
+theta <- sqrt((df[,"V2"]+1i*df[,"V3"])/(df_l[,"V2"]+1i*df_l[,"V3"])*reg_prop)
+z <- sqrt((df[,"V2"]+1i*df[,"V3"])*(df_l[,"V2"]+1i*df_l[,"V3"])*reg_prop)
+
+
+zet <- sqrt((df$V4+1i*df$V5)*(df_l$V4+1i*df_l$V5)*abs((df$V4+1i*df$V5)/(df_l$V4+1i*df_l$V5)))
+the <- sqrt(1/(df$V4+1i*df$V5)*(df_l$V4+1i*df_l$V5)*abs((df$V4+1i*df$V5)/(df_l$V4+1i*df_l$V5)))
+
+x_series <- c(1:400000)
+
+
+
+zet_2 <- sqrt((df$V6+1i*df$V7)*(df_l$V6+1i*df_l$V7)*abs((df$V6+1i*df$V7)/(df_l$V6+1i*df_l$V7)))
+the_2 <- sqrt(1/(df$V6+1i*df$V7)*(df_l$V6+1i*df_l$V7)*abs((df$V6+1i*df$V7)/(df_l$V6+1i*df_l$V7)))
+
+zet_3 <- sqrt((df$V8+1i*df$V9)*(df_l$V8+1i*df_l$V9)*abs((df$V8+1i*df$V9)/(df_l$V8+1i*df_l$V9)))
+the_3 <- sqrt(1/(df$V8+1i*df$V9)*(df_l$V8+1i*df_l$V9)*abs((df$V8+1i*df$V9)/(df_l$V8+1i*df_l$V9)))
+
+fu <- (-df$V1*log(2*pi/df$V1)/2-df$V1/2-pi/8+1/48/df$V1+7/5760/df$V1^3)#.02*df$V1^2+df$V1#
+f1 <- (log(df$V1)/2-log(2*pi)/2-1*2/48/df$V1^2-7/5760*3/df$V1^4)#.04*df$V1^1+1*df$V1^0#
+f2 <- 1/2/df$V1+3*2/48/df$V1^3#.04*df$V1^0#
+ang_f1 <- atan(f1)
+dx <- pi*(1+.57721/2)*cos(pi/2-ang_f1)
+dy1 <-  pi*(1+.57721/2)*sin(pi/2-ang_f1)
+
+fdiff <- dy1+f1*abs(dx)+(dx)^2/2*f2
+growth <- fdiff/(pi*(1+.57721/2))
+
+par(mfrow=c(1,2))
+plot(x=df$V1,y=fu,col=3,typ="l",xlim=c(0,50),ylim=c(0,50),xlab="imag part",ylab="function value")
+lines(x=df$V1,y=exp(1i*fu)*(df$V2+1i*df$V3)+fu,col=4,typ="l")
+lines(x=df$V1,y=fu+fdiff,col=1,lty=3,typ="l")
+lines(x=df$V1,y=fu-fdiff,col=1,lty=3,typ="l")
+legend("topleft", c("Theta(t)+Z(0.5+it)","Theta(t)", "upper peak bound","lower peak bound"),
+       lty = c(1,1,3,3),cex=.8, lwd = c(2,2,2,2), col = c("blue","green","black","black"))
+
+
+plot(x=df$V1,y=df$V1^(0.1548),typ="l",xlim=c(0,50),ylim=c(1,3.5),xlab="imag part",ylab="function value")
+lines(x=df$V1,y=growth,col=3)
+lines(x=df$V1[x_series],y=abs(z)[x_series]/abs((zet_3[x_series])),col=5)
+
+legend("topright", c("|t^(-0.1548)zeta(0.5+it)|", "Theta(t) based \n zeta_growthfactor(0.5+it)","curve fitted growth factor"),
+       lty = c(1,1,1),cex=.8, lwd = c(2,2,2), col = c("black","green","cyan"))
+
+
+
+```
+
+***Behaviour of $\theta(t)+e^{i\theta(t)}\zeta(0.5+it)$ function for very low t, highlighted by bounds on peak size and the current Lindelof Hypothesis bound $t^{-0.1548}$, $\theta(t)$ based $\zeta_{growth factor}(0.5+it)$ magnitude for low t and a curve fitted growth factor.***
+
+
+```{r, fig_2, echo=FALSE, cache=TRUE, fig.width=7, fig.height=5,  fig.keep='high', warning=FALSE }
+
+dir_loc <- "/home/john/bear/Projects/sampling-investigations/julia/"
+
+read_fn <- function(dir_loc,filen){
+  
+  filenn <- paste0(dir_loc,filen)
+  
+  dread <- read.table(filenn,
+                       sep=",", header=F,row.names=NULL)
+}
+
+res <- 0.5
+
+df <- read_fn(dir_loc,"outfile_hurwitz_zeta_upper_with_xi_0_5.dat")
+
+df[,"V1"] <- as.numeric(gsub("[^0-9\\.-]", "", df[,1]))
+df[,"V2"] <- as.numeric(df[,2])
+df[,"V3"] <- as.numeric(df[,3]) 
+df[,"V4"] <- as.numeric(df[,4]) 
+df[,"V5"] <- as.numeric(df[,5]) 
+df[,"V6"] <- as.numeric(df[,6]) 
+df[,"V7"] <- as.numeric(df[,7]) 
+df[,"V8"] <- as.numeric(df[,8]) 
+df[,"V9"] <- as.numeric(df[,9]) 
+df[,"V10"] <- as.numeric(gsub("[^0-9\\.-]", "", df[,10]) )
+
+df_l <- read_fn(dir_loc,"outfile_hurwitz_zeta_lower_with_xi_0_5.dat")
+
+df_l[,"V1"] <- as.numeric(gsub("[^0-9\\.-]", "", df_l[,1]))
+df_l[,"V2"] <- as.numeric(df_l[,2])
+df_l[,"V3"] <- as.numeric(df_l[,3]) 
+df_l[,"V4"] <- as.numeric(df_l[,4]) 
+df_l[,"V5"] <- as.numeric(df_l[,5]) 
+df_l[,"V6"] <- as.numeric(df_l[,6]) 
+df_l[,"V7"] <- as.numeric(df_l[,7]) 
+df_l[,"V8"] <- as.numeric(df_l[,8]) 
+df_l[,"V9"] <- as.numeric(df_l[,9]) 
+df_l[,"V10"] <- as.numeric(gsub("[^0-9\\.-]", "", df_l[,10]) )
+
+
+reg_prop <- abs((df[,"V2"]+1i*df[,"V3"])/(df_l[,"V2"]+1i*df_l[,"V3"]))
+theta <- sqrt((df[,"V2"]+1i*df[,"V3"])/(df_l[,"V2"]+1i*df_l[,"V3"])*reg_prop)
+z <- sqrt((df[,"V2"]+1i*df[,"V3"])*(df_l[,"V2"]+1i*df_l[,"V3"])*reg_prop)
+
+
+zet <- sqrt((df$V4+1i*df$V5)*(df_l$V4+1i*df_l$V5)*abs((df$V4+1i*df$V5)/(df_l$V4+1i*df_l$V5)))
+the <- sqrt(1/(df$V4+1i*df$V5)*(df_l$V4+1i*df_l$V5)*abs((df$V4+1i*df$V5)/(df_l$V4+1i*df_l$V5)))
+
+x_series <- c(1:400000)
+
+
+
+zet_2 <- sqrt((df$V6+1i*df$V7)*(df_l$V6+1i*df_l$V7)*abs((df$V6+1i*df$V7)/(df_l$V6+1i*df_l$V7)))
+the_2 <- sqrt(1/(df$V6+1i*df$V7)*(df_l$V6+1i*df_l$V7)*abs((df$V6+1i*df$V7)/(df_l$V6+1i*df_l$V7)))
+
+zet_3 <- sqrt((df$V8+1i*df$V9)*(df_l$V8+1i*df_l$V9)*abs((df$V8+1i*df$V9)/(df_l$V8+1i*df_l$V9)))
+the_3 <- sqrt(1/(df$V8+1i*df$V9)*(df_l$V8+1i*df_l$V9)*abs((df$V8+1i*df$V9)/(df_l$V8+1i*df_l$V9)))
+
+fu <- (-df$V1*log(2*pi/df$V1)/2-df$V1/2-pi/8+1/48/df$V1+7/5760/df$V1^3)#.02*df$V1^2+df$V1#
+f1 <- (log(df$V1)/2-log(2*pi)/2-1*2/48/df$V1^2-7/5760*3/df$V1^4)#.04*df$V1^1+1*df$V1^0#
+f2 <- 1/2/df$V1+3*2/48/df$V1^3#.04*df$V1^0#
+ang_f1 <- atan(f1)
+dx <- pi*(1+.57721/2)*cos(pi/2-ang_f1)
+dy1 <-  pi*(1+.57721/2)*sin(pi/2-ang_f1)
+
+fdiff <- dy1+f1*abs(dx)+(dx)^2/2*f2
+growth <- fdiff/(pi*(1+.57721/2))
+
+par(mfrow=c(1,2))
+plot(x=df$V1,y=fu,col=3,typ="l",xlim=c(270,300),ylim=c(360,440),xlab="imag part",ylab="function value")
+lines(x=df$V1,y=exp(1i*fu)*(df$V2+1i*df$V3)+fu,col=4,typ="l")
+lines(x=df$V1,y=fu+fdiff,col=1,lty=3,typ="l")
+lines(x=df$V1,y=fu-fdiff,col=1,lty=3,typ="l")
+legend("topleft", c("Theta(t)+Z(0.5+it)","Theta(t)", "upper peak bound","lower peak bound"),
+       lty = c(1,1,3,3),cex=.8, lwd = c(2,2,2,2), col = c("blue","green","black","black"))
+
+
+plot(x=df$V1,y=df$V1^(0.1548),typ="l",xlim=c(270,300),ylim=c(1,3.5),xlab="imag part",ylab="function value")
+lines(x=df$V1,y=growth,col=3)
+lines(x=df$V1[x_series],y=abs(z)[x_series]/abs((zet_3[x_series])),col=5)
+
+legend("topright", c("|t^(-0.1548)zeta(0.5+it)|", "Theta(t) based \n zeta_growthfactor(0.5+it)","curve fitted growth factor"),
+       lty = c(1,1,1),cex=.8, lwd = c(2,2,2), col = c("black","green","cyan"))
+
+
+
+```
+
+***Behaviour of $\theta(t)+e^{i\theta(t)}\zeta(0.5+it)$ function for slightly higher t, highlighted by bounds on peak size and the current Lindelof Hypothesis bound $t^{-0.1548}$, $\theta(t)$ based $\zeta_{growth factor}(0.5+it)$ magnitude for low t and a curve fitted growth factor.***
+
+
+##High t issues for growth factor estimates, to be continued
+
+Using known lists of $\zeta(s)$ maxima (5,7) for higher t the three growth factors $|t^{-0.1548}\zeta(s)|$, $\zeta_{growth factor}(0.5+it)$ and curve fitted factor (4) all fail to be consistent with the idea of a flat bound in magnitude for $\zeta_{norm}(s)$ of $(1+\gamma/2)\pi$ on the critical line. 
+
+In the results below, if the calculated peak heights represent growth from a baseline normalised Riemann Zeta function, then scaled values of $\sim \pi \approx 3.14$ would have been expected for $\zeta_{norm}(s)$ & $|t^{-0.1548}\zeta(s)|$
+
+
+for s=1/2+1i*2445745756408.35596, 
+$\zeta(s)$ = 297.435, $\zeta_{norm}(s)$ = 22.22, $|t^{-0.1548}\zeta(s)|$ = 3.60
+
+for s=1/2+1i*310678833629083965667540576593682.058,
+$\zeta(s)$ = 16858.119, $\zeta_{norm}(s)$ = 461.8294, $|t^{-0.1548}\zeta(s)|$ = 0.157398
+
+
+###Conclusions
+
+The composite function $\theta(t)+e^{i\theta(t)}\zeta(0.5+it)$ in tandem with the concept of a flat bounded normalised Riemann Zeta function can be used to derive a growth factor estimate for the magnitude of the Riemann Zeta function, valid for low $\Im(s)$. The approach also has a useful frame of reference change to understand the rate of change in the highest peaks. 
+
+Comparing to calculations using the latest known Lindelof Hypothesis bound results $t^{-0.158}|\zeta(0.5+it)|$, a fully consistent $\zeta_{norm}(s)$ functional form for all large $\Im(s)$ within the critical strip, requires additonal functional dependence in all these growth factor estimates or the assumption of $max(|\zeta_{norm}(0.5+it)|) = \pi(1+\gamma/2)$ is failing. 
+
+
+###References
+
+1. Edwards, H.M. (1974). Riemann's zeta function. Pure and Applied Mathematics 58. New York-London: Academic Press. ISBN 0-12-242750-0. Zbl 0315.10035.
+
+2. Riemann, Bernhard (1859). "$\ddot{U}$ber die Anzahl der Primzahlen unter einer gegebenen Gr$\ddot{o}$sse". Monatsberichte der Berliner Akademie.. In Gesammelte Werke, Teubner, Leipzig (1892), Reprinted by Dover, New York (1953).
+
+3. Berry, M. V. "The Riemann-Siegel Expansion for the Zeta Function: High Orders and Remainders." Proc. Roy. Soc. London A 450, 439-462, 1995.
+
+4. Martin, J.P.D. "Exact functional dependence for the growth in the magnitude of the Riemann Zeta function within the critical strip" (2018)
+http://dx.doi.org/10.6084/m9.figshare.5765796
+
+5. numbers.computation.free.fr/Constants/Miscellaneous/MaxiZAll.txt
+Copyright © 1999-2010 by Xavier Gourdon & Pascal Sebah
+
+6. Bourgain, Jean (2017), "Decoupling, exponential sums and the Riemann zeta function", Journal of the American Mathematical Society, 30 (1): 205–224, arXiv:1408.5794 doi:10.1090/jams/860
+
+7. Tihanyi, N., Kovács, A. & Kovács, J. "Computing Extremely Large Values of the Riemann Zeta Function" J Grid Computing (2017) 15: 527. https://doi.org/10.1007/s10723-017-9416-0
+
+8. Martin, J.P.D. "Mapping the Extended Riemann Siegel Z Theta Functions about branch points in the complex plane" (2016)
+http://dx.doi.org/10.6084/m9.figshare.3813999
+
