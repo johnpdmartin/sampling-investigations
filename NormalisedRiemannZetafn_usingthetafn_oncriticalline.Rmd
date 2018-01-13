@@ -2,7 +2,7 @@
 title: A Riemann Zeta magnitude growth function based on the Riemann Siegel Theta function closely mirrors the $|t^{-0.1548}\zeta(0.5+it)|$ behaviour for t < 10000.
 
 author: "John Martin" 
-date: "created:11/01/2018, last modified: 12/01/2018"
+date: "created:11/01/2018, last modified: 13/01/2018"
 output:
   pdf_document:
     fig_crop: no
@@ -483,6 +483,54 @@ $\zeta(s)$ = 297.435, $\zeta_{norm}(s)$ = 22.22, $|t^{-0.1548}\zeta(s)|$ = 3.60
 
 for s=1/2+1i*310678833629083965667540576593682.058,
 $\zeta(s)$ = 16858.119, $\zeta_{norm}(s)$ = 461.8294, $|t^{-0.1548}\zeta(s)|$ = 0.157398
+
+The following two graphs show the low t behaviour and the high t behaviour of $t^{-0.1548}$ and $\theta(t)$ based $\zeta_{growth factor}(0.5+it)$ plus some known large Riemann Zeta peaks (scaled by $\pi(1+\gamma/2)$) to represent empirical growth factors if $max(|\zeta_{norm}(0.5+it)|) = \pi(1+\gamma/2)$ is assumed to be true for all t .
+
+```{r, fig_3, echo=FALSE, cache=TRUE, fig.width=7, fig.height=4,  fig.keep='high', warning=FALSE }
+
+
+fug <- function(g) {(-g*log(2*pi/g)/2-g/2-pi/8+1/48/g+7/5760/g)}
+f1g <- function(g) {(log(g)/2-log(2*pi)/2-1*2/48/g^2-7/5760*3/g^4)}
+f2g <- function(g) {1/2/g+3*2/48/g^3}
+
+xs <- (seq(1,5,l=201))
+plot(x=(10^xs),y=log((10^xs)^0.1548*pi*(1+.57721/2)),typ="l",col=4,
+     ylab="log(function value)",xlab="imag part")
+lines(x=(10^xs),y=log(f1g(10^xs)*pi*(1+.57721/2)),col=3)
+legend("bottomright", c("t^(-0.1548)","Theta(t) based growth"),
+       lty = c(1,1),cex=.8, lwd = c(2,2), col = c("blue","green"))
+
+
+```
+
+***low t Behaviour of growth factor estimates.***
+
+
+
+```{r, fig_4, echo=FALSE, cache=TRUE, fig.width=7, fig.height=4,  fig.keep='high', warning=FALSE }
+
+
+fug <- function(g) {(-g*log(2*pi/g)/2-g/2-pi/8+1/48/g+7/5760/g)}
+f1g <- function(g) {(log(g)/2-log(2*pi)/2-1*2/48/g^2-7/5760*3/g^4)}
+f2g <- function(g) {1/2/g+3*2/48/g^3}
+
+scaled_peaks_x <- c(310678833629083965667540576593682.058,5032868769288289111.35,70391066310491324308791969554453.2490,552166410009931288886808632346.5052,35575860004214706249227248805977.2412,725177880629981.914,5032868769288289111.35,803625728592344363123814218778.1993)
+scaled_peaks_h <- c(16858.119,1581.7,14055.8928,13558.8331,13338.6875,453.9,1581.7,10282.6496)/pi/(1+.57721/2)
+
+xs <- (seq(1,32,l=2001))
+plot(x=log(10^xs),y=log((10^xs)^0.1548*pi*(1+.57721/2)),typ="l",col=4,
+     ylab="log(function value)",xlab="log(imag part)")
+lines(x=log(10^xs),y=log(f1g(10^xs)*pi*(1+.57721/2)),col=3)
+points(x=log(scaled_peaks_x),y=log(scaled_peaks_h),pch=4,col=2)
+legend("topleft", c("t^(-0.1548)","Theta(t) based growth","scaled known zeta peaks"),
+       lty = c(1,1,1),cex=.8, lwd = c(2,2,2), col = c("blue","green","red"),pch=c(1,1,4))
+
+
+
+
+```
+
+***high t Behaviour of growth factor estimates and some scaled known peaks***
 
 
 ###Conclusions
