@@ -2,7 +2,7 @@
 title: A Riemann Zeta magnitude growth function based on the Riemann Siegel Theta function closely mirrors the $|t^{-0.1548}\zeta(0.5+it)|$ behaviour for t < 10000.
 
 author: "John Martin" 
-date: "created:11/01/2018, last modified: 15/01/2018"
+date: "created:11/01/2018, last modified: 16/01/2018"
 output:
   pdf_document:
     fig_crop: no
@@ -484,7 +484,7 @@ $\zeta(s)$ = 297.435, $\zeta_{norm}(s)$ = 22.22, $|t^{-0.1548}\zeta(s)|$ = 3.60
 for s=1/2+1i*310678833629083965667540576593682.058,
 $\zeta(s)$ = 16858.119, $\zeta_{norm}(s)$ = 461.8294, $|t^{-0.1548}\zeta(s)|$ = 0.157398
 
-The following two graphs show the low t behaviour and the high t behaviour of $t^{0.1548}$ and $\theta(t)$ based $\zeta_{growth factor}(0.5+it)$ plus some known large Riemann Zeta peaks (scaled by $\pi(1+\gamma/2)$) to represent empirical growth factors if $max(|\zeta_{norm}(0.5+it)|) = \pi(1+\gamma/2)$ is assumed to be true for all t. Since the two estimators provide upper and lower bounds on the growth rate, a simple hybrid product of the two estimators gives a better estimate of the growth. 
+The following two graphs show the low t behaviour and the high t behaviour of $t^{0.1548}$ and $\theta(t)$ based $\zeta_{growth factor}(0.5+it)$ plus some known large Riemann Zeta peaks (scaled by $\pi(1+\gamma/2)$ and $(\pi(1+\gamma/2))^2$ respectively) to represent empirical growth factors if $max(|\zeta_{norm}(0.5+it)|) = \pi(1+\gamma/2)$ is assumed to be true for all t. Since the two estimators provide upper and lower bounds on the growth rate, a simple hybrid product of the two estimators gives a better estimate of the growth for $\frac{|\zeta(0.5+it)|}{(\pi(1+\gamma/2))^2}$. 
 
 ```{r, fig_3, echo=FALSE, cache=TRUE, fig.width=7, fig.height=4,  fig.keep='high', warning=FALSE }
 
@@ -522,10 +522,9 @@ plot(x=log(10^xs),y=log((10^xs)^0.1548),typ="l",col=4,
      ylab="log(growth factor value)",xlab="log(imag part)",ylim=c(-5,14))
 lines(x=log(10^xs),y=log(f1g(10^xs)),col=3)
 lines(x=log(10^xs),y=log(sqrt(((10^xs)^0.1548)*(f1g(10^xs)))),col=6,lty=6)
-lines(x=log(10^xs),y=log(sqrt(((10^xs)^0.1548)*(1))),col=9)
-lines(x=log(10^xs),y=log(exp(.57721)*log(log(10^xs))),col=1,lty=3)
 points(x=log(scaled_peaks_x),y=log(scaled_peaks_h),pch=4,col=2)
-legend("bottomright", c("t^(0.1548)","Theta'(t) based growth","some scaled known zeta peaks","hybrid sqrt(t^(0.1548)*Theta'(t)) based growth","speculative s=1+it growth behaviour?"),
+points(x=log(scaled_peaks_x),y=log(scaled_peaks_h/(pi*(1+.57721/2))),pch=5,col=9)
+legend("bottomright", c("t^(0.1548)","Theta'(t) based growth","some scaled (1/(pi*(1+gamma/2))) known zeta peaks","hybrid sqrt(t^(0.1548)*Theta'(t)) based growth","some scaled (1/(pi*(1+gamma/2)))^2 known zeta peaks"),
        lty = c(1,1,0,6,1),cex=.6, lwd = c(2,2,2,2,2), col = c("blue","green","red","purple",9),pch=c(-1,-1,4,-1,-1))
 
 # abs(2^(res+1i*x)*pi^(res+1i*x-1)*sin(pi/2*(res+1i*x))*gammaz(1-(res+1i*x)))
