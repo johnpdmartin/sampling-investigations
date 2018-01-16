@@ -494,9 +494,9 @@ f1g <- function(g) {(log(g)/2-log(2*pi)/2-1*2/48/g^2-7/5760*3/g^4)}
 f2g <- function(g) {1/2/g+3*2/48/g^3}
 
 xs <- (seq(1,5,l=201))
-plot(x=(10^xs),y=log((10^xs)^0.1548*pi*(1+.57721/2)),typ="l",col=4,
-     ylab="log(function value)",xlab="imag part")
-lines(x=(10^xs),y=log(f1g(10^xs)*pi*(1+.57721/2)),col=3)
+plot(x=(10^xs),y=log((10^xs)^0.1548),typ="l",col=4,
+     ylab="log(growth factor value)",xlab="imag part")
+lines(x=(10^xs),y=log(f1g(10^xs)),col=3)
 legend("bottomright", c("t^(0.1548)","Theta'(t) based growth"),
        lty = c(1,1),cex=.8, lwd = c(2,2), col = c("blue","green"))
 
@@ -517,15 +517,18 @@ f2g <- function(g) {1/2/g+3*2/48/g^3}
 scaled_peaks_x <- c(310678833629083965667540576593682.058,5032868769288289111.35,70391066310491324308791969554453.2490,552166410009931288886808632346.5052,35575860004214706249227248805977.2412,725177880629981.914,5032868769288289111.35,803625728592344363123814218778.1993,363991205.17884,3443895116.94519,31051083602.36298,153603679979.85403,258067466059.90668,295126484043.95032,326473979757.42792,875657660079.99756,906557871638.31824,1720474107149.35352,2371699985550.72070,690422639823936254540302269442.4854,6436526919750171929565.992,73027109216315547125974615.940)
 scaled_peaks_h <- c(16858.119,1581.7,14055.8928,13558.8331,13338.6875,453.9,1581.7,10282.6496,114.446,152.391,213.895,241.259,262.207,267.090,289.782,306.450,324.941,331.596,339.720,10268.7134,2942.71,5297.23)/pi/(1+.57721/2)
 
-xs <- (seq(1,32,l=2001))
-plot(x=log(10^xs),y=log((10^xs)^0.1548*pi*(1+.57721/2)),typ="l",col=4,
-     ylab="log(function value)",xlab="log(imag part)")
-lines(x=log(10^xs),y=log(f1g(10^xs)*pi*(1+.57721/2)),col=3)
-lines(x=log(10^xs),y=log(sqrt(((10^xs)^0.1548*pi*(1+.57721/2))*(f1g(10^xs)*pi*(1+.57721/2)))),col=6,lty=6)
+xs <- c(0.001,.01,.1,seq(1,32,l=2001))
+plot(x=log(10^xs),y=log((10^xs)^0.1548),typ="l",col=4,
+     ylab="log(growth factor value)",xlab="log(imag part)",ylim=c(-5,14))
+lines(x=log(10^xs),y=log(f1g(10^xs)),col=3)
+lines(x=log(10^xs),y=log(sqrt(((10^xs)^0.1548)*(f1g(10^xs)))),col=6,lty=6)
+lines(x=log(10^xs),y=log(sqrt(((10^xs)^0.1548)*(1))),col=9)
+lines(x=log(10^xs),y=log(exp(.57721)*log(log(10^xs))),col=1,lty=3)
 points(x=log(scaled_peaks_x),y=log(scaled_peaks_h),pch=4,col=2)
-legend("topleft", c("t^(0.1548)","Theta'(t) based growth","some scaled known zeta peaks","hybrid sqrt(t^(0.1548)*Theta'(t)) based growth"),
-       lty = c(1,1,0,6),cex=.8, lwd = c(2,2,2,2), col = c("blue","green","red","purple"),pch=c(-1,-1,4,-1))
+legend("bottomright", c("t^(0.1548)","Theta'(t) based growth","some scaled known zeta peaks","hybrid sqrt(t^(0.1548)*Theta'(t)) based growth","speculative s=1+it growth behaviour?"),
+       lty = c(1,1,0,6,1),cex=.6, lwd = c(2,2,2,2,2), col = c("blue","green","red","purple",9),pch=c(-1,-1,4,-1,-1))
 
+# abs(2^(res+1i*x)*pi^(res+1i*x-1)*sin(pi/2*(res+1i*x))*gammaz(1-(res+1i*x)))
 
 
 
