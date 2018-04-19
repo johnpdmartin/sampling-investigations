@@ -1,0 +1,758 @@
+---
+title: A fast calculation of first order shifts in $\zeta(s)$ zeroes positions using an extended Riemann Siegel Z function for the partial Euler Product of the lowest primes.
+
+author: "John Martin" 
+date: "Wednesday, April 18th, 2018"
+output:
+  pdf_document:
+    fig_crop: no
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+##Executive Summary
+
+On the critical line, the extended Riemann Siegel Z function analogue of the partial Euler product containing the multiplier of the Riemann Zeta functional equation $Z_{extEP}(s) = \sqrt{\frac{\Large\Pi_{\rho < P}^P\big(\frac{1}{(1-1/\rho^{s})}\big)^2}{(2^s\pi^{s-1}sin(\frac{\pi s}{2})\Gamma(1-s)))}\cdot\Big|(2^s\pi^{s-1}sin(\frac{\pi s}{2})\Gamma(1-s))\Big|}$ exhibits branch points resulting in clear discontinuities in $arg(Z_{extEP}(s)) = \Im(log(Z_{extEP}(s)))$ which easily identify the first order shift from Gram's rule in the non-trivial zeroes positions, near all peaks large and small at high imaginary values.  On the s=1 line the calculations are convergent far away from the real axis, and the large peaks near Rosser rule violation points are decomposed into dominant contributions from the first few primes and their interactions within the Euler Product. 
+
+```{r, exec_new, echo=FALSE, cache=TRUE, fig.width=7, fig.height=4.8,  fig.keep='high', warning=FALSE }
+
+dir_loc <- "/home/john/bear/Projects/sampling-investigations/julia/"
+
+
+
+
+read_fn <- function(dir_loc,filen){
+  
+  filenn <- paste0(dir_loc,filen)
+  
+  dread <- read.table(filenn,
+                      sep=",", header=F,row.names=NULL)
+}
+
+par(mfrow=c(1,2))
+
+df <- read_fn(dir_loc,"outfile_st_1_0.dat")
+
+df[,"V1"] <- as.numeric(gsub("[^0-9\\.-]", "", df[,1]))
+df[,"V10"] <- as.numeric(gsub("[^0-9\\.-]", "", df[,10]) )
+
+xse <- seq(6820048,6820052.5,l=4501)
+
+df2 <- read_fn(dir_loc,"outfile_search_zeroes_1_0_start_6820048_p001_size1000.dat")
+df2[,"V1"] <- as.numeric(gsub("[(]", "", df2[,1]))
+df2[,"V15"] <- as.numeric(gsub("[)]", "", df2[,15]))
+
+dfp <- as.data.frame(cbind(xse,abs(df$V5+1i*df$V6),df2$V4,df2$V5,df2$V6))
+plot(x=dfp[,1],y=dfp[,2],col=1,typ="l",xlab="(a) imag part s=(1+it) line",ylab="abs(function) value",ylim=c(-0*pi,3*pi),lwd=2)
+lines(x=dfp[,1],y=dfp[,3],col=2,lwd=2,lty=2)
+# lines(x=dfp[,1],y=dfp[,5],col=6)
+lines(x=dfp[,1],y=abs(dfp[,3]+1i*dfp[,4]),col=3,lwd=2,lty=2)
+# abline(h=0,lty=3)
+lines(x=df2[,1],y=df2[,8],col=5,lty=6,lwd=2);
+lines(x=df2[,1],y=df2[,14],col=4,lty=6,lwd=2);
+
+legend("topleft", legend = c("|zeta(s)|", "|Z_ext_1000_primes|", "|Re(Z_ext_1000_primes)|",
+                             "Im(log(Z_ext_1000_primes))","|Re(Z_ext_first_prime)|",
+                             "|Re(Z_ext_4_primes)|","zeta(s) zeroes"),
+  col = c("black","green","red","magenta","cyan","blue","black" ),  pch = -1, lty = c(1,1,2,1,6,6,3), lwd = 2, cex = 0.8)
+
+res <- 0.5
+
+dfy <- read.csv(paste0(dir_loc,"zetazeros_6820045"),sep=" ",header=FALSE,colClasses = c("numeric","double"))
+dfy[,"V1"] <- as.numeric(dfy[,1])
+
+df <- read_fn(dir_loc,"outfile_st_0_5_repeat.dat")
+
+df[,"V1"] <- as.numeric(gsub("[^0-9\\.-]", "", df[,1]))
+df[,"V10"] <- as.numeric(gsub("[^0-9\\.-]", "", df[,10]) )
+
+xse <- seq(6820048,6820052.5,l=4501)
+
+df2 <- read_fn(dir_loc,"outfile_search_zeroes_0_5_start_6820048_p001_size1000.dat")
+df2[,"V1"] <- as.numeric(gsub("[(]", "", df2[,1]))
+df2[,"V15"] <- as.numeric(gsub("[)]", "", df2[,15]))
+
+dfp <- as.data.frame(cbind(xse,abs(df$V5+1i*df$V6),df2$V4,df2$V5,df2$V6))
+plot(x=dfp[,1],y=dfp[,2],col=1,typ="l",xlab="(b) imag part s=(0.5+it) line",ylab="abs(function) value",ylim=c(-0*pi,16*pi),lwd=2)
+lines(x=dfp[,1],y=dfp[,3],col=2,lwd=2,lty=2)
+lines(x=dfp[,1],y=abs(dfp[,3]+1i*dfp[,4]),col=3,lwd=2,lty=2)
+abline(h=0,lty=3);abline(v=dfy[8:18,2],lty=3)
+lines(x=df2[,1],y=df2[,8],col=5,lty=6,lwd=2);
+lines(x=df2[,1],y=df2[,14],col=4,lty=6,lwd=2);
+lines(x=dfp[,1],y=dfp[,5],col=6,lwd=2)
+
+
+
+
+```
+
+***Extended Riemann Siegel Z function analogue components of the partial Euler Product of the lowest 1000 primes along (a) s=(1+$i*t$) and (b) s=(0.5+$i*t$) compared to $|\zeta(s)|$. The known $\zeta(s)$ non-trivial zeroes on the critical line near the first Rosser rule violation point are indicated in (b) by dotted vertical lines.***
+
+##Introduction
+
+The known resonant behaviour of the lowest primes in the Euler Product function at large peaks is re-examined with its' extended Riemann Siegel function analogue. On the critical line, the divergence of the partial Euler Product, is weak when only using the lowest primes well away from the real axis. This behaviour of the partial Euler Product has been actively used as a useful first order approximation to locate the largest peaks when searching for closely (and widely) spaced non-trivial zeroes which represent a interesting test for Riemann Hypothesis behaviour [1,2]. 
+
+The extended Riemann Siegel function approach [3,4] splits the Riemann Zeta function into the product of two closely related functions which interfere to produce the Riemann Zeta function lineshape. Of interest, with respect to the partial Euler product, is whether its' extended Riemann Siegel Z function analogue has informative branch point behaviour on (approximately) locating the Riemann Zeta zeroes. It was also of interest to examine the s=1 line where the Euler Product calculation converges away from the real axis, for the growth and origin of large peaks on s=1 line related with the large peaks (on the critical line) near Rosser rule violation points.
+
+In this paper, the extended Riemann Siegel functions and the general form for the Argument Principle calculation are firstly described with respect to the Riemann Zeta function (5-7). Then two expressions for extended Riemann Siegel function analogues of the partial Euler Product are presented and studied. In the first example, the obvious symmetric choice of using the functional equation of the partial Euler product and its conjugate is described but this example provides no additional insight on non-trivial zeroes behaviour. In the second example, by combining the partial Euler product and the multiplier function of the Riemann Zeta functional equation, the exactness (or symmetry) of the functional equation of the partial Euler Product is perturbed, and there is useful information gained providing a persistently clear resolution of the first order shifts of $\zeta(0.5+it)$ zeroes from Grams rule, at high t.
+
+##The extended Riemann Siegel functions and usage for Argument Principle calculations on the Riemann Zeta function
+
+### The Riemann Zeta function
+
+For $\Re(s) > 1$, the Euler Product of the primes absolutely converges to the Riemann Zeta function sum of the integers (5,6)
+
+\begin{equation}
+\zeta(s) = {\Large\sum_{n=1}^\infty} \frac{1}{n^s} = {\Large\prod_{\rho=2}^\infty} \frac{1}{(1-1/\rho^{s})} \qquad \text{for } \Re(s) > 1
+\end{equation}
+
+The Riemann Zeta function can be defined for the whole complex plane by the integral (5,6)
+
+\begin{equation}
+\zeta(s) = \frac{\prod(-s)}{2\pi i}\int_{C_{\epsilon,\delta}} \frac{(-x)^s}{(e^{x}-1)x}dx \qquad \text{for } \mathbb{C}
+\end{equation} 
+
+
+where $s \thinspace \epsilon \thinspace \mathbb{C}$ and $C_{\epsilon,\delta}$ is the contour about the imaginary poles.
+
+On the s=1 line, away from the real axis the Euler Product asymptotically approaches to the Riemann Zeta function value (8). This behaviour can be seen in equation 4.11.2 of (8)
+
+
+\begin{equation}
+\zeta(s) = {\Large\sum_{n=1}^N} \frac{1}{n^s} -\frac{N^{1-s}}{1-s} + O(\frac{|s|}{N^{\Re(s)}}) +  O(\frac{1}{N^{\Re(s)}}) \label {eq:expansion}
+\end{equation}
+
+On inspecting the partial Euler Product results for complex values s, in the upper half of the critical strip, the divergence of the ${\Large\sum_{n=1}^N} \frac{1}{n^s}$ term in the above equation and hence the partial Euler Product ${\Large\prod_{\rho=2}^P} \frac{1}{(1-1/\rho^{s})}$ in that region, exhibits a dominant $\frac{N^{1-s}}{1-s}$ oscillatory divergence behaviour near the real axis which becomes weak divergence well away from the real axis for small N or P.
+
+As a sidenote, rearranging equation \eqref {eq:expansion} to the form
+
+\begin{align}
+\frac{1}{N^{1-s}}{\Large\sum_{n=1}^N} \frac{1}{n^s} &= \frac{1}{1-s} + \frac{\zeta(s)}{N^{1-s}} - O(\frac{|s|}{N^{1-s}\cdot N^{\Re(s)}}) +  O(\frac{1}{N^{1-s} \cdot N^{\Re(s)}}) \qquad \text{for } \mathbb{C}  \label {eq:finitezeta} \\
+&\rightarrow \frac{1}{1-s} \qquad \text{for } \Re(s) < 1, N \rightarrow \infty
+\end{align}
+
+provides series expansion support for the observed finite normalised Riemann Zeta function calculations and subsequent number theory approximations derived in Martin (8,9) in the complex halfplane below the s=1 line.
+
+### $\zeta(s)$ functional equation, Riemann Siegel functions and counting zeroes
+
+The Riemann Zeta function has been shown to obey the functional equation (6)
+
+\begin{equation}
+\zeta(s) = 2^s\pi^{s-1}sin(\frac{\pi s}{2})\Gamma(1-s)\zeta(1-s) \label{eq:func}
+\end{equation}
+
+Following directly from the form of the functional equation and the properties of the coefficients on the RHS of eqn \eqref{eq:func} it has been shown that any zeroes off the critical line would be paired, ie. if $\zeta(s)$ = 0 was true then $\zeta(1-s) = 0$.
+
+Along the critical line (0.5+it), the Riemann Siegel function is an exact function (10) for the magnitude of the Riemann Zeta function with two components Z(t) \& $\theta(t)$
+
+\begin{equation}
+Z(t) = \zeta(0.5+it)e^{i\theta(t)}  \label{eq:rs}
+\end{equation}
+
+and
+
+\begin{equation}
+\theta(t) = \Im(log(\Gamma(\frac{1}{4}+\frac{1}{2}it)))-\frac{t}{2}log(\pi) \label{eq:theta}
+\end{equation}
+
+Backlund's count of the non-trivial zeroes within the critical strip, as described by (5) was based on the argument principle for the related $\xi(s)$ function and a symmetry argument to halve the contour integral to the portion $1+\epsilon$ to $\frac{1}{2}+it$ resulting in the expression 
+
+\begin{equation}
+N(t) = \frac{\theta(t)}{\pi} + S(t) + 1 \label {eq:numzero}
+\end{equation}
+
+where 
+
+\begin{equation}
+S(t) = \frac{arg(\zeta(0.5+it))}{\pi} = \frac{\Im(log(\zeta(0.5+it)))}{\pi}  \label {eq:st}
+\end{equation}
+
+Another nomenclature used, was to describe S(t) as the error term
+
+\begin{equation}
+S(t) = N(t) - \frac{\theta(t)}{\pi} - 1
+\end{equation}
+
+where consistent with Gram's rule, the quantity $\frac{\theta(t)}{\pi}$ was observed to be a good estimate of the known non-trivial zeroes, with S(t) varying between negative and positive values. 
+
+###Extended Riemann Siegel function formalism
+
+In Martin (3,4) and earlier work, the properties of the Riemann Zeta generating function were investigated and used to develop/map the extended Riemann Siegel function $Z_{ext}(s)$ and $\theta_{ext}(s)$ definitions also applicable away from the critical line, 
+
+\begin{align}
+\theta_{ext}(s) = \Im(log(\sqrt{\frac{\zeta(1-s)abs(2^s\pi^{s-1}sin(\frac{\pi s}{2})\Gamma(1-s))}{\zeta(s)}})) \label{eq:thetaext} 
+\end{align}
+
+\begin{align}
+Z_{ext}(s) &= \sqrt{\zeta(s)*\zeta(1-s)*abs(2^s\pi^{s-1}sin(\frac{\pi s}{2})\Gamma(1-s))} \label{eq:zext}
+\end{align}
+
+The $\theta_{ext}(s)$ function can be further simplified (11) to show the comparison to the $\theta(t)$ function
+
+\begin{align}
+\theta_{ext}(s) &= \Im(log(\sqrt{\frac{\zeta(1-s)abs(2^s\pi^{s-1}sin(\frac{\pi s}{2})\Gamma(1-s))}{\zeta(s)}}))  \\
+&= -\frac{1}{2} \Im (log((2^s\pi^{s-1}sin(\frac{\pi s}{2})\Gamma(1-s)))) \\
+&= -\frac{t}{2} log(2)-\frac{t}{2}log(\pi)-\frac{1}{2}\Im\big(log(e^{i*\frac{\pi s}{2}}-e^{-i*\frac{\pi s}{2}})\big)+\frac{\pi}{4}-\frac{1}{2} \Im (log(\Gamma(1-s)))
+\end{align}
+
+
+A distinctive difference between the $\theta(t)$ \& $\theta_{ext}(s)$ functions being that the $\theta(t)$ branch points provide the Gram points which have the tendency of approximately bisecting Riemann Zeta zeroes (1) while the $\theta_{ext}(s)$ branch points are approximately at the position of Riemann Zeta zeroes. Other important properties of $\theta_{ext}(s)$ \& $Z_{ext}(s)$ functions are that (i) the $Z_{ext}(s)$ branch points lie closest to the position of the Riemann Zeta zeroes (identically if on the critical line) (4,5) and (ii) the phase change at the $\theta_{ext}(s)$ \& $Z_{ext}(s)$ branch points are $\pi/2$ (5). In contrast, the phase change at the branch points of $\Im(log(\zeta(s)))$ is $\pi$.
+
+Finally, as shown in (3), the net count of zeroes and poles based on the argument principle, in terms of the extended Riemann Siegel functions using a contour integral surrounding the region of the zeroes and poles, is the imaginary part of the negative logarithm shown below
+
+\begin{align}
+N(T) - P(T) &= [\frac{1}{2\pi} (-\Im(log(\zeta(s))) \Big|_{a}) ] \\
+ &= [\frac{1}{2\pi} (-\Im(-i\theta_{ext}(s) + log(Z_{ext}(s)))) \Big|_{a}) ]  \\
+&= [\frac{1}{2\pi} (\theta_{ext}(s) - \Im(log(Z_{ext}(s)))) \Big|_{a}) ] \label {eq:logzeta_ext}
+\end{align}
+
+where (i) N is number of zeroes, (ii) P is the number of poles and (iii) the definite integral is a given contour integral (including along the imaginary axis from the real axis up to imaginary coordinate T). 
+
+Equation \eqref {eq:logzeta_ext}  compared to equation \eqref {eq:numzero} places a different emphasis on $\theta_{ext}(s)$ (compared to $\theta(t)$) because of the use of $\Im(log(Z_{ext}(s))$ rather than $\Im(log(\zeta(s))$. In equation \eqref {eq:logzeta_ext} the net zero count is based on destructive/constructive interference between $\theta_{ext}(s)$ and $\Im(log(Z_{ext}(s))$ above and below the critical line whereas in equation \eqref {eq:numzero} S(t) produces fluctuations of counts of zeroes about the average behaviour $\frac{\theta(t)}{\pi}$.
+
+Two important points, firstly looking at the behaviour of $\theta_{ext}(s)$ across the critical strip for the Davenport-Heilbronn counterexample (12) and the Riemann Zeta function (3,4) indicates that $\frac{\theta_{ext}(s)}{\pi}$ does indeed count the available number of zeroes but $\Im(log(Z_{ext}(s))$ has a strong role in modifying the spacings between non-trivial zeroes away from Gram points in the case of the Riemann Zeta function. Hence the description of S(t) as an error term to the average behaviour has applicability and the explicit correspondence (using the discontinuous version of $\Im(log(Z_{ext}(s)))$
+
+
+\begin{equation}
+\Im(log(Z_{ext}(s))  \equiv -\pi S(t) \thinspace (mod \thinspace 2\pi )  \label {eq:mod}
+\end{equation}
+
+where the $2\pi$ bound occurs over the interval $-\pi$ to $\pi$ and the modulo behaviour of $Z_{ext}(s)$ is due the presence of an explicit square root function. The continuous version of $\Im(log(Z_{ext}(s))$ and S(t) are derived by adding $\pi$ phase increments at each branch point discontinuity results (and $2\pi$ where $\Im(log(Z_{ext}(s))$ function reflects at the $\pm\pi$ modulo bound) in a continuous function with trend $\theta_{ext}(s)$.
+
+Secondly, the equivalence of the the branch points in equation \eqref {eq:mod} with  $\Im(log(Z_{ext}(s))$ and $\Im(log(\zeta(s))$ critically depends on the square root function equation \eqref {eq:zext} being explicitly calculated first rather than the log(sqrt) simplification being employed. 
+
+##Two versions of extended Riemann Siegel function analogues for the partial Euler Product
+
+As exploited by (1,2) and others, there are large peaks in the Riemann Zeta function on the critical line, co-incident with similar sized peaks in the partial Euler Product 
+
+\begin{equation}
+\zeta_{EP}(s) = {\Large\prod_{\rho=2}^P} \frac{1}{(1-1/\rho^{s})} \qquad \text{for } P << \infty \label {eq:EP}
+\end{equation}
+
+when many $\rho^{s} \approx 1$ at the same value of t.
+
+As will be observed in the following graphs, $\Im(\log(\zeta_{EP}(s)))$ behaves approximately using the lowest primes, as a finite $P^{(1-s)}$ modulated version of S(t) bounded by $(-pi,pi)$ which has weakening resolution of $\zeta(0.5+it)$ zeroes at high t except for Rosser rule violations.
+
+### 1. The empirical functional equation ratio version 
+
+Given the partial Euler product equation \eqref {eq:EP} the following empirical functional equation can be defined
+
+\begin{equation}
+\zeta_{EP}(s) = \Big(\frac{\zeta_{EP}(s)}{\zeta_{EP}(1-s)}\Big) \cdot \zeta_{EP}(1-s)
+\end{equation}
+
+Using the above definitions, the following extended Riemann Siegel function $Z_{ext}(s,ratio)$ and $\theta_{ext}(s,ratio)$ result, 
+
+\begin{align}
+\theta_{extEP}(s,ratio) &= \Im\Big(log\Big(\sqrt{\frac{\zeta_{EP}(1-s)abs\big(\frac{\zeta_{EP}(s)}{\zeta_{EP}(1-s)}\big)}{\zeta_{EP}(s)}}\Big)\Big) \\
+&= -\frac{1}{2}\Im\Big(log\Big(\frac{\zeta_{EP}(s)}{\zeta_{EP}(1-s)}\Big)\Big)\label{eq:thetaextratio} 
+\end{align}
+
+\begin{align}
+Z_{extEP}(s,ratio) &= \sqrt{\zeta_{EP}(s)*\zeta_{EP}(1-s)*abs\Big(\frac{\zeta_{EP}(s)}{\zeta_{EP}(1-s)}\Big)} \label{eq:zextratio}
+\end{align}
+
+This expression has the symmetry property $\Im(Z_{ext}(0.5+it,ratio)) = 0$ in common with $\Im(Z_{ext}(0.5+it)) = 0$ which is aesthetic but adds no information on the positions of the zeroes.
+
+### 2. The approximate functional equation hybrid version 
+
+To gain more insight on the non-trivial zeroes behaviour, in this second version, the partial Euler product equation is jointly used with the multiplier function in the RHS of the exact Riemann Zeta functional equation \eqref {eq:func} via the approximate functional equation
+
+\begin{equation}
+\zeta_{EP}(s) \approx \Big(2^s\pi^{s-1}sin(\frac{\pi s}{2})\Gamma(1-s)\Big) \cdot \zeta_{EP}(1-s)
+\end{equation}
+
+where potentially there is a calculational benefit (as shown below) with employing the true functional equation multiplier.
+
+Using the above definitions, the following extended Riemann Siegel function $Z_{ext}(s,hybrid)$ and $\theta_{ext}(s,hybrid)$ result, 
+
+\begin{align}
+\theta_{extEP}(s,hybrid) &= \Im\Big(log\Big(\sqrt{\frac{\zeta_{EP}(1-s)abs(2^s\pi^{s-1}sin(\frac{\pi s}{2})\Gamma(1-s))}{\zeta_{EP}(s)}}\Big)\Big) \\
+&= -\frac{1}{2}\Im\big(log(2^s\pi^{s-1}sin(\frac{\pi s}{2})\Gamma(1-s))\big) \\
+&= \theta_{ext}(s) \label{eq:thetaexthyb}
+\end{align}
+
+\begin{align}
+Z_{extEP}(s,hybrid) &= \sqrt{\zeta_{EP}(s)*\zeta_{EP}(1-s)*abs(2^s\pi^{s-1}sin(\frac{\pi s}{2})\Gamma(1-s))} \\
+&= \sqrt{\zeta_{EP}(s)*\frac{\zeta_{EP}(s)}{(2^s\pi^{s-1}sin(\frac{\pi s}{2})\Gamma(1-s))}*abs(2^s\pi^{s-1}sin(\frac{\pi s}{2})\Gamma(1-s))} \\
+&= \sqrt{\frac{\zeta_{EP}(s)^2}{(2^s\pi^{s-1}sin(\frac{\pi s}{2})\Gamma(1-s))}*abs(2^s\pi^{s-1}sin(\frac{\pi s}{2})\Gamma(1-s))}\label{eq:zexthyb}
+\end{align}
+
+As will be shown in the next section, $\Im(\log(Z_{extEP}(s,hybrid)))$ behaves approximately using the lowest primes, as a $P^{(1-s)}$ modulated horizontal line with discontinuities approximating to first order the location of the Riemann Zeta non-trivial zeroes. It is noted that the branch points of $\Im(\log(Z_{extEP}(s,hybrid)))$ only identify first order shifts in Gram points if the calculation inside the square root function of equation \eqref {eq:zexthyb} is completed first. 
+
+###Behaviour of partial Euler product based extended Riemann Siegel Z functions, on the critical line
+
+Figures 1-2 show below the behaviour of the Riemann Zeta function, the extended Riemann Siegel Z function and the partial Euler Product based versions (using 1000 primes) on the critical line for t in the intervals t=(273,285) \& (6820045,6820055) near the first Gram rule and Rosser rule violations respectively. These rule violations (13) can also be described as occurring near critical line points where ($\pi|S(t)| > \pi$) and ($\pi|S(t)| > 2\pi$) respectively. The calculations were conducted using the Julia language (14) with the Riemann Zeta non-trivial zeroes values extracted from the LMFDB website (15).
+
+```{r, fig1, echo=FALSE, cache=TRUE, fig.width=7, fig.height=4.5,  fig.keep='high', warning=FALSE }
+
+dir_loc <- "/home/john/bear/Projects/sampling-investigations/julia/"
+
+read_fn <- function(dir_loc,filen){
+  
+  filenn <- paste0(dir_loc,filen)
+  
+  dread <- read.table(filenn,
+                       sep=",", header=F,row.names=NULL)
+}
+
+
+par(mfrow=c(1,1))
+xsf <- seq(273,285,l=12001)
+
+df2 <- read_fn(dir_loc,"outfile_search_zeroes_0_5_start_275_p001_size1000.dat")
+df2[,"V1"] <- as.numeric(gsub("[(]", "", df2[,1]))
+df2[,"V15"] <- as.numeric(gsub("[)]", "", df2[,15]))
+
+dfy <- read.csv(paste0(dir_loc,"zetazeros.csv"),sep=" ",header=FALSE,colClasses = c("numeric","double"))
+dfy[,"V1"] <- as.numeric(dfy[,1])
+
+df <- read_fn(dir_loc,"outfile_search_zeta_0_5_start_273.dat")
+df[,"V1"] <- as.numeric(gsub("[(]", "", df[,1]))
+df[,"V5"] <- as.numeric(gsub("[)]", "", df[,5]))
+
+
+plot(x=xsf,y=abs(df[,2]+1i*df[,3]),col=5,typ="l",xlab="(a) imag part s=(0.5+it) line",ylab="abs(function) value",ylim=c(-1*pi,3*pi),lwd=2)#abs(zeta) 
+lines(x=xsf,y=df[,4],col=3,lwd=2,lty=1)#im(log(zeta))
+# lines(x=xsf,y=abs(df2[,10]+1i*df2[,11]),col=2,lwd=2,lty=6)#abs(Z_ratio)
+lines(x=xsf,y=abs(df2[,4]+1i*df2[,5]),col=2,lwd=2,lty=6)#abs(Z_hybrid)
+abline(v=dfy[,2],lty=3);abline(h=c(-pi,-pi/2,pi,pi/2),lty=3)#zeta zeroes and pi bounds
+lines(x=xsf,y=Im(log(df2[,2]+1i*df2[,3])),col=6,lwd=2)#im(log(EP))
+lines(x=xsf,y=Im(log(df2[,10]+1i*df2[,11])),col="brown",lwd=2)#im(log(Z_ratio))
+lines(x=xsf,y=df2[,6],col=1,lwd=2)#im(log(Z_hybrid))
+
+
+legend("topleft", legend = c("|zeta(s)|","|Z_ext_hybrid_1000_primes|",
+                             "Im(log(zeta(s)))", 
+                             "Im(log(EP_1000_primes))","Im(log(Z_ext_ratio_1000_primes))","zeta(s) zeroes (vertical lines)","Im(log(Z_ext_hybrid_1000_primes))"),
+  col = c("cyan","red","green","magenta","brown","black","black"),  pch = -1, lty = c(1,2,1,2,6,3,1), lwd = 2, cex = 0.8)
+
+
+add_2logphase <- function(x,y)  {
+  
+  sum <- -pi  
+  sqadd_pos <- 0
+  
+  
+  for (i in 1:length(x)) {
+    if(i == 1 ) {sqadd_pos[i] <- sum}
+    # if(x[i] <= .002 ) {sqadd_pos[i] <- sum}
+    else { 
+      test <- ((y[i]))
+      testp <- ifelse(x[i-1] != 0,((y[i-1])),test)
+      # if (abs(test-testp) >pi/2) print(paste(i,test-testp,test,testp,sum,"pos"))
+      # if (is.na(test)) print(paste(test-testp,test,testp,x[i],y[i],i))
+      if (test-testp > pi ) {flag <- 1;sum <- sum+2*pi;sqadd_pos[i] <- sum}
+      if (test-testp < -pi) {flag <- 1;sum <- sum-2*pi;sqadd_pos[i] <- sum}
+      else {flag <- 0; sqadd_pos[i] <- sum}
+    }
+  }
+  sum <- pi
+  sqadd_neg <- 0
+  
+  for (i in 1:length(x)) {
+    if(i==1 ) {sqadd_neg[length(x)+1-i] <- sum}
+    # if(x[length(x)+1-i] >= -.002 ) {sqadd_neg[length(x)+1-i] <- sum}
+    else { 
+      
+      test <- ((y[length(x)+1-i]))
+      testp <- ifelse(x[length(x)+1-i+1] != 0,((y[length(x)+1-i+1])),test)
+      # print(paste(i,test-testp,test,testp,sum,"neg"))
+      
+      # if (test-testp < -pi ) {flag <- 1;sum <- sum+2*pi;sqadd_neg[length(x)+1-i] <- sum}
+      if (test-testp > pi ) {flag <- 1;sum <- sum-2*pi;sqadd_neg[length(x)+1-i] <- sum}
+      else {flag <- 0; sqadd_neg[length(x)+1-i] <- sum}
+    }
+  }
+  
+  sqadd <- 0
+  for (i in 1:length(x)) {
+    if (x[i] < 0) sqadd[i] <- sqadd_neg[i]
+    else sqadd[i] <- sqadd_pos[i]
+  }
+  
+  sqadd}
+
+
+
+
+
+
+dfy <- read.csv(paste0(dir_loc,"zetazeros_6820045"),sep=" ",header=FALSE,colClasses = c("numeric","double"))
+dfy[,"V1"] <- as.numeric(dfy[,1])
+
+df <- read_fn(dir_loc,"outfile_st_0_5_repeat.dat")
+
+df[,"V1"] <- as.numeric(gsub("[^0-9\\.-]", "", df[,1]))
+df[,"V10"] <- as.numeric(gsub("[^0-9\\.-]", "", df[,10]) )
+
+xse <- seq(6820048,6820052.5,l=4501)
+
+ro_p <- add_2logphase(xse,df[,9])
+
+df2 <- read_fn(dir_loc,"outfile_search_zeroes_0_5_start_6820048_p001_size1000.dat")
+df2[,"V1"] <- as.numeric(gsub("[(]", "", df2[,1]))
+df2[,"V15"] <- as.numeric(gsub("[)]", "", df2[,15]))
+
+dfp <- as.data.frame(cbind(xse,abs(df$V5+1i*df$V6),df2$V4,df2$V5,df2$V6))
+plot(x=dfp[,1],y=dfp[,2],col=5,typ="l",xlab="(b) imag part s=(0.5+it) line",ylab="abs(function) value",ylim=c(-1*pi,16*pi),lwd=2)#abs(zeta)
+lines(x=dfp[,1],y=df[,9]-ro_p-pi,col="grey",lwd=2)#-pi*S(t)
+lines(x=dfp[,1],y=df[,9],col=3,lwd=2,lty=1)#Im(log(zeta))
+lines(x=dfp[,1],y=dfp[,3],col=4,lwd=2)#Re(Z_hybrid)
+lines(x=dfp[,1],y=abs(dfp[,3]+1i*dfp[,4]),col=2,lwd=2,lty=6)#abs(Z_hybrid)
+abline(h=c(-pi,-pi/2,pi/2,pi,2*pi),lty=3);abline(v=dfy[8:18,2],lty=3)#zeroes and bounds
+lines(x=dfp[,1],y=Im(log(df2[,2]+1i*df2[,3])),col=6,lwd=2)#im(log(EP))
+# lines(x=df2[,1],y=df2[,8],col=5,lty=6,lwd=2);
+# lines(x=df2[,1],y=df2[,14],col=4,lty=6,lwd=2);
+lines(x=dfp[,1],y=dfp[,5],col=1,lwd=2)
+
+legend("topleft", legend = c("|zeta(s)|","|Z_ext_hybrid_1000_primes|","Re(Z_ext_hybrid_1000_primes)",
+                             "Im(log(zeta(s)))","-pi*S(t)",
+                             "Im(log(EP_1000_primes))","zeta(s) zeroes (vertical lines)","Im(log(Z_ext_hybrid_1000_primes))"),
+  col = c("cyan","red","blue","green","grey","magenta","black","black"),  pch = -1, lty = c(1,6,1,1,1,1,3,1), lwd = 2, cex = 0.8)
+
+
+```
+
+***Figure 1. The behaviour of $|\zeta(0.5+it)|$, $\Im(log(\zeta(0.5+it)))$ and partial Euler Product based Riemann Siegel Z function estimates, using first 1000 primes, on the critical strip, around the first violations of Grams and Rosser rules.***
+
+Included in the figures are
+
+(i) $|\zeta(0.5+it)|$, $\Im(log(\zeta(0.5+it)))$
+(ii) the absolute and real components of $Z_{extEP}(s,hybrid)$,
+(iii) $\Im(\log(Z_{extEP}(s,hybrid)))$ and $\Im(\log(\zeta EP(s)))$, 
+(iv) $-\pi S(t)$ in (b) where ($-\pi S(t)$ and $\Im(\log(Z_{extEP}(s,hybrid)))$ are identical in (a) except between the $2\pi$ discontinuity in $\Im(\log(Z_{extEP}(s,hybrid)))$ and the non-trivial zero after the large peak), and
+(v) vertical lines at the positions of the known Riemann Zeta non-trivial zeroes.
+
+Firstly, using only the lowest primes, it can be seen that the $|Z_{extEP}(s,hybrid)|$ lineshape is approximately similar to the $|\zeta(s)|$ lineshape except with some noticeable modulation components of frequency ~ $P^{1-s}$ understandable from equation \eqref {eq:expansion} (where P is the maximum prime used in the calculation).
+
+Secondly, $\Im(\log(\zeta EP(s)))$ at low t (see (a)), follows closely $\Im(log(\zeta(0.5+it)))$ but then becomes less distinct at higher t (see (b)) except for discontinuities near the Rosser rule violation point.
+
+Thirdly, $\Im(\log(Z_{extEP}(s,hybrid)))$ provides clear discontinuities near the Riemann Zeta non-trivial zeroes at both the first Gram rule and Rosser rule violation regions. These approximations of the zeroes positions include significant first order corrections from the Gram points with little calculational overhead. The discontinuities correspond to the zeros of $\Re(Z_{extEP}(s,hybrid)$.
+
+The $\Im(\log(Z_{extEP}(s,hybrid)))$ values appear to be bounded in the interval $(-\pi/2,\pi/2)$ with discontinuities ~$\pi$ and a smaller modulation component of frequency ~ $P^{1-s}$. The basic algorithm for detecting the approximate $\zeta(s)$ zeroes location therefore involves detecting value changes in $\Im(\log(Z_{extEP}(s,hybrid)))$ exceeding $\pi/2$ with consecutive points space 0.001 apart, where the spacing would be decreased higher up the critical line. Again the calculation inside the square root of equation \eqref {eq:zexthyb} must be explicitly performed first before taking the imaginary part of the logarithm of $Z_{extEP}(s,hybrid)$ otherwise the branch points will close to $\theta_{ext}(s)$ values rather than $\zeta(s)$ zeroes.
+
+In Figures 2 \& 3, the performance of $Z_{extEP}(s,hybrid)$ is further evaluated. Figure 2 presents the partial Euler Product Riemann Siegel Z function results for another large Riemann Zeta critical line peak two orders of magnitude further up the critical line around t=445,575,490, where $\Im(\log(Z_{extEP}(s,hybrid)))$ continues to maintain good first order estimates of the zero locations. 
+
+```{r, fig2, echo=FALSE, cache=TRUE, fig.width=7, fig.height=5,  fig.keep='high', warning=FALSE }
+
+ xsf <- seq(445575483,445575497,l=14001)
+
+
+
+df2 <- read_fn(dir_loc,"outfile_search_zeroes_0_5_start_445575490_p001_size1000.dat")
+df2[,"V1"] <- as.numeric(gsub("[(]", "", df2[,1]))
+df2[,"V15"] <- as.numeric(gsub("[)]", "", df2[,15]))
+
+df <- read_fn(dir_loc,"outfile_search_zeta_0_5_start_445575490.dat")
+df[,"V1"] <- as.numeric(gsub("[(]", "", df[,1]))
+df[,"V3"] <- as.numeric(gsub("[)]", "", df[,3]))
+
+dfy <- read.csv(paste0(dir_loc,"zetazeros_445575490"),sep=" ",header=FALSE,colClasses = c("numeric","double"))
+dfy[,"V1"] <- as.numeric(dfy[,1])
+
+plot(x=df[,1],y=abs(df[,2]+1i*df[,3]),col=5,lwd=2,typ="b",xlab="imag part s=(0.5+it) line",ylab="abs(function) value",xlim=c( 445575490,445575496),ylim=c(0,130))
+lines(x=xsf,y=df2[,4],col=4,lwd=1)
+lines(x=xsf,y=df2[,6],col=1,lwd=2)
+lines(x=xsf,y=abs(df2[,4]+1i*df2[,5]),col=6,lwd=2,lty=6)
+ abline(h=0,lty=3); abline(v=dfy[,2],lty=3)
+
+ legend("topright", legend = c("|zeta(s)|","|Z_ext_hybrid_1000_primes|","Re(Z_ext_hybrid_1000_primes)",
+                             "Im(log(Z_ext_hybrid_1000_primes))","zeta(s) zeroes (vertical lines)"),
+  col = c("cyan","red","blue","black","black"),  pch = c(1,-1,-1,-1,-1), lty = c(1,6,1,1,3), lwd = 2, cex = 0.8)
+
+
+
+```
+
+***Figure 2. The behaviour of the partial Euler Product based Riemann Siegel Z function estimates, using first 1000 primes, higher on the critical strip, around t=445,557,549.***
+
+
+
+```{r, fig3, echo=FALSE, cache=TRUE, fig.width=7, fig.height=4.5,  fig.keep='high', warning=FALSE }
+
+dfy <- read.csv(paste0(dir_loc,"zetazeros_6820045"),sep=" ",header=FALSE,colClasses = c("numeric","double"))
+dfy[,"V1"] <- as.numeric(dfy[,1])
+
+df <- read_fn(dir_loc,"outfile_st_0_5_repeat.dat")
+
+df[,"V1"] <- as.numeric(gsub("[^0-9\\.-]", "", df[,1]))
+df[,"V10"] <- as.numeric(gsub("[^0-9\\.-]", "", df[,10]) )
+
+xse <- seq(6820048,6820052.5,l=4501)
+
+ro_p <- add_2logphase(xse,df[,9])
+
+df2 <- read_fn(dir_loc,"outfile_search_zeroes_0_5_start_6820048_p001_size100000.dat")
+df2[,"V1"] <- as.numeric(gsub("[(]", "", df2[,1]))
+df2[,"V15"] <- as.numeric(gsub("[)]", "", df2[,15]))
+
+dfp <- as.data.frame(cbind(xse,abs(df$V5+1i*df$V6),df2$V4,df2$V5,df2$V6))
+plot(x=dfp[,1],y=dfp[,2],col=5,typ="l",xlab="imag part s=(0.5+it) line",ylab="abs(function) value",ylim=c(-1*pi,16*pi),lwd=2)#abs(zeta)
+lines(x=dfp[,1],y=df[,9]-ro_p-pi,col="grey",lwd=2)#-pi*S(t)
+lines(x=dfp[,1],y=df[,9],col=3,lwd=2,lty=1)#Im(log(zeta))
+lines(x=dfp[,1],y=dfp[,3],col=4,lwd=2)#Re(Z_hybrid)
+lines(x=dfp[,1],y=abs(dfp[,3]+1i*dfp[,4]),col=2,lwd=2,lty=6)#abs(Z_hybrid)
+abline(h=c(-pi,-pi/2,pi/2,pi,2*pi),lty=3);abline(v=dfy[8:18,2],lty=3)#zeroes and bounds
+lines(x=dfp[,1],y=Im(log(df2[,2]+1i*df2[,3])),col=6,lwd=2)#im(log(EP))
+# lines(x=df2[,1],y=df2[,8],col=5,lty=6,lwd=2);
+# lines(x=df2[,1],y=df2[,14],col=4,lty=6,lwd=2);
+lines(x=dfp[,1],y=dfp[,5],col=1,lwd=2)
+
+legend("topleft", legend = c("|zeta(s)|","|Z_ext_hybrid_100000_primes|","Re(Z_ext_hybrid_100000_primes)",
+                             "Im(log(zeta(s)))","-pi*S(t)",
+                             "Im(log(EP_100000_primes))","zeta(s) zeroes (vertical lines)","Im(log(Z_ext_hybrid_100000_primes))"),
+  col = c("cyan","red","blue","green","grey","magenta","black","black"),  pch = -1, lty = c(1,6,1,1,1,1,3,1), lwd = 2, cex = 0.8)
+
+```
+
+***Figure 3. The behaviour of $|\zeta(0.5+it)|$, $\Im(log(\zeta(0.5+it)))$ and partial Euler Product based Riemann Siegel Z function estimates, using first 100,000 primes, on the critical strip, around the first violation of Rosser rule.***
+
+Figure 3 uses 100000 primes near the first Rosser rule violation (13) to show the change in behaviour as more primes are included in the partial Euler Product calculation. It can be seen in comparison to figure 1(b), that while the $\Im(\log(Z_{extEP}(s,hybrid)))$ discontinuties get closer to the $\zeta(s)$ zeroes near the large peaks, some other of the discontinuities move further away from some $\zeta(s)$ zeroes near small Riemann Zeta peaks. So the method is not an asymptotic estimate of all the Riemann Zeta zeroes but only provides the first order shift from the Gram points.  
+
+###Relationship and behaviour of large Riemann Zeta function peaks on the s=1 and s=1/2 lines
+
+It can be readily observed that large peaks on the critical line also have dominant peaks on the s=1 line. Using the partial Euler Product approach these behaviour of the contribution of the lowest primes to the peak size and width can be investigated. Figures 4 and 5 display the evolution of the partial Euler Product extended Riemann Siegel Z function as the number of primes is adjusted upward for t ~ 6,820,048 and 445,575,490, on the s=1 line and the critical line.
+
+Included in the figures are
+
+(i) the real components of $Z_{extEP}(s,hybrid)$ using the first 1, 4, 50 and 1000 primes respectively,
+(ii) $|\zeta(s)|$, and
+(iii) vertical lines at the positions of the known Riemann Zeta non-trivial zeroes.
+
+On the s=1 line, the two figures illustrate that the first 4 primes and their interaction in the partial Euler Product can explain a significant portion of both the large peaks. Beyond the first 50 primes, there is little contribution to the peak height. This interpretation would be consistent with the convergence of the Euler Product on the s=1 line well away from the real axis. The width (periodicity) of $Z_{extEP}(s,hybrid)$ components under the peak only slightly changes as more primes are used in the partial Euler Product. 
+
+On the critical line, the two figures consistently show the height of $\Re(Z_{extEP}(s,hybrid))$ using the first 4 primes is ~20% of the final height, much less than was the case on the s=1 line. It can also be seen that when using only 50 primes the peak height greatly exceeds the final height.This suggests that adding further primes results in destructive interaction effects within the partial Euler Product resulting in a lower final peak height. So more primes contribute to the large peak height on the critical line which can also explain larger peak sizes as $t \rightarrow \infty$. Also in contrast to the s=1 line, the width of the $\Re(Z_{extEP}(s,hybrid))$ component under the main peak grows (from using 4 to 50 primes) to exclude the neighbouring components and hence moves the eventual position of Riemann Zeta zeroes away from the Gram points. Further work is needed to properly understand the progression in number of significantly contributing primes to the signal strength as $t \rightarrow \infty$. 
+
+
+
+```{r, fig4, echo=FALSE, cache=TRUE, fig.width=7, fig.height=5,  fig.keep='high', warning=FALSE }
+
+
+par(mfrow=c(1,2))
+
+df <- read_fn(dir_loc,"outfile_st_1_0.dat")
+
+df[,"V1"] <- as.numeric(gsub("[^0-9\\.-]", "", df[,1]))
+df[,"V10"] <- as.numeric(gsub("[^0-9\\.-]", "", df[,10]) )
+
+xse <- seq(6820048,6820052.5,l=4501)
+
+df2 <- read_fn(dir_loc,"outfile_search_zeroes_1_0_start_6820048_p001_size1000.dat")
+df2[,"V1"] <- as.numeric(gsub("[(]", "", df2[,1]))
+df2[,"V15"] <- as.numeric(gsub("[)]", "", df2[,15]))
+
+dfp <- as.data.frame(cbind(xse,abs(df$V5+1i*df$V6),df2$V4,df2$V5,df2$V6))
+plot(x=dfp[,1],y=dfp[,2],col=1,typ="l",xlab="(a) imag part s=(1+it) line",ylab="abs(function) value",ylim=c(-0*pi,3*pi),lwd=2)
+lines(x=df2[,1],y=df2[,12],col="brown",lty=6,lwd=2);
+lines(x=dfp[,1],y=dfp[,3],col=2,lwd=2,lty=2)
+lines(x=df2[,1],y=df2[,8],col=5,lty=6,lwd=2);
+lines(x=df2[,1],y=df2[,14],col=4,lty=6,lwd=2);
+
+legend("topleft", legend = c("|Re(Z_ext_first_prime)|","|Re(Z_ext_4_primes)|","|Re(Z_ext_50_primes)|","|Re(Z_ext_1000_primes)|","|zeta(s)|"),
+  col = c("cyan","blue","brown","red","black" ),  pch = -1, lty = c(6,6,6,2,1), lwd = 2, cex = 0.6)
+
+res <- 0.5
+
+dfy <- read.csv(paste0(dir_loc,"zetazeros_6820045"),sep=" ",header=FALSE,colClasses = c("numeric","double"))
+dfy[,"V1"] <- as.numeric(dfy[,1])
+
+df <- read_fn(dir_loc,"outfile_st_0_5_repeat.dat")
+
+df[,"V1"] <- as.numeric(gsub("[^0-9\\.-]", "", df[,1]))
+df[,"V10"] <- as.numeric(gsub("[^0-9\\.-]", "", df[,10]) )
+
+xse <- seq(6820048,6820052.5,l=4501)
+
+df2 <- read_fn(dir_loc,"outfile_search_zeroes_0_5_start_6820048_p001_size1000.dat")
+df2[,"V1"] <- as.numeric(gsub("[(]", "", df2[,1]))
+df2[,"V15"] <- as.numeric(gsub("[)]", "", df2[,15]))
+
+dfp <- as.data.frame(cbind(xse,abs(df$V5+1i*df$V6),df2$V4,df2$V5,df2$V6))
+plot(x=dfp[,1],y=dfp[,2],col=1,typ="l",xlab="(b) imag part s=(0.5+it) line",ylab="abs(function) value",ylim=c(-0*pi,30*pi),lwd=2)
+lines(x=dfp[,1],y=dfp[,3],col=2,lwd=2,lty=2)
+lines(x=dfp[,1],y=abs(dfp[,3]+1i*dfp[,4]),col=3,lwd=2,lty=2)
+abline(h=0,lty=3);abline(v=dfy[8:18,2],lty=3)
+lines(x=df2[,1],y=df2[,8],col=5,lty=6,lwd=2);
+lines(x=df2[,1],y=df2[,14],col=4,lty=6,lwd=2);
+lines(x=dfp[,1],y=dfp[,5],col=6,lwd=2)
+lines(x=df2[,1],y=df2[,12],col="brown",lty=6,lwd=2);
+
+legend("topleft", legend = c("|Re(Z_ext_first_prime)|","|Re(Z_ext_4_primes)|","|Re(Z_ext_50_primes)|","|Re(Z_ext_1000_primes)|","|zeta(s)|", 
+                             "zeta(s) zeroes"),
+  col = c("cyan","blue","brown","red","black","black" ),  pch = -1, lty = c(6,6,6,2,1,3), lwd = 2, cex = 0.6)
+
+
+
+```
+
+***Figure 4. Change in height of large peak of $\zeta(s)$ by examining the partial Euler Product Riemnann Siegel Z function for different numbers of contributing primes along (a) s=(1+$i*t$) and (b) s=(0.5+$i*t$) near the first Rosser rule violation.***
+
+
+```{r, fig5, echo=FALSE, cache=TRUE, fig.width=7, fig.height=5,  fig.keep='high', warning=FALSE }
+
+
+par(mfrow=c(1,2))
+
+ xsf <- seq(445575483,445575497,l=14001)
+
+
+
+df2 <- read_fn(dir_loc,"outfile_search_zeroes_1_0_start_445575490_p001_size1000.dat")
+df2[,"V1"] <- as.numeric(gsub("[(]", "", df2[,1]))
+df2[,"V15"] <- as.numeric(gsub("[)]", "", df2[,15]))
+
+df <- read_fn(dir_loc,"outfile_search_zeta_1_0_start_445575490.dat")
+df[,"V1"] <- as.numeric(gsub("[(]", "", df[,1]))
+df[,"V3"] <- as.numeric(gsub("[)]", "", df[,3]))
+
+dfy <- read.csv(paste0(dir_loc,"zetazeros_445575490"),sep=" ",header=FALSE,colClasses = c("numeric","double"))
+dfy[,"V1"] <- as.numeric(dfy[,1])
+
+plot(x=df[,1],y=abs(df[,2]+1i*df[,3]),col=1,lwd=2,typ="l",xlab="imag part s=(0.5+it) line",ylab="abs(function) value",xlim=c( 445575490,445575492.5),ylim=c(0,10))
+lines(x=xsf,y=df2[,4],col=2,lwd=2,lty=6)
+ # abline(h=0,lty=3); abline(v=dfy[,2],lty=3)
+lines(x=df2[,1],y=df2[,8],col=5,lty=6,lwd=2);
+lines(x=df2[,1],y=df2[,14],col=4,lty=6,lwd=2);
+lines(x=df2[,1],y=df2[,12],col="brown",lty=6,lwd=2);
+
+legend("topleft", legend = c("|Re(Z_ext_first_prime)|","|Re(Z_ext_4_primes)|","|Re(Z_ext_50_primes)|","|Re(Z_ext_1000_primes)|","|zeta(s)|"),
+  col = c("cyan","blue","brown","red","black"),  pch = -1, lty = c(6,6,6,2,1), lwd = 2, cex = 0.6)
+
+ xsf <- seq(445575483,445575497,l=14001)
+
+
+
+df2 <- read_fn(dir_loc,"outfile_search_zeroes_0_5_start_445575490_p001_size1000.dat")
+df2[,"V1"] <- as.numeric(gsub("[(]", "", df2[,1]))
+df2[,"V15"] <- as.numeric(gsub("[)]", "", df2[,15]))
+
+df <- read_fn(dir_loc,"outfile_search_zeta_0_5_start_445575490.dat")
+df[,"V1"] <- as.numeric(gsub("[(]", "", df[,1]))
+df[,"V3"] <- as.numeric(gsub("[)]", "", df[,3]))
+
+dfy <- read.csv(paste0(dir_loc,"zetazeros_445575490"),sep=" ",header=FALSE,colClasses = c("numeric","double"))
+dfy[,"V1"] <- as.numeric(dfy[,1])
+
+plot(x=df[,1],y=abs(df[,2]+1i*df[,3]),col=1,lwd=2,typ="l",xlab="imag part s=(0.5+it) line",ylab="abs(function) value",xlim=c( 445575490,445575492.5),ylim=c(0,300))
+lines(x=xsf,y=df2[,4],col=2,lwd=2,lty=6)
+ abline(h=0,lty=3); abline(v=dfy[,2],lty=3)
+lines(x=df2[,1],y=df2[,8],col=5,lty=6,lwd=2);
+lines(x=df2[,1],y=df2[,14],col=4,lty=6,lwd=2);
+lines(x=df2[,1],y=df2[,12],col="brown",lty=6,lwd=2);
+lines(x=df2[,1],y=df2[,6],col=6,lwd=1)
+
+legend("topleft", legend = c("|Re(Z_ext_first_prime)|","|Re(Z_ext_4_prime)|","|Re(Z_ext_50_primes)|","|Re(Z_ext_1000_primes)|","|zeta(s)|", 
+                             "zeta(s) zeroes"),
+  col = c("cyan","blue","brown","red","black","black" ),  pch = -1, lty = c(6,6,6,2,1,3), lwd = 2, cex = 0.6)
+
+
+```
+
+***Figure 5. Change in height of large peak of $\zeta(s)$ by examining the partial Euler Product Riemnann Siegel Z function for different numbers of contributing primes along (a) s=(1+$i*t$) and (b) s=(0.5+$i*t$) near t=445,575,490.***
+
+
+###Conclusions
+
+The extended Riemann Siegel Z function analogue of the partial Euler Product provides useful information on $\zeta(s)$ behaviour about (i) first order shifts in the distribution of Riemann Zeta zeroes on the critical line away from Grams rule and (ii) the contribution of the lowest primes to large peaks on the s=1 line and the critical line. 
+
+Using only the lowest primes and the function $2^s\pi^{s-1}sin(\frac{\pi s}{2})\Gamma(1-s)$ underlying the extended Riemann Siegel theta function, fast calculations of the first order shifts in the Riemann Zeta zeroes can be performed, which should aid Riemann Hypothesis testing. Due to the periodical nature of complex logarithms, to get the branch points of $\Im(log(Z_{extEP}(s,hybrid)))$ which align closest with the Riemann Zeta zeroes the order of calculation is found to be very important.
+
+
+###References
+
+1.  Odlyzko, A.M. (1992) The $10^{20}$-th zero of the Riemann zeta function and 175 million of   its neighbors. 
+http://www.dtc.umn.edu/~odlyzko/unpublished/zeta.10to20.1992.pdf
+
+2. Hiary G.A. (2011) Fast methods to compute the Riemann zeta function Ann. Math., 174-2, 891-946
+also available; https://people.math.osu.edu/hiary.1/fastmethods.html
+
+3. Martin, J.P.D. "Applying the Argument Principle to the extended Riemann Siegel function components of the Riemann Zeta function" (2016)
+http://dx.doi.org/10.6084/m9.figshare.4012290
+
+4. Martin, J.P.D. "Mapping the Extended Riemann Siegel Z Theta Functions about branch points in the complex plane" (2016)
+http://dx.doi.org/10.6084/m9.figshare.3813999
+
+
+5. Edwards, H.M. (1974). Riemann's zeta function. Pure and Applied Mathematics 58. New York-London: Academic Press. ISBN 0-12-242750-0. Zbl 0315.10035.
+
+6. Riemann, Bernhard (1859). "$\ddot{U}$ber die Anzahl der Primzahlen unter einer gegebenen Gr$\ddot{o}$sse". Monatsberichte der Berliner Akademie.. In Gesammelte Werke, Teubner, Leipzig (1892), Reprinted by Dover, New York (1953).
+
+7. Titchmarsh, E.C. (1986) The Theory of the Riemann Zeta Function. 2nd Revised (Heath-Brown, D.R. ) Edition, Oxford University Press, Oxford.
+
+8. Martin, J.P.D. (2017) "A normalisation of the ordinary Dirichlet Series in the lower half complex plane that has the equivalent normalised Riemann Zeta function as an detrended envelope function"
+http://dx.doi.org/10.6084/m9.figshare.4762339
+
+9. Martin, J.P.D. (2017) "A normalised extension of the first Chebyshev function in the lower half complex plane"
+http://dx.doi.org/10.6084/m9.figshare.5031575
+
+10. Berry, M. V. "The Riemann-Siegel Expansion for the Zeta Function: High Orders and Remainders." Proc. Roy. Soc. London A 450, 439-462, 1995.
+
+11. Martin, J.P.D. "Extended Riemann Siegel Theta function further simplified using functional equation factor, for the Riemann Zeta function" (2017)
+http://dx.doi.org/10.6084/m9.figshare.5735268
+
+12. Martin, J.P.D. "Counting the non-trivial zeroes, using extended Riemann Siegel function analogues, for 5-periodic Dirichlet Series which obey functional equations" (2017)
+http://dx.doi.org/10.6084/m9.figshare.5721085
+
+13. Brent, R.P. (1979) "On the zeros of the Riemann zeta function in the critical strip"
+Math. Comp. 33 , p1361-1372
+DOI: https://doi.org/10.1090/S0025-5718-1979-0537983-2
+
+14. Julia: A Fresh Approach to Numerical Computing. Jeff Bezanson, Alan Edelman, Stefan Karpinski and Viral B. Shah (2017) SIAM Review, 59: 65–98. 
+doi: 10.1137/141000671. http://julialang.org/publications/julia-fresh-approach-BEKS.pdf.
+
+15. The LMFDB Collaboration, Zeros of $\zeta(s)$, http://www.lmfdb.org/zeros/zeta/, (2018) , [Online; accessed 18 March 2018].
+
+
+##Appendix A: Basic Julia code used to calculate $\zeta_{EP}(s)$, $Z_{extEP}(s)$ etc
+
+\begin{verbatim}
+Pkg.update()
+#Pkg.add("Primes")
+using Primes
+import Primes: isprime, primes, primesmask, factor
+#Pkg.add("SpecialFunctions") #to add zeta
+using SpecialFunctions
+
+pr_list = primes(2,205010010)
+
+function euler_prod_search(real_s,imag_s,num_primes,pr_list)
+    # euler product zeta function
+    prod=1;prodm=1;
+    for i in 1:num_primes; prod=prod/(1-((pr_list[i]))^(-(real_s+im*imag_s)));end;
+    for i in 1:num_primes; prodm=prodm/(1-((pr_list[i]))^(-(1-(real_s+im*imag_s))));end;
+    z3 = (exp(log(2)*(real_s+imag_s*im)+log(pi)*(real_s+imag_s*im-1)+ifelse(imag_s>200,
+    pi/2*imag_s-log(2)+im/2*pi*(1-real_s),log(sin((real_s+imag_s*im)*pi/2)))+
+    ifelse(imag_s>200,1/2*log(2*pi)+((1-(real_s+imag_s*im))-1/2)*log((1-(real_s+imag_s*im)))-
+    (1-(real_s+imag_s*im))+1/12/(1-(real_s+imag_s*im))-
+    1/360/(1-(real_s+imag_s*im))^3,log(gamma(1-(real_s+imag_s*im))))))
+    z1 = prod
+    zm = prodm
+    z_prod = sqrt(z1^2*(1/z3)*abs(z3));
+    z_prodm = sqrt(z1*zm*abs(z1/zm));
+    z4 = 1/(1-((pr_list[1]))^(-(real_s+im*imag_s)));    z4_prod = sqrt(z4^2/z3*abs(z3))
+    z5 = z4/(1-((pr_list[2]))^(-(real_s+im*imag_s)));    z5_prod = sqrt(z5^2/z3*abs(z3))
+    z6 = z5/(1-((pr_list[3]))^(-(real_s+im*imag_s)));    z6_prod = sqrt(z6^2/z3*abs(z3))
+    z7 = z6/(1-((pr_list[4]))^(-(real_s+im*imag_s)));    z7_prod = sqrt(z7^2/z3*abs(z3))
+    theta_prod = sqrt(1/z3*abs(z3))
+    return (imag_s),real(z1),imag(z1),real(z_prod),imag(z_prod),imag(log(z_prod)),
+    imag(log(theta_prod)),real(z4_prod),imag(z4_prod),real(z_prodm),imag(z_prodm),
+    real(z6_prod),imag(z6_prod),real(z7_prod),imag(z7_prod)
+end
+
+
+outfile = "outfile_search_zeroes_0_5_start_6820048_p001_size1000.dat"
+
+
+f = open(outfile, "a");
+for i in 0:4500;
+        out = euler_prod_search(0.5,6820048+i/1000,1000,pr_list)
+        println(f,out);
+end;
+close(f);
+\end{verbatim}
+
