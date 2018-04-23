@@ -16,7 +16,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ##Executive Summary
 
-On the critical line, the extended Riemann Siegel Z function analogue of the partial Euler product containing the multiplier of the Riemann Zeta functional equation $Z_{extEP}(s) = \sqrt{\frac{\Large\Pi_{\rho < P}^P\big(\frac{1}{(1-1/\rho^{s})}\big)^2}{(2^s\pi^{s-1}sin(\frac{\pi s}{2})\Gamma(1-s)))}\cdot\Big|(2^s\pi^{s-1}sin(\frac{\pi s}{2})\Gamma(1-s))\Big|}$ exhibits branch points resulting in clear discontinuities in $arg(Z_{extEP}(s)) = \Im(log(Z_{extEP}(s)))$ which easily identify the first order shift from Gram's rule in the non-trivial zeroes positions, near all peaks large and small at high imaginary values.  On the s=1 line the calculations are convergent far away from the real axis, and the large peaks near Rosser rule violation points are decomposed into dominant contributions from the first few primes and their interactions within the Euler Product. 
+On the critical line, the extended Riemann Siegel Z function analogue of the partial Euler product containing the multiplier of the Riemann Zeta functional equation $Z_{extEP}(s) = \sqrt{\frac{\Large\Pi_{\rho < P}^P\big(\frac{1}{(1-1/\rho^{s})}\big)^2}{(2^s\pi^{s-1}sin(\frac{\pi s}{2})\Gamma(1-s)))}\cdot\Big|(2^s\pi^{s-1}sin(\frac{\pi s}{2})\Gamma(1-s))\Big|}$ exhibits branch points resulting in clear discontinuities in $arg(Z_{extEP}(s)) = \Im(log(Z_{extEP}(s)))$ which easily identify the first order shift from Gram's rule in the non-trivial zeroes positions, near all peaks large and small at high imaginary values (even at t~$10^{31}$).  On the s=1 line the calculations are convergent far away from the real axis, and the large peaks near Rosser rule violation points are decomposed into dominant contributions from the first few primes and their interactions within the Euler Product. 
 
 ```{r, exec_new, echo=FALSE, cache=TRUE, fig.width=7, fig.height=4.8,  fig.keep='high', warning=FALSE }
 
@@ -526,7 +526,7 @@ Included in the figures are
 
 On the s=1 line, the two figures illustrate that the first 4 primes and their interaction in the partial Euler Product can explain a significant portion of both the large peaks. Beyond the first 50 primes, there is little contribution to the peak height. This interpretation would be consistent with the convergence of the Euler Product on the s=1 line well away from the real axis. The width (periodicity) of $Z_{extEP}(s,hybrid)$ components under the peak only slightly changes as more primes are used in the partial Euler Product. 
 
-On the critical line, the two figures consistently show the height of $\Re(Z_{extEP}(s,hybrid))$ using the first 4 primes is ~20% of the final height, much less than was the case on the s=1 line. It can also be seen that when using only 50 primes the peak height greatly exceeds the final height.This suggests that adding further primes results in destructive interaction effects within the partial Euler Product resulting in a lower final peak height. So more primes contribute to the large peak height on the critical line which can also explain larger peak sizes as $t \rightarrow \infty$. Also in contrast to the s=1 line, the width of the $\Re(Z_{extEP}(s,hybrid))$ component under the main peak grows (from using 4 to 50 primes) to exclude the neighbouring components and hence moves the eventual position of Riemann Zeta zeroes away from the Gram points. Further work is needed to properly understand the progression in number of significantly contributing primes to the signal strength as $t \rightarrow \infty$. 
+On the critical line, the two figures consistently show the height of $\Re(Z_{extEP}(s,hybrid))$ using the first 4 primes is ~20% of the final height, much less than was the case on the s=1 line. It can also be seen that when using only 50 primes the peak height greatly exceeds the final height.This suggests that adding further primes results in destructive interaction effects within the partial Euler Product resulting in a lower final peak height. So more primes contribute to the large peak height on the critical line which can also explain larger peak sizes as $t \rightarrow \infty$. Also in contrast to the s=1 line, the width of the $\Re(Z_{extEP}(s,hybrid))$ component under the main peak grows (from using 4 to 50 primes) to exclude the neighbouring components and hence moves the eventual position of Riemann Zeta zeroes away from the Gram points. 
 
 
 
@@ -613,7 +613,7 @@ df[,"V3"] <- as.numeric(gsub("[)]", "", df[,3]))
 dfy <- read.csv(paste0(dir_loc,"zetazeros_445575490"),sep=" ",header=FALSE,colClasses = c("numeric","double"))
 dfy[,"V1"] <- as.numeric(dfy[,1])
 
-plot(x=df[,1],y=abs(df[,2]+1i*df[,3]),col=1,lwd=2,typ="l",xlab="imag part s=(0.5+it) line",ylab="abs(function) value",xlim=c( 445575490,445575492.5),ylim=c(0,10))
+plot(x=df[,1],y=abs(df[,2]+1i*df[,3]),col=1,lwd=2,typ="l",xlab="imag part s=(1+it) line",ylab="abs(function) value",xlim=c( 445575490,445575492.5),ylim=c(0,10))
 lines(x=xsf,y=df2[,4],col=2,lwd=2,lty=6)
  # abline(h=0,lty=3); abline(v=dfy[,2],lty=3)
 lines(x=df2[,1],y=df2[,8],col=5,lty=6,lwd=2);
@@ -655,6 +655,99 @@ legend("topleft", legend = c("|Re(Z_ext_first_prime)|","|Re(Z_ext_4_prime)|","|R
 
 ***Figure 5. Change in height of large peak of $\zeta(s)$ by examining the partial Euler Product Riemnann Siegel Z function for different numbers of contributing primes along (a) s=(1+$i*t$) and (b) s=(0.5+$i*t$) near t=445,575,490.***
 
+Further work is needed to properly understand the progression in number of significantly contributing primes to the signal strength as $t \rightarrow \infty$. However, the technique does continue to work well at the highest t, when comparing to known $\zeta(s)$ data (1,2, 16, 17). For example, Figure 6 shows the partial Euler Product extended Riemann Siegel Z function behaviour at 39246764589894309155251169284104.0506 (~3.29e31) which has a Z(t) peak ~16244.8652, where the $Z_{extEP}(s,hybrid)$ calculations were performed using pari/gp software (18). The first order shifts in the riemann zeta zeroes on the critical line are well approximated (pink line) using only the first 1000 primes, with again the accompanying s=1 peak  being well described by the first 50 primes. In contrast, $\Im(log(\zeta_{EP}(s)))$ using the same first 1000 primes (black line) has badly lost resolution with only 4 discontinuities probably related to the Rosser rule violations near the peak.  
+
+
+```{r, fig6, echo=FALSE, cache=TRUE, fig.width=7, fig.height=5,  fig.keep='high', warning=FALSE }
+
+
+par(mfrow=c(1,2))
+
+ xsf <- seq(1/2000.,2,l=4000)
+
+
+
+df2 <- read_fn(dir_loc,"large_T_1_Z")
+df2[,"V1"] <- as.numeric(gsub("[ ]", "", df2[,1]))
+df2[,"V2"] <- as.numeric(gsub("[ ]", "", df2[,2]))
+df2[,"V3"] <- as.numeric(gsub("[ ]", "", df2[,3]))
+
+df3 <- read_fn(dir_loc,"large_T_1_Z_1")
+df3[,"V1"] <- as.numeric(gsub("[ ]", "", df3[,1]))
+df3[,"V2"] <- as.numeric(gsub("[ ]", "", df3[,2]))
+df3[,"V3"] <- as.numeric(gsub("[ ]", "", df3[,3]))
+
+df4 <- read_fn(dir_loc,"large_T_1_Z_4")
+df4[,"V1"] <- as.numeric(gsub("[ ]", "", df4[,1]))
+df4[,"V2"] <- as.numeric(gsub("[ ]", "", df4[,2]))
+df4[,"V3"] <- as.numeric(gsub("[ ]", "", df4[,3]))
+
+df50 <- read_fn(dir_loc,"large_T_1_Z_50")
+df50[,"V1"] <- as.numeric(gsub("[ ]", "", df50[,1]))
+df50[,"V2"] <- as.numeric(gsub("[ ]", "", df50[,2]))
+df50[,"V3"] <- as.numeric(gsub("[ ]", "", df50[,3]))
+
+
+dfy <- read.csv(paste0(dir_loc,"large_T_zetazeroes.csv"),sep=",",header=TRUE,skip=1)
+dfy[,1] <- as.numeric(as.character(dfy[,1]))
+
+plot(x=xsf,y=abs(df2[,1]+1i*df2[,2]),col=1,lwd=2,typ="l",xlab="imag part s=(1+it) line ~3.92e31",ylab="abs(function) value",ylim=c(0,10))
+lines(x=xsf,y=df2[,1],col=2,lwd=2,lty=6)
+ # abline(h=0,lty=3); abline(v=dfy[,2],lty=3)
+lines(x=xsf,y=df3[,1],col=5,lty=6,lwd=2);
+lines(x=xsf,y=df4[,1],col=4,lty=6,lwd=2);
+lines(x=xsf,y=df50[,1],col="brown",lty=6,lwd=2);
+
+legend("topleft", legend = c("|Re(Z_ext_first_prime)|","|Re(Z_ext_4_primes)|","|Re(Z_ext_50_primes)|","|Re(Z_ext_1000_primes)|","|Z_ext_1000_primes|"),
+  col = c("cyan","blue","brown","red","black"),  pch = -1, lty = c(6,6,6,2,1), lwd = 2, cex = 0.6)
+
+
+
+
+df2 <- read_fn(dir_loc,"large_T_0_5_Z")
+df2[,"V1"] <- as.numeric(gsub("[ ]", "", df2[,1]))
+df2[,"V2"] <- as.numeric(gsub("[ ]", "", df2[,2]))
+df2[,"V3"] <- as.numeric(gsub("[ ]", "", df2[,3]))
+
+df3 <- read_fn(dir_loc,"large_T_0_5_Z_1")
+df3[,"V1"] <- as.numeric(gsub("[ ]", "", df3[,1]))
+df3[,"V2"] <- as.numeric(gsub("[ ]", "", df3[,2]))
+df3[,"V3"] <- as.numeric(gsub("[ ]", "", df3[,3]))
+
+df4 <- read_fn(dir_loc,"large_T_0_5_Z_4")
+df4[,"V1"] <- as.numeric(gsub("[ ]", "", df4[,1]))
+df4[,"V2"] <- as.numeric(gsub("[ ]", "", df4[,2]))
+df4[,"V3"] <- as.numeric(gsub("[ ]", "", df4[,3]))
+
+df50 <- read_fn(dir_loc,"large_T_0_5_Z_50")
+df50[,"V1"] <- as.numeric(gsub("[ ]", "", df50[,1]))
+df50[,"V2"] <- as.numeric(gsub("[ ]", "", df50[,2]))
+df50[,"V3"] <- as.numeric(gsub("[ ]", "", df50[,3]))
+
+df <- read_fn(dir_loc,"large_T_0_5_EP")
+df[,"V1"] <- as.numeric(gsub("[ ]", "", df[,1]))
+df[,"V2"] <- as.numeric(gsub("[ ]", "", df[,2]))
+df[,"V3"] <- as.numeric(gsub("[ ]", "", df[,3]))
+
+
+dfy <- read.csv(paste0(dir_loc,"large_T_zetazeroes.csv"),sep=",",header=TRUE,skip=1)
+dfy[,1] <- as.numeric(as.character(dfy[,1]))
+
+plot(x=xsf,y=(df2[,1]),col=2,lwd=2,typ="l",xlab="imag part s=(0.5+it) line ~3.92e31",ylab="abs(function) value",ylim=c(-pi,20))
+lines(x=xsf,y=df2[,3],col=6,lwd=1)
+abline(h=0,lty=3); abline(v=dfy[,1]-19,lty=3)
+lines(x=xsf,y=df3[,1],col=5,lty=6,lwd=2);
+lines(x=xsf,y=df4[,1],col=4,lty=6,lwd=2);
+lines(x=xsf,y=df50[,1],col="brown",lty=6,lwd=2);
+lines(x=xsf,y=df[,3],col=1,lwd=2);
+
+legend("topleft", legend = c("|Re(Z_ext_first_prime)|","|Re(Z_ext_4_prime)|","|Re(Z_ext_50_primes)|","|Re(Z_ext_1000_primes)|","zeta(s) zeroes","imag(log(Z_ext_1000_primes))","imag(log(zetaEP(s)))"),
+  col = c("cyan","blue","brown","red","black","magenta","black" ),  pch = -1, lty = c(6,6,6,1,3,1,1), lwd = 2, cex = 0.6)
+
+
+```
+
+***Figure 6. Change in height of large peak of $\zeta(s)$ by examining the partial Euler Product Riemnann Siegel Z function for different numbers of contributing primes along (a) s=(1+$i*t$) and (b) s=(0.5+$i*t$) near t=3.9246764589894309155251169284103e31.***
 
 ###Conclusions
 
@@ -707,7 +800,13 @@ doi: 10.1137/141000671. http://julialang.org/publications/julia-fresh-approach-B
 
 15. The LMFDB Collaboration, Zeros of $\zeta(s)$, http://www.lmfdb.org/zeros/zeta/, (2018) , [Online; accessed 18 March 2018].
 
+16. Bober, J.W., Hiary, G.A. (2016) New computations of the Riemann Zeta function on the critical line. Exp. Math., 27, 1–13
 
+17. Tihanyi, N., Kovács, A. & Kovács, J. "Computing Extremely Large Values of the Riemann Zeta Function" J Grid Computing (2017) 15: 527. https://doi.org/10.1007/s10723-017-9416-0
+
+18. The PARI~Group, PARI/GP version {\tt 2.9.4}, Univ. Bordeaux, 2018,
+    \url{http://pari.math.u-bordeaux.fr/}.
+    
 ##Appendix A: Basic Julia code used to calculate $\zeta_{EP}(s)$, $Z_{extEP}(s)$ etc
 
 \begin{verbatim}
@@ -754,5 +853,31 @@ for i in 0:4500;
         println(f,out);
 end;
 close(f);
+\end{verbatim}
+
+
+##Appendix B: Basic pari/gp code used to calculate $\zeta_{EP}(s)$, $Z_{extEP}(s)$ etc
+
+\begin{verbatim}
+default(parisize, 12000000000)
+s1=listcreate(4000)
+step=2000.
+res = 0.5
+pr_lim = 7920
+bp = 39246764589894309155251169284103.
+forstep(X=1,4000,1,listput(s1,X/step))
+v1=Vec(s1)
+s2=listcreate(4000)
+
+forstep(X=1,4000,1,[s2=sqrt(prodeuler(p=2,pr_lim,1/(1-1/p^(res+I*(bp+X/step))))^2
+/exp(log(2^(res+I*(bp+X/step))*Pi^((res+I*(bp+X/step))-1))+
+(Pi/2*(bp+X/step)-log(2)+I/2*Pi*(1-res))+lngamma((1-(res+I*(bp+X/step)))))*
+abs(exp(log(2^(res+I*(bp+X/step))*Pi^((res+I*(bp+X/step))-1))+
+(Pi/2*(bp+X/step)-log(2)+I/2*Pi*(1-res))+lngamma((1-(res+I*(bp+X/step))))))),
+write(large_T_0_5_Z,real(s2),",",imag(s2),",",imag(log(s2)))])
+s3=listcreate(4000)
+forstep(X=1,4000,1,[s3=prodeuler(p=2,pr_lim,1/(1-1/p^(res+I*(bp+X/step)))),
+write(large_T_0_5_EP,real(s3),",",imag(s3),",",imag(log(s3)))])
+
 \end{verbatim}
 
