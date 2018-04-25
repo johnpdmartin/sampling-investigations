@@ -2,7 +2,7 @@
 title: A fast calculation of first order shifts in $\zeta(s)$ zeroes positions using an extended Riemann Siegel Z function for the partial Euler Product of the lowest primes.
 
 author: "John Martin" 
-date: "Wednesday, April 18th, 2018"
+date: created "Wed, April 18th, 2018" last modified "Wed, April 25th, 2018"
 output:
   pdf_document:
     fig_crop: no
@@ -84,8 +84,6 @@ abline(h=0,lty=3);abline(v=dfy[8:18,2],lty=3)
 lines(x=df2[,1],y=df2[,8],col=5,lty=6,lwd=2);
 lines(x=df2[,1],y=df2[,14],col=4,lty=6,lwd=2);
 lines(x=dfp[,1],y=dfp[,5],col=6,lwd=2)
-
-
 
 
 ```
@@ -590,7 +588,7 @@ legend("topleft", legend = c("|Re(Z_ext_first_prime)|","|Re(Z_ext_4_primes)|","|
 
 ```
 
-***Figure 4. Change in height of large peak of $\zeta(s)$ by examining the partial Euler Product Riemnann Siegel Z function for different numbers of contributing primes along (a) s=(1+$i*t$) and (b) s=(0.5+$i*t$) near the first Rosser rule violation.***
+***Figure 4. Change in height of large peak of $\zeta(s)$ by examining the partial Euler Product Riemann Siegel Z function for different numbers of contributing primes along (a) s=(1+$i*t$) and (b) s=(0.5+$i*t$) near the first Rosser rule violation.***
 
 
 ```{r, fig5, echo=FALSE, cache=TRUE, fig.width=7, fig.height=5,  fig.keep='high', warning=FALSE }
@@ -653,7 +651,7 @@ legend("topleft", legend = c("|Re(Z_ext_first_prime)|","|Re(Z_ext_4_prime)|","|R
 
 ```
 
-***Figure 5. Change in height of large peak of $\zeta(s)$ by examining the partial Euler Product Riemnann Siegel Z function for different numbers of contributing primes along (a) s=(1+$i*t$) and (b) s=(0.5+$i*t$) near t=445,575,490.***
+***Figure 5. Change in height of large peak of $\zeta(s)$ by examining the partial Euler Product Riemann Siegel Z function for different numbers of contributing primes along (a) s=(1+$i*t$) and (b) s=(0.5+$i*t$) near t=445,575,490.***
 
 Further work is needed to properly understand the progression in number of significantly contributing primes to the signal strength as $t \rightarrow \infty$. However, the technique does continue to work well at the highest t, when comparing to known $\zeta(s)$ data (1,2, 16, 17). For example, Figure 6 shows the partial Euler Product extended Riemann Siegel Z function behaviour at 39246764589894309155251169284104.0506 (~3.29e31) which has a Z(t) peak ~16244.8652, where the $Z_{extEP}(s,hybrid)$ calculations were performed using pari/gp software (18). The first order shifts in the riemann zeta zeroes on the critical line are well approximated (pink line) using only the first 1000 primes, with again the accompanying s=1 peak  being well described by the first 50 primes. In contrast, $\Im(log(\zeta_{EP}(s)))$ using the same first 1000 primes (black line) has badly lost resolution with only 4 discontinuities probably related to the Rosser rule violations near the peak.  
 
@@ -747,13 +745,93 @@ legend("topleft", legend = c("|Re(Z_ext_first_prime)|","|Re(Z_ext_4_prime)|","|R
 
 ```
 
-***Figure 6. Change in height of large peak of $\zeta(s)$ by examining the partial Euler Product Riemnann Siegel Z function for different numbers of contributing primes along (a) s=(1+$i*t$) and (b) s=(0.5+$i*t$) near t=3.9246764589894309155251169284103e31.***
+***Figure 6. Change in height of large peak of $\zeta(s)$ by examining the partial Euler Product Riemann Siegel Z function for different numbers of contributing primes along (a) s=(1+$i*t$) and (b) s=(0.5+$i*t$) near t=3.9246764589894309155251169284103e31.***
+
+\newpage 
+
+###Constructing a $-\pi S(t)$ analogue for $\Im(log(Z_{extEP}(s,hybrid)))$ to determine if Rosser rule violations can be identified via $Z_{extEP}(s,hybrid)$
+
+Figure 7 below illustrates the continuous version of $\Im(log(Z_{extEP}(s,hybrid)))$ and the aggregated phase increments from the branch points of $\Im(log(Z_{extEP}(s,hybrid)))$ in comparison to the continuous version of $\theta(t)+\zeta(0.5+it)$ near the first Rosser rule violation point ~6,820,050.
+
+At each branch point of $\Im(log(Z_{extEP}(s,hybrid)))$, a $\pi$ phase increment (4) can be added to the discontinuous $\Im(log(Z_{extEP}(s,hybrid)))$ function bounded by $\pm\frac{pi}{2}$ to create the continuous version of $\Im(log(Z_{extEP}(s,hybrid)))$. The overall trend of the continuous function on the critical line is $\theta(t)$ which is also, of course, the trend behaviour of $\zeta(0.5+it)$. In figure 7, instead of adding all the phase increments from t=14.137 onwards, $\theta(6,820,048)+\pi/2$ was used as a shortcut to establish the correct baseline of the continuous function between 6,820,048 \& 6820,052.5.
+
+Looking at the intersection of the (blue) $\pm\pi, -2\pi$ bounds on $\theta(t)$, with the (green) aggregated phase increments of $\Im(log(Z_{extEP}(s,hybrid)))$ it can be seen that Gram points violations and Rosser rule violations can be observed close to these intersection points at $\pm\pi, \pm2\pi$ respectively. Thus through careful mapping, approximate identification of Rosser rule violations may generally be possible using $\Im(log(Z_{extEP}(s,hybrid)))$.
+
+
+
+
+```{r, fig7, echo=FALSE, cache=TRUE, fig.width=7, fig.height=5,  fig.keep='high', warning=FALSE }
+
+
+df <- read_fn(dir_loc,"outfile_st_0_5_repeat.dat")
+
+df[,"V1"] <- as.numeric(gsub("[^0-9\\.-]", "", df[,1]))
+df[,"V10"] <- as.numeric(gsub("[^0-9\\.-]", "", df[,10]) )
+
+xse <- seq(6820048,6820052.5,l=4501)
+
+df2 <- read_fn(dir_loc,"outfile_search_zeroes_0_5_start_6820048_p001_size1000.dat")
+df2[,"V1"] <- as.numeric(gsub("[(]", "", df2[,1]))
+df2[,"V15"] <- as.numeric(gsub("[)]", "", df2[,15]))
+
+dfy <- read.csv(paste0(dir_loc,"zetazeros_6820045"),sep=" ",header=FALSE,colClasses = c("numeric","double"))
+dfy[,"V1"] <- as.numeric(dfy[,1])
+
+
+add_logphase <- function(x,y)  {
+  
+  sum <- 0  
+  sqadd_pos <- 0
+  
+  
+  for (i in 1:length(x)) {
+    if(i == 1 ) {sqadd_pos[i] <- sum}
+    else { 
+      test <- ((y[i]))
+      testp <- ifelse(x[i-1] != 0,((y[i-1])),test)
+      if (is.na(test)) print(paste(test-testp,test,testp,x[i],y[i],i))
+      # if (test-testp > pi/8 ) {flag <- 1;sum <- sum-1*pi;sqadd_pos[i] <- sum}
+      if (test-testp < -pi/8) {flag <- 1;sum <- sum+1*pi;sqadd_pos[i] <- sum}
+      else {flag <- 0; sqadd_pos[i] <- sum}
+    }
+  }
+
+
+  sqadd_pos}
+
+
+fug <- function(g) (-g*log(2*pi/g)/2-g/2-pi/8+1/48/g+7/5760/g^3)
+
+zphase <- add_logphase(xse,df2$V6)
+zetaphase <- add_logphase(xse,Im(log(sqrt((df$V2+1i*df$V3)*(df$V2-1i*df$V3)))))
+
+plot(x=xse,y=fug(xse[1])+df2$V6+zphase+pi/2,typ="l",
+     ylim=c(min(fug(xse[1])+df2$V6+zphase+pi/2),max(fug(xse[1])+df2$V6+zphase+pi/2)+40),
+     lwd=2,xlab="imag part",ylab="function value")
+lines(x=xse,y=fug(xse),col=2)
+lines(x=xse,y=fug(xse)+pi,col=4,lty=2)
+lines(x=xse,y=fug(xse)-pi,col=4,lty=2)
+lines(x=xse,y=fug(xse)-2*pi,col=4,lty=2)
+lines(x=xse,y=fug(xse[1])+zphase+pi/2,col=3)
+lines(x=xse,y=fug(xse)+exp(1i*zphase)*abs(df$V5+1i*df$V6),col=5)
+abline(v=dfy[c(11,13,14),2],lty=3)
+
+legend("topleft", legend = c("continuous version imag(log(Z_ext_1000_primes))","theta(t)","theta(t)+pi, -pi, -2*pi bounds on distance from theta(t)","theta(t) + imag(log(Z_ext_1000_primes)) branch point phase increments"," theta(t) + zeta(t) \n (using imag(log(Z_ext_1000_primes)) branch points for phase changes)","Gram rule & Rosser rule violations"),
+  col = c("black","red","blue","green","cyan","black" ),  pch = -1, lty = c(1,1,2,1,1,3), lwd = 2, cex = 0.6)
+
+```
+
+***Figure 7. Constructing an estimate of $-\pi S(t)$ from the continuous version of $\Im(log(Z_{extEP}(s,hybrid))) + Z_{extEP}(s,hybrid)$ with comparison to $\theta(t)$ and $\theta(t) + \zeta(s)$. ***
+
+\newpage
 
 ###Conclusions
 
 The extended Riemann Siegel Z function analogue of the partial Euler Product provides useful information on $\zeta(s)$ behaviour about (i) first order shifts in the distribution of Riemann Zeta zeroes on the critical line away from Grams rule and (ii) the contribution of the lowest primes to large peaks on the s=1 line and the critical line. 
 
-Using only the lowest primes and the function $2^s\pi^{s-1}sin(\frac{\pi s}{2})\Gamma(1-s)$ underlying the extended Riemann Siegel theta function, fast calculations of the first order shifts in the Riemann Zeta zeroes can be performed, which should aid Riemann Hypothesis testing. Due to the periodical nature of complex logarithms, to get the branch points of $\Im(log(Z_{extEP}(s,hybrid)))$ which align closest with the Riemann Zeta zeroes the order of calculation is found to be very important.
+Using only the lowest primes and the function $2^s\pi^{s-1}sin(\frac{\pi s}{2})\Gamma(1-s)$ underlying the extended Riemann Siegel theta function, fast calculations of the first order shifts in the Riemann Zeta zeroes can be performed, which should aid Riemann Hypothesis testing. Due to the periodical nature of complex logarithms, to get the branch points of $\Im(log(Z_{extEP}(s,hybrid)))$ which align closest with the Riemann Zeta zeroes the order of calculation is found to be very important. 
+
+Through careful mapping of the aggregated phase increments arising from the branch points of $\Im(log(Z_{extEP}(s,hybrid)))$ it is also possible to approximately identify Gram and Rosser rule violation points. 
 
 
 ###References
