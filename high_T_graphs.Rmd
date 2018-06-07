@@ -2,7 +2,7 @@
 title: Fast approximate calculations of $\pi S(t)$, at very high t, using an extended Riemann Siegel Z function for the partial Euler Product of the lowest primes.
 
 author: "John Martin" 
-date: created "Wed, June 6th, 2018" last modified "Wed, June 6th, 2018"
+date: created "Wed, June 6th, 2018" last modified "Thurs, June 7th, 2018"
 output: pdf_document
 ---
 
@@ -14,16 +14,16 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ##Executive Summary
 
-Some examples of approximate $\theta(t)+\pi S(t)$ and $\theta(t)+Z(1/2+it)$ on the critical line at very high t ($10^{31}$-$10^{75}$ ) are presented, using the extended Riemann Siegel Z function analogue of the partial Euler product containing the multiplier of the Riemann Zeta functional equation $Z_{extEP}(s) = \sqrt{\frac{\Large\Pi_{\rho < P}^P\big(\frac{1}{(1-1/\rho^{s})}\big)^2}{(2^s\pi^{s-1}sin(\frac{\pi s}{2})\Gamma(1-s)))}\cdot\Big|(2^s\pi^{s-1}sin(\frac{\pi s}{2})\Gamma(1-s))\Big|}$. The intent was to use the LLL algorithm and $\Im(log(Z_{extEP}(s)))$ as a fast approximation, to aid finding candidate high Riemann Zeta peaks possibly with $|S(t)| > 4$.
+Some examples of first order approximate estimates of $\theta(t)+\pi S(t)$ and $\theta(t)+Z(1/2+it)$ on the critical line at very high t ($10^{31}$-$10^{75}$ ) are presented, using the extended Riemann Siegel Z function analogue of the partial Euler product containing the multiplier of the Riemann Zeta functional equation $Z_{extEP}(s) = \sqrt{\frac{\Large\Pi_{\rho < P}^P\big(\frac{1}{(1-1/\rho^{s})}\big)^2}{(2^s\pi^{s-1}sin(\frac{\pi s}{2})\Gamma(1-s)))}\cdot\Big|(2^s\pi^{s-1}sin(\frac{\pi s}{2})\Gamma(1-s))\Big|}$. The intent was to use the LLL algorithm and $\Im(log(Z_{extEP}(s)))$ as a fast approximation, to aid finding candidate high Riemann Zeta peaks possibly with $|S(t)| > 4$.
 
 
 ##Introduction
 
 On the critical line, the divergence of the partial Euler Product, is weak when only using the lowest primes well away from the real axis. This behaviour of the partial Euler Product has been actively used as a useful first order approximation to locate the largest peaks when searching for closely (and widely) spaced non-trivial zeroes which represent a interesting test for Riemann Hypothesis behaviour [1,5]. 
 
-In this paper, some examples of approximate large peaks and $\pi S(t)$ values at very high t ($10^{31}$-$10^{75}$ ) are illustrated, searching for candidate peaks with $|S(t)| > 4$. Using the transformed reference frame, $\theta(t)+\pi S(t)$, $\theta(t)+\Im(log(Z_{extEP}(s)))$ the sloping component in S(t) is translated to the horizontal interval between zeroes. The high precision attainable with the pari/gp language [6] allows the successful use of LLL algorithm and $\Im(log(Z_{extEP}(s)))$ up to ~10^80 in this investigation.
+In this paper, some examples of approximate large peaks and $\pi S(t)$ values at very high t ($10^{31}$-$10^{75}$ ) are illustrated, searching for candidate peaks with $|S(t)| > 4$. Using the transformed reference frame, $\theta(t)+\pi S(t)$, $\theta(t)+\Im(log(Z_{extEP}(s)))$ the sloping component in S(t) is translated to the horizontal interval between zeroes. The high precision attainable with the pari/gp language [6] allows the successful use of LLL algorithm and $\Im(log(Z_{extEP}(s)))$ up to $10^{80}$ in this investigation.
 
-A common characteristic of the displayed high single or multiple peaks in this paper, is that the horizontal region of the feature is ~ 0.4-0.5, this observed behaviour does not preclude wider features from being discovered. Using the documented results [2,3] by Hiary et al for $\theta(t)+\pi S(t)$ around the large peak at $t\approx3.92e31$, $\theta(t)+\Im(log(Z_{extEP}(s)))$ appears to be a good first order approximation as first discussed in [5].  
+A common characteristic of the displayed high single or multiple peaks in this paper, is that the horizontal region of the feature is ~ 0.4-0.5, this observed behaviour does not preclude wider features from being discovered. Using the documented results [2,3] by Hiary et al for $\theta(t)+\pi S(t)$ around the large peak at $t\approx3.92e31$, $\theta(t)+\Im(log(Z_{extEP}(s)))$ appears to be a good first order approximation as first discussed in [5]. The appearance of large multiple peak behaviour was also documented by [2] in the range ($10^{22}$-$10^{32}$). 
 
 \newpage
 
@@ -207,6 +207,55 @@ plot(x=xse,y=dft$V1+Re(exp(1i*zphase)*(dfp$V1+1i*dfp$V2)),col=4,typ="l",
 ```
 
 ***For $t\approx7.65e51$, $\theta(t)+\Im(log(Z_{extEP}(s)))$ and $\theta(t)+\Re(Z_{extEP}(s))$ of the partial Euler Product of the lowest 1000 primes along s=(0.5+$i*t$). The inset graph depicts the full scale $\theta(t)+\Re(Z_{extEP}(s))$ peak approximation to $\theta(t)+Z_{ext}(s)$.***
+
+\newpage
+
+```{r fig4, echo=FALSE, cache=TRUE, fig.width=7, fig.height=4.8,  fig.keep='high', warning=FALSE }
+
+
+dfp <- read_fn(dir_loc,"large_T_0_5_Z_1946456847068914782580205904441241666451890570305692345146536056")
+
+
+dft <- read_fn(dir_loc,"large_theta_1946456847068914782580205904441241666451890570305692345146536056")
+
+
+xse <- seq(1/2000,4,l=8000)
+
+
+zphase <- add_logphase(xse,dfp$V3)
+# zetaphase <- add_logphase(xse,Im(log(sqrt((df$V2+1i*df$V3)*(df$V2-1i*df$V3)))))
+
+
+par(fig = c(0,1, 0, 1)) 
+plot(x=xse,y=dfp$V3+zphase+0*pi/2,typ="l",#ylim=c(-20,240),
+     lwd=2,xlab="imag part + 1946456847068914782580205904441241666451890570305692345146536056",
+     ylab=paste("rel fn value +",
+                fug(1946456847068914782580205904441241666451890570305692345146536056)),col=6)
+lines(x=xse,y=dft$V1,col=3)
+lines(x=xse,y=dft$V1+pi,col=5,lty=6)
+lines(x=xse,y=dft$V1-pi,col=5,lty=6)
+lines(x=xse,y=dft$V1+2*pi,col=5,lty=6)
+lines(x=xse,y=dft$V1-2*pi,col=5,lty=6)
+lines(x=xse,y=dft$V1+3.16*pi,col=5,lty=6)
+lines(x=xse,y=dft$V1-3*pi,col=5,lty=6)
+lines(x=xse,y=dft$V1[1]+zphase+0*pi/2,col=1)
+lines(x=xse,y=dft$V1+Re(exp(1i*zphase)*(dfp$V1+1i*dfp$V2)),col=4)
+
+legend("topleft", legend = c("continuous version imag(log(Z_ext_1000_primes))","theta(t)",
+                             "theta(t)+-pi,+-2pi,+-3pi etc bounds \n on distance from theta(t)",
+                             "theta(t) + imag(log(Z_ext_1000_primes)) \n branch point phase increments",
+                             " theta(t) + real(Z_ext_1000_primes) \n (using imag(log(Z_ext_1000_primes)) \n branch points for phase changes)"),
+       col = c("purple","green","cyan","black","blue" ),  
+       pch = -1, lty = c(1,1,6,1,1), lwd = 2, cex = 0.5,bty="n")
+
+par(fig = c(.65,0.995, 0.1, .8), new = T)  
+plot(x=xse,y=dft$V1+Re(exp(1i*zphase)*(dfp$V1+1i*dfp$V2)),col=4,typ="l",
+     xlab="",ylab="")
+
+```
+
+***For $t\approx1.94e63$, $\theta(t)+\Im(log(Z_{extEP}(s)))$ and $\theta(t)+\Re(Z_{extEP}(s))$ of the partial Euler Product of the lowest 1000 primes along s=(0.5+$i*t$). The inset graph depicts the full scale $\theta(t)+\Re(Z_{extEP}(s))$ peak approximation to $\theta(t)+Z_{ext}(s)$.***
+
 
 \newpage
 
