@@ -2,7 +2,7 @@
 title: Some high peaks of partial Euler Product of the lowest primes on the Riemann Zeta critical line, in the interval $(10^{20} < T < 10^{400})$ providing a proxy lower bound on Riemann Zeta function growth.
 
 author: "John Martin" 
-date: created "Sun, October 7th, 2018" last modified "Tues, October 9th, 2018"
+date: created "Sun, October 7th, 2018" last modified "Fri, October 19th, 2018"
 output:
   pdf_document:
     fig_crop: no
@@ -88,6 +88,42 @@ outdf_750 <- processFile(paste0(dir_loc,"/","LLL_750_search_1000_est.txt"),"750"
 outdf_800 <- processFile(paste0(dir_loc,"/","LLL_800_search_1000_est.txt"),"800","800")
 outdf_850 <- processFile(paste0(dir_loc,"/","LLL_850_search_1000_est.txt"),"850","850")
 
+
+processFile_fixedUB = function(filepath) {
+  con = file(filepath, "r")
+  
+  height <- 0
+  position_int <- 0
+  i <- 1
+  line_num <- 0
+  while ( TRUE ) {
+    line_num <- line_num + 1
+    line = readLines(con, n = 1)
+    if ( length(line) == 0 ) {
+      break
+    }
+
+    pos <- regexpr('lim 10', line)[1]
+    pos2 <- gregexpr(' ', line)[[1]] # Returns positions of every match in a string
+      if ( pos > 0 ) {
+        if (as.numeric(as.character(substr(line,pos2[2],pos2[3]))) > 7000)
+        position_int[i] <- substr(line,1,pos2[1])
+        height[i] <- substr(line,pos2[2],pos2[3])
+        i <- i + 1
+      }
+
+  }
+  close(con)
+  df <- as.data.frame(cbind(position_int,height))
+}
+
+outdf2_40 <- processFile_fixedUB(paste0(dir_loc,"/","LLL_10_40_search_1000_primes_allsoln.txt"))
+outdf2_50 <- processFile_fixedUB(paste0(dir_loc,"/","LLL_10_50_search_1000_primes_allsoln.txt"))
+outdf2_60 <- processFile_fixedUB(paste0(dir_loc,"/","LLL_10_60_search_1000_primes_allsoln.txt"))
+outdf2_70 <- processFile_fixedUB(paste0(dir_loc,"/","LLL_10_70_search_1000_primes_allsoln.txt"))
+outdf2_100 <- processFile_fixedUB(paste0(dir_loc,"/","LLL_10_100_search_1000_primes_allsoln.txt"))
+outdf2_200 <- processFile_fixedUB(paste0(dir_loc,"/","LLL_10_200_search_1000_primes_allsoln.txt"))
+
 x400_pt <- c(27367766953402488295551408085243063554200123009649008966735509299195584461404146023302617048483105180856569718644081642240,
             503676422052764551917096750099474223150996275631853393658213126530684852201868793205862969924352564688306247805744457323472,
             1274001690155177378511770696144045232575375274784140927051892459568798024310993666644660153199756126329569455812209,
@@ -155,16 +191,22 @@ points(x=log(as.numeric(as.character(outdf_700[,1]))),y=log(as.numeric(as.charac
 points(x=log(as.bigz(as.character(outdf_750[,1]))),y=log(as.numeric(as.character(outdf_750[,2]))),pch=10,col=10)
 points(x=log(as.bigz(as.character(outdf_800[,1]))),y=log(as.numeric(as.character(outdf_800[,2]))),pch=9,col=9)
 points(x=log(as.bigz(as.character(outdf_850[,1]))),y=log(as.numeric(as.character(outdf_850[,2]))),pch=11,col=13)
-lines(x=log(xz_pt[order(xz_pt)]),y=(log(yz_pt[order(xz_pt)])),lwd=2,col="black",pch=20)
 # points(x=log(as.bigz(as.character("25461213667558826585077573310184571709268718487072937682163830390280740449012248541205182985864551291199980006112106880583114688620095061530013748944678306728175231015035492570555453173717063101234372766685983191415214430508795518110768167130897674497810394"))),y=log(1096830))
+points(x=log(as.numeric(as.character(outdf2_40[,1]))),y=log(as.numeric(as.character(outdf2_40[,2]))),pch=21,col=21)
+points(x=log(as.numeric(as.character(outdf2_50[,1]))),y=log(as.numeric(as.character(outdf2_50[,2]))),pch=22,col=22)
+points(x=log(as.numeric(as.character(outdf2_60[,1]))),y=log(as.numeric(as.character(outdf2_60[,2]))),pch=24,col=24)
+points(x=log(as.numeric(as.character(outdf2_70[,1]))),y=log(as.numeric(as.character(outdf2_70[,2]))),pch=25,col=25)
+points(x=log(as.numeric(as.character(outdf2_100[,1]))),y=log(as.numeric(as.character(outdf2_100[,2]))),pch=23,col=23)
+points(x=log(as.numeric(as.character(outdf2_200[,1]))),y=log(as.numeric(as.character(outdf2_200[,2]))),pch=1,col=1)
+lines(x=log(xz_pt[order(xz_pt)]),y=(log(yz_pt[order(xz_pt)])),lwd=2,col="black",pch=20)
 #Add horizontal grid  
 abline(h = log(c(2,5,10,100,1000,10000,100000,1000000,2000000)), lty = 2, col = "grey")
 #Add vertical grid
 abline(v = c(log(281),log(10^30),log(10^50),log(10^100),log(10^200),log(10^300),log(xmax)),  lty = 2, col = "grey")
 legend("bottomright", legend = c("zeta(s) peaks","LLL using first 150 elements of log(2N_1)","LLL using first 300 elements of log(2N_1)","LLL using first 400 elements of log(2N_1)","LLL using first 500 elements of log(2N_1)",
-    "LLL using first 600 elements of log(2N_1)","LLL using first 700 elements of log(2N_1)","LLL using first 750 elements of log(2N_1)","LLL using first 800 elements of log(2N_1)","LLL using first 850 elements of log(2N_1)"),
-       col = c("black","red","green","blue","cyan","purple","brown",10,9,13 ),  
-       pch = c(20,2,3,4,5,6,8,10,9,11), lty = c(1,-1,-1,-1,-1,-1,-1,-1,-1,-1), lwd = 2, cex = 0.6,bty="n")
+    "LLL using first 600 elements of log(2N_1)","LLL using first 700 elements of log(2N_1)","LLL using first 750 elements of log(2N_1)","LLL using first 800 elements of log(2N_1)","LLL using first 850 elements of log(2N_1)","LLL with T axis upper bound 10^40","LLL with T axis upper bound 10^50","LLL with T axis upper bound 10^60","LLL with T axis upper bound 10^70","LLL with T axis upper bound 10^100","LLL with T axis upper bound 10^200"),
+       col = c("black","red","green","blue","cyan","purple","brown",10,9,13,21,22,24,25,23,1 ),  
+       pch = c(20,2,3,4,5,6,8,10,9,11,21,22,24,25,23,1), lty = c(1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1), lwd = 2, cex = 0.6,bty="n")
 
 plot(x=log(c(as.bigz(as.character("1")),xmax)),type="n",y=c(.0005,.024),
      col=4,ylim=log(c(.01,.35)),xlab="log(T)",xaxt="n",yaxt="n",ylab="log(log(|Z|/T))",
@@ -185,20 +227,27 @@ points(x=log(as.bigz(as.character(outdf_800[,1]))),y=log(log(as.numeric(as.chara
 points(x=log(as.bigz(as.character(outdf_850[,1]))),y=log(log(as.numeric(as.character(outdf_850[,2])))/log(as.bigz(as.character(outdf_850[,1])))),pch=11,col=13)
 # lines(x=log(c(10^25,10^35,10^45,10^50,10^75,10^100,10^125,10^150,10^175,10^200,10^225,10^250,10^275,10^300)),
 #       y=log(12/(log(c(10^25,10^35,10^45,10^50,10^75,10^100,10^125,10^150,10^175,10^200,10^225,10^250,10^275,10^300)))),lty=6,col=6)
+points(x=log(as.numeric(as.character(outdf2_40[,1]))),y=log(log(as.numeric(as.character(outdf2_40[,2])))/log(as.numeric(as.character(outdf2_40[,1])))),pch=21,col=21)
+points(x=log(as.numeric(as.character(outdf2_50[,1]))),y=log(log(as.numeric(as.character(outdf2_50[,2])))/log(as.numeric(as.character(outdf2_50[,1])))),pch=22,col=22)
+points(x=log(as.numeric(as.character(outdf2_60[,1]))),y=log(log(as.numeric(as.character(outdf2_60[,2])))/log(as.numeric(as.character(outdf2_60[,1])))),pch=24,col=24)
+points(x=log(as.numeric(as.character(outdf2_70[,1]))),y=log(log(as.numeric(as.character(outdf2_70[,2])))/log(as.numeric(as.character(outdf2_70[,1])))),pch=25,col=25)
+points(x=log(as.numeric(as.character(outdf2_100[,1]))),y=log(log(as.numeric(as.character(outdf2_100[,2])))/log(as.numeric(as.character(outdf2_100[,1])))),pch=23,col=23)
+points(x=log(as.numeric(as.character(outdf2_200[,1]))),y=log(log(as.numeric(as.character(outdf2_200[,2])))/log(as.numeric(as.character(outdf2_200[,1])))),pch=1,col=1)
 lines(x=log(xz_pt[order(xz_pt)]),y=log(log(yz_pt[order(xz_pt)])/log(xz_pt[order(xz_pt)])),lwd=2,col="black",pch=20)
 #Add horizontal grid  
 abline(h = log(c(.01,.02,.03,.05,.1,.2,.3)), lty = 2, col = "grey")
 #Add vertical grid
 abline(v = c(log(281),log(10^30),log(10^50),log(10^100),log(10^200),log(10^300),log(xmax)),  lty = 2, col = "grey")
 legend("topright", legend = c("zeta(s) peaks","LLL using first 150 elements of log(2N_1)","LLL using first 300 elements of log(2N_1)","LLL using first 400 elements of log(2N_1)","LLL using first 500 elements of log(2N_1)",
-    "LLL using first 600 elements of log(2N_1)","LLL using first 700 elements of log(2N_1)","LLL using first 750 elements of log(2N_1)","LLL using first 800 elements of log(2N_1)","LLL using first 850 elements of log(2N_1)"),
-       col = c("black","red","green","blue","cyan","purple","brown",10,9,13 ),  
-       pch = c(20,2,3,4,5,6,8,10,9,11), lty = c(1,-1,-1,-1,-1,-1,-1,-1,-1,-1), lwd = 2, cex = 0.6,bty="n")
+    "LLL using first 600 elements of log(2N_1)","LLL using first 700 elements of log(2N_1)","LLL using first 750 elements of log(2N_1)","LLL using first 800 elements of log(2N_1)","LLL using first 850 elements of log(2N_1)","LLL with T axis upper bound 10^40","LLL with T axis upper bound 10^50","LLL with T axis upper bound 10^60","LLL with T axis upper bound 10^70","LLL with T axis upper bound 10^100","LLL with T axis upper bound 10^200"),
+       col = c("black","red","green","blue","cyan","purple","brown",10,9,13,21,22,24,25,23,1 ),  
+       pch = c(20,2,3,4,5,6,8,10,9,11,21,22,24,25,23,1), lty = c(1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1), lwd = 2, cex = 0.6,bty="n")
 
 
 ```
 
-***Figure 1. Height of peaks of Partial Euler Product of the lowest 1000 primes along s=(0.5+$iT$) compared to $|\zeta(s)|$. The positions of the peaks were calculated via a grid search using the LLL algorithm based on different size sets of the irrationals $log(2*\mathbb{N}_1)/2\pi$ (ranging from 150-850 elements).***
+***Figure 1. Height of peaks of Partial Euler Product of the lowest 1000 primes along s=(0.5+$iT$) compared to $|\zeta(s)|$. 
+The positions of the peaks were calculated via two directions of grid searches using the LLL algorithm based (i) on varying the LLL algorithm upper bound for different size sets of the irrationals $log(2*\mathbb{N}_1)/2\pi$ ranging from 150-850 elements (horizontal grid) and (ii) increasing the set of irrationals used for a fixed LLL algorithm upper bound (vertical grid).***
 
 ##Introduction
 
