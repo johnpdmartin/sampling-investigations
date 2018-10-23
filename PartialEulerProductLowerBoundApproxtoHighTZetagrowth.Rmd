@@ -2,7 +2,7 @@
 title: Some high peaks of partial Euler Product of the lowest primes on the Riemann Zeta critical line, in the interval $(10^{20} < T < 10^{400})$ providing a proxy lower bound on Riemann Zeta function growth.
 
 author: "John Martin" 
-date: created "Sun, October 7th, 2018" last modified "Fri, October 19th, 2018"
+date: created "Sun, October 7th, 2018" last modified "Tues, October 23rd, 2018"
 output:
   pdf_document:
     fig_crop: no
@@ -89,7 +89,7 @@ outdf_800 <- processFile(paste0(dir_loc,"/","LLL_800_search_1000_est.txt"),"800"
 outdf_850 <- processFile(paste0(dir_loc,"/","LLL_850_search_1000_est.txt"),"850","850")
 
 
-processFile_fixedUB = function(filepath) {
+processFile_fixedUB = function(filepath,limit,ub) {
   con = file(filepath, "r")
   
   height <- 0
@@ -106,7 +106,8 @@ processFile_fixedUB = function(filepath) {
     pos <- regexpr('lim 10', line)[1]
     pos2 <- gregexpr(' ', line)[[1]] # Returns positions of every match in a string
       if ( pos > 0 ) {
-        if (as.numeric(as.character(substr(line,pos2[2],pos2[3]))) > 7000)
+        if (as.numeric(as.character(substr(line,pos2[2],pos2[3]))) > limit &
+            as.numeric(as.character(substr(line,1,pos2[1]))) > ub)
         position_int[i] <- substr(line,1,pos2[1])
         height[i] <- substr(line,pos2[2],pos2[3])
         i <- i + 1
@@ -117,12 +118,12 @@ processFile_fixedUB = function(filepath) {
   df <- as.data.frame(cbind(position_int,height))
 }
 
-outdf2_40 <- processFile_fixedUB(paste0(dir_loc,"/","LLL_10_40_search_1000_primes_allsoln.txt"))
-outdf2_50 <- processFile_fixedUB(paste0(dir_loc,"/","LLL_10_50_search_1000_primes_allsoln.txt"))
-outdf2_60 <- processFile_fixedUB(paste0(dir_loc,"/","LLL_10_60_search_1000_primes_allsoln.txt"))
-outdf2_70 <- processFile_fixedUB(paste0(dir_loc,"/","LLL_10_70_search_1000_primes_allsoln.txt"))
-outdf2_100 <- processFile_fixedUB(paste0(dir_loc,"/","LLL_10_100_search_1000_primes_allsoln.txt"))
-outdf2_200 <- processFile_fixedUB(paste0(dir_loc,"/","LLL_10_200_search_1000_primes_allsoln.txt"))
+outdf2_40 <- processFile_fixedUB(paste0(dir_loc,"/","LLL_10_40_search_1000_primes_allsoln.txt"),7000,10^-3*10^40)
+outdf2_50 <- processFile_fixedUB(paste0(dir_loc,"/","LLL_10_50_search_1000_primes_allsoln.txt"),7000,10^-3*10^50)
+outdf2_60 <- processFile_fixedUB(paste0(dir_loc,"/","LLL_10_60_search_1000_primes_allsoln.txt"),7000,10^-3*10^60)
+outdf2_70 <- processFile_fixedUB(paste0(dir_loc,"/","LLL_10_70_search_1000_primes_allsoln.txt"),7000,10^-3*10^70)
+outdf2_100 <- processFile_fixedUB(paste0(dir_loc,"/","LLL_10_100_search_1000_primes_allsoln.txt"),10000,10^-5*10^100)
+outdf2_200 <- processFile_fixedUB(paste0(dir_loc,"/","LLL_10_200_search_1000_primes_allsoln.txt"),10^5,10^-6*10^200)
 
 x400_pt <- c(27367766953402488295551408085243063554200123009649008966735509299195584461404146023302617048483105180856569718644081642240,
             503676422052764551917096750099474223150996275631853393658213126530684852201868793205862969924352564688306247805744457323472,
@@ -364,7 +365,8 @@ It can be seen that,
 (ii) the peak height increases as the diophantine approximation involves more integers and hence allows more primes in $|\zeta_{EP}(0.5+iT)|$ to constructively interfer at higher T peak positions, 
 (iii) while the authors in [9] observe a decreasing peak height ratio $\phi = \big( \frac{|\zeta(0.5+iT)|}{T}\big )$ between $(10^{30} < T < 10^{40})$, Figure 1b using data from [4,16] clearly shows the maximum $\phi$ for $\zeta(0.5+iT)$ occurs around T=281 the first Gram point violation and the relative peak size has been decreasing from that early point,
 (iv) the peak heights for $|\zeta_{EP}(0.5+iT)|$ beyond $T=10^{30}$ seem to be somewhat lower than where the $\zeta(0.5+iT)$ would extrapolate. One reason for this could be that the diophantine approximation produces peak positions with similar deviation from pure integers $m_j$ whereas for known $\zeta(0.5+iT)$ peaks such as T=310678833629083965667540576593682.065, there are particular low integers which do not satisfy the diophantine approximation, for example $\frac{log(53)310678833629083965667540576593682.065}{2\pi}$ is much further away from being an integer than the other integers in the interval (2,70) apart from 53. This leaves open the possibility of higher peaks occurring outside the strictness of equation \eqref {eq:DIO_{2x_int}} constraints and exploiting higher order interactions in equation \eqref {eq:EP},
-(v) overall though these $|\zeta_{EP}(0.5+iT)|$ peaks provide a consistent set of peaks to assess the likely T dependence of the growth in $|\zeta(0.5+iT)|$. Using Figure 1b, a coarse estimate of the decrease in peak height ratio is  $log(log(\phi)) \sim log(12)-log(log(T))$.
+(v) overall though these $|\zeta_{EP}(0.5+iT)|$ peaks provide a consistent set of peaks to assess the likely T dependence of the growth in $|\zeta(0.5+iT)|$. Using Figure 1b, a coarse estimate of the decrease in peak height ratio is  $log(log(\phi)) \sim log(12)-log(log(T))$,
+(vi) the vertical grid search using increasing sets of irrationals for a fixed LLL upper bound seems to be identifying higher peaks and the results will be updated.
 
 ## Particular partial Euler Product peaks 
 
@@ -380,6 +382,15 @@ T=130692476223618362174725640809867939030873321714855860919745313482279294817926
 T=1.3069247622361836217 E358
 
 $|\zeta_{EP}(0.5+iT)|$=1760647.31
+
+
+T=10111676390156098438553391992269072818073569507242200266347864541970182617857842958628735469886
+8097837257043318579891969574348341457647060139453285798560070823624340849132140635153744986427167
+920455 
+                       
+T=1.0111676390156098438 E197
+
+$|\zeta_{EP}(0.5+iT)|$=1429664.998
 
 
 T=17709552496196355575629753091583681186551045291452819186153408225838800562255237424907491616622
@@ -585,6 +596,179 @@ lines(x=xse,y=abs((dfp$V1+1i*dfp$V2)),col=8)
 ```
 
 ***Figure 3. The behaviour of partial Euler Product based Riemann Siegel Z function estimates $Z_{extEP}(s,hybrid)$, using first 1000 primes, on the lines s=(0.5+iT) & s=(1+iT), around T=2.5461213667558826584 E256.***
+
+
+Figures 4 & 5 below, show similar behaviour of the extended Riemann Siegel Z function and the partial Euler Product based versions (using 1000 primes) on both the critical line s=0.5+iT and the line s=1+iT, for T=1.0111676390156098438 E197 where the peak height $\sim 1.4*10^6$. In particular, the comparable widths of the resonance peaks for T=2.5461213667558826584 E256 and T=1.0111676390156098438 E197 should be noted.
+
+
+```{r, fig3, echo=FALSE, cache=TRUE, fig.width=7, fig.height=4.,  fig.keep='high', warning=FALSE }
+par(mfrow=c(1,2))
+
+read_fn <- function(dir_loc,filen){
+  
+  filenn <- paste0(dir_loc,filen)
+  # print(filenn)
+  
+  dread <- read.table(filenn,
+                      sep=",", header=F,row.names=NULL,colClasses = "numeric")
+}
+
+
+dir_loc <- "/home/john/bear/Projects/sampling-investigations/julia/"
+
+file_list <- list.files(dir_loc,pattern="large*")
+
+markt <- "1011e197"
+markt_num <- "1.011e197"
+
+# dfp <- read_fn(dir_loc,paste0("large_T_0_5_Z_",markt))#,"_10k"))
+dfp <- read_fn(dir_loc,paste0("large_T_0_5_EP_",markt))#,"_10k"))
+# dfp <- read_fn(dir_loc,paste0("large_T_1_0_EP_",markt))#,"_10k"))
+# dfp <- read_fn(dir_loc,paste0("large_T_1_0_Z_",markt))#,"_10k"))
+
+
+dft <- read_fn(dir_loc,paste0("large_theta_",markt))
+
+xse <- seq(1/2000-2,2,l=8000)
+
+add_logphase <- function(x,y)  {
+  
+  sum <- 0  
+  sqadd_pos <- 0
+  
+  
+  for (i in 1:length(x)) {
+    if(i == 1 ) {sqadd_pos[i] <- sum}
+    else { 
+      test <- ((y[i]))
+      testp <- ifelse(x[i-1] != 0,((y[i-1])),test)
+      if (is.na(test)) print(paste(test-testp,test,testp,x[i],y[i],i))
+      # if (test-testp > pi/8 ) {flag <- 1;sum <- sum-1*pi;sqadd_pos[i] <- sum}
+      if (test-testp < -pi/8) {flag <- 1;sum <- sum+1*pi;sqadd_pos[i] <- sum}
+      else {flag <- 0; sqadd_pos[i] <- sum}
+    }
+  }
+  
+  
+  sqadd_pos}
+
+
+fug <- function(g) (-g*log(2*pi/g)/2-g/2-pi/8+1/48/g+7/5760/g^3)
+
+zphase <- add_logphase(xse,dfp$V3)
+
+plot(x=xse,y=Re(exp(1i*zphase)*(dfp$V1+1i*dfp$V2)),col=4,typ="l",xlim=c(-.3,.3),ylim=c(-1.5*10^6,1.5*10^6),
+     lwd=2,xlab=paste("(a) imag part s=(0.5+it) line + ",markt_num),ylab="fn value",cex.ylab=.6)
+lines(x=xse,y=Im(exp(1i*zphase)*(dfp$V1+1i*dfp$V2)),col=6)
+lines(x=xse,y=abs((dfp$V1+1i*dfp$V2)),col=8)
+ 
+legend("topleft", legend = c("Re(Z_EP)","Im(Z_EP)","|Z_EP|"),  pch = -1, lty = 1,
+                             col = c(4,6,9), lwd = 2, cex = 0.6)
+
+# dfp <- read_fn(dir_loc,paste0("large_T_0_5_Z_",markt))#,"_10k"))
+# dfp <- read_fn(dir_loc,paste0("large_T_0_5_EP_",markt))#,"_10k"))
+dfp <- read_fn(dir_loc,paste0("large_T_1_0_EP_",markt))#,"_10k"))
+# dfp <- read_fn(dir_loc,paste0("large_T_1_0_Z_",markt))#,"_10k"))
+
+
+dft <- read_fn(dir_loc,paste0("large_theta_",markt))
+
+zphase <- add_logphase(xse,dfp$V3)
+
+plot(x=xse,y=Re(exp(1i*zphase)*(dfp$V1+1i*dfp$V2)),col=4,typ="l",xlim=c(-.5,.5),ylim=c(-13,13),
+     lwd=2,xlab=paste("(b) imag part s=(1+it) line + ",markt_num),ylab="fn value",cex.ylab=.6)
+lines(x=xse,y=Im(exp(1i*zphase)*(dfp$V1+1i*dfp$V2)),col=6)
+lines(x=xse,y=abs((dfp$V1+1i*dfp$V2)),col=8)
+
+
+```
+
+***Figure 4. The behaviour of partial Euler Product estimates $Z_{EP}(s)$, using first 1000 primes, on the lines s=(0.5+iT) & s=(1+iT), around T=1.0111676390156098438 E197.***
+
+
+```{r, fig4, echo=FALSE, cache=TRUE, fig.width=7, fig.height=4.,  fig.keep='high', warning=FALSE }
+par(mfrow=c(1,2))
+
+read_fn <- function(dir_loc,filen){
+  
+  filenn <- paste0(dir_loc,filen)
+  # print(filenn)
+  
+  dread <- read.table(filenn,
+                      sep=",", header=F,row.names=NULL,colClasses = "numeric")
+}
+
+
+dir_loc <- "/home/john/bear/Projects/sampling-investigations/julia/"
+
+file_list <- list.files(dir_loc,pattern="large*")
+
+markt <- "1011e197"
+markt_num <- "1.011e197"
+
+dfp <- read_fn(dir_loc,paste0("large_T_0_5_Z_",markt))#,"_10k"))
+# dfp <- read_fn(dir_loc,paste0("large_T_0_5_EP_",markt))#,"_10k"))
+# dfp <- read_fn(dir_loc,paste0("large_T_1_0_EP_",markt))#,"_10k"))
+# dfp <- read_fn(dir_loc,paste0("large_T_1_0_Z_",markt))#,"_10k"))
+
+
+dft <- read_fn(dir_loc,paste0("large_theta_",markt))
+
+xse <- seq(1/2000-2,2,l=8000)
+
+add_logphase <- function(x,y)  {
+  
+  sum <- 0  
+  sqadd_pos <- 0
+  
+  
+  for (i in 1:length(x)) {
+    if(i == 1 ) {sqadd_pos[i] <- sum}
+    else { 
+      test <- ((y[i]))
+      testp <- ifelse(x[i-1] != 0,((y[i-1])),test)
+      if (is.na(test)) print(paste(test-testp,test,testp,x[i],y[i],i))
+      # if (test-testp > pi/8 ) {flag <- 1;sum <- sum-1*pi;sqadd_pos[i] <- sum}
+      if (test-testp < -pi/8) {flag <- 1;sum <- sum+1*pi;sqadd_pos[i] <- sum}
+      else {flag <- 0; sqadd_pos[i] <- sum}
+    }
+  }
+  
+  
+  sqadd_pos}
+
+
+fug <- function(g) (-g*log(2*pi/g)/2-g/2-pi/8+1/48/g+7/5760/g^3)
+
+zphase <- add_logphase(xse,dfp$V3)
+
+plot(x=xse,y=Re(exp(1i*zphase)*(dfp$V1+1i*dfp$V2)),col=4,typ="l",xlim=c(-.3,.3),ylim=c(-1.5*10^6,1.5*10^6),
+     lwd=2,xlab=paste("(a) imag part s=(0.5+it) line + ",markt_num),ylab="fn value",cex.ylab=.6)
+lines(x=xse,y=Im(exp(1i*zphase)*(dfp$V1+1i*dfp$V2)),col=6)
+lines(x=xse,y=abs((dfp$V1+1i*dfp$V2)),col=8)
+
+legend("topleft", legend = c("Re(Z_ext_hybrid)","Im(Z_ext_hybrid)","|Z_EP_ext_hybrid|"),  pch = -1, lty = 1,
+                             col = c(4,6,9), lwd = 2, cex = 0.6)
+ 
+# dfp <- read_fn(dir_loc,paste0("large_T_0_5_Z_",markt))#,"_10k"))
+# dfp <- read_fn(dir_loc,paste0("large_T_0_5_EP_",markt))#,"_10k"))
+# dfp <- read_fn(dir_loc,paste0("large_T_1_0_EP_",markt))#,"_10k"))
+dfp <- read_fn(dir_loc,paste0("large_T_1_0_Z_",markt))#,"_10k"))
+
+
+dft <- read_fn(dir_loc,paste0("large_theta_",markt))
+
+zphase <- add_logphase(xse,dfp$V3)
+
+plot(x=xse,y=Re(exp(1i*zphase)*(dfp$V1+1i*dfp$V2)),col=4,typ="l",xlim=c(-.5,.5),ylim=c(-13,13),
+     lwd=2,xlab=paste("(b) imag part s=(1+it) line + ",markt_num),ylab="fn value",cex.ylab=.6)
+lines(x=xse,y=Im(exp(1i*zphase)*(dfp$V1+1i*dfp$V2)),col=6)
+lines(x=xse,y=abs((dfp$V1+1i*dfp$V2)),col=8)
+
+
+```
+
+***Figure 5. The behaviour of partial Euler Product based Riemann Siegel Z function estimates $Z_{extEP}(s,hybrid)$, using first 1000 primes, on the lines s=(0.5+iT) & s=(1+iT), around T=1.0111676390156098438 E197.***
 
 More work will be considered around whether using more primes in the partial Euler Product at these very high T values may increase the peak height.
 
