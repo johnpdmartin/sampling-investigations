@@ -1,12 +1,12 @@
 ---
 title: "An empirical variance distribution approximation, using backtransformation from the percentile scale, for the quantile estimating function of continuous distributions"
 author: "John P. D. Martin"
-date: "Wednesday, October 7, 2015"
+date: "Wednesday, October 7, 2015. fixed eqn 21 Nov 10 2018"
 output: pdf_document
 ---
 
 ```{r, setwd, echo=FALSE, cache=FALSE, fig.width=6, fig.height=6, fig.keep='high'}
-setwd("d:/courses/research/quantile_regression")
+# setwd("d:/courses/research/quantile_regression")
 ```
 
 ###Executive Summary
@@ -21,8 +21,8 @@ It can be seen that for modest samples, the empirical quantile variance estimate
 
 **Table 1: Quantile regression estimates of intercept only model, bootstrap standard errors and proxy standard errors of unweighted samples**
 
-Distribution | quantile | est value | bootstrap std error | average proxy std error  | asymm proxy std errors 
---------- | ------- | ------- | ----------- | ------- | -------
+Distribution | quantile | est value | bootstrap std error | average proxy std error  | asymm proxy std errors
+-------------------- | ------- | ------- | ----------- | ------- | --------------
 random uniform(0,1) | 0.25 | 0.2432 | $\pm$ 0.0126 | $\pm$ 0.0138 | (-0.0171,0.0104)
 "" | 0.5 | 0.4895 | $\pm$ 0.0123 | $\pm$ 0.0132 | (-0.0116,0.0149)
 "" | 0.75 | 0.7242 | $\pm$ 0.0196 | $\pm$ 0.0192 | (-0.0103,0.0282)
@@ -80,7 +80,7 @@ As part of understanding the properties of the quantile estimation function for 
 and the second pair of graphs in Figure 1 show (i) the conservation of the estimating function shape with quasi-normalisation and (ii) the consistent interval (0,1] in which the minimum occurs.
 
 ```{r, q_est_fn, echo=FALSE, cache=FALSE, fig.width=6, fig.height=6, fig.keep='high'}
-setwd("d:/courses/research/quantile_regression")
+# setwd("d:/courses/research/quantile_regression")
 # define quantile estimating functions
 
 # unnormalised
@@ -208,7 +208,7 @@ The black lines show the quasi-normalised estimating function values for a given
 
 
 ```{r, perc_scale, echo=FALSE, cache=FALSE, fig.width=6, fig.height=6, fig.keep='high'}
-setwd("d:/courses/research/quantile_regression")
+# setwd("d:/courses/research/quantile_regression")
 
 # deriving a specific example
 
@@ -329,7 +329,7 @@ Curve fitting the coefficients of the smoothed quasi-normalised estimation funct
 
 
 ```{r, curve_fitting, echo=FALSE, cache=FALSE, fig.width=6, fig.height=6, fig.keep='high'}
-setwd("d:/courses/research/quantile_regression")
+# setwd("d:/courses/research/quantile_regression")
 
 table_out <- matrix(data=rep(1,44),nrow=11,ncol=4,dimnames=list(c(1:11),c("quantile_pt","sq_coeff","lin_coeff","intercept")))
 
@@ -427,7 +427,7 @@ Since the density function is found to be proportional to a normal distribution 
 
 and in the large n limit, the density function of the quadratic polynomial proxy for the quantile estimating function (in the percentile scale) converges to a normal distribution form
 
-\begin {equation} f_{q-proxy}(b,\theta,n)_{CLT} \rightarrow \frac{1}{\sigma_{CLT}\sqrt{2\pi}} \exp\{ \frac{-\left( b-\theta \right)^2}{2\sigma_{CLT}^2} \}  \end{equation}
+\begin {equation} f_{q-proxy}(b,\theta,n)_{CLT} \rightarrow \frac{1}{\sqrt{2\pi \theta(1-\theta)n}} \exp\{ \frac{-\left( b-\theta \right)^2}{2\sigma_{CLT}^2} \}  \end{equation}
 
 
 #Comparison to analytic median jackknife variance results in percentile scale
@@ -477,7 +477,7 @@ Figure 3 is followed by tables of (i) the results of the quantile regression fit
 
 ```{r, symmdistcase1unif, echo=FALSE, cache=FALSE, fig.width=6, fig.height=6, fig.keep='high', message=FALSE, warning=FALSE}
 
-setwd("d:/courses/research/variance")
+# setwd("d:/courses/research/variance")
 library("quantreg")
 
 # small sample size 1000 
@@ -629,7 +629,7 @@ In general, comparing the "empirical variance distribution standard error estima
 **Table 1: Quantile regression estimates of intercept only model, bootstrap standard errors and proxy standard errors of unweighted samples**
 
 Distribution | quantile | est value | bootstrap std error | average proxy std error  | asymm proxy std errors 
---------- | ------- | ------- | ----------- | ------- | -------
+-------------------- | ------- | ------- | ----------- | ------- | ---------------
 random uniform(0,1) | 0.025 | 0.0026 | $\pm$ 0.0032 | $\pm$ 0.0015 | (-0.0019,0.0012)
 "" | 0.10 | 0.0778 | $\pm$ 0.0102 | $\pm$ 0.0070 | (-0.0072,0.0068)
 "" | 0.25 | 0.2432 | $\pm$ 0.0126 | $\pm$ 0.0138 | (-0.0171,0.0104)
@@ -677,7 +677,7 @@ While the approach has shown promise, the validation checks have mostly involved
 
 Preliminary coverage work, using the percentile scale to calculate the variance of quantile regression residuals, confirms good results for the confidence intervals of the intercept coefficients but potentially lower coverage for the slope coefficients estimates. It may be use of the beta distribution (8) rather than exponentiation is also a good approach.
 
-
+\newpage
 #References
 
 
@@ -698,6 +698,7 @@ matrices for smoothed rank estimators. Biometrika 92 149-158. MR2158616
 
 8. Agresti A. and Caffo B., The American Statistician, Vol. 54, No. 4, (Nov., 2000), pp. 280-288 
 
+\newpage
 #Appendix A - Jackknife variance estimate for median of unweighted samples in the percentile scale
 
 In the drop one unit jackknife variance approach for such a distribution (ignoring continuity corrections), the (n-1) subsampled cdf values assigned to each ordered point are
@@ -799,6 +800,7 @@ Therefore, the jackknife variance estimate of the unweighted median, in the perc
 
 \begin{equation}\sigma_{jk \thinspace median \thinspace in \thinspace percentile \thinspace scale} = \frac{1}{4(n-1)}\end{equation}
 
+\newpage
 #Appendix B - Results of quantile regression, and bootstrap & backtransformed quadratic polynomial proxy quantile variance calculations  
 
 
@@ -806,7 +808,7 @@ Therefore, the jackknife variance estimate of the unweighted median, in the perc
 
 ```{r, symmdistcase2unif, echo=FALSE, cache=FALSE, fig.width=6, fig.height=6, fig.keep='high', message=FALSE, warning=FALSE}
 
-setwd("d:/courses/research/variance")
+# setwd("d:/courses/research/variance")
 library("quantreg")
 
 # small sample size 1000 
@@ -905,7 +907,7 @@ backtrans_std
 
 ```{r, symmdistcase3sysunif, echo=FALSE, cache=FALSE, fig.width=6, fig.height=6, fig.keep='high', message=FALSE, warning=FALSE}
 
-setwd("d:/courses/research/variance")
+# setwd("d:/courses/research/variance")
 
 # small sample size random between 300-1000
 set.seed(6971)
@@ -1006,7 +1008,7 @@ backtrans_std
 ```
 
 ```{r, skewed_distribution_case_1_log_normal, echo=FALSE, cache=FALSE, fig.width=6, fig.height=6, fig.keep='high', message=FALSE, warning=FALSE}
-setwd("d:/courses/research/variance")
+# setwd("d:/courses/research/variance")
 
 
 # small sample size 1000 
@@ -1107,7 +1109,7 @@ backtrans_std
 ```
 
 ```{r, skewed_distribution_case_2_weighted_bivariate_normal, echo=FALSE, cache=FALSE, fig.width=6, fig.height=6, fig.keep='high', message=FALSE, warning=FALSE}
-setwd("d:/courses/research/variance")
+# setwd("d:/courses/research/variance")
 
 
 
