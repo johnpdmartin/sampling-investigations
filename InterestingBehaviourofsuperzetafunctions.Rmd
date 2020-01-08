@@ -1,0 +1,420 @@
+---
+title: Functional equation phase contour behaviour for several Riemann Siegel Z-function examples, the underlying symmetrical superzeta function and a bare (prime free) analogue function. 
+
+author: "John Martin" 
+date: "Tuesday, January 7th, 2020"
+header-includes:
+- \usepackage{pdflscape}
+- \newcommand{\blandscape}{\begin{landscape}}
+- \newcommand{\elandscape}{\end{landscape}}
+output:
+  pdf_document:
+    fig_crop: no
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+##Executive Summary
+
+In this paper, the phase contour behaviour is presented for the extended Riemann Siegel Z function analogues for examples of linear combinations of L-functions where $\Sigma_i L_i(s,f)$ obeys a functional equation $[\Sigma_i L_i(\chi,s)] = \alpha(\chi,s) [\Sigma_i L_i(\chi,1-s)]$. In particular, (i) there are distinctive differences in phase contour behaviour near the critical line non-trivial zeroes positions for the Riemann Zeta function, and the off centre non-trivial zeroes in the Dirichlet Eta, Davenport-Heilbron $\tau+$ (f1) and $\tau-$ (f2) 5-periodic functions and (ii) a bare (prime free) analogue function that has similar phase contour behaviour near the trivial real axis zeroes and (complementary Gram point) located non-trivial zeroes. 
+
+##Introduction
+
+The extended Riemann Siegel function approach [1-6] splits the Riemann Zeta function into the product of two closely related functions which interfere to produce the Riemann Zeta function lineshape. The known phase contour behaviour of the Riemann Zeta function [7, fig 7] is re-examined with its' extended Riemann Siegel Z-function analogue, the symmetric superzeta function and a bare (prime free) analogue. Several other phase contour behaviours for (linear combinations of) L-functions are also examined (i) the Dirichlet Eta function, (ii) the Davenport-Heilbron $\tau+$ (f1) [6-8] and $\tau-$ (f2) [6,7,9] 5-periodic functions and (iii) the dirichlet eta 5 periodic function.
+
+In the upper half complex plane the phase contour plots of the Riemann Zeta, Dirchlet Eta, and two Davenport Heilbronn functions have almost no structure. In contrast, the Riemann Siegel Z-function of these (linear combinations of) L-functions has s:(1-s) mirror symmetry about the real and imaginary axes. The interference between the extended Riemann Siegel Z-function and extended Riemann Siegel Theta function components of these (linear combinations of) L-functions [4,5] explains the lack of structure in the upper half complex plane of the Riemann Zeta, Dirchlet Eta, and two Davenport Heilbronn functions. The Riemann Siegel Z-function phase contour plot reveals the full symmetry of the functional equation behaviour and highlights the frequency and location of zeroes at verticies of phase discontinuities ($-90^{\circ}\leftrightarrow90^{\circ}$ or $-180^{\circ}\leftrightarrow180^{\circ}$).
+
+###The extended Riemann Siegel functions
+
+Particular linear combinations of L-functions may follow functional equation behaviour.
+
+\begin{equation}
+[\Sigma_i L_i(\chi,s)] = \alpha(\chi,s) [\Sigma_i L_i(\chi,q-s)]
+\end{equation}
+
+where $q \epsilon \mathbb{R}$ reflecting s:(q-s) symmetry in the complex plane about a critical real line q/2. 
+
+
+In Martin (4,5,11) and earlier work, the properties of the Riemann Zeta generating function were investigated and used to develop/map the extended Riemann Siegel function $Z_{ext}(s)$ and $\theta_{ext}(s)$ definitions also applicable away from the critical line, 
+
+
+\begin{align}
+\theta_{ext}(s) &= \Im(log(\sqrt{\frac{[\Sigma_i L_i(\chi,q-s)] \cdot abs(\alpha(\chi,s))}{[\Sigma_i L_i(\chi,s)]}})) \label{eq:thetaext} \\
+&= -\frac{1}{2} \Im (log(\alpha(\chi,s))) 
+\end{align}
+
+\begin{align}
+Z_{ext}(s) &= \sqrt{[\Sigma_i L_i(\chi,s)]\cdot [\Sigma_i L_i(\chi,q-s)]\cdot abs(\alpha(\chi,s))} \label{eq:zext}
+\end{align}
+
+such that
+
+\begin{align}
+[\Sigma_i L_i(\chi,s)] &= Z_{ext}(s) \cdot e^{-i\theta_{ext}(s)} \\ &= \sqrt{[\Sigma_i L_i(\chi,s)]\cdot [\Sigma_i L_i(\chi,q-s)]\cdot abs(\alpha(\chi,s))} \cdot \sqrt{\frac{[\Sigma_i L_i(\chi,s)]}{[\Sigma_i L_i(\chi,q-s)]\cdot abs(\alpha(\chi,s))}} \label{eq:Lext} \\
+&= [\Sigma_i L_i(\chi,s)]
+\end{align}
+
+Finally, as shown in (4,6), the net count of zeroes and poles based on the argument principle, in terms of the extended Riemann Siegel functions using a contour integral surrounding the region of the zeroes and poles, is the imaginary part of the negative logarithm shown below
+
+\begin{align}
+N(T) - P(T) &= [\frac{1}{2\pi} (-\Im(log([\Sigma_i L_i(\chi,s)])) \Big|_{a}) ] \\
+ &= [\frac{1}{2\pi} (-\Im(-i\theta_{ext}(s) + log(Z_{ext}(s)))) \Big|_{a}) ]  \\
+&= [\frac{1}{2\pi} (\theta_{ext}(s) - \Im(log(Z_{ext}(s)))) \Big|_{a}) ] \label {eq:logzeta_ext}
+\end{align}
+
+where (i) N is number of zeroes, (ii) P is the number of poles and (iii) the definite integral is a given contour integral (including along the imaginary axis from the real axis up to imaginary coordinate T).
+
+Consistent with Gram's rule [1,4,6], the quantity 
+
+\begin{align}
+N(q/2+iT) \sim 2 \cdot \frac{1}{2\pi}\theta_{ext}(q/2+iT) \label{eq:Ntheta}
+\end{align}
+
+can be observed to be a good estimate of the average number of non-trivial zeroes on or above the critical line $s=q/2+iT$, with 
+
+\begin{align}
+S(q/2+iT) \sim -\frac{1}{2\pi} (\theta_{ext}(q/2+iT) + \Im(log(Z_{ext}(q/2+iT))) \label{eq:Stheta}
+\end{align}
+
+varying between negative and positive values on the critical line as the zeroes spacing gets compressed or expanded by the interactions between primes in the (linear combination) L-function. 
+
+In equation \eqref {eq:logzeta_ext} the net zero count is based on destructive/constructive interference between $\theta_{ext}(s)$ and $\Im(log(Z_{ext}(s))$ above and below the critical line which determines the lack of structure in the upper half plane of the standard Riemann Zeta, Dirichlet Eta function contour plots (see figures 1,2,9,10) as opposed to their Riemann Siegel Z-function ($Z_{ext}(s)$) versions.
+
+###The symmetric superzeta function
+
+Taking the extended Riemann Siegel Z-function equation \eqref{eq:zext} it is simple to construct the superzeta function
+
+\begin{align}
+superZ_{ext}(s) &= [\Sigma_i L_i(\chi,s)] \cdot [\Sigma_i L_i(\chi,q-s)] \label{eq:superzext}
+\end{align}
+
+Both $superZ_{ext}(s)$ and $\sqrt{superZ_{ext}(s)}$ are symmetric and in a latter paper the behaviour of this function will be used to better understand some simple properties of the Euler Product divergence within the critical strip for the Riemann Zeta function. This $superZ_{ext}(s)$ function represents a potentially better candidate for finding hamiltonian examples to test the riemann hypothesis because of its higher symmetry.
+
+For this paper, the main reason for inclusion is to show a related Riemann Siegel Z-function which exhibits phase magnitudes from $-180^{\circ} to 180^{\circ}$ which the standard Riemann Zeta, Dirichlet Eta functions exhibit in the contour plot figures 1,2,9,10. As shown in the other graphs below, the extended Riemann Siegel Z-functions only exhibit phase magnitudes from $-90^{\circ} to 90^{\circ}$ presumably because it is a strongly coupled sub component of the (linear combination) L-function, ie. equation \eqref{eq:Lext}.
+
+
+###A bare (prime free) analogue to the extended Riemann Siegel Z-function
+
+Since the impact of the interaction between primes is most significant in the (linear combination) L-functions near the zeroes of the function and weak across most of the complex plane it may be informative to graph the potential behaviour in the absence of of the influence of primes (similar to Gram's point and complementary Gram's point estimates in 1-D).
+
+Using the simplest approach based on known Euler Product forms for some of the L-functions, some Euler Product Riemann Siegel Z-functions [15,16] and the complementary Gram points, one interesting bare (prime free) analogue Z-function is defined in the following piecewise manner
+
+\begin{align}
+bareZ_{ext}(s_+) &= \sqrt{1/\alpha(\chi,s_+) \cdot abs(\alpha(\chi,s_+))} \label{eq:bareabove}
+\end{align}
+
+when $s_+ \ge q/2+iT$
+
+\begin{align}
+bareZ_{ext}(s_-) &= \sqrt{1/\alpha(\chi,1-s_-)) \cdot abs(\alpha(\chi,s_+))} \label{eq:barebelow}
+\end{align}
+
+when $s_- < q/2+iT$
+
+and its behaviour is shown below for several (linear combination) L-functions. A particular property is that the phase behaviour near the non-trivial zeroes is closer in type to the diffuse contour shape exhibited near the real axis zeroes.
+
+
+Another interesting alternate bare (prime free) analogue would have been to use the linear combination $\sqrt{(1+1/\alpha(\chi,1-s_-))^2/\alpha(\chi,s_+) \cdot abs(\alpha(\chi,s_+))}$ instead of equations \eqref{eq:bareabove} \& \eqref{eq:barebelow} within the critical strip which has similarities to ideas in [17,18] for Euler Product improvements. This alternate analogue has narrower phase verticies at the non-trivial function zeroes but has the issue of not satisfying continuity (of magnitude) at the critical strip boundary so will not be shown in this paper.   
+
+
+###Phase contour plots
+
+The phase contour plots were based on grid search calculations of $Arg([\Sigma_i L_i(\chi,s)])$ conducted in pari-gp [12] and employed the use of color.palette = matlab.like2 in Rmarkdown plots using R [13] and Rstudio [14].
+
+
+\newpage
+
+###Figures 1-8
+
+Figures 1-8 illustrate in a pair of figures with the wide range (-40<Re(s)<40,-10<Im(s)<50) and closeup range (-3<Re(s)<4,-10<Im(s)<50) the Riemann Zeta function figs 1-2,
+
+$\zeta(s)$
+
+its extended Riemann Siegel Z-function figs 3-4,
+
+$Z_{ext}(s) = \sqrt{\zeta(s)\zeta(1-s)abs(2^s\pi^{s-1}sin(\frac{\pi s}{2})\Gamma(1-s))}$
+
+a bare (prime free) analogue Z-function figs 5-6,
+
+$bareZ_{ext}(s_+) = \sqrt{1/(2^s\pi^{s-1}sin(\frac{\pi s}{2})\Gamma(1-s)) \cdot abs(2^s\pi^{s-1}sin(\frac{\pi s}{2})\Gamma(1-s))}$
+
+$bareZ_{ext}(s_-) = \sqrt{1/(2^{(1-s)}\pi^{-s}sin(\frac{\pi (1-s)}{2})\Gamma(s)) \cdot abs(2^s\pi^{s-1}sin(\frac{\pi s}{2})\Gamma(1-s))}$
+
+and the symmetric superzeta function figs 7-8
+
+$superZ_{ext}(s) = \zeta(s)\zeta(1-s)$
+
+
+```{r zeta_fn, echo=FALSE, fig.cap="Phase contour plot of Riemann Zeta function", out.width = '100%',  warning=FALSE}
+knitr::include_graphics("/home/john/bear/Projects/sampling-investigations/julia/riemann_zeta_fn.jpeg")
+```
+
+```{r zeta_fn_mag, echo=FALSE, fig.cap="Phase contour plot of Riemann Zeta function closeup around critical strip", out.width = '100%', warning=FALSE}
+knitr::include_graphics("/home/john/bear/Projects/sampling-investigations/julia/riemann_zeta_fn_mag.jpeg")
+```
+
+```{r zeta_z, echo=FALSE, fig.cap="Phase contour plot of Riemann Siegel Z-Function", out.width = '100%',  warning=FALSE}
+knitr::include_graphics("/home/john/bear/Projects/sampling-investigations/julia/riemann_siegel_Z_fn.jpeg")
+```
+
+```{r zeta_z_mag, echo=FALSE, fig.cap="Phase contour plot of Riemann Siegel Z-Function closeup around critical strip", out.width = '100%',  warning=FALSE}
+knitr::include_graphics("/home/john/bear/Projects/sampling-investigations/julia/riemann_siegel_Z_fn_mag.jpeg")
+```
+
+```{r bare_zeta_z, echo=FALSE, fig.cap="Phase contour plot of a bare (prime free) analogue of Riemann Siegel Z-Function", out.width = '150%',  warning=FALSE}
+knitr::include_graphics("/home/john/bear/Projects/sampling-investigations/julia/bare_riemann_siegel_z_fn.jpeg")
+```
+
+```{r bare_zeta_z_mag, echo=FALSE, fig.cap="Phase contour plot of a bare (prime free) analogue of Riemann Siegel Z-Function closeup around critical strip", out.width = '100%',  warning=FALSE}
+knitr::include_graphics("/home/john/bear/Projects/sampling-investigations/julia/bare_riemann_siegel_z_fn_mag.jpeg")
+```
+
+```{r superzeta_fn, echo=FALSE, fig.cap="Phase contour plot of symmetric Riemann superzeta Function", out.width = '100%',  warning=FALSE}
+knitr::include_graphics("/home/john/bear/Projects/sampling-investigations/julia/symm_riemann_superzeta_fn.jpeg")
+```
+
+
+```{r superzeta_fn_mag, echo=FALSE, fig.cap="Phase contour plot of symmetric Riemann superzeta Function closeup around critical strip", out.width = '100%',  warning=FALSE}
+knitr::include_graphics("/home/john/bear/Projects/sampling-investigations/julia/symm_riemann_superzeta_fn_mag.jpeg")
+```
+
+###Figures 9-14
+
+Figures 9-14 illustrate in a pair of figures with the wide range (-40<Re(s)<40,-10<Im(s)<50) and closeup range (-3<Re(s)<4,-10<Im(s)<50) the Dirichlet Eta function figs 9-10,
+
+$\eta(s) = (1-2^{(1-s)})\zeta(s)$
+
+its extended Riemann Siegel Z-function figs 11-12,
+
+$Z_{ext}(s) = \sqrt{\eta(s)\eta(1-s)abs((1-2^{(1-s)})/(1-2^{s})2^s\pi^{s-1}sin(\frac{\pi s}{2})\Gamma(1-s))}$
+
+a bare (prime free) analogue Z-function figs 13-14,
+
+$bareZ_{ext}(s_+) = \sqrt{1/((1-2^{(1-s)})/(1-2^{s})2^s\pi^{s-1}sin(\frac{\pi s}{2})\Gamma(1-s)) \cdot abs((1-2^{(1-s)})/(1-2^{s})2^s\pi^{s-1}sin(\frac{\pi s}{2})\Gamma(1-s))}$
+
+$bareZ_{ext}(s_-) = \sqrt{1/((1-2^{s})/(1-2^{1-s})2^{(1-s)}\pi^{-s}sin(\frac{\pi (1-s)}{2})\Gamma(s)) \cdot abs((1-2^{(1-s)})/(1-2^{s})2^s\pi^{s-1}sin(\frac{\pi s}{2})\Gamma(1-s))}$
+
+
+```{r eta_fn, echo=FALSE, fig.cap="Phase contour plot of Dirichlet Eta function", out.width = '100%',  warning=FALSE}
+knitr::include_graphics("/home/john/bear/Projects/sampling-investigations/julia/eta_fn.jpeg")
+```
+
+
+```{r eta_fn_mag, echo=FALSE, fig.cap="Phase contour plot of Dirichlet Eta function closeup around critical strip", out.width = '100%',  warning=FALSE}
+knitr::include_graphics("/home/john/bear/Projects/sampling-investigations/julia/eta_fn_mag.jpeg")
+```
+
+```{r eta_z_fn, echo=FALSE, fig.cap="Phase contour plot of Dirichlet Eta Z-function", out.width = '100%',  warning=FALSE}
+knitr::include_graphics("/home/john/bear/Projects/sampling-investigations/julia/eta_z_fn.jpeg")
+```
+
+
+```{r eta_z_fn_mag, echo=FALSE, fig.cap="Phase contour plot of Dirichlet Eta Z-function closeup around critical strip", out.width = '100%',  warning=FALSE}
+knitr::include_graphics("/home/john/bear/Projects/sampling-investigations/julia/eta_z_fn_mag.jpeg")
+```
+
+```{r bare_eta_z_fn, echo=FALSE, fig.cap="Phase contour plot of a bare (prime free) analogue of Dirichlet Eta Z-function", out.width = '100%',  warning=FALSE}
+knitr::include_graphics("/home/john/bear/Projects/sampling-investigations/julia/bare_eta_z_fn.jpeg")
+```
+
+```{r bare_eta_z_fn_mag, echo=FALSE, fig.cap="Phase contour plot of a bare (prime free) analogue of Dirichlet Eta Z-function closeup around critical strip", out.width = '100%',  warning=FALSE}
+knitr::include_graphics("/home/john/bear/Projects/sampling-investigations/julia/bare_eta_z_fn_mag.jpeg")
+```
+
+\newpage
+
+###Figures 15-20
+
+Moving to an example of a linear combination of L-functions with off critical line non-trivial zeroes, the Davenport-Heilbronn function [8] (also known as the Titchmarsh counterexample [9]), has non-trivial zeroes both on the critical line and within the critical strip, where in series and Hurwitz Zeta function notation respectively, the 5-periodic Dirichlet series can be written
+
+\begin{align}
+f_{1}(s) &= 1 + \frac{\xi}{2^s} - \frac{\xi}{3^s} - \frac{1}{4^s} + \frac{0}{5^s} + ... \label{eq:func1}\\ 
+&= 5^{-s}\Big ( \zeta(s,\frac{1}{5}) + \xi\cdot\zeta(s,\frac{2}{5}) - \xi\cdot\zeta(s,\frac{3}{5}) - \zeta(s,\frac{4}{5})\Big ) \label{eq:func1_hurwitz}
+\end{align}
+
+where 
+
+\begin{equation}
+\xi = \frac{(\sqrt{10-2\sqrt{5}}-2)}{(\sqrt{5}-1)} \label{eq:xi}
+\end{equation}
+
+The Davenport-Heilbronn f1(s) function has the functional equation
+
+\begin{equation}
+f_{1}(s) = 5^{(\frac{1}{2}-s)}2(2\pi)^{(s-1)}cos(\frac{\pi s}{2})\Gamma(1-s)f_{1}(1-s) \label{eq:eq_func1}
+\end{equation}
+
+Figures 15-18 illustrate in a pair of figures with the wide range (-40<Re(s)<40,-10<Im(s)<50) and closeup range (-3<Re(s)<4,-10<Im(s)<50) the Davenport-Heilbron f1(s) ($\tau_+(s)$) extended Riemann Siegel Z-function figs 15-16,
+
+$Z_{ext}(s) = \sqrt{f_{1}(s)f_{1}(1-s)abs(5^{(\frac{1}{2}-s)}2(2\pi)^{(s-1)}cos(\frac{\pi s}{2})\Gamma(1-s))}$
+
+a bare (prime free) analogue Z-function figs 17-18,
+
+$bareZ_{ext}(s_+) = \sqrt{1/(5^{(\frac{1}{2}-s)}2(2\pi)^{(s-1)}cos(\frac{\pi s}{2})\Gamma(1-s)) \cdot abs(5^{(\frac{1}{2}-s)}2(2\pi)^{(s-1)}cos(\frac{\pi s}{2})\Gamma(1-s))}$
+
+$bareZ_{ext}(s_-) = \sqrt{1/(5^{(\frac{1}{2}-(1-s))}2(2\pi)^{-s}cos(\frac{\pi (1-s)}{2})\Gamma(s)) \cdot abs(5^{(\frac{1}{2}-s)}2(2\pi)^{(s-1)}cos(\frac{\pi s}{2})\Gamma(1-s))}$
+
+and since the first off critical line non-trivial zeroes are at Re(s) = 85.6993 $\&$ 114.1633, using the wide range (-40<Re(s)<40,50<Im(s)<120) and closeup range (-3<Re(s)<4,50<Im(s)<120) the Davenport-Heilbron f1(s) ($\tau_+(s)$) extended Riemann Siegel Z-function is again shown in figs 19-20 for some off-critical line zeroes, 
+
+$Z_{ext}(s) = \sqrt{f_{1}(s)f_{1}(1-s)abs(5^{(\frac{1}{2}-s)}2(2\pi)^{(s-1)}cos(\frac{\pi s}{2})\Gamma(1-s))}$
+
+
+```{r f1_z, echo=FALSE, fig.cap="Phase contour plot of Davenport Heilbron 5-periodic f1 (tau+) function -10<Im(s)<50", out.width = '100%',   warning=FALSE}
+knitr::include_graphics("/home/john/bear/Projects/sampling-investigations/julia/davenport_Z_fn.jpeg")
+```
+
+```{r f1_z_mag, echo=FALSE, fig.cap="Phase contour plot of Davenport Heilbron 5-periodic f1 (tau+) function -10<Im(s)<50 closeup around critical strip", out.width = '100%',   warning=FALSE}
+knitr::include_graphics("/home/john/bear/Projects/sampling-investigations/julia/davenport_Z_fn_mag.jpeg")
+```
+
+```{r bare_5p_z, echo=FALSE, fig.cap="Phase contour plot of a bare (prime free) analogue of 5-periodic Z-Function", out.width = '100%',  warning=FALSE}
+knitr::include_graphics("/home/john/bear/Projects/sampling-investigations/julia/bare_5p_z_fn.jpeg")
+```
+
+```{r bare_5p_z_mag, echo=FALSE, fig.cap="Phase contour plot of a bare (prime free) analogue of 5-periodic Z-Function closeup around critical strip", out.width = '100%',  warning=FALSE}
+knitr::include_graphics("/home/john/bear/Projects/sampling-investigations/julia/bare_5p_z_fn_mag.jpeg")
+```
+
+```{r f1_z_50_120, echo=FALSE, fig.cap="Phase contour plot of Davenport Heilbron 5-periodic function 50<Im(s)<120", out.width = '100%',   warning=FALSE}
+knitr::include_graphics("/home/john/bear/Projects/sampling-investigations/julia/davenport_Z_fn_50_120.jpeg")
+```
+
+```{r f1_z_50_120_mag, echo=FALSE, fig.cap="Phase contour plot of Davenport Heilbron 5-periodic function 50<Im(s)<120 closeup around critical strip", out.width = '100%',   warning=FALSE}
+knitr::include_graphics("/home/john/bear/Projects/sampling-investigations/julia/davenport_Z_fn_50_120_mag.jpeg")
+```
+
+\newpage
+
+###Figures 21-24
+
+The second linear combination of L-functions 5-periodic function example has close similarities to the f1(s) function expression but uses the coefficient $\frac{1}{\xi}$ for the second and third periodic coefficients along with sign changes in those coefficients. As an important distinction from $f_{1}(s)$, this second function $f_{2}(s) (\tau_-(s))$, has non-trivial zeroes also outside the critical strip [8] as well as on the critical line, and across the critical strip. More recent work [10], estimates the highest(lowest) Re(s) values for non-trivial zeroes are approximately bounded by Re(s)=2.37 (-1.37). Expressed in series and Hurwitz Zeta function notation respectively, 
+
+\begin{align}
+f_{2}(s) &= 1 - \big(\frac{1}{\xi}\big)\frac{1}{2^s} + \big(\frac{1}{\xi}\big)\frac{1}{3^s} - \frac{1}{4^s} + \frac{0}{5^s} + ... \label{eq:func2}\\ 
+&= 5^{-s}\Big ( \zeta(s,\frac{1}{5}) - \frac{1}{\xi}\cdot\zeta(s,\frac{2}{5}) + \frac{1}{\xi}\cdot\zeta(s,\frac{3}{5}) - \zeta(s,\frac{4}{5})\Big ) \label{eq:func2_hurwitz}
+\end{align}
+
+where $\xi$ is given in eqn \eqref {eq:xi}
+
+The $f_{2}(s)$ 5-periodic Dirichlet series function has the functional equation (6) 
+\begin{equation}
+f_{2}(s) = 5^{(\frac{1}{2}-s)}2(2\pi)^{(s-1)}cos(\frac{\pi s}{2})\Gamma(1-s)f_{2}(1-s) \label{eq:eq_func2}
+\end{equation}
+
+with interestingly, the same RHS multiplier function as in eqn \eqref{eq:eq_func1}. So the bare (prime free) behaviour shown in figs 17-18 is also applicable for comparison to the f2(s) extended Riemann Siegel Z-function.
+
+Figures 21-22 illustrate in a pair of figures with the wide range (-40<Re(s)<40,-10<Im(s)<50) and closeup range (-3<Re(s)<4,-10<Im(s)<50) the Davenport-Heilbron f2(s) ($\tau_-(s)$) extended Riemann Siegel Z-function,
+
+$Z_{ext}(s) = \sqrt{f_{2}(s)f_{2}(1-s)abs(5^{(\frac{1}{2}-s)}2(2\pi)^{(s-1)}cos(\frac{\pi s}{2})\Gamma(1-s))}$
+
+and to compare to figs 19,20 for f1(s) behaviour figs 23-24 show the wide range (-40<Re(s)<40,50<Im(s)<120) and closeup range (-3<Re(s)<4,50<Im(s)<120) the Davenport-Heilbron f2(s) ($\tau_+(s)$) extended Riemann Siegel Z-function behaviour.
+
+
+
+
+```{r f2_z, echo=FALSE, fig.cap="Phase contour plot of f2 5-periodic function -10<Im(s)<50", out.width = '100%',   warning=FALSE}
+knitr::include_graphics("/home/john/bear/Projects/sampling-investigations/julia/f2_Z_fn.jpeg")
+```
+
+```{r f2_z_mag, echo=FALSE, fig.cap="Phase contour plot of f2 5-periodic function -10<Im(s)<50 closeup around the critical strip", out.width = '100%',   warning=FALSE}
+knitr::include_graphics("/home/john/bear/Projects/sampling-investigations/julia/f2_Z_fn_mag.jpeg")
+```
+
+```{r f2_z_50_120, echo=FALSE, fig.cap="Phase contour plot of f2 5-periodic function 50<Im(s)<120", out.width = '100%',   warning=FALSE}
+knitr::include_graphics("/home/john/bear/Projects/sampling-investigations/julia/f2_Z_fn_50_120.jpeg")
+```
+
+```{r f2_z_50_120_mag, echo=FALSE, fig.cap="Phase contour plot of f2 5-periodic function 50<Im(s)<120 closeup around critical strip", out.width = '100%',   warning=FALSE}
+knitr::include_graphics("/home/john/bear/Projects/sampling-investigations/julia/f2_Z_fn_50_120_mag.jpeg")
+```
+
+
+\newpage
+
+###Figures 25-26
+
+Figures 25-26 illustrate in a pair of figures with the wide range (-40<Re(s)<40,-10<Im(s)<50) and closeup range (-3<Re(s)<4,-10<Im(s)<50) the 5 periodic Dirichlet Eta function extended Riemann Siegel Z-function which has the same functional equational factor as f1(s) and f2(s) but is a product function with the Riemann Zeta function very similar to the Dirichlet Eta function,
+
+$\eta_5(s) = (1-5^{(1/2-s)})\zeta(s)$
+
+its extended Riemann Siegel Z-function figs 25-26,
+
+$Z_{ext}(s) = \sqrt{\eta_5(s)\eta_5(1-s)abs(5^{(\frac{1}{2}-s)}2(2\pi)^{(s-1)}cos(\frac{\pi s}{2})\Gamma(1-s))}$
+
+and figs 17-18 provide a bare (prime free) analogue comparison.
+
+
+```{r 5p_eta_z, echo=FALSE, fig.cap="Phase contour plot of a 5-periodic eta analogue Z-Function", out.width = '100%',  warning=FALSE}
+knitr::include_graphics("/home/john/bear/Projects/sampling-investigations/julia/5p_eta_z_fn.jpeg")
+```
+
+```{r 5p_eta_z_mag, echo=FALSE, fig.cap="Phase contour plot of a 5-periodic eta analogue Z-Function closeup around the critical strip", out.width = '100%',  warning=FALSE}
+knitr::include_graphics("/home/john/bear/Projects/sampling-investigations/julia/5p_eta_z_fn_mag.jpeg")
+```
+
+\newpage
+
+###Conclusions
+
+The phase contour plots of extended Riemann Siegel Z-functions compared to the standard (linear combinations) of L-functions with functional equations supports the interpretation that the lack of structure in the L-function phase contour behaviour in the upper complex plane is due to phase cancellation interference between two coupled subcomponents of the L-function. 
+
+The phase contour plots of extended Riemann Siegel Z-functions compared to a bare (prime free) analogue illustrates the impact of the primes to the (linear combinations) of L-functions with functional equations is mainly within the critical strip. Which is not new knowledge but provides a 2-D version of complementary Gram point (or Gram point) mapping.
+
+The types of phase contour behaviour near L-function zeroes is of three types. Firstly, for zeroes on the real axis (and the bare (prime free) analogue) the phase contour is diffuse with simple mirror phase inversion at the real axis. Secondly, for non-trivial zeroes on the critical line of (linear combinations) of L-functions the phase contour converges to a sharp vertex before expanding again on the other side of the critical line. Thirdly, for non-trivial zeroes off the critical line, two adjacent isophase lines coalesce and the phase contour converge to a sharp vertex at the zero location. Fourthly, for the Dirichlet Eta extended Riemann Siegel Z-function the open ended verticies at s=0 $\&$ 1 are unusual presumably because of the separable nature of the Dirichlet Eta L-function.
+
+
+###References
+
+1. Edwards, H.M. (1974). Riemann's zeta function. Pure and Applied Mathematics 58. New York-London: Academic Press. ISBN 0-12-242750-0. Zbl 0315.10035.
+
+2. Riemann, Bernhard (1859). "$\ddot{U}$ber die Anzahl der Primzahlen unter einer gegebenen Gr$\ddot{o}$sse". Monatsberichte der Berliner Akademie.. In Gesammelte Werke, Teubner, Leipzig (1892), Reprinted by Dover, New York (1953).
+
+3. Berry, M. V. "The Riemann-Siegel Expansion for the Zeta Function: High Orders and Remainders." Proc. Roy. Soc. London A 450, 439-462, 1995.
+
+4. Martin, J.P.D. "Applying the Argument Principle to the extended Riemann Siegel function components of the Riemann Zeta function" (2016)
+http://dx.doi.org/10.6084/m9.figshare.4012290
+
+5. Martin, J.P.D. "Mapping the Extended Riemann Siegel Z Theta Functions about branch points in the complex plane" (2016)
+http://dx.doi.org/10.6084/m9.figshare.3813999
+
+6. Martin, J.P.D. "Counting the non-trivial zeroes using extended Riemann Siegel function analogues for 5-periodic Dirichlet Series which obey functional equations. (2017) 
+http://dx.doi.org/10.6084/m9.figshare.5721085
+
+7. Goudjil, Kamal. “Computer Visualization of the Riemann Zeta Function.” (2017). https://hal.archives-ouvertes.fr/hal-01441140
+
+8. Balanzario, E.P. and Sanchez-Ortiz, J. Mathematics of Computation,
+Volume 76, Number 260, October 2007, Pages 2045–2049
+
+9. Spira, R. Mathematics of Computation, Volume 63, Number 208,
+October 1994, Pages 747-748
+
+10. E. Bombieri, A. Ghosh, “Around the Davenport–Heilbronn function”, Uspekhi Mat. Nauk, 66:2(398) (2011), 15–66; Russian Math. Surveys, 66:2 (2011), 221–270
+https://doi.org/10.4213/rm9410 
+IAS lecture https://www.youtube.com/watch?v=-JUHypc2_9A
+
+11. Martin, J.P.D. "Extended Riemann Siegel Theta function further simplified using functional equation factor for the Riemann Zeta function." (2017)
+http://dx.doi.org/10.6084/m9.figshare.5735268
+
+12. The PARI~Group, PARI/GP version 2.12.0, Univ. Bordeaux, 2018,
+http://pari.math.u-bordeaux.fr/.
+
+13. R Core Team (2017). R: A language and environment for statistical computing.
+R Foundation for Statistical Computing, Vienna, Austria. URL
+https://www.R-project.org/.
+
+14. RStudio Team (2015). RStudio: Integrated Development for R. RStudio, Inc., Boston, MA URL http://www.rstudio.com/.
+
+15. Martin, J.P.D. (2018) "A fast calculation of first order shifts in $\zeta(s)$ zeroes positions using an extended Riemann Siegel Z function for the partial Euler Product of the lowest primes" 
+http://dx.doi.org/10.6084/m9.figshare.6157700
+
+16. Martin, J.P.D. (2018) "Fast approximate calculations of $\pi S$ at very high t using an extended Riemann Siegel Z function for the partial Euler Product of the lowest primes" 
+http://dx.doi.org/10.6084/m9.figshare.6452744
+
+17. S. M. Gonek, C. P. Hughes, and J. P. Keating, A hybrid Euler-Hadamard product for the Riemann zeta function, Duke Math. J. 136 (2007), no. 3, 507–549. MR 2309173 
+
+18. S. M. Gonek, Finite Euler products and the Riemann hypothesis, Trans. Amer. Math. Soc. 364 (2012), no. 4, 2157–2191. MR 2869202, 
+https://doi.org/10.1090/S0002-9947-2011-05546-7
