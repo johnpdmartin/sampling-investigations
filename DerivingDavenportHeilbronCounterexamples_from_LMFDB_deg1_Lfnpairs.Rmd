@@ -1,0 +1,835 @@
+---
+title: 7-, \& 9-periodic dual Davenport Heilbronn counterexamples are derived for the corresponding Degree 1 dual L-functions pairs given in https://www.lmfdb.org/L/degree1.  
+
+author: "John Martin" 
+date: "Tuesday, January 20th, 2020"
+header-includes:
+- \usepackage{pdflscape}
+- \newcommand{\blandscape}{\begin{landscape}}
+- \newcommand{\elandscape}{\end{landscape}}
+output:
+  pdf_document:
+    fig_crop: no
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+##Executive Summary
+
+Dual pairs of Davenport Heilbronn counterexamples are derived and detailed for the 7- \& 9- periodic Degree 1 dual L-functions pairs given in https://www.lmfdb.org/L/degree1. The lowest non-trivial zeroes off the critical line are listed for the functions and the phase contour behaviour for the extended Riemann Siegel Z-functions of the counterexamples is presented for the upper complex plane also showing the positions of the non-trivial zeroes -10<Im(s)<110. The Davenport Heilbronn counterexamples that result from antisymmetric linear combinations of dual L-functions appear to have more non-trivial zeroes off the critical line than their dual pair counterexample.
+
+##Introduction
+
+The two known 5-periodic Davenport Heilbronn functions (also known as the Titchmarsh counterexample [1]) [1-4] are periodic Dirichlet series with functional equations that have non-trivial zeroes off the critical line and are formed by linear combinations of the L-functions. Most of the known L-functions and their properties have been fully summarised in [5] with https://www.lmfdb.org/L/degree1 being the url of particular interest accessed in this paper. 
+
+For the calculations of L-functions, Hurwitz Zeta functions, signs of functional equations, non-trivial zeroes (using Newton-Raphson method) and phase contour calculations presented in this paper the PARI-GP programming language was used [6].
+
+In L-function, Dirichlet series and Hurwitz Zeta function form these two 5-periodic functions of the form [1]
+
+\begin{align}
+f_{1}(s) &= \frac{1}{2cos(\theta_1)} \Big [ e^{i\theta_1}L(\chi_5(2,.),s) + e^{-i\theta_1}L(\chi_5(3,.),s) \Big ] \label{eq:func1_Lcomb} \\ 
+&= 1 + \frac{tan(\theta_1)}{2^s} - \frac{tan(\theta_1)}{3^s} - \frac{1}{4^s} + \frac{0}{5^s} + ... \label{eq:func1_series} \\ 
+&= 5^{-s}\Big ( \zeta(s,\frac{1}{5}) + tan(\theta_1)\cdot\zeta(s,\frac{2}{5}) - tan(\theta_1)\cdot\zeta(s,\frac{3}{5}) - \zeta(s,\frac{4}{5})\Big ) \label{eq:func1_hurwitz}
+\end{align}
+
+where 
+
+\begin{align}
+tan(\theta_1) &= \frac{(\sqrt{10-2\sqrt{5}}-2)}{(\sqrt{5}-1)} \label{eq:xi} \\
+&= 0.284079043840412296028291832393
+\end{align}
+
+and 
+
+\begin{align}
+\theta_1=0.276787179448522625754266365045 \qquad radians \label{eq:theta1}
+\end{align}
+
+
+The Davenport-Heilbronn $f_{1}$(s) function has the functional equation
+
+\begin{equation}
+f_{1}(s) = 5^{(\frac{1}{2}-s)}2(2\pi)^{(s-1)}cos(\frac{\pi s}{2})\Gamma(1-s)f_{1}(1-s) = \chi(f_{1}(s))\cdot f_{1}(1-s) \label{eq:eq_func1}
+\end{equation}
+
+and has the following non-trivial zeroes off the critical line $0<|Im(s)|<110$
+
+\vspace*{0.5cm} 
+
+\footnotesize
+$0.80851718245663738555335196060684412785\pm i \cdot85.699348485377592171929267708941729038$
+
+$1-0.80851718245663738555335196060684412785\pm i \cdot85.699348485377592171929267708941729038$
+\normalsize
+
+\vspace*{0.5cm} 
+
+In figures 1 & 2, the phase contour plot of the extended Riemann Siegel Z-function 
+
+\begin{equation}
+Z_{ext}(f1(s)) = \sqrt{f_{1}(s)f_{1}(1-s)abs(\chi(f_{1}(s)))}
+\end{equation}
+
+[7] is given for the upper positive quandrant of the complex plane showing the verticies of the non-trivial zeroes for the range $0<Im(s)<110$. The first off centre non-trivial zero is in figure 2 and a wider phase contour plot of $Z_{ext}$(f1(s)) is given in [7] more fully showing the periodicity and symmetry of the function.
+
+The second linear combination of L-functions 5-periodic Davenport Heilbronn function example f2(s) [2,3] has the designation $\tau_-(s)$ [3] arising from f1(s) ($\tau_+(s))$) & f2(s) being the two coupled solutions of linear combinations of the $\chi_5(2,.)$ and $\chi_5(3,.)$ L-functions. The more recent work [3], estimates the highest(lowest) Re(s) values for non-trivial zeroes of f2(s) are approximately bounded by Re(s)=2.37 (-1.37). 
+
+Expressed in L-function, Dirichlet series and Hurwitz Zeta function form the f2(s) 5-periodic function is
+
+\begin{align}
+f_{2}(s) &= \frac{1}{2cos(\theta_2)} \Big [ e^{i\theta_2}L(\chi_5(2,.),s) + e^{-i\theta_2}L(\chi_5(3,.),s) \Big ] \label{eq:func2_Lcomb} \\ 
+&= 1 - \frac{tan(\theta_2)}{2^s} + \frac{tan(\theta_2)}{3^s} - \frac{1}{4^s} + \frac{0}{5^s} + ... \label{eq:func2_series}\\ 
+&= 5^{-s}\Big ( \zeta(s,\frac{1}{5}) - tan(\theta_2)\cdot\zeta(s,\frac{2}{5}) + tan(\theta_2)\cdot\zeta(s,\frac{3}{5}) - \zeta(s,\frac{4}{5})\Big ) \label{eq:func2_hurwitz}
+\end{align}
+
+where 
+
+\begin{align}
+tan(\theta_2) &= \frac{1}{0.284079043840412296028291832393}
+\end{align}
+
+and 
+
+\begin{align}
+\theta_2=1.2940091473463739934770553265951171821 \qquad radians \label{eq:theta2}
+\end{align}
+
+
+The Davenport-Heilbronn $f_{2}$(s) function has the functional equation
+
+\begin{equation}
+f_{2}(s) = 5^{(\frac{1}{2}-s)}2(2\pi)^{(s-1)}cos(\frac{\pi s}{2})\Gamma(1-s)f_{2}(1-s) = \chi(f_{2}(s))\cdot f_{2}(1-s) \label{eq:eq_func2}
+\end{equation}
+
+with the same multiplicative factor on the RHS as equation \eqref{eq:eq_func1} and has the following non-trivial zeroes off the critical line $0<|Im(s)|<110$
+
+\vspace*{0.5cm} 
+
+\footnotesize
+$2.3086229470433624646684745313382929775\pm i \cdot8.9183552921135375897304020319429105263$
+
+$1-2.3086229470433624646684745313382929775\pm i \cdot8.9183552921135375897304020319429105263$
+
+$1.9437413807034388245161449051459879086\pm i \cdot18.899390659174843919800253427568499108$
+
+$1-1.9437413807034388245161449051459879086\pm i \cdot18.899390659174843919800253427568499108$
+
+$2.0910625198293503224155591587306381132\pm i \cdot26.545011347433552936698152903217565537$
+
+$1-2.0910625198293503224155591587306381132\pm i \cdot26.545011347433552936698152903217565537$
+
+$2.1562639826862161678775397343642115545\pm i \cdot36.555612271261742825299296392621588623$
+
+$1-2.1562639826862161678775397343642115545\pm i \cdot36.555612271261742825299296392621588623$
+
+$2.3326248734630998436940787648857072480\pm i \cdot54.420129738497149832143525401383468617$
+
+$1-2.3326248734630998436940787648857072480\pm i \cdot54.420129738497149832143525401383468617$
+
+$1.7850944162864900022964753742188517475\pm i \cdot64.371090136530587674080528780000177847$
+
+$1-1.7850944162864900022964753742188517475\pm i \cdot64.371090136530587674080528780000177847$
+
+$2.0550252913225851071060269785994136540\pm i \cdot82.059817115159427949523358844812277054$
+
+$1-2.0550252913225851071060269785994136540\pm i \cdot82.059817115159427949523358844812277054$
+
+$2.3455123434516853975100902552096252279\pm i \cdot99.861375948502072751227875099201383184$
+
+$1-2.3455123434516853975100902552096252279\pm i \cdot99.861375948502072751227875099201383184$
+\normalsize
+\vspace*{0.5cm} 
+
+In figures 3 & 4, the phase contour plot of the extended Riemann Siegel Z-function 
+
+\begin{equation}
+Z_{ext}(f2(s)) = \sqrt{f_{2}(s)f_{2}(1-s)abs(\chi(f_{2}(s)))}
+\end{equation}
+
+[7] is given for the upper positive quandrant of the complex plane showing the verticies of the non-trivial zeroes for the range $0<Im(s)<110$. As will be noted later in the paper for other Davenport Heilbronn counterexamples this $\tau_-(s)$ function (f2(s)) has more frequent and higher off centre non-trivial zeroes than its $\tau_+(s))$ dual (f1(s)). A wider phase contour plot of $Z_{ext}$(f2(s)) is given in [7] more fully showing the periodicity and symmetry of the function.
+
+In this paper, (i) the above behaviour for the $\tau_-(s)$ and $\tau_+(s))$ dual 5-periodic Davenport Heilbronn counterexamples to the 5-periodic dual L-functions in https://www.lmfdb.org/L/degree1 [5] is found to be similarly repeated for the 7- \& 9-periodic dual L-functions and (ii) consistent with [4] extra Davenport Heilbron counterexamples are explicitly identified for 7-periodic Dirichlet series beyond the solitary $f_{3}$(s) function claimed by [2].
+
+
+## Using the signs of the functional equations for some dual L-functions pairs to quickly derive dual Davenport Heilbronn counterexample pairs  
+ 
+Two important pieces of information to note are (i) $\theta_1$ and $\theta_2$ of the 5-periodic dual Davenport Heilbronn counterexample pairs (and similarly for 7- & 9-periodic solutions) are strong coupled
+
+\begin{align}
+\theta_2 &= \theta_1+\frac{\pi}{2} \label{eq:theta2+pi/2}
+\end{align}
+
+and (ii) the multiplicative factors of the functional equations for $L(\chi_5(2,.),s)$, f1(s), f2(s) and $L(\chi_5(3,.),s)$ are very similar except for a multiplicative (complex) factor which is labelled as the sign $\epsilon$ [5] of the functional equation
+
+
+\begin{align}
+\chi(L(\chi_5(2,.),s)) &= \epsilon \cdot \chi(f1(s)) \\
+\chi(f1(s)) &= 5^{(\frac{1}{2}-s)}2(2\pi)^{(s-1)}cos(\frac{\pi s}{2})\Gamma(1-s) \equiv \frac{5^{(1-s)/2}\pi^{-((1-s)+1)/2}\Gamma(((1-s)+1)/2)}{5^{s/2}\pi^{-(s+1)/2}\Gamma((s+1)/2)}\label{eq:theta2+pi/2} \\
+\chi(f2(s)) &= \chi(f1(s)) \\
+\chi(L(\chi_5(3,.),s)) &= \bar{\epsilon} \cdot \chi(f1(s))
+\end{align}
+
+where 
+
+\small
+\begin{align}
+\epsilon(L(\chi_5(2,.),s))&=(0.85065080835203993218154049706301107225... \nonumber \\ &\qquad +i*0.52573111211913360602566908484787660729...)
+\end{align}
+\normalsize
+
+is the sign of the functional equation for the L-function $L(\chi_5(2,.),s)$ [5]. 
+
+The effect of the functional equation signs for $\chi(L(\chi_5(2,.),s))$ and $\chi(L(\chi_5(3,.),s))$ is such that the extended Riemann Siegel Theta functions [8] of these L-functions lag and lead respectively the extended Riemann Siegel Theta function of f1(s) (and f2(s)) but are otherwise parallel. Hence, equations like \eqref {eq:func1_Lcomb} and \eqref {eq:func2_Lcomb} transform the reference frame from one in which the 5-periodicity comprises L-functions with higher symmetry (so far with only the known non-trivial zeroes on the critical line) to one with 5-periodicity Davenport Heilbronn functions with lower symmetry (having at least some off centre non-trivial zeroes). 
+
+In this sense, it can be seen that for some dual L-function pairs the angle $\theta$ relating how to obtain the dual Davenport Heilbronn counterexamples can be obtained directly from the sign of the L-function where the dual counterexamples have a functional equation multiplicative factor midway between the multiplicative factors for the dual L-functions. 
+
+
+\begin{align}
+f_{1}(s) &= \frac{1}{2cos(\theta_1)} \Big [ e^{i\theta_1}L(\chi_5(2,.),s) + e^{-i\theta_1}L(\chi_5(3,.),s) \Big ] \label{eq:func1_symm} \\
+f_{2}(s) &= \frac{i}{2sin(\theta_1)} \Big [ e^{i\theta_1}L(\chi_5(2,.),s) - e^{-i\theta_1}L(\chi_5(3,.),s) \Big ] \label{eq:func2_symm} 
+\end{align}
+
+where
+\begin{align}
+\theta_1= \frac{1}{2} \cdot \arg(\epsilon) \label{eq:theta_derive}
+\end{align}
+
+where $\arg = atan$.
+
+This above relationship of symmetric and antisymmetric linear combinations of L-functions also works for the 7- & 9-periodic dual Davenport Heilbronn counterexample pairs of the 7- & 9-periodic dual L-functions in [5] where an important aspect of the $\theta$ based transformation is to force the dual Davenport Heilbronn counterexample pairs to have Dirichlet series with real coefficients.
+
+
+## 7-periodic dual Davenport Heilbronn counterexamples pair for the dual L-function pair $L(\chi_7(3,.),s)$ and $L(\chi_7(5,.),s)$
+
+Using the sign of the functional equation for $\Lambda(\chi_7(3,.),s)$ from [5] but calculated for more precision
+
+\begin{align}
+\theta_3 &= \frac{1}{2} \cdot \arg(\epsilon(\Lambda(\chi_7(3,.),s))) \label{eq:theta_73} \\
+&= 0.58697397671378779232411272227824472869 \qquad radians
+\end{align}
+
+\begin{align}
+f_{4}(s) &= \frac{1}{2cos(\theta_3)} \Big [ e^{i\theta_3}L(\chi_7(3,.),s) + e^{-i\theta_3}L(\chi_7(5,.),s) \Big ] \label{eq:func4_Lcomb} \\
+f_{3}(s) &= \frac{i}{2sin(\theta_3)} \Big [ e^{i\theta_3}L(\chi_7(3,.),s) - e^{-i\theta_3}L(\chi_7(5,.),s) \Big ] \label{eq:func3_Lcomb} 
+\end{align}
+
+where f_{3}(s) is labelled to the second function to match the antisymmetric linear combination Davenport Heilbronn counterexample function detailed by [2]. It should be noted also that $\tau+(s)$ and $\tau-(s)$ nomenclature from [3] also usefully aligns with the symmetric and antisymmetric characteristics of the linear combinations of the dual L-function terms.
+
+In Dirichlet series and Hurwitz Zeta form
+
+\begin{align}
+f_{4}(s) &= \frac{1}{2cos(\theta_3)} \Big [ e^{i\theta_3}L(\chi_7(3,.),s) + e^{-i\theta_3}L(\chi_7(5,.),s) \Big ] \\ 
+&= 1 + \frac{-\sqrt{\frac{1}{4}}+tan(\theta_3) \cdot \sqrt{\frac{3}{4}}}{2^s} + \frac{\sqrt{\frac{1}{4}}+tan(\theta_3) \cdot \sqrt{\frac{3}{4}}}{3^s}  \nonumber \\ &\qquad + \frac{-\sqrt{\frac{1}{4}}-tan(\theta_3) \cdot \sqrt{\frac{3}{4}}}{4^s} + \frac{\sqrt{\frac{1}{4}}-tan(\theta_3) \cdot \sqrt{\frac{3}{4}}}{5^s} - \frac{1}{6^s}+ ... \label{eq:func4_series_subst}\\ 
+&= 1 + \frac{0.0760644}{2^s} + \frac{1.0760644}{3^s} - \frac{1.0760644}{4^s} - \frac{0.0760644}{5^s} - \frac{1}{6^s}+ ... \label{eq:func4_series}\\ 
+&= 7^{-s}\Big ( \zeta(s,\frac{1}{7}) + 0.0760644\cdot\zeta(s,\frac{2}{7}) + 1.0760644\cdot\zeta(s,\frac{3}{7}) - 1.0760644\cdot\zeta(s,\frac{4}{7}) \nonumber \\ &\qquad - 0.0760644\cdot\zeta(s,\frac{5}{7}) - \zeta(s,\frac{6}{7})\Big ) \label{eq:func4_hurwitz}
+\end{align}
+
+where in equation \eqref {eq:func4_series_subst} to hasten the Dirichlet series coefficients calculation, the Dirichlet series for $L(\chi_7(3,.),s)$ from [5] is used but with $tan(\theta_3)$ directly substituted for the imaginary unit $i$. This approach is what also obviously happens for f1(s) [1,2] but it didn't appear to get discussed in any detail and results in Davenport Heilbronn counterexamples with purely real coefficients of the Dirichlet series. 
+
+The Davenport-Heilbronn $f_{4}$(s) function has the functional equation
+
+\begin{equation}
+f_{4}(s) = \frac{7^{(1-s)/2}\pi^{-((1-s)+1)/2}\Gamma(((1-s)+1)/2)}{7^{s/2}\pi^{-(s+1)/2}\Gamma((s+1)/2)}f_{4}(1-s) = \chi(f_{4}(s))\cdot f_{4}(1-s) \label{eq:eq_func4}
+\end{equation}
+
+and has the following non-trivial zeroes off the critical line $0<|Im(s)|<110$
+
+\vspace*{0.5cm} 
+
+\footnotesize
+$1.0356987160930834341675959448422685305\pm i \cdot31.580360541054708418263867474669671927$
+
+$1-1.0356987160930834341675959448422685305\pm i \cdot31.580360541054708418263867474669671927$
+
+$0.61665250166005069421268721575795378231\pm i \cdot49.597333382090541948366544865959410221$
+
+$1-0.61665250166005069421268721575795378231\pm i \cdot49.597333382090541948366544865959410221$
+
+$0.74537948274558157664775965008825477809\pm i \cdot59.114189008699994992480763810847129428$
+
+$1-0.74537948274558157664775965008825477809\pm i \cdot59.114189008699994992480763810847129428$
+
+$0.89997318432297630293692294150931875132\pm i \cdot94.490821447886922792371976741640032545$
+
+$1-0.89997318432297630293692294150931875132\pm i \cdot94.490821447886922792371976741640032545$
+
+$0.95082590974143495621201794244093682115\pm i \cdot105.02627402917771826429331189285700121$
+
+$1-0.95082590974143495621201794244093682115\pm i \cdot105.02627402917771826429331189285700121$
+\normalsize
+\vspace*{0.5cm} 
+
+In figures 5 & 6, the phase contour plot of the extended Riemann Siegel Z-function [7] 
+
+\begin{equation}
+Z_{ext}(f_{4}(s)) = \sqrt{f_{4}(s)f_{4}(1-s)abs(\chi(f_{4}(s)))}
+\end{equation}
+
+is given for the upper positive quandrant of the complex plane showing the verticies of the non-trivial zeroes for the range $0<Im(s)<110$. This $\tau_+(s)$ dual function (f4(s) is a symmetric linear combination of dual L-functions) has less non-trivial zeroes in this range than its $\tau_-(s)$ dual. 
+
+In Dirichlet series and Hurwitz Zeta form
+
+\begin{align}
+f_{3}(s) &= \frac{1}{2sin(\theta_3)} \Big [ e^{i\theta_3}L(\chi_7(3,.),s) - e^{-i\theta_3}L(\chi_7(5,.),s) \Big ] \\ 
+&= 1 + \frac{-\sqrt{\frac{1}{4}}-\frac{1}{tan(\theta_3)} \cdot \sqrt{\frac{3}{4}}}{2^s} + \frac{\sqrt{\frac{1}{4}}-\frac{1}{tan(\theta_3)} \cdot \sqrt{\frac{3}{4}}}{3^s}  \nonumber \\ &\qquad + \frac{-\sqrt{\frac{1}{4}}+\frac{1}{tan(\theta_3)} \cdot \sqrt{\frac{3}{4}}}{4^s} + \frac{\sqrt{\frac{1}{4}}+\frac{1}{tan(\theta_3)} \cdot \sqrt{\frac{3}{4}}}{5^s} - \frac{1}{6^s}+ ... \label{eq:func3_series_subst}\\ 
+&= 1 - \frac{1.8019377}{2^s} - \frac{0.8019377}{3^s} + \frac{0.8019377}{4^s} + \frac{1.8019377}{5^s} - \frac{1}{6^s}+ ... \label{eq:func3_series}\\ 
+&= 7^{-s}\Big ( \zeta(s,\frac{1}{7}) -1.8019377\cdot\zeta(s,\frac{2}{7}) -0.8019377\cdot\zeta(s,\frac{3}{7}) +0.8019377\cdot\zeta(s,\frac{4}{7}) \nonumber \\ &\qquad +1.8019377\cdot\zeta(s,\frac{5}{7}) - \zeta(s,\frac{6}{7})\Big ) \label{eq:func3_hurwitz}
+\end{align}
+
+where in equation \eqref {eq:func3_series_subst} to hasten the Dirichlet series coefficients calculation for the $\tau_-(s)$ dual case, the Dirichlet series for $L(\chi_7(5,.),s)$ from [5] is used but with $\frac{1}{tan(\theta_3)}$ directly substituted for the imaginary unit $i$. 
+
+It should be noted that the above Dirichlet series coefficients are in full agreement with the f3(s) function detailed in [2]. Therefore the equation \eqref {eq:func3_series_subst} approach is also valid for f2(s) construction ($\frac{1}{tan(\theta_1)}$ for imaginary unit $i$ in the $L(\chi_5(3,.),s)$) but the [2] authors interpreted the Dirichlet series substitution as $\frac{-1}{tan(\theta_1)}$ for the imaginary unit $i$ in the $L(\chi_5(2,.),s)$ series. The above f3(s) behaviour suggests that earlier description of $\frac{1}{tan(\theta)}$ substitution for $\tau_-(s)$ dual cases in [2] to generate the Dirichlet series is not general enough for higher L-functions cases. 
+
+Again the dual Davenport Heilbronn counterexamples have purely real coefficients in their Dirichlet series.
+
+The Davenport-Heilbronn $f_{3}$(s) function has the functional equation
+
+\begin{equation}
+f_{3}(s) = \frac{7^{(1-s)/2}\pi^{-((1-s)+1)/2}\Gamma(((1-s)+1)/2)}{7^{s/2}\pi^{-(s+1)/2}\Gamma((s+1)/2)}f_{3}(1-s) = \chi(f_{3}(s))\cdot f_{3}(1-s) \label{eq:eq_func3}
+\end{equation}
+
+and has the following non-trivial zeroes off the critical line $0<|Im(s)|<110$
+
+\vspace*{0.5cm} 
+
+\footnotesize
+$1.3474578909817112247150185315213322560\pm i \cdot17.528586482529124473097432785620123703$
+
+$1-1.3474578909817112247150185315213322560\pm i \cdot17.528586482529124473097432785620123703$
+
+$1.0616182125761716260171312513081949904\pm i \cdot28.442591498054314530417496141489702308$
+
+$1-1.0616182125761716260171312513081949904\pm i \cdot28.442591498054314530417496141489702308$
+
+$1.3049234743548266813311041373655754881\pm i \cdot45.532029203784684281594200868001052499$
+
+$1-1.3049234743548266813311041373655754881\pm i \cdot45.532029203784684281594200868001052499$
+
+$1.0145955577959537929657937837624287070\pm i \cdot56.279267390270018059134571032308126201$
+
+$1-1.0145955577959537929657937837624287070\pm i \cdot56.279267390270018059134571032308126201$
+
+$0.91718147251505222008978871924631498298\pm i \cdot63.711144757953249570472808041286656045$ 
+
+$1-0.91718147251505222008978871924631498298\pm i \cdot63.711144757953249570472808041286656045$
+
+$1.3319564669084314366448155344336469455\pm i \cdot80.352214365802129800009212712830693851$
+
+$1-1.3319564669084314366448155344336469455\pm i \cdot80.352214365802129800009212712830693851$
+
+$1.2217980601625670862823225304922578896\pm i \cdot91.175622043193673585228685913185290722$
+
+$1-1.2217980601625670862823225304922578896\pm i \cdot91.175622043193673585228685913185290722$
+
+$1.2200856163826685768049832442849074747\pm i \cdot108.40180173334825708140980496334509076$
+
+$1-1.2200856163826685768049832442849074747\pm i \cdot108.40180173334825708140980496334509076$
+\normalsize
+\vspace*{0.5cm} 
+
+In figures 7 & 8, the phase contour plot of the extended Riemann Siegel Z-function [7] 
+
+\begin{equation}
+Z_{ext}(f_{3}(s)) = \sqrt{f_{3}(s)f_{3}(1-s)abs(\chi(f_{3}(s)))}
+\end{equation}
+
+is given for the upper positive quandrant of the complex plane showing the verticies of the non-trivial zeroes for the range $0<Im(s)<110$.
+
+
+## 7-periodic dual Davenport Heilbronn counterexamples pair for the even parity dual L-function pair $L(\chi_7(2,.),s)$ and $L(\chi_7(4,.),s)$
+
+Using the sign of the functional equation for $\Lambda(\chi_7(2,.),s)$ from [5] but calculated for more precision
+
+\begin{align}
+\theta_4 &= \frac{1}{2} \cdot \arg(\epsilon(\Lambda(\chi_7(2,.),s))) \label{eq:theta_72} \\
+&= -0.230111787241404976915050869407 \qquad radians
+\end{align}
+
+\begin{align}
+f_{5}(s) &= \frac{1}{2cos(\theta_4)} \Big [ e^{i\theta_4}L(\chi_7(2,.),s) + e^{-i\theta_4}L(\chi_7(4,.),s) \Big ] \label{eq:func5_Lcomb} \\
+f_{6}(s) &= \frac{i}{2sin(\theta_4)} \Big [ e^{i\theta_4}L(\chi_7(2,.),s) - e^{-i\theta_4}L(\chi_7(4,.),s) \Big ] \label{eq:func6_Lcomb} 
+\end{align}
+
+In Dirichlet series and Hurwitz Zeta form
+
+\begin{align}
+f_{5}(s) &= \frac{1}{2cos(\theta_4)} \Big [ e^{i\theta_4}L(\chi_7(2,.),s) + e^{-i\theta_4}L(\chi_7(4,.),s) \Big ] \\ 
+&= 1 + \frac{-\sqrt{\frac{1}{4}}-tan(\theta_4) \cdot \sqrt{\frac{3}{4}}}{2^s} + \frac{-\sqrt{\frac{1}{4}}+tan(\theta_4) \cdot \sqrt{\frac{3}{4}}}{3^s}  \nonumber \\ &\qquad + \frac{-\sqrt{\frac{1}{4}}+tan(\theta_4) \cdot \sqrt{\frac{3}{4}}}{4^s} + \frac{-\sqrt{\frac{1}{4}}-tan(\theta_4) \cdot \sqrt{\frac{3}{4}}}{5^s} + \frac{1}{6^s}+ ... \label{eq:func5_series_subst}\\ 
+&= 1 - \frac{0.2971238}{2^s} - \frac{0.7028762}{3^s} - \frac{0.7028762}{4^s} - \frac{0.2971238}{5^s} + \frac{1}{6^s}+ ... \label{eq:func5_series}\\ 
+&= 7^{-s}\Big ( \zeta(s,\frac{1}{7}) - 0.2971238\cdot\zeta(s,\frac{2}{7}) - 0.7028762\cdot\zeta(s,\frac{3}{7}) - 0.7028762\cdot\zeta(s,\frac{4}{7}) \nonumber \\ &\qquad - 0.2971238\cdot\zeta(s,\frac{5}{7}) + \zeta(s,\frac{6}{7})\Big ) \label{eq:func5_hurwitz}
+\end{align}
+
+The Davenport-Heilbronn $f_{5}$(s) function has the functional equation
+
+\begin{equation}
+f_{5}(s) = \frac{7^{(1-s)/2}\pi^{-(1-s)/2}\Gamma((1-s)/2)}{7^{s/2}\pi^{-(s)/2}\Gamma((s)/2)}f_{4}(1-s) = \chi(f_{5}(s))\cdot f_{5}(1-s) \label{eq:eq_func5}
+\end{equation}
+
+and has the following non-trivial zeroes off the critical line $0<|Im(s)|<110$
+
+\vspace*{0.5cm} 
+
+\footnotesize
+
+$0.63561562193670621273478397524783140425\pm i \cdot68.208803779168075459206161870488837291$
+
+$1-0.63561562193670621273478397524783140425\pm i \cdot68.208803779168075459206161870488837291$
+\normalsize
+\vspace*{0.5cm} 
+
+In figures 9 & 10, the phase contour plot of the extended Riemann Siegel Z-function [7] 
+
+\begin{equation}
+Z_{ext}(f_{5}(s)) = \sqrt{f_{5}(s)f_{5}(1-s)abs(\chi(f_{5}(s)))}
+\end{equation}
+
+is given for the upper positive quandrant of the complex plane showing the verticies of the non-trivial zeroes for the range $0<Im(s)<110$. This $\tau_+(s)$ dual function (f_{5}(s) is a symmetric linear combination of dual L-functions) has less non-trivial zeroes in this range than its $\tau_-(s)$ dual f_{6}(s). 
+
+In Dirichlet series and Hurwitz Zeta form
+
+\begin{align}
+f_{6}(s) &= \frac{1}{2sin(\theta_4)} \Big [ e^{i\theta_4}L(\chi_7(3,.),s) - e^{-i\theta_4}L(\chi_7(5,.),s) \Big ] \\ 
+&= 1 + \frac{-\sqrt{\frac{1}{4}}+\frac{1}{tan(\theta_4)} \cdot \sqrt{\frac{3}{4}}}{2^s} + \frac{-\sqrt{\frac{1}{4}}-\frac{1}{tan(\theta_4)} \cdot \sqrt{\frac{3}{4}}}{3^s}  \nonumber \\ &\qquad + \frac{-\sqrt{\frac{1}{4}}-\frac{1}{tan(\theta_4)} \cdot \sqrt{\frac{3}{4}}}{4^s} + \frac{-\sqrt{\frac{1}{4}}+\frac{1}{tan(\theta_4)} \cdot \sqrt{\frac{3}{4}}}{5^s} + \frac{1}{6^s}+ ... \label{eq:func6_series_subst}\\ 
+&= 1 - \frac{4.1968354}{2^s} + \frac{3.1968354}{3^s} + \frac{3.1968354}{4^s} - \frac{4.1968354}{5^s} + \frac{1}{6^s}+ ... \label{eq:func6_series}\\ 
+&= 7^{-s}\Big ( \zeta(s,\frac{1}{7}) -4.1968354\cdot\zeta(s,\frac{2}{7}) +3.1968354\cdot\zeta(s,\frac{3}{7}) +3.1968354\cdot\zeta(s,\frac{4}{7}) \nonumber \\ &\qquad -4.1968354\cdot\zeta(s,\frac{5}{7}) + \zeta(s,\frac{6}{7})\Big ) \label{eq:func6_hurwitz}
+\end{align}
+
+The Davenport-Heilbronn $f_{6}$(s) function has the functional equation
+
+\begin{equation}
+f_{6}(s) = \frac{7^{(1-s)/2}\pi^{-(1-s)/2}\Gamma((1-s)/2)}{7^{s/2}\pi^{-(s)/2}\Gamma((s)/2)}f_{6}(1-s) = \chi(f_{6}(s))\cdot f_{6}(1-s) \label{eq:eq_func6}
+\end{equation}
+
+and has the following non-trivial zeroes off the critical line $0<|Im(s)|<110$
+
+\vspace*{0.5cm} 
+
+\footnotesize
+$2.2966369153300939798611551594924629972\pm i \cdot8.7297527168959137433886785679865631751$
+
+$1-2.2966369153300939798611551594924629972\pm i \cdot8.7297527168959137433886785679865631751$
+
+$2.0657801598225238774191718207798620491\pm i \cdot19.098047557783340811311661746209904395$
+
+$1-2.0657801598225238774191718207798620491\pm i \cdot19.098047557783340811311661746209904395$
+
+$2.0424326649486289689374172464885255842\pm i \cdot26.713365123352961584042101985717673800$
+
+$1-2.0424326649486289689374172464885255842\pm i \cdot26.713365123352961584042101985717673800$
+
+$2.0528901008239248697796543194996078668\pm i \cdot36.550397676559100184369276507359282148$
+
+$1-2.0528901008239248697796543194996078668\pm i \cdot36.550397676559100184369276507359282148$
+
+$1.6991736510743970635532633796978670989\pm i \cdot43.804462172894526836577832478629380292$
+
+$1-1.6991736510743970635532633796978670989\pm i \cdot43.804462172894526836577832478629380292$
+
+$2.3979707153508877578179791621270849766\pm i \cdot54.387012526147001645549521886816308428$
+
+$1-2.3979707153508877578179791621270849766\pm i \cdot54.387012526147001645549521886816308428$
+
+$1.0419025616515708521693390344332765652\pm i \cdot62.327215896964030375930433560935226208$
+
+$1-1.0419025616515708521693390344332765652\pm i \cdot62.327215896964030375930433560935226208$
+
+$1.3207778439565784383913641615101686552\pm i \cdot64.939810849374755613707110369823688067$
+
+$1-1.3207778439565784383913641615101686552\pm i \cdot64.939810849374755613707110369823688067$
+
+$2.0880620391046339170151372134152551498\pm i \cdot71.991222589254239802996312511316874063$
+
+$1-2.0880620391046339170151372134152551498\pm i \cdot71.991222589254239802996312511316874063$
+
+$2.2187074907409963380876458709912835334\pm i \cdot82.149530491128141004961280355768088675$
+
+$1-2.2187074907409963380876458709912835334\pm i \cdot82.149530491128141004961280355768088675$
+
+$2.0069134109197098786039096055148072843\pm i \cdot89.846744372855648726656952925798185203$
+
+$1-2.0069134109197098786039096055148072843\pm i \cdot89.846744372855648726656952925798185203$
+
+$2.1705089185104856298900051558629198479\pm i \cdot100.01235593782620134098262120163545061$
+
+$1-2.1705089185104856298900051558629198479\pm i \cdot100.01235593782620134098262120163545061$
+
+$1.2299615179503366626250411005034664055\pm i \cdot106.60334758092843859961924771904987831$
+
+$1-1.2299615179503366626250411005034664055\pm i \cdot106.60334758092843859961924771904987831$
+
+$1.2738971469340549745797689788366176216\pm i \cdot109.29625320715483765765773016269294264$
+
+$1-1.2738971469340549745797689788366176216\pm i \cdot109.29625320715483765765773016269294264$
+\normalsize
+
+\vspace*{0.5cm} 
+
+In figures 11 & 12, the phase contour plot of the extended Riemann Siegel Z-function [7] 
+
+\begin{equation}
+Z_{ext}(f_{6}(s)) = \sqrt{f_{6}(s)f_{6}(1-s)abs(\chi(f_{6}(s)))}
+\end{equation}
+
+is given for the upper positive quandrant of the complex plane showing the verticies of the non-trivial zeroes for the range $0<Im(s)<110$.
+
+
+## 9-periodic dual Davenport Heilbronn counterexamples pair for the odd parity dual L-function pair $L(\chi_9(2,.),s)$ and $L(\chi_9(5,.),s)$
+
+Using the sign of the functional equation for $\Lambda(\chi_9(2,.),s)$ from [5] but calculated for more precision
+
+\begin{align}
+\theta_5 &= \frac{1}{2} \cdot \arg(\epsilon(\Lambda(\chi_9(2),.),s))) \label{eq:theta_92} \\
+&= 0.436332312998582394230922692122 \qquad radians
+\end{align}
+
+\begin{align}
+f_{7}(s) &= \frac{1}{2cos(\theta_5)} \Big [ e^{i\theta_5}L(\chi_9(2,.),s) + e^{-i\theta_5}L(\chi_9(5,.),s) \Big ] \label{eq:func7_Lcomb} \\
+f_{8}(s) &= \frac{i}{2sin(\theta_5)} \Big [ e^{i\theta_5}L(\chi_9(2,.),s) - e^{-i\theta_5}L(\chi_9(5,.),s) \Big ] \label{eq:func8_Lcomb} 
+\end{align}
+
+where the $\tau+(s)$ and $\tau-(s)$ nomenclature from [3] also usefully aligns with the symmetric and antisymmetric characteristics of the linear combinations of the dual L-function terms.
+
+In Dirichlet series and Hurwitz Zeta form
+
+\begin{align}
+f_{7}(s) &= \frac{1}{2cos(\theta_5)} \Big [ e^{i\theta_5}L(\chi_9(2,.),s) + e^{-i\theta_5}L(\chi_9(5,.),s) \Big ] \\ 
+&= 1 + \frac{0.9038343}{2^s} - \frac{0.0961657}{4^s} + \frac{0.0961657}{5^s} - \frac{0.9038343}{7^s} - \frac{1}{8^s} + ... \label{eq:func7_series}\\ 
+&= 9^{-s}\Big ( \zeta(s,\frac{1}{9}) + 0.9038343\cdot\zeta(s,\frac{2}{9}) -  0.0961657\cdot\zeta(s,\frac{4}{9}) \nonumber \\ &\qquad + 0.0961657\cdot\zeta(s,\frac{5}{9}) - 0.9038343\cdot\zeta(s,\frac{7}{9}) - \zeta(s,\frac{8}{9}) \Big ) \label{eq:func7_hurwitz}
+\end{align}
+
+The Davenport-Heilbronn $f_{7}$(s) function has the functional equation
+
+\begin{equation}
+f_{7}(s) = \frac{9^{(1-s)/2}\pi^{-((1-s)+1)/2}\Gamma(((1-s)+1)/2)}{9^{s/2}\pi^{-(s+1)/2}\Gamma((s+1)/2)}f_{7}(1-s) = \chi(f_{7}(s))\cdot f_{7}(1-s) \label{eq:eq_func7}
+\end{equation}
+
+and has the following non-trivial zeroes off the critical line $0<|Im(s)|<110$
+
+\vspace*{0.5cm} 
+
+\footnotesize
+$0.62158704184115554414037512867838611841\pm i \cdot77.544874826829190243514315952942075208$
+
+$1-0.62158704184115554414037512867838611841\pm i \cdot77.544874826829190243514315952942075208$
+\normalsize
+\vspace*{0.5cm} 
+
+In figures 13 & 14, the phase contour plot of the extended Riemann Siegel Z-function [7] 
+
+\begin{equation}
+Z_{ext}(f_{7}(s)) = \sqrt{f_{7}(s)f_{7}(1-s)abs(\chi(f_{7}(s)))}
+\end{equation}
+
+is given for the upper positive quandrant of the complex plane showing the verticies of the non-trivial zeroes for the range $0<Im(s)<110$. This $\tau_+(s)$ dual function ($f_{7}$(s) is a symmetric linear combination of dual L-functions) has less non-trivial zeroes in this range than its $\tau_-(s)$ dual $f_{8}$(s). 
+
+In Dirichlet series and Hurwitz Zeta form
+
+\begin{align}
+f_{8}(s) &= \frac{i}{2sin(\theta_5)} \Big [ e^{i\theta_5}L(\chi_9(2,.),s) - e^{-i\theta_5}L(\chi_9(5,.),s) \Big ] \\ 
+&= 1 - \frac{1.3571975}{2^s} - \frac{2.3571975}{4^s} + \frac{2.3571975}{5^s} + \frac{1.3571975}{7^s} - \frac{1}{8^s} + ... \label{eq:func8_series}\\ 
+&= 9^{-s}\Big ( \zeta(s,\frac{1}{9}) - 1.3571975\cdot\zeta(s,\frac{2}{9}) -  2.3571975\cdot\zeta(s,\frac{4}{9}) \nonumber \\ &\qquad + 2.3571975\cdot\zeta(s,\frac{5}{9}) + 1.3571975\cdot\zeta(s,\frac{7}{9}) - \zeta(s,\frac{8}{9}) \Big ) \label{eq:func8_hurwitz}
+\end{align}
+
+Again the dual Davenport Heilbronn counterexamples have purely real coefficients in their Dirichlet series.
+
+The Davenport-Heilbronn $f_{8}$(s) function has the functional equation
+
+\begin{equation}
+f_{8}(s) = \frac{9^{(1-s)/2}\pi^{-((1-s)+1)/2}\Gamma(((1-s)+1)/2)}{9^{s/2}\pi^{-(s+1)/2}\Gamma((s+1)/2)}f_{8}(1-s) = \chi(f_{8}(s))\cdot f_{8}(1-s) \label{eq:eq_func8}
+\end{equation}
+
+and has the following non-trivial zeroes off the critical line $0<|Im(s)|<110$
+
+\vspace*{0.5cm} 
+
+\footnotesize
+$1.3159555916275012529334619269001143406\pm i \cdot9.2447269524406616271488327381085503796$
+
+$1.5635423134942829938334193212852067958\pm i \cdot17.936056942508805858654916634683276876$
+
+$1.1388772352384116560057994592031387139\pm i \cdot27.040869810010801764080410382879505136$
+
+$1.5569216752813280367738773570316119968\pm i \cdot36.624696275964167400306530616008245708$
+
+$1.3235378123621239248518733319177526151\pm i \cdot45.011315659340644169400301369948408922$
+
+$1.1125656327706793654682203649985395223\pm i \cdot53.770037140075359055825360259016830016$
+
+$1.4597512691839676619983480354711312026\pm i \cdot63.519350936755099491690556063086049333$
+
+$1.5194421626313498374841774438739637816\pm i \cdot72.582668879945669053720783299121994830$
+
+$1.0927250868624657477750005615239575107\pm i \cdot81.238879749589644203058112407815618990$
+
+$1.4119881657520550514283315300801545636\pm i \cdot91.140150984490427220959417198066026463$
+
+$1.4464428621692401393173523960464433823\pm i \cdot99.543767857773338237840487187113522903$
+
+$1.3634566909812535820677266832912427548\pm i \cdot108.21392777888474768638066935222999076$
+
+\normalsize
+\vspace*{0.5cm} 
+
+In figures 15 & 16, the phase contour plot of the extended Riemann Siegel Z-function [7] 
+
+\begin{equation}
+Z_{ext}(f_{8}(s)) = \sqrt{f_{8}(s)f_{8}(1-s)abs(\chi(f_{8}(s)))}
+\end{equation}
+
+is given for the upper positive quandrant of the complex plane showing the verticies of the non-trivial zeroes for the range $0<Im(s)<110$.
+
+
+## 9-periodic dual Davenport Heilbronn counterexamples pair for the even parity dual L-function pair $L(\chi_9(4,.),s)$ and $L(\chi_9(7,.),s)$
+
+Using the sign of the functional equation for $\Lambda(\chi_9(4,.),s)$ from [5] but calculated for more precision
+
+\begin{align}
+\theta_6 &= \frac{1}{2} \cdot \arg(\epsilon(\Lambda(\chi_9(4),.),s))) \label{eq:theta_94} \\
+&= 0.349065850398865915384738153698 \qquad radians
+\end{align}
+
+\begin{align}
+f_{9}(s) &= \frac{1}{2cos(\theta_6)} \Big [ e^{i\theta_6}L(\chi_9(4,.),s) + e^{-i\theta_6}L(\chi_9(7,.),s) \Big ] \label{eq:func9_Lcomb} \\
+f_{10}(s) &= \frac{i}{2sin(\theta_6)} \Big [ e^{i\theta_6}L(\chi_9(4,.),s) - e^{-i\theta_6}L(\chi_9(7,.),s) \Big ] \label{eq:func10_Lcomb} 
+\end{align}
+
+where the $\tau+(s)$ and $\tau-(s)$ nomenclature from [3] also usefully aligns with the symmetric and antisymmetric characteristics of the linear combinations of the dual L-function terms.
+
+In Dirichlet series and Hurwitz Zeta form
+
+\begin{align}
+f_{9}(s) &= \frac{1}{2cos(\theta_6)} \Big [ e^{i\theta_6}L(\chi_9(4,.),s) + e^{-i\theta_6}L(\chi_9(7,.),s) \Big ]  \\ 
+&= 1 - \frac{0.1847925}{2^s} - \frac{0.8152075}{4^s} - \frac{0.8152075}{5^s} - \frac{0.1847925}{7^s} + \frac{1}{8^s} + ... \label{eq:func9_series}\\ 
+&= 9^{-s}\Big ( \zeta(s,\frac{1}{9}) - 0.1847925\cdot\zeta(s,\frac{2}{9}) -  0.8152075\cdot\zeta(s,\frac{4}{9}) \nonumber \\ &\qquad - 0.8152075\cdot\zeta(s,\frac{5}{9}) - 0.1847925\cdot\zeta(s,\frac{7}{9}) + \zeta(s,\frac{8}{9}) \Big ) \label{eq:func9_hurwitz}
+\end{align}
+
+The Davenport-Heilbronn $f_{9}$(s) function has the functional equation
+
+\begin{equation}
+f_{9}(s) = \frac{9^{(1-s)/2}\pi^{-((1-s))/2}\Gamma(((1-s))/2)}{9^{s/2}\pi^{-(s)/2}\Gamma((s)/2)}f_{9}(1-s) = \chi(f_{9}(s))\cdot f_{9}(1-s) \label{eq:eq_func9}
+\end{equation}
+
+and has the following non-trivial zeroes off the critical line $0<|Im(s)|<110$
+
+\vspace*{0.5cm} 
+
+\footnotesize
+$0.73723511073018731438538135704231355918\pm i \cdot85.929213490067066619079490927881661099$
+
+$1-0.73723511073018731438538135704231355918\pm i \cdot85.929213490067066619079490927881661099$
+\normalsize
+\vspace*{0.5cm} 
+
+In figures 17 & 18, the phase contour plot of the extended Riemann Siegel Z-function [7] 
+
+\begin{equation}
+Z_{ext}(f_{9}(s)) = \sqrt{f_{9}(s)f_{9}(1-s)abs(\chi(f_{9}(s)))}
+\end{equation}
+
+is given for the upper positive quandrant of the complex plane showing the verticies of the non-trivial zeroes for the range $0<Im(s)<110$. This $\tau_+(s)$ dual function ($f_{9}$(s) is a symmetric linear combination of dual L-functions) has less non-trivial zeroes in this range than its $\tau_-(s)$ dual $f_{10}$(s). 
+
+In Dirichlet series and Hurwitz Zeta form
+
+\begin{align}
+f_{10}(s) &= \frac{i}{2sin(\theta_6)} \Big [ e^{i\theta_6}L(\chi_9(4,.),s) - e^{-i\theta_6}L(\chi_9(7,.),s) \Big ] \\ 
+&= 1 - \frac{2.8793852}{2^s} + \frac{1.8793852}{4^s} + \frac{1.8793852}{5^s} - \frac{2.8793852}{7^s} + \frac{1}{8^s} + ... \label{eq:func10_series}\\ 
+&= 9^{-s}\Big ( \zeta(s,\frac{1}{9}) - 2.8793852\cdot\zeta(s,\frac{2}{9}) +  1.8793852\cdot\zeta(s,\frac{4}{9}) \nonumber \\ &\qquad + 1.8793852\cdot\zeta(s,\frac{5}{9}) - 2.8793852\cdot\zeta(s,\frac{7}{9}) + \zeta(s,\frac{8}{9}) \Big ) \label{eq:func10_hurwitz}
+\end{align}
+
+Again the dual Davenport Heilbronn counterexamples have purely real coefficients in their Dirichlet series.
+The Davenport-Heilbronn $f_{10}$(s) function has the functional equation
+
+\begin{equation}
+f_{10}(s) = \frac{9^{(1-s)/2}\pi^{-((1-s))/2}\Gamma(((1-s))/2)}{9^{s/2}\pi^{-(s)/2}\Gamma((s)/2)}f_{10}(1-s) = \chi(f_{10}(s))\cdot f_{10}(1-s) \label{eq:eq_func10}
+\end{equation}
+
+and has the following non-trivial zeroes off the critical line $0<|Im(s)|<110$
+
+\vspace*{0.5cm} 
+
+\footnotesize
+$1.4660511688936516323903910955858833769\pm i \cdot9.4871729547728066457376278600614311492$
+
+$1.2713626349808204966760764352686738789\pm i \cdot18.150597139967930138744256683609578592$
+
+$1.3824278823020539145038223775245153894\pm i \cdot26.206969987495454085637537193071133813$
+
+$1.2357160816850315078708971206128223492\pm i \cdot28.448862495203423391527439712310430641$
+
+$1.1523811728309530354330344019273873426\pm i \cdot36.578561754533966723927541873620403865$
+
+$1.6479793571317157826236546106332200674\pm i \cdot45.106927116171989310751387933771344817$
+
+$0.95124112460784922077778032021002034623\pm i \cdot53.005075078841560509288909627735852010$
+
+$1.2361126591728418564991327723426328372\pm i \cdot54.897013892084284839685130019030312074$
+
+$1.2141736177485555088401823348660175231\pm i \cdot64.179205329762071775724259241888280288$
+
+$1.2552808597379821698277475235138169234\pm i \cdot72.226265693074295453946298431419420694$
+
+$1.2185359285640234379137586089065544044\pm i \cdot80.934184454394728076952000030966919800$
+
+$1.0750851603626069779091991218571635583\pm i \cdot83.349542157477422104724685805892271112$
+
+$1.3426840576054182501234218513350259987\pm i \cdot91.199480558214384204443934044468481333$
+
+$1.6264873924579124481489033789228693629\pm i \cdot99.648457256124124937700023781297067951$
+
+$1.2150486460774143098051136347485801386\pm i \cdot107.58582873509957334635691943420938188$
+\normalsize
+\vspace*{0.5cm} 
+
+In figures 19 & 20, the phase contour plot of the extended Riemann Siegel Z-function [7] 
+
+\begin{equation}
+Z_{ext}(f_{10}(s)) = \sqrt{f_{10}(s)f_{10}(1-s)abs(\chi(f_{10}(s)))}
+\end{equation}
+
+is given for the upper positive quandrant of the complex plane showing the verticies of the non-trivial zeroes for the range $0<Im(s)<110$.
+
+
+###Conclusions
+
+Dual L-function pairs can be associated with dual Davenport Heilbronn counterexample pairs that are Dirichlet series with real coefficients. The derivation of the dual counterexample pairs arises from symmetric and antisymmetric linear combinations of the dual L-functions. 
+
+The $tau-(s)$ counterexamples formed by antisymmetric linear combinations of dual L-functions have larger Dirichlet series coefficients and exhibit more non-trivial zeroes off (and further away from) the critical line.
+
+The dual L-functions can be understood to be reference frame transformations of linear combinations of the Davenport Heilbronn counterexamples moving (at least some) off centre non-trivial zeroes onto the critical line resulting in higher symmetry functions of the non-trivial zeroes for the given functional equation periodicity.
+
+
+###References
+
+1. Spira, R. Mathematics of Computation, Volume 63, Number 208,
+October 1994, Pages 747-748
+
+2. Balanzario, E.P. and Sanchez-Ortiz, J. Mathematics of Computation,
+Volume 76, Number 260, October 2007, Pages 2045–2049
+
+3. E. Bombieri, A. Ghosh, “Around the Davenport–Heilbronn function”, Uspekhi Mat. Nauk, 66:2(398) (2011), 15–66; Russian Math. Surveys, 66:2 (2011), 221–270
+https://doi.org/10.4213/rm9410 
+IAS lecture https://www.youtube.com/watch?v=-JUHypc2_9A
+
+4. Vaughan R.C. "Zeros of Dirichlet series", Indagationes Mathematicae, Volume 26, Issue 5, December 2015, Pages 897-909
+https://doi.org/10.1016/j.indag.2015.09.007
+
+5. The LMFDB Collaboration, The L-functions and Modular Forms Database, http://www.lmfdb.org, 2019, [Online; accessed January 2020].
+
+6. The PARI~Group, PARI/GP version 2.12.0, Univ. Bordeaux, 2018,
+http://pari.math.u-bordeaux.fr/.
+
+7. Martin, J.P.D. "Phase_contour_plots_of_extended_Riemann_Siegel_functions." (2020) https://figshare.com/articles/Phase_contour_plots_of_extended_Riemann_Siegel_functions/11542821
+
+8. Martin, J.P.D. "Extended Riemann Siegel Theta function further simplified using functional equation factor for the Riemann Zeta function." (2017)
+http://dx.doi.org/10.6084/m9.figshare.5735268
+
+9. R Core Team (2017). R: A language and environment for statistical computing.
+R Foundation for Statistical Computing, Vienna, Austria. URL
+https://www.R-project.org/.
+
+10. RStudio Team (2015). RStudio: Integrated Development for R. RStudio, Inc., Boston, MA URL http://www.rstudio.com/.
+
+
+
+##Phase contour plots
+
+The phase contour plots were based on grid search calculations of $Arg(f_i(s))$ conducted in pari-gp [6] and employed the use of color.palette = matlab.like2 in Rmarkdown plots using R [9] and Rstudio [10].
+
+
+\newpage
+```{r f1_5z_m10, echo=FALSE, fig.cap="Phase contour plot of Davenport Heilbronn 5-periodic f1 (tau+) function -10<Im(s)<50", out.width = '100%',   warning=FALSE}
+knitr::include_graphics("/home/john/bear/Projects/sampling-investigations/julia/f1_5Z_fn_m10_50.jpeg")
+```
+
+```{r f1_5z_50, echo=FALSE, fig.cap="Phase contour plot of Davenport Heilbronn 5-periodic f1 (tau+) function 50<Im(s)<110 including lowest off-centre non-trivial zero", out.width = '100%',   warning=FALSE}
+knitr::include_graphics("/home/john/bear/Projects/sampling-investigations/julia/f1_5Z_fn_50_110.jpeg")
+```
+
+
+\newpage
+```{r f2_5z_m10, echo=FALSE, fig.cap="Phase contour plot of Davenport Heilbronn 5-periodic f2 (tau-) function -10<Im(s)<50", out.width = '100%',   warning=FALSE}
+knitr::include_graphics("/home/john/bear/Projects/sampling-investigations/julia/f2_5Z_fn_m10_50.jpeg")
+```
+
+```{r f2_5z_50, echo=FALSE, fig.cap="Phase contour plot of Davenport Heilbronn 5-periodic f2 (tau-) function 50<Im(s)<110", out.width = '100%',   warning=FALSE}
+knitr::include_graphics("/home/john/bear/Projects/sampling-investigations/julia/f2_5Z_fn_50_110.jpeg")
+```
+
+
+
+\newpage
+```{r f4_7z_m10, echo=FALSE, fig.cap="Phase contour plot of Davenport Heilbronn 7-periodic f4 (tau+) function -10<Im(s)<50", out.width = '100%',   warning=FALSE}
+knitr::include_graphics("/home/john/bear/Projects/sampling-investigations/julia/f4_7Z_fn_m10_50.jpeg")
+```
+
+```{r f4_7z_50, echo=FALSE, fig.cap="Phase contour plot of Davenport Heilbronn 5-periodic f4 (tau+) function 50<Im(s)<110", out.width = '100%',   warning=FALSE}
+knitr::include_graphics("/home/john/bear/Projects/sampling-investigations/julia/f4_7Z_fn_50_110.jpeg")
+```
+
+
+\newpage
+```{r f3_7z_m10, echo=FALSE, fig.cap="Phase contour plot of Davenport Heilbronn 5-periodic f3 (tau-) function -10<Im(s)<50", out.width = '100%',   warning=FALSE}
+knitr::include_graphics("/home/john/bear/Projects/sampling-investigations/julia/f3_7Z_fn_m10_50.jpeg")
+```
+
+```{r f3_7z_50, echo=FALSE, fig.cap="Phase contour plot of Davenport Heilbronn 5-periodic f3 (tau-) function 50<Im(s)<110", out.width = '100%',   warning=FALSE}
+knitr::include_graphics("/home/john/bear/Projects/sampling-investigations/julia/f3_7Z_fn_50_110.jpeg")
+```
+
+\newpage
+```{r f5_7z_m10, echo=FALSE, fig.cap="Phase contour plot of Davenport Heilbronn 7-periodic f5 (tau+) function -10<Im(s)<50", out.width = '100%',   warning=FALSE}
+knitr::include_graphics("/home/john/bear/Projects/sampling-investigations/julia/f5_7Z_fn_m10_50.jpeg")
+```
+
+```{r f5_7z_50, echo=FALSE, fig.cap="Phase contour plot of Davenport Heilbronn 7-periodic f5 (tau+) function 50<Im(s)<110", out.width = '100%',   warning=FALSE}
+knitr::include_graphics("/home/john/bear/Projects/sampling-investigations/julia/f5_7Z_fn_50_110.jpeg")
+```
+
+
+\newpage
+```{r f6_7z_m10, echo=FALSE, fig.cap="Phase contour plot of Davenport Heilbronn 7-periodic f6 (tau-) function -10<Im(s)<50", out.width = '100%',   warning=FALSE}
+knitr::include_graphics("/home/john/bear/Projects/sampling-investigations/julia/f6_7Z_fn_m10_50.jpeg")
+```
+
+```{r f6_7z_50, echo=FALSE, fig.cap="Phase contour plot of Davenport Heilbronn 7-periodic f6 (tau-) function 50<Im(s)<110", out.width = '100%',   warning=FALSE}
+knitr::include_graphics("/home/john/bear/Projects/sampling-investigations/julia/f6_7Z_fn_50_110.jpeg")
+```
+
+
+```{r f7_9z_m10, echo=FALSE, fig.cap="Phase contour plot of Davenport Heilbronn 9-periodic f7 (tau+) function -10<Im(s)<50", out.width = '100%',   warning=FALSE}
+knitr::include_graphics("/home/john/bear/Projects/sampling-investigations/julia/f7_9Z_fn_m10_50.jpeg")
+```
+
+```{r f7_9z_50, echo=FALSE, fig.cap="Phase contour plot of Davenport Heilbronn 9-periodic f7 (tau+) function 50<Im(s)<110", out.width = '100%',   warning=FALSE}
+knitr::include_graphics("/home/john/bear/Projects/sampling-investigations/julia/f7_9Z_fn_50_110.jpeg")
+```
+
+```{r f8_9z_m10, echo=FALSE, fig.cap="Phase contour plot of Davenport Heilbronn 9-periodic f8 (tau-) function -10<Im(s)<50", out.width = '100%',   warning=FALSE}
+knitr::include_graphics("/home/john/bear/Projects/sampling-investigations/julia/f8_9Z_fn_m10_50.jpeg")
+```
+
+```{r f8_9z_50, echo=FALSE, fig.cap="Phase contour plot of Davenport Heilbronn 9-periodic f8 (tau-) function 50<Im(s)<110", out.width = '100%',   warning=FALSE}
+knitr::include_graphics("/home/john/bear/Projects/sampling-investigations/julia/f8_9Z_fn_50_110.jpeg")
+```
+
+```{r f9_9z_m10, echo=FALSE, fig.cap="Phase contour plot of Davenport Heilbronn 9-periodic f9 (tau+) function -10<Im(s)<50", out.width = '100%',   warning=FALSE}
+knitr::include_graphics("/home/john/bear/Projects/sampling-investigations/julia/f9_9Z_fn_m10_50.jpeg")
+```
+
+```{r f9_9z_50, echo=FALSE, fig.cap="Phase contour plot of Davenport Heilbronn 9-periodic f9 (tau+) function 50<Im(s)<110", out.width = '100%',   warning=FALSE}
+knitr::include_graphics("/home/john/bear/Projects/sampling-investigations/julia/f9_9Z_fn_50_110.jpeg")
+```
+
+
+```{r f10_9z_m10, echo=FALSE, fig.cap="Phase contour plot of Davenport Heilbronn 9-periodic f10 (tau-) function -10<Im(s)<50", out.width = '100%',   warning=FALSE}
+knitr::include_graphics("/home/john/bear/Projects/sampling-investigations/julia/f10_9Z_fn_m10_50.jpeg")
+```
+
+```{r f10_9z_50, echo=FALSE, fig.cap="Phase contour plot of Davenport Heilbronn 9-periodic f10 (tau-) function 50<Im(s)<110", out.width = '100%',   warning=FALSE}
+knitr::include_graphics("/home/john/bear/Projects/sampling-investigations/julia/f10_9Z_fn_50_110.jpeg")
+```
+
