@@ -2,7 +2,7 @@
 title: 7-, \& 9-periodic dual Davenport Heilbronn counterexamples are derived for the corresponding Degree 1 dual L-functions pairs given in https://www.lmfdb.org/L/degree1.  
 
 author: "John Martin" 
-date: "Tuesday, January 20th, 2020"
+date: "Wednesday, January 22nd, 2020"
 header-includes:
 - \usepackage{pdflscape}
 - \newcommand{\blandscape}{\begin{landscape}}
@@ -71,14 +71,14 @@ $1-0.80851718245663738555335196060684412785\pm i \cdot85.69934848537759217192926
 In figures 1 & 2, the phase contour plot of the extended Riemann Siegel Z-function 
 
 \begin{equation}
-Z_{ext}(f1(s)) = \sqrt{f_{1}(s)f_{1}(1-s)abs(\chi(f_{1}(s)))}
+Z_{ext}(f_{1}(s)) = \sqrt{f_{1}(s)f_{1}(1-s)abs(\chi(f_{1}(s)))}
 \end{equation}
 
-[7] is given for the upper positive quandrant of the complex plane showing the verticies of the non-trivial zeroes for the range $0<Im(s)<110$. The first off centre non-trivial zero is in figure 2 and a wider phase contour plot of $Z_{ext}$(f1(s)) is given in [7] more fully showing the periodicity and symmetry of the function.
+[7] is given for the upper positive quandrant of the complex plane showing the verticies of the non-trivial zeroes for the range $0<Im(s)<110$. The first off centre non-trivial zero is in figure 2 and a wider phase contour plot of $Z_{ext}$($f_{1}$(s)) is given in [7] more fully showing the periodicity and symmetry of the function.
 
-The second linear combination of L-functions 5-periodic Davenport Heilbronn function example f2(s) [2,3] has the designation $\tau_-(s)$ [3] arising from f1(s) ($\tau_+(s))$) & f2(s) being the two coupled solutions of linear combinations of the $\chi_5(2,.)$ and $\chi_5(3,.)$ L-functions. The more recent work [3], estimates the highest(lowest) Re(s) values for non-trivial zeroes of f2(s) are approximately bounded by Re(s)=2.37 (-1.37). 
+The second linear combination of L-functions 5-periodic Davenport Heilbronn function example $f_{2}$(s) [2,3] has the designation $\tau_-(s)$ [3] arising from $f_{1}$(s) ($\tau_+(s))$) & $f_{2}$(s) being the two coupled solutions of linear combinations of the $\chi_5(2,.)$ and $\chi_5(3,.)$ L-functions. The more recent work [3], estimates the highest(lowest) Re(s) values for non-trivial zeroes of $f_{2}$(s) are approximately bounded by Re(s)=2.37 (-1.37). 
 
-Expressed in L-function, Dirichlet series and Hurwitz Zeta function form the f2(s) 5-periodic function is
+Expressed in L-function, Dirichlet series and Hurwitz Zeta function form the $f_{2}$(s) 5-periodic function is
 
 \begin{align}
 f_{2}(s) &= \frac{1}{2cos(\theta_2)} \Big [ e^{i\theta_2}L(\chi_5(2,.),s) + e^{-i\theta_2}L(\chi_5(3,.),s) \Big ] \label{eq:func2_Lcomb} \\ 
@@ -147,10 +147,10 @@ $1-2.3455123434516853975100902552096252279\pm i \cdot99.861375948502072751227875
 In figures 3 & 4, the phase contour plot of the extended Riemann Siegel Z-function 
 
 \begin{equation}
-Z_{ext}(f2(s)) = \sqrt{f_{2}(s)f_{2}(1-s)abs(\chi(f_{2}(s)))}
+Z_{ext}(f_{2}(s)) = \sqrt{f_{2}(s)f_{2}(1-s)abs(\chi(f_{2}(s)))}
 \end{equation}
 
-[7] is given for the upper positive quandrant of the complex plane showing the verticies of the non-trivial zeroes for the range $0<Im(s)<110$. As will be noted later in the paper for other Davenport Heilbronn counterexamples this $\tau_-(s)$ function (f2(s)) has more frequent and higher off centre non-trivial zeroes than its $\tau_+(s))$ dual (f1(s)). A wider phase contour plot of $Z_{ext}$(f2(s)) is given in [7] more fully showing the periodicity and symmetry of the function.
+[7] is given for the upper positive quandrant of the complex plane showing the verticies of the non-trivial zeroes for the range $0<Im(s)<110$. As will be noted later in the paper for other Davenport Heilbronn counterexamples this $\tau_-(s)$ function ($f_{2}$(s)) has more frequent and higher off centre non-trivial zeroes than its $\tau_+(s))$ dual ($f_{1}$(s)). A wider phase contour plot of $Z_{ext}$($f_{2}$(s)) is given in [7] more fully showing the periodicity and symmetry of the function.
 
 In this paper, (i) the above behaviour for the $\tau_-(s)$ and $\tau_+(s))$ dual 5-periodic Davenport Heilbronn counterexamples to the 5-periodic dual L-functions in https://www.lmfdb.org/L/degree1 [5] is found to be similarly repeated for the 7- \& 9-periodic dual L-functions and (ii) consistent with [4] extra Davenport Heilbron counterexamples are explicitly identified for 7-periodic Dirichlet series beyond the solitary $f_{3}$(s) function claimed by [2].
 
@@ -163,14 +163,14 @@ Two important pieces of information to note are (i) $\theta_1$ and $\theta_2$ of
 \theta_2 &= \theta_1+\frac{\pi}{2} \label{eq:theta2+pi/2}
 \end{align}
 
-and (ii) the multiplicative factors of the functional equations for $L(\chi_5(2,.),s)$, f1(s), f2(s) and $L(\chi_5(3,.),s)$ are very similar except for a multiplicative (complex) factor which is labelled as the sign $\epsilon$ [5] of the functional equation
+and (ii) the multiplicative factors of the functional equations for $L(\chi_5(2,.),s)$, $f_{1}$(s), $f_{2}$(s) and $L(\chi_5(3,.),s)$ are very similar except for a multiplicative (complex) factor which is labelled as the sign $\epsilon$ [5] of the functional equation
 
 
 \begin{align}
-\chi(L(\chi_5(2,.),s)) &= \epsilon \cdot \chi(f1(s)) \\
-\chi(f1(s)) &= 5^{(\frac{1}{2}-s)}2(2\pi)^{(s-1)}cos(\frac{\pi s}{2})\Gamma(1-s) \equiv \frac{5^{(1-s)/2}\pi^{-((1-s)+1)/2}\Gamma(((1-s)+1)/2)}{5^{s/2}\pi^{-(s+1)/2}\Gamma((s+1)/2)}\label{eq:theta2+pi/2} \\
-\chi(f2(s)) &= \chi(f1(s)) \\
-\chi(L(\chi_5(3,.),s)) &= \bar{\epsilon} \cdot \chi(f1(s))
+\chi(L(\chi_5(2,.),s)) &= \epsilon \cdot \chi(f_{1}(s)) \\
+\chi(f_{1}(s)) &= 5^{(\frac{1}{2}-s)}2(2\pi)^{(s-1)}cos(\frac{\pi s}{2})\Gamma(1-s) \equiv \frac{5^{(1-s)/2}\pi^{-((1-s)+1)/2}\Gamma(((1-s)+1)/2)}{5^{s/2}\pi^{-(s+1)/2}\Gamma((s+1)/2)}\label{eq:theta2+pi/2} \\
+\chi(f_{2}(s)) &= \chi(f_{1}(s)) \\
+\chi(L(\chi_5(3,.),s)) &= \bar{\epsilon} \cdot \chi(f_{1}(s))
 \end{align}
 
 where 
@@ -183,7 +183,7 @@ where
 
 is the sign of the functional equation for the L-function $L(\chi_5(2,.),s)$ [5]. 
 
-The effect of the functional equation signs for $\chi(L(\chi_5(2,.),s))$ and $\chi(L(\chi_5(3,.),s))$ is such that the extended Riemann Siegel Theta functions [8] of these L-functions lag and lead respectively the extended Riemann Siegel Theta function of f1(s) (and f2(s)) but are otherwise parallel. Hence, equations like \eqref {eq:func1_Lcomb} and \eqref {eq:func2_Lcomb} transform the reference frame from one in which the 5-periodicity comprises L-functions with higher symmetry (so far with only the known non-trivial zeroes on the critical line) to one with 5-periodicity Davenport Heilbronn functions with lower symmetry (having at least some off centre non-trivial zeroes). 
+The effect of the functional equation signs for $\chi(L(\chi_5(2,.),s))$ and $\chi(L(\chi_5(3,.),s))$ is such that the extended Riemann Siegel Theta functions [8] of these L-functions lag and lead respectively the extended Riemann Siegel Theta function of $f_{1}$(s) (and $f_{2}$(s)) but are otherwise parallel. Hence, equations like \eqref {eq:func1_Lcomb} and \eqref {eq:func2_Lcomb} transform the reference frame from one in which the 5-periodicity comprises L-functions with higher symmetry (so far with only the known non-trivial zeroes on the critical line) to one with 5-periodicity Davenport Heilbronn functions with lower symmetry (having at least some off centre non-trivial zeroes). 
 
 In this sense, it can be seen that for some dual L-function pairs the angle $\theta$ relating how to obtain the dual Davenport Heilbronn counterexamples can be obtained directly from the sign of the L-function where the dual counterexamples have a functional equation multiplicative factor midway between the multiplicative factors for the dual L-functions. 
 
@@ -217,7 +217,7 @@ f_{4}(s) &= \frac{1}{2cos(\theta_3)} \Big [ e^{i\theta_3}L(\chi_7(3,.),s) + e^{-
 f_{3}(s) &= \frac{i}{2sin(\theta_3)} \Big [ e^{i\theta_3}L(\chi_7(3,.),s) - e^{-i\theta_3}L(\chi_7(5,.),s) \Big ] \label{eq:func3_Lcomb} 
 \end{align}
 
-where f_{3}(s) is labelled to the second function to match the antisymmetric linear combination Davenport Heilbronn counterexample function detailed by [2]. It should be noted also that $\tau+(s)$ and $\tau-(s)$ nomenclature from [3] also usefully aligns with the symmetric and antisymmetric characteristics of the linear combinations of the dual L-function terms.
+where $f_{3}$(s) is labelled to the second function to match the antisymmetric linear combination Davenport Heilbronn counterexample function detailed by [2]. It should be noted also that $\tau+(s)$ and $\tau-(s)$ nomenclature from [3] also usefully aligns with the symmetric and antisymmetric characteristics of the linear combinations of the dual L-function terms.
 
 In Dirichlet series and Hurwitz Zeta form
 
@@ -228,7 +228,7 @@ f_{4}(s) &= \frac{1}{2cos(\theta_3)} \Big [ e^{i\theta_3}L(\chi_7(3,.),s) + e^{-
 &= 7^{-s}\Big ( \zeta(s,\frac{1}{7}) + 0.0760644\cdot\zeta(s,\frac{2}{7}) + 1.0760644\cdot\zeta(s,\frac{3}{7}) - 1.0760644\cdot\zeta(s,\frac{4}{7}) \nonumber \\ &\qquad - 0.0760644\cdot\zeta(s,\frac{5}{7}) - \zeta(s,\frac{6}{7})\Big ) \label{eq:func4_hurwitz}
 \end{align}
 
-where in equation \eqref {eq:func4_series_subst} to hasten the Dirichlet series coefficients calculation, the Dirichlet series for $L(\chi_7(3,.),s)$ from [5] is used but with $tan(\theta_3)$ directly substituted for the imaginary unit $i$. This approach is what also obviously happens for f1(s) [1,2] but it didn't appear to get discussed in any detail and results in Davenport Heilbronn counterexamples with purely real coefficients of the Dirichlet series. 
+where in equation \eqref {eq:func4_series_subst} to hasten the Dirichlet series coefficients calculation, the Dirichlet series for $L(\chi_7(3,.),s)$ from [5] is used but with $tan(\theta_3)$ directly substituted for the imaginary unit $i$. This approach is what also obviously happens for $f_{1}$(s) [1,2] but it didn't appear to get discussed in any detail and results in Davenport Heilbronn counterexamples with purely real coefficients of the Dirichlet series. 
 
 The Davenport-Heilbronn $f_{4}$(s) function has the functional equation
 
@@ -269,12 +269,12 @@ In figures 5 & 6, the phase contour plot of the extended Riemann Siegel Z-functi
 Z_{ext}(f_{4}(s)) = \sqrt{f_{4}(s)f_{4}(1-s)abs(\chi(f_{4}(s)))}
 \end{equation}
 
-is given for the upper positive quandrant of the complex plane showing the verticies of the non-trivial zeroes for the range $0<Im(s)<110$. This $\tau_+(s)$ dual function (f4(s) is a symmetric linear combination of dual L-functions) has less non-trivial zeroes in this range than its $\tau_-(s)$ dual. 
+is given for the upper positive quandrant of the complex plane showing the verticies of the non-trivial zeroes for the range $0<Im(s)<110$. This $\tau_+(s)$ dual function ($f_{4}$(s) is a symmetric linear combination of dual L-functions) has less non-trivial zeroes in this range than its $\tau_-(s)$ dual. 
 
 In Dirichlet series and Hurwitz Zeta form
 
 \begin{align}
-f_{3}(s) &= \frac{1}{2sin(\theta_3)} \Big [ e^{i\theta_3}L(\chi_7(3,.),s) - e^{-i\theta_3}L(\chi_7(5,.),s) \Big ] \\ 
+f_{3}(s) &= \frac{i}{2sin(\theta_3)} \Big [ e^{i\theta_3}L(\chi_7(3,.),s) - e^{-i\theta_3}L(\chi_7(5,.),s) \Big ] \\ 
 &= 1 + \frac{-\sqrt{\frac{1}{4}}-\frac{1}{tan(\theta_3)} \cdot \sqrt{\frac{3}{4}}}{2^s} + \frac{\sqrt{\frac{1}{4}}-\frac{1}{tan(\theta_3)} \cdot \sqrt{\frac{3}{4}}}{3^s}  \nonumber \\ &\qquad + \frac{-\sqrt{\frac{1}{4}}+\frac{1}{tan(\theta_3)} \cdot \sqrt{\frac{3}{4}}}{4^s} + \frac{\sqrt{\frac{1}{4}}+\frac{1}{tan(\theta_3)} \cdot \sqrt{\frac{3}{4}}}{5^s} - \frac{1}{6^s}+ ... \label{eq:func3_series_subst}\\ 
 &= 1 - \frac{1.8019377}{2^s} - \frac{0.8019377}{3^s} + \frac{0.8019377}{4^s} + \frac{1.8019377}{5^s} - \frac{1}{6^s}+ ... \label{eq:func3_series}\\ 
 &= 7^{-s}\Big ( \zeta(s,\frac{1}{7}) -1.8019377\cdot\zeta(s,\frac{2}{7}) -0.8019377\cdot\zeta(s,\frac{3}{7}) +0.8019377\cdot\zeta(s,\frac{4}{7}) \nonumber \\ &\qquad +1.8019377\cdot\zeta(s,\frac{5}{7}) - \zeta(s,\frac{6}{7})\Big ) \label{eq:func3_hurwitz}
@@ -282,7 +282,7 @@ f_{3}(s) &= \frac{1}{2sin(\theta_3)} \Big [ e^{i\theta_3}L(\chi_7(3,.),s) - e^{-
 
 where in equation \eqref {eq:func3_series_subst} to hasten the Dirichlet series coefficients calculation for the $\tau_-(s)$ dual case, the Dirichlet series for $L(\chi_7(5,.),s)$ from [5] is used but with $\frac{1}{tan(\theta_3)}$ directly substituted for the imaginary unit $i$. 
 
-It should be noted that the above Dirichlet series coefficients are in full agreement with the f3(s) function detailed in [2]. Therefore the equation \eqref {eq:func3_series_subst} approach is also valid for f2(s) construction ($\frac{1}{tan(\theta_1)}$ for imaginary unit $i$ in the $L(\chi_5(3,.),s)$) but the [2] authors interpreted the Dirichlet series substitution as $\frac{-1}{tan(\theta_1)}$ for the imaginary unit $i$ in the $L(\chi_5(2,.),s)$ series. The above f3(s) behaviour suggests that earlier description of $\frac{1}{tan(\theta)}$ substitution for $\tau_-(s)$ dual cases in [2] to generate the Dirichlet series is not general enough for higher L-functions cases. 
+It should be noted that the above Dirichlet series coefficients are in full agreement with the $f_{3}$(s) function detailed in [2]. Therefore the equation \eqref {eq:func3_series_subst} approach is also valid for $f_{2}$(s) construction ($\frac{1}{tan(\theta_1)}$ for imaginary unit $i$ in the $L(\chi_5(3,.),s)$) but the [2] authors interpreted the Dirichlet series substitution as $\frac{-1}{tan(\theta_1)}$ for the imaginary unit $i$ in the $L(\chi_5(2,.),s)$ series. The above $f_{3}$(s) behaviour suggests that earlier description of $\frac{1}{tan(\theta)}$ substitution for $\tau_-(s)$ dual cases in [2] to generate the Dirichlet series is not general enough for higher L-functions cases. 
 
 Again the dual Davenport Heilbronn counterexamples have purely real coefficients in their Dirichlet series.
 
@@ -387,12 +387,12 @@ In figures 9 & 10, the phase contour plot of the extended Riemann Siegel Z-funct
 Z_{ext}(f_{5}(s)) = \sqrt{f_{5}(s)f_{5}(1-s)abs(\chi(f_{5}(s)))}
 \end{equation}
 
-is given for the upper positive quandrant of the complex plane showing the verticies of the non-trivial zeroes for the range $0<Im(s)<110$. This $\tau_+(s)$ dual function (f_{5}(s) is a symmetric linear combination of dual L-functions) has less non-trivial zeroes in this range than its $\tau_-(s)$ dual f_{6}(s). 
+is given for the upper positive quandrant of the complex plane showing the verticies of the non-trivial zeroes for the range $0<Im(s)<110$. This $\tau_+(s)$ dual function ($f_{5}$(s) is a symmetric linear combination of dual L-functions) has less non-trivial zeroes in this range than its $\tau_-(s)$ dual $f_{6}$(s). 
 
 In Dirichlet series and Hurwitz Zeta form
 
 \begin{align}
-f_{6}(s) &= \frac{1}{2sin(\theta_4)} \Big [ e^{i\theta_4}L(\chi_7(3,.),s) - e^{-i\theta_4}L(\chi_7(5,.),s) \Big ] \\ 
+f_{6}(s) &= \frac{i}{2sin(\theta_4)} \Big [ e^{i\theta_4}L(\chi_7(3,.),s) - e^{-i\theta_4}L(\chi_7(5,.),s) \Big ] \\ 
 &= 1 + \frac{-\sqrt{\frac{1}{4}}+\frac{1}{tan(\theta_4)} \cdot \sqrt{\frac{3}{4}}}{2^s} + \frac{-\sqrt{\frac{1}{4}}-\frac{1}{tan(\theta_4)} \cdot \sqrt{\frac{3}{4}}}{3^s}  \nonumber \\ &\qquad + \frac{-\sqrt{\frac{1}{4}}-\frac{1}{tan(\theta_4)} \cdot \sqrt{\frac{3}{4}}}{4^s} + \frac{-\sqrt{\frac{1}{4}}+\frac{1}{tan(\theta_4)} \cdot \sqrt{\frac{3}{4}}}{5^s} + \frac{1}{6^s}+ ... \label{eq:func6_series_subst}\\ 
 &= 1 - \frac{4.1968354}{2^s} + \frac{3.1968354}{3^s} + \frac{3.1968354}{4^s} - \frac{4.1968354}{5^s} + \frac{1}{6^s}+ ... \label{eq:func6_series}\\ 
 &= 7^{-s}\Big ( \zeta(s,\frac{1}{7}) -4.1968354\cdot\zeta(s,\frac{2}{7}) +3.1968354\cdot\zeta(s,\frac{3}{7}) +3.1968354\cdot\zeta(s,\frac{4}{7}) \nonumber \\ &\qquad -4.1968354\cdot\zeta(s,\frac{5}{7}) + \zeta(s,\frac{6}{7})\Big ) \label{eq:func6_hurwitz}
@@ -741,95 +741,95 @@ The phase contour plots were based on grid search calculations of $Arg(f_i(s))$ 
 
 
 \newpage
-```{r f1_5z_m10, echo=FALSE, fig.cap="Phase contour plot of Davenport Heilbronn 5-periodic f1 (tau+) function -10<Im(s)<50", out.width = '100%',   warning=FALSE}
+```{r f1_5z_m10, echo=FALSE, fig.cap="Phase contour plot of Davenport Heilbronn 5-periodic $f_{1}$(s) (tau+) function -10<Im(s)<50", out.width = '100%',   warning=FALSE}
 knitr::include_graphics("/home/john/bear/Projects/sampling-investigations/julia/f1_5Z_fn_m10_50.jpeg")
 ```
 
-```{r f1_5z_50, echo=FALSE, fig.cap="Phase contour plot of Davenport Heilbronn 5-periodic f1 (tau+) function 50<Im(s)<110 including lowest off-centre non-trivial zero", out.width = '100%',   warning=FALSE}
+```{r f1_5z_50, echo=FALSE, fig.cap="Phase contour plot of Davenport Heilbronn 5-periodic $f_{1}$(s) (tau+) function 50<Im(s)<110 including lowest off-centre non-trivial zero", out.width = '100%',   warning=FALSE}
 knitr::include_graphics("/home/john/bear/Projects/sampling-investigations/julia/f1_5Z_fn_50_110.jpeg")
 ```
 
 
 \newpage
-```{r f2_5z_m10, echo=FALSE, fig.cap="Phase contour plot of Davenport Heilbronn 5-periodic f2 (tau-) function -10<Im(s)<50", out.width = '100%',   warning=FALSE}
+```{r f2_5z_m10, echo=FALSE, fig.cap="Phase contour plot of Davenport Heilbronn 5-periodic $f_{2}$(s) (tau-) function -10<Im(s)<50", out.width = '100%',   warning=FALSE}
 knitr::include_graphics("/home/john/bear/Projects/sampling-investigations/julia/f2_5Z_fn_m10_50.jpeg")
 ```
 
-```{r f2_5z_50, echo=FALSE, fig.cap="Phase contour plot of Davenport Heilbronn 5-periodic f2 (tau-) function 50<Im(s)<110", out.width = '100%',   warning=FALSE}
+```{r f2_5z_50, echo=FALSE, fig.cap="Phase contour plot of Davenport Heilbronn 5-periodic $f_{2}$(s) (tau-) function 50<Im(s)<110", out.width = '100%',   warning=FALSE}
 knitr::include_graphics("/home/john/bear/Projects/sampling-investigations/julia/f2_5Z_fn_50_110.jpeg")
 ```
 
 
 
 \newpage
-```{r f4_7z_m10, echo=FALSE, fig.cap="Phase contour plot of Davenport Heilbronn 7-periodic f4 (tau+) function -10<Im(s)<50", out.width = '100%',   warning=FALSE}
+```{r f4_7z_m10, echo=FALSE, fig.cap="Phase contour plot of Davenport Heilbronn 7-periodic $f_{4}$(s) (tau+) function -10<Im(s)<50", out.width = '100%',   warning=FALSE}
 knitr::include_graphics("/home/john/bear/Projects/sampling-investigations/julia/f4_7Z_fn_m10_50.jpeg")
 ```
 
-```{r f4_7z_50, echo=FALSE, fig.cap="Phase contour plot of Davenport Heilbronn 5-periodic f4 (tau+) function 50<Im(s)<110", out.width = '100%',   warning=FALSE}
+```{r f4_7z_50, echo=FALSE, fig.cap="Phase contour plot of Davenport Heilbronn 7-periodic $f_{4}$(s) (tau+) function 50<Im(s)<110", out.width = '100%',   warning=FALSE}
 knitr::include_graphics("/home/john/bear/Projects/sampling-investigations/julia/f4_7Z_fn_50_110.jpeg")
 ```
 
 
 \newpage
-```{r f3_7z_m10, echo=FALSE, fig.cap="Phase contour plot of Davenport Heilbronn 5-periodic f3 (tau-) function -10<Im(s)<50", out.width = '100%',   warning=FALSE}
+```{r f3_7z_m10, echo=FALSE, fig.cap="Phase contour plot of Davenport Heilbronn 7-periodic $f_{3}$(s) (tau-) function -10<Im(s)<50", out.width = '100%',   warning=FALSE}
 knitr::include_graphics("/home/john/bear/Projects/sampling-investigations/julia/f3_7Z_fn_m10_50.jpeg")
 ```
 
-```{r f3_7z_50, echo=FALSE, fig.cap="Phase contour plot of Davenport Heilbronn 5-periodic f3 (tau-) function 50<Im(s)<110", out.width = '100%',   warning=FALSE}
+```{r f3_7z_50, echo=FALSE, fig.cap="Phase contour plot of Davenport Heilbronn 7-periodic $f_{3}$(s) (tau-) function 50<Im(s)<110", out.width = '100%',   warning=FALSE}
 knitr::include_graphics("/home/john/bear/Projects/sampling-investigations/julia/f3_7Z_fn_50_110.jpeg")
 ```
 
 \newpage
-```{r f5_7z_m10, echo=FALSE, fig.cap="Phase contour plot of Davenport Heilbronn 7-periodic f5 (tau+) function -10<Im(s)<50", out.width = '100%',   warning=FALSE}
+```{r f5_7z_m10, echo=FALSE, fig.cap="Phase contour plot of Davenport Heilbronn 7-periodic $f_{5}$(s) (tau+) function -10<Im(s)<50", out.width = '100%',   warning=FALSE}
 knitr::include_graphics("/home/john/bear/Projects/sampling-investigations/julia/f5_7Z_fn_m10_50.jpeg")
 ```
 
-```{r f5_7z_50, echo=FALSE, fig.cap="Phase contour plot of Davenport Heilbronn 7-periodic f5 (tau+) function 50<Im(s)<110", out.width = '100%',   warning=FALSE}
+```{r f5_7z_50, echo=FALSE, fig.cap="Phase contour plot of Davenport Heilbronn 7-periodic $f_{5}$(s) (tau+) function 50<Im(s)<110", out.width = '100%',   warning=FALSE}
 knitr::include_graphics("/home/john/bear/Projects/sampling-investigations/julia/f5_7Z_fn_50_110.jpeg")
 ```
 
 
 \newpage
-```{r f6_7z_m10, echo=FALSE, fig.cap="Phase contour plot of Davenport Heilbronn 7-periodic f6 (tau-) function -10<Im(s)<50", out.width = '100%',   warning=FALSE}
+```{r f6_7z_m10, echo=FALSE, fig.cap="Phase contour plot of Davenport Heilbronn 7-periodic $f_{6}$(s) (tau-) function -10<Im(s)<50", out.width = '100%',   warning=FALSE}
 knitr::include_graphics("/home/john/bear/Projects/sampling-investigations/julia/f6_7Z_fn_m10_50.jpeg")
 ```
 
-```{r f6_7z_50, echo=FALSE, fig.cap="Phase contour plot of Davenport Heilbronn 7-periodic f6 (tau-) function 50<Im(s)<110", out.width = '100%',   warning=FALSE}
+```{r f6_7z_50, echo=FALSE, fig.cap="Phase contour plot of Davenport Heilbronn 7-periodic $f_{6}$(s) (tau-) function 50<Im(s)<110", out.width = '100%',   warning=FALSE}
 knitr::include_graphics("/home/john/bear/Projects/sampling-investigations/julia/f6_7Z_fn_50_110.jpeg")
 ```
 
 
-```{r f7_9z_m10, echo=FALSE, fig.cap="Phase contour plot of Davenport Heilbronn 9-periodic f7 (tau+) function -10<Im(s)<50", out.width = '100%',   warning=FALSE}
+```{r f7_9z_m10, echo=FALSE, fig.cap="Phase contour plot of Davenport Heilbronn 9-periodic $f_{7}$(s) (tau+) function -10<Im(s)<50", out.width = '100%',   warning=FALSE}
 knitr::include_graphics("/home/john/bear/Projects/sampling-investigations/julia/f7_9Z_fn_m10_50.jpeg")
 ```
 
-```{r f7_9z_50, echo=FALSE, fig.cap="Phase contour plot of Davenport Heilbronn 9-periodic f7 (tau+) function 50<Im(s)<110", out.width = '100%',   warning=FALSE}
+```{r f7_9z_50, echo=FALSE, fig.cap="Phase contour plot of Davenport Heilbronn 9-periodic $f_{7}$(s) (tau+) function 50<Im(s)<110", out.width = '100%',   warning=FALSE}
 knitr::include_graphics("/home/john/bear/Projects/sampling-investigations/julia/f7_9Z_fn_50_110.jpeg")
 ```
 
-```{r f8_9z_m10, echo=FALSE, fig.cap="Phase contour plot of Davenport Heilbronn 9-periodic f8 (tau-) function -10<Im(s)<50", out.width = '100%',   warning=FALSE}
+```{r f8_9z_m10, echo=FALSE, fig.cap="Phase contour plot of Davenport Heilbronn 9-periodic $f_{8}$(s) (tau-) function -10<Im(s)<50", out.width = '100%',   warning=FALSE}
 knitr::include_graphics("/home/john/bear/Projects/sampling-investigations/julia/f8_9Z_fn_m10_50.jpeg")
 ```
 
-```{r f8_9z_50, echo=FALSE, fig.cap="Phase contour plot of Davenport Heilbronn 9-periodic f8 (tau-) function 50<Im(s)<110", out.width = '100%',   warning=FALSE}
+```{r f8_9z_50, echo=FALSE, fig.cap="Phase contour plot of Davenport Heilbronn 9-periodic $f_{8}$(s) (tau-) function 50<Im(s)<110", out.width = '100%',   warning=FALSE}
 knitr::include_graphics("/home/john/bear/Projects/sampling-investigations/julia/f8_9Z_fn_50_110.jpeg")
 ```
 
-```{r f9_9z_m10, echo=FALSE, fig.cap="Phase contour plot of Davenport Heilbronn 9-periodic f9 (tau+) function -10<Im(s)<50", out.width = '100%',   warning=FALSE}
+```{r f9_9z_m10, echo=FALSE, fig.cap="Phase contour plot of Davenport Heilbronn 9-periodic $f_{9}$(s) (tau+) function -10<Im(s)<50", out.width = '100%',   warning=FALSE}
 knitr::include_graphics("/home/john/bear/Projects/sampling-investigations/julia/f9_9Z_fn_m10_50.jpeg")
 ```
 
-```{r f9_9z_50, echo=FALSE, fig.cap="Phase contour plot of Davenport Heilbronn 9-periodic f9 (tau+) function 50<Im(s)<110", out.width = '100%',   warning=FALSE}
+```{r f9_9z_50, echo=FALSE, fig.cap="Phase contour plot of Davenport Heilbronn 9-periodic $f_{9}$(s) (tau+) function 50<Im(s)<110", out.width = '100%',   warning=FALSE}
 knitr::include_graphics("/home/john/bear/Projects/sampling-investigations/julia/f9_9Z_fn_50_110.jpeg")
 ```
 
 
-```{r f10_9z_m10, echo=FALSE, fig.cap="Phase contour plot of Davenport Heilbronn 9-periodic f10 (tau-) function -10<Im(s)<50", out.width = '100%',   warning=FALSE}
+```{r f10_9z_m10, echo=FALSE, fig.cap="Phase contour plot of Davenport Heilbronn 9-periodic $f_{10}$(s) (tau-) function -10<Im(s)<50", out.width = '100%',   warning=FALSE}
 knitr::include_graphics("/home/john/bear/Projects/sampling-investigations/julia/f10_9Z_fn_m10_50.jpeg")
 ```
 
-```{r f10_9z_50, echo=FALSE, fig.cap="Phase contour plot of Davenport Heilbronn 9-periodic f10 (tau-) function 50<Im(s)<110", out.width = '100%',   warning=FALSE}
+```{r f10_9z_50, echo=FALSE, fig.cap="Phase contour plot of Davenport Heilbronn 9-periodic $f_{10}$(s) (tau-) function 50<Im(s)<110", out.width = '100%',   warning=FALSE}
 knitr::include_graphics("/home/john/bear/Projects/sampling-investigations/julia/f10_9Z_fn_50_110.jpeg")
 ```
 
