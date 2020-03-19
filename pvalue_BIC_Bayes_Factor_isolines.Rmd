@@ -1,0 +1,395 @@
+---
+title: "The strong contour line relationship between two-sided p values of simple RCT two sample t-tests and BIC based Bayes factor $P_{BIC}(D|H0)$ outputs for fixed sample sizes"
+author: "John Martin"
+date: "3/18/2020"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+##Executive Summary
+
+For simple Randomised Control Trial (RCT) analysis there is a strong non-linear relationship between the two-sided p values of two sample t-tests and the corresponding BIC based Bayes factor output $P_{BIC}(D|H0)$. In particular, the spearman rank correlation coefficient $cor_{spearman,RCT}(p_{value},P_{BIC}(D|H0)) \approx 1$ and a strong contour line relationship dependent on sample size exists between the two statistics that allows psuedo ROC curve interpretation and cutoff estimation. In practice, as $P(H0)$ varies $(0 \le P(H0) \le 1)$ the position of the distribution of observed data on a given sample size contour line varies according to the statistical power (ie. effect size) and $P(H0)$ probability. Proceeding to posterior odds calculations and derivation of $P_{BIC}(H0|D)$, $P_{BIC}(H1|D)$ probabilities, the above BIC based results have significant relevance under the common prior odds assumption $P(H0)/P(H1) \sim 1$.    
+
+##Introduction
+
+There is continuing disagreement about the correlation between 
+
+\begin{itemize}
+\item $p_{value}$ the two sample t-test probability of the observed data given the Null Hypothesis and 
+\item $P(H0|D)$ the Bayesian posterior probability of the Null Hypothesis given the observed data. 
+\end{itemize}
+
+In this paper, the correlation under repeated sampling for fixed sample sizes is re-examined empirically between Bayes Factor estimates and p-values using (i) BIC based estimates for Bayes Factor ouputs $P_{BIC}(D|H0)$ in relative posterior probability calculations, and explicitly (ii) the Spearman Rank correlation calculation (to allow for a non-linear relationship).
+
+Firstly, the evidence for [1] and against [2], a weak (0.397) correlation coefficient between $p_{value}$ and $P(H0|D)$ is briefly described. Then an existing BIC based method for Bayes Factor calculation is described and used to produce evidence for a strong non-linear relationship between $P_{BIC}(D|H0)$ and two sample t-test p-values under repeated sampling for a fixed sample size. Finally, estimates of pseudo ROC curve cutoff points are attempted for the $P_{BIC}(D|H0)$ (and normalised $P_{BIC}(D|H0)$) contour line for fixed sample sizes to provoke discussion about optimality or otherwise of $\alpha = 0.05$ $p_{values}$.
+
+Under the commonly used prior odds assumption $\frac{P(H0)}{P(H1)} \approx 1$, the above finding has significant relevance to the posterior probability $P(H0|D)$, p-value correlation for fixed sample sizes.
+
+Previously, Trafimow and Rice [1] raised the issue that frequentist based Null Hypothesis Significance Test (NHST) p-values are not strongly correlated (ie. 0.397) with Bayesian estimates of $P(H0|D)$ based on Bayes formula updating. The simulation used randomly drawn values of $P(D|H0)\rightarrow p_{value}$, $P(H0)$, and $P(D|H1)$ as input to Bayes Formula calculations.
+
+As a critique of the relevance of the evidence presented in [1], Lakens [2] 
+\begin{enumerate}
+\item Replicated (with more accuracy) the results from [1], which Lakens identified as employing Pearson correlation calculations (ie. 0.37) of the relationship between p-values and posterior $P(H0|D)$ estimates using Bayes Rule updating under randomly drawn values of $P(D|H0)$, $P(H0)$, and $P(D|H1)$. 
+\item Then argued that such an approach did not replicate the situation in Randomised Control Trial (RCT) analysis where the statistical power $P(D|H1)$ for a known H1 value is determined by the sample size and coefficient of variation of the data distribution. This pre-determined power along with the existing $P(H0)$ then strengthens the p-value ($P(D|H0)$) and $P(H0|D)$ relationship under repeated sampling rather than the simulation studied in [1].
+\item Used simulations to empirically demonstrate the strong non-linear relationship under repeated sampling for fixed $P(H0|D)$ and $P(D|H1)$ for several values of these parameters. Further, Lakens then argued that the results [1] may be inadequate because it assumes a linear regression relationship (ie. Pearson correlation) for the correlation analysis. 
+\end{enumerate}
+
+
+##Deriving linked $P_{BIC}(D|H0)$ values and p-values under repeated sampling for fixed sample sizes
+
+
+Masson [3] demonstrated how to calculate estimates of relative posterior probabilities using 
+
+\begin{align} 
+\frac{P(H0|D)}{P(H1|D)} &= \frac{P(D|H0))}{P(D|H1))} \cdot \frac{P(H0)}{P(H1)} \\
+ &= BF \cdot \frac{P(H0)}{P(H1)}\label {eq:rel_post_prob}
+\end{align}
+
+where BF is the Bayes Factor of the ratio of the likelihoods of the data given H0 and H1 respectively, by using Bayesian Information Criteria (BIC) model fit calculations 
+
+\begin{equation} 
+BIC = -2ln(L) + k ln(n) \label {eq:BIC}
+\end{equation}
+
+where L is the maximum likelihood of the fitted model, k is the number of free model parameters and n is the sample size.
+
+Explicitly, the BIC based estimate [3] for the Bayes Factor component in \eqref {eq:rel_post_prob}, is given by
+
+\begin{align} 
+\frac{P(H0|D)}{P(H1|D)} &\approx \frac{P_{BIC}(D|H0))}{P_{BIC}(D|H1))} \cdot \frac{P(H0)}{P(H1)} \\
+&\approx e^{\frac{(\Delta BIC)}{2}} \cdot \frac{P(H0)}{P(H1)} \label {eq:app_rel_post_prob} \\
+&\rightarrow e^{\frac{(\Delta BIC)}{2}} \qquad \qquad \qquad \qquad \qquad \text{as } \frac{P(H0)}{P(H1)} \rightarrow 1 \label {eq:app_prior_odds_1}
+\end{align}
+
+
+where 
+
+\begin{equation} 
+\Delta BIC = BIC_{H1}-BIC_{H0} \label {eq:dBIC}
+\end{equation}
+
+In comparison, the $p_{value}$ of the frequentist based NHST method is calculated via the probability of the observed t statistic under a two-sided null hypothesis
+
+\begin{equation} 
+p_{value} = P(\thinspace |t| \thinspace |\thinspace D\thinspace)
+\end{equation}
+
+where $H_{null}:\mu_T = \mu_C \text{ ; }H_{alt}:\mu_T \ne \mu_C$
+
+
+In practice, in the calculations presented in the paper, the two model populations used were (i) an intercept only model and (ii) an intercept with additive treatment effect model
+
+\begin{align} 
+&H0: \mu_T = \mu_C \\
+&H1: \mu_T = \mu_C + \delta
+\end{align}
+
+To obtain $P_{BIC}(D|H0)$, as explained in [3] the relationship
+
+\begin{equation}
+P_{BIC}(D|H0) = \frac{BF}{(BF+1)} \label {eq:pDh0}
+\end{equation}
+
+is used and the same (r package) lm r-object output was explicitly employed for $p_{value}$ and BF (BIC based Bayes Factor) calculations using summary(lm) and BIC(lm) commands respectively.
+
+##Empirical behaviour of $P_{BIC}(D|H0)$ vs $p_{value}$ under repeated sampling for different fixed sample sizes 
+
+###Under A/A conditions ie. $P(H1) = 0$ 
+
+
+```{r echo=FALSE, cache=TRUE, fig.height=5.1}
+library(pracma)
+
+elbow_finder <- function(x_values, y_values) {
+  #https://stackoverflow.com/a/42810075
+  # Max values to create line
+  max_x_x <- max(x_values)
+  max_x_y <- y_values[which.max(x_values)]
+  max_y_y <- max(y_values)
+  max_y_x <- x_values[which.max(y_values)]
+  max_df <- data.frame(x = c(max_y_x, max_x_x), y = c(max_y_y, max_x_y))
+  
+  # Creating straight line between the max values
+  fit <- lm(max_df$y ~ max_df$x)
+  
+  # Distance from point to line
+  distances <- c()
+  for(i in 1:length(x_values)) {
+    distances <- c(distances, abs(coef(fit)[2]*x_values[i] - y_values[i] + coef(fit)[1]) / sqrt(coef(fit)[2]^2 + 1^2))
+  }
+  
+  # Max distance point
+  x_max_dist <- x_values[which.max(distances)]
+  y_max_dist <- y_values[which.max(distances)]
+  
+  return(c(1-x_max_dist, y_max_dist))
+}
+
+par(mfrow=c(1,1))
+
+data_calc=function(totsampsize,PH1_rate,effect_size,reps){
+  
+p_D_H0=0;p_D_H1=0;p_value=0;int_p_value=0;nsamp=totsampsize;nsamp2=nsamp/2
+sd_samp=20;t_eff=effect_size/sqrt(2)*sqrt(10000/nsamp);effect=0.1*t_eff*sd_samp;PH1=PH1_rate;#t_eff=.5/sqrt(2)*sqrt(10000/nsamp);
+for (i in 1:reps) {
+  
+  samp=runif(nsamp)#rnorm(nsamp,0,sd_samp)
+  
+  d=c(rep(1,nsamp2),rep(0,nsamp2))
+  d2=c(rbinom(nsamp2,1,PH1),rep(0,nsamp2))
+  
+  signal=samp+effect*d2
+  m1=lm(signal~d)
+  m0=lm(signal~1)
+  summary(m1)
+  summary(m0)
+  
+  BIC(m1)
+  BIC(m0)
+  BIC(m1)-BIC(m0)
+  BF=exp((BIC(m1)-BIC(m0))/2)
+  
+  p_D_H0[i]=BF/(BF+1)
+  p_D_H1[i]=1-p_D_H0[i]
+  
+  p_value[i]=summary(m1)$coefficients["d","Pr(>|t|)"]
+  int_p_value[i]=summary(m0)$coefficients["(Intercept)","Pr(>|t|)"]
+}
+
+df=as.data.frame(cbind(p_value,p_D_H0))
+
+}
+
+tots=c(4,6,8,10,20,50,100,500,1000,10000,100000,1000000,
+       10000000,100000000)
+p_vals=c(.4990129,.3667658,.3140997,
+         .2836638,.2241521,.1765258,.1498637,
+         .103164,.0879358,.05036998,
+         .02840425,.0157278,.008743237,0.004811645)
+adj_pH0D=c(.7931323,.7764761,.7797581,
+           .7839924,.8050357,.8332576,.8529681,
+           .8930153,.9080369,.9458068,
+           .9693143,.9828399,.9905736,0.9948048)
+
+pH0D=c(.5287549,.5513773,.5760823,
+       .5956358,.6579202,.7300176,.7754255,
+       .854788,.8802024,.9364424,
+       .9662587,.9818581,.9902605,0.9947053)
+
+
+n10=data_calc(10,0,0,1000)
+n10f=approxfun(n10$p_value,n10$p_D_H0)
+n20=data_calc(20,0,0,1000)
+n20f=approxfun(n20$p_value,n20$p_D_H0)
+n50=data_calc(50,0,0,1000)
+n50f=approxfun(n50$p_value,n50$p_D_H0)
+n100=data_calc(100,0,0,1000)
+n100f=approxfun(n100$p_value,n100$p_D_H0)
+n1000=data_calc(1000,0,0,1000)
+n1000f=approxfun(n1000$p_value,n1000$p_D_H0)
+n500=data_calc(500,0,0,1000)
+n500f=approxfun(n500$p_value,n500$p_D_H0)
+n10000=data_calc(10000,0,0,1000)
+n10000f=approxfun(n10000$p_value,n10000$p_D_H0)
+n100000=data_calc(100000,0,0,1000)
+n100000f=approxfun(n100000$p_value,n100000$p_D_H0)
+  
+plot(x=n100000$p_value,y=n100000$p_D_H0,xlim=c(0,1),col=rgb(0,0,0,0.5),
+     ylab="Pbic( D | H0 )",ylim=c(0,1),pch=20,xlab="p_value",
+     main=expression('P'[BIC]*'( D | H0 ) vs p_value for different total N in RCT analysis'),col.main="blue",font.main=3)
+lines(x=seq(0,1,l=1001),n100000f(seq(0,1,l=1001)),col=1)
+abline(v=0.05,col=2,lty=2,lwd=2);
+grid();
+points(x=n10000$p_value,y=n10000$p_D_H0,col=2,pch=20)
+lines(x=seq(0,1,l=1001),n10000f(seq(0,1,l=1001)),col=2)
+points(x=n1000$p_value,y=n1000$p_D_H0,col=3,pch=20)
+lines(x=seq(0,1,l=1001),n1000f(seq(0,1,l=1001)),col=3)
+points(x=n500$p_value,y=n500$p_D_H0,col=7,pch=20)
+lines(x=seq(0,1,l=1001),n500f(seq(0,1,l=1001)),col=7)
+points(x=n100$p_value,y=n100$p_D_H0,col=4,pch=20)
+lines(x=seq(0,1,l=1001),n100f(seq(0,1,l=1001)),col=4)
+points(x=n50$p_value,y=n50$p_D_H0,col=5,pch=20)
+lines(x=seq(0,1,l=1001),n50f(seq(0,1,l=1001)),col=5)
+points(x=n20$p_value,y=n20$p_D_H0,col=6,pch=20)
+lines(x=seq(0,1,l=1001),n20f(seq(0,1,l=1001)),col=6)
+points(x=n10$p_value,y=n10$p_D_H0,col="gray",pch=20)
+lines(x=seq(0,1,l=1001),n10f(seq(0,1,l=1001)),col="gray")
+lines(y=pH0D,x=p_vals,col=2,lty=3,lwd=2)
+out_elbow2=elbow_finder(c(1,1-n100000$p_D_H0),c(0,n100000$p_value));
+legend(x="bottomright",legend=c("total N=100,000","total N=10,000",
+"total N=1,000","total N=500","total N=100","total N=50","total N=20",
+"total N=10","ROC cutoff points","alpha = 0.05 p_value"),
+col=c(1,2,3,7,4,5,6,"gray",2,2),lty=c(rep(1,8),3,2),pch=c(rep(20,8),-1,-1))
+
+
+# cor(n100000$p_value,y=n100000$p_D_H0,method="pearson")
+# cor(n100000$p_value,y=n100000$p_D_H0,method="spearman")
+#summary(lm(n10000$p_D_H0 ~ n10000$p_value))
+
+```
+***Figure 1. $P_{BIC}(D|H0)$ as a function of p value for different sample sizes under simple RCT analysis when $P(H0)=1$.***
+
+###Under A/B conditions ie. $P(H1) = 1$
+
+```{r echo=FALSE, cache=TRUE, fig.height=5.1}
+
+
+n10_2=data_calc(10,1,.01,1000)
+n10f_2=approxfun(n10_2$p_value,n10_2$p_D_H0)
+n20_2=data_calc(20,1,.01,1000)
+n20f_2=approxfun(n20_2$p_value,n20_2$p_D_H0)
+n50_2=data_calc(50,1,.01,1000)
+n50f_2=approxfun(n50_2$p_value,n50_2$p_D_H0)
+n100_2=data_calc(100,1,.01,1000)
+n100f_2=approxfun(n100_2$p_value,n100_2$p_D_H0)
+n1000_2=data_calc(1000,1,.01,1000)
+n1000f_2=approxfun(n1000_2$p_value,n1000_2$p_D_H0)
+n500_2=data_calc(500,1,.01,1000)
+n500f_2=approxfun(n500_2$p_value,n500_2$p_D_H0)
+n10000_2=data_calc(10000,1,.01,1000)
+n10000f_2=approxfun(n10000_2$p_value,n10000_2$p_D_H0)
+n100000_2=data_calc(100000,1,.01,1000)
+n100000f_2=approxfun(n100000_2$p_value,n100000_2$p_D_H0)
+  
+plot(x=n100000_2$p_value,y=n100000_2$p_D_H0,xlim=c(0,1),col=rgb(0,0,0,0.5),
+     ylab="Pbic( D | H0 )",ylim=c(0,1),pch=20,xlab="p_value",
+     main=expression('P'[BIC]*'( D | H0 ) vs p_value for different total N in RCT analysis'),col.main="blue",font.main=3)
+lines(x=seq(0,1,l=1001),n100000f(seq(0,1,l=1001)),col=1)
+abline(v=0.05,col=2,lty=2,lwd=2);
+grid();
+points(x=n10000_2$p_value,y=n10000_2$p_D_H0,col=2,pch=20)
+lines(x=seq(0,1,l=1001),n10000f(seq(0,1,l=1001)),col=2)
+points(x=n1000_2$p_value,y=n1000_2$p_D_H0,col=3,pch=20)
+lines(x=seq(0,1,l=1001),n1000f(seq(0,1,l=1001)),col=3)
+points(x=n500_2$p_value,y=n500_2$p_D_H0,col=7,pch=20)
+lines(x=seq(0,1,l=1001),n500f(seq(0,1,l=1001)),col=7)
+points(x=n100_2$p_value,y=n100_2$p_D_H0,col=4,pch=20)
+lines(x=seq(0,1,l=1001),n100f(seq(0,1,l=1001)),col=4)
+points(x=n50_2$p_value,y=n50_2$p_D_H0,col=5,pch=20)
+lines(x=seq(0,1,l=1001),n50f(seq(0,1,l=1001)),col=5)
+points(x=n20_2$p_value,y=n20_2$p_D_H0,col=6,pch=20)
+lines(x=seq(0,1,l=1001),n20f(seq(0,1,l=1001)),col=6)
+points(x=n10_2$p_value,y=n10_2$p_D_H0,col="gray",pch=20)
+lines(x=seq(0,1,l=1001),n10f(seq(0,1,l=1001)),col="gray")
+lines(y=pH0D,x=p_vals,col=2,lty=3,lwd=2)
+out_elbow2=elbow_finder(c(1,1-n100000_2$p_D_H0),c(0,n100000_2$p_value));
+legend(x="bottomright",legend=c("total N=100,000","total N=10,000",
+"total N=1,000","total N=500","total N=100","total N=50","total N=20",
+"total N=10","ROC cutoff points","alpha = 0.05 p_value"),
+col=c(1,2,3,7,4,5,6,"gray",2,2),lty=c(rep(1,8),3,2),pch=c(rep(20,8),-1,-1))
+
+
+# cor(n100000$p_value,y=n100000$p_D_H0,method="pearson")
+# cor(n100000$p_value,y=n100000$p_D_H0,method="spearman")
+#summary(lm(n10000$p_D_H0 ~ n10000$p_value))
+
+```
+***Figure 2. $P_{BIC}(D|H0)$ as a function of p value for different sample sizes under simple RCT analysis when $P(H0)=1$. The contour line barely changes when $P(H0)$ < 1 as $cor_{spearman,RCT}(p_{value},P_{BIC}(D|H0)) \approx 1$ remains but the distribution of observed p values and $P_{BIC}(D|H0)$ values moves to the left. As evidence, of fixed contour line behaviour the fitted lines on the graph are from $P(H1)=0$ data and these lines fit the $P(H1)=1$ data points very well. ***
+
+Looking at Figure 1, with $P(H1) = 0$ under repeated sampling for fixed sample size there is a strong non-linear contour line behaviour between $P_{BIC}(D|H0)$ and $p_{value}$. The curvature of the contour line depends on the fixed sample size. As the the sample size increases, the density of the observed data pairs of ($P_{BIC}(D|H0)$,$p_{value}$) with $P_{BIC}(D|H0)$ < 0.8 in the region $0 \le p_{value} \le 0.05$ decreases.
+
+Using the Spearman Rank correlation calculation $cor_{spearman,RCT}(p_{value},P_{BIC}(D|H0)) \approx 1$ which is consistent with a strong non-linear relationship between ($P_{BIC}(D|H0)$,$p_{value}$) observed data in simple RCT analysis when $P(H0)=1$. 
+
+Looking at Figure 2, with $P(H1) = 1$ and using the fitted contour lines from $P(H1)=0$ data from figure 1, the data using $P(H1) = 1$ lies closely on the same contour line for a fixed sample size but the distribution of the observed data shifts (left and down) to lower $P_{BIC}(D|H0)$ and $p_{values}$ consistent with the measured treatment effect results being determined as statistically significant at a higher rate.
+
+Again using the Spearman Rank correlation calculation $cor_{spearman,RCT}(p_{value},P_{BIC}(D|H0)) \approx 1$ which is consistent with a strong non-linear relationship between ($P_{BIC}(D|H0)$,$p_{value}$) observed data in simple RCT analysis when $P(H0) < 1$. 
+As the treatment effect increases further, more observed data points will shift more dramatically (left and down) to lower $P_{BIC}(D|H0)$ and $p_{values}$ consistent with increasing statistical power.
+
+##ROC curve interpretation and analysis of $P_{BIC}(D|H0)$ vs $p_{value}$ behaviour for different fixed sample sizes
+
+It can also be observed from figures 1 & 2 that the $P_{BIC}(D|H0)$ vs $p_{value}$ behaviour for fixed sample sizes has the form of a Receiver Operating Characteristic (ROC) curve which appears often for binary classification problems. In this case the binary classification objective is assigning statistical significance labels to particular observed $P_{BIC}(D|H0)$ and/or $p_{value}$ estimates.
+
+Using the approximation equation \eqref {eq:app_prior_odds_1}, such data analysis would also be used to estimate statistical significance for $\hat{P}(H0|D)$.
+
+Using the ROC curve interpretation, the optimal threshold  for $P_{BIC}(D|H0)$ and by extrapolation $\hat{P}(H0|D)$ using the BIC based relative posterior probability equations \eqref  {eq:app_rel_post_prob} - \eqref {eq:app_prior_odds_1} could be calculated by the elbow point of the ROC curve behaviour. Two common methods are the Youden Index and the maximum height from the diagonal (between minimum and maximum values). In this paper, both methods gives very similar results for the elbow point of $P_{BIC}(D|H0)$ vs $p_{value}$ behaviour.
+
+The elbow point cutoff $p_{value}$ behaviour as a function of sample size model analysis is shown in figure 3 as a log-log plot. The cutoff points are shown in figures 1 & 2 at the intersection of the contour lines and the red dotted line. The alternate cutoff points using the standard $\alpha = .05$ NHST method is shown in figures 1 & 2 at the intersection of the contour lines and the vertical red dashed line. For total sample size of 10,000, the optimal ROC cutoff point is $p_{value} \sim 0.05$ agreeing closely with the standard NHST method. 
+
+One immediate comment about the ROC curve cutoff point for N > 10,000 becoming a $p_{value} < .05$ is that [4,5] Bayesian arguments have already been made that the NHST approach ($\alpha = 0.05$) seems too high for large samples based on increasing Bayesian probabilities of false positives and "it must be the case that a large enough sample will produce a significant result" [4]. A possible reply to that argument based on figure 1 data, is that the contour lines for N > 10,000 arises from $P(H0)=1$. 
+
+Two resolutions to the above may be: Firstly, the proper application of the observed data for posterior probability calculations rather than just using the Bayes Factor approach would therefore be that the prior odds $\frac{P(H0)}{P(H1)}$ be included rather than the common usage of $\frac{P(H0)}{P(H1)}  \approx 1$.  However, using $P(H1)=0$ is problematic for prior odds estimation. Secondly, the BIC based Bayes Factor approach [3] is an approximation and may not be sensitive enough for the $P(H0) \rightarrow 1$ case.
+
+```{r echo=FALSE, cache=TRUE, fig.height=4.5}
+
+p_v=c(p_vals)
+a_tots=c(tots)
+
+la = log(1/a_tots)[-(1:4)]
+lp = log(p_v)[-(1:4)]
+mod=summary(lm(la~lp))
+
+plot(y=(1/(a_tots)),x=p_v,log="xy",typ="b",xlab="log(p_value) of pseudo ROC curve cutoff-points",main=expression('1/N vs p'[value]*' for P'[BIC]*'( D | H0 ) vs p'[value]*' ROC curve cutoff points'),col.main="blue",font.main=3,ylab="log(1/N)")
+points(x=p_v,y=exp(mod$coefficients["lp","Estimate"]*log(p_v)+
+                     mod$coefficients["(Intercept)","Estimate"]),col=2,pch=20)
+legend(x="bottomright",legend=c("measured ROC cutoff-points","model fit"),
+col=c(1,2),lty=c(1,0),pch=c(1,20))
+
+```
+***Figure 3. Linear regression fitted log-log scatterplot of 1/(N) vs $p_{value}$ for ROC curve cutoff point analysis.***
+
+##Normalised $P_{BIC}(D|H0)$ values
+
+It can be seen in figure 1 that $P_{BIC}(D|H0) < 1$ when $P(H0) =1$. For small sample the evidence for the dominance of H0 or H1 is weaker (consistent with low statistical power) and $P_{BIC}(D|H0) \ll 1$. However, as discussed for Figure 2 the contour line for fixed sample size doesn't move with treatment effect, only the observed data shifts (left and down) along the contour line as statistical power increases.
+
+To improve interpretation of $P_{BIC}(D|H0)$ with respect to P(H0), a simple normalisation factor by inspection can be added to equation \eqref {eq:pDh0} 
+
+\begin{equation}
+normP_{BIC}(D|H0) = \frac{BF}{(BF+1)} \cdot \frac{1}{(1+\frac{1}{\sqrt{N}})} \label {eq:pDh0_norm}
+\end{equation}
+
+such that $normP_{BIC}(D|H0)$ has the interval $(0,1]$.
+
+The behaviour of $normP_{BIC}(D|H0)$ is shown in Figure 4 and the same ROC cutoff $p_{value}$ apply as for $P_{BIC}(D|H0)$. To calculate the ROC cutoff point an additional method now becomes available $\frac{d normP_{BIC}(D|H0)}{d p} = 1$ and is in close agreement with the Youden Index and maximum height from the diagonal (which now has fixed minimum=0 and maximum=1 for $normP_{BIC}(D|H0)$ irrespective of sample size). As $N \rightarrow \infty$ the slope of the ROC cutoff line approaches -1.
+
+
+
+```{r echo=FALSE, cache=TRUE, fig.height=7}
+plot(x=n100000$p_value,y=n100000$p_D_H0/(sqrt(100000)*1/sqrt(100000)/(1+1/sqrt(100000))),xlim=c(0,1),col=rgb(0,0,0,0.5),ylab="normalised Pbic( D | H0 )",ylim=c(0,1),pch=20,xlab="p_value",
+     main=expression('norm_P'[BIC]*'( D | H0 ) vs p_value for different total N in RCT analysis'),col.main="blue",font.main=3)
+lines(x=seq(0,1,l=1001),n100000f(seq(0,1,l=1001))/(sqrt(100000)*1/sqrt(100000)/(1+1/sqrt(100000))),col=1)
+abline(v=0.05,col=2,lty=2,lwd=2);
+grid();
+points(x=n10000$p_value,y=n10000$p_D_H0/(sqrt(10000)*1/sqrt(10000)/(1+1/sqrt(10000))),col=2,pch=20)
+lines(x=seq(0,1,l=1001),n10000f(seq(0,1,l=1001))/(sqrt(10000)*1/sqrt(10000)/(1+1/sqrt(10000))),col=2)
+points(x=n1000$p_value,y=n1000$p_D_H0/(sqrt(1000)*1/sqrt(1000)/(1+1/sqrt(1000))),col=3,pch=20)
+lines(x=seq(0,1,l=1001),n1000f(seq(0,1,l=1001))/(sqrt(1000)*1/sqrt(1000)/(1+1/sqrt(1000))),col=3)
+points(x=n500$p_value,y=n500$p_D_H0/(sqrt(500)*1/sqrt(500)/(1+1/sqrt(500))),col=7,pch=20)
+lines(x=seq(0,1,l=1001),n500f(seq(0,1,l=1001))/(sqrt(500)*1/sqrt(500)/(1+1/sqrt(500))),col=7)
+points(x=n100$p_value,y=n100$p_D_H0/(sqrt(100)*1/sqrt(100)/(1+1/sqrt(100))),col=4,pch=20)
+lines(x=seq(0,1,l=1001),n100f(seq(0,1,l=1001))/(sqrt(100)*1/sqrt(100)/(1+1/sqrt(100))),col=4)
+points(x=n50$p_value,y=n50$p_D_H0/(sqrt(50)*1/sqrt(50)/(1+1/sqrt(50))),col=5,pch=20)
+lines(x=seq(0,1,l=1001),n50f(seq(0,1,l=1001))/(sqrt(50)*1/sqrt(50)/(1+1/sqrt(50))),col=5)
+points(x=n20$p_value,y=n20$p_D_H0/(sqrt(20)*1/sqrt(20)/(1+1/sqrt(20))),col=6,pch=20)
+lines(x=seq(0,1,l=1001),n20f(seq(0,1,l=1001))/(sqrt(20)*1/sqrt(20)/(1+1/sqrt(20))),col=6)
+points(x=n10$p_value,y=n10$p_D_H0/(sqrt(10)*1/sqrt(10)/(1+1/sqrt(10))),col="gray",pch=20)
+lines(x=seq(0,1,l=1001),n10f(seq(0,1,l=1001))/(sqrt(10)*1/sqrt(10)/(1+1/sqrt(10))),col="gray")
+lines(y=adj_pH0D,x=p_vals,col=2,lty=3,lwd=2)
+legend(x="bottomright",legend=c("total N=100,000","total N=10,000",
+"total N=1,000","total N=500","total N=100","total N=50","total N=20",
+"total N=10","ROC cutoff points","alpha = 0.05 p_value"),
+col=c(1,2,3,7,4,5,6,"gray",2,2),lty=c(rep(1,8),3,2),pch=c(rep(20,8),-1,-1))
+
+
+```
+***Figure 4. $normP_{BIC}(D|H0) \equiv \frac{P_{BIC}(D|H0)}{(1+\frac{1}{\sqrt{N}})}$ as a function of p value for different sample sizes under simple RCT analysis when $P(H0)=1$. Using the $normP_{BIC}(D|H0)$ value, the pseudo ROC cutoff point estimate under Youden Index, elbow point and $\frac{d normP_{BIC}(D|H0)}{d p}$ = 1 methods are in very close agreement.***
+
+##Conclusions
+
+Under repeated sampling, for a fixed sample size the Spearman Rank correlation coefficient $cor_{spearman,RCT}(p_{value},P_{BIC}(D|H0)) \approx 1$ where $P_{BIC}(D|H0)$ is derived from BIC based Bayes Factor calculations [3] indicating a strong relationship between the NHST $p_{value}$ and Bayesian $P_{BIC}(D|H0)$. This result along with $(p_{value},P_{BIC}(D|H0))$ contour lines independent of treatment effect and P(H1) gives useful information to interpretation of relative posterior probability based estimates of $P(H0|D)$ \eqref {eq:rel_post_prob} assuming $\frac{P(H0)}{P(H1)}\approx constant$.
+
+Finally, a normalised version of P_{BIC}(D|H0) provides easier ROC point cutoff calculation and interpretation. 
+
+##References
+
+1. Trafimow, D., & Rice, S. (2009). A test of the null hypothesis significance testing procedure correlation argument. The Journal of General Psychology, 136, 261-270.
+
+2. Lakens, D. (2015) https://daniellakens.blogspot.com/2015/11/the-relation-between-p-values-and.html
+
+3. Masson, M. E. J. (2011) A tutorial on a practical Bayesian alternative to null-hypothesis significance testing. Behav Res 43:679–690  DOI 10.3758/s13428-010-0049-5
+
+4. Cohen, J. (1994). The earth is round (p < .05). American Psychologist, 49, 997-1003.
+
+5. Hagen, R. L. (1997). In praise of the null hypothesis statistical test. American Psychologist, 52, 15-24.
