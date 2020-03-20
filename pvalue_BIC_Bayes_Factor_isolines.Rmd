@@ -1,8 +1,13 @@
 ---
-title: "The strong contour line relationship between two-sided p values of simple RCT two sample t-tests and BIC based Bayes factor $P_{BIC}(D|H0)$ outputs for fixed sample sizes"
+title: The strong contour line relationship between two-sided p values of simple RCT
+  two sample t-tests and BIC based Bayes factor $P_{BIC}(D|H0)$ outputs for fixed
+  sample sizes
 author: "John Martin"
 date: "3/19/2020"
-output: pdf_document
+output:
+  pdf_document: default
+  html_document:
+    df_print: paged
 ---
 
 ```{r setup, include=FALSE}
@@ -11,7 +16,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ##Executive Summary
 
-For simple Randomised Control Trial (RCT) analysis there is a strong non-linear relationship between the two-sided p values of two sample t-tests and the corresponding BIC based Bayes factor output $P_{BIC}(D|H0)$. In particular, the spearman rank correlation coefficient $cor_{spearman,RCT}(p_{value},P_{BIC}(D|H0)) \approx 1$ and a strong contour line relationship dependent on sample size exists between the two statistics that allows psuedo ROC curve interpretation and cutoff estimation. In practice, as $P(H0)$ varies $(0 \le P(H0) \le 1)$ the position of the distribution of observed data on a given sample size contour line varies according to the statistical power (ie. effect size) and $P(H0)$ probability. Proceeding to posterior odds calculations and derivation of $P_{BIC}(H0|D)$, $P_{BIC}(H1|D)$ probabilities, the above BIC based results have significant relevance under the common prior odds assumption $P(H0)/P(H1) \sim 1$.    
+For simple Randomised Control Trial (RCT) analysis there is a strong non-linear relationship between the two-sided p values of two sample t-tests and the corresponding BIC based Bayes factor output $P_{BIC}(D|H0)$. In particular, the spearman rank correlation coefficient $cor_{spearman,RCT}(p_{value},P_{BIC}(D|H0)) \approx 1$ and a strong contour line relationship dependent on sample size exists between the two statistics that allows pseudo ROC curve interpretation and cutoff estimation. In practice, as $P(H0)$ varies $(0 \le P(H0) \le 1)$ the position of the distribution of observed data on a given sample size contour line varies according to the statistical power (ie. effect size) and $P(H0)$ probability. Proceeding to posterior odds calculations and derivation of $P_{BIC}(H0|D)$, $P_{BIC}(H1|D)$ probabilities, the above BIC based results have significant relevance under the common prior odds assumption $P(H0)/P(H1) \sim 1$.    
 
 ##Introduction
 
@@ -322,6 +327,8 @@ Two resolutions to the above may be: Firstly, the proper application of the obse
 
 A second comment is that the standard $\alpha = 0.05$ approach can be interpreted as essentially assigning a fixed cutoff threshold to the ROC curve. In comparison to the elbow cutoff point behaviour, using $\alpha = 0.05$ is aggressive for sample sizes < 10,000. In the last section, the data distribution for different sample sizes under both $\alpha = 0.05$ and 95% statistical power constraints is illustrated.
 
+In the appendix, the relationship between the BIC based Bayes Factor itself $BF_{BIC} =\frac{P_{BIC}(D|H0))}{P_{BIC}(D|H1))}$ and $p_{value}$ is illustrated and for $p_{value} = 0.05$ the approximate asymptotic limit for the BIC based Bayes Factor for simple RCT analysis is $\frac{BF_{BIC}}{\sqrt{N}} \sim 0.15 =(1/6.666)\text{ as N } \rightarrow \infty$.
+
 ```{r echo=FALSE, cache=TRUE, fig.height=4.5}
 
 p_v=c(p_vals)
@@ -437,7 +444,7 @@ legend(x="bottomright",legend=c("total N=100,000","total N=10,000",
 col=c(1,2,3,7,4,5,6,"gray",2,2),lty=c(rep(1,8),3,2),pch=c(rep(20,8),-1,-1))
 
 ```
-***Figure 5. $P_{BIC}(D|H0)$ as a function of p value for different sample sizes under simple RCT analysis when $P(H0)=0$,$\alpha = 0.05$ and the statistical power is ~95%. In this simulation the effect size is different for each fixed sample size to achieve ~95% and for clarity only 100 repeated samples are shown. The underlying contour lines under the data points were obtained from figure 1. ***
+***Figure 5. $P_{BIC}(D|H0)$ as a function of p value for different sample sizes under simple RCT analysis when $\alpha = 0.05$ and the statistical power is ~95%. In this simulation the effect size is different for each fixed sample size to achieve ~95% and for clarity only 100 repeated samples are shown. The underlying contour lines behind the data points were obtained from figure 1 using $P(H0)=0$. ***
 
 
 ##Conclusions
@@ -445,6 +452,8 @@ col=c(1,2,3,7,4,5,6,"gray",2,2),lty=c(rep(1,8),3,2),pch=c(rep(20,8),-1,-1))
 Under repeated sampling, for a fixed sample size the Spearman Rank correlation coefficient $cor_{spearman,RCT}(p_{value},P_{BIC}(D|H0)) \approx 1$ where $P_{BIC}(D|H0)$ is derived from BIC based Bayes Factor calculations [3] indicating a strong relationship between the NHST $p_{value}$ and Bayesian $P_{BIC}(D|H0)$. This behaviour is consistent with the earlier work [2,4] also showing a strong relationship between NHST $p_{value}$ and Bayesian $P(D|H0)$ calculations. 
 
 With the evidence of the $(p_{value},P_{BIC}(D|H0))$ contour line positions being independent of (i) treatment effect size and (ii) P(H1) the above results gives interesting information on the common interpretation of relative posterior probability based estimates of $P(H0|D)$ equation \eqref {eq:rel_post_prob} assuming $\frac{P(H0)}{P(H1)}\approx constant$. 
+
+The corresponding $BF_{BIC} =\frac{P_{BIC}(D|H0))}{P_{BIC}(D|H1))}$ and $p_{value}$ relationship is illustrated in the Appendix where is estimated for $p_{value} = 0.05$ that the approximate large sample asymptotic limit for the BIC based Bayes Factor for simple RCT analysis is $\frac{BF_{BIC}}{\sqrt{N}} \sim 0.15 =(1/6.666)\text{ as N } \rightarrow \infty$
 
 Finally, a normalised version of $P_{BIC}(D|H0)$ provides easier ROC point cutoff calculation and interpretation. 
 
@@ -461,3 +470,176 @@ Finally, a normalised version of $P_{BIC}(D|H0)$ provides easier ROC point cutof
 5. Cohen, J. (1994). The earth is round (p < .05). American Psychologist, 49, 997-1003.
 
 6. Hagen, R. L. (1997). In praise of the null hypothesis statistical test. American Psychologist, 52, 15-24.
+
+
+##Appendix A: BIC based Bayes Factor vs $p_{value}$ behaviour for different sample sizes
+
+The following three graphs show the same RCT analysis results (under repeated sampling for different fixed sample sizes), indicating the relationship between the BIC based Bayes Factor itself $BF_{BIC} =\frac{P_{BIC}(D|H0))}{P_{BIC}(D|H1))}$ and $p_{value}$.
+
+Figure 7 shows the raw scatterplot as a log plot where the different sample size contour lines seem to be at least approximately, shifted versions of each other.
+
+Figure 8 shows the log plot relationship using a normalised BIC based Bayes Factor $\frac{BF_{BIC}}{\sqrt{N}}$. It can be seen that as $p_{value} \rightarrow 1$ the normalised contour lines are in good agreement. The upper limit $\frac{BF_{BIC}}{\sqrt{N}} = 1$ and an approximate large N intersection point of $\frac{BF_{BIC}}{\sqrt{N}} \approx 0.15$ when $p_{value} = 0.05$ are indicated by dotted horizontal lines. 
+
+Finally, Figure 9 shows the log($\frac{BF_{BIC}}{\sqrt{N}}$)-log(  $p_{value}$) relationship which more accurately estimates that $\frac{BF_{BIC}}{\sqrt{N}} \sim 0.15 =(1/6.666)\text{ as N } \rightarrow \infty$. As N becomes small, the intersection point with $p_{value} = 0.5$ dcreases to lower $\frac{BF_{BIC}}{\sqrt{N}}$ values.
+
+```{r echo=FALSE, cache=TRUE, fig.height=7}
+
+data_calcBF=function(totsampsize,PH1_rate,effect_size,reps){
+  
+  p_D_H0=0;p_D_H1=0;BFvec=0;p_value=0;int_p_value=0;nsamp=totsampsize;nsamp2=nsamp/2
+  sd_samp=20;t_eff=effect_size/sqrt(2)*sqrt(10000/nsamp);effect=0.1*t_eff*sd_samp;PH1=PH1_rate;#t_eff=.5/sqrt(2)*sqrt(10000/nsamp);
+  for (i in 1:reps) {
+    
+    samp=runif(nsamp)#rnorm(nsamp,0,sd_samp)
+    
+    d=c(rep(1,nsamp2),rep(0,nsamp2))
+    d2=c(rbinom(nsamp2,1,PH1),rep(0,nsamp2))
+    
+    signal=samp+effect*d2
+    m1=lm(signal~d)
+    m0=lm(signal~1)
+    summary(m1)
+    summary(m0)
+    
+    BIC(m1)
+    BIC(m0)
+    BIC(m1)-BIC(m0)
+    BF=exp((BIC(m1)-BIC(m0))/2)
+    
+    BFvec[i]=BF
+    p_D_H0[i]=BF/(BF+1)
+    p_D_H1[i]=1-p_D_H0[i]
+    
+    p_value[i]=summary(m1)$coefficients["d","Pr(>|t|)"]
+    int_p_value[i]=summary(m0)$coefficients["(Intercept)","Pr(>|t|)"]
+  }
+  
+  df=as.data.frame(cbind(p_value,BFvec))
+  
+}
+
+
+#calculating with P(H0)=1 to start with
+#to get universal contour lines first
+
+n10=data_calcBF(10,0,0,1000)
+n10BF=approxfun(n10$p_value,n10$BFvec)
+n20=data_calcBF(20,0,0,1000)
+n20BF=approxfun(n20$p_value,n20$BFvec)
+n50=data_calcBF(50,0,0,1000)
+n50BF=approxfun(n50$p_value,n50$BFvec)
+n100=data_calcBF(100,0,0,1000)
+n100BF=approxfun(n100$p_value,n100$BFvec)
+n500=data_calcBF(500,0,0,1000)
+n500BF=approxfun(n500$p_value,n500$BFvec)
+n1000=data_calcBF(1000,0,0,1000)
+n1000BF=approxfun(n1000$p_value,n1000$BFvec)
+n10000=data_calcBF(10000,0,0,1000)
+n10000BF=approxfun(n10000$p_value,n10000$BFvec)
+n100000=data_calcBF(100000,0,0,1000)
+n100000BF=approxfun(n100000$p_value,n100000$BFvec)
+
+# recalculating for ~95% statistical power 
+n10_95=data_calcBF(10,1,.0161,100)
+n20_95=data_calcBF(20,1,.015,100)
+n50_95=data_calcBF(50,1,.0149,100)
+n100_95=data_calcBF(100,1,.0147,100)
+n500_95=data_calcBF(500,1,.0143,100)
+n1000_95=data_calcBF(1000,1,.0147,100)
+n10000_95=data_calcBF(10000,1,.0147,100)
+n100000_95=data_calcBF(100000,1,.0149,100)
+
+plot(x=n100000_95$p_value,y=n100000_95$BFvec,xlim=c(0,1),col=rgb(0,0,0,0.5),ylab="log(BIC based Bayes Factor)",pch=20,xlab="p_value",
+     main=expression('BIC based Bayes Factor vs p_value for 95% statistical power cases'),col.main="blue",font.main=3,log="y",ylim=c(.000001,max(n100000$BFvec)))
+lines(x=seq(0,1,l=1001),n100000BF(seq(0,1,l=1001)),col=1)
+abline(v=0.05,col=2,lty=2,lwd=2);
+grid();
+points(x=n10000_95$p_value,y=n10000_95$BFvec,col=2,pch=20)
+lines(x=seq(0,1,l=1001),n10000BF(seq(0,1,l=1001)),col=2)
+points(x=n1000_95$p_value,y=n1000_95$BFvec,col=3,pch=20)
+lines(x=seq(0,1,l=1001),n1000BF(seq(0,1,l=1001)),col=3)
+points(x=n500_95$p_value,y=n500_95$BFvec,col=7,pch=20)
+lines(x=seq(0,1,l=1001),n500BF(seq(0,1,l=1001)),col=7)
+points(x=n100_95$p_value,y=n100_95$BFvec,col=4,pch=20)
+lines(x=seq(0,1,l=1001),n100BF(seq(0,1,l=1001)),col=4)
+points(x=n50_95$p_value,y=n50_95$BFvec,col=5,pch=20)
+lines(x=seq(0,1,l=1001),n50BF(seq(0,1,l=1001)),col=5)
+points(x=n20_95$p_value,y=n20_95$BFvec,col=6,pch=20)
+lines(x=seq(0,1,l=1001),n20BF(seq(0,1,l=1001)),col=6)
+points(x=n10_95$p_value,y=n10_95$BFvec,col="gray",pch=20)
+lines(x=seq(0,1,l=1001),n10BF(seq(0,1,l=1001)),col="gray")
+legend(x="bottomright",legend=c("total N=100,000","total N=10,000",
+                                "total N=1,000","total N=500","total N=100","total N=50","total N=20",
+                                "total N=10","alpha = 0.05 p_value"),
+       col=c(1,2,3,7,4,5,6,"gray",2),lty=c(rep(1,8),2),pch=c(rep(20,8),-1),cex=0.8)
+
+```
+***Figure 6. log(BIC based Bayes Factor) as a function of $p_{value}$ for different sample sizes under simple RCT analysis when $\alpha = 0.05$ and the statistical power is ~95%, for clarity only 100 repeated samples are shown. The underlying contour lines behind the data points were obtained from figure 1 using $P(H0)=0$. ***
+
+```{r echo=FALSE, cache=TRUE, fig.height=7}
+
+plot(x=n100000_95$p_value,y=n100000_95$BFvec/sqrt(100000),xlim=c(0,1),col=rgb(0,0,0,0.5),ylab="log(BIC based Bayes Factor)",pch=20,xlab="p_value",
+     main=expression('BIC based Bayes Factor vs p_value for 95% statistical power cases'),col.main="blue",font.main=3,log="y",
+     ylim=c(.001,1))
+#   ylim=c(.001,max(n100000$BFvec)*sqrt(10/100000)))
+lines(x=seq(0,1,l=1001),n100000BF(seq(0,1,l=1001))/sqrt(100000),col=1)
+abline(v=0.05,col=2,lty=2,lwd=2);
+grid();
+points(x=n10000_95$p_value,y=n10000_95$BFvec/sqrt(10000),col=2,pch=20)
+lines(x=seq(0,1,l=1001),n10000BF(seq(0,1,l=1001))/sqrt(10000),col=2)
+points(x=n1000_95$p_value,y=n1000_95$BFvec/sqrt(1000),col=3,pch=20)
+lines(x=seq(0,1,l=1001),n1000BF(seq(0,1,l=1001))/sqrt(1000),col=3)
+points(x=n500_95$p_value,y=n500_95$BFvec/sqrt(500),col=7,pch=20)
+lines(x=seq(0,1,l=1001),n500BF(seq(0,1,l=1001))/sqrt(500),col=7)
+points(x=n100_95$p_value,y=n100_95$BFvec/sqrt(100),col=4,pch=20)
+lines(x=seq(0,1,l=1001),n100BF(seq(0,1,l=1001))/sqrt(100),col=4)
+points(x=n50_95$p_value,y=n50_95$BFvec/sqrt(50),col=5,pch=20)
+lines(x=seq(0,1,l=1001),n50BF(seq(0,1,l=1001))/sqrt(50),col=5)
+points(x=n20_95$p_value,y=n20_95$BFvec/sqrt(20),col=6,pch=20)
+lines(x=seq(0,1,l=1001),n20BF(seq(0,1,l=1001))/sqrt(20),col=6)
+points(x=n10_95$p_value,y=n10_95$BFvec/sqrt(10),col="gray",pch=20)
+lines(x=seq(0,1,l=1001),n10BF(seq(0,1,l=1001))/sqrt(10),col="gray")
+legend(x="bottomright",legend=c("total N=100,000","total N=10,000",
+                                "total N=1,000","total N=500","total N=100","total N=50","total N=20",
+                                "total N=10","alpha = 0.05 p_value"),
+       col=c(1,2,3,7,4,5,6,"gray",2),lty=c(rep(1,8),2),pch=c(rep(20,8),-1),cex=0.8)
+abline(h=1,lty=3)#exp(-1/2))
+abline(h=0.15,lty=3)
+
+```
+***Figure 7. log((BIC based Bayes Factor)/sqrt(N)) as a function of $p_{value}$ for different sample sizes under simple RCT analysis when $\alpha = 0.05$ and the statistical power is ~95%, for clarity only 100 repeated samples are shown. The underlying contour lines behind the data points were obtained from figure 1 using $P(H0)=0$. ***
+
+
+```{r echo=FALSE, cache=TRUE, fig.height=7}
+
+plot(x=n100000_95$p_value,y=n100000_95$BFvec/sqrt(100000),xlim=c(0.001,1),col=rgb(0,0,0,0.5),ylab="log(BIC based Bayes Factor)",pch=20,xlab="p_value",
+     main=expression('BIC based Bayes Factor vs p_value for 95% statistical power cases'),col.main="blue",font.main=3,log="xy",
+     ylim=c(.01,1))
+  #   ylim=c(.001,max(n100000$BFvec)*sqrt(10/100000)))
+lines(x=seq(0,1,l=1001),n100000BF(seq(0,1,l=1001))/sqrt(100000),col=1)
+abline(v=0.05,col=2,lty=2,lwd=2);
+grid();
+points(x=n10000_95$p_value,y=n10000_95$BFvec/sqrt(10000),col=2,pch=20)
+lines(x=seq(0,1,l=1001),n10000BF(seq(0,1,l=1001))/sqrt(10000),col=2)
+points(x=n1000_95$p_value,y=n1000_95$BFvec/sqrt(1000),col=3,pch=20)
+lines(x=seq(0,1,l=1001),n1000BF(seq(0,1,l=1001))/sqrt(1000),col=3)
+points(x=n500_95$p_value,y=n500_95$BFvec/sqrt(500),col=7,pch=20)
+lines(x=seq(0,1,l=1001),n500BF(seq(0,1,l=1001))/sqrt(500),col=7)
+points(x=n100_95$p_value,y=n100_95$BFvec/sqrt(100),col=4,pch=20)
+lines(x=seq(0,1,l=1001),n100BF(seq(0,1,l=1001))/sqrt(100),col=4)
+points(x=n50_95$p_value,y=n50_95$BFvec/sqrt(50),col=5,pch=20)
+lines(x=seq(0,1,l=1001),n50BF(seq(0,1,l=1001))/sqrt(50),col=5)
+points(x=n20_95$p_value,y=n20_95$BFvec/sqrt(20),col=6,pch=20)
+lines(x=seq(0,1,l=1001),n20BF(seq(0,1,l=1001))/sqrt(20),col=6)
+points(x=n10_95$p_value,y=n10_95$BFvec/sqrt(10),col="gray",pch=20)
+lines(x=seq(0,1,l=1001),n10BF(seq(0,1,l=1001))/sqrt(10),col="gray")
+legend(x="bottomright",legend=c("total N=100,000","total N=10,000",
+                                "total N=1,000","total N=500","total N=100","total N=50","total N=20",
+                                "total N=10","alpha = 0.05 p_value"),
+       col=c(1,2,3,7,4,5,6,"gray",2),lty=c(rep(1,8),2),pch=c(rep(20,8),-1),cex=0.8)
+abline(h=1,lty=3)#exp(-1/2))
+abline(h=0.15,lty=3)
+
+```
+***Figure 7. log((BIC based Bayes Factor)/sqrt(N)) as a function of log($p_{value}$) for different sample sizes under simple RCT analysis when $\alpha = 0.05$ and the statistical power is ~95%, for clarity only 100 repeated samples are shown. The underlying contour lines behind the data points were obtained from figure 1 using $P(H0)=0$.
+
