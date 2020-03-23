@@ -1,9 +1,9 @@
 ---
 title: The strong contour line relationship between two-sided p values of simple RCT
   two sample t-tests and BIC based Bayes factor $P_{BIC}(D|H0)$ outputs for fixed
-  sample sizes
+  sample sizes.
 author: "John Martin"
-date: "3/21/2020"
+date: "3/23/2020"
 output:
   pdf_document: default
   html_document:
@@ -444,7 +444,7 @@ legend(x="bottomright",legend=c("total N=100,000","total N=10,000",
 col=c(1,2,3,7,4,5,6,"gray",2,2),lty=c(rep(1,8),3,2),pch=c(rep(20,8),-1,-1))
 
 ```
-***Figure 5. $P_{BIC}(D|H0)$ as a function of p value for different sample sizes under simple RCT analysis when $\alpha = 0.05$ and the statistical power is ~95%. In this simulation the effect size is different for each fixed sample size to achieve ~95% and for clarity only 100 repeated samples are shown. The underlying contour lines behind the data points were obtained from figure 1 using $P(H0)=0$. ***
+***Figure 5. $P_{BIC}(D|H0)$ as a function of p value for different sample sizes under simple RCT analysis when $\alpha = 0.05$ and the statistical power is ~95%. In this simulation the effect size is different for each fixed sample size to achieve ~95% and for clarity only 100 repeated samples are shown. The underlying contour lines behind the data points were obtained from figure 1 using $P(H0)=1$. ***
 
 
 ##Conclusions
@@ -487,6 +487,8 @@ Figure 7 shows the log plot relationship using a normalised BIC based Bayes Fact
 Figure 8 shows the log($\frac{BF_{BIC}}{\sqrt{N}}$)-log(  $p_{value}$) relationship which more accurately estimates that $\frac{BF_{BIC}}{\sqrt{N}} \sim 0.15 =(1/6.666)\text{ as N } \rightarrow \infty$. As N becomes small, the intersection point with $p_{value} = 0.5$ decreases to lower $\frac{BF_{BIC}}{\sqrt{N}}$ values.
 
 Finally figure 9 shows in linear scale the pseudo ROC curve relationship between $\frac{BF_{BIC}}{\sqrt{N}}$ and $p_{value}$. On this scale, the $p_{value} = 0.05$ cutoff approach has $\frac{BF_{BIC}}{\sqrt{N}}$ values well below the ROC curve cutoff point estimates. For example the ROC curve cutoff points are ~(0.425,0.727) and ~(0.522,0.760) for N=100,000 & N=10 where the points are defined ($p_{value}$,$\frac{BF_{BIC}}{\sqrt{N}}$). Also shown on the figure are thresholds indicating strength of evidence for H1 including the p-value based significance regions, the Bayesian inference significance regions using Jeffreys [7] categories and the large N intersection of the p-value based and BIC based Bayesian thresholds. 
+
+One comment based on the results presented in the Appendix, is that with respect to Lindley's Paradox behaviour the relationship between the normalised BIC based Bayes Factor $\frac{BF_{BIC}}{\sqrt{N}}$ and $p_{value}$ doesn't exhibit this paradox as easily (as do posterior odds $\frac{P(H0|D)}{P(H1|D)}$ or raw Bayes Factor  $\frac{P(D|H0))}{P(D|H1))}$ versus $p_{value}$).
 
 
 
@@ -582,7 +584,7 @@ legend(x="bottomright",legend=c("total N=100,000","total N=10,000",
        col=c(1,2,3,7,4,5,6,"gray",2),lty=c(rep(1,8),2),pch=c(rep(20,8),-1),cex=0.8)
 
 ```
-***Figure 6. log(BIC based Bayes Factor) as a function of $p_{value}$ for different sample sizes under simple RCT analysis when $\alpha = 0.05$ and the statistical power is ~95%, for clarity only 100 repeated samples are shown. The underlying contour lines behind the data points were obtained from figure 1 using $P(H0)=0$. ***
+***Figure 6. log(BIC based Bayes Factor) as a function of $p_{value}$ for different sample sizes under simple RCT analysis when $\alpha = 0.05$ and the statistical power is ~95%, for clarity only 100 repeated samples are shown. The underlying contour lines behind the data points were obtained from figure 1 using $P(H0)=1$. ***
 
 ```{r echo=FALSE, cache=TRUE, fig.height=7}
 
@@ -615,7 +617,7 @@ abline(h=1,lty=3)#exp(-1/2))
 abline(h=0.15,lty=3)
 
 ```
-***Figure 7. log((BIC based Bayes Factor)/sqrt(N)) as a function of $p_{value}$ for different sample sizes under simple RCT analysis when $\alpha = 0.05$ and the statistical power is ~95%, for clarity only 100 repeated samples are shown. The underlying contour lines behind the data points were obtained from figure 1 using $P(H0)=0$. ***
+***Figure 7. log((BIC based Bayes Factor)/sqrt(N)) as a function of $p_{value}$ for different sample sizes under simple RCT analysis when $\alpha = 0.05$ and the statistical power is ~95%, for clarity only 100 repeated samples are shown. The underlying contour lines behind the data points were obtained from figure 1 using $P(H0)=1$. ***
 
 
 ```{r echo=FALSE, cache=TRUE, fig.height=7}
@@ -698,7 +700,7 @@ legend(x=.7,y=.9,legend=c("total N=100,000","total N=10,000",
 abline(h=1,lty=3)#exp(-1/2))
 abline(h=0.15,lty=3)
 ```
-***Figure 9. ROC curve behaviour of BIC based (Bayes Factor)/sqrt(N) as a function of $p_{value}$ for different sample sizes and a mapping of the strength of evidence regions in favour of H1. The $\alpha = 0.05$ based cutoffs (vertical dashed line) are well below the ROC curve cutoffs shown as red dotted approximately horizontal line. The data points are again from  simple RCT analysis when $\alpha = 0.05$ and the statistical power is ~95%, for clarity only 100 repeated samples are shown. The contour lines behind the data points were obtained from figure 1 using $P(H0)=0$. ***
+***Figure 9. ROC curve behaviour of BIC based (Bayes Factor)/sqrt(N) as a function of $p_{value}$ for different sample sizes and a mapping of the strength of evidence regions in favour of H1. The $\alpha = 0.05$ based cutoffs (vertical dashed line) are well below the ROC curve cutoffs shown as red dotted approximately horizontal line. The data points are again from  simple RCT analysis when $\alpha = 0.05$ and the statistical power is ~95%, for clarity only 100 repeated samples are shown. The contour lines behind the data points were obtained from figure 1 using $P(H0)=1$. ***
 
 \newpage
 ```{r echo=FALSE, cache=TRUE}
