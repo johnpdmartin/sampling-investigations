@@ -16,7 +16,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 For simple Randomised Control Trial (RCT) analysis using a nested model approach the normalised BIC based Bayes factor estimates approach a simple likelihood based Bayes Factor behaviour 
 
-$\frac{1}{\sqrt{N}}\frac{P_{BIC}(D|H0)}{P_{BIC}(D|H1)} \rightarrow$ $exp(LR/2)\equiv \frac{\mathcal{L}(H1)}{\mathcal{L}(H0)}$.    
+$\frac{1}{\sqrt{N}}\frac{P_{BIC}(D|H0)}{P_{BIC}(D|H1)} \rightarrow$ $exp(-LR/2)\equiv \frac{\mathcal{L}(H0)}{\mathcal{L}(H1)}$.    
 
 
 
