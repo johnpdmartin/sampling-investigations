@@ -14,9 +14,9 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ##Executive Summary
 
-For simple Randomised Control Trial (RCT) analysis using a nested model approach the normalised BIC based Bayes factor estimates approach a simple likelihood based Bayes Factor behaviour 
+For simple Randomised Control Trial (RCT) analysis using a nested model approach the sample size normalised BIC based Bayes factor estimates is identical to a simple Likelihood Ratio (LR) based Bayes Factor behaviour 
 
-$\frac{1}{\sqrt{N}}\frac{P_{BIC}(D|H0)}{P_{BIC}(D|H1)} \rightarrow$ $exp(-LR/2)\equiv \frac{\mathcal{L}(H0)}{\mathcal{L}(H1)}$.    
+$\frac{1}{\sqrt{N}}\frac{P_{BIC}(D|H0)}{P_{BIC}(D|H1)} = exp(-LR/2)\equiv \frac{\mathcal{L}(H0)}{\mathcal{L}(H1)}$.    
 
 
 
@@ -53,7 +53,7 @@ BIC = -2ln(L) + k ln(n) \label {eq:BIC}
 
 where L is the maximum likelihood of the fitted model, k is the number of free model parameters and n is the sample size.
 
-Explicitly, the BIC based estimate [3] for the Bayes Factor component in \eqref {eq:rel_post_prob}, is given by
+Explicitly, the BIC based estimate [4] for the Bayes Factor component in \eqref {eq:rel_post_prob}, is given by
 
 \begin{align} 
 \frac{P(H0|D)}{P(H1|D)} &\approx \frac{P_{BIC}(D|H0))}{P_{BIC}(D|H1))} \cdot \frac{P(H0)}{P(H1)} \\
@@ -102,7 +102,13 @@ e^{\frac{-(LR)}{2}} &= e^{-1 \cdot -2 \cdot ln(\frac{\mathcal{L}(H0)}{\mathcal{L
 \end{align}
 
 
-Importantly, it is already demonstrated that the frequentist based null hypothesis significance test (NHST) method calculated via the probability of the observed t statistic under a two-sided null hypothesis can be expressed as a LR test [5,6].
+Importantly, it is already demonstrated that the frequentist based null hypothesis significance test (NHST) method calculated via the probability of the observed t statistic under a two-sided null hypothesis can be related to a LR test [5,6].
+
+Explicitly, the estimator for the numerator of the Likelihood based Bayes Factor component in \eqref {eq:rel_post_prob}, is given by
+
+\begin{equation}
+P_{LR}(D|H0)) = \frac{\frac{\mathcal{L}(H0)}{\mathcal{L}(H1)}}{\frac{\mathcal{L}(H0)}{\mathcal{L}(H1)}+1} \label {eq:PLRDH0}
+\end{equation}
 
 ##Relationship between BIC based and Likelihood Ratio based Bayes Factors
 
@@ -128,7 +134,7 @@ and hence for simple RCT analysis
 
 \begin{align}
 \text{norm}P_{BIC} &= \frac{1}{\sqrt{n}}\frac{P_{BIC}(D|H0)}{P_{BIC}(D|H1)} \\
-&\equiv \frac{\mathcal{L}(H0)}{\mathcal{L}(H1)} 
+&\equiv \frac{\mathcal{L}(H0)}{\mathcal{L}(H1)} \label {eq:normBICIdentity}
 \end{align}
 
 which is bounded by (0,1) and has a known direct relationship to NHST $p_{values}$.
@@ -136,7 +142,9 @@ which is bounded by (0,1) and has a known direct relationship to NHST $p_{values
 
 ##Likelihood Ratio (and normalised BIC based) Bayes Factor vs $p_{value}$ behaviour for different sample sizes
 
-As in [3] the following figure 1 shows the pseudo ROC curve relationship between $BF_{LR} \equiv \frac{BF_{BIC}}{\sqrt{N}}$ and $p_{value}$. On the figure are thresholds indicating strength of evidence for H1 including the p-value based significance regions, the Bayesian inference significance regions using Jeffreys [7] categories and the large N intersection of the p-value based and BIC based Bayesian thresholds (or simply the intersection of p-value and Likelihood Ratio based Bayes Factors) for simple RCT analysis. 
+As in [3] the following figure 1 shows the pseudo ROC curve relationship between $BF_{LR} \equiv \frac{BF_{BIC}}{\sqrt{N}}$ and $p_{value}$. On the figure are thresholds indicating strength of evidence for H1 including the p-value based significance regions, the Bayesian inference significance regions using Jeffreys [7] categories and the large N intersection of the p-value based and BIC based Bayesian thresholds (or simply the intersection of p-value and Likelihood Ratio based Bayes Factors) for simple RCT analysis.
+
+An interpretation of the Likelihood Ratio based Bayes Factor is that it calculates the relative maximum likelihood performance of the null model (H0) compared to the alternative model (H1) in explaining the dependent data variable behaviour. Likewise using equations \eqref {eq:normBICIdentity} and \eqref {eq:BIC} the BIC based Bayes Factor calculates the relative maximum likelihood performance of the null model (H0) compared to a penalised alternative model (H1). With the conclusion that the penalty term for the alternative model (H1) is the factor that gives rise to Lindley's Paradox situations between BIC Bayes Factor estimates and NHST $p_{value}$ estimates (given there is a relative closeness between NHST $p_{value}$ cutoffs and Likelihood Ratio estimate significance cutoffs as echoed in figure 1.)   
 
 ```{r echo=FALSE, cache=TRUE, fig.height=7}
 
@@ -342,7 +350,7 @@ legend(x=.7,y=.9,legend=c("total N=100,000","total N=10,000",
 abline(h=1,lty=3)#exp(-1/2))
 abline(h=0.15,lty=3)
 ```
-***Figure 1. ROC curve behaviour of LR based (= normalised BIC based (BF/sqrt(N))) Bayes factor  as a function of $p_{value}$ for different sample sizes and a mapping of the strength of evidence regions in favour of H1. The $\alpha = 0.05$ based cutoffs (vertical dashed line) are well below the ROC curve cutoffs shown as red dotted approximately horizontal line. The data points are again from  simple RCT analysis when $\alpha = 0.05$ and the statistical power is ~95%, for clarity only 100 repeated samples are shown. The contour lines behind the data points were obtained from figure 2 using $P(H0)=1$. ***
+***Figure 1. ROC curve behaviour of LR based Bayes factor ($\equiv$ normalised BIC based (BF/sqrt(N))) is shown as a function of $p_{value}$ for different sample sizes. A overlay mapping of the Bayesian based strength of evidence regions (horizontal dot-dash lines) in favour of H1 and the $\alpha = 0.05$ based cutoffs to reject H0 (vertical dashed line) are also shown. The data points are from simple RCT analysis when $P(H1)=1$, the statistical power is ~95%, and for clarity only 100 repeated samples are shown. The contour lines behind the data points were obtained from figure 2 using $P(H0)=1$ to indicate the contour line positions are independent of the RCT treatment effect. ***
 
 
 
@@ -350,7 +358,9 @@ abline(h=0.15,lty=3)
 
 ##Empirical behaviour of $P_{LR}(D|H0)$ & $P_{BIC}(D|H0)$ vs $p_{value}$ for simple RCT analysis under repeated sampling for different fixed sample sizes 
 
-Figures 2 & 3, show the significant difference in $P_{LR}(D|H0)$ & $P_{BIC}(D|H0)$ outputs for simple RCT analysis. The $P_{LR}(D|H0)$ versus $p_{value}$ behaviour does not have the Lindley Paradox issues that is exhibited for $P_{BIC}(D|H0)$ versus $p_{value}$ behaviour. 
+Figures 2 & 3, show the significant difference in $P_{LR}(D|H0)$ & $P_{BIC}(D|H0)$ outputs for simple RCT analysis. The $P_{LR}(D|H0)$ versus $p_{value}$ behaviour does not have the Lindley Paradox issues that is exhibited for $P_{BIC}(D|H0)$ versus $p_{value}$ behaviour.
+
+It is informative that when $p_{value} = 1$, the numerator and denominator of the Likelihood Ratio based Bayes Factor are $P_{LR}(D|H0) = 0.5$ & $P_{LR}(D|H1) = 0.5$ indicating that both (unpenalised) models are equally efficient at explaining the data behaviour. Under these conditions the role of the prior odds becomes the determining factor in estimating the posterior odds.
 
 
 ###Under A/A conditions ie. $P(H1) = 0$ 
