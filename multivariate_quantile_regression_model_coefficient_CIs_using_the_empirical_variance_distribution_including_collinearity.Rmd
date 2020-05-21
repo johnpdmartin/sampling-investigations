@@ -1,13 +1,14 @@
 ---
 title: "Multivariate, quantile regression model coefficient CIs using the empirical variance distribution, in the presence of collinearity"
 author: "John P. D. Martin"
-date: "Monday, May 2, 2016"
+date: \today
 output: pdf_document
 ---
 
 ```{r, setwd, echo=FALSE, cache=FALSE, fig.width=6, fig.height=6, fig.keep='high'}
-setwd("C:/Users/John/Documents/GitHub/sampling-investigations/modelCImultivariatecaseresults")
 
+#setwd("C:/Users/John/Documents/GitHub/sampling-investigations/modelCImultivariatecaseresults")
+setwd("/home/john/bear/Projects/sampling-investigations/git_repo/sampling-investigations/modelCImultivariatecaseresults")
 ```
 
 ###Executive Summary
@@ -22,7 +23,7 @@ Table 1 displays the coverage performance of several quantile regression varianc
 \footnotesize
 
 Regression $\bold{Y}=\bold{\beta X} + \varepsilon$ | quantile |  bootstrap coverage | evd_max coverage  | bin_max coverage
---------- | ------- | ------- | ----------- | ------- | -------
+--------------------------- | -------- | ---------------- | ------------ | -------- | --------
 x ~ (N(90,90))  |  | slope CI VIF = 3  |  | 
 $y = 1*x + 1*x^2 + rnorm(0,10)$ | 0.1  |  (0.949,0.953,0.936) | (0.967,0.966,0.950) | (0.958,0.965,0.946)
 "" | 0.5 |  (0.956,0.953,0.952) | (0.962,0.961,0.967) | (0.958,0.956,0.963)
@@ -88,7 +89,7 @@ is examined for bivariate quantile regression cases under repeated sampling for 
 
 ## Covariance matrix terms for evd based Quantile regression model coefficient CIs
 
-In Martin (3,4), the slope model coefficient CI estimators for univariate cases are derived from the asymmetric empirical variance distribution (evd) approximations of the quantile regression residuals sample variance (distribution) $s_{res}$ and var(x), 
+In Martin (3,4), the slope model coefficient CI estimators for univariate cases are derived from the asymmetric empirical variance distribution (evd) approximations of the quantile regression residuals sample variance (distribution) $s_{res}^2$ and var(x), 
 
 ### Univariate case
 
@@ -96,19 +97,19 @@ For quantile regression with one explanatory variable,
 
 \begin{equation} y = \beta_0 + \beta_1 x + \varepsilon \end{equation}
 
-the model slope CI estimates may be derived from empirical variance distribution (evd) approximations of the quantile regression residuals model variance (distribution) $s_{maxhalfCI}$ via the relationship
+the model slope CI estimates may be derived from empirical variance distribution (evd) approximations of the quantile regression residuals model variance (distribution) $s_{maxhalfCI}^2$ via the relationship
 
-\begin{equation} s_{\beta} = \frac{s_{maxhalfCI}}{\sqrt{var(x)}} \label{eq:uni1} \end{equation}
+\begin{equation} s_{\beta} = \sqrt{\frac{s_{maxhalfCI}^2}{var(x)}} \label{eq:uni1} \end{equation}
 
 while the evd based intercept CI estimator is of the form
 
 \begin{equation} s_{\beta_0}(\theta) = \sqrt{s_{maxhalfCI}^2+\frac{s_{mean halfCI}^2}{var(x)} (0-median(x))^2 }\label{eq:uni2} \end{equation}
 
-where the $s_{meanhalfCI}$ evd based residuals variance in the slope related term of \eqref{eq:uni2}, provides better coverage performance for the evd based intercept CI estimator based on recent (linear expanding heteroscedasticity) results (4). 
+where the $s_{meanhalfCI}^2$ evd based residuals variance in the slope related term of \eqref{eq:uni2}, provides better coverage performance for the evd based intercept CI estimator based on recent (linear expanding heteroscedasticity) results (4). 
 
-$s_{meanhalfCI}$ is a symmetrised variance estimate using the mean of the asymmetric evd $s_{res}$ CI. 
+$s_{meanhalfCI}^2$ is a symmetrised variance estimate using the mean of the asymmetric evd $s_{res}$ CI. 
 
-$s_{maxhalfCI}$ is a symmetrised variance estimate using the maximum half CI of the asymmetric evd $s_{res}$ CI.
+$s_{maxhalfCI}^2$ is a symmetrised variance estimate using the maximum half CI of the asymmetric evd $s_{res}$ CI.
 
 ### Multivariate case
 
@@ -118,13 +119,13 @@ For quantile regression with two explanatory variables,
 
 the model slope(s) CI estimates may be derived from empirical variance distribution (evd) approximations of the quantile regression residuals model variance (distribution) $s_{maxhalfCI}$ via the relationships
 
-\begin{equation} s_{\beta_1} = \frac{s_{maxhalfCI}}{\sqrt{var(x_1)(1-r^2_{12})}} \label{eq:b1} \end{equation}
+\begin{equation} s_{\beta_1} = \sqrt{\frac{s_{maxhalfCI}^2}{var(x_1)(1-r^2_{12})}} \label{eq:b1} \end{equation}
 
-\begin{equation} s_{\beta_2} = \frac{s_{maxhalfCI}}{\sqrt{var(x_2)(1-r^2_{12})}} \label{eq:b2} \end{equation}
+\begin{equation} s_{\beta_2} = \sqrt{\frac{s_{maxhalfCI}^2}{var(x_2)(1-r^2_{12})}} \label{eq:b2} \end{equation}
 
 \begin{equation} r_{12} = \frac{cov(x_1,x_2)}{\sqrt{var(x_1)var(x_2)}} \label{eq:r12} \end{equation}
 
-where $s_{maxhalfCI}$ is derived from the evd based maximum half CI estimate (3,4), in the presence of homoscedastic iid errors.
+where $s_{maxhalfCI}^2$ is derived from the evd based maximum half CI estimate (3,4), in the presence of homoscedastic iid errors.
 
 In Martin (3,4) a simplistic version of the intercept model coefficient CI estimator for bivariate cases was trialled which contained $r_{12}$ in two slope related terms. In hindsight, the weaker performance of the Martin (3,4) bivariate intercept estimator can be attributed to an incomplete use of the covariance matrix eqn \eqref{eq:covm}.
 
@@ -170,7 +171,7 @@ where it is now understood that the $cov(x_1,x_2)$ term was not consistently inc
 
 A future improvement of the above approach for heteroscedastic cases, may involve replacing in eqn \eqref{eq:intercept}, the estimated intercept coefficient variance eqn \eqref{eq:var}, currently based on the quantile regression fit to the median(y) eqn \eqref{eq:beta0} by the quantile regression fit to the dependent variable quantile of interest $\theta(y)$.
 
-Importantly, to keep the evd based variance estimation maximising the use of quantile regression calculations. The residuals distribution variances $s_{maxhalfCI}$ and $s_{meanhalfCI}$ are not calculated using sum of squares of errors of the residuals but are calculated by performing quantile regression calculations on the residual distribution using evd based estimates of ($\theta_{LB}$, $\theta_{UB}$), to then estimate the 2.5th & 97.5th bounds in the original measurement scale. As noted in (3,4) $s_{maxhalfCI}$ term applies to the numerator of the slope CI estimates and the constant term of the intercept CI estimator giving respectively, good coverage performance and comparability to bootstrap results for the minimum intercept CI width. The $s_{meanhalfCI}$ modification was introduced in (4) for the covariate dependent terms of the intercept CI estimator giving improved 95% coverage performance under linear expanding horn heteroscedasticity. 
+Importantly, to keep the evd based variance estimation maximising the use of quantile regression calculations. The residuals distribution variances $s_{maxhalfCI}^2$ and $s_{meanhalfCI}^2$ are not calculated using sum of squares of errors of the residuals but are calculated by performing quantile regression calculations on the residual distribution using evd based estimates of ($\theta_{LB}$, $\theta_{UB}$), to then estimate the 2.5th & 97.5th bounds in the original measurement scale. As noted in (3,4) $s_{maxhalfCI}^2$ term applies to the numerator of the slope CI estimates and the constant term of the intercept CI estimator giving respectively, good coverage performance and comparability to bootstrap results for the minimum intercept CI width. The $s_{meanhalfCI}^2$ modification was introduced in (4) for the covariate dependent terms of the intercept CI estimator giving improved 95% coverage performance under linear expanding horn heteroscedasticity. 
  
 
 # Algorithm for evd based estimators for use as quantile regression model coefficient CI estimators in homoscedastic iid error cases
@@ -225,7 +226,9 @@ Figures 1,2 & 3, display respectively, the coverage performance of bootstrap, bi
 
 ```{r, reg1, echo=FALSE, cache=FALSE, fig.width=6, fig.height=8, fig.keep='high', message=FALSE, warning=FALSE}
 
-setwd("C:/Users/John/Documents/GitHub/sampling-investigations/modelCImultivariatecaseresults")
+#setwd("C:/Users/John/Documents/GitHub/sampling-investigations/modelCImultivariatecaseresults")
+setwd("/home/john/bear/Projects/sampling-investigations/git_repo/sampling-investigations/modelCImultivariatecaseresults")
+
 # library("quantreg")
 
 reg1_50perc <- read.csv(file="../modelCImultivariatecaseresults/50_p0p0_withvarandr2_90___norm_xsq.csv")
@@ -302,7 +305,8 @@ In figure 1, for n=1000, nominal 95% coverage is observed for bootstrap, evd_max
 
 ```{r, reg2, echo=FALSE, cache=FALSE, fig.width=6, fig.height=8, fig.keep='high', message=FALSE, warning=FALSE}
 
-setwd("C:/Users/John/Documents/GitHub/sampling-investigations/modelCImultivariatecaseresults")
+#setwd("C:/Users/John/Documents/GitHub/sampling-investigations/modelCImultivariatecaseresults")
+setwd("/home/john/bear/Projects/sampling-investigations/git_repo/sampling-investigations/modelCImultivariatecaseresults")
 # library("quantreg")
 
 reg2_50perc <- read.csv(file="../modelCImultivariatecaseresults/50_p5p5_withvarandr2_90_m90_norm_lap.csv")
@@ -381,7 +385,8 @@ In figure 2, for n=1000, nominal 95% coverage is observed for bootstrap, evd_max
 
 ```{r, reg3, echo=FALSE, cache=FALSE, fig.width=6, fig.height=8, fig.keep='high', message=FALSE, warning=FALSE}
 
-setwd("C:/Users/John/Documents/GitHub/sampling-investigations/modelCImultivariatecaseresults")
+#setwd("C:/Users/John/Documents/GitHub/sampling-investigations/modelCImultivariatecaseresults")
+setwd("/home/john/bear/Projects/sampling-investigations/git_repo/sampling-investigations/modelCImultivariatecaseresults")
 # library("quantreg")
 
 reg3_50perc <- read.csv(file="../modelCImultivariatecaseresults/50_p0p10_adjintest_m1_0_expnorm02_unif.csv")
