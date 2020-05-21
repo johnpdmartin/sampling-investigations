@@ -1,12 +1,13 @@
 ---
 title: "Quantile regression model coefficient CIs for linear expanding horn heteroscedastic cases using auxiliary regression and the empirical variance distribution"
 author: "John P. D. Martin"
-date: "Sunday, February 7, 2016"
+date: \today
 output: pdf_document
 ---
 
-```{r, setwd, echo=FALSE, cache=FALSE, fig.width=6, fig.height=6, fig.keep='high'}
-setwd("C:/Users/John/Documents/GitHub/sampling-investigations/modelCIheterogeneouscaseresults")
+```{r, setwd, echo=FALSE, cache=TRUE, fig.width=6, fig.height=6, fig.keep='high'}
+#setwd("C:/Users/John/Documents/GitHub/sampling-investigations/modelCIheterogeneouscaseresults")
+setwd("/home/john/bear/Projects/sampling-investigations/git_repo/sampling-investigations/modelCIheterogeneouscaseresults")
 
 ```
 
@@ -20,7 +21,7 @@ Analysis of the coverage accuracy of the results is conducted by repeated sampli
 \footnotesize
 
 Regression $Y=\beta f(X) + x \varepsilon$ | quantile |  bootstrap coverage | bootstrap half CI | evd_aux reg coverage
---------- | ------- | ------- | ----------- | ------- | -------
+-------------------- | ------- | ---------- | ----------- | ------- | ---------
 Intercept at median(x) |  |   |  | 
 $y = 0.5*x + x*rnorm(0,1.5)$ | 0.1 |  (0.935,0.931) | (0.0089,1.0753) | (0.963,0.931)
 "" | 0.5 |  (0.935,0.937) | (0.0065,0.7866) | (0.956,0.921)
@@ -77,11 +78,11 @@ In Martin (3), the evd based sample quantile CI estimators (1,2) were trialled, 
 
 \begin{equation} y = \beta_0 + \beta_1 x_1 + \beta_2 x_2 + \varepsilon \end{equation}
 
-the model slope(s) and intercept CI estimates are derived from empirical variance distribution (evd) approximations of the quantile regression residuals sample variance (distribution) $s_{res}$ via the relationships
+the model slope(s) and intercept CI estimates are derived from empirical variance distribution (evd) approximations of the quantile regression residuals sample variance (distribution) $s_{res}^2$ via the relationships
 
-\begin{equation} s_{\beta_1} = \frac{s_{res}}{var(x_1)(1-r_{12qr})}\label{eq:1} \end{equation}
+\begin{equation} s_{\beta_1} = \sqrt{\frac{s_{res}^2}{var(x_1)(1-r_{12qr})}}\label{eq:1} \end{equation}
 
-\begin{equation} s_{\beta_2} = \frac{s_{res}}{var(x_2)(1-r_{12qr})}\label{eq:2} \end{equation}
+\begin{equation} s_{\beta_2} = \sqrt{\frac{s_{res}^2}{var(x_2)(1-r_{12qr})}}\label{eq:2} \end{equation}
 
 \begin{equation} s_{\beta_0}(\theta) = \sqrt{s_{res}^2+s_{\beta_1}^2 median(x_1)^2 +s_{\beta_2}^2 median(x_2)^2 }\label{eq:3} \end{equation}
 
@@ -94,7 +95,7 @@ In (3), equations \eqref{eq:1}, \eqref{eq:2} & \eqref{eq:3} were found to form a
 \textbf{
 However, further research, for the current paper has revealed that the covariance term $r_{12qr}$ in equation \eqref{eq:4} is not accurate enough for use with bivariate quantile regression, it is sufficient for specific bivariate cases when $r_{12qr} \rightarrow 0$ but more generalisation of the covariate adjustment is needed.}
 
-Importantly, to keep the evd based variance estimation maximising the use of quantile regression calculations. The residuals distribution variance $s_{res}$ is not calculated using sum of squares of errors of the residuals but is calculated by performing quantile regression calculations on the residual distribution using evd based estimates of ($\theta_{LB}$, $\theta_{UB}$), to then estimate the 2.5th & 97.5th bounds in the original measurement scale.   
+Importantly, to keep the evd based variance estimation maximising the use of quantile regression calculations. The residuals distribution variance $s_{res}^2$ is not calculated using sum of squares of errors of the residuals but is calculated by performing quantile regression calculations on the residual distribution using evd based estimates of ($\theta_{LB}$, $\theta_{UB}$), to then estimate the 2.5th & 97.5th bounds in the original measurement scale.   
 
 In this paper, the evd based quantile regression model coefficient CI estimators (3) have been successfully adapted to estimate CI intervals for linear expanding horn heteroscedastic, independent error cases. The results are then compared to the known population slope and intercept regression values as well as default quantreg (5) bootstrap estimates. To deal with the heteroscedasticity, auxiliary regression of the quantile regression residuals (analogous to generalised least squares regression) has proved essential to transform the distribution before extracting useful and consistent evd quantile values for single covariate cases (and some limited bivariate cases).
 
@@ -105,7 +106,7 @@ It has been identified for linear expanding horn heteroscedastic cases, that the
 A well specified quantile regression model is one where the density of data points beyond a given fitted quantile regression line is relatively independent of the explanatory variables when repeated sampling occurs from a population distribution. For example, with a linear explanatory variable dependence and linear expanding horn heteroscedasticity, linear quantile regression lines would be expected to occur for all quantile values, as shown in figure 1. 
 
 
-```{r, linearhorn, echo=FALSE, cache=FALSE, fig.width=6, fig.height=6, fig.keep='high', message=FALSE, warning=FALSE}
+```{r, linearhorn, echo=FALSE, cache=TRUE, fig.width=6, fig.height=6, fig.keep='high', message=FALSE, warning=FALSE}
 
 
 library(Runuran);library(quantreg);library(Bolstad);library(scatterplot3d)
@@ -155,7 +156,7 @@ lines(y=fitted.values(rq((y_sample)~(x_sample),tau=.975)),x=x_sample,col="green"
 
 As shown in Firgure 2, the quantile regression model residuals exhibit heteroscedasticity. Initially, the evd based model slope coefficent CI estimator for homoscedastic case (3) was trialled explicitly on the heteroscedastically scattered residual distribution but undercoverage of the evd based model slope coefficent CI estimates was clearly evident. 
 
-```{r, linearhornresiduals, echo=FALSE, cache=FALSE, fig.width=6, fig.height=6, fig.keep='high', message=FALSE, warning=FALSE}
+```{r, linearhornresiduals, echo=FALSE, cache=TRUE, fig.width=6, fig.height=6, fig.keep='high', message=FALSE, warning=FALSE}
 
 
  # trying to adjust for heterogeniety
@@ -171,7 +172,7 @@ As shown in Firgure 2, the quantile regression model residuals exhibit heterosce
 Following the approach of auxiliary regression, the heteroscedascity in the residuals can be modelled using quantile regression applied to the absolute values of the residuals, as shown in Figure 3. 
 
 
-```{r, linearhornauxiliaryregression, echo=FALSE, cache=FALSE, fig.width=6, fig.height=6, fig.keep='high', message=FALSE, warning=FALSE}
+```{r, linearhornauxiliaryregression, echo=FALSE, cache=TRUE, fig.width=6, fig.height=6, fig.keep='high', message=FALSE, warning=FALSE}
 
 
  # trying to adjust for heterogeniety
@@ -206,7 +207,7 @@ The auxiliary regression model can be used explicitly to adjust the residuals di
 \begin{equation} model_{residual adjust} = \frac{(model_{residual})}{(auxiliary_{model value})}*\frac{\int_{.025}^{.975} model_{residual} dx}{\int_{.025}^{.975} \frac{(model_{residual})}{(auxiliary_{model value})} dx} \label{eq:norm}
 \end{equation}
 
-```{r, linearhornadjustedresiduals, echo=FALSE, cache=FALSE, fig.width=6, fig.height=6, fig.keep='high', message=FALSE, warning=FALSE}
+```{r, linearhornadjustedresiduals, echo=FALSE, cache=TRUE, fig.width=6, fig.height=6, fig.keep='high', message=FALSE, warning=FALSE}
 
    plot(y=res_adjfin,x=x_sample,ylim=c(-max(y2,abs(res_adj)),max(y2,abs(res_adj))),main=paste("Homoscedastically transformed residuals distribution","\n using auxiliary regression"),sub="Figure 4: Adjusted residuals for evd based model slope CI estimation",ylab="adjusted residuals values",col="green")
 
@@ -216,7 +217,7 @@ The auxiliary regression model can be used explicitly to adjust the residuals di
 
 In the examples, to be shown, the evd based model slope coefficients CI estimators based on the auxiliary regression adjusted residuals distribution give good coverage performance. 
 
-\begin{equation} s_{\beta_1} = \frac{s_{residual adjust (max half evd CI)}}{var(x)}\label{eq:slopehet} \end{equation}
+\begin{equation} s_{\beta_1} = \sqrt{\frac{s_{residual adjust (max half evd CI)}^2}{var(x)}}\label{eq:slopehet} \end{equation}
 
 It has been found that using $\theta=0.5$ for auxiliary quantile regression modelling of the absolute residuals is satisfactory for linear expanding horn heteroscedasticity, regardless of the quantile value investigated in the quantile regression. Also, consistent with the evd based model slope coefficients CI estimators in (3), it is necessary to take the maximum half CI of the asymmetric evd CIs of the (transformed) residuals distribution as the estimated symmetric confidence interval estimate of the slope coefficient.
 
@@ -227,9 +228,10 @@ In investigating possible evd based model intercept coefficient CI estimators, i
 As expected, the intercept CI is much smaller if the intercept is centrally located in the measured data. However, it is apparent that the unweighted median is no longer the minimum CI length in the presence of linear heteroscedasticity.
 
 
-```{r, xmedianCIlength, echo=FALSE, cache=FALSE, fig.width=6, fig.height=6, fig.keep='high', message=FALSE, warning=FALSE}
+```{r, xmedianCIlength, echo=FALSE, cache=TRUE, fig.width=6, fig.height=6, fig.keep='high', message=FALSE, warning=FALSE}
 
-setwd("C:/Users/John/Documents/GitHub/sampling-investigations/modelCIheterogeneouscaseresults")
+#setwd("C:/Users/John/Documents/GitHub/sampling-investigations/modelCIheterogeneouscaseresults")
+setwd("/home/john/bear/Projects/sampling-investigations/git_repo/sampling-investigations/modelCIheterogeneouscaseresults")
 # library("quantreg")
 
 linear1000 <- read.csv(file="../modelCIheterogeneouscaseresults/intercept_behaviour_linhet1000.csv")
@@ -282,9 +284,10 @@ On assessing \eqref{eq:trialint}, better coverage performance was occurring if $
 
 As shown in figure 6, this estimator has good performance compared to the default bootstrap estimates for linear expanding horn heterscedasticity. Namely, $s(median(residuals,w_{auxreg}))$ term closely corresponds to the minimum intercept CI length and $s_{\beta_i mean half CI}$ term provides the best match to the curvature to the bootstrap intercept CI length as the intercept position is varied within a fixed scatterplot shape.
 
-```{r, evdxmedianCIlength, echo=FALSE, cache=FALSE, fig.width=6, fig.height=6, fig.keep='high', message=FALSE, warning=FALSE}
+```{r, evdxmedianCIlength, echo=FALSE, cache=TRUE, fig.width=6, fig.height=6, fig.keep='high', message=FALSE, warning=FALSE}
 
-setwd("C:/Users/John/Documents/GitHub/sampling-investigations/modelCIheterogeneouscaseresults")
+#setwd("C:/Users/John/Documents/GitHub/sampling-investigations/modelCIheterogeneouscaseresults")
+setwd("/home/john/bear/Projects/sampling-investigations/git_repo/sampling-investigations/modelCIheterogeneouscaseresults")
 # library("quantreg")
 
 linear1000 <- read.csv(file="../modelCIheterogeneouscaseresults/intercept_behaviour_linhet1000.csv")
@@ -380,9 +383,10 @@ Figures 9 & 10, display the coverage performance of bootstrap, bin_max & evd_max
 
 Figures 11-13, display the coverage performance of bootstrap, bin_max & evd_max for the slope and intercept respectively of model (iii) as a function of the positions of the intercepts of the two explanatory variables.
 
-```{r, reg1slope, echo=FALSE, cache=FALSE, fig.width=6, fig.height=3, fig.keep='high', message=FALSE, warning=FALSE}
+```{r, reg1slope, echo=FALSE, cache=TRUE, fig.width=6, fig.height=3, fig.keep='high', message=FALSE, warning=FALSE}
 
-setwd("C:/Users/John/Documents/GitHub/sampling-investigations/modelCIheterogeneouscaseresults")
+#setwd("C:/Users/John/Documents/GitHub/sampling-investigations/modelCIheterogeneouscaseresults")
+setwd("/home/john/bear/Projects/sampling-investigations/git_repo/sampling-investigations/modelCIheterogeneouscaseresults")
 # library("quantreg")
 
 reg1_50perc <- read.csv(file="../modelCIheterogeneouscaseresults/50_runif_intunwgtmid_p15_dfadj_in_perc_scale_aux_reg.csv")
@@ -420,9 +424,10 @@ mtext("black - bootstrap, blue line - evd_max, red lines - bin_max", side=3, out
 In figures 7 & 8, for n=1000, nominal 95% coverage is observed for bootstrap, evd_max, bin_max estimators for all quantiles (0.025-0.975) in slope CIs and > 96% for the evd based CIs of the intercept. For smaller samples, bin_max and evd_max based CIs estimates exhibit poorer coverage for extreme quantiles. Good intercept coverage performance is observed for the intercept CI estimates regardless of sample size if the intercept of the explanatory variable is positioned at the (auxliary regression) weighted median. This result indicates the first term in equation \eqref{eq:finalint} is performing excellently.
 
 
-```{r, reg1intercept, echo=FALSE, cache=FALSE, fig.width=6, fig.height=6, fig.keep='high', message=FALSE, warning=FALSE}
+```{r, reg1intercept, echo=FALSE, cache=TRUE, fig.width=6, fig.height=6, fig.keep='high', message=FALSE, warning=FALSE}
 
-setwd("C:/Users/John/Documents/GitHub/sampling-investigations/modelCIheterogeneouscaseresults")
+#setwd("C:/Users/John/Documents/GitHub/sampling-investigations/modelCIheterogeneouscaseresults")
+setwd("/home/john/bear/Projects/sampling-investigations/git_repo/sampling-investigations/modelCIheterogeneouscaseresults")
 reg1_50perc <- read.csv(file="../modelCIheterogeneouscaseresults/50_runif_intleft_p15_dfadj_in_perc_scale_aux_reg.csv")
 reg1_100perc <- read.csv(file="../modelCIheterogeneouscaseresults/100_runif_intleft_p15_dfadj_in_perc_scale_aux_reg.csv")
 reg1_1000perc <- read.csv(file="../modelCIheterogeneouscaseresults/1000_runif_intleft_p15_dfadj_in_perc_scale_aux_reg.csv")
@@ -503,9 +508,10 @@ mtext("black - bootstrap, blue line - evd_max, red lines - bin_max", side=3, out
 
 
 
-```{r, reg2slope, echo=FALSE, cache=FALSE, fig.width=6, fig.height=3, fig.keep='high', message=FALSE, warning=FALSE}
+```{r, reg2slope, echo=FALSE, cache=TRUE, fig.width=6, fig.height=3, fig.keep='high', message=FALSE, warning=FALSE}
 
-setwd("C:/Users/John/Documents/GitHub/sampling-investigations/modelCIheterogeneouscaseresults")
+#setwd("C:/Users/John/Documents/GitHub/sampling-investigations/modelCIheterogeneouscaseresults")
+setwd("/home/john/bear/Projects/sampling-investigations/git_repo/sampling-investigations/modelCIheterogeneouscaseresults")
 # library("quantreg")
 
 reg2_50perc <- read.csv(file="../modelCIheterogeneouscaseresults/50_engelproxy_intunwgtmid_p15_dfadj_in_perc_scale_aux_reg.csv")
@@ -545,10 +551,11 @@ In figures 9 & 10, for n=1000, nominal 95% coverage is observed for bootstrap, e
 Looking at figures 10d-10f, the first term in equation \eqref{eq:finalint} is again performing excellently with evd_max and bin_max intercept CI estimates.
 
 
-```{r, reg2intercept, echo=FALSE, cache=FALSE, fig.width=6, fig.height=6, fig.keep='high', message=FALSE, warning=FALSE}
+```{r, reg2intercept, echo=FALSE, cache=TRUE, fig.width=6, fig.height=6, fig.keep='high', message=FALSE, warning=FALSE}
 
 
-setwd("C:/Users/John/Documents/GitHub/sampling-investigations/modelCIheterogeneouscaseresults")
+#setwd("C:/Users/John/Documents/GitHub/sampling-investigations/modelCIheterogeneouscaseresults")
+setwd("/home/john/bear/Projects/sampling-investigations/git_repo/sampling-investigations/modelCIheterogeneouscaseresults")
 reg2_50perc <- read.csv(file="../modelCIheterogeneouscaseresults/50_engelproxy_intleft_p15_dfadj_in_perc_scale_aux_reg.csv")
 reg2_100perc <- read.csv(file="../modelCIheterogeneouscaseresults/100_engelproxy_intleft_p15_dfadj_in_perc_scale_aux_reg.csv")
 reg2_1000perc <- read.csv(file="../modelCIheterogeneouscaseresults/1000_engelproxy_intleft_p15_dfadj_in_perc_scale_aux_reg.csv")
@@ -628,9 +635,10 @@ mtext("black - bootstrap, blue line - evd_max, red lines - bin_max", side=3, out
 
 ```
 
-```{r, reg3slope, echo=FALSE, cache=FALSE, fig.width=6, fig.height=3, fig.keep='high', message=FALSE, warning=FALSE}
+```{r, reg3slope, echo=FALSE, cache=TRUE, fig.width=6, fig.height=3, fig.keep='high', message=FALSE, warning=FALSE}
 
-setwd("C:/Users/John/Documents/GitHub/sampling-investigations/modelCIheterogeneouscaseresults")
+#setwd("C:/Users/John/Documents/GitHub/sampling-investigations/modelCIheterogeneouscaseresults")
+setwd("/home/john/bear/Projects/sampling-investigations/git_repo/sampling-investigations/modelCIheterogeneouscaseresults")
 # library("quantreg")
 
 reg3_1000leftperc <- read.csv(file="../modelCIheterogeneouscaseresults/1000_runif_intmidtwoterms_m180_10_xlin_p15_dfadj_in_perc_scale_aux_reg.csv")
@@ -665,9 +673,10 @@ mtext("black - bootstrap, blue line - evd_max, red lines - bin_max", side=3, out
 
 ```
 
-```{r, reg3slope2, echo=FALSE, cache=FALSE, fig.width=6, fig.height=3, fig.keep='high', message=FALSE, warning=FALSE}
+```{r, reg3slope2, echo=FALSE, cache=TRUE, fig.width=6, fig.height=3, fig.keep='high', message=FALSE, warning=FALSE}
 
-setwd("C:/Users/John/Documents/GitHub/sampling-investigations/modelCIheterogeneouscaseresults")
+#setwd("C:/Users/John/Documents/GitHub/sampling-investigations/modelCIheterogeneouscaseresults")
+setwd("/home/john/bear/Projects/sampling-investigations/git_repo/sampling-investigations/modelCIheterogeneouscaseresults")
 # library("quantreg")
 
 reg3_1000leftperc <- read.csv(file="../modelCIheterogeneouscaseresults/1000_runif_intmidtwoterms_m180_10_xlin_p15_dfadj_in_perc_scale_aux_reg.csv")
@@ -706,9 +715,10 @@ In figure 11, for n=1000, the slope CI coverage of the first variable which is c
 
 Looking at the intercept CI coverage performance in figure 13, as the intercept positions are varied, the performance can exhibit slight undercoverage to slight overcoverage, in this specific bivariate case. 
 
-```{r, reg3intercept, echo=FALSE, cache=FALSE, fig.width=6, fig.height=6, fig.keep='high', message=FALSE, warning=FALSE}
+```{r, reg3intercept, echo=FALSE, cache=TRUE, fig.width=6, fig.height=6, fig.keep='high', message=FALSE, warning=FALSE}
 
-setwd("C:/Users/John/Documents/GitHub/sampling-investigations/modelCIheterogeneouscaseresults")
+#setwd("C:/Users/John/Documents/GitHub/sampling-investigations/modelCIheterogeneouscaseresults")
+setwd("/home/john/bear/Projects/sampling-investigations/git_repo/sampling-investigations/modelCIheterogeneouscaseresults")
 reg3_1000leftperc <- read.csv(file="../modelCIheterogeneouscaseresults/1000_runif_intlefttwoterms_0_10_xlin_p15_dfadj_in_perc_scale_aux_reg.csv")
 reg3_1000midperc <- read.csv(file="../modelCIheterogeneouscaseresults/1000_runif_intlefttwoterms_0_0_xlin_p15_dfadj_in_perc_scale_aux_reg.csv")
 reg3_1000rightperc <- read.csv(file="../modelCIheterogeneouscaseresults/1000_runif_intlefttwoterms_0_m10_xlin_p15_dfadj_in_perc_scale_aux_reg.csv")
@@ -837,7 +847,7 @@ In log linear form, by taking the logarithms of both food expenditure and househ
 
 
 
-```{r, engel_log-log, echo=FALSE, cache=FALSE, fig.width=6, fig.height=6, fig.keep='high',warning=FALSE,message=FALSE}
+```{r, engel_log-log, echo=FALSE, cache=TRUE, fig.width=6, fig.height=6, fig.keep='high',warning=FALSE,message=FALSE}
 
 library(quantreg)
 #example(rq)
@@ -886,7 +896,7 @@ The rank inversion method was replaced as the quantreg default quantile regressi
 Comparing figure A2 & A3 shows only a slight improvement due to the auxiliary regression adjustment to the evd based estimators compared to the delete-d-group jackknife CI estimates. For this dataset the intercept is a extrapolated x value.
 
 
-```{r, evd_algorithm, echo=FALSE, cache=FALSE, fig.width=6, fig.height=6, fig.keep='high',warning=FALSE}
+```{r, evd_algorithm, echo=FALSE, cache=TRUE, fig.width=6, fig.height=6, fig.keep='high',warning=FALSE}
 
 library(quantreg)
 #example(rq)
@@ -1423,7 +1433,7 @@ list(as.numeric(c(taus_set, pt_est_b0,
 ```
 
 
-```{r, Engel_quasi-homoscedastic, echo=FALSE, cache=FALSE, fig.width=6, fig.height=6, fig.keep='high',warning=FALSE}
+```{r, Engel_quasi-homoscedastic, echo=FALSE, cache=TRUE, fig.width=6, fig.height=6, fig.keep='high',warning=FALSE}
 
 CI_results <- CI_estimator(log(engel$foodexp),log(engel$income),"perc_scale")
 
@@ -1533,7 +1543,7 @@ mtext("approximately homoscedastic iid conditions", side=3, outer=TRUE, line=-3)
 
 ***Figure A2: Estimated intercept and slope model coefficient CIs for log-log transformed Engel dataset, homoscedastic model***
 
-```{r, Engel_quasi-homoscedastic_auxreg, echo=FALSE, cache=FALSE, fig.width=6, fig.height=6, fig.keep='high',warning=FALSE}
+```{r, Engel_quasi-homoscedastic_auxreg, echo=FALSE, cache=TRUE, fig.width=6, fig.height=6, fig.keep='high',warning=FALSE}
 
 CI_results <- CI_estimator_het(log(engel$foodexp),log(engel$income),"perc_scale",6)
 
@@ -1649,7 +1659,7 @@ In comparison, the intercept CIs are only slightly increased.However, it needs t
 
 
 
-```{r, engel_heteroscedastic, echo=FALSE, cache=FALSE, fig.width=6, fig.height=6, fig.keep='high'}
+```{r, engel_heteroscedastic, echo=FALSE, cache=TRUE, fig.width=6, fig.height=6, fig.keep='high'}
 
 
 CI_results <- CI_estimator(engel$foodexp,engel$income,"perc_scale")
@@ -1757,7 +1767,7 @@ mtext("homoscedastic evd estimator on heteroscedastic conditions", side=3, outer
 
 ***Figure A4: Estimated model coefficient CIs for non-transformed Engel dataset using evd based homoscedastic iid estimators***
 
-```{r, engel_heteroscedastic_auxreg, echo=FALSE, cache=FALSE, fig.width=6, fig.height=6, fig.keep='high'}
+```{r, engel_heteroscedastic_auxreg, echo=FALSE, cache=TRUE, fig.width=6, fig.height=6, fig.keep='high'}
 
 
 CI_results <- CI_estimator_het(engel$foodexp,engel$income,"perc_scale",6)
