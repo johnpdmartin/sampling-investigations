@@ -1,12 +1,12 @@
 ---
 title: "Quantile regression model coefficient CIs using the empirical variance distribution approximation"
 author: "John P. D. Martin"
-date: "Wednesday, December 16, 2015"
+date: \today
 output: pdf_document
 ---
 
-```{r, setwd, echo=FALSE, cache=FALSE, fig.width=6, fig.height=6, fig.keep='high'}
-setwd("d:/courses/research/quantile_regression")
+```{r, setwd, echo=FALSE, cache=TRUE, fig.width=6, fig.height=6, fig.keep='high'}
+#setwd("d:/courses/research/quantile_regression")
 ```
 
 ###Executive Summary
@@ -22,7 +22,7 @@ It can be seen that for this modest sample size, the bootstrap estimator and the
 \footnotesize
 
 Regression $Y=\beta X + \varepsilon$ | quantile |  bootstrap coverage | evd_max coverage  | bin_max coverage
---------- | ------- | ------- | ----------- | ------- | -------
+------------------ | ------- | ---------- | ----------- | ------- | -------
 $y = x + rnorm(0,10)$ | 0.1 |  (0.947,0.944) | (0.956,0.965) | (0.954,0.960)
 "" | 0.5 |  (0.945,0.953) | (0.957,0.971) | (0.957,0.971)
 "" | 0.9 |  (0.950,0.952) | (0.958,0.960) | (0.960,0.957)
@@ -150,13 +150,13 @@ However, for regression modelling the slope(s) and intercept coefficient confide
 
 \begin{equation} y = \beta_0 + \beta_1 x_1 + \beta_2 x_2 + \varepsilon \end{equation}
 
-the model slope(s) and coefficients are derived from the residuals sample variance (distribution) $s_{res}$ via the linear regression relationships
+the model slope(s) and coefficients are derived from the residuals sample variance (distribution) $s_{res}^2$ via the linear regression relationships
 
-\begin{equation} s_{\beta_1} = \frac{s_{res}}{var(x_1)(1-r_{12})}\label{eq:1} \end{equation}
+\begin{equation} s_{\beta_1} = \sqrt{\frac{s_{res}^2}{var(x_1)(1-r_{12})}}\label{eq:1} \end{equation}
 
-\begin{equation} s_{\beta_2} = \frac{s_{res}}{var(x_2)(1-r_{12})}\label{eq:2} \end{equation}
+\begin{equation} s_{\beta_2} = \sqrt{\frac{s_{res}^2}{var(x_2)(1-r_{12})}}\label{eq:2} \end{equation}
 
-\begin{equation} s_{\beta_0} = s_{res}\sqrt{1+s_{\beta_1}^2\bar{x}_1^2 +s_{\beta_2}^2\bar{x}_2^2 }\label{eq:3} \end{equation}
+\begin{equation} s_{\beta_0} = \sqrt{s_{res}^2+s_{\beta_1}^2\bar{x}_1^2 +s_{\beta_2}^2\bar{x}_2^2 }\label{eq:3} \end{equation}
 
 \begin{equation} r_{12} = \frac{cov(x_1,x_2)}{\sqrt{var(x_1)var(x_2)}} \end{equation}
 
@@ -164,9 +164,9 @@ Since the evd approximation to quantile estimating function, produces a smooth, 
 
 For the model intercept coefficient variance estimator, two obvious adaptions of \eqref{eq:3} for evd based approximations of quantile regression model intercept variance (as well as others) were trialled.
 
-\begin{equation} s_{\beta_0}(\theta) = s_{res}\sqrt{1+s_{\beta_1}^2 (x_1(\theta))^2 +s_{\beta_2}^2 (x_2(\theta))^2 }\label{eq:4} \end{equation}
+\begin{equation} s_{\beta_0}(\theta) = \sqrt{s_{res}^2+s_{\beta_1}^2 (x_1(\theta))^2 +s_{\beta_2}^2 (x_2(\theta))^2 }\label{eq:4} \end{equation}
 
-\begin{equation} s_{\beta_0}(\theta) = s_{res}\sqrt{1+s_{\beta_1}^2 median(x_1)^2 +s_{\beta_2}^2 median(x_2)^2 }\label{eq:5} \end{equation}
+\begin{equation} s_{\beta_0}(\theta) = \sqrt{s_{res}^2+s_{\beta_1}^2 median(x_1)^2 +s_{\beta_2}^2 median(x_2)^2 }\label{eq:5} \end{equation}
 
 where $\theta$ is the quantile value under quantile regression modelling. Examining the evd approximation CI results of a quadratic polynomial quantile regression example, very strongly indicates that equation \eqref{eq:5} gives superior and symmetric coverage performance compared to equation \eqref{eq:4} over the whole quantile range (0,1). That only the median sample estimate needs to involved, rather than individual $\theta$ sample estimates for the intercept CI, is probably a reflection of the equal slope observed for different quantile values in quantile regression results for homoscedastic data.  
 
@@ -310,9 +310,10 @@ Generally, the figures for the homoscedastic iid cases (i)-(iv) are similar in t
 For the non-iid case (v), figure 11 shows undercoverage of the intercept CI estimators for default bootstrap, evd_max, bin_max estimators
 
 
-```{r, reg1slope, echo=FALSE, cache=FALSE, fig.width=6, fig.height=6, fig.keep='high', message=FALSE, warning=FALSE}
+```{r, reg1slope, echo=FALSE, cache=TRUE, fig.width=6, fig.height=6, fig.keep='high', message=FALSE, warning=FALSE}
 
-setwd("C:/Users/John/Documents/GitHub/sampling-investigations/modelCIhomogeneouscaseresults")
+#setwd("C:/Users/John/Documents/GitHub/sampling-investigations/modelCIhomogeneouscaseresults")
+setwd("/home/john/bear/Projects/sampling-investigations/git_repo/sampling-investigations/modelCIhomogeneouscaseresults")
 # library("quantreg")
 
 reg1_50perc <- read.csv(file="../modelCIhomogeneouscaseresults/50_linear_gaussian_10_dfadj_in_perc_scale.csv")
@@ -367,7 +368,7 @@ mtext("black - bootstrap, blue line - evd_max, red lines - bin_max", side=3, out
 
 ```
 
-```{r, reg1intercept, echo=FALSE, cache=FALSE, fig.width=6, fig.height=6, fig.keep='high', message=FALSE, warning=FALSE}
+```{r, reg1intercept, echo=FALSE, cache=TRUE, fig.width=6, fig.height=6, fig.keep='high', message=FALSE, warning=FALSE}
 
 
 
@@ -418,9 +419,10 @@ mtext("black - bootstrap, blue line - evd_max, red lines - bin_max", side=3, out
 
 
 
-```{r, reg2slope, echo=FALSE, cache=FALSE, fig.width=6, fig.height=6, fig.keep='high', message=FALSE, warning=FALSE}
+```{r, reg2slope, echo=FALSE, cache=TRUE, fig.width=6, fig.height=6, fig.keep='high', message=FALSE, warning=FALSE}
 
-setwd("C:/Users/John/Documents/GitHub/sampling-investigations/modelCIhomogeneouscaseresults")
+#setwd("C:/Users/John/Documents/GitHub/sampling-investigations/modelCIhomogeneouscaseresults")
+setwd("/home/john/bear/Projects/sampling-investigations/git_repo/sampling-investigations/modelCIhomogeneouscaseresults")
 # library("quantreg")
 
 reg2_50perc <- read.csv(file="../modelCIhomogeneouscaseresults/50_squaredonly_gaussian_10_dfadj_in_perc_scale.csv")
@@ -479,7 +481,7 @@ mtext("black - bootstrap, blue line - evd_max, red lines - bin_max", side=3, out
 
 ```
 
-```{r, reg2intercept, echo=FALSE, cache=FALSE, fig.width=6, fig.height=6, fig.keep='high', message=FALSE, warning=FALSE}
+```{r, reg2intercept, echo=FALSE, cache=TRUE, fig.width=6, fig.height=6, fig.keep='high', message=FALSE, warning=FALSE}
 
 
 
@@ -528,9 +530,10 @@ mtext("black - bootstrap, blue line - evd_max, red lines - bin_max", side=3, out
 
 ```
 
-```{r, reg3slope, echo=FALSE, cache=FALSE, fig.width=6, fig.height=6, fig.keep='high', message=FALSE, warning=FALSE}
+```{r, reg3slope, echo=FALSE, cache=TRUE, fig.width=6, fig.height=6, fig.keep='high', message=FALSE, warning=FALSE}
 
-setwd("C:/Users/John/Documents/GitHub/sampling-investigations/modelCIhomogeneouscaseresults")
+#setwd("C:/Users/John/Documents/GitHub/sampling-investigations/modelCIhomogeneouscaseresults")
+setwd("/home/john/bear/Projects/sampling-investigations/git_repo/sampling-investigations/modelCIhomogeneouscaseresults")
 # library("quantreg")
 
 reg3_50perc <- read.csv(file="../modelCIhomogeneouscaseresults/50_linear_laplacian_10_dfadj_in_perc_scale.csv")
@@ -585,7 +588,7 @@ mtext("black - bootstrap, blue line - evd_max, red lines - bin_max", side=3, out
 
 ```
 
-```{r, reg3intercept, echo=FALSE, cache=FALSE, fig.width=6, fig.height=6, fig.keep='high', message=FALSE, warning=FALSE}
+```{r, reg3intercept, echo=FALSE, cache=TRUE, fig.width=6, fig.height=6, fig.keep='high', message=FALSE, warning=FALSE}
 
 
 
@@ -635,9 +638,10 @@ mtext("black - bootstrap, blue line - evd_max, red lines - bin_max", side=3, out
 ```
 
 
-```{r, reg4slope, echo=FALSE, cache=FALSE, fig.width=6, fig.height=6, fig.keep='high', message=FALSE, warning=FALSE}
+```{r, reg4slope, echo=FALSE, cache=TRUE, fig.width=6, fig.height=6, fig.keep='high', message=FALSE, warning=FALSE}
 
-setwd("C:/Users/John/Documents/GitHub/sampling-investigations/modelCIhomogeneouscaseresults")
+#setwd("C:/Users/John/Documents/GitHub/sampling-investigations/modelCIhomogeneouscaseresults")
+setwd("/home/john/bear/Projects/sampling-investigations/git_repo/sampling-investigations/modelCIhomogeneouscaseresults")
 # library("quantreg")
 
 reg4_50perc <- read.csv(file="../modelCIhomogeneouscaseresults/50_twoterms_laplacian_10_dfadj_in_perc_scale.csv")
@@ -692,9 +696,10 @@ mtext("black - bootstrap, blue line - evd_max, red lines - bin_max", side=3, out
 
 ```
 
-```{r, reg4slope2, echo=FALSE, cache=FALSE, fig.width=6, fig.height=6, fig.keep='high', message=FALSE, warning=FALSE}
+```{r, reg4slope2, echo=FALSE, cache=TRUE, fig.width=6, fig.height=6, fig.keep='high', message=FALSE, warning=FALSE}
 
-setwd("C:/Users/John/Documents/GitHub/sampling-investigations/modelCIhomogeneouscaseresults")
+#setwd("C:/Users/John/Documents/GitHub/sampling-investigations/modelCIhomogeneouscaseresults")
+setwd("/home/john/bear/Projects/sampling-investigations/git_repo/sampling-investigations/modelCIhomogeneouscaseresults")
 # library("quantreg")
 
 reg4_50perc <- read.csv(file="../modelCIhomogeneouscaseresults/50_twoterms_laplacian_10_dfadj_in_perc_scale.csv")
@@ -749,7 +754,7 @@ mtext("black - bootstrap, blue line - evd_max, red lines - bin_max", side=3, out
 
 ```
 
-```{r, reg4intercept, echo=FALSE, cache=FALSE, fig.width=6, fig.height=6, fig.keep='high', message=FALSE, warning=FALSE}
+```{r, reg4intercept, echo=FALSE, cache=TRUE, fig.width=6, fig.height=6, fig.keep='high', message=FALSE, warning=FALSE}
 
 
 
@@ -802,9 +807,10 @@ mtext("black - bootstrap, blue line - evd_max, red lines - bin_max", side=3, out
 
 
 
-```{r, reg5slope, echo=FALSE, cache=FALSE, fig.width=6, fig.height=6, fig.keep='high', message=FALSE, warning=FALSE}
+```{r, reg5slope, echo=FALSE, cache=TRUE, fig.width=6, fig.height=6, fig.keep='high', message=FALSE, warning=FALSE}
 
-setwd("C:/Users/John/Documents/GitHub/sampling-investigations/modelCIhomogeneouscaseresults")
+#setwd("C:/Users/John/Documents/GitHub/sampling-investigations/modelCIhomogeneouscaseresults")
+setwd("/home/john/bear/Projects/sampling-investigations/git_repo/sampling-investigations/modelCIhomogeneouscaseresults")
 # library("quantreg")
 
 reg5_50perc <- read.csv(file="../modelCIhomogeneouscaseresults/50_noniid_gaussian_10_dfadj_in_perc_scale.csv")
@@ -859,7 +865,7 @@ mtext("black - bootstrap, blue line - evd_max, red lines - bin_max", side=3, out
 
 ```
 
-```{r, reg5intercept, echo=FALSE, cache=FALSE, fig.width=6, fig.height=6, fig.keep='high', message=FALSE, warning=FALSE}
+```{r, reg5intercept, echo=FALSE, cache=TRUE, fig.width=6, fig.height=6, fig.keep='high', message=FALSE, warning=FALSE}
 
 
 
@@ -954,7 +960,7 @@ In log linear form, by taking the logarithms of both food expenditure and househ
 
 
 
-```{r, engel_log-log, echo=FALSE, cache=FALSE, fig.width=6, fig.height=6, fig.keep='high',warning=FALSE,message=FALSE}
+```{r, engel_log-log, echo=FALSE, cache=TRUE, fig.width=6, fig.height=6, fig.keep='high',warning=FALSE,message=FALSE}
 
 library(quantreg)
 #example(rq)
@@ -990,7 +996,7 @@ where the outline of the bootstrap CIs is given in all the sub-graphs.
 The rank inversion method was replaced as the quantreg default quantile regression CI estimator by the bootstrap method. As seen in figure A2, for this quasi-iid homoscedastic case, the bootstrap and evd_symm_max estimates are similar for many quantiles except for minor differences for regions near 0.4-0.5 and 0.6-0.8. The difference occur in both the slope and intercept CI estimates suggesting a breakdown of the iid conditions for the evd_symm_max method. The older rank inversion method exhibits smaller CIs compared to the other two methods for quasi-iid homoscedastic conditions. 
 
 
-```{r, evd_algorithm, echo=FALSE, cache=FALSE, fig.width=6, fig.height=6, fig.keep='high',warning=FALSE}
+```{r, evd_algorithm, echo=FALSE, cache=TRUE, fig.width=6, fig.height=6, fig.keep='high',warning=FALSE}
 
 library(quantreg)
 #example(rq)
@@ -1222,7 +1228,7 @@ list(as.numeric(c(taus_set, pt_est_b0,
 ```
 
 
-```{r, Engel_quasi-homoscedastic, echo=FALSE, cache=FALSE, fig.width=6, fig.height=6, fig.keep='high',warning=FALSE}
+```{r, Engel_quasi-homoscedastic, echo=FALSE, cache=TRUE, fig.width=6, fig.height=6, fig.keep='high',warning=FALSE}
 
 CI_results <- CI_estimator(log(engel$foodexp),log(engel$income),"perc_scale")
 
@@ -1337,7 +1343,7 @@ For completeness, figure A3 gives the comparative performance of the three CI es
 
 
 
-```{r, engel_heteroscedastic, echo=FALSE, cache=FALSE, fig.width=6, fig.height=6, fig.keep='high'}
+```{r, engel_heteroscedastic, echo=FALSE, cache=TRUE, fig.width=6, fig.height=6, fig.keep='high'}
 
 
 CI_results <- CI_estimator(engel$foodexp,engel$income,"perc_scale")
