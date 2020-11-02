@@ -1,0 +1,428 @@
+---
+title: Examining Riemann Zeta mesoscale self-similarity along the line $\Re(\zeta) = 1$ near large peaks.
+
+author: "John Martin" 
+#subtitle: created "October 2020"
+#date: last modified '`r format(Sys.Date(), "%d %b, %Y")`'
+date: \today
+header-includes:  \usepackage{xcolor}
+output:
+  pdf_document:
+    fig_crop: no
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+#library(Rmpfr)
+library(gmp)
+
+```
+
+
+##Executive Summary
+
+The self-similarity of the partial Euler Product and Riemann Zeta functions surrounding large peaks on the line S=1+i\*T is examined, using pari/gp software, for $(280 < T < 10^{370})$. Empirically, it is observed that there is extended mesoscale structure surrounding the large peaks on the line S=1+i\*T reflecting closely a truncated Riemann Zeta function near the real axis and the similarity grows as $T \rightarrow \infty$. Exploiting known lower bounds of the growth rate $|\zeta(1+I*T)| \ge e^{\gamma}\cdot \left[log_2(T) + log_3(T) + O(1) \right]$ and the observed mesoscale behaviour, simple expressions are provided to approximate the known lower bound height and local structure about the large peaks (at S=1+i\*T) as truncated versions of (i) the Riemann Zeta function near the real axis $|\zeta(1+I*(T+t))| \sim \left|(\zeta(1+I*t)\right| \text{ where } |t| > \gamma/(log_2(T)+log_3(T))$ and (ii) its Euler product $|\zeta_{EP}(1+I*(T+t),N \rightarrow\infty)| \sim \left|{\Large\prod_{\rho=2}^{\lfloor 2\pi log(\theta(T))\rceil}} \left\{1/(1-1/p^{(1+i*t)})\right\}\right|$ for $t < T$.
+
+##Introduction
+
+On the critical line $\zeta(0.5+iT)$, the divergence of the partial Euler Product, is weak when only using the lowest primes well away from the real axis. As a result, the partial Euler Product has been actively used as a useful first order approximation to locate the largest peaks when searching for closely (and widely) spaced non-trivial zeroes which represent a interesting test for Riemann Hypothesis behaviour [1-4]. Other authors have added corrections to the partial Euler product to reduce the divergence behaviour and get better agreement with $\zeta(0.5+iT)$ values [5,6]. These peaks on $\zeta(0.5+iT)$ are directly related to smaller peaks on the line $\zeta(1+iT)$
+
+Theoretical work improving the expected lower and upper bounds of the growth of the Riemann Zeta function from Littlewood's bounds [7] (with and without the Riemann Hypothesis respectively) along the line $\zeta(1+iT)$ [8-11] has attained a current lower bound for line 1 growth assuming the Riemann Zeta hypothesis [8] of
+
+\begin{equation} \label{eq:klb}
+|\zeta(1+I*T)| \ge e^{\gamma}\cdot \left[log_2(T) + log_3(T) - log_4(T) + O(1) \right]
+\end{equation}
+
+and the lower bound conjecture [8]
+
+\begin{equation} \label{eq:lb}
+|\zeta(1+I*T)| \ge e^{\gamma}\cdot \left[log_2(T) + log_3(T) + O(1) \right]
+\end{equation}
+
+In this paper, large Euler Product peaks are presented in the wide range $(280 < T < 10^{370})$ along $S=(1+i(T+t))$ where $t < T$ and the behaviour is fitted by a truncated Riemann Zeta function and partial Euler Product located at $s=(1+it)$ about the Riemann Zeta pole. The peak positions were previously identified via pari/gp software [12] employing the Lenstra-Lenstra-Lovász (LLL) basis reduction algorithm [13], to solve the diophantine approximation $\frac{log(2*\mathbb{N}_1) T}{2\pi} \approx n_j$.
+
+The intent of the truncation was to (i) investigate and approximate the effect of the large peaks as arising from a finite set of primes, in constrast to the infinity of primes contributing to the Riemann Zeta pole (and the Riemann Zeta function as $T \rightarrow \infty$) while (ii) mimicking that the width of the known large peaks [2-4,14-18] remains $\Delta T \sim 0.4$ for $T > 10^{30}$. 
+
+As illustrated in the paper, (i) useful truncation bounds related to equation \eqref{eq:lb} and/or the Riemann Siegel Theta function result in sensible bounds with respect to observed Riemann Zeta and Euler Product behaviour along S=1+i\*T, for $(280 < T < 10^{370})$ and (ii) extensive self-similarity is observed about the large peaks consistent with the Riemann Zeta function behaviour about the pole.
+
+##The Riemann Zeta function and partial Euler Product
+
+For $\Re(s) > 1$, the Euler Product of the primes absolutely converges to the Riemann Zeta function sum of the integers [19-20]
+
+\begin{equation}
+\zeta(s) = {\Large\sum_{n=1}^\infty} \frac{1}{n^s} = {\Large\prod_{\rho=2}^\infty} \frac{1}{(1-1/\rho^{s})} \qquad \text{for } \Re(s) > 1
+\end{equation}
+
+The Riemann Zeta function can be defined for the whole complex plane by the integral [19-20]
+
+\begin{equation}
+\zeta(s) = \frac{\prod(-s)}{2\pi i}\int_{C_{\epsilon,\delta}} \frac{(-x)^s}{(e^{x}-1)x}dx \qquad \text{for } \mathbb{C}
+\end{equation}
+
+
+where $s \thinspace \epsilon \thinspace \mathbb{C}$ and $C_{\epsilon,\delta}$ is the contour about the imaginary poles.
+
+On the s=1 line, away from the real axis the Euler Product asymptotically approaches to the Riemann Zeta function value [21]. This behaviour can be seen in equation 4.11.2 of [21]
+
+
+\begin{equation}
+\zeta(s) = {\Large\sum_{n=1}^N} \frac{1}{n^s} -\frac{N^{1-s}}{1-s} + O(\frac{|s|}{N^{\Re(s)}}) +  O(\frac{1}{N^{\Re(s)}}) \label {eq:expansion}
+\end{equation}
+
+On inspecting the partial Euler Product results for complex values s, in the upper half of the critical strip, the divergence of the ${\Large\sum_{n=1}^N} \frac{1}{n^s}$ term in the above equation and hence the partial Euler Product ${\Large\prod_{\rho=2}^P} \frac{1}{(1-1/\rho^{s})}$ in that region, exhibits a dominant $\frac{N^{1-s}}{1-s}$ oscillatory divergence behaviour near the real axis which becomes a trivial difference well away from the real axis.
+
+As exploited by [1,4,16-18] and others, there are large peaks in the Riemann Zeta function on the critical line, co-incident with similar sized peaks in the partial Euler Product
+
+\begin{equation}
+\zeta_{EP}(s) = {\Large\prod_{\rho=2}^P} \frac{1}{(1-1/\rho^{s})} \qquad \text{for } P << \infty \label {eq:EP}
+\end{equation}
+
+when many $\rho^{s} \approx 1$ at the same value of T. This constraint is described as a diophantine approximation
+
+\begin{equation}
+log(p_j)T \approx n_j 2\pi
+\label {eq:DIO}
+\end{equation}
+
+where $n_j$ are integers, for as many primes $p_j$ as possible.
+
+Importantly, these peaks are directly correspond to smaller but dominant peaks on the line $S=1+iT$ [16,17,22].
+
+
+##Behaviour of Riemann Zeta function and partial Euler Product, on the line 1+I\*(T+t) near large diophatine peaks for the interval $(280 < T < 2.1\cdot10^5)$ compared to truncated (and translated) Riemann Zeta and Euler Product 1+I\*t functions
+
+In the figures below, 
+
+for figures 1-3, the absolute values of the exact Riemann Zeta function (gray) and overlapping partial Euler product (blue) for spans of t=(-2,2) and t=(-45,45) about the peaks at T=280.8, 10025.3 and 200257.65 on S=1+I\*(T+t) is compared to
+
+\begin{enumerate}
+\item (horizontal red) Granville and Soundararajan's [8] conjectured lower bound equation \eqref{eq:lb}, \\ $|\zeta(1+I(T+t))|_{LB} \sim e^{\gamma}\left(log(log(T+t))+log(log(log(T+t)))\right)$ \\ under the Riemann Hypothesis, 
+\item (red) truncated Riemann Zeta function (about the pole) adapting the result of equation \eqref{eq:lb} \\ $\zeta(1+I(T+t)) \sim \zeta(1+I(t))$ where $|t| > \frac{\gamma}{\left(log(log(T+t))+log(log(log(T+t)))\right)}$ 
+\item (green) truncated Euler Product (about the pole) approximated using the Riemann Siegel Theta function \\ $|\zeta_{EP}(1+I*(T+t),\lfloor 2\pi log(\theta(T+t))\rceil| \sim \left|{\Large\prod_{\rho=2}^{\lfloor 2\pi log(\theta(T+t))\rceil}} \left\{1/(1-1/p^{(1+i*t)})\right\}\right|$
+\item (horizontal blue) approximate Euler Product height using the average number of Riemann Zeta zeroes (to height $T+t$) \\ 
+$|\zeta_{EP}(1+I(T+t))| \sim e^{\gamma}\left(log(log(\theta(T+t)))\right) \approx e^{\gamma}\left(log(log(\pi\cdot (N(T+t)-1)))\right)$
+\end{enumerate}
+
+
+```{r fig_cap_280, echo=FALSE}
+cap2 <- "Line 1 Riemann Zeta mesoscale self-similarity about the large peak at location S=1+I*280. Left panel t=(-2,2), Right panel t=(-45,45) about the peak with partial Euler Product P(S,N) \\textcolor{blue}{(blue)}, truncated real axis $\\zeta(1+It)$ \\textcolor{red}{(red)} $|t| > \\frac{\\gamma}{\\left(log(log(T+t))+log(log(log(T+t)))\\right)}$, truncated real axis P(1+I*t,$2\\pi\\left(log(\\theta(T+t))\\right)$) \\textcolor{green}{(green)} versions, $e^{\\gamma}\\left(log(log(T+t))+log(log(log(T+t)))\\right)$ \\textcolor{magenta}{(horizontal magenta)} based growth lower bound, the exact $\\zeta(S+t)$ \\textcolor{gray}{(gray)} function and $e^{\\gamma}\\left(log(log(\\theta(T+t))))\\right)$ \\textcolor{blue}{(horizontal blue)} based growth. \\tiny{peak=1+I*280}
+"
+
+```
+
+```{r image_280, fig.show = "hold", out.width = "50%", fig.align = "default",fig.cap=cap2}
+
+knitr::include_graphics("/home/john/pari/graph280narrow.pdf")
+
+knitr::include_graphics("/home/john/pari/graph280wide.pdf")
+
+```
+
+
+```{r fig_cap_1p0025e4, echo=FALSE}
+cap2 <- "Line 1 Riemann Zeta mesoscale self-similarity about the large peak at location S=1+I*10025.53."
+# " Left panel t=(-2,2), Right panel t=(-45,45) about the peak with partial Euler Product P(S,N) \\textcolor{blue}{(blue)}, truncated real axis $\\zeta(1+It)$ \\textcolor{red}{(red)} $|t| > \\frac{\\gamma}{\\left(log(log(T+t))+log(log(log(T+t)))\\right)}$, truncated real axis P(1+I*t,$2\\pi\\left(log(\\theta(T+t))\\right)$) \\textcolor{green}{(green)} versions, $e^{\\gamma}\\left(log(log(T+t))+log(log(log(T+t)))\\right)$ \\textcolor{magenta}{(horizontal magenta)} based growth lower bound, the exact $\\zeta(S+t)$ \\textcolor{gray}{(gray)} function and $e^{\\gamma}\\left(log(log(\\theta(T+t))))\\right)$ \\textcolor{blue}{(horizontal blue)} based growth. \\tiny{peak=1+I*10025.53}
+# "
+
+```
+
+```{r image_1p0025e4, fig.show = "hold", out.width = "50%", fig.align = "default",fig.cap=cap2}
+
+knitr::include_graphics("/home/john/pari/graph1p0025e4narrow.pdf")
+
+knitr::include_graphics("/home/john/pari/graph1p0025e4wide.pdf")
+
+```
+
+
+```{r fig_cap_2p00257e5, echo=FALSE}
+cap2 <- "Line 1 Riemann Zeta mesoscale self-similarity about the large peak at location S=1+I*200257.65."
+# Left panel t=(-2,2), Right panel t=(-45,45) about the peak with partial Euler Product P(S,N) \\textcolor{blue}{(blue)}, truncated real axis $\\zeta(1+It)$ \\textcolor{red}{(red)} $|t| > \\frac{\\gamma}{\\left(log(log(T+t))+log(log(log(T+t)))\\right)}$, truncated real axis P(1+I*t,$2\\pi\\left(log(\\theta(T+t))\\right)$) \\textcolor{green}{(green)} versions, $e^{\\gamma}\\left(log(log(T+t))+log(log(log(T+t)))\\right)$ \\textcolor{magenta}{(horizontal magenta)} based growth lower bound, the exact $\\zeta(S+t)$ \\textcolor{gray}{(gray)} function and $e^{\\gamma}\\left(log(log(\\theta(T+t))))\\right)$ \\textcolor{blue}{(horizontal blue)} based growth. \\tiny{peak=1+I*200257.65}
+# "
+
+```
+
+```{r image_2p00257e5, fig.show = "hold", out.width = "50%", fig.align = "default",fig.cap=cap2}
+
+knitr::include_graphics("/home/john/pari/graph2p00257e5narrow.pdf")
+
+knitr::include_graphics("/home/john/pari/graph2p00257e5wide.pdf")
+
+```
+
+\newpage
+Firstly, it can be seen in figures 1-3, that the Riemann Zeta function (gray) and partial Euler Product (blue) on S=1+I\*(T+t) overlap closely. The partial Euler Product was calculated using $10*\lfloor 2\pi log(\theta(T))\rceil$ primes which was found to give good convergence (to calculations using much higher numbers of primes) and backed up by the agreement with the exact Riemann Zeta function.
+
+Secondly, there is consistent agreement between the bound calculated by equation \eqref {eq:lb} (horizontal red) and the plateau (red) of the truncated (and translated) Riemann Zeta function.
+
+Thirdly, the proposed approximate Euler Product height estimate (horizontal blue) $e^{\gamma}\left(log(log(\theta(T+t)))\right)$ for large peaks on $S=1+I*(T+t)$ appears below but close to the exact Riemann Zeta function value.
+
+Next, the proposed truncated (and translated) Euler Product (green) is higher than the Granville and Soundararajan's [8] conjecture value for low T.
+
+Finally, on the right panel it can be seen that away from the central peak there is a strong self similarity in the envelope of the riemann zeta function about T+t compared to the Riemann Zeta function about t (red) (ie. about the pole). With some evidence that the difference between the gray and red line is diminishing as T increases.
+
+##Behaviour of partial Euler Product, on the line 1+I\*(T+t) near large diophatine peaks for the interval $(6\cdot10^6 < T < 10^{360})$ compared to truncated (and translated) Riemann Zeta and Euler Product 1+I\*t functions
+
+For figures 4-11, only the results of the partial Euler Product (blue) for spans of t=(-2,2) and t=(-45,45) about the peaks at T=6820051 -  8.936e367 on S=1+I\*(T+t) are compared to
+
+\begin{enumerate}
+\item (horizontal red) Granville and Soundararajan's [8] conjectured lower bound equation \eqref{eq:lb}, \\ $|\zeta(1+I(T+t))|_{LB} \sim e^{\gamma}\left(log(log(T+t))+log(log(log(T+t)))\right)$ \\ under the Riemann Hypothesis, 
+\item (red) truncated Riemann Zeta function (about the pole) adapting the result of equation \eqref{eq:lb} \\ $\zeta(1+I(T+t)) \sim \zeta(1+I(t))$ where $|t| > \frac{\gamma}{\left(log(log(T+t))+log(log(log(T+t)))\right)}$ 
+\item (green) truncated Euler Product (about the pole) approximated using the Riemann Siegel Theta function \\ $|\zeta_{EP}(1+I*(T+t),\lfloor 2\pi log(\theta(T+t))\rceil| \sim \left|{\Large\prod_{\rho=2}^{\lfloor 2\pi log(\theta(T+t))\rceil}} \left\{1/(1-1/p^{(1+i*t)})\right\}\right|$
+\item (horizontal gray for figs 4-10, green for fig 11) approximate Euler Product height using the average number of Riemann Zeta zeroes (to height $T+t$) \\ 
+$|\zeta_{EP}(1+I(T+t))| \sim e^{\gamma}\left(log(log(\theta(T+t)))\right) \approx e^{\gamma}\left(log(log(\pi\cdot (N(T+t)-1)))\right)$ ()
+\end{enumerate}
+
+
+```{r fig_cap_6p28e6, echo=FALSE}
+cap2 <- "Line 1 Riemann Zeta mesoscale self-similarity about the large peak at location S=1+I*6.82E6. Left panel t=(-2,2), Right panel t=(-45,45) about the peak with partial Euler Product P(S,N) \\textcolor{blue}{(blue)}, truncated real axis $\\zeta(1+It)$ \\textcolor{red}{(red)} $|t| > \\frac{\\gamma}{\\left(log(log(T+t))+log(log(log(T+t)))\\right)}$, truncated real axis P(1+I*t,$2\\pi\\left(log(\\theta(T+t))\\right)$) \\textcolor{green}{(green)} versions, $e^{\\gamma}\\left(log(log(T+t))+log(log(log(T+t)))\\right)$ \\textcolor{magenta}{(horizontal magenta)} based growth lower bound and $e^{\\gamma}\\left(log(log(\\theta(T+t))))\\right)$ \\textcolor{gray}{(horizontal gray)} based growth. \\scriptsize{peak=1+I*6820051}
+"
+
+```
+
+```{r image_6p28e6, fig.show = "hold", out.width = "50%", fig.align = "default",fig.cap=cap2}
+
+knitr::include_graphics("/home/john/pari/graph6p82e6narrow.pdf")
+
+knitr::include_graphics("/home/john/pari/graph6p82e6wide.pdf")
+
+```
+
+
+
+
+```{r fig_cap_3p92e31, echo=FALSE}
+cap2 <- "Line 1 Riemann Zeta mesoscale self-similarity about the large peak at location S=1+I*3.924676E31.\\scriptsize{peak=1+I*39246764589894309155251169284104}"
+
+# Left panel t=(-2,2), Right panel t=(-45,45) about the peak with partial Euler Product P(S,N) \\textcolor{blue}{(blue)}, truncated real axis $\\zeta(1+It)$ \\textcolor{red}{(red)} $|t| > \\frac{\\gamma}{\\left(log(log(T+t))+log(log(log(T+t)))\\right)}$, truncated real axis P(1+I*t,$2\\pi\\left(log(\\theta(T+t))\\right)$) \\textcolor{green}{(green)} versions, $e^{\\gamma}\\left(log(log(T+t))+log(log(log(T+t)))\\right)$ \\textcolor{magenta}{(horizontal magenta)} based growth lower bound and $e^{\\gamma}\\left(log(log(\\theta(T+t))))\\right)$ \\textcolor{gray}{(horizontal gray)} based growth. 
+# "
+
+```
+
+```{r image_3p92e31, fig.show = "hold", out.width = "50%", fig.align = "default",fig.cap=cap2}
+
+knitr::include_graphics("/home/john/pari/graph3p92e31narrow.pdf")
+
+knitr::include_graphics("/home/john/pari/graph3p92e31wide.pdf")
+
+```
+
+
+```{r fig_cap_3p10e32, echo=FALSE}
+cap2 <- "Line 1 Riemann Zeta mesoscale self-similarity about the large peak at location S=1+I*3.924676E31.\\scriptsize{peak=1+I*310678833629083965667540576593682.0582}
+"
+# Left panel t=(-2,2), Right panel t=(-45,45) about the peak with partial Euler Product P(S,N) \\textcolor{blue}{(blue)}, truncated real axis $\\zeta(1+It)$ \\textcolor{red}{(red)} $|t| > \\frac{\\gamma}{\\left(log(log(T+t))+log(log(log(T+t)))\\right)}$, truncated real axis P(1+I*t,$2\\pi\\left(log(\\theta(T+t))\\right)$) \\textcolor{green}{(green)} versions, $e^{\\gamma}\\left(log(log(T+t))+log(log(log(T+t)))\\right)$ \\textcolor{magenta}{(horizontal magenta)} based growth lower bound and $e^{\\gamma}\\left(log(log(\\theta(T+t))))\\right)$ \\textcolor{gray}{(horizontal gray)} based growth. 
+
+```
+
+```{r image_3p10e32, fig.show = "hold", out.width = "50%", fig.align = "default",fig.cap=cap2}
+
+knitr::include_graphics("/home/john/pari/graph3p10e32narrow.pdf")
+
+knitr::include_graphics("/home/john/pari/graph3p10e32wide.pdf")
+
+```
+
+\newpage
+In these figures, the partial Euler Product was again calculated using $10*\lfloor 2\pi log(\theta(T))\rceil$ primes and found to give reasonable convergence (to calculations using a much higher numbers of primes). Likewise, there is consistent agreement between the bound calculated by equation \eqref {eq:lb} (horizontal red) and the plateau (red) of the truncated (and translated) Riemann Zeta function. Also the proposed approximate Euler Product height estimate (horizontal blue) $e^{\gamma}\left(log(log(\theta(T+t)))\right)$ for large peaks on $S=1+I*(T+t)$ continues to appear below the partial Euler Product function value.
+
+Importantly, on the right panel it can be seen that away from the central peak there is stronger self similarity in the envelope of the riemann zeta function about T+t compared to the Riemann Zeta function about t (red) (ie. about the pole) is only getting stronger as T increases. Within $|t| < 2$, the truncated (and translated) partial Euler product contains some oscillations due to its known divergence from the Riemann Zeta function close to t=0. 
+
+
+
+```{r fig_cap_2p302e39, echo=FALSE}
+cap2 <- "Line 1 Riemann Zeta mesoscale self-similarity about the large peak at location S=1+I*2.3022029198E39. \\scriptsize{peak=1+I*2302202919833091938191454510490853528294}"
+# Left panel t=(-2,2), Right panel t=(-45,45) about the peak with partial Euler Product P(S,N) \\textcolor{blue}{(blue)}, truncated real axis $\\zeta(1+It)$ \\textcolor{red}{(red)} $|t| > \\frac{\\gamma}{\\left(log(log(T+t))+log(log(log(T+t)))\\right)}$, truncated real axis P(1+I*t,$2\\pi\\left(log(\\theta(T+t))\\right)$) \\textcolor{green}{(green)} versions, $e^{\\gamma}\\left(log(log(T+t))+log(log(log(T+t)))\\right)$ \\textcolor{magenta}{(horizontal magenta)} based growth lower bound and $e^{\\gamma}\\left(log(log(\\theta(T+t))))\\right)$ \\textcolor{gray}{(horizontal gray)} based growth. 
+
+```
+
+```{r image_2p302e39, fig.show = "hold", out.width = "50%", fig.align = "default",fig.cap=cap2}
+
+knitr::include_graphics("/home/john/pari/graph2p302e39narrow.pdf")
+
+knitr::include_graphics("/home/john/pari/graph2p302e39wide.pdf")
+
+```
+
+
+```{r fig_cap_1p01e197, echo=FALSE}
+cap2 <- "Line 1 Riemann Zeta mesoscale self-similarity about the large peak at location S=1+I*1.0111676E197. \\scriptsize{peak=1+I*1011167639015609843855339199226907281807356950724220026634786454197018261785784295862873546988680978372570433
+18579891969574348341457647060139453285798560070823624340849132140635153744986427167920455}"
+
+# Left panel t=(-2,2), Right panel t=(-45,45) about the peak with partial Euler Product P(S,N) \\textcolor{blue}{(blue)}, truncated real axis $\\zeta(1+It)$ \\textcolor{red}{(red)} $|t| > \\frac{\\gamma}{\\left(log(log(T+t))+log(log(log(T+t)))\\right)}$, truncated real axis P(1+I*t,$2\\pi\\left(log(\\theta(T+t))\\right)$) \\textcolor{green}{(green)} versions, $e^{\\gamma}\\left(log(log(T+t))+log(log(log(T+t)))\\right)$ \\textcolor{magenta}{(horizontal magenta)} based growth lower bound and $e^{\\gamma}\\left(log(log(\\theta(T+t))))\\right)$ \\textcolor{gray}{(horizontal gray)} based growth. 
+# }
+# "
+
+```
+
+
+
+```{r image_1p01e197, fig.show = "hold", out.width = "50%", fig.align = "default",fig.cap=cap2}
+
+knitr::include_graphics("/home/john/pari/graph1p01e197narrow.pdf")
+
+knitr::include_graphics("/home/john/pari/graph1p01e197wide.pdf")
+
+```
+
+
+In figures 5-7, there is a larger difference between the approximate Euler Product height estimate (horizontal gray) $e^{\gamma}\left(log(log(\theta(T+t)))\right)$ and the partial Euler Product function value but but for higher peaks 8-11 so far discovered, the difference becomes small again.
+
+In figures 5-8, the truncated (and translated) partial Euler Product comes closer to the Granville and Soundararajan's [8] conjecture lower bound ($e^{\gamma}\left(log(log(T+t))+log(log(log(T+t)))\right)$) . In figures 9-11, for $T > 10^{274}$ the ($e^{\gamma}\left(log(log(T+t))+log(log(log(T+t)))\right)$) bound is higher hence the horizontal red line is right at the top of these last 3 figures. 
+
+Based on calculations, the (Riemann Hypothesis based) known lower bound equation \eqref{eq:klb} exceeds the proposed truncated (and translated) partial Euler Product
+
+\begin{equation}
+e^{\gamma}\cdot \left[log_2(T) + log_3(T) - log_4(T) + O(1) \right] >   \left|{\Large\prod_{\rho=2}^{\lfloor 2\pi log(\theta(T+t))\rceil}} \left\{1/(1-1/p^{(1+i*t)})\right\}\right|
+\end{equation}
+
+only after $T>10^{500000}$.  
+
+
+```{r fig_cap_6p00e297, echo=FALSE}
+cap <- "Line 1 Riemann Zeta mesoscale self-similarity about the large peak at location S=1+I*6.00286505291648E297. \\tiny{peak=1+I*6002865052916485566272718286665807825462395133180627209068148917514914656740248492109169
+84486639789217441603802749902965358902350052338458231124297318923513447146746407996791105366995037335707698554237789614274918
+2350515745454308725317154819018276836700697197020938978446939833728659770140616741673}"
+
+# Left panel t=(-2,2), Right panel t=(-45,45) about the peak with partial Euler Product P(S,N) \\textcolor{blue}{(blue)}, truncated real axis $\\zeta(1+It)$ \\textcolor{red}{(red)} $|t| > \\frac{\\gamma}{\\left(log(log(T+t))+log(log(log(T+t)))\\right)}$, truncated real axis P(1+I*t,$2\\pi\\left(log(\\theta(T+t))\\right)$) \\textcolor{green}{(green)} versions, $e^{\\gamma}\\left(log(log(T+t))+log(log(log(T+t)))\\right)$ \\textcolor{magenta}{(horizontal magenta)} based growth lower bound and $e^{\\gamma}\\left(log(log(\\theta(T+t))))\\right)$ \\textcolor{gray}{(horizontal gray)} based growth. 
+# "
+
+```
+
+```{r image_6p00e297, fig.show = "hold", out.width = "50%", fig.align = "default",fig.cap=cap}
+
+knitr::include_graphics("/home/john/pari/graph6p00e297narrow.pdf")
+
+knitr::include_graphics("/home/john/pari/graph6p00e297wide.pdf")
+
+```
+
+
+
+```{r fig_cap_1p306e358, echo=FALSE}
+cap2 <- "Line 1 Riemann Zeta mesoscale self-similarity about the large peak at location S=1+I*1.30692476E358. \\tiny{peak=1+I*130692476223618362174725640809867939030873321714855860919745313482279294817926066573795200625748544
+8239655228161598834526314966714359281270036828256552282963288004484244631141247035380584382485693856319843119263004813235910441021382902564735
+7003915417915959677593254567560611168884381068661886505179878367017087735189404217192841186995218146702812310521109128}"
+
+# Left panel t=(-2,2), Right panel t=(-45,45) about the peak with partial Euler Product P(S,N) \\textcolor{blue}{(blue)}, truncated real axis $\\zeta(1+It)$ \\textcolor{red}{(red)} $|t| > \\frac{\\gamma}{\\left(log(log(T+t))+log(log(log(T+t)))\\right)}$, truncated real axis P(1+I*t,$2\\pi\\left(log(\\theta(T+t))\\right)$) \\textcolor{green}{(green)} versions, $e^{\\gamma}\\left(log(log(T+t))+log(log(log(T+t)))\\right)$ \\textcolor{magenta}{(horizontal magenta)} based growth lower bound and $e^{\\gamma}\\left(log(log(\\theta(T+t))))\\right)$ \\textcolor{gray}{(horizontal gray)} based growth. 
+# "
+
+```
+
+```{r image_1p306e358, fig.show = "hold", out.width = "50%", fig.align = "default",fig.cap=cap2}
+
+knitr::include_graphics("/home/john/pari/graph1p306e358narrow.pdf")
+
+knitr::include_graphics("/home/john/pari/graph1p306e358wide.pdf")
+
+```
+
+
+
+```{r fig_cap_8p936e367, echo=FALSE}
+cap2 <- "Line 1 Riemann Zeta mesoscale self-similarity about the large peak at location S=1+I*8.9362664425717E367. For this figure, the approximate height $e^{\\gamma}\\left(log(log(\\theta(T+t))))\\right)$ based growth is \\textcolor{green}{(horizontal green)}  \\tiny{peak=1+I*893626644257171399313373192047956719114675883393746313834958641449176010338316972160690135
+8819312804983156479571618358985696756909871136412169970729746623714364362037044571794072517802080216698330988261435391799763203076330309644
+9720006300803931391668954761077509037742762061816566952782742617040349300888139692496123035856135839737951819455965721791490627713793766874} "
+
+# Left panel t=(-2,2), Right panel t=(-45,45) about the peak with partial Euler Product P(S,N) \\textcolor{blue}{(blue)}, truncated real axis $\\zeta(1+It)$ \\textcolor{red}{(red)} $|t| > \\frac{\\gamma}{\\left(log(log(T+t))+log(log(log(T+t)))\\right)}$, truncated real axis P(1+I*t,$2\\pi\\left(log(\\theta(T+t))\\right)$) \\textcolor{green}{(green)} versions, $e^{\\gamma}\\left(log(log(T+t))+log(log(log(T+t)))\\right)$ \\textcolor{magenta}{(horizontal magenta)} based growth lower bound and $e^{\\gamma}\\left(log(log(\\theta(T+t))))\\right)$ \\textcolor{green}{(horizontal green)} based growth. 
+# "
+
+```
+
+```{r image_8p936e367, fig.show = "hold", out.width = "50%", fig.align = "default",fig.cap=cap2}
+
+knitr::include_graphics("/home/john/pari/graph8p936e367narrow.pdf")
+
+knitr::include_graphics("/home/john/pari/graph8p936e367wide.pdf")
+
+```
+
+
+##Extensive range of self-similarity for large peaks at high T
+
+For high T, the range of the self-similarity is very extensive. For example, it is simple enough with $T > 10^{10}$ to see a side feature at $T\pm6820051$ (as in figure 4) and for $T > 10^{35}$ to see a side feature at $T\pm310678833629083965667540576593682.0582$ (as in figure 6) which are reflections of the large peaks about the pole at  6820051 and  310678833629083965667540576593682.0582. That is, for high T the peaks are repeating as satellite peaks about larger peaks as  multiple diophatine integer solutions describing two peaks can simply be added to form a composite solution.
+
+Figure 12, shows satellite peaks at 6820051 and  310678833629083965667540576593682.0582 associated with the large peak peak=1+I*2302202919833091938191454510490853528294, where the left panel should be compared to figure 4 and right panel to figure 6 respectively. These satellite peaks are then surrounded by a second reflection of the riemann zeta function envelope pattern about the pole.
+
+
+```{r fig_cap_2p302e39_side, echo=FALSE}
+cap2 <- "Line 1 Riemann Zeta mesoscale self-similarity about the large peak at location S=1+I*2.3022029198E39. \\scriptsize{peak=1+I*2302202919833091938191454510490853528294}
+Left panel t=(-45,45)+6820051, Right panel t=(-45,45)+310678833629083965667540576593682.0582."
+
+# about the peak with partial Euler Product P(S,N) \\textcolor{blue}{(blue)}, truncated real axis $\\zeta(1+It)$ \\textcolor{red}{(red)} $|t| > \\frac{\\gamma}{\\left(log(log(T+t))+log(log(log(T+t)))\\right)}$, truncated real axis P(1+I*t,$2\\pi\\left(log(\\theta(T+t))\\right)$) \\textcolor{green}{(green)} versions, $e^{\\gamma}\\left(log(log(T+t))+log(log(log(T+t)))\\right)$ \\textcolor{magenta}{(horizontal magenta)} based growth lower bound and $e^{\\gamma}\\left(log(log(\\theta(T+t))))\\right)$ \\textcolor{gray}{(horizontal gray)} based growth. 
+
+```
+
+```{r image_2p302e39_side, fig.show = "hold", out.width = "50%", fig.align = "default",fig.cap=cap2}
+
+knitr::include_graphics("/home/john/pari/graph2p302e39side6e6.pdf")
+
+knitr::include_graphics("/home/john/pari/graph2p302e39side3p1e32.pdf")
+
+```
+
+###Conclusions
+
+By examining the known lower bounds for growth on the line $S=1+I*T$ the Riemann Zeta function and Euler Product about the pole can be approximately truncated (and translated) to explain the relatively constant width (~0.4) of large peaks at high T and the striking self-similarity in the envelope of the local structure (with Riemann Zeta behavior near the real axis).
+
+An approximate estimate of the lower bound of the growth along the line $S=1+I*T$, \newline $\left|{\Large\prod_{\rho=2}^{\lfloor 2\pi log(\theta(T+t))\rceil}} \left\{1/(1-1/p^{(1+i*t)})\right\}\right| ,t \rightarrow 0$ gives an interpretation of the growth of $|\zeta(1+I*t)|$ in terms of the average number of Riemann Zeta zeroes contained in the critical strip up to height T ($\bar{N}(T)\sim \theta(T)/\pi+1$).
+
+
+###References
+
+1.  Odlyzko, A.M. (1992) The $10^{20}$-th zero of the Riemann zeta function and 175 million of   its neighbors.
+http://www.dtc.umn.edu/~odlyzko/unpublished/zeta.10to20.1992.pdf
+
+2. Hiary G.A. (2011) Fast methods to compute the Riemann zeta function Ann. Math., 174-2, 891-946
+also available; https://people.math.osu.edu/hiary.1/fastmethods.html
+
+3. Bober, J.W., Hiary, G.A. (2016) New computations of the Riemann Zeta function on the critical line. Exp. Math., 27, 1–13
+
+4. Tihanyi, N., Kovács, A. & Kovács, J. "Computing Extremely Large Values of the Riemann Zeta Function" J Grid Computing (2017) 15: 527. https://doi.org/10.1007/s10723-017-9416-0
+
+5. S. M. Gonek, C. P. Hughes, and J. P. Keating, A hybrid Euler-Hadamard product for the Riemann zeta function, Duke Math. J. 136 (2007), no. 3, 507–549. MR 2309173
+
+6. S. M. Gonek, Finite Euler products and the Riemann hypothesis, Trans. Amer. Math. Soc. 364 (2012), no. 4, 2157–2191. MR 2869202, https://doi.org/10.1090/S0002-9947-2011-05546-7
+
+7. J. E. Littlewood,On the Riemann zeta-function, Proc. London Math. Soc.,24no. 2 (1924), 175–201.
+
+8. A. Granville, K. Soundararajan, Extreme values of $|\zeta(1 +it)|$, in “The Riemann Zeta Function and Related Themes: Papers in Honour of Professor K. Ramachandra”, Ramanujan Math. Soc.Lect. Notes Ser., (2006) 2, pp. 65–80, Ramanujan Math. Soc., Mysore, 
+
+9. C. Aistleitner, K. Mahatab, M. Munsch, "Extreme Values of the Riemann Zeta Function on the 1-Line" ", IMRN, Issue 22, (2019) pp 6924–6932, https://doi.org/10.1093/imrn/rnx331
+
+10. Y. Lamzouri, "On the distribution of extreme values of zeta and L-functions in the strip $1/2 < \sigma < 1$" ,Int. Math. Res. Not. IMRN (2011), pp 5449–5503
+
+11. W. Heap, "A note on the maximum of the Riemann zeta function on the 1‐line", Bulletin of the London Mathematical Society (2020)
+DOI: 10.1112/blms.12382
+
+12. The PARI~Group, PARI/GP version {\tt 2.12.0}, Univ. Bordeaux, 2018,
+    \url{http://pari.math.u-bordeaux.fr/}.
+\normalfont
+
+13. Lenstra, A.K., H.W. Lenstra Jr. & L. Lovász, (1982) Factoring polynomials with rational coefficients, Math. Ann., 261(4) ,515–534.
+
+14. Tihanyi N., Kovács A. and Szűcs A. (2014) Stud. Univ. Babeş-Bolyai Math. 59(2014), No. 4, 557–566
+
+15. Kovács A. & Tihanyi N. (2018) Annales Univ. Sci. Budapest., Sect. Comp. 48, 53–64
+
+16. Martin, J.P.D. (2018) "A fast calculation of first order shifts in $\zeta(s)$ zeroes positions using an extended Riemann Siegel Z function for the partial Euler Product of the lowest primes"
+http://dx.doi.org/10.6084/m9.figshare.6157700
+
+17. Martin, J.P.D. (2018) "Fast approximate calculations of $\pi S$ at very high t using an extended Riemann Siegel Z function for the partial Euler Product of the lowest primes"
+http://dx.doi.org/10.6084/m9.figshare.6452744
+
+18. Martin, J.P.D. (2018) "Some high  peaks of partial Euler Product of the lowest primes on the Riemann Zeta critical line in the interval $10^{20} < T < 10^{400}$ providing a proxy lower bound on Riemann Zeta function growth".
+https://figshare.com/articles/journal_contribution/_/7185092
+
+19. Edwards, H.M. (1974). Riemann's zeta function. Pure and Applied Mathematics 58. New York-London: Academic Press. ISBN 0-12-242750-0. Zbl 0315.10035.
+
+20. Riemann, Bernhard (1859). "$\ddot{U}$ber die Anzahl der Primzahlen unter einer gegebenen Gr$\ddot{o}$sse". Monatsberichte der Berliner Akademie.. In Gesammelte Werke, Teubner, Leipzig (1892), Reprinted by Dover, New York (1953).
+
+21. Titchmarsh, E.C. (1986) The Theory of the Riemann Zeta Function. 2nd Revised (Heath-Brown, D.R. ) Edition, Oxford University Press, Oxford.
+
+22. Martin, J.P.D. (2020) "Phase contour plots of extended Riemann Siegel functions"
+https://figshare.com/articles/journal_contribution/Phase_contour_plots_of_extended_Riemann_Siegel_functions/11542821
+
+
+
