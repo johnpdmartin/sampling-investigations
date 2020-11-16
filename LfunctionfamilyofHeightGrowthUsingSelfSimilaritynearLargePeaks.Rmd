@@ -57,7 +57,7 @@ As illustrated in the paper, (i) useful truncation bounds related to equation \e
 
 ##Approximations for Riemann Zeta function peak heights and mesoscale structure near large diophantine peaks along line $S=1+I\*(T+t)$ for $t < T$
 
-As described in Martin (6), the magnitude of the mesoscale structure in the Riemann Zeta function along the line S=1+I*T near the known large diophatine peaks $(280 < T <  10^{30})$ can be reasonably approximated by
+As described in Martin (6), the magnitude of the mesoscale structure in the Riemann Zeta function along the line S=1+I*T near the known large diophantine peaks $(280 < T <  10^{30})$ can be reasonably approximated by
 
 (i) Granville and Soundararajan's [8] conjectured lower bound equation under the Riemann Hypothesis,
 \begin{equation} \label{eq:lbrep}
@@ -82,7 +82,7 @@ where $\theta(T+t)$ is the Riemann Siegel Theta function and/or the extended Rie
 
 ##Approximations for L-function large peak heights and mesoscale structure near diophantine peaks in upper complex plane $S=\sigma+I\*(T=t)$ for $\sigma \ge 1$, $t < T$. 
 
-##Type I - large L-function diophatine peaks
+##Type I - large L-function diophantine peaks
 
 As shown in figures 1-10, examining and fitting the observed behaviour near large diophantine peaks along the line $S=\sigma+I*T$ when $(10^5 < T <  10^{30})$ for 1st degree functions of dirichlet character $\chi_3(2,.)$, $\chi_4(3,.)$, $\chi_{15}(14,.)$ and $\chi_5(4,.)$ the above approximations can be extended to the form 
 
@@ -139,7 +139,7 @@ where the average number of L-function zeroes contained in the critical strip up
 (in $\chi_N(q,.)$ notation, N is the conductor parameter describing that the Dirichlet character $\chi$ of the L function is mod N in periodicity).
 
 
-##Type II - points which correspond to diophatine peaks from Riemann Zeta function 
+##Type II - points which correspond to diophantine peaks from Riemann Zeta function 
 
 As exploited by [10-14,6] and others, there are large peaks in the Riemann Zeta function on the critical line. 
 
@@ -154,9 +154,9 @@ T \approx n_j \cdot \frac{log(p_j)}{2\pi}
 \label {eq:DIOR}
 \end{equation}
 
-where $n_j$ are integers, for as many primes $p_j$ as possible based on the leading expansion of the Euler Product \eqref{eq:EP} (as compared to the other L-functions in this paper where their large peak  diophatine problem involves the second leading term of the expansion of the L-function Euler product see equation \eqref {eq:EPL} and the paragraph afterward). These peaks are directly correspond to smaller but dominant peaks on the line $S=1+iT$ [12-15]. 
+where $n_j$ are integers, for as many primes $p_j$ as possible based on the leading expansion of the Euler Product \eqref{eq:EP} (as compared to the other L-functions in this paper where their large peak  diophantine problem involves the second leading term of the expansion of the L-function Euler product see equation \eqref {eq:EPL} and the paragraph afterward). These peaks are directly correspond to smaller but dominant peaks on the line $S=1+iT$ [12-15]. 
 
-It is observed for 1st degree functions of dirichlet character $\chi_3(2,.)$, $\chi_4(3,.)$, $\chi_{15}(14,.)$ and $\chi_5(4,.)$ that at points corresponding to such large Riemann Zeta function diophatine peaks there is a second type of mesoscale self-similarity
+It is observed for 1st degree functions of dirichlet character $\chi_3(2,.)$, $\chi_4(3,.)$, $\chi_{15}(14,.)$ and $\chi_5(4,.)$ that at points corresponding to such large Riemann Zeta function diophantine peaks there is a second type of mesoscale self-similarity
 
 (i) a (truncated) L-function (about the real axis at S=1) 
 
@@ -189,7 +189,7 @@ For figures 1, 5, 9 and 13, the absolute values of the exact
 (iii) $|L\left(\chi_5(4,.),\sigma+I\*(T+t)\right)|$, and 
 (iv) $|L\left(\chi_{15}(14,.),\sigma+I\*(T+t)\right)|$ 
 
-functions (gray) and overlapping partial Euler product (blue) for spans of t=(-2,2) and t=(-45,45) about low T large diophatine peaks on S=1+I\*(T+t) is compared to partial Euler Product, on the line 1+I\*(T+t) compared to truncated (and translated) L-function and Euler Product 1+I\*t functions adjusted for absent modulo primes in the L-functions
+functions (gray) and overlapping partial Euler product (blue) for spans of t=(-2,2) and t=(-45,45) about low T large diophantine peaks on S=1+I\*(T+t) is compared to partial Euler Product, on the line 1+I\*(T+t) compared to truncated (and translated) L-function and Euler Product 1+I\*t functions adjusted for absent modulo primes in the L-functions
 
 \begin{enumerate}
 \item (horizontal red) Granville and Soundararajan's [2] conjectured lower bound equation under the Riemann Hypothesis adjusted for absent modulo primes in the L-function, \\ $\alpha e^{\gamma}\left(log(log(T+t))+log(log(log(T+t)))\right)$ where $\alpha = \{\frac{2}{3}, \frac{2}{4}, \frac{4}{5}, \frac{3}{5}\}$, 
@@ -450,9 +450,9 @@ cap2 <- "\\scriptsize{Line 1 L($\\chi_{15}(14),.),s$) mesoscale self-similarity 
 
 ```{r image_4268004789095020497280360004p335, fig.show = "hold", out.width = "50%", fig.align = "default",fig.cap=cap2}
 
-knitr::include_graphics("/home/john/pari/graphchi15p14_1083800184869346410p306narrow.pdf")
+knitr::include_graphics("/home/john/pari/graphchi15p14_4268004789095020497280360004p335narrow.pdf")
 
-knitr::include_graphics("/home/john/pari/graphchi15p14_1083800184869346410p306wide.pdf")
+knitr::include_graphics("/home/john/pari/graphchi15p14_4268004789095020497280360004p335wide.pdf")
 
 ```
 
@@ -465,13 +465,13 @@ On the right panel it can also be clearly seen that away from the central diopha
 
 Next the proposed approximate Euler Product height estimate (horizontal blue for figs 1,5,9,13 and horizontal gray for the higher T figures) as in  equations \eqref {eq:est32} to \eqref {eq:est15p14} for large peaks on $S=1+I*(T+t)$ appears below but nominally of the magnitude of the l-function peak.
 
-Finally, the proposed truncated (and translated) Riemann Zeta Euler Product (green) scaled by the lowest modulo absent prime euler factors as in  equations \eqref {eq:ep32} to \eqref {eq:ep15p14} is higher than the truncated and scaled Riemann Zeta function based bound (red). As T grows the distance (for the four series figs 1-4, figs 5-8, figs 9-12 and figs 13-16) between the truncated, euler factor scaled and translated L-function (near the real axis, equations \eqref {eq:z32} to \eqref {eq:z15p14}) and the similarly truncated, euler factor scaled and translated Euler product estimates from equations \eqref {eq:ep32} to \eqref {eq:ep15p14} grows smaller. This behaviour is similar to that observed [6] for the Riemann Zeta function at the large diophatine peaks on the line S=1+I\*T.
+Finally, the proposed truncated (and translated) Riemann Zeta Euler Product (green) scaled by the lowest modulo absent prime euler factors as in  equations \eqref {eq:ep32} to \eqref {eq:ep15p14} is higher than the truncated and scaled Riemann Zeta function based bound (red). As T grows the distance (for the four series figs 1-4, figs 5-8, figs 9-12 and figs 13-16) between the truncated, euler factor scaled and translated L-function (near the real axis, equations \eqref {eq:z32} to \eqref {eq:z15p14}) and the similarly truncated, euler factor scaled and translated Euler product estimates from equations \eqref {eq:ep32} to \eqref {eq:ep15p14} grows smaller. This behaviour is similar to that observed [6] for the Riemann Zeta function at the large diophantine peaks on the line S=1+I\*T.
 
 
 
 ##Behaviour of L-function Type II peak mesoscale structure
 
-For figures 17-20, at known points $1+I\*(T+t)$ where the Riemann Zeta function has large diophatine peaks [16,14], the L-function partial Euler product is compared to the exact L-function about the real axis $1+I\*t$ and as $T \rightarrow \infty$
+For figures 17-20, at known points $1+I\*(T+t)$ where the Riemann Zeta function has large diophantine peaks [16,14], the L-function partial Euler product is compared to the exact L-function about the real axis $1+I\*t$ and as $T \rightarrow \infty$
 
 \begin{align}
 |EP_{L\left(\chi_3(2,.),\sigma+I*(T+t),N \rightarrow \infty\right)}|_{\text{about large } \zeta(s) \text{ peaks}} &\sim |L\left(\chi_3(2,.),\sigma+I\*t\right)| \\
@@ -603,7 +603,7 @@ knitr::include_graphics("/home/john/pari/graphchi5p4_230220291983309193819145451
 
 ###Conclusions
 
-At least two types of self-similarity are observed to occur in four L-functions (without poles) for the line $S=1+I\*(T+t)$ (and for $\sigma > 1$) of (i) type I about large diophantine peaks of the L-function described by truncated, scaled and translated Riemann Zeta function (and partial Euler product) and (ii) type II about known points corresponding to large diophatine peaks of the Riemann Zeta function described by translated L-function (and partial Euler product).
+At least two types of self-similarity are observed to occur in four L-functions (without poles) for the line $S=1+I\*(T+t)$ (and for $\sigma > 1$) of (i) type I about large diophantine peaks of the L-function described by truncated, scaled and translated Riemann Zeta function (and partial Euler product) and (ii) type II about known points corresponding to large diophantine peaks of the Riemann Zeta function described by translated L-function (and partial Euler product).
 
 Useful approximations for the L-function growth along $S=1+I\*(T+t)$ are provided as scaled versions of the Riemann Zeta function behaviour due to the effect of absent lowest modulo primes for each respective L-function.
 
