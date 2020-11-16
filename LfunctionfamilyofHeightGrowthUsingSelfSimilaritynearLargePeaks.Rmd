@@ -115,11 +115,11 @@ where the extended $\theta$ functions are obtained from the functional equation 
 
 where at high T the $log(\Gamma(1-s))$ term dominates (as for the $\theta(T)$ function of $\zeta(s)$) but the other terms contribute at lower values. 
 
-Given the good performance of the above truncated Riemann Zeta and Euler product approximations at fitting the mesoscale structure for the considered L-functions, an adaptation of the Granville and Soundararajan's [8] conjectured lower bound to these L-functions is to scale the conjectured bound for the Riemann Zeta function downwards according to the modulo primes absent in the L-function 
+Given the good performance of the above truncated Riemann Zeta and Euler product approximations at fitting the mesoscale structure for the considered L-functions, an adaptation of the Granville and Soundararajan's [8] conjectured lower bound to these L-functions is to scale the conjectured bound for the Riemann Zeta function downwards according to the modulo primes absent in the L-function. In particular, the adjustment factor is (the number of non-zero elements in $\chi(p)$)/(number of elements in $\chi(p)$) 
 
 \begin{align}
 |L\left(\chi_3(2,.),\sigma+I\*(T+t)\right)|_{LB} &\sim \frac{2}{3}e^{\gamma}\left(log(log(T+t))+log(log(log(T+t)))\right) \label {eq:lb32}\\
-|L\left(\chi_4(3,.),\sigma+I\*(T+t)\right)|_{LB} &\sim \frac{2}{4}e^{\gamma}\left(log(log(T+t))+log(log(log(T+t)))\right) \label {eq:lb43}\\ |L\left(\chi_5(4,.),\sigma+I\*(T+t)\right)|_{LB} &\sim \frac{4}{5}e^{\gamma}\left(log(log(T+t))+log(log(log(T+t)))\right) \label {eq:lb54}\\ |L\left(\chi_{15}(14,.),\sigma+I\*(T+t)\right)|_{LB} &\sim \frac{3}{5}e^{\gamma}\left(log(log(T+t))+log(log(log(T+t)))\right) \label {eq:lb15p14}\\
+|L\left(\chi_4(3,.),\sigma+I\*(T+t)\right)|_{LB} &\sim \frac{2}{4}e^{\gamma}\left(log(log(T+t))+log(log(log(T+t)))\right) \label {eq:lb43}\\ |L\left(\chi_5(4,.),\sigma+I\*(T+t)\right)|_{LB} &\sim \frac{4}{5}e^{\gamma}\left(log(log(T+t))+log(log(log(T+t)))\right) \label {eq:lb54}\\ |L\left(\chi_{15}(14,.),\sigma+I\*(T+t)\right)|_{LB} &\sim \frac{8}{15}e^{\gamma}\left(log(log(T+t))+log(log(log(T+t)))\right) \label {eq:lb15p14}\\
 \end{align}
 
 and an nominal lower estimate of the expected Euler Product height using the average number of Riemann Zeta zeroes (to height $T+t$) is given by
@@ -128,7 +128,7 @@ and an nominal lower estimate of the expected Euler Product height using the ave
 |EP_{L\left(\chi_3(2,.),\sigma+I*(T+t),N\right)}| &\gtrsim \frac{2}{3}e^{\gamma}\left(log(log(\theta_{\chi_3(2,.)}(s)))\right) \label {eq:est32}\\
 |EP_{L\left(\chi_4(3,.),\sigma+I*(T+t),N\right)}| &\gtrsim \frac{2}{4}e^{\gamma}\left(log(log(\theta_{\chi_4(3,.)}(s)))\right)  \label {eq:est43}\\
 |EP_{L\left(\chi_5(4,.),\sigma+I*(T+t),N\right)}| &\gtrsim \frac{4}{5}e^{\gamma}\left(log(log(\theta_{\chi_5(4,.)}(s)))\right)  \label {eq:est54}\\
-|EP_{L\left(\chi_{15}(14,.),\sigma+I*(T+t),N\right)}| &\gtrsim \frac{3}{5}e^{\gamma}\left(log(log(\theta_{\chi_{15}(14,.)}(s)))\right)  \label {eq:est15p14}
+|EP_{L\left(\chi_{15}(14,.),\sigma+I*(T+t),N\right)}| &\gtrsim \frac{8}{15}e^{\gamma}\left(log(log(\theta_{\chi_{15}(14,.)}(s)))\right)  \label {eq:est15p14}
 \end{align}
 
 where the average number of L-function zeroes contained in the critical strip up to height T is 
@@ -192,7 +192,7 @@ For figures 1, 5, 9 and 13, the absolute values of the exact
 functions (gray) and overlapping partial Euler product (blue) for spans of t=(-2,2) and t=(-45,45) about low T large diophantine peaks on S=1+I\*(T+t) is compared to partial Euler Product, on the line 1+I\*(T+t) compared to truncated (and translated) L-function and Euler Product 1+I\*t functions adjusted for absent modulo primes in the L-functions
 
 \begin{enumerate}
-\item (horizontal red) Granville and Soundararajan's [2] conjectured lower bound equation under the Riemann Hypothesis adjusted for absent modulo primes in the L-function, \\ $\alpha e^{\gamma}\left(log(log(T+t))+log(log(log(T+t)))\right)$ where $\alpha = \{\frac{2}{3}, \frac{2}{4}, \frac{4}{5}, \frac{3}{5}\}$, 
+\item (horizontal red) Granville and Soundararajan's [2] conjectured lower bound equation under the Riemann Hypothesis adjusted for absent modulo primes in the L-function, \\ $\alpha e^{\gamma}\left(log(log(T+t))+log(log(log(T+t)))\right)$ where $\alpha = \{\frac{2}{3}, \frac{2}{4}, \frac{4}{5}, \frac{8}{15}\}$, 
 \item (red) truncated Riemann Zeta function (about the pole) adjusted for absent modulo primes in the L-function using equations \eqref {eq:z32} to \eqref {eq:z15p14}
 \item (green) truncated Riemann Zeta Euler Product (about the pole) adjusted for absent modulo primes in the L-function using equations \eqref {eq:ep32} to \eqref {eq:ep15p14}
 \item (horizontal blue) approximate Euler Product height using the average number of L-function zeroes in the critical strip (to height $T+t$) via equations \eqref {eq:est32} to \eqref {eq:est15p14}
@@ -399,7 +399,7 @@ knitr::include_graphics("/home/john/pari/graphchi5p4_33451771105515631014874992p
 ### L-function $L(\chi_{15}(14),.),s)$
 
 ```{r fig_cap_1767, echo=FALSE}
-cap2 <- "\\scriptsize{Line 1 L($\\chi_{15}(14),.),s$) mesoscale self-similarity about the large peak at location S=1+I*1767.45. Left panel t=(-2,2), Right panel t=(-45,45) about the peak with partial Euler Product $|P(S,N)|$ \\textcolor{blue}{(blue)}, truncated real axis $|(1-1/3^{(1+It)})(1-1/5^{(1+It)})\\zeta(1+It)|$ \\textcolor{red}{(red)} $|t| > \\frac{\\gamma}{\\left(log(log(T+t))+log(log(log(T+t)))\\right)}$, truncated real axis $|(1-1/3^{(1+It)})(1-1/5^{(1+It)})P(1+I*t,2\\pi\\left(log(\\theta_{\\chi_15(14),.)}(\\sigma+I\\*(T+t)))\\right))|$ \\textcolor{green}{(green)} versions, $\\frac{3}{5}e^{\\gamma}\\left(log(log(T+t))+log(log(log(T+t)))\\right)$ \\textcolor{magenta}{(horizontal magenta)} modulo absent primes based growth lower bound, the exact |L($\\chi_{15}(14),.),s$)| \\textcolor{gray}{(gray)} function and $\\frac{3}{5}e^{\\gamma}\\left(log(log(\\theta_{\\chi_{15}(14),.)}(\\sigma+I\\*(T+t)))))\\right)$ \\textcolor{blue}{(horizontal blue)} modulo absent primes based growth.} \\tiny{peak=1+I*1767.45}
+cap2 <- "\\scriptsize{Line 1 L($\\chi_{15}(14),.),s$) mesoscale self-similarity about the large peak at location S=1+I*1767.45. Left panel t=(-2,2), Right panel t=(-45,45) about the peak with partial Euler Product $|P(S,N)|$ \\textcolor{blue}{(blue)}, truncated real axis $|(1-1/3^{(1+It)})(1-1/5^{(1+It)})\\zeta(1+It)|$ \\textcolor{red}{(red)} $|t| > \\frac{\\gamma}{\\left(log(log(T+t))+log(log(log(T+t)))\\right)}$, truncated real axis $|(1-1/3^{(1+It)})(1-1/5^{(1+It)})P(1+I*t,2\\pi\\left(log(\\theta_{\\chi_15(14),.)}(\\sigma+I\\*(T+t)))\\right))|$ \\textcolor{green}{(green)} versions, $\\frac{8}{15}e^{\\gamma}\\left(log(log(T+t))+log(log(log(T+t)))\\right)$ \\textcolor{magenta}{(horizontal magenta)} modulo absent primes based growth lower bound, the exact |L($\\chi_{15}(14),.),s$)| \\textcolor{gray}{(gray)} function and $\\frac{8}{15}e^{\\gamma}\\left(log(log(\\theta_{\\chi_{15}(14),.)}(\\sigma+I\\*(T+t)))))\\right)$ \\textcolor{blue}{(horizontal blue)} modulo absent primes based growth.} \\tiny{peak=1+I*1767.45}
 "
 
 ```
@@ -413,7 +413,7 @@ knitr::include_graphics("/home/john/pari/graphchi15p14_1767p45wide.pdf")
 ```
 
 ```{r fig_cap_471664690p2, echo=FALSE}
-cap2 <- "\\scriptsize{Line 1 L($\\chi_{15}(14),.),s$) mesoscale self-similarity about the large peak at location S=1+I*471664690.2 Left panel t=(-2,2), Right panel t=(-45,45) about the peak with partial Euler Product P(S,N) \\textcolor{blue}{(blue)}, truncated real axis $|(1-1/3^{(1+It)})(1-1/5^{(1+It)})\\zeta(1+It)|$ \\textcolor{red}{(red)} $|t| > \\frac{\\gamma}{\\left(log(log(T+t))+log(log(log(T+t)))\\right)}$, truncated real axis $|(1-1/3^{(1+It)})(1-1/5^{(1+It)})P(1+I*t,2\\pi\\left(log(\\theta(T+t))\\right)|$) \\textcolor{green}{(green)} versions, $\\frac{3}{5}e^{\\gamma}\\left(log(log(T+t))+log(log(log(T+t)))\\right)$ \\textcolor{magenta}{(horizontal magenta)} based growth lower bound and $\\frac{3}{5}e^{\\gamma}\\left(log(log(\\theta(T+t))))\\right)$ \\textcolor{gray}{(horizontal gray)} based growth.} \\scriptsize{peak=1+I*471664690.2}"
+cap2 <- "\\scriptsize{Line 1 L($\\chi_{15}(14),.),s$) mesoscale self-similarity about the large peak at location S=1+I*471664690.2 Left panel t=(-2,2), Right panel t=(-45,45) about the peak with partial Euler Product P(S,N) \\textcolor{blue}{(blue)}, truncated real axis $|(1-1/3^{(1+It)})(1-1/5^{(1+It)})\\zeta(1+It)|$ \\textcolor{red}{(red)} $|t| > \\frac{\\gamma}{\\left(log(log(T+t))+log(log(log(T+t)))\\right)}$, truncated real axis $|(1-1/3^{(1+It)})(1-1/5^{(1+It)})P(1+I*t,2\\pi\\left(log(\\theta(T+t))\\right)|$) \\textcolor{green}{(green)} versions, $\\frac{8}{15}e^{\\gamma}\\left(log(log(T+t))+log(log(log(T+t)))\\right)$ \\textcolor{magenta}{(horizontal magenta)} based growth lower bound and $\\frac{8}{15}e^{\\gamma}\\left(log(log(\\theta(T+t))))\\right)$ \\textcolor{gray}{(horizontal gray)} based growth.} \\scriptsize{peak=1+I*471664690.2}"
 
 ```
 
@@ -428,7 +428,7 @@ knitr::include_graphics("/home/john/pari/graphchi15p14_471664690p2wide.pdf")
 
 
 ```{r fig_cap_1083800184869346410p306, echo=FALSE}
-cap2 <- "\\scriptsize{Line 1 L($\\chi_{15}(14),.),s$) mesoscale self-similarity about the large peak at location S=1+I*1.0838e18 Left panel t=(-2,2), Right panel t=(-45,45) about the peak with partial Euler Product P(S,N) \\textcolor{blue}{(blue)}, truncated real axis $|(1-1/3^{(1+It)})(1-1/5^{(1+It)})\\zeta(1+It)|$ \\textcolor{red}{(red)} $|t| > \\frac{\\gamma}{\\left(log(log(T+t))+log(log(log(T+t)))\\right)}$, truncated real axis $|(1-1/3^{(1+It)})(1-1/5^{(1+It)})P(1+I*t,2\\pi\\left(log(\\theta(T+t))\\right)|$) \\textcolor{green}{(green)} versions, $\\frac{3}{5}e^{\\gamma}\\left(log(log(T+t))+log(log(log(T+t)))\\right)$ \\textcolor{magenta}{(horizontal magenta)} based growth lower bound and $\\frac{3}{5}e^{\\gamma}\\left(log(log(\\theta(T+t))))\\right)$ \\textcolor{gray}{(horizontal gray)} based growth.} \\scriptsize{peak=1+I*1083800184869346410.306}"
+cap2 <- "\\scriptsize{Line 1 L($\\chi_{15}(14),.),s$) mesoscale self-similarity about the large peak at location S=1+I*1.0838e18 Left panel t=(-2,2), Right panel t=(-45,45) about the peak with partial Euler Product P(S,N) \\textcolor{blue}{(blue)}, truncated real axis $|(1-1/3^{(1+It)})(1-1/5^{(1+It)})\\zeta(1+It)|$ \\textcolor{red}{(red)} $|t| > \\frac{\\gamma}{\\left(log(log(T+t))+log(log(log(T+t)))\\right)}$, truncated real axis $|(1-1/3^{(1+It)})(1-1/5^{(1+It)})P(1+I*t,2\\pi\\left(log(\\theta(T+t))\\right)|$) \\textcolor{green}{(green)} versions, $\\frac{8}{15}e^{\\gamma}\\left(log(log(T+t))+log(log(log(T+t)))\\right)$ \\textcolor{magenta}{(horizontal magenta)} based growth lower bound and $\\frac{8}{15}e^{\\gamma}\\left(log(log(\\theta(T+t))))\\right)$ \\textcolor{gray}{(horizontal gray)} based growth.} \\scriptsize{peak=1+I*1083800184869346410.306}"
 
 ```
 
@@ -443,7 +443,7 @@ knitr::include_graphics("/home/john/pari/graphchi15p14_1083800184869346410p306wi
 
 
 ```{r fig_cap_4268004789095020497280360004p335, echo=FALSE}
-cap2 <- "\\scriptsize{Line 1 L($\\chi_{15}(14),.),s$) mesoscale self-similarity about the large peak at location S=1+I*4.268e27 Left panel t=(-2,2), Right panel t=(-45,45) about the peak with partial Euler Product P(S,N) \\textcolor{blue}{(blue)}, truncated real axis $|(1-1/3^{(1+It)})(1-1/5^{(1+It)})\\zeta(1+It)|$ \\textcolor{red}{(red)} $|t| > \\frac{\\gamma}{\\left(log(log(T+t))+log(log(log(T+t)))\\right)}$, truncated real axis $|(1-1/3^{(1+It)})(1-1/5^{(1+It)})P(1+I*t,2\\pi\\left(log(\\theta(T+t))\\right)|$) \\textcolor{green}{(green)} versions, $\\frac{3}{5}e^{\\gamma}\\left(log(log(T+t))+log(log(log(T+t)))\\right)$ \\textcolor{magenta}{(horizontal magenta)} based growth lower bound and $\\frac{3}{5}e^{\\gamma}\\left(log(log(\\theta(T+t))))\\right)$ \\textcolor{gray}{(horizontal gray)} based growth.} \\scriptsize{peak=1+I*4268004789095020497280360004.335}"
+cap2 <- "\\scriptsize{Line 1 L($\\chi_{15}(14),.),s$) mesoscale self-similarity about the large peak at location S=1+I*4.268e27 Left panel t=(-2,2), Right panel t=(-45,45) about the peak with partial Euler Product P(S,N) \\textcolor{blue}{(blue)}, truncated real axis $|(1-1/3^{(1+It)})(1-1/5^{(1+It)})\\zeta(1+It)|$ \\textcolor{red}{(red)} $|t| > \\frac{\\gamma}{\\left(log(log(T+t))+log(log(log(T+t)))\\right)}$, truncated real axis $|(1-1/3^{(1+It)})(1-1/5^{(1+It)})P(1+I*t,2\\pi\\left(log(\\theta(T+t))\\right)|$) \\textcolor{green}{(green)} versions, $\\frac{8}{15}e^{\\gamma}\\left(log(log(T+t))+log(log(log(T+t)))\\right)$ \\textcolor{magenta}{(horizontal magenta)} based growth lower bound and $\\frac{8}{15}e^{\\gamma}\\left(log(log(\\theta(T+t))))\\right)$ \\textcolor{gray}{(horizontal gray)} based growth.} \\scriptsize{peak=1+I*4268004789095020497280360004.335}"
 
 ```
 
