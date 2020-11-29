@@ -1,0 +1,1103 @@
+---
+title: Self-similarity for non self-dual $\chi_5(q,.)$ 1st degree L functions and their Davenport-Heilbronn counterparts along the line $\Re(s) = 1$ and the surrounding region.
+
+author: "John Martin" 
+#subtitle: created "November 24 2020"
+#date: last modified '`r format(Sys.Date(), "%d %b, %Y")`'
+date: \today
+header-includes:  \usepackage{xcolor}
+output:
+  pdf_document:
+    fig_crop: no
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+#library(Rmpfr)
+library(gmp)
+
+```
+
+
+#Executive Summary
+
+For $\chi_5(2,.)$ and $\chi_5(3,.)$ non self-dual L-functions, three types of self-similarity exhibited on the line S=1+i\*T are examined in the range $(10^5 < T <  10^{30})$ linked to (i) large diophantine peaks, and points known to correspond to (ii) large Riemann Zeta function peaks and (iii) large diophantine peaks of the paired dual L-function. The self-similarity for their Davenport-Heilbronn counterparts is also studied and useful approximations for the magnitude of the mescoscale behaviour includes the use of the self-dual $\chi_5(4,.)$ and $\zeta(s)$ functions. These mesoscale structure approximations also build a first order version of the distribution of non-trivial zeroes off the critical line for the Davenport-Heilbronn functions.
+
+#Introduction
+
+In this paper, following Martin [1,2] mesoscale self-similarity structure for non self-dual 1st degree L-functions of dirichlet character $\chi_5(2,.)$, $\chi_5(3,.)$ and their Davenport-Heilbronn counterparts are investigated (i) using partial Euler products on the line S=1+I\*(T+t) 
+
+\begin{equation} \label{eq:EPL}
+L\left(\chi_q(n,.),s\right) = \prod\limits_{p}^{\infty} \frac{1}{(1-\frac{\chi(p)}{p^s})} \text{ for }\Re(s) \ge 1 
+\end{equation}
+
+near large diophantine peaks and at points known to correspond to large Riemann Zeta function peaks and (ii) exact L-functions [3], their linear combinations [6,7,10] and partial Euler products centred about the real axis S=1+I\*(t) where t < T. 
+
+The two known 5-periodic Davenport Heilbronn functions [6-10] (also known as the Titchmarsh counterexample [6]) are periodic Dirichlet series with functional equations that have non-trivial zeroes off the critical line and are formed by linear combinations of the $\chi_5(2,.)$, $\chi_5(3,.)$ L-functions. 
+
+In L-function, Dirichlet series and Hurwitz Zeta function form the $f_{1}$(s) 5-periodic function is [6,10]
+
+\begin{align}
+f_{1}(s) &= \frac{1}{2cos(\theta_1)} \Big [ e^{i\theta_1}L(\chi_5(3,.),s) + e^{-i\theta_1}L(\chi_5(2,.),s) \Big ] \label{eq:func1_Lcomb} \\ 
+&= 1 + \frac{tan(\theta_1)}{2^s} - \frac{tan(\theta_1)}{3^s} - \frac{1}{4^s} + \frac{0}{5^s} + ... \label{eq:func1_series} \\ 
+&= 5^{-s}\Big ( \zeta(s,\frac{1}{5}) + tan(\theta_1)\cdot\zeta(s,\frac{2}{5}) - tan(\theta_1)\cdot\zeta(s,\frac{3}{5}) - \zeta(s,\frac{4}{5})\Big ) \label{eq:func1_hurwitz}
+\end{align}
+
+where 
+
+\begin{align}
+tan(\theta_1) &= \frac{(\sqrt{10-2\sqrt{5}}-2)}{(\sqrt{5}-1)} \label{eq:xi} \\
+&= 0.284079043840412296028291832393
+\end{align}
+
+and 
+
+\begin{align}
+\theta_1=0.276787179448522625754266365045 \qquad radians \label{eq:theta1}
+\end{align}
+
+
+The Davenport-Heilbronn $f_{1}$(s) function has the functional equation
+
+\begin{equation}
+f_{1}(s) = 5^{(\frac{1}{2}-s)}2(2\pi)^{(s-1)}cos(\frac{\pi s}{2})\Gamma(1-s)f_{1}(1-s) = \chi(f_{1}(s))\cdot f_{1}(1-s) \label{eq:eq_func1}
+\end{equation}
+
+and has a linear combination of Euler products (for $\chi_5(2,.)$ and $\chi_5(3,.)$) form
+
+\begin{equation}
+EP_{f_1(s)} = \frac{1}{2cos(\theta_1)} \Big [ e^{i\theta_1}\left({\Large\prod_{p=2}^{\infty}} \frac{1}{(1-\chi_5(3,p)/p^{(\sigma+I\*t)})}\right)+ e^{-i\theta_1}\left({\Large\prod_{p=2}^{\infty}} \frac{1}{(1-\chi_5(2,p)/p^{(\sigma+I\*t)})}\right) \Big ] \text{ for } \sigma \ge 1 \label{eq:eq_epfunc1}
+\end{equation}
+
+The second linear combination of L-functions 5-periodic Davenport Heilbronn function example $f_{2}$(s) [7,8] has the designation $\tau_-(s)$ [8] arising from $f_{1}$(s) ($\tau_+(s))$) & $f_{2}$(s) being the two coupled solutions of linear combinations of the $\chi_5(2,.)$ and $\chi_5(3,.)$ L-functions. The more recent work [8], estimates the highest(lowest) Re(s) values for non-trivial zeroes of $f_{2}$(s) are approximately bounded by Re(s)=2.37 (-1.37) which is relevant to the behaviour expected using the envelope approximations for the self-similarity presented in this report. 
+
+Expressed in L-function, Dirichlet series and Hurwitz Zeta function form the $f_{2}$(s) 5-periodic function is
+
+\begin{align}
+f_{2}(s) &= \frac{I}{2sin(\theta_1)} \Big [ e^{i\theta_1}L(\chi_5(3,.),s) - e^{-i\theta_1}L(\chi_5(2,.),s) \Big ] \label{eq:func2_Lcomb} \\ 
+&= 1 - \frac{1/tan(\theta_1)}{2^s} + \frac{1/tan(\theta_1)}{3^s} - \frac{1}{4^s} + \frac{0}{5^s} + ... \label{eq:func2_series}\\ 
+&= 5^{-s}\Big ( \zeta(s,\frac{1}{5}) - \frac{1}{tan(\theta_1)}\cdot\zeta(s,\frac{2}{5}) + \frac{1}{tan(\theta_1)}\cdot\zeta(s,\frac{3}{5}) - \zeta(s,\frac{4}{5})\Big ) \label{eq:func2_hurwitz}
+\end{align}
+
+
+The Davenport-Heilbronn $f_{2}$(s) function has the functional equation
+
+\begin{equation}
+f_{2}(s) = 5^{(\frac{1}{2}-s)}2(2\pi)^{(s-1)}cos(\frac{\pi s}{2})\Gamma(1-s)f_{2}(1-s) = \chi(f_{2}(s))\cdot f_{2}(1-s) \label{eq:eq_func2}
+\end{equation}
+
+and has a linear combination of Euler products (for $\chi_5(2,.)$ and $\chi_5(3,.)$) form
+
+\begin{equation}
+EP_{f_2(s)} = \frac{I}{2sin(\theta_1)} \Big [ e^{i\theta_1}\left({\Large\prod_{p=2}^{\infty}} \frac{1}{(1-\chi_5(3,p)/p^{(\sigma+I\*t)})}\right)- e^{-i\theta_1}\left({\Large\prod_{p=2}^{\infty}} \frac{1}{(1-\chi_5(2,p)/p^{(\sigma+I\*t)})}\right) \Big ] \text{ for } \sigma \ge 1 \label{eq:eq_epfunc2}
+\end{equation}
+
+with the same multiplicative factor on the RHS as equation \eqref{eq:eq_func1} and has known non-trivial zeroes off the critical line in the range $\sim-1.37 < \sigma < 2.37$. 
+
+
+As discussed in [10], the mixing factor $tan(\theta_i)$ for non self-dual pair 1st degree L-functions can be obtained directly from the signs $\epsilon$ [3] of the dual pair L-functions involved in each Davenport-Heilbronn counterpart. 
+
+The large diophantine peak positions were identified via pari/gp software [4] employing the Lenstra-Lenstra-Lovász (LLL) basis reduction algorithm [5], to solve the diophantine problem
+
+\begin{align}
+log(p_i) T &\approx 2\pi n_i \label {eq:DIO1} \\
+\left(log(p_j)-log(p_i)\right) T &\approx 2\pi(m_j-m_i) + O(\pi)_{ji} \label {eq:DIO2}
+\end{align}
+
+where $n, m$ are integers for (i) the primes and (ii) as many pairs of primes $\{p_1,p_2\}$ which arise from the expansion of the L-function Euler Product equation \eqref{eq:EPL}. Naturally, the large diophantine peaks in $\chi_5(2,.)$ and $\chi_5(3,.)$ L-functions are present in scaled form in the $f_{1}(s)$ and $f_{2}(s)$ functions which are relatively simple transformations of $\chi_5(2,.)$ and $\chi_5(3,.)$. 
+
+
+As illustrated in the paper, (i) self-similarity mesoscale structure of $\chi_5(2,.)$ and $\chi_5(3,.)$ L-functions fitted by truncated and translated L-function and the Riemann Zeta function behaviour results in sensible bounds with respect to observed L-function Euler Product behaviour at large peaks along $S=\sigma+i*T$, for $\sigma \ge 1, (10^5 < T <  10^{30})$ and (ii) the self-similarity approximations for the Davenport-Heilbronn functions involving the $\chi_5(4,.)$ and $\zeta(s)$ functions provide first order models of the non-trivial zero pattern off the critical line.
+
+
+#Approximations for non self-dual L-function large peak heights and mesoscale structure near diophantine peaks in upper complex plane $S=\sigma+I\*(T=t)$ for $\sigma \ge 1$, $t < T$. 
+
+Following [2] for 1st degree self-dual L-functions, the self-similarity observed for non self-dual L-functions  $\chi_5(2,.)$ and $\chi_5(3,.)$ contains at least three types
+
+##Type I - large L-function diophantine peaks
+
+As shown in figures 1-10, examining and fitting the observed behaviour near large diophantine peaks along the line $S=\sigma+I*T$ when $(10^5 < T <  10^{30})$ for non self-dual 1st degree functions of dirichlet character $\chi_5(2,.)$ and $\chi_5(3,.)$ useful approximations for the mesoscale structure surrounding large diophantine peaks are of the form
+
+(i) a truncated Riemann Zeta function (about the pole) adjusted for the absent modulo primes in the L-function 
+\begin{align}
+|L\left(\chi_5(2,.),\sigma+I\*(T+t)\right)| &\sim |(1-\frac{1}{5^{(\sigma+I\*t)}})\zeta(\sigma+I\*t)| \label {eq:z52} \\
+|L\left(\chi_5(3,.),\sigma+I\*(T+t)\right)| &\sim |(1-\frac{1}{5^{(\sigma+I\*t)}})\zeta(\sigma+I\*t)| \label {eq:z53} \\
+&\text{ where } |t| > \frac{\gamma}{\left(log(log(T+t))+log(log(log(T+t)))\right)} \text{ and } \sigma \ge 1 \nonumber
+\end{align}
+
+(ii) a truncated Euler Product (about the pole) adjusted for the absent modulo primes in the L-function and accounting for the difference in the extended Theta functions (and hence the density of the function zeroes) 
+\begin{align}
+|EP_{L\left(\chi_5(2,.),\sigma+I*(T+t),N \rightarrow \infty\right)}| &\sim \left|(1-\frac{1}{5^{(\sigma+I\*t)}})\left({\Large\prod_{p=2}^{\lfloor 2\pi log(\theta_{\chi_5(2,.)}(\sigma+I\*(T+t))\rceil}} \frac{1}{(1-1/p^{(\sigma+I\*t)})}\right)\right| \label {eq:ep52}\\
+|EP_{L\left(\chi_5(3,.),\sigma+I*(T+t),N \rightarrow \infty\right)}| &\sim \left|(1-\frac{1}{5^{(\sigma+I\*t)}})\left({\Large\prod_{p=2}^{\lfloor 2\pi log(\theta_{\chi_5(3,.)}(\sigma+I\*(T+t))\rceil}} \frac{1}{(1-1/p^{(\sigma+I\*t)})}\right)\right| \label {eq:ep53}
+\text{for } \sigma \ge 0 \nonumber
+\end{align}
+
+where the extended $\theta$ functions are obtained from the functional equation of the L-function (and extended Riemann Siegel Theta and Z function formalism [9])
+
+\begin{align}
+\theta_{\chi_5(2,.)}(s) &= -\frac{1}{2}\cdot \Im(log\{\epsilon \cdot 5^{(\frac{1}{2}-s)}\cdot 2^{s}\cdot \pi^{-(1-s)}\cdot sin(\pi\*s/2)\cdot \Gamma(1-s)\}) \\
+\theta_{\chi_5(3,.)}(s) &= -\frac{1}{2}\cdot \Im(log\{\epsilon^{*} \cdot 5^{(\frac{1}{2}-s)}\cdot 2^{s}\cdot \pi^{-(1-s)}\cdot sin(\pi\*s/2)\cdot \Gamma(1-s)\}) 
+\end{align}
+
+where $\epsilon =$ \scriptsize{0.8506508083520399321815404970630110... + $I\cdot$ 0.5257311121191336060256690848478766...} [3,10]
+
+\normalsize
+where at high T the $log(\Gamma(1-s))$ term dominates (as for the $\theta(T)$ function of $\zeta(s)$) but the other terms contribute at lower values. 
+
+An adaptation of the Granville and Soundararajan's [11-15] conjectured lower bound for $\zeta(s)$ to  L-functions [2] is to scale the conjectured bound for the Riemann Zeta function downwards according to the modulo primes absent in the L-function. In particular, the adjustment factor is (the number of non-zero elements in $\chi(p)$)/(number of elements in $\chi(p)$) 
+
+\begin{align}
+|L\left(\chi_5(2,.),\sigma+I\*(T+t)\right)|_{LB} &\sim \frac{4}{5}e^{\gamma}\left(log(log(T+t))+log(log(log(T+t)))\right) \label {eq:lb52}\\ |L\left(\chi_5(3,.),\sigma+I\*(T+t)\right)|_{LB} &\sim \frac{4}{5}e^{\gamma}\left(log(log(T+t))+log(log(log(T+t)))\right) \label {eq:lb53}
+\end{align}
+
+and an nominal lower estimate of the expected Euler Product height using the average number of Riemann Zeta zeroes (to height $T+t$) is given by
+
+\begin{align}
+|EP_{L\left(\chi_5(2,.),\sigma+I*(T+t),N\right)}| &\gtrsim \frac{4}{5}e^{\gamma}\left(log(log(\theta_{\chi_5(2,.)}(s)))\right)  \label {eq:est52}\\
+|EP_{L\left(\chi_5(3,.),\sigma+I*(T+t),N\right)}| &\gtrsim \frac{4}{5}e^{\gamma}\left(log(log(\theta_{\chi_5(3,.)}(s)))\right)  \label {eq:est53}
+\end{align}
+
+where the average number of L-function zeroes contained in the critical strip up to height T is 
+\begin{equation}
+\bar{N}_{zeroes}(T)\sim \frac{\theta_{\chi_N(q,.)}(\sigma+I\*T)}{\pi}+1
+\end{equation}
+
+(in $\chi_N(q,.)$ notation, N is the conductor parameter describing that the Dirichlet character $\chi$ of the L function is mod N in periodicity).
+
+
+##Type II - points which correspond to diophantine peaks from Riemann Zeta function 
+
+As exploited by [16-21] and others, there are large peaks in the Riemann Zeta function on the critical line. 
+
+\begin{equation}
+\zeta_{EP}(s) = {\Large\prod_{\rho=2}^P} \frac{1}{(1-1/p^{s})} \qquad \text{for } P << \infty \label {eq:EP}
+\end{equation}
+
+when many $p^{s} \approx 1$ at the same value of T. This constraint being a diophantine problem
+
+\begin{equation}
+log(p_j) T \approx 2\pi n_j 
+\label {eq:DIOR}
+\end{equation}
+
+where $n_j$ are integers, for as many primes $p_j$ as possible based on the leading expansion of the Euler Product \eqref{eq:EP} (as compared to the other L-functions in this paper where their large peak  diophantine problem involves the second leading term of the expansion of the L-function Euler product see equation \eqref {eq:EPL} and the paragraph afterward). These peaks are directly correspond to smaller but dominant peaks on the line $S=1+iT$ [16,19-21]. 
+
+It is observed for 1st degree functions of dirichlet character $\chi_5(2,.)$, $\chi_5(3,.)$ that at points corresponding to such large Riemann Zeta function diophantine peaks there is a second type of mesoscale self-similarity
+
+(i) a (truncated) pair dual L-function (about the real axis at S=1) 
+
+\begin{align}
+|L\left(\chi_5(2,.),\sigma+I\*(T+t)\right)| &\sim |L\left(\chi_5(2,.),\sigma+I\*t\right)| \\
+|L\left(\chi_5(3,.),\sigma+I\*(T+t)\right)| &\sim |L\left(\chi_5(3,.),\sigma+I\*t\right)| \\
+&\text{ where } \sigma \ge 1 \nonumber
+\end{align}
+
+(ii) a (truncated) pair dual Euler Product (about the real axis at S=1) 
+\begin{align}
+|EP_{L\left(\chi_5(2,.),\sigma+I*(T+t),N \rightarrow \infty\right)}| &\sim \left|{\Large\prod_{p=2}^{\lfloor 2\pi log(\theta_{\chi_5(2,.)}(\sigma+I\*(T+t)))\rceil}} \frac{1}{(1-\chi_5(2,.)/p^{(\sigma+I\*t)})}\right| \\
+|EP_{L\left(\chi_5(3,.),\sigma+I*(T+t),N \rightarrow \infty\right)}| &\sim \left|{\Large\prod_{p=2}^{\lfloor 2\pi log(\theta_{\chi_5(3,.)}(\sigma+I\*(T+t)))\rceil}} \frac{1}{(1-\chi_5(3,.)/p^{(\sigma+I\*t)})}\right| \\
+\text{for } \sigma \ge 1 \nonumber
+\end{align}
+ 
+
+It is also observed that these type II self-similarity structures in the L-function Euler Product on $S=1+I\*T$ have satellite peaks at $T+T_2+t$ where $t < T_2 < T$ and $T_2$ corresponds to known type I or type II peaks. 
+
+##Type III - points which correspond to diophantine peaks from the dual pair L-function 
+
+A third type of self-similarity mesoscale strutcure is observed to occur at points known to correspond to a large diophantine peak of the dual pair L-function. That is, at points where there is a large diophantine peak for $\chi_5(2,.)$ it is observed that there is self-similarity approximating the $\chi_5(4,.)$ L-function (centred about the real axis) for $\chi_5(3,.)$. Likewise, at points where there is a large diophantine peak for $\chi_5(3,.)$ it is observed that there is self-similarity approximating the $\chi_5(4,.)$ L-function (centred about the real axis) for $\chi_5(2,.)$. Thus for type III self-similarity
+
+(i) a (truncated) $\chi_5(4,.)$ L-function (about the real axis at S=1) 
+
+\begin{align}
+|L\left(\chi_5(2,.),\sigma+I\*(T+t)\right)| &\sim |L\left(\chi_5(4,.),\sigma+I\*t\right)| \\
+|L\left(\chi_5(3,.),\sigma+I\*(T+t)\right)| &\sim |L\left(\chi_5(4,.),\sigma+I\*t\right)| \\
+&\text{ where } \sigma \ge 1 \nonumber
+\end{align}
+
+(ii) a (truncated) $\chi_5(4,.)$ Euler Product (about the real axis at S=1) 
+\begin{align}
+|EP_{L\left(\chi_5(2,.),\sigma+I*(T+t),N \rightarrow \infty\right)}| &\sim \left|{\Large\prod_{p=2}^{\lfloor 2\pi log(\theta_{\chi_5(2,.)}(\sigma+I\*(T+t)))\rceil}} \frac{1}{(1-\chi_5(4,.)/p^{(\sigma+I\*t)})}\right| \\
+|EP_{L\left(\chi_5(3,.),\sigma+I*(T+t),N \rightarrow \infty\right)}| &\sim \left|{\Large\prod_{p=2}^{\lfloor 2\pi log(\theta_{\chi_5(3,.)}(\sigma+I\*(T+t)))\rceil}} \frac{1}{(1-\chi_5(4,.)/p^{(\sigma+I\*t)})}\right|  \\
+\text{for } \sigma \ge 1 \nonumber
+\end{align}
+ 
+
+It is also observed that these type II self-similarity structures in the L-function Euler Product on $S=1+I\*T$ have satellite peaks at $T+T_2+t$ where $t < T_2 < T$ and $T_2$ corresponds to known type I or type II peaks. 
+
+
+
+##Behaviour of non self-dual L-function Type I peak mesoscale structure
+
+For figures 1, and 5, the absolute values of the exact 
+
+(i) $|L\left(\chi_5(2,.),\sigma+I\*(T+t)\right)|$, and
+(ii) $|L\left(\chi_5(3,.),\sigma+I\*(T+t)\right)|$ 
+
+functions (gray) and overlapping partial Euler product (blue) for spans of t=(-2,2) and t=(-45,45) about low T large diophantine peaks on S=1+I\*(T+t) is compared to partial Euler Product, on the line 1+I\*(T+t) compared to truncated (and translated) L-function and Euler Product 1+I\*t functions adjusted for absent modulo primes in the L-functions
+
+\begin{enumerate}
+\item (horizontal red) Granville and Soundararajan's [11] conjectured lower bound equation under the Riemann Hypothesis adjusted for absent modulo primes in the L-function, \\ $\alpha e^{\gamma}\left(log(log(T+t))+log(log(log(T+t)))\right)$ where $\alpha = \{\frac{2}{3}, \frac{2}{4}, \frac{4}{5}, \frac{8}{15}\}$, 
+\item (red) truncated Riemann Zeta function (about the pole) adjusted for absent modulo primes in the L-function using equations \eqref {eq:z52} or \eqref {eq:z53}
+\item (green) truncated Riemann Zeta Euler Product (about the pole) adjusted for absent modulo primes in the L-function using equations \eqref {eq:ep52} or \eqref {eq:ep53}
+\item (horizontal blue) approximate Euler Product height using the average number of L-function zeroes in the critical strip (to height $T+t$) via equations \eqref {eq:est52} or \eqref {eq:est53}
+\end{enumerate}
+
+These first graphs in a series of 4 for each L-function are intended to confirm the agreement between the partial Euler product and exact L-function away from the real axis. For large peaks (in the other graphs) higher along the imaginary axis the computation time for the exact L-function is very long and so was not conducted.
+
+The weak oscillatory divergence in the partial Euler product can be seen in the right panel of each graph with the minor oscillations of the truncated (and translated from the real axis) partial Euler product (green line) near the main peak.
+
+
+
+\newpage
+### L-function $L(\chi_{5}(2),.),s)$
+
+```{r fig_cap_953p8, echo=FALSE}
+cap2 <- "\\scriptsize{Line 1 L($\\chi_5(2),.),s$) mesoscale self-similarity about the large peak at location S=1+I*953.8. Left panel t=(-2,2), Right panel t=(-45,45) about the peak with partial Euler Product $|P(S,N)|$ \\textcolor{blue}{(blue)}, truncated real axis $|(1-1/5^{(1+It)})\\zeta(1+It)|$ \\textcolor{red}{(red)} $|t| > \\frac{\\gamma}{\\left(log(log(T+t))+log(log(log(T+t)))\\right)}$, truncated real axis $|(1-1/5^{(1+It)})P(1+I*t,2\\pi\\left(log(\\theta_{\\chi_5(2),.)}(\\sigma+I\\*(T+t)))\\right))|$ \\textcolor{green}{(green)} versions, $\\frac{4}{5}e^{\\gamma}\\left(log(log(T+t))+log(log(log(T+t)))\\right)$ \\textcolor{magenta}{(horizontal magenta)} modulo absent primes based growth lower bound, the exact |L($\\chi_5(2),.),s$)| \\textcolor{gray}{(gray)} function and $\\frac{4}{5}e^{\\gamma}\\left(log(log(\\theta_{\\chi_5(2),.)}(\\sigma+I\\*(T+t)))))\\right)$ \\textcolor{blue}{(horizontal blue)} modulo absent primes based growth.} \\tiny{peak=1+I*953.8}
+"
+
+```
+
+```{r image_953p8, fig.show = "hold", out.width = "50%", fig.align = "default",fig.cap=cap2}
+
+knitr::include_graphics("/home/john/pari/L_function_mesoscale_non_selfdual/graphchi52_953p8narrow.pdf")
+
+knitr::include_graphics("/home/john/pari/L_function_mesoscale_non_selfdual/graphchi52_953p8wide.pdf")
+
+```
+
+
+```{r fig_cap_1542818784p48, echo=FALSE}
+cap2 <- "\\scriptsize{Line 1 L($\\chi_5(2),.),s$) mesoscale self-similarity about the large peak at location S=1+I*1.554e9. Left panel t=(-2,2), Right panel t=(-45,45) about the peak with partial Euler Product $|P(S,N)|$ \\textcolor{blue}{(blue)}, truncated real axis $|(1-1/5^{(1+It)})\\zeta(1+It)|$ \\textcolor{red}{(red)} $|t| > \\frac{\\gamma}{\\left(log(log(T+t))+log(log(log(T+t)))\\right)}$, truncated real axis $|(1-1/5^{(1+It)})P(1+I*t,2\\pi\\left(log(\\theta_{\\chi_5(2),.)}(\\sigma+I\\*(T+t)))\\right))|$ \\textcolor{green}{(green)} versions, $\\frac{4}{5}e^{\\gamma}\\left(log(log(T+t))+log(log(log(T+t)))\\right)$ \\textcolor{magenta}{(horizontal magenta)} modulo absent primes based growth lower bound, and $\\frac{4}{5}e^{\\gamma}\\left(log(log(\\theta_{\\chi_5(2),.)}(\\sigma+I\\*(T+t)))))\\right)$ \\textcolor{gray}{(horizontal gray)} modulo absent primes based growth.} \\tiny{peak=1+I*1542818784.48}
+"
+
+```
+
+```{r image_1542818784p48, fig.show = "hold", out.width = "50%", fig.align = "default",fig.cap=cap2}
+
+knitr::include_graphics("/home/john/pari/L_function_mesoscale_non_selfdual/graphchi52_1542818784p48narrow.pdf")
+
+knitr::include_graphics("/home/john/pari/L_function_mesoscale_non_selfdual/graphchi52_1542818784p48wide.pdf")
+
+```
+
+```{r fig_cap_53355053210455414p34, echo=FALSE}
+cap2 <- "\\scriptsize{Line 1 L($\\chi_5(2),.),s$) mesoscale self-similarity about the large peak at location S=1+I*5.335e16. Left panel t=(-2,2), Right panel t=(-45,45) about the peak with partial Euler Product $|P(S,N)|$ \\textcolor{blue}{(blue)}, truncated real axis $|(1-1/5^{(1+It)})\\zeta(1+It)|$ \\textcolor{red}{(red)} $|t| > \\frac{\\gamma}{\\left(log(log(T+t))+log(log(log(T+t)))\\right)}$, truncated real axis $|(1-1/5^{(1+It)})P(1+I*t,2\\pi\\left(log(\\theta_{\\chi_5(2),.)}(\\sigma+I\\*(T+t)))\\right))|$ \\textcolor{green}{(green)} versions, $\\frac{4}{5}e^{\\gamma}\\left(log(log(T+t))+log(log(log(T+t)))\\right)$ \\textcolor{magenta}{(horizontal magenta)} modulo absent primes based growth lower bound, and $\\frac{4}{5}e^{\\gamma}\\left(log(log(\\theta_{\\chi_5(2),.)}(\\sigma+I\\*(T+t)))))\\right)$ \\textcolor{gray}{(horizontal gray)} modulo absent primes based growth.} \\tiny{peak=1+I*53355053210455414.34}
+"
+
+```
+
+```{r image_53355053210455414p34, fig.show = "hold", out.width = "50%", fig.align = "default",fig.cap=cap2}
+
+knitr::include_graphics("/home/john/pari/L_function_mesoscale_non_selfdual/graphchi52_53355053210455414p34narrow.pdf")
+
+knitr::include_graphics("/home/john/pari/L_function_mesoscale_non_selfdual/graphchi52_53355053210455414p34wide.pdf")
+
+```
+
+
+```{r fig_cap_1642277008512931327065919901p31, echo=FALSE}
+cap2 <- "\\scriptsize{Line 1 L($\\chi_5(2),.),s$) mesoscale self-similarity about the large peak at location S=1+I*1.642e27. Left panel t=(-2,2), Right panel t=(-45,45) about the peak with partial Euler Product $|P(S,N)|$ \\textcolor{blue}{(blue)}, truncated real axis $|(1-1/5^{(1+It)})\\zeta(1+It)|$ \\textcolor{red}{(red)} $|t| > \\frac{\\gamma}{\\left(log(log(T+t))+log(log(log(T+t)))\\right)}$, truncated real axis $|(1-1/5^{(1+It)})P(1+I*t,2\\pi\\left(log(\\theta_{\\chi_5(2),.)}(\\sigma+I\\*(T+t)))\\right))|$ \\textcolor{green}{(green)} versions, $\\frac{4}{5}e^{\\gamma}\\left(log(log(T+t))+log(log(log(T+t)))\\right)$ \\textcolor{magenta}{(horizontal magenta)} modulo absent primes based growth lower bound, and $\\frac{4}{5}e^{\\gamma}\\left(log(log(\\theta_{\\chi_5(2),.)}(\\sigma+I\\*(T+t)))))\\right)$ \\textcolor{gray}{(horizontal gray)} modulo absent primes based growth.} \\tiny{peak=1+I*1642277008512931327065919901.31}
+"
+
+```
+
+```{r image_1642277008512931327065919901p31, fig.show = "hold", out.width = "50%", fig.align = "default",fig.cap=cap2}
+
+knitr::include_graphics("/home/john/pari/L_function_mesoscale_non_selfdual/graphchi52_1642277008512931327065919901p31narrow.pdf")
+
+knitr::include_graphics("/home/john/pari/L_function_mesoscale_non_selfdual/graphchi52_1642277008512931327065919901p31wide.pdf")
+
+```
+
+\newpage
+### L-function $L(\chi_{5}(3),.),s)$
+
+```{r fig_cap_1511p75, echo=FALSE}
+cap2 <- "\\scriptsize{Line 1 L($\\chi_5(3),.),s$) mesoscale self-similarity about the large peak at location S=1+I*1511.75. Left panel t=(-2,2), Right panel t=(-45,45) about the peak with partial Euler Product $|P(S,N)|$ \\textcolor{blue}{(blue)}, truncated real axis $|(1-1/5^{(1+It)})\\zeta(1+It)|$ \\textcolor{red}{(red)} $|t| > \\frac{\\gamma}{\\left(log(log(T+t))+log(log(log(T+t)))\\right)}$, truncated real axis $|(1-1/5^{(1+It)})P(1+I*t,2\\pi\\left(log(\\theta_{\\chi_5(3),.)}(\\sigma+I\\*(T+t)))\\right))|$ \\textcolor{green}{(green)} versions, $\\frac{4}{5}e^{\\gamma}\\left(log(log(T+t))+log(log(log(T+t)))\\right)$ \\textcolor{magenta}{(horizontal magenta)} modulo absent primes based growth lower bound, the exact |L($\\chi_5(3),.),s$)| \\textcolor{gray}{(gray)} function and $\\frac{4}{5}e^{\\gamma}\\left(log(log(\\theta_{\\chi_5(3),.)}(\\sigma+I\\*(T+t)))))\\right)$ \\textcolor{blue}{(horizontal blue)} modulo absent primes based growth.} \\tiny{peak=1+I*1511.75}
+"
+
+```
+
+```{r image_1511p75, fig.show = "hold", out.width = "50%", fig.align = "default",fig.cap=cap2}
+
+knitr::include_graphics("/home/john/pari/L_function_mesoscale_non_selfdual/graphchi53_1511p75narrow.pdf")
+
+knitr::include_graphics("/home/john/pari/L_function_mesoscale_non_selfdual/graphchi53_1511p75wide.pdf")
+
+```
+
+
+```{r fig_cap_327949557p75, echo=FALSE}
+cap2 <- "\\scriptsize{Line 1 L($\\chi_5(3),.),s$) mesoscale self-similarity about the large peak at location S=1+I*3.279e8. Left panel t=(-2,2), Right panel t=(-45,45) about the peak with partial Euler Product $|P(S,N)|$ \\textcolor{blue}{(blue)}, truncated real axis $|(1-1/5^{(1+It)})\\zeta(1+It)|$ \\textcolor{red}{(red)} $|t| > \\frac{\\gamma}{\\left(log(log(T+t))+log(log(log(T+t)))\\right)}$, truncated real axis $|(1-1/5^{(1+It)})P(1+I*t,2\\pi\\left(log(\\theta_{\\chi_5(3),.)}(\\sigma+I\\*(T+t)))\\right))|$ \\textcolor{green}{(green)} versions, $\\frac{4}{5}e^{\\gamma}\\left(log(log(T+t))+log(log(log(T+t)))\\right)$ \\textcolor{magenta}{(horizontal magenta)} modulo absent primes based growth lower bound, and $\\frac{4}{5}e^{\\gamma}\\left(log(log(\\theta_{\\chi_5(3),.)}(\\sigma+I\\*(T+t)))))\\right)$ \\textcolor{gray}{(horizontal gray)} modulo absent primes based growth.} \\tiny{peak=1+I*327949557.75}
+"
+
+```
+
+```{r image_327949557p75, fig.show = "hold", out.width = "50%", fig.align = "default",fig.cap=cap2}
+
+knitr::include_graphics("/home/john/pari/L_function_mesoscale_non_selfdual/graphchi53_327949557p75narrow.pdf")
+
+knitr::include_graphics("/home/john/pari/L_function_mesoscale_non_selfdual/graphchi53_327949557p75wide.pdf")
+
+```
+
+
+
+```{r fig_cap_4131733959093848042p475, echo=FALSE}
+cap2 <- "\\scriptsize{Line 1 L($\\chi_5(3),.),s$) mesoscale self-similarity about the large peak at location S=1+I*4.131e18. Left panel t=(-2,2), Right panel t=(-45,45) about the peak with partial Euler Product $|P(S,N)|$ \\textcolor{blue}{(blue)}, truncated real axis $|(1-1/5^{(1+It)})\\zeta(1+It)|$ \\textcolor{red}{(red)} $|t| > \\frac{\\gamma}{\\left(log(log(T+t))+log(log(log(T+t)))\\right)}$, truncated real axis $|(1-1/5^{(1+It)})P(1+I*t,2\\pi\\left(log(\\theta_{\\chi_5(3),.)}(\\sigma+I\\*(T+t)))\\right))|$ \\textcolor{green}{(green)} versions, $\\frac{4}{5}e^{\\gamma}\\left(log(log(T+t))+log(log(log(T+t)))\\right)$ \\textcolor{magenta}{(horizontal magenta)} modulo absent primes based growth lower bound, and $\\frac{4}{5}e^{\\gamma}\\left(log(log(\\theta_{\\chi_5(3),.)}(\\sigma+I\\*(T+t)))))\\right)$ \\textcolor{gray}{(horizontal gray)} modulo absent primes based growth.} \\tiny{peak=1+I*4131733959093848042.475}
+"
+
+```
+
+```{r image_4131733959093848042p475, fig.show = "hold", out.width = "50%", fig.align = "default",fig.cap=cap2}
+
+knitr::include_graphics("/home/john/pari/L_function_mesoscale_non_selfdual/graphchi53_4131733959093848042p475narrow.pdf")
+
+knitr::include_graphics("/home/john/pari/L_function_mesoscale_non_selfdual/graphchi53_4131733959093848042p475wide.pdf")
+
+```
+
+
+
+```{r fig_cap_2648175512052631375802062083p35, echo=FALSE}
+cap2 <- "\\scriptsize{Line 1 L($\\chi_5(3),.),s$) mesoscale self-similarity about the large peak at location S=1+I*2.648e27. Left panel t=(-2,2), Right panel t=(-45,45) about the peak with partial Euler Product $|P(S,N)|$ \\textcolor{blue}{(blue)}, truncated real axis $|(1-1/5^{(1+It)})\\zeta(1+It)|$ \\textcolor{red}{(red)} $|t| > \\frac{\\gamma}{\\left(log(log(T+t))+log(log(log(T+t)))\\right)}$, truncated real axis $|(1-1/5^{(1+It)})P(1+I*t,2\\pi\\left(log(\\theta_{\\chi_5(3),.)}(\\sigma+I\\*(T+t)))\\right))|$ \\textcolor{green}{(green)} versions, $\\frac{4}{5}e^{\\gamma}\\left(log(log(T+t))+log(log(log(T+t)))\\right)$ \\textcolor{magenta}{(horizontal magenta)} modulo absent primes based growth lower bound, and $\\frac{4}{5}e^{\\gamma}\\left(log(log(\\theta_{\\chi_5(3),.)}(\\sigma+I\\*(T+t)))))\\right)$ \\textcolor{gray}{(horizontal gray)} modulo absent primes based growth.} \\tiny{peak=1+I*2648175512052631375802062083.35}
+"
+
+```
+
+```{r image_2648175512052631375802062083p35, fig.show = "hold", out.width = "50%", fig.align = "default",fig.cap=cap2}
+
+knitr::include_graphics("/home/john/pari/L_function_mesoscale_non_selfdual/graphchi53_2648175512052631375802062083p35narrow.pdf")
+
+knitr::include_graphics("/home/john/pari/L_function_mesoscale_non_selfdual/graphchi53_2648175512052631375802062083p35wide.pdf")
+
+```
+
+\newpage
+Firstly, it can be seen in figures 1 and 5, the exact L-function (gray) and partial Euler Product (blue) on S=1+I\*(T+t) overlap closely. The partial Euler Product was calculated using $1000$ primes which was found to give good convergence when $T \ll 10^{20}$ and backed up by the agreement with the exact L-function.
+
+Then for all figures 1-8, there is consistent agreement between the approximate bounds calculated by equations \eqref {eq:lb52}, \eqref {eq:lb53} (horizontal red) and the plateau (red) of the truncated (and translated) Riemann Zeta function scaled by the lowest modulo absent prime euler factors as in  equations \eqref {eq:z52}, \eqref {eq:z53}.
+
+On the right panel it can also be clearly seen that away from the central diophantine peak there is a strong self similarity in the envelope of the L-function about T+t (blue) compared to the translated Riemann Zeta function (red) scaled by euler factors of the lowest absent primes in the L-function.
+
+Next the proposed approximate Euler Product height estimate (horizontal blue for figs 1,5 and horizontal gray for the higher T figures) as in  equations \eqref {eq:est52}, \eqref {eq:est53} for large peaks on $S=1+I*(T+t)$ appears below but nominally of the magnitude of the l-function peak.
+
+Finally, the proposed truncated (and translated) Riemann Zeta Euler Product (green) scaled by the lowest modulo absent prime euler factors as in  equations \eqref {eq:ep52}, \eqref {eq:ep53} is higher than the truncated and scaled Riemann Zeta function based bound (red). As T grows the distance (for the two series figs 1-4, figs 5-8) between the truncated, euler factor scaled and translated L-function (near the real axis, equations \eqref {eq:z52}, \eqref {eq:z53}) and the similarly truncated, euler factor scaled and translated Euler product estimates from equations \eqref {eq:ep52}, \eqref {eq:ep53} grows smaller. This behaviour is similar to that observed [1,2] for the Riemann Zeta function and self-dual L-functions $\chi_3(2,.)$, $\chi_4(3,.)$, $\chi_5(4,.)$ and $\chi_{15}(14,.)$ at large diophantine peaks on the line S=1+I\*T.
+
+
+
+##Behaviour of L-function Type II peak mesoscale structure
+
+For figures 9-10, at known points $1+I\*(T+t)$ where the Riemann Zeta function has large diophantine peaks [16-21], the L-function partial Euler product is compared to the exact L-function about the real axis $1+I\*t$ and as $T \rightarrow \infty$
+
+\begin{align}
+|EP_{L\left(\chi_5(2,.),\sigma+I*(T+t),N \rightarrow \infty\right)}|_{\text{about large } \zeta(s) \text{ peaks}} &\sim |L\left(\chi_5(2,.),\sigma+I\*t\right)| \\
+|EP_{L\left(\chi_5(3,.),\sigma+I*(T+t),N \rightarrow \infty\right)}|_{\text{about large } \zeta(s) \text{ peaks}} &\sim |L\left(\chi_5(3,.),\sigma+I\*t\right)| \\
+&\text{ where } \sigma \ge 1 \text{ and } T \rightarrow \infty \nonumber
+\end{align}
+
+where this behaviour is observed to also be followed for $\sigma \ge 1$.
+
+
+
+
+```{r fig_cap_L52, echo=FALSE}
+cap2 <- "\\scriptsize{Line 1 L($\\chi_{5}(2),.),s$) mesoscale self-similarity about points that are known to correspond to three large peaks in the Riemann Zeta function at locations S=1+I*3.92e31, 1+I*2.302e39, 1+I*6.00e297 On the three panels t=(-45,45) about the location are the L-function partial Euler Product P(S,N) \\textcolor{blue}{(blue)} and the translated real axis exact L($\\chi_{5}(2),.),1+I\\*t$)} \\textcolor{green}{(green)}"
+
+```
+
+
+```{r image_L52, fig.show = "hold", out.width = "33%", fig.align = "default",fig.cap=cap2}
+
+knitr::include_graphics("/home/john/pari/L_function_mesoscale_non_selfdual/graphchi52_3p92e31wide.pdf")
+
+knitr::include_graphics("/home/john/pari/L_function_mesoscale_non_selfdual/graphchi52_2302202919833091938191454510490853528294wide.pdf")
+
+knitr::include_graphics("/home/john/pari/L_function_mesoscale_non_selfdual/graphchi52_6e297wide.pdf")
+
+```
+
+
+
+```{r fig_cap_L53, echo=FALSE}
+cap2 <- "\\scriptsize{Line 1 L($\\chi_{5}(3),.),s$) mesoscale self-similarity about points that are known to correspond to three large peaks in the Riemann Zeta function at locations S=1+I*3.92e31, 1+I*2.302e39, 1+I*6.00e297 On the three panels t=(-45,45) about the location are the L-function partial Euler Product P(S,N) \\textcolor{blue}{(blue)} and the translated real axis exact L($\\chi_{5}(3),.),1+I\\*t$)} \\textcolor{green}{(green)}"
+
+```
+
+
+```{r image_L53, fig.show = "hold", out.width = "33%", fig.align = "default",fig.cap=cap2}
+
+knitr::include_graphics("/home/john/pari/L_function_mesoscale_non_selfdual/graphchi53_3p92e31wide.pdf")
+
+knitr::include_graphics("/home/john/pari/L_function_mesoscale_non_selfdual/graphchi53_2302202919833091938191454510490853528294wide.pdf")
+
+knitr::include_graphics("/home/john/pari/L_function_mesoscale_non_selfdual/graphchi53_6e297wide.pdf")
+
+```
+
+
+
+
+\newpage
+##Extensive range of self-similarity for large peaks at high T
+
+As with the Riemann Zeta function [1,2], for high T, the range of the self-similarity is very extensive. 
+
+The left panel of figure 11, shows for $L(\chi_5(2,.))$ a type I self-similarity satellite peak at (centre location)+1642277008512931327065919901.31 associated with the type II mesoscale centre at $1+I*2302202919833091938191454510490853528294$. This figure is a reasonable reflection of the L-function mesoscale behaviour about $1+I*1642277008512931327065919901.31$ shown in figure 4. 
+
+The right panel of figure 11, shows for $L(\chi_5(2,.))$ a type II self-similarity satellite peaks at (centre location)+39246764589894309155251169284104.0506 associated with the type II mesoscale centre at $1+I*2302202919833091938191454510490853528294$. This figure is a reasonable reflection of the L-function mesoscale behaviour about $1+I*39246764589894309155251169284104.0506$ shown in the first panel of figure 9.
+.
+
+
+
+
+```{r fig_cap_L52_satellite, echo=FALSE}
+cap2 <- "\\scriptsize{Line 1 L($\\chi_{5}(2),.),s$) mesoscale self-similarity satellites about a type II self-similarity point that are known to correspond to a large diophantine peak in the Riemann Zeta function at locations S=1+I*(2302202919833091938191454510490853528294. Left panel (centre)+\\textcolor{blue}{1642277008512931327065919901.31}) Right panel (centre)+\\textcolor{blue}{39246764589894309155251169284104.0506} The graph has span t=(-45,45) about the location for the L-function partial Euler Product P(1+I(T+t),N) \\textcolor{blue}{(blue)} and the translated real axis L-function partial Euler product P(1+I(t),N)} \\textcolor{green}{(green)}"
+
+```
+
+
+
+
+
+
+
+```{r image_L52_satellite, fig.show = "hold", out.width = "50%", fig.align = "default",fig.cap=cap2}
+
+
+knitr::include_graphics("/home/john/pari/L_function_mesoscale_non_selfdual/graphchi52_2302202919833091938191454510490853528294wide_1642277008512931327065919901p31satellite.pdf")
+
+knitr::include_graphics("/home/john/pari/L_function_mesoscale_non_selfdual/graphchi52_2302202919833091938191454510490853528294wide_39246764589894309155251169284104p0506satellite.pdf")
+
+
+```
+
+
+The left panel of figure 12, shows for $L(\chi_5(3,.))$ a type I self-similarity satellite peak at (centre location)+1642277008512931327065919901.31 associated with the type II mesoscale centre at $1+I*2302202919833091938191454510490853528294$. This figure is a reasonable reflection of the L-function mesoscale behaviour about $1+I*2648175512052631375802062083.35$ shown in figure 8. 
+
+The right panel of figure 12, shows for $L(\chi_5(3,.))$ a type II self-similarity satellite peaks at (centre location)+39246764589894309155251169284104.0506 associated with the type II mesoscale centre at $1+I*2302202919833091938191454510490853528294$. This figure is a reasonable reflection of the L-function mesoscale behaviour about $1+I*39246764589894309155251169284104.0506$ shown in the first panel of figure 10.
+.
+
+
+
+
+```{r fig_cap_L53_satellite, echo=FALSE}
+cap2 <- "\\scriptsize{Line 1 L($\\chi_{5}(3),.),s$) mesoscale self-similarity satellites about a type II self-similarity point that are known to correspond to a large diophantine peak in the Riemann Zeta function at locations S=1+I*(2302202919833091938191454510490853528294. Left panel (centre)+\\textcolor{blue}{2648175512052631375802062083.35}) Right panel (centre)+\\textcolor{blue}{39246764589894309155251169284104.0506} The graph has span t=(-45,45) about the location for the L-function partial Euler Product P(1+I(T+t),N) \\textcolor{blue}{(blue)} and the translated real axis L-function partial Euler product P(1+I(t),N)} \\textcolor{green}{(green)}"
+
+```
+
+
+
+
+
+
+
+```{r image_L53_satellite, fig.show = "hold", out.width = "50%", fig.align = "default",fig.cap=cap2}
+
+
+knitr::include_graphics("/home/john/pari/L_function_mesoscale_non_selfdual/graphchi53_2302202919833091938191454510490853528294wide_2648175512052631375802062083p35satellite.pdf")
+
+knitr::include_graphics("/home/john/pari/L_function_mesoscale_non_selfdual/graphchi53_2302202919833091938191454510490853528294wide_39246764589894309155251169284104p0506satellite.pdf")
+
+
+```
+
+\newpage
+##Behaviour of L-function Type III peak mesoscale structure
+
+For figures 13-14, at known points $1+I\*(T+t)$ where the $\chi_5(2,.)$ ($\chi_5(3,.)$) pair dual L-function respectively $\chi_5(3,.)$ ($\chi_5(2,.)$) has a large diophantine peak, the L-function partial Euler product is compared to the exact $\chi_5(4,.)$ L-function about the real axis $1+I\*t$ and as $T \rightarrow \infty$
+
+\begin{align}
+|EP_{L\left(\chi_5(2,.),\sigma+I*(T+t),N \rightarrow \infty\right)}|_{\text{about large } \chi_5(3,.) \text{ peaks}} &\sim |L\left(\chi_5(4,.),\sigma+I\*t\right)| \\
+|EP_{L\left(\chi_5(3,.),\sigma+I*(T+t),N \rightarrow \infty\right)}|_{\text{about large } \chi_5(2,.) \text{ peaks}} &\sim |L\left(\chi_5(4,.),\sigma+I\*t\right)| \\
+&\text{ where } \sigma \ge 1 \text{ and } T \rightarrow \infty \nonumber
+\end{align}
+
+where this behaviour is observed to also be followed for $\sigma \ge 1$.
+
+
+
+
+```{r fig_cap_L52_L53peak, echo=FALSE}
+cap2 <- "\\scriptsize{Line 1 L($\\chi_{5}(2),.),s$) type III mesoscale self-similarity about points that are known to correspond to large peaks in pair dual L-function L($\\chi_{5}(3),.),s$) at location S=1+I*2648175512052631375802062083.35 (see fig 8) On the panel t=(-45,45) about the location are the L-function partial Euler Product P(S,N) \\textcolor{blue}{(blue)} and the translated real axis exact L($\\chi_{5}(4),.),1+I\\*t$) function} \\textcolor{green}{(green)}"
+
+```
+
+
+```{r image_L52_L53peak, fig.show = "hold", out.width = "50%", fig.align = "default",fig.cap=cap2}
+
+knitr::include_graphics("/home/john/pari/L_function_mesoscale_non_selfdual/graphchi52_2648175512052631375802062083p35wide.pdf")
+
+```
+
+
+
+```{r fig_cap_L53_L52peak, echo=FALSE}
+cap2 <- "\\scriptsize{Line 1 L($\\chi_{5}(3),.),s$) type III mesoscale self-similarity about points that are known to correspond to large peaks in pair dual L-function L($\\chi_{5}(2),.),s$) at location S=1+I*1642277008512931327065919901.31 (see fig 4) On the panel t=(-45,45) about the location are the L-function partial Euler Product P(S,N) \\textcolor{blue}{(blue)} and the translated real axis exact L($\\chi_{5}(4),.),1+I\\*t$) function} \\textcolor{green}{(green)}"
+
+```
+
+
+```{r image_L53_L52peak, fig.show = "hold", out.width = "50%", fig.align = "default",fig.cap=cap2}
+
+
+knitr::include_graphics("/home/john/pari/L_function_mesoscale_non_selfdual/graphchi53_1642277008512931327065919901p31wide.pdf")
+
+```
+
+
+#Approximations for 5-periodic Davenport-Heilbronn function large peak heights and mesoscale structure near diophantine peaks in upper complex plane $S=\sigma+I\*(T=t)$ for $t < T$. 
+
+Since the Davenport-Heilbronn 5-periodic functions $f_1(s)$, $f_2(s)$ are linear combinations of the  $\chi_5(2,.)$ and $\chi_5(3,.)$ 1st degree self-dual L-functions, the self-similarity observed for $f_1(s)$, $f_2(s)$ is expected to contain a mixture of $\chi_5(2,.)$ and $\chi_5(3,.)$ self-similarity near diophantine points
+
+##Type I - large $f_1(s)$, $f_2(s)$ diophantine peaks (a mixture of type I and III $\chi_5(2,.)$ and $\chi_5(3,.)$ mesoscale structure)
+
+As shown in figures 15-22, examining and fitting the observed behaviour near large diophantine peaks along the line $S=\sigma+I*T$ when $(10^5 < T <  10^{30})$ for the $f_1(s)$, $f_2(s)$ functions (equations \eqref {eq:func1_Lcomb}, \eqref {eq:func2_Lcomb}) useful approximations for the mesoscale structure surrounding large diophantine peaks are of the form
+
+(i) a linear combination of type I and type III $\chi_5(2,.)$ and $\chi_5(3,.)$ mesoscale structure comprising (i) a truncated Riemann Zeta function (about the pole) adjusted for the absent modulo primes in the 5-periodic Davenport_Heilbronn function and (ii) the $\chi_5(4.)$ function about the real axis
+
+\begin{align}
+|f_1(\sigma+I\*(T+t))| &\sim \frac{1}{2cos(\theta_1)} \Big [ e^{i\theta_1}(1-\frac{1}{5^{(\sigma+I\*t)}})\zeta(\sigma+I\*t) + e^{-i\theta_1}L(\chi_5(4,.),\sigma+I\*t) \Big ] \text{ when peak is due to }L(\chi_5(3,.),s) \label{eq:zf1chi53}\\
+&\sim \frac{1}{2cos(\theta_1)} \Big [ e^{i\theta_1}L(\chi_5(4,.),\sigma+I\*t) + e^{-i\theta_1}(1-\frac{1}{5^{(\sigma+I\*t)}})\zeta(\sigma+I\*t)  \Big ] \text{ when peak is due to }L(\chi_5(2,.),s) \label{eq:zf1chi52}\\
+&\text{ where } |t| > \frac{\gamma}{\left(log(log(T+t))+log(log(log(T+t)))\right)} \text{ and } \sigma \ge 1 \nonumber
+\end{align}
+
+\begin{align}
+|f_2(\sigma+I\*(T+t))| &\sim \frac{I}{2sin(\theta_1)} \Big [ e^{i\theta_1}(1-\frac{1}{5^{(\sigma+I\*t)}})\zeta(\sigma+I\*t) - e^{-i\theta_1}L(\chi_5(4,.),\sigma+I\*t) \Big ] \text{ when peak is due to }L(\chi_5(3,.),s) \label{eq:zf2chi53}\\
+&\sim \frac{I}{2sin(\theta_1)} \Big [ e^{i\theta_1}L(\chi_5(4,.),\sigma+I\*t) - e^{-i\theta_1}(1-\frac{1}{5^{(\sigma+I\*t)}})\zeta(\sigma+I\*t) \Big ] \text{ when peak is due to }L(\chi_5(2,.),s) \label{eq:zf2chi52}\\
+&\text{ where } |t| > \frac{\gamma}{\left(log(log(T+t))+log(log(log(T+t)))\right)} \text{ and } \sigma \ge 1 \nonumber
+\end{align}
+
+
+(ii) a linear combination of type I and type III $\chi_5(2,.)$ and $\chi_5(3,.)$ mesoscale structure comprising (i) a truncated Euler Product (about the pole) adjusted for the absent modulo primes in the 5-periodic Davenport_Heilbronn function and accounting for the difference in the extended Theta functions (and hence the density of the function zeroes for the L-function $\chi_5(2,.)$ and $\chi_5(3,.)$ producing the peak) and (ii) the $\chi_5(4.)$ function about the real axis 
+
+\begin{align}
+|f_1(\sigma+I\*(T+t))| &\sim \frac{1}{2cos(\theta_1)} \Big [ e^{i\theta_1}(1-\frac{1}{5^{(\sigma+I\*t)}})\left({\Large\prod_{p=2}^{\lfloor 2\pi log(\theta_{\chi_5(3,.)}(\sigma+I\*(T+t))\rceil}} \frac{1}{(1-1/p^{(\sigma+I\*t)})}\right) \nonumber \\ &\qquad \qquad \qquad + e^{-i\theta_1}L(\chi_5(4,.),\sigma+I\*t) \Big ] \text{ when peak is due to }L(\chi_5(3,.),s) \label{eq:epf1chi53}\\
+&\sim \frac{1}{2cos(\theta_1)} \Big [ e^{i\theta_1}L(\chi_5(4,.),\sigma+I\*t) \nonumber \\ &\qquad + e^{-i\theta_1}(1-\frac{1}{5^{(\sigma+I\*t)}})\left({\Large\prod_{p=2}^{\lfloor 2\pi log(\theta_{\chi_5(2,.)}(\sigma+I\*(T+t))\rceil}} \frac{1}{(1-1/p^{(\sigma+I\*t)})}\right)  \Big ] \text{ when peak is due to }L(\chi_5(2,.),s) \label{eq:epf1chi52}\\
+&\text{for } \sigma \ge 1 \nonumber
+\end{align}
+
+\begin{align}
+|f_2(\sigma+I\*(T+t))| &\sim \frac{I}{2sin(\theta_1)} \Big [ e^{i\theta_1}(1-\frac{1}{5^{(\sigma+I\*t)}})\left({\Large\prod_{p=2}^{\lfloor 2\pi log(\theta_{\chi_5(3,.)}(\sigma+I\*(T+t))\rceil}} \frac{1}{(1-1/p^{(\sigma+I\*t)})}\right) \nonumber \\ &\qquad \qquad \qquad - e^{-i\theta_1}L(\chi_5(4,.),\sigma+I\*t)\Big ] \text{ when peak is due to }L(\chi_5(3,.),s) \label{eq:epf2chi53}\\
+&\sim \frac{I}{2sin(\theta_1)} \Big [ e^{i\theta_1}L(\chi_5(4,.),\sigma+I\*t) \nonumber \\ &\qquad - e^{-i\theta_1}(1-\frac{1}{5^{(\sigma+I\*t)}})\left({\Large\prod_{p=2}^{\lfloor 2\pi log(\theta_{\chi_5(2,.)}(\sigma+I\*(T+t))\rceil}} \frac{1}{(1-1/p^{(\sigma+I\*t)})}\right) \Big ] \text{ when peak is due to }L(\chi_5(2,.),s) \label{eq:epf2chi52}\\
+&\text{for } \sigma \ge 1 \nonumber
+\end{align}
+
+where the extended $\theta$ functions are obtained from the functional equation of the L-function (and extended Riemann Siegel Theta and Z function formalism [9])
+
+\begin{align}
+\theta_{\chi_5(2,.)}(s) &= -\frac{1}{2}\cdot \Im(log\{\epsilon \cdot 5^{(\frac{1}{2}-s)}\cdot 2^{s}\cdot \pi^{-(1-s)}\cdot sin(\pi\*s/2)\cdot \Gamma(1-s)\}) \\
+\theta_{\chi_5(3,.)}(s) &= -\frac{1}{2}\cdot \Im(log\{\epsilon^{*} \cdot 5^{(\frac{1}{2}-s)}\cdot 2^{s}\cdot \pi^{-(1-s)}\cdot sin(\pi\*s/2)\cdot \Gamma(1-s)\}) 
+\end{align}
+
+where $\epsilon =$ \scriptsize{0.8506508083520399321815404970630110... + $I\cdot$ 0.5257311121191336060256690848478766...} [3,10]
+
+\normalsize
+where at high T the $log(\Gamma(1-s))$ term dominates (as for the $\theta(T)$ function of $\zeta(s)$) but the other terms contribute at lower values. 
+
+An adaptation of the Granville and Soundararajan's [11-15] conjectured lower bound for $\zeta(s)$ to these (two component) Davenport-Heilbronn functions is to produce a mixture formula of type I and type III mesoscale contributions (translated from the real axis point S=1) from the behaviour for $\chi_5(2,.)$ and $\chi_5(3,.)$. In particular,
+
+\begin{align}
+|f_1(\sigma+I\*(T+t))|_{LB} &\sim  \Big | \frac{1}{2cos(\theta_1)} \Big \{ e^{i\theta_1}(1-\frac{1}{5^{\sigma}})\cdot\frac{4}{5}e^{\gamma}\left(log(log(T+t))+log(log(log(T+t)))\right)  + \nonumber \\
+&\qquad e^{-i\theta_1}L(\chi_5(4,.),\sigma)  \Big \}\Big | \text{ when peak is due to }L(\chi_5(3,.),s) \label{eq:lbzf1chi53} \\
+|f_1(\sigma+I\*(T+t))|_{LB} &\sim  \Big | \frac{1}{2cos(\theta_1)} \Big \{ e^{-i\theta_1}(1-\frac{1}{5^{\sigma}})\cdot\frac{4}{5}e^{\gamma}\left(log(log(T+t))+log(log(log(T+t)))\right) + \nonumber \\
+&\qquad e^{i\theta_1}L(\chi_5(4,.),\sigma)  \Big \}\Big | \text{ when peak is due to }L(\chi_5(2,.),s) \label{eq:lbzf1chi52} 
+\end{align}
+
+and 
+
+\begin{align}
+|f_2(\sigma+I\*(T+t))|_{LB} &\sim  \Big | \frac{I}{2sin(\theta_1)} \Big \{ e^{i\theta_1}(1-\frac{1}{5^{\sigma}})\cdot\frac{4}{5}e^{\gamma}\left(log(log(T+t))+log(log(log(T+t)))\right) - \nonumber \\
+&\qquad e^{-i\theta_1}L(\chi_5(4,.),\sigma)  \Big \}\Big | \text{ when peak is due to }L(\chi_5(3,.),s) \label{eq:lbzf2chi53} \\
+|f_2(\sigma+I\*(T+t))|_{LB} &\sim  \Big | \frac{I}{2sin(\theta_1)} \Big \{ -e^{-i\theta_1}(1-\frac{1}{5^{\sigma}})\cdot\frac{4}{5}e^{\gamma}\left(log(log(T+t))+log(log(log(T+t)))\right) + \nonumber \\
+&\qquad e^{i\theta_1}L(\chi_5(4,.),\sigma)  \Big \}\Big | \text{ when peak is due to }L(\chi_5(2,.),s) \label{eq:lbzf2chi52} 
+\end{align}
+
+and an nominal lower estimate of the expected Euler Product height using the average number of Riemann Zeta zeroes (to height $T+t$) is given by
+
+\begin{align}
+|EP_{f_1(\sigma+I\*(T+t))}| &\gtrsim \Big | \frac{1}{2cos(\theta_1)} \Big \{ e^{i\theta_1}(1-\frac{1}{5^{\sigma}})\cdot\frac{4}{5}e^{\gamma}\left(log(log(\theta_{\chi_5(3,.)}(s)))\right)  + \nonumber \\
+&\qquad e^{-i\theta_1}L(\chi_5(4,.),\sigma)  \Big \}\Big | \text{ when peak is due to }L(\chi_5(3,.),s) \label{eq:estf1chi53} \\
+|EP_{f_1(\sigma+I\*(T+t))}| &\gtrsim \Big | \frac{1}{2cos(\theta_1)} \Big \{ e^{-i\theta_1}(1-\frac{1}{5^{\sigma}})\cdot\frac{4}{5}e^{\gamma}\left(log(log(\theta_{\chi_5(2,.)}(s)))\right) + \nonumber \\
+&\qquad e^{i\theta_1}L(\chi_5(4,.),\sigma)  \Big \}\Big | \text{ when peak is due to }L(\chi_5(2,.),s) \label{eq:estf1chi52}
+\end{align}
+
+\begin{align}
+|EP_{f_2(\sigma+I\*(T+t))}| &\gtrsim \Big | \frac{I}{2sin(\theta_1)} \Big \{ e^{i\theta_1}(1-\frac{1}{5^{\sigma}})\cdot\frac{4}{5}e^{\gamma}\left(log(log(\theta_{\chi_5(3,.)}(s)))\right) - \nonumber \\
+&\qquad e^{-i\theta_1}L(\chi_5(4,.),\sigma)  \Big \}\Big | \text{ when peak is due to }L(\chi_5(3,.),s) \label{eq:estf2chi53} \\
+|EP_{f_2(\sigma+I\*(T+t))}| &\gtrsim \Big | \frac{I}{2sin(\theta_1)} \Big \{ -e^{-i\theta_1}(1-\frac{1}{5^{\sigma}})\cdot\frac{4}{5}e^{\gamma}\left(log(log(\theta_{\chi_5(2,.)}(s)))\right) + \nonumber \\
+&\qquad e^{i\theta_1}L(\chi_5(4,.),\sigma)  \Big \}\Big | \text{ when peak is due to }L(\chi_5(2,.),s) \label{eq:estf2chi52}
+\end{align}
+
+
+
+where the average number of L-function zeroes contained in the critical strip up to height T is 
+\begin{equation}
+\bar{N}_{zeroes}(T)\sim \frac{\theta_{\chi_N(q,.)}(\sigma+I\*T)}{\pi}+1
+\end{equation}
+
+(in $\chi_N(q,.)$ notation, N is the conductor parameter describing that the Dirichlet character $\chi$ of the L function is mod N in periodicity). It is an interesting question whether $\chi_5(2,.)$ and $\chi_5(3,.)$ could have a diophantine peak at the same point.
+
+
+##Type II - points which correspond to diophantine peaks from Riemann Zeta function 
+
+It is observed for 5-periodic Davenport-Heilbronn functions of that at points corresponding to such large Riemann Zeta function diophantine peaks there is a second type of mesoscale self-similarity
+
+(i) a (truncated) pair dual L-function (about the real axis at S=1) 
+
+\begin{align}
+|L\left(\chi_5(2,.),\sigma+I\*(T+t)\right)| &\sim |L\left(\chi_5(2,.),\sigma+I\*t\right)|  \text{ when location corresponds to $\zeta(s)$ peak}\\
+|L\left(\chi_5(3,.),\sigma+I\*(T+t)\right)| &\sim |L\left(\chi_5(3,.),\sigma+I\*t\right)|  \text{ when location corresponds to $\zeta(s)$ peak}\\
+&\text{ where } \sigma \ge 1 \nonumber
+\end{align}
+
+(ii) a (truncated) pair dual Euler Product (about the real axis at S=1) 
+\begin{align}
+|EP_{L\left(\chi_5(2,.),\sigma+I*(T+t),N \rightarrow \infty\right)}| &\sim \left|{\Large\prod_{p=2}^{\lfloor 2\pi log(\theta_{\chi_5(2,.)}(\sigma+I\*(T+t)))\rceil}} \frac{1}{(1-\chi_5(2,.)/p^{(\sigma+I\*t)})}\right|  \text{ when location corresponds to $\zeta(s)$ peak} \\
+|EP_{L\left(\chi_5(3,.),\sigma+I*(T+t),N \rightarrow \infty\right)}| &\sim \left|{\Large\prod_{p=2}^{\lfloor 2\pi log(\theta_{\chi_5(3,.)}(\sigma+I\*(T+t)))\rceil}} \frac{1}{(1-\chi_5(3,.)/p^{(\sigma+I\*t)})}\right|  \text{ when location corresponds to $\zeta(s)$ peak}\\
+\text{for } \sigma \ge 1 \nonumber
+\end{align}
+ 
+
+It is also observed that these type II self-similarity structures in the L-function Euler Product on $S=1+I\*T$ have satellite peaks at $T+T_2+t$ where $t < T_2 < T$ and $T_2$ corresponds to known type I or type II peaks. 
+
+
+##Behaviour of 5-periodic Davenport-Heilbronn Type I peak mesoscale structure
+
+For figures 15 and 19, the absolute values of the exact 
+
+(i) $|f_1(\sigma+I\*(T+t))|$, and
+(ii) $|f_2(\sigma+I\*(T+t))|$ 
+
+functions (gray) and overlapping partial Euler product (blue) for spans of t=(-2,2) and t=(-45,45) about low T large diophantine peaks on S=1+I\*(T+t) is compared to linear combination of partial Euler Products from $\chi_5(2,.)$ and $\chi_5(3,.)$ L-functions, on the line 1+I\*(T+t) compared to linear combination of truncated (and translated) $\zeta(s)$ Euler Product 1+I\*t and $\chi_5(4,.)$ function.
+
+\begin{enumerate}
+\item (horizontal red) Granville and Soundararajan's [11] conjectured lower bound equation under the Riemann Hypothesis adjusted (i) for absent modulo primes in the L-function components comprising the Davenport-Heilbronn function and (ii) only one component is producing the diophantine peak, which depending on whether $\chi_5(2,.)$ or $\chi_5(3,.)$ is the source of the diophantine peak and the 5-periodic Davenport-Heilbronn function $f_1(s)$, $f_2(s)$ under investigation, results in the estimates equations \eqref {eq:lbzf1chi53}-\eqref {eq:lbzf2chi52}  
+\item (red) mixture of (i) translated, scaled and truncated Riemann Zeta function (about the pole) adjusted for absent modulo primes and (ii) $\chi_5(4,.)$ L-function using equations \eqref {eq:zf1chi53}-\eqref {eq:zf2chi52}
+\item (green) mixture of (i) translated, scaled and truncated Riemann Zeta Euler Product (about the pole) adjusted for absent modulo primes and (ii) $\chi_5(4,.)$ L-function using equations using equations \eqref {eq:epf1chi53}-\eqref {eq:epf2chi52}
+\item (horizontal blue) approximate Euler Product height using the average number of L-function zeroes in the critical strip (to height $T+t$) and whether $\chi_5(2,.)$ or $\chi_5(3,.)$ is the source of the diophantine peak via equations \eqref {eq:estf1chi53}-\eqref {eq:estf2chi52}
+\end{enumerate}
+
+Again the first graphs in a series of 4 for each $f_1(s)$ ($f_2(s)$) related Davenport-Heilbronn function type I peaks are intended to confirm the agreement between the partial Euler product estimate and exact Davenport-Heilbronn function away from the real axis. For large peaks (in the other graphs) higher along the imaginary axis the computation time for the exact Davenport-Heilbronn function is very long and so was not conducted.
+
+The weak oscillatory divergence in the partial Euler products of equations \eqref {eq:epf1chi53}-\eqref {eq:epf2chi52} can be seen in the right panel of each graph with the minor oscillations of the truncated (and translated from the real axis) partial Euler product (green line) near the main peak.
+
+
+
+\newpage
+### 5-periodic Davenport-Heilbronn function $f_1(s)$ mixture of type I and III mesoscale structure (L-function $L(\chi_{5}(2,.),s)$ related peaks) 
+
+
+```{r fig_cap_953p785_f1, echo=FALSE}
+cap2 <- "\\scriptsize{Line 1 $f_1(s)$ mesoscale self-similarity about the large peak at location S=1+I*953.785 calculated by linear combinations of (i) $(\\chi_5(2),.)$ and $(\\chi_5(3),.)$ and fitted by linear combinations of (ii) $(\\chi_5(4),.)$ and $(\\zeta(s))$. Left panel t=(-2,2), Right panel t=(-45,45) about the peak using (i) equation \\eqref{eq:eq_epfunc1} with partial Euler Products from $\\chi_5(2,.)$ and $\\chi_5(3,.)$ \\textcolor{blue}{(blue)}, (ii) equation \\eqref {eq:zf1chi52} with $(\\chi_5(4),.)$ and truncated $\\zeta(\\sigma+I*t)$ \\textcolor{red}{(red)}, (iii) equation \\eqref {eq:epf1chi52} \\textcolor{green}{(green)} versions, (iv) equation \\eqref {eq:lbzf1chi52} \\textcolor{magenta}{(horizontal magenta)} approximate lower bound, (v) the exact |$f_1(s)$| \\textcolor{gray}{(gray)} function equation \\eqref{eq:func1_Lcomb} and (vi) equation \\eqref {eq:estf1chi52} \\textcolor{blue}{(horizontal blue)}  approximation.} \\tiny{peak=1+I*953.785} \\scriptsize{Type Ia $f_1(s)$ peak - equation \\eqref {eq:zf1chi52}}"
+
+```
+
+```{r image_953p785_f1, fig.show = "hold", out.width = "50%", fig.align = "default",fig.cap=cap2}
+
+knitr::include_graphics("/home/john/pari/L_function_mesoscale_non_selfdual/graphDHf1_953p785narrow.pdf")
+
+knitr::include_graphics("/home/john/pari/L_function_mesoscale_non_selfdual/graphDHf1_953p785wide.pdf")
+
+```
+
+```{r fig_cap_1542818784p48_f1, echo=FALSE}
+cap2 <- "\\scriptsize{Line 1 $f_1(s)$ mesoscale self-similarity about the large peak at location S=1+I*1.554e9 calculated by linear combinations of (i) $(\\chi_5(2),.)$ and $(\\chi_5(3),.)$ and fitted by linear combinations of (ii) $(\\chi_5(4),.)$ and $(\\zeta(s))$. Left panel t=(-2,2), Right panel t=(-45,45) about the peak using (i) equation \\eqref{eq:eq_epfunc1} with partial Euler Products from $\\chi_5(2,.)$ and $\\chi_5(3,.)$ \\textcolor{blue}{(blue)}, (ii) equation \\eqref {eq:zf1chi52} with $(\\chi_5(4),.)$ and truncated $\\zeta(\\sigma+I*t)$ \\textcolor{red}{(red)}, (iii) equation \\eqref {eq:epf1chi52} \\textcolor{green}{(green)} versions, (iv) equation \\eqref {eq:lbzf1chi52} \\textcolor{magenta}{(horizontal magenta)} approximate lower bound, and (v) equation \\eqref {eq:estf1chi52} \\textcolor{gray}{(horizontal gray)} approximation.} \\tiny{peak=1+I*1542818784.48} \\scriptsize{Type Ia $f_1(s)$ peak - equation \\eqref {eq:zf1chi52}}
+"
+
+```
+
+```{r image_1542818784p48_f1, fig.show = "hold", out.width = "50%", fig.align = "default",fig.cap=cap2}
+
+knitr::include_graphics("/home/john/pari/L_function_mesoscale_non_selfdual/graphDHf1_1542818784p48narrow.pdf")
+
+knitr::include_graphics("/home/john/pari/L_function_mesoscale_non_selfdual/graphDHf1_1542818784p48wide.pdf")
+
+```
+
+```{r fig_cap_53355053210455414p34_f1, echo=FALSE}
+cap2 <- "\\scriptsize{Line 1 $f_1(s)$ mesoscale self-similarity about the large peak at location S=1+I*5.335e16 calculated by linear combinations of (i) $(\\chi_5(2),.)$ and $(\\chi_5(3),.)$ and fitted by linear combinations of (ii) $(\\chi_5(4),.)$ and $(\\zeta(s))$. Left panel t=(-2,2), Right panel t=(-45,45) about the peak using (i) equation \\eqref{eq:eq_epfunc1} with partial Euler Products from $\\chi_5(2,.)$ and $\\chi_5(3,.)$ \\textcolor{blue}{(blue)}, (ii) equation \\eqref {eq:zf1chi52} with $(\\chi_5(4),.)$ and truncated $\\zeta(\\sigma+I*t)$ \\textcolor{red}{(red)}, (iii) equation \\eqref {eq:epf1chi52} \\textcolor{green}{(green)} versions, (iv) equation \\eqref {eq:lbzf1chi52} \\textcolor{magenta}{(horizontal magenta)} approximate lower bound, and (v) equation \\eqref {eq:estf1chi52} \\textcolor{gray}{(horizontal gray)} approximation.} \\tiny{peak=1+I*53355053210455414.34} \\scriptsize{Type Ia $f_1(s)$ peak - equation \\eqref {eq:zf1chi52}}
+"
+
+```
+
+```{r image_53355053210455414p34_f1, fig.show = "hold", out.width = "50%", fig.align = "default",fig.cap=cap2}
+
+knitr::include_graphics("/home/john/pari/L_function_mesoscale_non_selfdual/graphDHf1_53355053210455414p34narrow.pdf")
+
+knitr::include_graphics("/home/john/pari/L_function_mesoscale_non_selfdual/graphDHf1_53355053210455414p34wide.pdf")
+
+```
+
+
+```{r fig_cap_1642277008512931327065919901p31_f1, echo=FALSE}
+cap2 <- "\\scriptsize{Line 1 $f_1(s)$ mesoscale self-similarity about the large peak at location S=1+I*1.642e27 calculated by linear combinations of (i) $(\\chi_5(2),.)$ and $(\\chi_5(3),.)$ and fitted by linear combinations of (ii) $(\\chi_5(4),.)$ and $(\\zeta(s))$. Left panel t=(-2,2), Right panel t=(-45,45) about the peak using (i) equation \\eqref{eq:eq_epfunc1} with partial Euler Products from $\\chi_5(2,.)$ and $\\chi_5(3,.)$ \\textcolor{blue}{(blue)}, (ii) equation \\eqref {eq:zf1chi52} with $(\\chi_5(4),.)$ and truncated $\\zeta(\\sigma+I*t)$ \\textcolor{red}{(red)}, (iii) equation \\eqref {eq:epf1chi52} \\textcolor{green}{(green)} versions, (iv) equation \\eqref {eq:lbzf1chi52} \\textcolor{magenta}{(horizontal magenta)} approximate lower bound, and (v) equation \\eqref {eq:estf1chi52} \\textcolor{gray}{(horizontal gray)} approximation.} \\tiny{peak=1+I*1642277008512931327065919901.31} \\scriptsize{Type Ia $f_1(s)$ peak - equation \\eqref {eq:zf1chi52}}"
+
+```
+
+```{r image_1642277008512931327065919901p31_f1, fig.show = "hold", out.width = "50%", fig.align = "default",fig.cap=cap2}
+
+knitr::include_graphics("/home/john/pari/L_function_mesoscale_non_selfdual/graphDHf1_1642277008512931327065919901p31narrow.pdf")
+
+knitr::include_graphics("/home/john/pari/L_function_mesoscale_non_selfdual/graphDHf1_1642277008512931327065919901p31wide.pdf")
+
+```
+
+\newpage
+### 5-periodic Davenport-Heilbronn function $f_1(s)$ mixture of type I and III mesoscale structure (L-function $L(\chi_{5}(3,.),s)$ related peaks) 
+
+```{r fig_cap_1511p75_f1, echo=FALSE}
+cap2 <- "\\scriptsize{Line 1 $f_1(s)$ mesoscale self-similarity about the large peak at location S=1+I*1511.75 calculated by linear combinations of (i) $(\\chi_5(2),.)$ and $(\\chi_5(3),.)$ and fitted by linear combinations of (ii) $(\\chi_5(4),.)$ and $(\\zeta(s))$. Left panel t=(-2,2), Right panel t=(-45,45) about the peak using (i) equation \\eqref{eq:eq_epfunc1} with partial Euler Products from $\\chi_5(2,.)$ and $\\chi_5(3,.)$ \\textcolor{blue}{(blue)}, (ii) equation \\eqref {eq:zf1chi53} with $(\\chi_5(4),.)$ and truncated $\\zeta(\\sigma+I*t)$ \\textcolor{red}{(red)}, (iii) equation \\eqref {eq:epf1chi53} \\textcolor{green}{(green)} versions, (iv) equation \\eqref {eq:lbzf1chi53} \\textcolor{magenta}{(horizontal magenta)} approximate lower bound, (v) the exact |$f_1(s)$| \\textcolor{gray}{(gray)} function  equation \\eqref{eq:func1_Lcomb} and (vi) equation \\eqref {eq:estf1chi53} \\textcolor{blue}{(horizontal blue)} approximation.} \\tiny{peak=1+I*1511.75} \\scriptsize{Type Ib $f_1(s)$ peak - equation \\eqref {eq:zf1chi53}}"
+
+```
+
+```{r image_1511p75_f1, fig.show = "hold", out.width = "50%", fig.align = "default",fig.cap=cap2}
+
+knitr::include_graphics("/home/john/pari/L_function_mesoscale_non_selfdual/graphDHf1_1511p75narrow.pdf")
+
+knitr::include_graphics("/home/john/pari/L_function_mesoscale_non_selfdual/graphDHf1_1511p75wide.pdf")
+
+```
+
+
+
+
+```{r fig_cap_327949557p75_f1, echo=FALSE}
+cap2 <- "\\scriptsize{Line 1 $f_1(s)$ mesoscale self-similarity about the large peak at location S=1+I*3.279e8 calculated by linear combinations of (i) $(\\chi_5(2),.)$ and $(\\chi_5(3),.)$ and fitted by linear combinations of (ii) $(\\chi_5(4),.)$ and $(\\zeta(s))$. Left panel t=(-2,2), Right panel t=(-45,45) about the peak using (i) equation \\eqref{eq:eq_epfunc1} with partial Euler Products from $\\chi_5(2,.)$ and $\\chi_5(3,.)$ \\textcolor{blue}{(blue)}, (ii) equation \\eqref {eq:zf1chi53} with $(\\chi_5(4),.)$ and truncated $\\zeta(\\sigma+I*t)$ \\textcolor{red}{(red)}, (iii) equation \\eqref {eq:epf1chi53} \\textcolor{green}{(green)} versions, (iv) equation \\eqref {eq:lbzf1chi53} \\textcolor{magenta}{(horizontal magenta)} approximate lower bound, and (v) equation \\eqref {eq:estf1chi53} \\textcolor{gray}{(horizontal gray)} approximation.} \\tiny{peak=1+I*327949557.75} \\scriptsize{Type Ia $f_1(s)$ peak - equation \\eqref {eq:zf1chi53}}"
+
+```
+
+```{r image_327949557p75_f1, fig.show = "hold", out.width = "50%", fig.align = "default",fig.cap=cap2}
+
+knitr::include_graphics("/home/john/pari/L_function_mesoscale_non_selfdual/graphDHf1_327949557p7narrow.pdf")
+
+knitr::include_graphics("/home/john/pari/L_function_mesoscale_non_selfdual/graphDHf1_327949557p7wide.pdf")
+
+```
+
+
+
+```{r fig_cap_4131733959093848042p475_f1, echo=FALSE}
+cap2 <- "\\scriptsize{Line 1 $f_1(s)$ mesoscale self-similarity about the large peak at location S=1+I*4.131e18 calculated by linear combinations of (i) $(\\chi_5(2),.)$ and $(\\chi_5(3),.)$ and fitted by linear combinations of (ii) $(\\chi_5(4),.)$ and $(\\zeta(s))$. Left panel t=(-2,2), Right panel t=(-45,45) about the peak using (i) equation \\eqref{eq:eq_epfunc1} with partial Euler Products from $\\chi_5(2,.)$ and $\\chi_5(3,.)$ \\textcolor{blue}{(blue)}, (ii) equation \\eqref {eq:zf1chi53} with $(\\chi_5(4),.)$ and truncated $\\zeta(\\sigma+I*t)$ \\textcolor{red}{(red)}, (iii) equation \\eqref {eq:epf1chi53} \\textcolor{green}{(green)} versions, (iv) equation \\eqref {eq:lbzf1chi53} \\textcolor{magenta}{(horizontal magenta)} approximate lower bound, and (v) equation \\eqref {eq:estf1chi53} \\textcolor{gray}{(horizontal gray)} approximation.} \\tiny{peak=1+I*4131733959093848042.475} \\scriptsize{Type Ia $f_1(s)$ peak - equation \\eqref {eq:zf1chi53}}"
+
+```
+
+```{r image_4131733959093848042p475_f1, fig.show = "hold", out.width = "50%", fig.align = "default",fig.cap=cap2}
+
+knitr::include_graphics("/home/john/pari/L_function_mesoscale_non_selfdual/graphDHf1_4131733959093848042p475narrow.pdf")
+
+knitr::include_graphics("/home/john/pari/L_function_mesoscale_non_selfdual/graphDHf1_4131733959093848042p475wide.pdf")
+
+```
+
+
+
+```{r fig_cap_2648175512052631375802062083p35_f1, echo=FALSE}
+cap2 <- "\\scriptsize{Line 1 $f_1(s)$ mesoscale self-similarity about the large peak at location S=1+I*2.648e27 calculated by linear combinations of (i) $(\\chi_5(2),.)$ and $(\\chi_5(3),.)$ and fitted by linear combinations of (ii) $(\\chi_5(4),.)$ and $(\\zeta(s))$. Left panel t=(-2,2), Right panel t=(-45,45) about the peak using (i) equation \\eqref{eq:eq_epfunc1} with partial Euler Products from $\\chi_5(2,.)$ and $\\chi_5(3,.)$ \\textcolor{blue}{(blue)}, (ii) equation \\eqref {eq:zf1chi53} with $(\\chi_5(4),.)$ and truncated $\\zeta(\\sigma+I*t)$ \\textcolor{red}{(red)}, (iii) equation \\eqref {eq:epf1chi53} \\textcolor{green}{(green)} versions, (iv) equation \\eqref {eq:lbzf1chi53} \\textcolor{magenta}{(horizontal magenta)} approximate lower bound, and (v) equation \\eqref {eq:estf1chi53} \\textcolor{gray}{(horizontal gray)} approximation.} \\tiny{peak=1+I*2648175512052631375802062083.35} \\scriptsize{Type Ia $f_1(s)$ peak - equation \\eqref {eq:zf1chi53}}"
+
+```
+
+```{r image_2648175512052631375802062083p35_f1, fig.show = "hold", out.width = "50%", fig.align = "default",fig.cap=cap2}
+
+knitr::include_graphics("/home/john/pari/L_function_mesoscale_non_selfdual/graphDHf1_2648175512052631375802062083p35narrow.pdf")
+
+knitr::include_graphics("/home/john/pari/L_function_mesoscale_non_selfdual/graphDHf1_2648175512052631375802062083p35wide.pdf")
+
+```
+
+\newpage
+Again as with the analysis for $\chi_5(3,.)$ and $\chi_5(2,.)$ for figures 1-8, it can be seen in figures 15 and 19, that the exact Davenport-Heilbronn $f_1(s)$ function (gray) equation \eqref {eq:func1_Lcomb} and partial Euler Product (blue) equation \eqref {eq:eq_epfunc1} on S=1+I\*(T+t) overlap closely. The linear combination of partial Euler Products was calculated using $1000$ primes which was found to give good convergence when $T \ll 10^{20}$ and backed up by the agreement with the exact L-function.
+
+Then for figures 15-22 with $\chi_5(2,.)$ related diophantine peaks, there is consistent agreement between the approximate bounds calculated by the equation \eqref {eq:lbzf1chi52} (horizontal red) and the plateau (red) equation \eqref {eq:zf1chi52} formed by a linear combination of a truncated and translated Riemann Zeta function scaled by euler factors and the self-dual $\chi_5(4,.)$ function. On the right panel it can also be clearly seen that away from the central diophantine peak there is a strong self similarity in the envelope of the L-function about T+t (blue) compared to the linear combination of a truncated and translated Riemann Zeta function scaled by euler factors and the self-dual $\chi_5(4,.)$ function.
+
+Overall there remains consistent agreement between the approximate bounds calculated by equations \eqref {eq:lbzf1chi52}-\eqref {eq:lbzf1chi53} (horizontal red) and the plateau (red) equations \eqref {eq:zf1chi52}-\eqref {eq:zf1chi53} formed by a linear combination of a truncated and translated Riemann Zeta function scaled by euler factors and the self-dual $\chi_5(4,.)$ function. On the right panel it can also be clearly seen that away from the central diophantine peak there is a strong self similarity in the envelope of the L-function about T+t (blue) compared to the linear combination of a truncated and translated Riemann Zeta function scaled by euler factors and the self-dual $\chi_5(4,.)$ function.
+
+Next the proposed approximate Euler Product height estimate (horizontal blue for figs 15 and 19 and horizontal gray for the higher T graphs, figs 16-18 and 20-22) as in  equations \eqref {eq:estf1chi52}-\eqref {eq:estf1chi53} for large peaks on $S=1+I*(T+t)$ appears below but nominally of the magnitude of the Davenport-Heilbronn peak.
+
+Finally, the proposed linear combination of the truncated (and translated) $\chi_5(2,.)$  Euler Product (green) scaled by the lowest modulo absent prime euler factors and the $\chi_5(4,.)$ function as in  equations \eqref {eq:epf1chi52}-\eqref {eq:epf1chi53} is higher than the linear combination of the truncated and scaled Riemann Zeta function and the $\chi_5(4,.)$ function based bound equations \eqref {eq:lbzf1chi52}-\eqref {eq:lbzf1chi53} (red). As T grows the distance (for the two series figs 15-18, figs 19-22) between the truncated, euler factor scaled and translated Davenport-Heilbronn function (near the real axis, equations \eqref{eq:zf1chi52}-\eqref {eq:zf1chi53} and the similarly truncated, euler factor scaled and translated Euler product estimates from equations \eqref {eq:epf1chi52}-\eqref {eq:epf1chi53} grows smaller. This behaviour is similar to that observed [1,2] for the Riemann Zeta function and self-dual L-functions $\chi_3(2,.)$, $\chi_4(3,.)$, $\chi_5(4,.)$ and $\chi_{15}(14,.)$ at large diophantine peaks on the line S=1+I\*T.
+
+\newpage
+### 5-periodic Davenport-Heilbronn function $f_2(s)$ mixture of type I and III mesoscale structure (L-function $L(\chi_{5}(2,.),s)$ related peaks) 
+
+```{r fig_cap_953p785_f2, echo=FALSE}
+cap2 <- "\\scriptsize{Line 1 $f_2(s)$ mesoscale self-similarity about the large peak at location S=1+I*953.785 calculated by linear combinations of (i) $(\\chi_5(2),.)$ and $(\\chi_5(3),.)$ and fitted by linear combinations of (ii) $(\\chi_5(4),.)$ and $(\\zeta(s))$. Left panel t=(-2,2), Right panel t=(-45,45) about the peak using (i) equation \\eqref{eq:eq_epfunc2} with partial Euler Products from $\\chi_5(2,.)$ and $\\chi_5(3,.)$ \\textcolor{blue}{(blue)}, (ii) equation \\eqref {eq:zf2chi52} with $(\\chi_5(4),.)$ and truncated $\\zeta(\\sigma+I*t)$ \\textcolor{red}{(red)}, (iii) equation \\eqref {eq:epf2chi52} \\textcolor{green}{(green)} versions, (iv) equation \\eqref {eq:lbzf2chi52} \\textcolor{magenta}{(horizontal magenta)} approximate lower bound, (v) the exact |$f_2(s)$| \\textcolor{gray}{(gray)} function  equation \\eqref{eq:func2_Lcomb} and (vi) equation \\eqref {eq:estf2chi52} \\textcolor{blue}{(horizontal blue)} approximation.} \\tiny{peak=1+I*953.785} \\scriptsize{Type Ia $f_2(s)$ peak - equation \\eqref {eq:zf2chi52}}"
+
+```
+
+```{r image_953p785_f2, fig.show = "hold", out.width = "50%", fig.align = "default",fig.cap=cap2}
+
+knitr::include_graphics("/home/john/pari/L_function_mesoscale_non_selfdual/graphDHf2_953p785narrow.pdf")
+
+knitr::include_graphics("/home/john/pari/L_function_mesoscale_non_selfdual/graphDHf2_953p785wide.pdf")
+
+```
+
+
+```{r fig_cap_1542818784p48_f2, echo=FALSE}
+cap2 <- "\\scriptsize{Line 1 $f_2(s)$ mesoscale self-similarity about the large peak at location S=1+I*1.554e9 calculated by linear combinations of (i) $(\\chi_5(2),.)$ and $(\\chi_5(3),.)$ and fitted by linear combinations of (ii) $(\\chi_5(4),.)$ and $(\\zeta(s))$. Left panel t=(-2,2), Right panel t=(-45,45) about the peak using (i) equation \\eqref{eq:eq_epfunc2} with partial Euler Products from $\\chi_5(2,.)$ and $\\chi_5(3,.)$ \\textcolor{blue}{(blue)}, (ii) equation \\eqref {eq:zf2chi52} with $(\\chi_5(4),.)$ and truncated $\\zeta(\\sigma+I*t)$ \\textcolor{red}{(red)}, (iii) equation \\eqref {eq:epf2chi52} \\textcolor{green}{(green)} versions, (iv) equation \\eqref {eq:lbzf2chi52} \\textcolor{magenta}{(horizontal magenta)} approximate lower bound, and (v) equation \\eqref {eq:estf2chi52} \\textcolor{gray}{(horizontal gray)} approximation.} \\tiny{peak=1+I*1542818784.48} \\scriptsize{Type Ia $f_2(s)$ peak - equation \\eqref {eq:zf2chi52}}
+"
+
+```
+
+```{r image_1542818784p48_f2, fig.show = "hold", out.width = "50%", fig.align = "default",fig.cap=cap2}
+
+knitr::include_graphics("/home/john/pari/L_function_mesoscale_non_selfdual/graphDHf2_1542818784p48narrow.pdf")
+
+knitr::include_graphics("/home/john/pari/L_function_mesoscale_non_selfdual/graphDHf2_1542818784p48wide.pdf")
+
+```
+
+
+```{r fig_cap_53355053210455414p34_f2, echo=FALSE}
+cap2 <- "\\scriptsize{Line 1 $f_2(s)$ mesoscale self-similarity about the large peak at location S=1+I*5.335e16 calculated by linear combinations of (i) $(\\chi_5(2),.)$ and $(\\chi_5(3),.)$ and fitted by linear combinations of (ii) $(\\chi_5(4),.)$ and $(\\zeta(s))$. Left panel t=(-2,2), Right panel t=(-45,45) about the peak using (i) equation \\eqref{eq:eq_epfunc2} with partial Euler Products from $\\chi_5(2,.)$ and $\\chi_5(3,.)$ \\textcolor{blue}{(blue)}, (ii) equation \\eqref {eq:zf2chi52} with $(\\chi_5(4),.)$ and truncated $\\zeta(\\sigma+I*t)$ \\textcolor{red}{(red)}, (iii) equation \\eqref {eq:epf2chi52} \\textcolor{green}{(green)} versions, (iv) equation \\eqref {eq:lbzf2chi52} \\textcolor{magenta}{(horizontal magenta)} approximate lower bound, and (v) equation \\eqref {eq:estf2chi52} \\textcolor{gray}{(horizontal gray)} approximation.} \\tiny{peak=1+I*53355053210455414.34} \\scriptsize{Type Ia $f_2(s)$ peak - equation \\eqref {eq:zf2chi52}}
+"
+
+```
+
+```{r image_53355053210455414p34_f2, fig.show = "hold", out.width = "50%", fig.align = "default",fig.cap=cap2}
+
+knitr::include_graphics("/home/john/pari/L_function_mesoscale_non_selfdual/graphDHf2_53355053210455414p34narrow.pdf")
+
+knitr::include_graphics("/home/john/pari/L_function_mesoscale_non_selfdual/graphDHf2_53355053210455414p34wide.pdf")
+
+```
+
+
+```{r fig_cap_1642277008512931327065919901p31_f2, echo=FALSE}
+cap2 <- "\\scriptsize{Line 1 $f_2(s)$ mesoscale self-similarity about the large peak at location S=1+I*1.642e27 calculated by linear combinations of (i) $(\\chi_5(2),.)$ and $(\\chi_5(3),.)$ and fitted by linear combinations of (ii) $(\\chi_5(4),.)$ and $(\\zeta(s))$. Left panel t=(-2,2), Right panel t=(-45,45) about the peak using (i) equation \\eqref{eq:eq_epfunc2} with partial Euler Products from $\\chi_5(2,.)$ and $\\chi_5(3,.)$ \\textcolor{blue}{(blue)}, (ii) equation \\eqref {eq:zf2chi52} with $(\\chi_5(4),.)$ and truncated $\\zeta(\\sigma+I*t)$ \\textcolor{red}{(red)}, (iii) equation \\eqref {eq:epf2chi52} \\textcolor{green}{(green)} versions, (iv) equation \\eqref {eq:lbzf2chi52} \\textcolor{magenta}{(horizontal magenta)} approximate lower bound, and (v) equation \\eqref {eq:estf2chi52} \\textcolor{gray}{(horizontal gray)} approximation.} \\tiny{peak=1+I*1642277008512931327065919901.31} \\scriptsize{Type Ia $f_2(s)$ peak - equation \\eqref {eq:zf2chi52}}"
+
+```
+
+```{r image_1642277008512931327065919901p31_f2, fig.show = "hold", out.width = "50%", fig.align = "default",fig.cap=cap2}
+
+knitr::include_graphics("/home/john/pari/L_function_mesoscale_non_selfdual/graphDHf2_1642277008512931327065919901p31narrow.pdf")
+
+knitr::include_graphics("/home/john/pari/L_function_mesoscale_non_selfdual/graphDHf2_1642277008512931327065919901p31wide.pdf")
+
+```
+
+\newpage
+### 5-periodic Davenport-Heilbronn function $f_2(s)$ mixture of type I and III mesoscale structure (L-function $L(\chi_{5}(3,.),s)$ related peaks) 
+
+
+```{r fig_cap_1511p75_f2, echo=FALSE}
+cap2 <- "\\scriptsize{Line 1 $f_2(s)$ mesoscale self-similarity about the large peak at location S=1+I*1511.75 calculated by linear combinations of (i) $(\\chi_5(2),.)$ and $(\\chi_5(3),.)$ and fitted by linear combinations of (ii) $(\\chi_5(4),.)$ and $(\\zeta(s))$. Left panel t=(-2,2), Right panel t=(-45,45) about the peak using (i) equation \\eqref{eq:eq_epfunc2} with partial Euler Products from $\\chi_5(2,.)$ and $\\chi_5(3,.)$ \\textcolor{blue}{(blue)}, (ii) equation \\eqref {eq:zf2chi53} with $(\\chi_5(4),.)$ and truncated $\\zeta(\\sigma+I*t)$ \\textcolor{red}{(red)}, (iii) equation \\eqref {eq:epf2chi53} \\textcolor{green}{(green)} versions, (iv) equation \\eqref {eq:lbzf2chi53} \\textcolor{magenta}{(horizontal magenta)} approximate lower bound, (v) the exact |$f_2(s)$| \\textcolor{gray}{(gray)} function  equation \\eqref{eq:func2_Lcomb} and (vi) equation \\eqref {eq:estf2chi53} \\textcolor{blue}{(horizontal blue)} approximation.} \\tiny{peak=1+I*1511.75} \\scriptsize{Type Ib $f_2(s)$ peak - equation \\eqref {eq:zf2chi53}}"
+
+```
+
+```{r image_1511p75_f2, fig.show = "hold", out.width = "50%", fig.align = "default",fig.cap=cap2}
+
+knitr::include_graphics("/home/john/pari/L_function_mesoscale_non_selfdual/graphDHf2_1511p75narrow.pdf")
+
+knitr::include_graphics("/home/john/pari/L_function_mesoscale_non_selfdual/graphDHf2_1511p75wide.pdf")
+
+```
+
+
+```{r fig_cap_327949557p75_f2, echo=FALSE}
+cap2 <- "\\scriptsize{Line 1 $f_2(s)$ mesoscale self-similarity about the large peak at location S=1+I*3.279e8 calculated by linear combinations of (i) $(\\chi_5(2),.)$ and $(\\chi_5(3),.)$ and fitted by linear combinations of (ii) $(\\chi_5(4),.)$ and $(\\zeta(s))$. Left panel t=(-2,2), Right panel t=(-45,45) about the peak using (i) equation \\eqref{eq:eq_epfunc2} with partial Euler Products from $\\chi_5(2,.)$ and $\\chi_5(3,.)$ \\textcolor{blue}{(blue)}, (ii) equation \\eqref {eq:zf2chi53} with $(\\chi_5(4),.)$ and truncated $\\zeta(\\sigma+I*t)$ \\textcolor{red}{(red)}, (iii) equation \\eqref {eq:epf2chi53} \\textcolor{green}{(green)} versions, (iv) equation \\eqref {eq:lbzf2chi53} \\textcolor{magenta}{(horizontal magenta)} approximate lower bound, and (v) equation \\eqref {eq:estf2chi53} \\textcolor{gray}{(horizontal gray)} approximation.} \\tiny{peak=1+I*327949557.75} \\scriptsize{Type Ia $f_2(s)$ peak - equation \\eqref {eq:zf2chi53}}"
+
+```
+
+```{r image_327949557p75_f2, fig.show = "hold", out.width = "50%", fig.align = "default",fig.cap=cap2}
+
+knitr::include_graphics("/home/john/pari/L_function_mesoscale_non_selfdual/graphDHf2_327949557p7narrow.pdf")
+
+knitr::include_graphics("/home/john/pari/L_function_mesoscale_non_selfdual/graphDHf2_327949557p7wide.pdf")
+
+```
+
+
+
+```{r fig_cap_4131733959093848042p475_f2, echo=FALSE}
+cap2 <- "\\scriptsize{Line 1 $f_2(s)$ mesoscale self-similarity about the large peak at location S=1+I*4.131e18 calculated by linear combinations of (i) $(\\chi_5(2),.)$ and $(\\chi_5(3),.)$ and fitted by linear combinations of (ii) $(\\chi_5(4),.)$ and $(\\zeta(s))$. Left panel t=(-2,2), Right panel t=(-45,45) about the peak using (i) equation \\eqref{eq:eq_epfunc2} with partial Euler Products from $\\chi_5(2,.)$ and $\\chi_5(3,.)$ \\textcolor{blue}{(blue)}, (ii) equation \\eqref {eq:zf2chi53} with $(\\chi_5(4),.)$ and truncated $\\zeta(\\sigma+I*t)$ \\textcolor{red}{(red)}, (iii) equation \\eqref {eq:epf2chi53} \\textcolor{green}{(green)} versions, (iv) equation \\eqref {eq:lbzf2chi53} \\textcolor{magenta}{(horizontal magenta)} approximate lower bound, and (v) equation \\eqref {eq:estf2chi53} \\textcolor{gray}{(horizontal gray)} approximation.} \\tiny{peak=1+I*4131733959093848042.475} \\scriptsize{Type Ia $f_2(s)$ peak - equation \\eqref {eq:zf2chi53}}"
+
+```
+
+```{r image_4131733959093848042p475_f2, fig.show = "hold", out.width = "50%", fig.align = "default",fig.cap=cap2}
+
+knitr::include_graphics("/home/john/pari/L_function_mesoscale_non_selfdual/graphDHf2_4131733959093848042p475narrow.pdf")
+
+knitr::include_graphics("/home/john/pari/L_function_mesoscale_non_selfdual/graphDHf2_4131733959093848042p475wide.pdf")
+
+```
+
+
+
+```{r fig_cap_2648175512052631375802062083p35_f2, echo=FALSE}
+cap2 <- "\\scriptsize{Line 1 $f_2(s)$ mesoscale self-similarity about the large peak at location S=1+I*2.648e27 calculated by linear combinations of (i) $(\\chi_5(2),.)$ and $(\\chi_5(3),.)$ and fitted by linear combinations of (ii) $(\\chi_5(4),.)$ and $(\\zeta(s))$. Left panel t=(-2,2), Right panel t=(-45,45) about the peak using (i) equation \\eqref{eq:eq_epfunc2} with partial Euler Products from $\\chi_5(2,.)$ and $\\chi_5(3,.)$ \\textcolor{blue}{(blue)}, (ii) equation \\eqref {eq:zf2chi53} with $(\\chi_5(4),.)$ and truncated $\\zeta(\\sigma+I*t)$ \\textcolor{red}{(red)}, (iii) equation \\eqref {eq:epf2chi53} \\textcolor{green}{(green)} versions, (iv) equation \\eqref {eq:lbzf2chi53} \\textcolor{magenta}{(horizontal magenta)} approximate lower bound, and (v) equation \\eqref {eq:estf2chi53} \\textcolor{gray}{(horizontal gray)} approximation.} \\tiny{peak=1+I*2648175512052631375802062083.35} \\scriptsize{Type Ia $f_2(s)$ peak - equation \\eqref {eq:zf2chi53}}"
+
+```
+
+```{r image_2648175512052631375802062083p35_f2, fig.show = "hold", out.width = "50%", fig.align = "default",fig.cap=cap2}
+
+knitr::include_graphics("/home/john/pari/L_function_mesoscale_non_selfdual/graphDHf2_2648175512052631375802062083p35narrow.pdf")
+
+knitr::include_graphics("/home/john/pari/L_function_mesoscale_non_selfdual/graphDHf2_2648175512052631375802062083p35wide.pdf")
+
+```
+
+\newpage
+Again as with the analysis for $\chi_5(3,.)$ and $\chi_5(2,.)$ for figures 1-8, it can be seen in figures 23 and 27, that the exact Davenport-Heilbronn $f_2(s)$ function (gray) equation \eqref {eq:func2_Lcomb} and partial Euler Product (blue) equation \eqref {eq:eq_epfunc2} on S=1+I\*(T+t) overlap closely. The linear combination of partial Euler Products was calculated using $1000$ primes which was found to give good convergence when $T \ll 10^{20}$ and backed up by the agreement with the exact L-function.
+
+Then for figures 27-30 with $\chi_5(3,.)$ related diophantine peaks, there is consistent agreement between the approximate bounds calculated by the equation \eqref {eq:lbzf2chi52} (horizontal red) and the plateau (red) equation \eqref {eq:zf2chi52} formed by a linear combination of a truncated and translated Riemann Zeta function scaled by euler factors and the self-dual $\chi_5(4,.)$ function. On the right panel it can also be clearly seen that away from the central diophantine peak there is a strong self similarity in the envelope of the L-function about T+t (blue) compared to the linear combination of a truncated and translated Riemann Zeta function scaled by euler factors and the self-dual $\chi_5(4,.)$ function.
+
+However, for figures 23-26 with $\chi_5(2,.)$ related diophantine peaks there is a difference to the behaviour observed for Riemann Zeta [1], self-dual L-functions [2], $\chi_5(2,.)$, $\chi_5(3,.)$ and figs 15-18 in that the plateau (red) value is above the approximate bound (horizontal). 
+
+Apart from this distinctive behaviour for figures 23-26  there remains reasonable agreement between the approximate bounds calculated by equations \eqref {eq:lbzf2chi52}-\eqref {eq:lbzf2chi53} (horizontal red) and the plateau (red) equations \eqref {eq:zf2chi52}-\eqref {eq:zf2chi53} formed by a linear combination of a truncated and translated Riemann Zeta function scaled by euler factors and the self-dual $\chi_5(4,.)$ function. On the right panel it can also be clearly seen that away from the central diophantine peak there is a strong self similarity in the envelope of the L-function about T+t (blue) compared to the linear combination of a truncated and translated Riemann Zeta function scaled by euler factors and the self-dual $\chi_5(4,.)$ function.
+
+Next the proposed approximate Euler Product height estimate (horizontal blue for figs 23 and 27 and horizontal gray for the higher T graphs, figs 24-26 and 28-30) as in  equations \eqref {eq:estf2chi52}-\eqref {eq:estf2chi53} for large peaks on $S=1+I*(T+t)$ appears below but nominally of the magnitude of the Davenport-Heilbronn peak.
+
+Finally, the proposed linear combination of the truncated (and translated) $\chi_5(2,.)$  Euler Product (green) scaled by the lowest modulo absent prime euler factors and the $\chi_5(4,.)$ function as in  equations \eqref {eq:epf2chi52}-\eqref {eq:epf2chi53} is higher than the linear combination of the truncated and scaled Riemann Zeta function and the $\chi_5(4,.)$ function based bound equations \eqref {eq:lbzf2chi52}-\eqref {eq:lbzf2chi53} (red). As T grows the distance (for the two series figs 23-26, figs 27-30) between the truncated, euler factor scaled and translated Davenport-Heilbronn function (near the real axis, equations \eqref{eq:zf2chi52}-\eqref {eq:zf2chi53} and the similarly truncated, euler factor scaled and translated Euler product estimates from equations \eqref {eq:epf2chi52}-\eqref {eq:epf2chi53} grows smaller. This behaviour is similar to that observed [1,2] for the Riemann Zeta function and self-dual L-functions $\chi_3(2,.)$, $\chi_4(3,.)$, $\chi_5(4,.)$ and $\chi_{15}(14,.)$ at large diophantine peaks on the line S=1+I\*T.
+
+The larger size of the diophantine peak heights for the $f_2(s)$ function compared to the $f_1(s)$ function is mainly being driven by the $1/cos(\theta_1)$ and $1/sin(\theta_1)$ factors appearing respectively in the exact function equations \eqref {eq:func1_Lcomb} and \eqref {eq:func2_Lcomb} (and partial Euler product equations \eqref{eq:eq_epfunc1} and \eqref{eq:eq_epfunc2}).  
+
+
+
+##Behaviour of 5-periodic Davenport-Heilbronn function Type II peak mesoscale structure
+
+For figures 31-32, at known points $1+I\*(T+t)$ where the Riemann Zeta function has large diophantine peaks [16-21], the 5-periodic Davenport-Heilbronn function linear combination of partial Euler products (equations \eqref{eq:eq_epfunc1} and \eqref{eq:eq_epfunc2} is compared to the translated exact 5-periodic Davenport-Heilbronn about the real axis $1+I\*t$ and as $T \rightarrow \infty$
+
+\begin{align}
+|EP_{f_1(\sigma+I*(T+t),N \rightarrow \infty)}|_{\text{about large } \zeta(s) \text{ peaks}}
+&\sim |f_1(\sigma+I\*t)| \label {eq:f1_zetapeaks}\\
+|EP_{f_2(\sigma+I*(T+t),N \rightarrow \infty)}|_{\text{about large } \zeta(s) \text{ peaks}} &\sim |f_2(\sigma+I\*t)| \label {eq:f2_zetapeaks}\\
+&\text{ where } \sigma \ge 1 \text{ and } T \rightarrow \infty \nonumber
+\end{align}
+
+
+
+```{r fig_cap_L52_f1, echo=FALSE}
+cap2 <- "\\scriptsize{Line 1 $f_1(s)$ mesoscale self-similarity about points that are known to correspond to three large peaks in the Riemann Zeta function at locations S=1+I*3.92e31, 1+I*2.302e39, 1+I*6.00e297 On the three panels t=(-45,45) about the location are the $f_1(s)$ function partial Euler Product P(S,N) \\textcolor{blue}{(blue)},(ii) translated partial euler product \\textcolor{green}{(green)} and (iii) the translated real axis exact function \\textcolor{red}{(red)}}"
+
+```
+
+
+```{r image_L52_f1, fig.show = "hold", out.width = "33%", fig.align = "default",fig.cap=cap2}
+
+knitr::include_graphics("/home/john/pari/L_function_mesoscale_non_selfdual/graphDHf1_3p92e31wide.pdf")
+
+knitr::include_graphics("/home/john/pari/L_function_mesoscale_non_selfdual/graphDHf1_2302202919833091938191454510490853528294wide.pdf")
+
+knitr::include_graphics("/home/john/pari/L_function_mesoscale_non_selfdual/graphDHf1_6e297wide.pdf")
+
+```
+
+
+
+
+```{r fig_cap_L52_f2, echo=FALSE}
+cap2 <- "\\scriptsize{Line 1 $f_2(s)$ mesoscale self-similarity about points that are known to correspond to three large peaks in the Riemann Zeta function at locations S=1+I*3.92e31, 1+I*2.302e39, 1+I*6.00e297 On the three panels t=(-45,45) about the location are the $f_2(s)$ function partial Euler Product P(S,N) \\textcolor{blue}{(blue)},(ii) translated partial euler product \\textcolor{green}{(green)} and (iii) the translated real axis exact function \\textcolor{red}{(red)}}"
+
+```
+
+
+```{r image_L52_f2, fig.show = "hold", out.width = "33%", fig.align = "default",fig.cap=cap2}
+
+knitr::include_graphics("/home/john/pari/L_function_mesoscale_non_selfdual/graphDHf2_3p92e31wide.pdf")
+
+knitr::include_graphics("/home/john/pari/L_function_mesoscale_non_selfdual/graphDHf2_2302202919833091938191454510490853528294wide.pdf")
+
+knitr::include_graphics("/home/john/pari/L_function_mesoscale_non_selfdual/graphDHf2_6e297wide.pdf")
+
+```
+
+
+##Zeroes off the critical line in the envelope functions approximating the mixture of type I and III mesoscale structure for the 5-periodic Davenport-Heilbronn functions
+
+Taking the envelope functions equations \eqref {eq:zf1chi53}-\eqref {eq:zf2chi52} or the partial euler versions equations \eqref {eq:epf1chi53}-\eqref {eq:epf2chi52}
+
+
+\begin{align}
+&\frac{1}{2cos(\theta_1)} \Big [ e^{i\theta_1}(1-\frac{1}{5^{(\sigma+I\*t)}})\zeta(\sigma+I\*t) + e^{-i\theta_1}L(\chi_5(4,.),\sigma+I\*t) \Big ] \text{ when peak is due to }L(\chi_5(3,.),s) \label{eq:zf1chi53_2}\\
+&\frac{1}{2cos(\theta_1)} \Big [ e^{i\theta_1}L(\chi_5(4,.),\sigma+I\*t) + e^{-i\theta_1}(1-\frac{1}{5^{(\sigma+I\*t)}})\zeta(\sigma+I\*t)  \Big ] \text{ when peak is due to }L(\chi_5(2,.),s) \label{eq:zf1chi52_2}\\
+&\frac{I}{2sin(\theta_1)} \Big [ e^{i\theta_1}(1-\frac{1}{5^{(\sigma+I\*t)}})\zeta(\sigma+I\*t) - e^{-i\theta_1}L(\chi_5(4,.),\sigma+I\*t) \Big ] \text{ when peak is due to }L(\chi_5(3,.),s) \label{eq:zf2chi53_2}\\
+&\frac{I}{2sin(\theta_1)} \Big [ e^{i\theta_1}L(\chi_5(4,.),\sigma+I\*t) - e^{-i\theta_1}(1-\frac{1}{5^{(\sigma+I\*t)}})\zeta(\sigma+I\*t) \Big ] \text{ when peak is due to }L(\chi_5(2,.),s) \label{eq:zf2chi52_2}\\
+&\text{ where } |t| > \frac{\gamma}{\left(log(log(T+t))+log(log(log(T+t)))\right)}, t < T
+\end{align}
+
+It is observed that 
+
+(i) equations \eqref {eq:zf1chi53_2}, \eqref {eq:zf1chi52_2} (and their partial euler versions) contains zeroes at least as wide the critical strip $0 < \sigma < 1$ and 
+
+(ii) equations \eqref {eq:zf2chi53_2}, \eqref {eq:zf2chi52_2} (and their partial euler versions) contains zeroes both within and outside the critical strip at least as wide as $-1.35 < \sigma < 2.35$. 
+
+and so can be used as first order approximations of the non-trivial zeroes of $f_1(s)$ and $f_2(s)$ in the region of large peaks originating from $\chi_5(2,.)$ or $\chi_5(3,.)$ diophantine peaks. As $T \rightarrow \infty$ the mesoscale structure about such diophantine peaks becomes better approximated by equations \eqref {eq:zf1chi53}-\eqref {eq:zf2chi52} or the partial euler versions equations \eqref {eq:epf1chi53}-\eqref {eq:epf2chi52}.
+
+
+
+\newpage
+###Conclusions
+
+At least three types of self-similarity are observed to occur in the non self-dual $\chi_5(2.)$ and $\chi_5(3,.)$ L-functions for the line $S=1+I\*(T+t)$ (and for $\sigma > 1$) of (i) type I about large diophantine peaks of the $\chi_5(2.)$ and $\chi_5(3,.)$ L-functions described by truncated, scaled and translated Riemann Zeta function (and partial Euler product), (ii) type II about known points corresponding to large diophantine peaks of the Riemann Zeta function described by translated L-function (and partial Euler product) and (iii) type III about known points corresponding to large diophantine peaks of the dual-pair L function.
+
+The 5-periodic Davenport-Heilbronn related functions $f_1(s)$ and $f_2(s)$ of the $\chi_5(2.)$ and $\chi_5(3,.)$ L-functions are also investigated and the mesoscale structure about large $\chi_5(2.)$ and $\chi_5(3,.)$ diophantine related points is consistent with the known mixture of $\chi_5(2.)$ and $\chi_5(3,.)$ L-functions (and their partial euler product forms) contained in $f_1(s)$ and $f_2(s)$.
+
+Useful approximations for the growth of the functions along $S=1+I\*(T+t)$ are provided consistent with the approach used in [1,2].
+
+
+
+###References
+
+
+1. Martin J.P.D., (2020) "Examining Riemann Zeta mesoscale self-similarity along the line 1 near large peaks" https://dx.doi.org/10.6084/m9.figshare.13176062
+
+2. Martin J.P.D., (2020) "Self-similarity along the line $\Re(L(\chi,s)) = 1$ for 1st degree L functions near (i) large peaks and (ii) points known to correspond to large Riemann Zeta function peaks." https://dx.doi.org/10.6084/m9.figshare.25506011
+
+3. The LMFDB Collaboration, Degree 1 L-functions,
+https://www.lmfdb.org/L/degree1/, 2020 , [Online; accessed November 2020].
+
+4. The PARI~Group, PARI/GP version {\tt 2.12.0}, Univ. Bordeaux, 2018,
+    \url{http://pari.math.u-bordeaux.fr/}.
+\normalfont
+
+5. Lenstra, A.K., H.W. Lenstra Jr. & L. Lovász, (1982) Factoring polynomials with rational coefficients, Math. Ann., 261(4) ,515–534.
+
+6. Spira, R. Mathematics of Computation, Volume 63, Number 208,
+October 1994, Pages 747-748
+
+7. Balanzario, E.P. and Sanchez-Ortiz, J. Mathematics of Computation,
+Volume 76, Number 260, October 2007, Pages 2045–2049
+
+8. E. Bombieri, A. Ghosh, “Around the Davenport–Heilbronn function”, Uspekhi Mat. Nauk, 66:2(398) (2011), 15–66; Russian Math. Surveys, 66:2 (2011), 221–270
+https://doi.org/10.4213/rm9410 
+IAS lecture https://www.youtube.com/watch?v=-JUHypc2_9A
+
+9. Vaughan R.C. "Zeros of Dirichlet series", Indagationes Mathematicae, Volume 26, Issue 5, December 2015, Pages 897-909
+https://doi.org/10.1016/j.indag.2015.09.007
+
+10. Martin J.P.D., (2020) "7-, \& 9-periodic dual Davenport Heilbronn counterexamples are derived for the corresponding Degree 1 dual L-functions pairs given in https://www.lmfdb.org/L/degree1." https://dx.doi.org/10.6084/m9.figshare.21257145
+
+11. J. E. Littlewood,On the Riemann zeta-function, Proc. London Math. Soc.,24no. 2 (1924), 175–201.
+
+12. A. Granville, K. Soundararajan, Extreme values of $|\zeta(1 +it)|$, in “The Riemann Zeta Function and Related Themes: Papers in Honour of Professor K. Ramachandra”, Ramanujan Math. Soc.Lect. Notes Ser., (2006) 2, pp. 65–80, Ramanujan Math. Soc., Mysore, 
+
+13. C. Aistleitner, K. Mahatab, M. Munsch, "Extreme Values of the Riemann Zeta Function on the 1-Line" ", IMRN, Issue 22, (2019) pp 6924–6932, https://doi.org/10.1093/imrn/rnx331
+
+14. Y. Lamzouri, "On the distribution of extreme values of zeta and L-functions in the strip $1/2 < \sigma < 1$" ,Int. Math. Res. Not. IMRN (2011), pp 5449–5503
+
+15. W. Heap, "A note on the maximum of the Riemann zeta function on the 1‐line", Bulletin of the London Mathematical Society (2020)
+DOI: 10.1112/blms.12382
+
+16.  Odlyzko, A.M. (1992) The $10^{20}$-th zero of the Riemann zeta function and 175 million of   its neighbors.
+http://www.dtc.umn.edu/~odlyzko/unpublished/zeta.10to20.1992.pdf
+
+17. Hiary G.A. (2011) Fast methods to compute the Riemann zeta function Ann. Math., 174-2, 891-946
+also available; https://people.math.osu.edu/hiary.1/fastmethods.html
+
+18. Tihanyi, N., Kovács, A. & Kovács, J. "Computing Extremely Large Values of the Riemann Zeta Function" J Grid Computing (2017) 15: 527. https://doi.org/10.1007/s10723-017-9416-0
+
+19. Martin, J.P.D. (2018) "A fast calculation of first order shifts in $\zeta(s)$ zeroes positions using an extended Riemann Siegel Z function for the partial Euler Product of the lowest primes"
+http://dx.doi.org/10.6084/m9.figshare.6157700
+
+20. Martin, J.P.D. (2018) "Fast approximate calculations of $\pi S$ at very high t using an extended Riemann Siegel Z function for the partial Euler Product of the lowest primes"
+http://dx.doi.org/10.6084/m9.figshare.6452744
+
+21. Martin, J.P.D. (2018) "Some high  peaks of partial Euler Product of the lowest primes on the Riemann Zeta critical line in the interval $10^{20} < T < 10^{400}$ providing a proxy lower bound on Riemann Zeta function growth".
+https://figshare.com/articles/journal_contribution/_/7185092
+
+
+
+
+
