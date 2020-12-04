@@ -1006,24 +1006,128 @@ knitr::include_graphics("/home/john/pari/L_function_mesoscale_non_selfdual/graph
 
 ##Zeroes off the critical line in the envelope functions approximating the mixture of type I and III mesoscale structure for the 5-periodic Davenport-Heilbronn functions
 
-Taking the envelope functions equations \eqref {eq:zf1chi53}-\eqref {eq:zf2chi52} or the partial euler versions equations \eqref {eq:epf1chi53}-\eqref {eq:epf2chi52}
+Taking the envelope functions equations \eqref {eq:zf1chi53}-\eqref {eq:zf2chi52} or the partial euler versions equations \eqref {eq:epf1chi53}-\eqref {eq:epf2chi52} their usefulness for approximating $f_1(s)$ and $f_2(s)$ can be extended with the following definitions for other values of $\Re(s)=\sigma$. That is, for the upper complex plane $\sigma \ge \frac{1}{2}$ the envelope function approximations \eqref {eq:zf1chi53}-\eqref {eq:zf2chi52} in the region $-t +T < T < t+T$ about $\chi_5(2,.)$ and $\chi_5(3,.)$ related diophantine peaks of $f_1(\sigma+I*T)$ and $f_2(\sigma+I*T)$ are
 
 
 \begin{align}
-&\frac{1}{2cos(\theta_1)} \Big [ e^{i\theta_1}(1-\frac{1}{5^{(\sigma+I\*t)}})\zeta(\sigma+I\*t) + e^{-i\theta_1}L(\chi_5(4,.),\sigma+I\*t) \Big ] \text{ when peak is due to }L(\chi_5(3,.),s) \label{eq:zf1chi53_2}\\
-&\frac{1}{2cos(\theta_1)} \Big [ e^{i\theta_1}L(\chi_5(4,.),\sigma+I\*t) + e^{-i\theta_1}(1-\frac{1}{5^{(\sigma+I\*t)}})\zeta(\sigma+I\*t)  \Big ] \text{ when peak is due to }L(\chi_5(2,.),s) \label{eq:zf1chi52_2}\\
-&\frac{I}{2sin(\theta_1)} \Big [ e^{i\theta_1}(1-\frac{1}{5^{(\sigma+I\*t)}})\zeta(\sigma+I\*t) - e^{-i\theta_1}L(\chi_5(4,.),\sigma+I\*t) \Big ] \text{ when peak is due to }L(\chi_5(3,.),s) \label{eq:zf2chi53_2}\\
-&\frac{I}{2sin(\theta_1)} \Big [ e^{i\theta_1}L(\chi_5(4,.),\sigma+I\*t) - e^{-i\theta_1}(1-\frac{1}{5^{(\sigma+I\*t)}})\zeta(\sigma+I\*t) \Big ] \text{ when peak is due to }L(\chi_5(2,.),s) \label{eq:zf2chi52_2}\\
-&\text{ where } |t| > \frac{\gamma}{\left(log(log(T+t))+log(log(log(T+t)))\right)}, t < T
+|f_1(\sigma+I\*(T+t))|_{L(\chi_5(3,.),s)_{\text{diophantine peak}}} &\sim \Big|\frac{1}{2cos(\theta_1)} \Big [ e^{i\theta_1}(1-\frac{1}{5^{(\sigma+I\*t)}})\zeta(\sigma+I\*t) +  e^{-i\theta_1}L(\chi_5(4,.),\sigma+I\*t) \Big ]  \Big| \label{eq:zf1chi53_2p}\\
+|f_1(\sigma+I\*(T+t))|_{L(\chi_5(2,.),s)_{\text{diophantine peak}}} &\sim \Big|\frac{1}{2cos(\theta_1)} \Big [ e^{i\theta_1}L(\chi_5(4,.),\sigma+I\*t) + e^{-i\theta_1}(1-\frac{1}{5^{(\sigma+I\*t)}})\zeta(\sigma+I\*t)  \Big ] \Big|   \label{eq:zf1chi52_2p}\\
+|f_2(\sigma+I\*(T+t))|_{L(\chi_5(3,.),s)_{\text{diophantine peak}}} &\sim \Big|\frac{-I}{2sin(\theta_1)} \Big [ e^{i\theta_1}(1-\frac{1}{5^{(\sigma+I\*t)}})\zeta(\sigma+I\*t) - e^{-i\theta_1}L(\chi_5(4,.),\sigma+I\*t) \Big ] \Big| \label{eq:zf2chi53_2p}\\
+|f_2(\sigma+I\*(T+t))|_{L(\chi_5(2,.),s)_{\text{diophantine peak}}} &\sim \Big|\frac{-I}{2sin(\theta_1)} \Big [ e^{i\theta_1}L(\chi_5(4,.),\sigma+I\*t) - e^{-i\theta_1}(1-\frac{1}{5^{(\sigma+I\*t)}})\zeta(\sigma+I\*t) \Big ] \Big| \label{eq:zf2chi52_2p}\\
+&\text{ where } |t| > \frac{\gamma}{\left(log(log(T+t))+log(log(log(T+t)))\right)}, t < T, \sigma \ge \frac{1}{2}
 \end{align}
+
+
+While for the lower complex plane $\sigma < \frac{1}{2}$, the envelope function approximations \eqref {eq:zf1chi53}-\eqref {eq:zf2chi52} are written as
+
+\begin{align}
+|f_1(\sigma+I\*(T+t))|_{L(\chi_5(3,.),s)_{\text{diophantine peak}}} &\sim \Big| \frac{1}{2cos(\theta_1)} \Big [ e^{-i\theta_1}(1-\frac{1}{5^{(1-(\sigma+I\*t))}})\zeta(1-(\sigma+I\*t)) \nonumber \\
+&+ e^{i\theta_1}L(\chi_5(4,.),1-(\sigma+I\*t)) \Big ] \frac{1}{\chi_{f1}(1-(\sigma+I*(T+t)))} \Big| \label{eq:zf1chi53_2m} \\
+|f_1(\sigma+I\*(T+t))|_{L(\chi_5(2,.),s)_{\text{diophantine peak}}} &\sim \Big| \frac{1}{2cos(\theta_1)} \Big [ e^{-i\theta_1}L(\chi_5(4,.),1-(\sigma+I\*t)) \nonumber \\
+&+ e^{i\theta_1}(1-\frac{1}{5^{(1-(\sigma+I\*t))}})\zeta(1-(\sigma+I\*t))  \Big ]  \frac{1}{\chi_{f1}(1-(\sigma+I*(T+t)))} \Big|\label{eq:zf1chi52_2m}\\
+|f_2(\sigma+I\*(T+t))|_{L(\chi_5(3,.),s)_{\text{diophantine peak}}} &\sim \Big| \frac{I}{2sin(\theta_1)} \Big [ e^{-i\theta_1}(1-\frac{1}{5^{(1-(\sigma+I\*t))}})\zeta(1-(\sigma+I\*t)) \nonumber \\
+&- e^{i\theta_1}L(\chi_5(4,.),(1-(\sigma+I\*t)) \Big ] \frac{1}{\chi_{f2}(1-(\sigma+I*(T+t)))} \Big| \label{eq:zf2chi53_2m}\\
+|f_2(\sigma+I\*(T+t))|_{L(\chi_5(2,.),s)_{\text{diophantine peak}}} &\sim \Big| \frac{I}{2sin(\theta_1)} \Big [ e^{-i\theta_1}L(\chi_5(4,.),1-(\sigma+I\*t)) \nonumber \\
+&- e^{i\theta_1}(1-\frac{1}{5^{(1-(\sigma+I\*t))}})\zeta(1-(\sigma+I\*t)) \Big ] \frac{1}{\chi_{f2}(1-(\sigma+I*(T+t)))} \Big| \label{eq:zf2chi52_2m}\\
+&\text{ where } |t| > \frac{\gamma}{\left(log(log(T+t))+log(log(log(T+t)))\right)}, t < T, \sigma < \frac{1}{2}
+\end{align}
+
+where $\chi_{f2}(1-(\sigma+I*(T+t)))$ and $\chi_{f2}(1-(\sigma+I*(T+t)))$ are obtained from the $f_1(s)$ ($f_2(s)$) functional equations [6,7,10]
+
+\begin{align}
+f_1(s) &= \chi_{f1}(s) f_1(1-s) \\
+\chi_{f1}(s) &= 5^{(\frac{1}{2}-s)}\cdot 2^{s}\cdot \pi^{-(1-s)}\cdot cos(\pi\*s/2)\cdot \Gamma(1-s) \\
+f_2(s) &= \chi_{f2}(s) f_2(1-s) \\
+\chi_{f2}(s) &= \chi_{f1}(s) 
+\end{align}
+
+
 
 It is observed that 
 
-(i) equations \eqref {eq:zf1chi53_2}, \eqref {eq:zf1chi52_2} (and their partial euler versions) contains zeroes at least as wide the critical strip $0 < \sigma < 1$ and 
+(i) equations \eqref {eq:zf1chi53_2p}, \eqref {eq:zf1chi52_2p},\eqref {eq:zf1chi53_2m}, \eqref {eq:zf1chi52_2m}  (and their partial euler versions) contains zeroes at least as wide the critical strip $0 < \sigma < 1$ and 
 
-(ii) equations \eqref {eq:zf2chi53_2}, \eqref {eq:zf2chi52_2} (and their partial euler versions) contains zeroes both within and outside the critical strip at least as wide as $-1.35 < \sigma < 2.35$. 
+(ii) equations \eqref {eq:zf2chi53_2p}, \eqref {eq:zf2chi52_2p}, \eqref {eq:zf2chi53_2m}, \eqref {eq:zf2chi52_2m} (and their partial euler versions) contains zeroes both within and outside the critical strip at least as wide as $-1.35 < \sigma < 2.35$.
 
 and so can be used as first order approximations of the non-trivial zeroes of $f_1(s)$ and $f_2(s)$ in the region of large peaks originating from $\chi_5(2,.)$ or $\chi_5(3,.)$ diophantine peaks. As $T \rightarrow \infty$ the mesoscale structure about such diophantine peaks becomes better approximated by equations \eqref {eq:zf1chi53}-\eqref {eq:zf2chi52} or the partial euler versions equations \eqref {eq:epf1chi53}-\eqref {eq:epf2chi52}.
+
+Examining figure 33, the zeroes for $\sigma > 1$ and $\sigma < 0$ surrounding  the diophantine peak of $f_2(s)$ at $S=1+I*256.005$ (which is associated with the $L(\chi_5(2,.),s)$ L-function are in close agreement with exact calculations for $f_2(s)$. Inside the critical strip, the zeroes from the envelope function are not accurate for T~256.005. Whether this is because T~256.005 rather than $T \rightarrow \infty$ will be investigated. The phase contour behaviour of the 5-periodic Davenport-Heilbronn functions and their extended Riemann Siegel Z function forms was discussed in [10]. 
+
+```{r image_zeroes_f2, message=FALSE, warnings=FALSE, echo=FALSE, fig.cap="Overlay low resolution phase contour plots of (i) symmetric combination of equations 69 and 74 with (ii) the contour plot of $Z_{ext}(f_{2}(s))$ the extended Riemann Siegel $f_{2}(s)$ Z function around diophantine peak at $\\Im(s)=256.005$. Phase contour lines of $Z_{ext}{f_2(s)}$ in blue/red indicating non-trivial zeroes on and off the critical line. Phase contour line of symmetric combination of eqns 69, 74 in cyan/green. Critical strip/line indicated by magenta lines. Observed limit of non-trivial zeroes indicated by dotted line at -1.33, 2.33."}
+
+read_fn <- function(dir_loc,filen){
+  
+  filenn <- paste0(dir_loc,filen)
+  #print(filenn)
+  
+  dread <- read.table(filenn,
+                      sep=",", header=F,row.names=NULL,colClasses = "character")
+}
+
+
+dir_loc <- "/home/john/bear/Projects/sampling-investigations/julia/"
+
+file_list <- list.files(dir_loc,pattern="*dat")
+
+dfpf2 <- read_fn(dir_loc,paste0("hurwitz_zeta_grid_f2_z_256p005.dat"))
+dfpenv <- read_fn(dir_loc,paste0("high_T_envelope_grid_f2_reflection_256p005.dat"))
+
+dfpf2[,"V1"] <- as.numeric(gsub("[^0-9e\\.-]", "", dfpf2[,1]))
+dfpf2[,"V2"] <- as.numeric(gsub("[^0-9e\\.-]", "", dfpf2[,2]))
+dfpf2[,"V3"] <- as.numeric(gsub("[^0-9e\\.-]", "", dfpf2[,3]))
+dfpf2[,"V4"] <- as.numeric(gsub("[^0-9e\\.-]", "", dfpf2[,4]))
+dfpf2[,"V5"] <- as.numeric(gsub("[^0-9e\\.-]", "", dfpf2[,5]))
+#str(dfpf2)
+
+dfpenv[,"V1"] <- as.numeric(gsub("[^0-9e\\.-]", "", dfpenv[,1]))
+dfpenv[,"V2"] <- as.numeric(gsub("[^0-9e\\.-]", "", dfpenv[,2]))
+dfpenv[,"V3"] <- as.numeric(gsub("[^0-9e\\.-]", "", dfpenv[,3]))
+dfpenv[,"V4"] <- as.numeric(gsub("[^0-9e\\.-]", "", dfpenv[,4]))
+dfpenv[,"V5"] <- as.numeric(gsub("[^0-9e\\.-]", "", dfpenv[,5]))
+#str(dfpenv)
+
+# length(unique(dfpf2[,"V1"]))
+# length(unique(dfpf2[,"V2"]))
+# head(dfpf2[,"V2"])
+dfpsf2 = dfpf2[dfpf2[,"V2"] <= 286.005 & dfpf2[,"V2"] >= 226.005,]
+dfpsenv = dfpenv[dfpenv[,"V2"] <= 30 & dfpenv[,"V2"] >= -30,]
+# length(unique(dfpsf2[,"V1"]))
+# length(unique(dfpsf2[,"V2"]))
+
+matsf2 = matrix(dfpsf2[,"V3"],ncol=length(unique(dfpsf2[,"V1"])),nrow=length(unique(dfpsf2[,"V2"])))
+# sum(is.na(matsf2))
+matsf2[is.na(matsf2)] <- 0
+# length(matsf2[,1])
+# length(matsf2[1,])
+
+matsenv = matrix(dfpsenv[,"V3"],ncol=length(unique(dfpsenv[,"V1"])),nrow=length(unique(dfpsenv[,"V2"])))
+# sum(is.na(matsenv))
+matsenv[is.na(matsenv)] <- 0
+# length(matsenv[,1])
+# length(matsenv[1,])
+
+library(latex2exp)
+contour(seq(226.005,286.005,l=1201), seq(-2,3,l=4001),matsf2,col=c("darkblue",2,"darkblue",2,1),levels=c(-80,80,-70,70,90),drawlabels=FALSE,main=expression(atop("Low resolution phase contour plots for the extended Riemann Siegel ",paste(Z[ext](f[2](s))," function and envelope functions eqns 69 and 74"))),
+        xlab="imaginary axis value",ylab="real axis value")
+
+contour(seq(226.005,286.005,l=1201), seq(-2,3,l=4001),matsenv,levels=c(-80,80),col=c(3,5),add=TRUE,drawlabels=FALSE)
+abline(h=c(-1.33,2.33),lty=3)
+abline(h=c(0,1/2,1),lty=6,col=6)
+abline(v=256.005,lty=6,col=6)
+
+
+```
+
+
+
+Examining figure 34 the envelope function surrounding  the diophantine peak of $f_1(s)$ at $S=1+I*256.005$ (which is associated with the $L(\chi_5(2,.),s)$ L-function have some disagreements with exact calculations for $f_2(s)$. Whether this is because T~256.005 rather than $T \rightarrow \infty$ will be investigated. 
+
+```{r image_zeroes_f1, message=FALSE, warnings=FALSE, echo=FALSE, fig.cap="Overlay of (i) high resolution contour plot of equations 67 and 72 with (ii) a low resolution contour plot of $Z_{ext}(f_{1}(s))$ function around the diophantine peak at $\\Im(s)=256.005$. Phase contour lines of $Z_{ext}(f_{1}(s))$ in black indicating mostly non-trivial zeroes on the critical line and one off the critical line at $\\Im(s)\\sim240$. Phase contour line of eqns 66, 72 in blue/red. Critical strip/line indicated by magenta lines."}
+
+knitr::include_graphics("/home/john/pari/f1_256p005_phasecontour.jpeg")
+
+```
+
 
 
 
