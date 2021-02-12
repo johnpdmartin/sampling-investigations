@@ -349,7 +349,7 @@ The positions of the zeroes indicated by the discontinuities in $S_{EPf_2}(t)$ a
 
 
 ```{r fig_cap_ramZ, echo=FALSE}
-cap2 <- "\\scriptsize{Using the first 4 primes, the argument $S_{EP}(t)$ and zeroes and poles counting function $N_{EP}(t)-P_{EP}(t)$ for three different ways of calculating the (imaginary part of the) logarithm of the partial Euler Product Z function is overlayed onto (S and N-P) Ramanujan tau L-functions on critical line for z=0.5+I*5 to z= 0.5+I*50. Left top panel: partial $S_{EP}(t)$ ($N_{EP}(t)-P_{EP}(t)$) continuous version, Right top panel: $S_{EP}(t)$ ($N_{EP}(t)-P_{EP}(t)$) branch version Lower panel: difference between the two partial Euler Product $S_{EP}(t)$ ($N_{EP}(t)-P_{EP}(t)$) versions. The partial Euler product functions are (i) the argument function $S_{EP}(t)$ $\\textcolor{violet}{(red-violet)}$ and (ii) the zero (and pole) counting function $N_{EP}(t)-P_{EP}(t)$ $\\textcolor{blue}{(blue)}$. Whilst both the Ramanujan tau L-functions S(t) and N(t)-P(t) functions are shown in $\\textcolor{green}{(green)}$ and $\\textcolor{red}{(red)}$ respectively in all three panels.}"
+cap2 <- "\\scriptsize{Using the first 4 primes, the argument $S_{EP}(t)$ and zeroes and poles counting function $N_{EP}(t)-P_{EP}(t)$ for three different ways of calculating the (imaginary part of the) logarithm of the partial Euler Product Z function is overlayed onto (S and N-P) Ramanujan tau L-functions on critical line for z=6+I*5 to z= 6+I*50. Left top panel: partial $S_{EP}(t)$ ($N_{EP}(t)-P_{EP}(t)$) continuous version, Right top panel: $S_{EP}(t)$ ($N_{EP}(t)-P_{EP}(t)$) branch version Lower panel: difference between the two partial Euler Product $S_{EP}(t)$ ($N_{EP}(t)-P_{EP}(t)$) versions. The partial Euler product functions are (i) the argument function $S_{EP}(t)$ $\\textcolor{violet}{(red-violet)}$ and (ii) the zero (and pole) counting function $N_{EP}(t)-P_{EP}(t)$ $\\textcolor{blue}{(blue)}$. Whilst both the Ramanujan tau L-functions S(t) and N(t)-P(t) functions are shown in $\\textcolor{green}{(green)}$ and $\\textcolor{red}{(red)}$ respectively in all three panels.}"
 
 ```
 
@@ -365,17 +365,17 @@ knitr::include_graphics("/home/john/pari/sharpEP_S_N_functions/graph_imaglogramZ
 
 ##Ramanujan Tau L-function and the partial Euler Product
 
-In figure 4, the S(t) and N(t)-P(t) functions for the Ramaujan Tau L-function [4,10] are compared to $S_{EP}(t)$ and $N_{EP}(t)-P_{EP}(t)$ using (i) the partial Euler Product, (ii) its extended Riemann Siegel Z function and (iii) difference of the two functions based versions of the argument function and zeroes (and poles) counting function using 4 primes, on the critical line interval (0.5+I\*5) - (0.5+I\*50)
+In figure 4, the S(t) and N(t)-P(t) functions for the Ramaujan Tau L-function [4,10] are compared to $S_{EP}(t)$ and $N_{EP}(t)-P_{EP}(t)$ using (i) the partial Euler Product, (ii) its extended Riemann Siegel Z function and (iii) difference of the two functions based versions of the argument function and zeroes (and poles) counting function using 4 primes, on the critical line interval (6+I\*5) - (6+I\*50)
 
 \textbf{Included in all three panels;}
 \begin{enumerate}
 \item The (green) function is the argument function of the Ramaujan Tau L-function (with lower contour segment on the critical line) 
 \begin{equation}
-S(t) = \frac{Arg(\tau L(1/2+I\*t))}{\pi} = \frac{\Im(log(\tau L(1/2+I\*t)))}{\pi}
+S(t) = \frac{Arg(\tau L(6+I\*t))}{\pi} = \frac{\Im(log(\tau L(6+I\*t)))}{\pi}
 \end{equation}
 \item The (red) staircase function is the Ramaujan Tau L-function zeros and poles counting function (with lower contour segment on the critical line) 
 \begin{equation}
-N(t)-P(t) = \frac{\theta_{ext,\tau L}(1/2+t)}{\pi} + S(t) 
+N(t)-P(t) = \frac{\theta_{ext,\tau L}(6+t)}{\pi} + S(t) 
 \end{equation}
 where $\theta_{ext,\tau L}(s)$ is the continuous version of the extended Riemann Siegel Theta function for the Ramaujan Tau L-function.
 \begin{align}
@@ -390,7 +390,7 @@ and importantly the continuous version of $\theta_{ext,\tau L_{EP}}(s)$ is emplo
 \begin{enumerate}
 \item The (red-violet) function is the continuous argument function obtained from the partial Euler Product (with lower contour segment on the critical line)
 \begin{equation}\label{eq:stauLcontep}
-S_{EPcont}(t) = \frac{\Im(log(\tau L_{EP}(1/2+I\*t))}{\pi}
+S_{EPcont}(t) = \frac{\Im(log(\tau L_{EP}(6+I\*t))}{\pi}
 \end{equation}
 where the Ramaujan Tau L-function partial Euler Product function is
 \begin{equation}
@@ -403,7 +403,7 @@ which is divergent (convergent) inside (outside) the critical strip $(5.5 \le \R
 where $q=e^{2\pi I z}$ with $\Im(z) > 0$
 \item The (blue) function is the continuous zeros and poles counting function obtained from the partial Euler product (with lower contour segment on the critical line) 
 \begin{align}\label{eq:nptauLcontep}
-(N_{EP\tau L}(t)-P_{EP\tau L}(t))_{cont} = \frac{\theta_{ext,\tau L}(1/2+I\*t)}{\pi} + S_{EPcont}(t)
+(N_{EP\tau L}(t)-P_{EP\tau L}(t))_{cont} = \frac{\theta_{ext,\tau L}(6+I\*t)}{\pi} + S_{EPcont}(t)
 \end{align}  
 \end{enumerate}
 
@@ -411,7 +411,7 @@ where $q=e^{2\pi I z}$ with $\Im(z) > 0$
 \begin{enumerate}
 \item The (red-violet) function is the branch argument function obtained from the extended Riemann Siegel Z function of the partial Euler Product (with lower contour segment on the critical line)
 \begin{equation}\label{ eq:stauLbranchep}
-S_{EPbranch}(t) = \frac{\Im(log(Z_{ext,\tau L_{EP}}(1/2+I\*t)))}{\pi}
+S_{EPbranch}(t) = \frac{\Im(log(Z_{ext,\tau L_{EP}}(6+I\*t)))}{\pi}
 \end{equation}
 where the Ramaujan Tau L-function partial Euler Product extended Riemann Siegel Z function is 
 \begin{align}
@@ -420,7 +420,7 @@ Z_{ext,\zeta_{EP}}(s) &= \sqrt{\frac{\tau L_{EP}(s)^2}{(2\*\pi)^{2s-12}\Gamma(12
 which is divergent (convergent) inside (outside) the critical strip.
 \item The (blue) function is the branch zeros and poles counting function obtained from the extended Riemann Siegel Z function of the partial Euler Product (with lower contour segment on the critical line) 
 \begin{align}\label{eq:nptauLbranchep}
-(N_{EP}(t)-P_{EP}(t))_{branch} = \frac{\theta_{ext,\tau L}(1/2+I\*t)}{\pi} +  S_{EPbranch}(t)
+(N_{EP}(t)-P_{EP}(t))_{branch} = \frac{\theta_{ext,\tau L}(6+I\*t)}{\pi} +  S_{EPbranch}(t)
 \end{align}  
 \end{enumerate}
 
@@ -433,7 +433,7 @@ S_{EP}(t) = S_{EPcont}(t) - S_{EPbranch}(t)
 which is only a first order approximation of the Ramaujan Tau L-function argument function but has a sharp lineshape regardless of the number of primes used in the calculation.
 \item The (blue) function is the sharp zeros and poles counting function obtained from the difference of the continuous and branch partial Euler Product argument functions (with lower contour segment on the critical line) 
 \begin{align}\label{eq:nptauLrenormep}
-(N_{EP}(t)-P_{EP}(t)) = \frac{\theta_{ext,\tau L}(1/2+I\*t)}{\pi} + S_{EP}(t)
+(N_{EP}(t)-P_{EP}(t)) = \frac{\theta_{ext,\tau L}(6+I\*t)}{\pi} + S_{EP}(t)
 \end{align}
 which is only a first order approximation of the Ramaujan Tau L-function zeroes and poles function but is a sharp lineshape regardless of the number of primes used in the calculation.
 \end{enumerate}
@@ -442,7 +442,7 @@ which is only a first order approximation of the Ramaujan Tau L-function zeroes 
 
 The Ramaujan Tau L-function has no poles so 
 \begin{equation}
-N_{EP}(1/2+I\*t) = \frac{\theta_{ext,\tau L}(1/2+I\*t)}{\pi} + S_{EP}(1/2+I\*t) + 0
+N_{EP}(1/2+I\*t) = \frac{\theta_{ext,\tau L}(6+I\*t)}{\pi} + S_{EP}(6+I\*t) + 0
 \end{equation}
 
 The phase increment = 1 in $N_{EP}(t)-P_{EP}(t)$ per known non-trivial Ramanujan Tau L-function zeroes  is in agreement with known Ramanujan Tau L-function behavior. The positions of the zeroes indicated by the discontinuities in $S_{EP}(t)$ and $N_{EP}(t)-P_{EP}(t)$ is only in first order agreement with the Ramanujan Tau L-function function.
