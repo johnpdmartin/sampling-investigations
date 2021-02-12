@@ -1,0 +1,608 @@
+---
+title: A self normalised calculation of the argument function $S_{EP}(t)$ and zeroes (and pole) counting function $N_{EP}(t)-P_{EP}(t)$ of the partial Euler Product versions of 1st degree L-functions and their Davenport-Heilbronn counterparts. 
+
+author: "John Martin"
+date: \today
+header-includes:  \usepackage{xcolor}
+output:
+  pdf_document:
+    fig_crop: no
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+
+```
+
+
+
+##Executive Summary
+
+Calculating the difference between the imaginary part of the logarithm of (i) the partial Euler Product and (ii) its extended Riemann Siegel Z function cancels the effect of the common divergent fluctuation terms present in each logarithm leaving only the phase increment from the partial Euler Product non-trivial zeroes (and poles). The resultant partial Euler Product based argument function $S_{EP}(t)=\Im(log(EP))-\Im(log(Z_{EP}))$ using continuous expressions (not principal branch calculations) and zero (and pole) counting function $N_{EP}(t)-P_{EP}(t)$ (which also includes the smooth trend component $\theta_{ext}(t)$) are informative approximations for the imaginary axis non-trivial zero positions for 1st degree L-functions. Using linear combinations of partial Euler Products the Davenport-Heilbronn function non-trivial zero imaginary axis positions are also usefully approximated and off centre non-trivial zeroes are readily identified by a double phase increment. 
+
+##Introduction
+
+In this paper, the Riemann Zeta function [1-3], Ramanujan Tau L-function [4] and two 5-periodic (Davenport-Heilbronn) linear combinations of L-functions [5-7] are used to illustrate the argument function S(t) and zeroes and pole counting function N(t)-P(t) on the critical line, for the true function and several different calculations of $S_{EP}(t)$ and $N_{EP}(t)-P_{EP}(t)$ using the partial Euler Product and its extended Riemann Siegel Theta and Z function analogues. 
+
+In particular, taking the difference between the partial Euler Product and its extended Riemann Siegel (partial Euler product) Z function based $S_{EP}(t)$ and $N_{EP}(t)-P_{EP}(t)$ approximations gives renormalised lineshapes better representating the true function S(t) and N(t)-P(t) behaviour. Importantly, (i) the sharp partial Euler product S(t) and N(t)-P(t) lineshape results of the difference between the partial Euler Product and its Z function  is maintained for partial Euler Products over larger numbers of primes but only remains a useful first-order approximation compared to the true L-function non-trivial zeroes positions, and (ii) the equations also apply above the critical line.
+
+All the calculations and graphs are produced using the pari-gp language [8].
+
+
+```{r fig_cap_zetaZ, echo=FALSE}
+cap2 <- "\\scriptsize{Using the first 4 primes, the argument $S_{EP}(t)$ and zeroes and poles counting function $N_{EP}(t)-P_{EP}(t)$ for three different ways of calculating the (imaginary part of the) logarithm of the partial Euler Product Z function is overlayed onto (S and N-P) Riemann Zeta functions on critical line for z=0.5+I*5 to z= 0.5+I*50. Left top panel: partial $S_{EP}(t)$ ($N_{EP}(t)-P_{EP}(t)$) continuous version, Right top panel: $S_{EP}(t)$ ($N_{EP}(t)-P_{EP}(t)$) branch version Lower panel: difference between the two partial Euler Product $S_{EP}(t)$ ($N_{EP}(t)-P_{EP}(t)$) versions. The partial Euler product functions are (i) the argument function $S_{EP}(t)$ $\\textcolor{violet}{(red-violet)}$ and (ii) the zero (and pole) counting function $N_{EP}(t)-P_{EP}(t)$ $\\textcolor{blue}{(blue)}$. Whilst both the Riemann Zeta S(t) and N(t)-P(t) functions are shown in $\\textcolor{green}{(green)}$ and $\\textcolor{red}{(red)}$ respectively in all three panels.}"
+
+```
+
+```{r image_zetaZ, fig.show = "hold", out.width = c("50%","50%","100%"), fig.align = "default", fig.cap=cap2}
+
+knitr::include_graphics("/home/john/pari/sharpEP_S_N_functions/graph_imaglogzetaZ_cont_4primes.pdf")
+
+knitr::include_graphics("/home/john/pari/sharpEP_S_N_functions/graph_imaglogzetaZ_branch_4primes.pdf")
+
+knitr::include_graphics("/home/john/pari/sharpEP_S_N_functions/graph_imaglogzetaZ_sharp_4primes.pdf")
+
+```
+
+
+##Riemann Zeta function and the partial Euler Product
+
+In figure 1, the S(t) and N(t)-P(t) functions for the Riemann Zeta function are compared to $S_{EP}(t)$ and $N_{EP}(t)-P_{EP}(t)$ using (i) the partial Euler Product, (ii) its extended Riemann Siegel Z function [1,3,9] and (iii) difference of the two functions based versions of the argument function and zeroes (and poles) counting function using 4 primes, on the critical line interval (0.5+I\*5) - (0.5+I\*50)
+
+\textbf{Included in all three panels;}
+\begin{enumerate}
+\item The (green) function is the argument function of the Riemann Zeta (with lower contour segment on the critical line) 
+\begin{equation}
+S(t) = \frac{Arg(\zeta(1/2+I\*t))}{\pi} = \frac{\Im(log(\zeta(1/2+I\*t)))}{\pi}
+\end{equation}
+\item The (red) staircase function is the Riemann Zeta zeros and poles counting function (with lower contour segment on the critical line) 
+\begin{equation}
+N(t)-P(t) = \frac{\theta(t)}{\pi} + S(t) 
+\end{equation}
+where $\theta(t)$ is the continuous version of the Riemann Siegel Theta function.
+\end{enumerate}
+
+
+
+\textbf{Included in the top left panel;}
+\begin{enumerate}
+\item The (red-violet) function is the continuous argument function obtained from the partial Euler Product (with lower contour segment on the critical line)
+\begin{equation}\label{eq:szetacontep}
+S_{EPcont}(t) = \frac{\Im(log(\zeta_{EP}(1/2+I\*t))}{\pi}
+\end{equation}
+where the Riemann Zeta partial Euler Product function is
+\begin{equation}
+\zeta_{EP}(s) = {\Large\prod_{\rho=2}^P} \frac{1}{(1-1/\rho^{s})} \qquad \text{for } P \ll \infty \label {eq:EP}
+\end{equation}
+which is divergent (convergent) inside (outside) the critical strip.
+\item The (blue) function is the continuous zeros and poles counting function obtained from the partial Euler product (with lower contour segment on the critical line) 
+\begin{align}\label{eq:npzetacontep}
+(N_{EP}(t)-P_{EP}(t))_{cont} = \frac{\theta_{ext,\zeta_{EP}}(1/2+I\*t)}{\pi} + S_{EPcont}(t)
+\end{align}  
+where $\theta_{ext,\zeta_{EP}}(s)$ is the extended Riemann Siegel Theta function for the Riemann Zeta function.
+\begin{align}
+\theta_{ext,\zeta_{EP}}(s) &= -\frac{1}{2}\Im\big(log(2^s\pi^{s-1}sin(\frac{\pi s}{2})\Gamma(1-s))\big) \\
+&= \theta(t) \text{ on the critical line} \label{eq:thetaext}
+\end{align}
+\end{enumerate}
+and importantly the continuous version of $\theta_{ext,\zeta_{EP}}(s)$ is employed via Stirling's approximation of $log(\Gamma(1-s))$, $log(sin(\frac{\pi s}{2}))$ etc rather than the principal branch logarithm value.
+
+\textbf{Included in the top right panel;}
+\begin{enumerate}
+\item The (red-violet) function is the branch argument function obtained from the extended Riemann Siegel Z function [9] of the partial Euler Product (with lower contour segment on the critical line)
+\begin{equation}\label{ eq:szetabranchep}
+S_{EPbranch}(t) = \frac{\Im(log(Z_{ext,\zeta_{EP}}(1/2+I\*t)))}{\pi}
+\end{equation}
+where the Riemann Zeta partial Euler Product extended Riemann Siegel Z function is 
+\begin{align}
+Z_{ext,\zeta_{EP}}(s) &= \sqrt{\frac{\zeta_{EP}(s)^2}{(2^s\pi^{s-1}sin(\frac{\pi s}{2})\Gamma(1-s))}*abs(2^s\pi^{s-1}sin(\frac{\pi s}{2})\Gamma(1-s))}\label{eq:zext}
+\end{align}
+which is divergent (convergent) inside (outside) the critical strip.
+\item The (blue) function is the branch zeros and poles counting function obtained from the extended Riemann Siegel Z function of the partial Euler Product (with lower contour segment on the critical line) 
+\begin{align}\label{eq:npzetabranchep}
+(N_{EP}(t)-P_{EP}(t))_{branch} = \frac{\theta_{ext,\zeta_{EP}}(1/2+I\*t)}{\pi} +  S_{EPbranch}(t)
+\end{align}  
+\end{enumerate}
+
+\textbf{Included in the lower panel;}
+\begin{enumerate}
+\item The (red-violet) function is the sharp argument function obtained from the difference of the continuous and branch partial Euler Product argument functions  (with lower contour segment on the critical line)
+\begin{equation}\label{eq:szetarenormep}
+S_{EP}(t) = S_{EPcont}(t) - S_{EPbranch}(t)
+\end{equation}
+which is only a first order approximation of the Riemann Zeta argument function but has a sharp lineshape regardless of the number of primes used in the calculation.
+\item The (blue) function is the sharp zeros and poles counting function obtained from the difference of the continuous and branch partial Euler Product argument functions (with lower contour segment on the critical line) 
+\begin{align}\label{eq:npzetarenormep}
+(N_{EP}(t)-P_{EP}(t)) = \frac{\theta_{ext,\zeta_{EP}}(1/2+I\*t)}{\pi} + S_{EP}(t)
+\end{align}
+which is only a first order approximation of the Riemann Zeta zeroes and poles function but is a sharp lineshape regardless of the number of primes used in the calculation.
+\end{enumerate}
+
+\textbf{main observations;}
+
+The Riemann Zeta function has a single pole at s=1 so 
+\begin{equation}
+N_{EP}(1/2+I\*t) = \frac{\theta_{ext,\zeta_{EP}}(1/2+I\*t)}{\pi} + S_{EP}(1/2+I\*t) + 1
+\end{equation}
+
+The phase increment = 1 in $N_{EP}(t)-P_{EP}(t)$ per known non-trivial Riemann Zeta zero  is in agreement with known Riemann Zeta behavior. The positions of the zeroes indicated by the discontinuities in $S_{EP}(t)$ and $N_{EP}(t)-P_{EP}(t)$ is only in first order agreement with the Riemann Zeta function but does display the main characteristic behavior of large separation between zeroes at large peaks with bunching as compensation in both wings of the large peaks.
+
+Thus, in localised regions $|S_{EP}(t)| > 1, 2, 3$ etc near large peaks. Hence the suspicion arises that discontinuity phase increments > 1 may be present at high t (and hence a violation of Riemann Hypothesis). In reply, no such phase increments > 1 have been yet observed for the Riemann Zeta function nor in this partial Euler Product analogue which is investigated again in later sections.
+
+To demonstrate whether a partial Euler product based function may exhibit phase increments (due to non-trivial zeroes) > 1, the following two sections illustrate the behavior for $S_{EP}(t)$ and $N_{EP}(t)-P_{EP}(t)$ based functions for Davenport-Heilbronn functions which are known to have non-trivial zeroes off the critical line. 
+
+
+
+```{r fig_cap_f1Z, echo=FALSE}
+cap2 <- "\\scriptsize{Using the first 4 primes, the argument $S_{EP}(t)$ and zeroes and poles counting function $N_{EP}(t)-P_{EP}(t)-40$ for three different ways of calculating the (imaginary part) of the logarithm of the (linear combination of) partial Euler Product Z function is overlayed onto  the S and (N-P)-40 Davenport-Heilbronn f1 functions on critical line for z=0.5+I*80 to z= 0.5+I*90. The upper complex plane first non critical line zero is known to occur at z=.808517 + I*85.699348 as shown in the figure and such S and N-P points have double phase increments of value 2. Left panel: linear combination $S_{EP}(t)$ ($N_{EP}(t)-P_{EP}(t)$) continuous version, Middle panel: linear combination $S_{EP}(t)$ ($N_{EP}(t)-P_{EP}(t)$) branch version Right panel: difference between the two linear combination partial Euler Product $S_{EP}(t)$ ($N_{EP}(t)-P_{EP}(t)$) versions. The linear combination partial Euler product functions are (i) the argument function $S_{EP}(t)$  $\\textcolor{violet}{(red-violet)}$ and (ii) the shifted zero (and pole) counting function $N_{EP}(t)-P_{EP}(t)-40$ $\\textcolor{blue}{(blue)}$. Whilst both the Davenport-Heilbronn f1 function S(t) and N(t)-P(t)-40 functions are shown in $\\textcolor{green}{(green)}$ and $\\textcolor{red}{(red)}$ respectively  in all three panels. The N(t)-P(t) count (near t $\\sim$ 80) was subtracted by 40 so that the S(t) function could be displayed on the same graph.}"
+
+```
+
+```{r image_f1Z, fig.show = "hold", out.width = c("50%","50%","100%"), fig.align = "default", fig.cap=cap2}
+
+knitr::include_graphics("/home/john/pari/sharpEP_S_N_functions/graph_imaglogf1Z_cont_4primes.pdf")
+
+knitr::include_graphics("/home/john/pari/sharpEP_S_N_functions/graph_imaglogf1Z_branch_4primes.pdf")
+
+knitr::include_graphics("/home/john/pari/sharpEP_S_N_functions/graph_imaglogf1Z_sharp_4primes.pdf")
+
+```
+
+##Davenport-Heilbronn $f_1(s)$ function and its linear combination of partial Euler Products
+
+In figure 2, the S(t) and N(t)-P(t) functions for the Davenport-Heilbronn $f_1(s)$ function are compared to $S_{EP}(t)$ and $N_{EP}(t)-P_{EP}(t)$ using (i) its linear combination of partial Euler Products version, (ii) its linear combination of partial Euler Products extended Riemann Siegel Z function and (iii) difference of the two functions based versions of the argument function and zeroes (and poles) counting function using 4 primes, on the critical line interval (0.5+I\*80) - (0.5+I\*90) in the region of the first off centre non-trivial zeroes (\footnotesize$0.808 + I \cdot85.699$, $1-0.808 + I \cdot85.699$\normalsize)
+
+\textbf{Included in all three panels;} 
+where the shifted N(t)-P(t) function, N(t)-P(t) - 40 is displayed for the convenience of overlapping S(t) and N(t)-P(t) - 40 lineshapes
+\begin{enumerate}
+\item The (green) function is the argument function of the Davenport-Heilbronn $f_1(s)$ function (with lower contour segment on the critical line) 
+\begin{equation}
+S_{f_1}(t) = \frac{Arg(f_1(1/2+I\*t))}{\pi} = \frac{\Im(log(f_1(1/2+I\*t)))}{\pi}
+\end{equation}
+where $f_{1}(s)$ the 5-periodic function [5-7] is given in L-function, Dirichlet series and Hurwitz Zeta function form by
+\begin{align}
+f_{1}(s) &= \frac{1}{2cos(\theta_1)} \Big [ e^{i\theta_1}L(\chi_5(3,.),s) + e^{-i\theta_1}L(\chi_5(2,.),s) \Big ] \label{eq:func1_Lcomb} \\ 
+&= 1 + \frac{tan(\theta_1)}{2^s} - \frac{tan(\theta_1)}{3^s} - \frac{1}{4^s} + \frac{0}{5^s} + ... \label{eq:func1_series} \\ 
+&= 5^{-s}\Big ( \zeta(s,\frac{1}{5}) + tan(\theta_1)\cdot\zeta(s,\frac{2}{5}) - tan(\theta_1)\cdot\zeta(s,\frac{3}{5}) - \zeta(s,\frac{4}{5})\Big ) \label{eq:func1_hurwitz}
+\end{align}
+where 
+\begin{align}
+tan(\theta_1) &= \frac{(\sqrt{10-2\sqrt{5}}-2)}{(\sqrt{5}-1)} \label{eq:xi} \\
+&= 0.284079043840412296028291832393
+\end{align}
+\item The (red) staircase function is the (downshifted by 40) Davenport-Heilbronn $f_1(s)$ function zeros and poles counting function (with lower contour segment on the critical line) 
+\begin{equation}
+N_{f_1}(t)-P_{f_1}(t) -40 = \frac{\theta_{f_1}(t)}{\pi} + S_{f_1}(t) - 40 
+\end{equation}
+where $\theta_{f_1}(t)$ is the continuous version of the $f_1(s)$ function extended Riemann Siegel Theta function (on the critical line s=1/2+I*t).
+\begin{equation}
+\theta_{ext,f_1}(s) = -\frac{1}{2}\Im\big(log(5^{(\frac{1}{2}-s)}2(2\pi)^{(s-1)}cos(\frac{\pi s}{2})\Gamma(1-s))\big) \label{eq:thetaextfunc1}
+\end{equation}
+and importantly the continuous version of $\theta_{ext,f_1}(s)$ is calculated via Stirling's approximation of $log(\Gamma(1-s))$, $log(cos(\frac{\pi s}{2}))$ etc rather than the principal branch logarithm value.
+\end{enumerate}
+
+\textbf{Included in the top left panel;}
+\begin{enumerate}
+\item The (red-violet) function is the continuous argument function obtained from the Davenport-Heilbronn $f_1(s)$ function linear combination of partial Euler Products (with lower contour segment on the critical line)
+\begin{equation}\label{eq:scontf1}
+S_{EPf_1cont}(t) = \frac{\Im(log(EP_{f_1}(1/2+I\*t)))}{\pi}
+\end{equation}
+where the Davenport-Heilbronn $f_1(s)$ function linear combination of partial Euler Product [7] is
+\begin{equation}
+EP_{f_1(s)} = \frac{1}{2cos(\theta_1)} \Big [ e^{i\theta_1}\left({\Large\prod_{p=2}^{P}} \frac{1}{(1-\chi_5(3,p)/p^{(\sigma+I\*t)})}\right)+ e^{-i\theta_1}\left({\Large\prod_{p=2}^{P}} \frac{1}{(1-\chi_5(2,p)/p^{(\sigma+I\*t)})}\right) \Big ] \qquad \text{for } P \ll \infty \label{eq:eq_epfunc1}
+\end{equation}
+which is divergent (convergent) inside (outside) the critical strip.
+\item The (blue) function is the (downshifted by 40) continuous zeros and poles counting function obtained from the Davenport-Heilbronn $f_1(s)$ function linear combination of partial Euler Products (with lower contour segment on the critical line) 
+\begin{align}\label{eq:npcontf1}
+(N_{EPf_1}(t)-P_{EPf_1}(t))_{cont} -40 = \frac{\theta_{ext,f_1}(1/2+I\*t)}{\pi} + S_{EPf_1cont}(t) - 40
+\end{align}  
+\end{enumerate}
+
+\textbf{Included in the top right panel;}
+\begin{enumerate}
+\item The (red-violet) function is the branch argument function obtained from the Davenport-Heilbronn $f_1(s)$ function extended Riemann Siegel Z function [9] of the linear combination of partial Euler Products (with lower contour segment on the critical line)
+\begin{equation}\label{ eq:sf1branchep}
+S_{EPf_1branch}(t) = \frac{\Im(log(Z_{ext,EP_{f_1}}(1/2+I\*t)))}{\pi}
+\end{equation}
+where the Davenport-Heilbronn $f_1(s)$ function extended Riemann Siegel Z function of the linear combination of partial Euler Products  is
+\begin{align}
+Z_{ext,EP_{f_1}}(s) &= \sqrt{\frac{EP_{f_1}(s)^2}{(5^{(\frac{1}{2}-s)}2(2\pi)^{(s-1)}cos(\frac{\pi s}{2})\Gamma(1-s))}*abs(5^{(\frac{1}{2}-s)}2(2\pi)^{(s-1)}cos(\frac{\pi s}{2})\Gamma(1-s))}\label{eq:zf1ext}
+\end{align}
+which is divergent (convergent) inside (outside) the critical strip.
+\item The (blue) function is the (downshifted by 40) branch zeros and poles counting function obtained from the Davenport-Heilbronn $f_1(s)$ function linear combination of partial Euler Products (with lower contour segment on the critical line) 
+\begin{align}\label{eq:npf1branchep}
+(N_{EPf_1}(t)-P_{EPf_1}(t))_{branch} -40 = \frac{\theta_{ext,\zeta_{EP}}(1/2+I\*t)}{\pi} + S_{EPf_1branch}(t) - 40
+\end{align}  
+\end{enumerate}
+
+\textbf{Included in the lower panel;}
+\begin{enumerate}
+\item The (red-violet) function is the sharp argument function obtained from the difference of the continuous and branch partial Euler Product argument functions  (with lower contour segment on the critical line)
+\begin{equation}\label{eq:sf1renormep}
+S_{EPf_1}(t) = S_{EPf_1cont}(t) - S_{EPf_1branch}(t)
+\end{equation}
+which is only a first order approximation of the Davenport-Heilbronn $f_1(s)$ argument function but has a sharp lineshape regardless of the number of primes used in the calculation.
+\item The (blue) function is the (downshifted by 40) sharp zeros and poles counting function obtained from the difference of the continuous and branch partial Euler Product argument functions (with lower contour segment on the critical line) 
+\begin{align}\label{eq:npf1renormep}
+(N_{EPf_1}(t)-P_{EPf_1}(t)) - 40 = \frac{\theta_{ext,EP_{f_1}}(1/2+I\*t)}{\pi} + S_{EPf_1}(t) -40
+\end{align}
+which is only a first order approximation of the Davenport-Heilbronn $f_1(s)$ zeroes and poles function but is a sharp lineshape regardless of the number of primes used in the calculation.
+\end{enumerate}
+
+\textbf{main observations;}
+
+The Davenport-Heilbronn $f_1(s)$ function has no poles so 
+\begin{equation}
+N_{EPf_1}(1/2+I\*t) = \frac{\theta_{ext,EP_{f_1}}(1/2+I\*t)}{\pi} + S_{EPf_1}(1/2+I\*t) + 0
+\end{equation}
+
+The phase increment = 1 in $N_{EPf_1}(t)-P_{EPf_1}(t)$ and $(N_{EPf_1}(t)-P_{EPf_1}(t))_{branch}$ per known non-trivial Davenport-Heilbronn $f_1(s)$ zeroes on the critical line. 
+
+The phase increment = 2 in $N_{EPf_1}(t)-P_{EPf_1}(t)$ and $(N_{EPf_1}(t)-P_{EPf_1}(t))_{cont}$ per known non-trivial Davenport-Heilbronn $f_1(s)$ zeroes off the critical line. Thus a linear combination partial Euler product based function may exhibit phase increments (due to off critical line non-trivial zeroes) > 1
+
+The positions of the zeroes indicated by the discontinuities in $S_{EPf_1}(t)$ and $N_{EPf_1}(t)-P_{EPf_1}(t)$ is only in first order agreement with the Davenport-Heilbronn function but does display the main characteristic behaviors of expansion and contraction in seperation between the positions of the zeroes near large peaks.
+
+##Davenport-Heilbronn $f_2(s)$ function and its linear combination of partial Euler Products
+
+In figure 3, the S(t) and N(t)-P(t) functions for the Davenport-Heilbronn $f_2(s)$ function are compared to $S_{EP}(t)$ and $N_{EP}(t)-P_{EP}(t)$ using (i) its linear combination of partial Euler Products version, (ii) its linear combination of partial Euler Products extended Riemann Siegel Z function and (iii) difference of the two functions based versions of the argument function and zeroes (and poles) counting function using 4 primes, on the critical line interval (0.5+I\*5) - (0.5+I\*30) in the region of the first three off centre non-trivial zeroes (\footnotesize$2.308 + I \cdot8.918$, $1-2.308 + I \cdot8.918$, $1.943 + I \cdot18.899$, $1-1.943 + I \cdot18.899$, $2.091 + I \cdot26.545$ and $1-2.091 + I \cdot26.545$\normalsize)
+
+
+```{r fig_cap_f2Z, echo=FALSE}
+cap2 <- "\\scriptsize{Using the first 4 primes, the argument $S_{EP}(t)$ and zeroes and poles counting function $N_{EP}(t)-P_{EP}(t)$ for three different ways of calculating the (imaginary part) of the logarithm of the (linear combination of) partial Euler Product Z function is overlayed onto  the S and (N-P) Davenport-Heilbronn f2 functions on critical line for z=0.5+I*5 to z= 0.5+I*30. The upper complex plane first three non critical line zeroes are known to occur at z=2.30862 + I*8.91836, 1.94374 + I*18.8994, 2.09106 + I*26.5450 and as shown in the figure such S and N-P points have double phase increments of value 2. With these non-trivial zeroes occurring outside the critical strip, it is empirically observed that the critical line values of S and (N-P) are shifted slightly from the true zero imaginary values of such non-trivial zeroes. Left panel: linear combination $S_{EP}(t)$ ($N_{EP}(t)-P_{EP}(t)$) continuous version, Middle panel: linear combination $S_{EP}(t)$ ($N_{EP}(t)-P_{EP}(t)$) branch version Right panel: difference between the two linear combination partial Euler Product $S_{EP}(t)$ ($N_{EP}(t)-P_{EP}(t)$) versions. The linear combination partial Euler product functions are (i) the argument function $S_{EP}(t)$  $\\textcolor{violet}{(red-violet)}$ and (ii) the shifted zero (and pole) counting function $N_{EP}(t)-P_{EP}(t)$ $\\textcolor{blue}{(blue)}$. Whilst both the Davenport-Heilbronn f2 function S(t) and N(t)-P(t) functions are shown in $\\textcolor{green}{(green)}$ and $\\textcolor{red}{(red)}$ respectively  in all three panels.}"
+
+```
+
+```{r image_f2Z, fig.show = "hold", out.width = c("50%","50%","100%"), fig.align = "default", fig.cap=cap2}
+
+knitr::include_graphics("/home/john/pari/sharpEP_S_N_functions/graph_imaglogf2Z_cont_4primes.pdf")
+
+knitr::include_graphics("/home/john/pari/sharpEP_S_N_functions/graph_imaglogf2Z_branch_4primes.pdf")
+
+knitr::include_graphics("/home/john/pari/sharpEP_S_N_functions/graph_imaglogf2Z_sharp_4primes.pdf")
+
+```
+
+
+\textbf{Included in all three panels;} 
+\begin{enumerate}
+\item The (green) function is the argument function of the Davenport-Heilbronn $f_2(s)$ function (with lower contour segment on the critical line) 
+\begin{equation}
+S_{f_2}(t) = \frac{Arg(f_2(1/2+I\*t))}{\pi} = \frac{\Im(log(f_2(1/2+I\*t)))}{\pi}
+\end{equation}
+where $f_{2}(s)$ the 5-periodic function [5-7] is given in L-function, Dirichlet series and Hurwitz Zeta function form by
+\begin{align}
+f_{2}(s) &= \frac{I}{2sin(\theta_1)} \Big [ e^{i\theta_1}L(\chi_5(3,.),s) - e^{-i\theta_1}L(\chi_5(2,.),s) \Big ] \label{eq:func2_Lcomb} \\ 
+&= 1 - \frac{1/tan(\theta_1)}{2^s} + \frac{1/tan(\theta_1)}{3^s} - \frac{1}{4^s} + \frac{0}{5^s} + ... \label{eq:func2_series}\\ 
+&= 5^{-s}\Big ( \zeta(s,\frac{1}{5}) - \frac{1}{tan(\theta_1)}\cdot\zeta(s,\frac{2}{5}) + \frac{1}{tan(\theta_1)}\cdot\zeta(s,\frac{3}{5}) - \zeta(s,\frac{4}{5})\Big ) \label{eq:func2_hurwitz}
+\end{align}
+\item The (red) staircase function is the Davenport-Heilbronn $f_2(s)$ function zeros and poles counting function (with lower contour segment on the critical line) 
+\begin{equation}
+N_{f_2}(t)-P_{f_2}(t) = \frac{\theta_{ext,f_2}(t)}{\pi} + S_{f_2}(t) 
+\end{equation}
+where $\theta_{f_2}(t)$ is the continuous version of the $f_2(s)$ function extended Riemann Siegel Theta function (on the critical line s=1/2+I*t).
+\begin{equation}
+\theta_{ext,f_2}(s) = -\frac{1}{2}\Im\big(log(5^{(\frac{1}{2}-s)}2(2\pi)^{(s-1)}cos(\frac{\pi s}{2})\Gamma(1-s))\big) \label{eq:thetaextfunc2}
+\end{equation}
+and importantly the continuous version of $\theta_{ext,f_2}(s)$ is calculated via Stirling's approximation of $log(\Gamma(1-s))$, $log(cos(\frac{\pi s}{2}))$ etc rather than the principal branch logarithm value.
+\end{enumerate}
+
+\textbf{Included in the top left panel;}
+\begin{enumerate}
+\item The (red-violet) function is the continuous argument function obtained from the Davenport-Heilbronn $f_2(s)$ function linear combination of partial Euler Products (with lower contour segment on the critical line)
+\begin{equation}\label{eq:scontf2}
+S_{EPf_2cont}(t) = \frac{\Im(log(EP_{f_2}(1/2+I\*t)))}{\pi}
+\end{equation}
+where the Davenport-Heilbronn $f_2(s)$ function linear combination of partial Euler Product is
+\begin{equation}
+EP_{f_2(s)} = \frac{I}{2sin(\theta_1)} \Big [ e^{i\theta_1}\left({\Large\prod_{p=2}^{P}} \frac{1}{(1-\chi_5(3,p)/p^{(\sigma+I\*t)})}\right)- e^{-i\theta_1}\left({\Large\prod_{p=2}^{P}} \frac{1}{(1-\chi_5(2,p)/p^{(\sigma+I\*t)})}\right) \Big ] \qquad \text{for } P \ll \infty \label{eq:eq_epfunc2}
+\end{equation}
+which is divergent (convergent) inside (outside) the critical strip.
+\item The (blue) function is the continuous zeros and poles counting function obtained from the Davenport-Heilbronn $f_2(s)$ function linear combination of partial Euler Products (with lower contour segment on the critical line) 
+\begin{align}\label{eq:npcontf2}
+(N_{EPf_2}(t)-P_{EPf_2}(t))_{cont}  = \frac{\theta_{ext,f_2}(1/2+I\*t)}{\pi} + S_{EPf_2cont}(t) 
+\end{align}  
+\end{enumerate}
+
+\textbf{Included in the top right panel;}
+\begin{enumerate}
+\item The (red-violet) function is the branch argument function obtained from the Davenport-Heilbronn $f_2(s)$ function extended Riemann Siegel Z function [9] of the linear combination of partial Euler Products (with lower contour segment on the critical line)
+\begin{equation}\label{ eq:sf2branchep}
+S_{EPf_2branch}(t) = \frac{\Im(log(Z_{ext,EP_{f_2}}(1/2+I\*t)))}{\pi}
+\end{equation}
+where the Davenport-Heilbronn $f_2(s)$ function extended Riemann Siegel Z function of the linear combination of partial Euler Products  is
+\begin{align}
+Z_{ext,EP_{f_2}}(s) &= \sqrt{\frac{-EP_{f_2}(s)^2}{(5^{(\frac{1}{2}-s)}2(2\pi)^{(s-1)}cos(\frac{\pi s}{2})\Gamma(1-s))}*abs(5^{(\frac{1}{2}-s)}2(2\pi)^{(s-1)}cos(\frac{\pi s}{2})\Gamma(1-s))}\label{eq:zf2ext}
+\end{align}
+which is divergent (convergent) inside (outside) the critical strip. The factor of -1 in equation \ref{eq:zf2ext} was identified by comparison of the real and imaginary components of the $f_2(s)$ Riemann Siegel Z function and $Z_{ext,EP_{f_2}}(s)$ for $\Re(s) > 1$ and arises due to the presence of I as a common factor in equation \ref {eq:eq_epfunc2}. 
+\item The (blue) function is the branch zeros and poles counting function obtained from the Davenport-Heilbronn $f_2(s)$ function linear combination of partial Euler Products (with lower contour segment on the critical line) 
+\begin{align}\label{eq:npf2branchep}
+(N_{EPf_2}(t)-P_{EPf_2}(t))_{branch}  = \frac{\theta_{ext,f_2}(1/2+I\*t)}{\pi} + S_{EPf_2branch}(t) 
+\end{align}  
+\end{enumerate}
+
+\textbf{Included in the lower panel;}
+\begin{enumerate}
+\item The (red-violet) function is the sharp argument function obtained from the difference of the continuous and branch partial Euler Product argument functions  (with lower contour segment on the critical line)
+\begin{equation}\label{eq:sf2renormep}
+S_{EPf_2}(t) = S_{EPf_2cont}(t) - S_{EPf_2branch}(t)
+\end{equation}
+which is only a first order approximation of the Davenport-Heilbronn $f_2(s)$ argument function but has a sharp lineshape regardless of the number of primes used in the calculation.
+\item The (blue) function is the sharp zeros and poles counting function obtained from the difference of the continuous and branch partial Euler Product argument functions (with lower contour segment on the critical line) 
+\begin{align}\label{eq:npf2renormep}
+(N_{EPf_2}(t)-P_{EPf_2}(t))  = \frac{\theta_{ext,f_2}(1/2+I\*t)}{\pi} + S_{EPf_2}(t) 
+\end{align}
+which is only a first order approximation of the Davenport-Heilbronn $f_2(s)$ zeroes and poles function but is a sharp lineshape regardless of the number of primes used in the calculation.
+\end{enumerate}
+
+\textbf{main observations;}
+
+The Davenport-Heilbronn $f_2(s)$ function has no poles so 
+\begin{equation}
+N_{EPf_2}(1/2+I\*t) = \frac{\theta_{ext,f_2}(1/2+I\*t)}{\pi} + S_{EPf_2}(1/2+I\*t) + 0
+\end{equation}
+
+The phase increment = 1 in $N_{EPf_2}(t)-P_{EPf_2}(t)$ and $(N_{EPf_2}(t)-P_{EPf_2}(t))_{branch}$ per known non-trivial Davenport-Heilbronn $f_2(s)$ zeroes on the critical line. 
+
+The phase increment = 2 in $N_{EPf_2}(t)-P_{EPf_2}(t)$ and $(N_{EPf_2}(t)-P_{EPf_2}(t))_{cont}$ per known non-trivial Davenport-Heilbronn $f_2(s)$ zeroes off the critical line. Thus another linear combination partial Euler product based function may exhibit phase increments (due to off critical line non-trivial zeroes) > 1
+
+The positions of the zeroes indicated by the discontinuities in $S_{EPf_2}(t)$ and $N_{EPf_2}(t)-P_{EPf_2}(t)$ is only in first order agreement with the Davenport-Heilbronn function but does display the main characteristic behaviors of expansion and contraction in seperation between the positions of the zeroes near large peaks. The positions of the discontinuities in $N_{EPf_2}(1/2+I*t)-P_{EPf_2}(1/2+I*t)$ (with the lowest contour on the critical line) are further away from the actual non-trivial zero positions that occur outside the critical strip for $f_2(s)$ compared to the non-trivial zeroes inside the critical strip.  
+
+
+```{r fig_cap_ramZ, echo=FALSE}
+cap2 <- "\\scriptsize{Using the first 4 primes, the argument $S_{EP}(t)$ and zeroes and poles counting function $N_{EP}(t)-P_{EP}(t)$ for three different ways of calculating the (imaginary part of the) logarithm of the partial Euler Product Z function is overlayed onto (S and N-P) Ramanujan tau L-functions on critical line for z=0.5+I*5 to z= 0.5+I*50. Left top panel: partial $S_{EP}(t)$ ($N_{EP}(t)-P_{EP}(t)$) continuous version, Right top panel: $S_{EP}(t)$ ($N_{EP}(t)-P_{EP}(t)$) branch version Lower panel: difference between the two partial Euler Product $S_{EP}(t)$ ($N_{EP}(t)-P_{EP}(t)$) versions. The partial Euler product functions are (i) the argument function $S_{EP}(t)$ $\\textcolor{violet}{(red-violet)}$ and (ii) the zero (and pole) counting function $N_{EP}(t)-P_{EP}(t)$ $\\textcolor{blue}{(blue)}$. Whilst both the Ramanujan tau L-functions S(t) and N(t)-P(t) functions are shown in $\\textcolor{green}{(green)}$ and $\\textcolor{red}{(red)}$ respectively in all three panels.}"
+
+```
+
+```{r image_ramZ, fig.show = "hold", out.width = c("50%","50%","100%"), fig.align = "default", fig.cap=cap2}
+
+knitr::include_graphics("/home/john/pari/sharpEP_S_N_functions/graph_imaglogramZ_cont_4primes.pdf")
+
+knitr::include_graphics("/home/john/pari/sharpEP_S_N_functions/graph_imaglogramZ_branch_4primes.pdf")
+
+knitr::include_graphics("/home/john/pari/sharpEP_S_N_functions/graph_imaglogramZ_sharp_4primes.pdf")
+
+```
+
+##Ramanujan Tau L-function and the partial Euler Product
+
+In figure 4, the S(t) and N(t)-P(t) functions for the Ramaujan Tau L-function [4,10] are compared to $S_{EP}(t)$ and $N_{EP}(t)-P_{EP}(t)$ using (i) the partial Euler Product, (ii) its extended Riemann Siegel Z function and (iii) difference of the two functions based versions of the argument function and zeroes (and poles) counting function using 4 primes, on the critical line interval (0.5+I\*5) - (0.5+I\*50)
+
+\textbf{Included in all three panels;}
+\begin{enumerate}
+\item The (green) function is the argument function of the Ramaujan Tau L-function (with lower contour segment on the critical line) 
+\begin{equation}
+S(t) = \frac{Arg(\tau L(1/2+I\*t))}{\pi} = \frac{\Im(log(\tau L(1/2+I\*t)))}{\pi}
+\end{equation}
+\item The (red) staircase function is the Ramaujan Tau L-function zeros and poles counting function (with lower contour segment on the critical line) 
+\begin{equation}
+N(t)-P(t) = \frac{\theta_{ext,\tau L}(1/2+t)}{\pi} + S(t) 
+\end{equation}
+where $\theta_{ext,\tau L}(s)$ is the continuous version of the extended Riemann Siegel Theta function for the Ramaujan Tau L-function.
+\begin{align}
+\theta_{ext,\tau L}(s) &= -\frac{1}{2}\Im\big(log((2*\pi)^{2s-12}\Gamma(12-s)/\Gamma(s))\big) \label{eq:thetatauLext}
+\end{align}
+\end{enumerate}
+and importantly the continuous version of $\theta_{ext,\tau L_{EP}}(s)$ is employed via Stirling's approximation of $log(\Gamma(12-s))$, $log(\Gamma(s))$ etc rather than the principal branch logarithm value.
+
+
+
+\textbf{Included in the top left panel;}
+\begin{enumerate}
+\item The (red-violet) function is the continuous argument function obtained from the partial Euler Product (with lower contour segment on the critical line)
+\begin{equation}\label{eq:stauLcontep}
+S_{EPcont}(t) = \frac{\Im(log(\tau L_{EP}(1/2+I\*t))}{\pi}
+\end{equation}
+where the Ramaujan Tau L-function partial Euler Product function is
+\begin{equation}
+\tau L_{EP}(s) = {\Large\prod_{\rho=2}^P} \frac{1}{(1-\tau(\rho)/\rho^{s}+\rho^{(11-2s)})} \qquad \text{for } P \ll \infty \label {eq:tauLEP}
+\end{equation}
+which is divergent (convergent) inside (outside) the critical strip $(5.5 \le \Re(s) \le 6.5)$ and $\tau(n)$ the Ramaujan Tau function which satisfies the generating function
+\begin{equation}
+\sum_{n\ge1} \tau(n)q^n = q\prod_{n\ge1} (1-q^n)^{24} 
+\end{equation}
+where $q=e^{2\pi I z}$ with $\Im(z) > 0$
+\item The (blue) function is the continuous zeros and poles counting function obtained from the partial Euler product (with lower contour segment on the critical line) 
+\begin{align}\label{eq:nptauLcontep}
+(N_{EP\tau L}(t)-P_{EP\tau L}(t))_{cont} = \frac{\theta_{ext,\tau L}(1/2+I\*t)}{\pi} + S_{EPcont}(t)
+\end{align}  
+\end{enumerate}
+
+\textbf{Included in the top right panel;}
+\begin{enumerate}
+\item The (red-violet) function is the branch argument function obtained from the extended Riemann Siegel Z function of the partial Euler Product (with lower contour segment on the critical line)
+\begin{equation}\label{ eq:stauLbranchep}
+S_{EPbranch}(t) = \frac{\Im(log(Z_{ext,\tau L_{EP}}(1/2+I\*t)))}{\pi}
+\end{equation}
+where the Ramaujan Tau L-function partial Euler Product extended Riemann Siegel Z function is 
+\begin{align}
+Z_{ext,\zeta_{EP}}(s) &= \sqrt{\frac{\tau L_{EP}(s)^2}{(2\*\pi)^{2s-12}\Gamma(12-s)/\Gamma(s)}*abs((2\*\pi)^{2s-12}\Gamma(12-s)/\Gamma(s))}\label{eq:ztauLext}
+\end{align}
+which is divergent (convergent) inside (outside) the critical strip.
+\item The (blue) function is the branch zeros and poles counting function obtained from the extended Riemann Siegel Z function of the partial Euler Product (with lower contour segment on the critical line) 
+\begin{align}\label{eq:nptauLbranchep}
+(N_{EP}(t)-P_{EP}(t))_{branch} = \frac{\theta_{ext,\tau L}(1/2+I\*t)}{\pi} +  S_{EPbranch}(t)
+\end{align}  
+\end{enumerate}
+
+\textbf{Included in the lower panel;}
+\begin{enumerate}
+\item The (red-violet) function is the sharp argument function obtained from the difference of the continuous and branch partial Euler Product argument functions  (with lower contour segment on the critical line)
+\begin{equation}\label{eq:stauLrenormep}
+S_{EP}(t) = S_{EPcont}(t) - S_{EPbranch}(t)
+\end{equation}
+which is only a first order approximation of the Ramaujan Tau L-function argument function but has a sharp lineshape regardless of the number of primes used in the calculation.
+\item The (blue) function is the sharp zeros and poles counting function obtained from the difference of the continuous and branch partial Euler Product argument functions (with lower contour segment on the critical line) 
+\begin{align}\label{eq:nptauLrenormep}
+(N_{EP}(t)-P_{EP}(t)) = \frac{\theta_{ext,\tau L}(1/2+I\*t)}{\pi} + S_{EP}(t)
+\end{align}
+which is only a first order approximation of the Ramaujan Tau L-function zeroes and poles function but is a sharp lineshape regardless of the number of primes used in the calculation.
+\end{enumerate}
+
+\textbf{main observations;}
+
+The Ramaujan Tau L-function has no poles so 
+\begin{equation}
+N_{EP}(1/2+I\*t) = \frac{\theta_{ext,\tau L}(1/2+I\*t)}{\pi} + S_{EP}(1/2+I\*t) + 0
+\end{equation}
+
+The phase increment = 1 in $N_{EP}(t)-P_{EP}(t)$ per known non-trivial Ramanujan Tau L-function zeroes  is in agreement with known Ramanujan Tau L-function behavior. The positions of the zeroes indicated by the discontinuities in $S_{EP}(t)$ and $N_{EP}(t)-P_{EP}(t)$ is only in first order agreement with the Ramanujan Tau L-function function.
+
+##A comparison of  Riemann Zeta function and the partial Euler Product argument function results at high t
+
+G. Hiary [11,12] [link]{https://people.math.osu.edu/hiary.1/zetapictures.html#39246764589894309155251169284084} has presented Riemann Zeta S(t) (and Riemann Siegel Z(t)) results about the large peak on the critical line at $t \sim 3.92e31$. The maximum S(t) values below and above the peak are +3.169 and -2.936 [12]. In figures 5 and 6, the results for the partial Euler product based $S_{EP}(t)$ and $\Re(Z_{ext,EP}(s))$ functions are displayed using the first 168 and 1229 primes respectively. The maximum values of $S_{EP}(t)$ using 1229 primes are +3.0 and -2.5 which approximately compare to the above S(t) values and positions. Examining the spacings between zeros, the large zero separation at the peak is well approximated but there are several smaller zero spacings present in the Riemann Zeta function [12]. The S(t) side feature at +14 is present in many of the large Riemann Zeta peaks examined by [12] in the interval $10^{27} < t <10^{32}$ . 
+
+The main difference between figures 5 and 6 is that with 1229 primes the width of the large zero spacing in $S_{EP}(t)$ under the peak is much closer to the real Riemann Zeta S(t) behavior. 
+
+It is important to point out that 
+\begin{enumerate}
+\item The corresponding Riemann Zeta function results of Hiary [12] has different y-axis scales for S(t) (-5,5) and Z(t) (left panel (-20,20), right panel (-1000,1000)) whereas figures 5 and 6 have the same y axis scale (-5,5) for $S_{EP}(t)$ and $\Re(Z_{ext,EP}(s))$
+\item In figures 5 and 6, $\Re(Z_{ext,EP}(1/2+I*t))$ is displayed rather than $Z_{ext,EP}(1/2+I*t)$ because the $S_{EP}(1/2+I*t)$ formula developed in this paper only identifies the zeroes of $\Re(Z_{ext,EP}(1/2+I*t))$ which approximates the zeroes of $\zeta(s)$.
+\item To plot a continuous version of $\Re(Z_{ext,EP}(1/2+I*t))$ since $Z_{ext,EP}(1/2+I*t)$ is a square root function calculation, the following transformation is employed
+\begin{equation}
+\Re(Z_{ext,EP}(1/2+I\cdot t))=\Re\left(cos\Big(N_{EP}(1/2+I \cdot t)-P_{EP}(1/2+I \cdot t)\Big) \cdot Z_{ext,EP}(1/2+I\cdot t) \right)
+\end{equation}
+where $cos(N_{EP}(t)-P_{EP}(t))$ is a rectangular wave of alternating value $\pm 1$ which supplies the correct phase in assigning the sign of $Z_{ext,EP}(1/2+I*t)$ as each zero position is passed.
+\end{enumerate}
+
+
+```{r fig_cap_3p92_168Z, echo=FALSE}
+cap2 <- "\\scriptsize{Using the first 168 primes, the argument $S_{EP}(t)$ (red) and the real part of the partial Euler Product extended Riemann Siegel Z function $\\Re(Z_{ext,EP}(s))$ (green) is displayed in the region of the critical line peak 39246764589894309155251169284104.0506. Left panel: close up around peak $\\Delta_t = (-2.4,+2.4)$ Right panel: $\\Delta_t = (-12,+18)$}"
+
+```
+
+```{r image_3p92_168Z, fig.show = "hold", out.width = c("50%","50%"), fig.align = "default", fig.cap=cap2}
+
+knitr::include_graphics("/home/john/pari/sharpEP_S_N_functions/graph_3p92e31_168primes_narrow.pdf")
+knitr::include_graphics("/home/john/pari/sharpEP_S_N_functions/graph_3p92e31_168primes_wide.pdf")
+
+```
+
+```{r fig_cap_3p92_1229Z, echo=FALSE}
+cap2 <- "\\scriptsize{Using the first 1229 primes, the argument $S_{EP}(t)$ (red) and the real part of the partial Euler Product extended Riemann Siegel Z function $\\Re(Z_{ext,EP}(s))$ (green) is displayed in the region of the critical line peak 39246764589894309155251169284104.0506. Left panel: close up around peak $\\Delta_t = (-2.4,+2.4)$ Right panel: $\\Delta_t = (-12,+18)$}"
+
+```
+
+```{r image_3p92_1229Z, fig.show = "hold", out.width = c("50%","50%"), fig.align = "default", fig.cap=cap2}
+
+knitr::include_graphics("/home/john/pari/sharpEP_S_N_functions/graph_3p92e31_1229primes_narrow.pdf")
+knitr::include_graphics("/home/john/pari/sharpEP_S_N_functions/graph_3p92e31_1229primes_wide.pdf")
+
+```
+
+
+
+##Self-similarity of the partial Euler Product argument function results near large peaks at high t
+
+In recent work [13-15], the region surrounding large peaks t high T on the line s=1  for the partial Euler Product of L-functions and their Davenport-Heilbronn counterparts were found to exhibit self-similarity of the function's behavior about the real axis s=1. 
+
+Examining whether this behavior occurs on the critical line, figure 7 shows the translated $S_{EP}(1/2+I*t)$ continuous expression behavior where $-2.4 \le t \le 2.4$ and $-12 \le t \le 18$ using 109 primes overlayed on the $S_{EP}(T+t)$ and $\Re(Z_{ext,EP}(T+t))$ for the partial Euler Peak at 3.92e31, i.e. \scriptsize{$\\T=39246764589894309155251169284104.0506$} \normalsize  using the first 1229 primes. The use of 109 primes for $S_{EP}(1/2+I*t)$ was chosen to roughly fit the $S_{EP}(T+t)$ extremum. The side features in [12] for many large peaks at +1.5 and +14 is supporting evidence that this mesoscale self-similarity is also occurring in the Riemann Zeta function.
+
+In figure 8, the $S_{EP}(T)$ and $\Re(Z_{ext,EP}(T))$ for a partial Euler Product peak at 6.0028e297 [16], i.e. \scriptsize{$\\T=t+60028650529164855662727182866658078254623951331806272090681489175149146567402484921091698448663 \\
+9789217441603802749902965358902350052338458231124297318923513447146746407996791105366995037335707 \\
+6985542377896142749182350515745454308725317154819018276836700697197020938978446939833728659770140 \\
+616741673$} \normalsize 
+are displayed overlayed by $S_{EP}(1/2+I*t)$ about the real axis where $-4 \le t \le 4$ and $-30 \le t \le 30$ respectively in the two panels, using the first 168 primes.
+
+Considering the self-similarity features at high T
+\begin{enumerate}
+\item consistent with the line s=1 behavior [13] the surrounding meso-scale structure follows the behavior of the partial Euler Product (and Riemann Zeta) patterns of zeroes about the real axis. These are the larger features at $\sim \pm 14.134, \pm 21.02, \pm 25.01$. It can be observed in [12] for true Riemann Zeta calculations that many large peaks in the interval $10^{27}-10^{32}$ have a noticeable side feature in S(t) at $\sim|14.1|$.
+\item The large $S_{EP}(T)$ oscillations on the critical line close about the main peak corresponding to the large zero spacing and the weaker feature at $\sim 1.4$ can be reasonably replicated using $S_{EP}(1/2+I*t)$ about the real axis. Normally the high T expansion is not used for partial Euler Product about the real axis itself but useful information about self-similarity appears to be provided by these results when shifted to high T.
+\item The values of 109 \& 168 primes used in the shifted $S_{EP}(1/2+I*t)$ results were simply empirical fits to the $S_{EP}(1/2+I*T)$ behavior. In principle, the values will be related to the growth rate of the function along the critical line.
+\end{enumerate}
+
+
+```{r fig_cap_3p92e31_168selfZ, echo=FALSE}
+cap2 <- "\\scriptsize{A translated overlay of $S_{EP}(t)$ (blue) about the real axis at s=1/2+I*t using the first 109 primes to the region T. On top of the results from figure 6 which where calculated at t+39246764589894309155251169284104.0506 using 1229 primes.}"
+
+```
+
+```{r image_3p92e31_168selfZ, fig.show = "hold", out.width = c("50%","50%"), fig.align = "default", fig.cap=cap2}
+
+knitr::include_graphics("/home/john/pari/sharpEP_S_N_functions/graph_3p92e31_1229primes_selfsimilarity.pdf")
+knitr::include_graphics("/home/john/pari/sharpEP_S_N_functions/graph_3p92e31_1229primes_wideselfsimilarity.pdf")
+
+```
+
+
+```{r fig_cap_6p0028e297_168Z, echo=FALSE}
+cap2 <- "\\scriptsize{A translated overlay of $S_{EP}(t)$ (blue) about the real axis at s=1/2+I*t using the first 168 primes to the region T. On top of the argument function $S_{EP}(T)$ (red) and the real part of the partial Euler Product extended Riemann Siegel Z function $\\Re(Z_{ext,EP}(1/2+I*T))$ (green) calculated at T=t+600286505291648556627271828666580782546239513318062720906814891751491465674024849210\\ 91698448663978921744160380274990296535890235005233845823112429731892351344714674640799679110536699503733570769855423 \\ 77896142749182350515745454308725317154819018276836700697197020938978446939833728659770140616741673 also calculated using 168 primes. Left panel: close up around peak $t = (-4,+4)$ Right panel: $t= (-30,+30)$}"
+
+```
+
+```{r image_6p0028e297_168Z, fig.show = "hold", out.width = c("50%","50%"), fig.align = "default", fig.cap=cap2}
+
+knitr::include_graphics("/home/john/pari/sharpEP_S_N_functions/graph_6p0028e297_168primes_narrow.pdf")
+knitr::include_graphics("/home/john/pari/sharpEP_S_N_functions/graph_6p0028e297_168primes_wide.pdf")
+
+```
+
+
+
+
+
+
+###Conclusions
+
+Although the partial Euler Product is divergent inside the critical strip, a renormalised partial Euler Product argument function can be obtained by calculating the difference 
+
+\begin{equation}
+S_{EP}(t)=\Im(log(EP))-\Im(log(Z_{EP}))
+\end{equation}
+
+where the calculations involve continuous expressions not principal branch calculations.
+
+The behavior also holds trivially for the Riemann Zeta function  
+
+\begin{align}
+S_{\zeta}(1/2+I\*t) &= \Im(log(\zeta(1/2+I\*t)))-\Im(log(Z_{\zeta}(1/2+I\*t))) \\
+&=\Im(log(\zeta(1/2+I\*t))) \text{ since } \Im(log(Z_{\zeta}(1/2+I\*t)))=0
+\end{align}
+
+Using the extended Riemann Siegel Theta function (obtainable from the functional equation) a renomalised partial Euler Product zeroes (and poles) counting function is also derived. 
+
+These renormalised functions are useful approximations in identifying key behavior of the true function behavior eg. of phase increments per zero, the compression/expansion of spacings between zeroes and self-similarity of function behavior near large peaks at high t.
+
+
+###References
+
+1. Edwards, H.M. (1974). Riemann's zeta function. Pure and Applied Mathematics 58. New York-London: Academic Press. ISBN 0-12-242750-0. Zbl 0315.10035.
+
+2. Riemann, Bernhard (1859). "$\ddot{U}$ber die Anzahl der Primzahlen unter einer gegebenen Gr$\ddot{o}$sse". Monatsberichte der Berliner Akademie.. In Gesammelte Werke, Teubner, Leipzig (1892), Reprinted by Dover, New York (1953).
+
+3. Berry, M. V. "The Riemann-Siegel Expansion for the Zeta Function: High Orders and Remainders." Proc. Roy. Soc. London A 450, 439-462, 1995.
+
+4. Keiper, J. B. "On the Zeros of the Ramanujan $tau$-Dirichlet Series in the Critical Strip." Mathematics of Computation 65, no. 216 (1996): 1613-619. Accessed February 10, 2021. http://www.jstor.org/stable/2153727.
+
+5. Spira, R. Mathematics of Computation, Volume 63, Number 208,
+October 1994, Pages 747-748
+
+6. Balanzario, E.P. and Sanchez-Ortiz, J. Mathematics of Computation,
+Volume 76, Number 260, October 2007, Pages 2045–2049
+
+7. Martin J.P.D., (2020) "7-, \& 9-periodic dual Davenport Heilbronn counterexamples are derived for the corresponding Degree 1 dual L-functions pairs given in https://www.lmfdb.org/L/degree1." https://dx.doi.org/10.6084/m9.figshare.21257145
+
+8. The PARI~Group, PARI/GP version {\tt 2.12.0}, Univ. Bordeaux, 2018,
+    \url{http://pari.math.u-bordeaux.fr/}.
+\normalfont
+
+9. Martin, J.P.D. "A fast calculation of first order shifts in $\zeta(s)$ zeroes positions using an extended Riemann Siegel Z function for the partial Euler Product of the lowest primes" (2018)
+http://dx.doi.org/10.6084/m9.figshare.6157700
+
+10. 1998–2021 Wolfram Research, Inc. https://functions.wolfram.com/ZetaFunctionsandPolylogarithms/RamanujanTauL/
+
+11. Hiary G.A. (2011) Fast methods to compute the Riemann zeta function Ann. Math., 174-2, 891-946
+also available; https://people.math.osu.edu/hiary.1/fastmethods.html
+
+12. Hiary G.A. (2011) "Z(t), S(t)  values and $\zeta(s)$ non-trivial zeroes positions surrounding peak 39246764589894309155251169284084 + 20.05" [link]{https://people.math.osu.edu/hiary.1/zetapictures.html#39246764589894309155251169284084}
+
+13. Martin J.P.D., (2020) "Examining Riemann Zeta mesoscale self-similarity along the line 1 near large peaks" https://dx.doi.org/10.6084/m9.figshare.13176062
+
+14. Martin J.P.D., (2020) "Self-similarity along the line $\Re(L(\chi,s)) = 1$ for 1st degree L functions near (i) large peaks and (ii) points known to correspond to large Riemann Zeta function peaks." https://dx.doi.org/10.6084/m9.figshare.25506011
+
+15. Martin J.P.D., (2020) "Self-similarity for non self-dual $\chi(5,.)$ 1st degree L functions and their Davenport Heilbronn counterparts along the line $\Re(L(\chi,s)) = 1$ and the surrounding region" https://dx.doi.org/10.6084/m9.figshare.13299599
+
+16. Martin, J.P.D. (2018) "Some high  peaks of partial Euler Product of the lowest primes on the Riemann Zeta critical line in the interval $10^{20} < T < 10^{400}$ providing a proxy lower bound on Riemann Zeta function growth".
+https://figshare.com/articles/journal_contribution/_/7185092
+
+
+
