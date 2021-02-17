@@ -501,7 +501,7 @@ In figure 8, the $S_{EP}(T)$ and $\Re(Z_{ext,EP}(T))$ for a partial Euler Produc
 9789217441603802749902965358902350052338458231124297318923513447146746407996791105366995037335707 \\
 6985542377896142749182350515745454308725317154819018276836700697197020938978446939833728659770140 \\
 616741673$} \normalsize 
-are displayed overlayed by $S_{EP}(1/2+I*t)$ about the real axis where $-4 \le t \le 4$ and $-30 \le t \le 30$ respectively in the two panels, using the first 168 primes.
+are displayed overlayed by $S_{EP}(1/2+I*t)$ about the real axis where $-4 \le t \le 4$ and $-30 \le t \le 30$ in the two panels, using the first 9592 (and 1229) primes respectively.
 
 Considering the self-similarity features at high T
 \begin{enumerate}
@@ -525,14 +525,14 @@ knitr::include_graphics("/home/john/pari/sharpEP_S_N_functions/graph_3p92e31_122
 
 
 ```{r fig_cap_6p0028e297_168Z, echo=FALSE}
-cap2 <- "\\scriptsize{A translated overlay of $S_{EP}(t)$ (blue) about the real axis at s=1/2+I*t using the first 168 primes to the region T. On top of the argument function $S_{EP}(T)$ (red) and the real part of the partial Euler Product extended Riemann Siegel Z function $\\Re(Z_{ext,EP}(1/2+I*T))$ (green) calculated at T=t+600286505291648556627271828666580782546239513318062720906814891751491465674024849210\\ 91698448663978921744160380274990296535890235005233845823112429731892351344714674640799679110536699503733570769855423 \\ 77896142749182350515745454308725317154819018276836700697197020938978446939833728659770140616741673 also calculated using 168 primes. Left panel: close up around peak $t = (-4,+4)$ Right panel: $t= (-30,+30)$}"
+cap2 <- "\\scriptsize{A translated overlay of $S_{EP}(t)$ (blue) about the real axis at s=1/2+I*t shifted to the region T. On top of the argument function $S_{EP}(T)$ (red) and the real part of the partial Euler Product extended Riemann Siegel Z function $\\Re(Z_{ext,EP}(1/2+I*T))$ (green) calculated at T=t+600286505291648556627271828666580782546239513318062720906814891751491465674024849210\\ 91698448663978921744160380274990296535890235005233845823112429731892351344714674640799679110536699503733570769855423 \\ 77896142749182350515745454308725317154819018276836700697197020938978446939833728659770140616741673 calculated using 1229 primes. Left panel: $S_{EP}(T+t)$ (red) close up around peak $t = (-4,+4)$ using the first 9592 primes. Right panel: $S_{EP}(T+t)$ (red) $t= (-30,+30)$ using the first 1229 primes.}"
 
 ```
 
 ```{r image_6p0028e297_168Z, fig.show = "hold", out.width = c("50%","50%"), fig.align = "default", fig.cap=cap2}
 
-knitr::include_graphics("/home/john/pari/sharpEP_S_N_functions/graph_6p0028e297_168primes_narrow.pdf")
-knitr::include_graphics("/home/john/pari/sharpEP_S_N_functions/graph_6p0028e297_168primes_wide.pdf")
+knitr::include_graphics("/home/john/pari/sharpEP_S_N_functions/graph_6p0028e297_9592primes_narrow.pdf")
+knitr::include_graphics("/home/john/pari/sharpEP_S_N_functions/graph_6p0028e297_1229primes_wide.pdf")
 
 ```
 
@@ -604,5 +604,157 @@ also available; https://people.math.osu.edu/hiary.1/fastmethods.html
 16. Martin, J.P.D. (2018) "Some high  peaks of partial Euler Product of the lowest primes on the Riemann Zeta critical line in the interval $10^{20} < T < 10^{400}$ providing a proxy lower bound on Riemann Zeta function growth".
 https://figshare.com/articles/journal_contribution/_/7185092
 
+##Appendix A: Example pari-gp calculations
+
+To create the sharp versions of S(t) and N(t)-P(t) it has been found necessary to use (i) continuous versions of $\Im(log(EP(1/2+I*t)))$ and $\Im(log(Z_{EP}(1/2+I*t)))$ and (ii) (when using pari-gp) to avoid having nested use of user defined functions.
+
+The following example derives continuous expressions of $log(\theta_{ext}(s))$, $log(EP(s))$ and $log(Z_{EP}(s))$. In figure 9, the principal branch values are shown for (i)  $\Im(log(\zeta(s)))$ and (ii) using the first 4 primes $log(EP(s))$ and the sharp argument function $S_{EP}=\Im(log(EP(s)))-\Im(log(Z_{EP}(s)))$.
+
+\tiny
+\begin{verbatim}
+allocatemem(6400000000)  
+default(graphcolors,[4,5,2,3,1,6]); \\red, green, blue, violetred,black,grey
+\\partial Euler product
+fun_EP(res,t,N)=prodeuler(p=2,N,1/(1-1/(p)^(res+I*t))); 
+\\multipler factor for functional equation
+fun_chi(res,t)=2^(res+I*t)*Pi^((res+I*t)-1)*sin(Pi/2*(res+I*t))*gamma(1-(res+I*t));
+\\ continuous version of multipler factor for functional equation along positive imaginary axis
+fun_chi2(res,t)=exp(log(2)*(res+I*t)+log(Pi)*((res+I*t)-1)+(Pi/2*t-log(2)+I/2*Pi*(1-res))+((1-(res+I*t)-1/2)*log(1-(res+I*t))-(1-(res+I*t))+1/2*log(2*Pi))); 
+\\ continuous version of multipler factor for functional equation along negative imaginary axis
+fun_chi2r(res,t)=exp(log(2)*(res+I*t)+log(Pi)*((res+I*t)-1)+(Pi/2*t-log(2)-I/2*Pi*(1-res))+((1-(res+I*t)-1/2)*log(1-(res+I*t))-(1-(res+I*t))+1/2*log(2*Pi))); 
+\\continuous version of log(multipler factor) for functional equation along positive imaginary axis
+logfun_chi2(res,t)=(log(2)*(res+I*t)+log(Pi)*((res+I*t)-1)+(Pi/2*t-log(2)+I/2*Pi*(1-res))+((1-(res+I*t)-1/2)*log(1-(res+I*t))-(1-(res+I*t))+1/2*log(2*Pi))); 
+\\continuous version of log(multipler factor) for functional equation along negative imaginary axis
+logfun_chi2r(res,t)=(log(2)*(res+I*t)+log(Pi)*((res+I*t)-1)+(Pi/2*t-log(2)-I/2*Pi*(1-res))+((1-(res+I*t)-1/2)*log(1-(res+I*t))-(1-(res+I*t))+1/2*log(2*Pi)));
+\\log(partial Euler product)
+logfun_EP(res,t,N)=sum(p=2,N,-1*isprime(p)*log((1-1/(p)^(res+I*t)))); 
+
+\\continuous version of sharp Argument function along positive imaginary axis
+imaglogfun_sharp_EPZ_Sposaxis(t,res,N)=1/2*imag(2*logfun_EP(res,t,N)-logfun_chi2(res,t))-(imag(log(sqrt(fun_EP(res,t,N)^2/fun_chi2(res,t)*abs(fun_chi2(res,t))))-1/2*logfun_chi2(res,t)));
+\\continuous version of sharp Argument function along negative imaginary axis
+imaglogfun_sharp_EPZ_Snegaxis(t,res,N)=1/2*imag(2*logfun_EP(res,t,N)-logfun_chi2r(res,t))-(imag(log(sqrt(fun_EP(res,t,N)^2/fun_chi2r(res,t)*abs(fun_chi2r(res,t))))-1/2*logfun_chi2r(res,t)));
+
+\\ continuous version of renormalised Argument function to use when shifting results about s=res on real axis to high t 
+\\ using if statement to control negative and positive imaginary axis cases
+imaglogfun_sharp_EPZ_Slow(t,res,N)=if(t >0,imaglogfun_sharp_EPZ_Sposaxis(t,res,N),imaglogfun_sharp_EPZ_Snegaxis(t,res,N)); 
+
+res=1/2; \\ real axis value
+t_num=0; \\central position for peak of interest
+N=10; \\use primes between 1 to N of the integers
+Nprimes=sum(p=2,N,isprime(p)); \\count number of primes up to N
+print(Nprimes);
+
+s=plothexport("svg",t=-34,34,[imag(log(zeta(res+I*t)))/Pi,imag(logfun_EP(res,t+t_num,N))/Pi,imaglogfun_sharp_EPZ_Slow(t,res,N)/Pi]);
+write("/home/john/pari/example1.svg", s);
+\end{verbatim}
+\normalsize
+
+```{r fig_cap_example1, echo=FALSE}
+cap2 <- "\\scriptsize{A comparison of ({\\color{red}{red}}) $\\Im(log(\\zeta(1/2+I*t)))$, ({\\color{green}{green}}) $\\Im(log(EP(1/2+I*t)))$ and the sharp argument function ({\\color{blue}{blue}}) $\\Im(log(EP(1/2+I*t)))-\\Im(log(Z_{EP}(1/2+I*t)))$ with 4 primes in the interval $t= (-34,+34)$}"
+
+```
+
+```{r image_example1, fig.show = "hold", out.width = c("100%"), fig.align = "default", fig.cap=cap2}
+
+knitr::include_graphics("/home/john/pari/example1.pdf")
+
+```
+
+\clearpage
+Figure 10 shows the zeros and pole counting function using the continuous forms of $log(EP(s))$ and $log(Z_{EP}(s))$ where the first 4 primes have been employed, with the Riemann Zeta S(t) function as a reference curve.  
+
+Since the sharp partial Euler Product argument and zeros and poles counting function use Stirling's approximation such functions will not be accurate on the real axis itself but as shown in figure 10, the approach works well to within 0.25 of the real axis.
+\tiny
+\begin{verbatim}
+res=1/2; \\ real axis value
+t_num=0; \\central position for peak of interest
+N=10; \\use primes between 1 to N of the integers
+Nprimes=sum(p=2,N,isprime(p)); \\count number of primes up to N
+print(Nprimes);
+
+\\ standard continuous (high t) theta function for zeta function
+vtheta(t)=t/2*log(t/(2*Pi))-t/2-Pi/8+1/(48*t)+7/(5760*t^3)+31/(80640*t^4);
+
+\\ using if statement to control negative and positive imaginary axis cases
+logfun_chi2low(res,t)=if(t >0,logfun_chi2(res,t),logfun_chi2r(res,t)); 
+
+s=plothexport("svg",t=-34,34,[imag(log(zeta(res+I*(t+t_num))))/Pi,imaglogfun_sharp_EPZ_Slow(t+t_num,res,N)/Pi-1/2*imag(logfun_chi2low(res,t+t_num))/Pi]);
+write("/home/john/pari/example2.svg", s);
+\end{verbatim}
+\normalsize
 
 
+```{r fig_cap_example2, echo=FALSE}
+cap2 <- "\\scriptsize{A comparison of ({\\color{red}{red}}) $\\Im(log(\\zeta(1/2+I*t)))$, ({\\color{green}{green}}) the sharp partial Euler Product zeroes and poles counting function  $\\Im(log(EP(1/2+I*t)))-\\Im(log(Z_{EP}(1/2+I*t)))-1/2*\\Im(log(\\theta_ext(1/2+I*t)))$ with 4 primes in the interval $t= (-34,+34)$}"
+
+```
+
+```{r image_example2, fig.show = "hold", out.width = c("100%"), fig.align = "default", fig.cap=cap2}
+
+knitr::include_graphics("/home/john/pari/example2.pdf")
+
+```
+
+\clearpage
+Figure 11 shows the impact of the the number of primes on the partial Euler Product argument function and zeroes and pole counting function \textcolor{blue}{(blue)}. The graph illustrates, for increasing number of primes \{1,4,25,1000\}, the behaviour of the sharp partial Euler Product (left panel) argument and (right panel) zeros (and poles) counting functions around the first Riemann Zeta gram point violation using the peak at $~280.8$ as the central point. Including for comparison is (i) the Riemann Zeta functions S(t), N(t)-P(t) \textcolor{red}{(red)} and (ii) the standard $\Im(log(EP(1/2+I*t)))$ calculation \textcolor{green}{(green)} containing divergent fluctuations.
+
+
+
+\tiny
+\begin{verbatim}
+\\ examining the first gram point violation
+\\ 280.8 is the central peak near zeta function first gram point violation
+N=2; \\ first 1 prime
+Nprimes=sum(p=2,N,isprime(p)); \\count number of primes up to N
+print(Nprimes);
+\\continuous version of sharp Zeroes and poles counting function along positive imaginary axis
+imaglogfun_sharp_EPZ_Nposaxis(t,res,N)=imaglogfun_sharp_EPZ_Sposaxis(t,res,N)-1/2*imag(logfun_chi2(res,t));
+\\examing the zeta argument and partial Euler product argument functions
+s=plothexport("svg",t=270.8,290.8,[imag(log(zeta(res+I*(t))))/Pi,imag(logfun_EP(res,t,N))/Pi,imaglogfun_sharp_EPZ_Sposaxis(t,res,N)/Pi]);
+write("/home/john/pari/example3.svg", s);
+s=plothexport("svg",t=270.8,290.8,[imag(log(zeta(res+I*(t))))/Pi+vtheta(t)/Pi,imag(logfun_EP(res,t,N))/Pi-1/2*imag(logfun_chi2(res,t))/Pi,imaglogfun_sharp_EPZ_Nposaxis(t,res,N)/Pi]);
+write("/home/john/pari/example4.svg", s);
+N=10; \\ first 4 primes
+Nprimes=sum(p=2,N,isprime(p)); \\count number of primes up to N
+print(Nprimes);
+s=plothexport("svg",t=270.8,290.8,[imag(log(zeta(res+I*(t))))/Pi,imag(logfun_EP(res,t,N))/Pi,imaglogfun_sharp_EPZ_Sposaxis(t,res,N)/Pi]);
+write("/home/john/pari/example5.svg", s);
+s=plothexport("svg",t=270.8,290.8,[imag(log(zeta(res+I*(t))))/Pi+vtheta(t)/Pi,imag(logfun_EP(res,t,N))/Pi-1/2*imag(logfun_chi2(res,t))/Pi,imaglogfun_sharp_EPZ_Nposaxis(t,res,N)/Pi]);
+write("/home/john/pari/example6.svg", s);
+N=100; \\ first 25 primes
+Nprimes=sum(p=2,N,isprime(p)); \\count number of primes up to N
+print(Nprimes);
+s=plothexport("svg",t=270.8,290.8,[imag(log(zeta(res+I*(t))))/Pi,imag(logfun_EP(res,t,N))/Pi,imaglogfun_sharp_EPZ_Sposaxis(t,res,N)/Pi]);
+write("/home/john/pari/example7.svg", s);
+s=plothexport("svg",t=270.8,290.8,[imag(log(zeta(res+I*(t))))/Pi+vtheta(t)/Pi,imag(logfun_EP(res,t,N))/Pi-1/2*imag(logfun_chi2(res,t))/Pi,imaglogfun_sharp_EPZ_Nposaxis(t,res,N)/Pi]);
+write("/home/john/pari/example8.svg", s);
+N=7919; \\ first 1000 primes
+Nprimes=sum(p=2,N,isprime(p)); \\count number of primes up to N
+print(Nprimes);
+s=plothexport("svg",t=270.8,290.8,[imag(log(zeta(res+I*(t))))/Pi,imag(logfun_EP(res,t,N))/Pi,imaglogfun_sharp_EPZ_Sposaxis(t,res,N)/Pi]);
+write("/home/john/pari/example9.svg", s);
+s=plothexport("svg",t=270.8,290.8,[imag(log(zeta(res+I*(t))))/Pi+vtheta(t)/Pi,imag(logfun_EP(res,t,N))/Pi-1/2*imag(logfun_chi2(res,t))/Pi,imaglogfun_sharp_EPZ_Nposaxis(t,res,N)/Pi]);
+write("/home/john/pari/example10.svg", s);
+\end{verbatim}
+\normalsize
+
+```{r fig_cap_example34, echo=FALSE}
+cap2 <- "\\scriptsize{Using successively higher numbers (1,4,25,1000) of primes for the partial Euler product calculations in a comparison of ({\\color{red}{red}}) $\\Im(log(\\zeta(1/2+I*t)))$, ({\\color{green}{green}}) $\\Im(log(EP(1/2+I*t)))$ and the sharp argument function ({\\color{blue}{blue}}) $\\Im(log(EP(1/2+I*t)))-\\Im(log(Z_{EP}(1/2+I*t)))$ in the interval $T+t= (280.8-10,280.8+10)$}"
+
+```
+
+```{r image_example34, fig.show = "hold", out.width = c("50%","50%"), fig.align = "default", fig.cap=cap2}
+
+knitr::include_graphics("/home/john/pari/example3.pdf")
+knitr::include_graphics("/home/john/pari/example4.pdf")
+
+knitr::include_graphics("/home/john/pari/example5.pdf")
+knitr::include_graphics("/home/john/pari/example6.pdf")
+
+knitr::include_graphics("/home/john/pari/example7.pdf")
+knitr::include_graphics("/home/john/pari/example8.pdf")
+
+knitr::include_graphics("/home/john/pari/example9.pdf")
+knitr::include_graphics("/home/john/pari/example10.pdf")
+
+```
