@@ -1,0 +1,456 @@
+---
+title: "A quiescent region about $\\frac{t}{\\pi}$ in the oscillating divergence of the Riemann Zeta Dirichlet Series inside the critical strip."
+author: "John Martin"
+date: \today
+header-includes:  \usepackage{xcolor}
+output:
+  pdf_document:
+    fig_crop: no
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+
+```
+
+
+
+##Executive Summary
+
+A (second) quiescent region about $N \approx \frac{t}{\pi}$ is observed for the Riemann Zeta Dirichlet series sum ($\sum_{n=1}^N \frac{1}{n^s}$) inside the critical strip. The zeroth order sum based on $\lfloor\frac{t}{\pi}\rfloor$ and a first order sum involving simple interpolation of $\lfloor\frac{t}{\pi}\rfloor$ and $\lceil\frac{t}{\pi}\rceil$ sums provides much closer estimates of $\zeta(s)$ than the zeroth order Riemann-Siegel Z formula results (which uses the first quiescent region about $\sqrt{(\frac{t}{2\pi})}$). The quiescent region is present for the whole range $0 \le \sigma \le 1$ but the error is higher as $\sigma \rightarrow 0$.
+
+##Introduction
+
+In this paper, the oscillating divergence of the Riemann Zeta Dirichlet Series is displayed compared to the convergent behavior of the Dirichlet Eta Series and a known globally convergent (accelerated) series [1,2] based calculations of the Riemann Zeta function [3-6]. The observed quiescence in the divergence about $N \approx \frac{t}{\pi}$ of the Riemann Zeta Dirichlet series then motivated an investigation to approximate the Riemann Zeta function using this behaviour. 
+
+The paper shows that simple zeroth and first order expressions using truncation at $N \approx \frac{t}{\pi}$ of the Riemann Zeta Dirichlet series are well behaved and monotonically decreasing. All the calculations and graphs are produced using the pari-gp language [7].
+
+## $N \approx \frac{t}{\pi}$ partial Riemann Zeta Dirichlet Series sums
+
+As a heads start, figure 1 shows a comparison of the Riemann Siegel Z function, 
+
+\begin{equation}\label {eq:Z}
+Z_\zeta(s) = e^{i\theta(t)}\zeta(s)
+\end{equation}
+
+the zeroth order truncated Riemann Zeta Dirichlet series sum Z function at $\lfloor\frac{t}{\pi}\rfloor$,
+
+\begin{align}
+Z_{\frac{t}{\pi},0} &= e^{i\theta(t)}\left[\sum_{n=1}^{\lfloor\frac{t}{\pi}\rfloor}\frac{1}{n^s}  \right] \label {eq:0thodr_Ztpi} 
+\end{align}
+
+and the zeroth order Riemann-Siegel formula on the critical line
+
+\begin{equation}\label {eq:RS_Z_0thodr}
+Z_{RS\sqrt{\frac{t}{2\pi}},0} = e^{i\theta(t)}\sum_{n=1}^{\lfloor\sqrt{\frac{t}{2\pi}}\rfloor}\frac{1}{n^{(1/2+I\cdot t)}} + e^{-i\theta(t)}\sum_{n=1}^{\lfloor\sqrt{\frac{t}{2\pi}}\rfloor}\frac{1}{n^{1-(1/2+I\cdot t)}} + R_{RS\sqrt{\frac{t}{2\pi}}}(1/2+I\cdot t)
+\end{equation}
+
+
+```{r fig_cap_compZ, echo=FALSE}
+cap2 <- "\\scriptsize{Left panel: real and imaginary components of $Z_\\zeta(s)$ blue \\& gray, $Z_{\\frac{t}{\\pi},0}$ red \\& violet-red and the real function $Z_{RS\\sqrt{\\frac{t}{2\\pi}},0}$ green are calculated for three intervals on the critical line (i) t=(5,60), (ii) t=(220,310) and (iii) t=(1810,2040). Right panel: Difference between the real components of equation $Z_{\\frac{t}{\\pi},0}-Z_\\zeta(s)$ red, $(Z_{RS\\sqrt{\\frac{t}{2\\pi}},0}-Z_\\zeta(s))$ green and an conjectured bound for $(Z_{\\frac{t}{\\pi},0}-Z_\\zeta(s))$ in gray. }"
+
+```
+
+```{r image_compZ, fig.show = "hold", out.width = c("50%","50%"), fig.align = "default", fig.cap=cap2}
+
+knitr::include_graphics("/home/john/pari/dirichletseriesquiescence/graph_Z_0.50000000000000000000000000000000000000_5.pdf")
+
+knitr::include_graphics("/home/john/pari/dirichletseriesquiescence/graph_diffZ_0.50000000000000000000000000000000000000_5.pdf")
+
+knitr::include_graphics("/home/john/pari/dirichletseriesquiescence/graph_Z_0.50000000000000000000000000000000000000_220.pdf")
+
+knitr::include_graphics("/home/john/pari/dirichletseriesquiescence/graph_diffZ_0.50000000000000000000000000000000000000_220.pdf")
+
+knitr::include_graphics("/home/john/pari/dirichletseriesquiescence/graph_Z_0.50000000000000000000000000000000000000_1810.pdf")
+
+knitr::include_graphics("/home/john/pari/dirichletseriesquiescence/graph_diffZ_0.50000000000000000000000000000000000000_1810.pdf")
+
+```
+
+where $R_{RS\sqrt{\frac{t}{2\pi}}}(1/2+I\cdot t)$ are the known higher order corrections [8,9] and $\theta(t)$ is the Riemann-Siegel Theta function. 
+
+
+### On the critical line
+
+In figure 1, the calculations of equations (1-3) are performed on the critical line for three intervals (i) t=(5,60), (ii) t=(220,310) and (iii) t=(1810,2040). 
+
+
+The left panel shows the real and imaginary components of the $Z_\zeta(s)$ (blue & gray) and $Z_{\frac{t}{\pi},0}$ (red & violet-red) as well as the zeroth order Riemann-Siegel Z function (green). Since $\Im(Z_\zeta(1/2+I\cdot t))=0$ its gray line is on the imaginary axis. The $\Im(Z_{\frac{t}{\pi},0})$ component is the small (violet-red) line oscillating about the imaginary axis. The $\Re(Z_{\frac{t}{\pi},0})$ red is mostly overlayed by the $\Re(Z_\zeta(1/2+I\cdot t))$ blue line.
+
+The right panel shows the error compared to $Z_\zeta(s)$ for the real component of $Z_{\frac{t}{\pi},0}$ (red) and the zeroth order Riemann-Siegel Z function (green). In addition, the right panel contains a conjectured bound for the $Z_{\frac{t}{\pi},0}$ error (gray).
+
+As can be readily seen the real component of the zeroth order truncated Riemann Zeta Dirichlet series sum Z function at $\lfloor\frac{t}{\pi}\rfloor$ is (i) closer to the true Riemann Zeta function for most values than the zeroth order Riemann-Siegel Z function and (ii) the magnitude of the error appears to be diminishing montonically. Further the imaginary component of the zeroth order truncated Riemann Zeta Dirichlet series sum Z function rapidly diminishes along the imaginary axis.
+
+### Across the critical strip
+
+Figure 2, shows the behaviour of the zeroth order truncated Riemann Zeta Dirichlet series sum Z function at $\lfloor\frac{t}{\pi}\rfloor$ for $0 \le \sigma \le 1$ for the imaginary axis interval t=(50000,50005). In the middle row for $\sigma=0.5$, the results for the zeroth order Riemann-Siegel Z function are also included in green.
+
+
+```{r fig_cap_comperror, echo=FALSE}
+cap2 <- "\\scriptsize{Left panel: real and imaginary components of $Z_\\zeta(s)$ blue \\& gray, $Z_{\\frac{t}{\\pi},0}$ red \\& violet-red are calculated for four real values along the critical strip (i) $\\sigma=1$, (ii) $\\sigma=0.5$, (iii) $\\sigma=0.01$ and (iv) $\\sigma=0$ for the interval t=(50000,50005). Right panel: Difference between the real components of equation $Z_{\\frac{t}{\\pi},0}-Z_\\zeta(s)$ red, a conjectured bound for $(Z_{\\frac{t}{\\pi},0}-Z_\\zeta(s))$ in gray and the magnitude $| \\frac{\\lfloor \\frac{t}{\\pi}\\rfloor^{(1-s)}}{(s-1)} |$ of an expected term in from the approximate functional equation references [5,6] in violet-red. In the middle row for $\\sigma=0.5$, the results for the zeroth order Riemann-Siegel Z function are also included.}"
+
+```
+
+```{r image_comperror, fig.show = "hold", out.width = c("50%","50%"), fig.align = "default", fig.cap=cap2}
+
+knitr::include_graphics("/home/john/pari/dirichletseriesquiescence/graph_Z_1.0000000000000000000000000000000000000_50000.pdf")
+
+knitr::include_graphics("/home/john/pari/dirichletseriesquiescence/graph_diffZ_1.0000000000000000000000000000000000000_50000.pdf")
+
+knitr::include_graphics("/home/john/pari/dirichletseriesquiescence/graph_Z_0.5000000000000000000000000000000000000_50000.pdf")
+
+knitr::include_graphics("/home/john/pari/dirichletseriesquiescence/graph_diffZ_0.50000000000000000000000000000000000000_50000.pdf")
+
+knitr::include_graphics("/home/john/pari/dirichletseriesquiescence/graph_Z_0.01000000000000000000000000000000000000_50000.pdf")
+
+knitr::include_graphics("/home/john/pari/dirichletseriesquiescence/graph_diffZ_0.010000000000000000000000000000000000000_50000.pdf")
+
+knitr::include_graphics("/home/john/pari/dirichletseriesquiescence/graph_Z_0_50000.pdf")
+
+knitr::include_graphics("/home/john/pari/dirichletseriesquiescence/graph_diffZ_0_50000.pdf")
+
+```
+
+
+
+
+
+The conjectured bound was inspired by the approximate $\zeta(s)$ functional equation [5,6], 
+
+\begin{equation} \label {eq:approxfunc}
+\zeta(s) = \sum_{n=1}^{X}\frac{1}{n^{s}} + \frac{X^{(1-s)}}{(s-1)} + O(X^{-\sigma})
+\end{equation}
+
+and the following behavior is empirically observed
+
+\begin{equation}
+| \sum_{n=1}^{\lfloor \frac{t}{\pi}\rfloor}\frac{1}{n^{s}} - \zeta(s) | \lessapprox \frac{1}{2(\lfloor \frac{t}{\pi}\rfloor)^\sigma} \sim  | \frac{\lfloor \frac{t}{\pi}\rfloor^{(1-s)}}{(s-1)} |
+\end{equation}
+
+
+As can be seen in figure 2 up at t~50000, (i) the left panel shows the Riemann Zeta function and zeroth order truncated Riemann Zeta Dirichlet series sum Z function at $\lfloor\frac{t}{\pi}\rfloor$ are  indistinguishable at the resolution of the line plot indicating only a small relative difference in the approximation, (ii) in contrast in the second row for $\sigma=1/2$ the difference with the zeroth order Riemann-Siegel Z function is just visible,  and (iii) the right panel indicates the error behaviour $(Z_{\frac{t}{\pi},0}-Z_\zeta(s))$ more clearly. 
+
+In particular, the right panel reveals that the error of the zeroth order truncated Riemann Zeta Dirichlet series sum Z function at $\lfloor\frac{t}{\pi}\rfloor$ value is (i) lowest (highest) for $\sigma=1(0)$ as expected, (ii) the calculated error and the conjectured bound (gray) are lower than magnitude  $|\frac{X^{(1-s)}}{(s-1)}|$ of the second term in equation \eqref{eq:approxfunc}, (iii) for $\sigma=0.5$ the error for the zeroth order Riemann-Siegel Z function is 0.058 compared to 0.004 for the zeroth order truncated Riemann Zeta Dirichlet series sum Z function at $\lfloor\frac{t}{\pi}\rfloor$ and (iv) the calculated error for $\sigma=0$ appears to be bounded at the constant value 1/2 (well away from the real axis).  
+
+### Examining the error term
+
+The oscillating error term for the zeroth order approximation appears relatively simple and is reminiscent of the  $cos(\theta(t)-t\cdot log(n))$ frequency modulation behaviour in the Riemann-Siegel Z function. 
+
+In figure 3, the performance of the following first order truncated Riemann Zeta Dirichlet series sum Z function is shown along the critical line,
+
+\begin{align}
+Z_{\frac{t}{\pi},1} &= e^{i\theta(t)}\left[\sum_{n=1}^{\lfloor\frac{t}{\pi}\rfloor}\frac{1}{n^s} + (\frac{t}{\pi}-\lfloor\frac{t}{\pi}\rfloor)\cdot\frac{1}{\lceil\frac{t}{\pi} \rceil^s} \right] \label {eq:1stodr_Ztpi} \\
+&= Z_{\frac{t}{\pi},0} + (\frac{t}{\pi}-\lfloor\frac{t}{\pi}\rfloor)\cdot \frac{e^{i\theta(t)}}{\lceil\frac{t}{\pi} \rceil^s}  
+\end{align}
+
+As can be seen the error is smaller than the zeroth order error bound (gray line) but the oscillating component becomes a more complex modulation than the zeroth order behaviour shown in the second row, right panel of figure 2.
+
+
+```{r fig_cap_comperror1storder, echo=FALSE}
+cap2 <- "\\scriptsize{Difference between the real components of equation $Z_{\\frac{t}{\\pi},1}-Z_\\zeta(s)$ red, a conjectured bound for $(Z_{\\frac{t}{\\pi},0}-Z_\\zeta(s))$ in gray and the magnitude $| \\frac{\\lfloor \\frac{t}{\\pi}\\rfloor^{(1-s)}}{(s-1)} |$ of an expected term in from the approximate functional equation references [5,6] in violet-red.}"
+
+```
+
+```{r image_comperror1storder, fig.show = "hold", out.width = c("100%"), fig.align = "default", fig.cap=cap2}
+
+
+knitr::include_graphics("/home/john/pari/dirichletseriesquiescence/graph_1storderdiffZ_0.50000000000000000000000000000000000000_50000.pdf")
+
+
+```
+
+In figure 4, (i) the discontinuity in the zeroth order truncated Riemann Zeta Dirichlet series sum Z function at $\lfloor\frac{t}{\pi}\rfloor$ error term is masked with the transformation 
+
+\begin{equation}
+cos(t-\pi*(\frac{t}{\pi}-\lfloor\frac{t}{\pi}\rfloor))\cdot(Z_{\frac{t}{\pi},0}-Z_\zeta(s))
+\end{equation}
+
+where $t-\pi*(\frac{t}{\pi}-\lfloor\frac{t}{\pi}\rfloor)$ is a staircase function matching the frequency of the discontinuities. 
+
+As a rough approximation, the discontinuity masked oscillation in the error is fitted by an modifed version of the second term in the RHS of the approximate functional equation \eqref {eq:approxfunc} i.e. $\frac{1}{2}\cdot \frac{X'^{(1-s')}}{(s'-1)}$ near t=2270 to examine the frequency behaviour of the oscillations in the error 
+
+\begin{equation}
+\Im\left(\frac{(\frac{t}{\pi})^{(1-(\sigma+I\cdot 1.505\frac{t}{\pi}-I*0.05))}}{2\cdot((\sigma+I\cdot\frac{t}{\pi})-1)))}\right)
+\end{equation}
+
+and tested for compatibility at two other intervals near t=50000 and t=60000. The approximation  is clearly not accurate but highlights some of the frequency modulation behaviour for the intervals examined.
+
+```{r fig_cap_comperror_disc_mask, echo=FALSE}
+cap2 <- "\\scriptsize{Difference between the real components of the discontinuity masked equation $cos(t-(\\pi*((\\frac{t}{\\pi}-\\lfloor\\frac{t}{\\pi}\\rfloor))\\cdot (Z_{\\frac{t}{\\pi},1}-Z_\\zeta(s))$ red, a conjectured bound for $(Z_{\\frac{t}{\\pi},0}-Z_\\zeta(s))$ in gray and the fitted expression $\\Im\\left(\\frac{(\\frac{t}{\\pi})^{(1-(\\sigma+I\\cdot(\\alpha\\frac{t}{\\pi}+\\phi))}}{(\\sigma + I\\cdot(\\frac{t}{\\pi})-1)}\\right)$ in blue. For three intervals on the critical line (i) t=(2270,2290), (ii) t=(50000,50005) and t=(600000,600005)}"
+
+```
+
+```{r image_comperror_disc_mask, fig.show = "hold", out.width = c("33%","33%","33%"), fig.align = "default", fig.cap=cap2}
+
+knitr::include_graphics("/home/john/pari/dirichletseriesquiescence/graph_disc_maskdiffZ_0.50000000000000000000000000000000000000_2270.pdf")
+
+knitr::include_graphics("/home/john/pari/dirichletseriesquiescence/graph_disc_maskdiffZ_0.50000000000000000000000000000000000000_50000.pdf")
+
+knitr::include_graphics("/home/john/pari/dirichletseriesquiescence/graph_disc_maskdiffZ_0.50000000000000000000000000000000000000_600000.pdf")
+
+
+```
+
+
+## Riemann Zeta (Dirichlet Eta function and accelerated series) based convergence and the Riemann Zeta Dirichlet Series oscillating divergence
+
+The motivation for attempting a truncated Riemann Zeta Dirichlet series sum at $\lfloor\frac{t}{\pi}\rfloor$ integers is presented in this section. 
+
+Firstly, figures 5 and 6 illustrate Riemann Zeta Z function estimates based on (i) the convergence behaviour of the Riemann Zeta (Dirichlet Eta function and accelerated series) based calculations [1,2] and (ii) the asymptotic oscillating divergence of the Riemann Zeta Dirichlet series, at t=280.8 (a peak) and t=279.22925 (a zero) for three real axis values $\sigma=1,1/2,0$.
+
+The first column of truncated Riemann Zeta Z function estimates in the figures are given by Dirichlet Eta based Riemann Zeta function calculations
+
+\begin{equation}
+e^{i\theta(t)}\zeta_{eta}(s) = e^{i\theta(t)} \frac{1}{(1-2^{(1-s)})} \sum_{n=1}^N \frac{(-1)^{(n+1)}}{n^s}
+\end{equation}
+
+The second column of truncated Riemann Zeta Z function estimates uses an accelerated series Dirichlet Eta based Riemann Zeta function [1,2] calculation
+
+\begin{equation}
+e^{i\theta(t)} \zeta_{acc-eta}(s) = e^{i\theta(t)} \frac{1}{(1-2^{(1-s)})} \sum_{n=0}^N \frac{1}{2^{(n+1)}} \sum_{k=0}^n {n\choose k} \frac{(-1)^{k}}{(k+1)^s}
+\end{equation}
+
+The third column of truncated Riemann Zeta Z function estimates uses the direct Riemann Zeta Dirichlet series calculation
+
+\begin{equation}
+e^{i\theta(t)} \zeta_{\text{Dirichlet series}}(s) = e^{i\theta(t)} \sum_{n=1}^{N}\frac{1}{n^s}  \end{equation}
+
+where the Z(s) function results are used in preference to $\zeta(s)$ because $\Im(Z(s))=0$ on the critical line provides a useful reference feature in the graphs. The real (imaginary) component of each estimator is shown in red (green) respectively, with zero value shown in blue.
+
+For closer comparison of the $\sigma=0,1$ behaviour to the critical line results the transformation $e^{i\theta(t)}\zeta(s)$ is used rather than the more general $e^{i\theta_{ext}(s)}\zeta(s)$ transformation [10].
+
+The important features to note are
+\begin{enumerate}
+\item All three calculations exhibit three types of features (i) some rapid changes in value for low N as more terms are added, (ii) some areas of plateau (with oscillation behaviour) and (iii) asymptotically a long plateau (with oscillation behaviour) except that the accelerated series estimator doesn't exhibit oscillations.
+\item The asymptotic plateau region starts $N \sim \frac{t}{\pi} \rightarrow \frac{t}{3}$, $N \sim \frac{2}{3}t$ and $N \sim \frac{t}{6}$ for the Dirichlet Eta, accelerated series and direct Dirichlet series estimators. For the Dirichlet Eta based Riemann Zeta estimator the entry point ($\frac{t}{\pi} \rightarrow \frac{t}{3}$) to the asymptotic plateau region seems to depend on whether the Riemann Zeta function has a zero or peak.
+\item The oscillations in extended plateau regions have a region away from the ends of the plateau where the magnitude of the oscillations is lowest (i.e. quiescent).
+\item The oscillations in the asymptotic plateau for the direct Dirichlet series have a quiescent region $N \sim \frac{t}{\pi}$ whereas the similar region for the Dirichlet Eta based estimator is at $\infty$ since the Dirichlet Eta based estimator is convergent.
+\item While the direct Dirichlet series has growing (bounded) oscillations for $0 \le \sigma < 1$ $(\sigma = 1)$ as $N \rightarrow \infty$ the trend value of the real and imaginary components do appear to agree with the convergent Riemann Zeta (Dirichlet Eta function and accelerated series) based calculations (e.g. see figure 6 third column $\sigma=1/2$ where both the real and imaginary components have trend = 0), highlighting that the direct Dirichlet series exhibits oscillatory divergence.
+\end{enumerate}
+
+
+```{r fig_cap__zetaZ_280p8, echo=FALSE}
+cap2 <- "\\scriptsize{The behaviour of three Riemann Zeta truncated series Z function based calculations for t=280.8 which is a Riemann Zeta peak on the critical line and three real axis values (i) first row $\\sigma=1$, (ii) second row $\\sigma=1/2$ and third row $\\sigma=0$. Left panel: Dirichlet Eta function based Z function calculation, Middle panel: accelerated series Dirichlet Eta based Z function calculation. Right panel: Riemann Zeta Dirichlet series Z function calculation. The real component is shown in red, the imaginary component in green where the x axis in the number of included integers in the series sum.}"
+
+```
+
+```{r image_280p8, fig.show = "hold", out.width = c("33%","33%","33%"), fig.align = "default", fig.cap=cap2, fig.height=5}
+
+knitr::include_graphics("/home/john/pari/dirichletseriesquiescence/graph_dirichletetabasedzeta_1.0000000000000000000000000000000000000_280.80000000000000000000000000000000000.pdf")
+
+knitr::include_graphics("/home/john/pari/dirichletseriesquiescence/graph_accelerateseriesbasedzeta_1.0000000000000000000000000000000000000_280.80000000000000000000000000000000000.pdf")
+
+knitr::include_graphics("/home/john/pari/dirichletseriesquiescence/graph_oscdivergentbasedzeta_1.0000000000000000000000000000000000000_280.80000000000000000000000000000000000.pdf")
+
+
+knitr::include_graphics("/home/john/pari/dirichletseriesquiescence/graph_dirichletetabasedzeta_0.50000000000000000000000000000000000000_280.80000000000000000000000000000000000.pdf")
+
+knitr::include_graphics("/home/john/pari/dirichletseriesquiescence/graph_accelerateseriesbasedzeta_0.50000000000000000000000000000000000000_280.80000000000000000000000000000000000.pdf")
+
+knitr::include_graphics("/home/john/pari/dirichletseriesquiescence/graph_oscdivergentbasedzeta_0.50000000000000000000000000000000000000_280.80000000000000000000000000000000000.pdf")
+
+
+knitr::include_graphics("/home/john/pari/dirichletseriesquiescence/graph_dirichletetabasedzeta_0.E-38_280.80000000000000000000000000000000000.pdf")
+
+knitr::include_graphics("/home/john/pari/dirichletseriesquiescence/graph_accelerateseriesbasedzeta_0.E-38_280.80000000000000000000000000000000000.pdf")
+
+knitr::include_graphics("/home/john/pari/dirichletseriesquiescence/graph_oscdivergentbasedzeta_0.E-38_280.80000000000000000000000000000000000.pdf")
+
+
+
+
+```
+
+
+
+
+```{r fig_cap__zetaZ_279p22925, echo=FALSE}
+cap2 <- "\\scriptsize{The behaviour of three Riemann Zeta truncated series based Z function calculations for t=279.22925 which is the (approximate) location of a Riemann Zeta zero on the critical line and three real axis values (i) first row $\\sigma=1$, (ii) second row $\\sigma=1/2$ and third row $\\sigma=0$. Left panel: Dirichlet Eta function based Z function calculation, Middle panel: accelerated series Dirichlet Eta based Z function calculation. Right panel: Riemann Zeta Dirichlet series Z function calculation. The real component is shown in red, the imaginary component in green where the x axis in the number of included integers in the series sum.}"
+
+```
+
+```{r image_279p22925, fig.show = "hold", out.width = c("33%","33%","33%"), fig.align = "default", fig.cap=cap2}
+
+knitr::include_graphics("/home/john/pari/dirichletseriesquiescence/graph_dirichletetabasedzeta_1.0000000000000000000000000000000000000_279.22925000000000000000000000000000000.pdf")
+
+knitr::include_graphics("/home/john/pari/dirichletseriesquiescence/graph_accelerateseriesbasedzeta_1.0000000000000000000000000000000000000_279.22925000000000000000000000000000000.pdf")
+
+knitr::include_graphics("/home/john/pari/dirichletseriesquiescence/graph_oscdivergentbasedzeta_1.0000000000000000000000000000000000000_279.22925000000000000000000000000000000.pdf")
+
+
+knitr::include_graphics("/home/john/pari/dirichletseriesquiescence/graph_dirichletetabasedzeta_0.50000000000000000000000000000000000000_279.22925000000000000000000000000000000.pdf")
+
+knitr::include_graphics("/home/john/pari/dirichletseriesquiescence/graph_accelerateseriesbasedzeta_0.50000000000000000000000000000000000000_279.22925000000000000000000000000000000.pdf")
+
+knitr::include_graphics("/home/john/pari/dirichletseriesquiescence/graph_oscdivergentbasedzeta_0.50000000000000000000000000000000000000_279.22925000000000000000000000000000000.pdf")
+
+
+knitr::include_graphics("/home/john/pari/dirichletseriesquiescence/graph_dirichletetabasedzeta_0.E-38_279.22925000000000000000000000000000000.pdf")
+
+knitr::include_graphics("/home/john/pari/dirichletseriesquiescence/graph_accelerateseriesbasedzeta_0.E-38_279.22925000000000000000000000000000000.pdf")
+
+knitr::include_graphics("/home/john/pari/dirichletseriesquiescence/graph_oscdivergentbasedzeta_0.E-38_279.22925000000000000000000000000000000.pdf")
+
+
+
+
+```
+
+
+This behaviour continues to be observed as t increases with the only change being that the number of plateaus increases. Figure 7 shows the behaviour at t=6789.01 for just the Dirichlet Eta and direct Dirichlet series estimators (as these compute more quickly). 
+
+
+
+
+```{r fig_cap__zetaZ_6789, echo=FALSE}
+cap2 <- "\\scriptsize{The behaviour of two Riemann Zeta truncated series Z function based calculations for t=6789.01 which is a Riemann Zeta peak on the critical line and three real axis values (i) first row $\\sigma=1$, (ii) second row $\\sigma=1/2$ and third row $\\sigma=0$. Left panel: Dirichlet Eta function based Z function calculation, Right panel: Riemann Zeta Dirichlet series Z function calculation. The real component is shown in red, the imaginary component in green where the x axis in the number of included integers in the series sum.}"
+
+```
+
+```{r image_6789, fig.show = "hold", out.width = c("50%","50%"), fig.align = "default", fig.cap=cap2, fig.height=5}
+
+knitr::include_graphics("/home/john/pari/dirichletseriesquiescence/graph_dirichletetabasedzeta_1_6789.01000000000000000000000000.pdf")
+
+knitr::include_graphics("/home/john/pari/dirichletseriesquiescence/graph_oscdivergentbasedzeta_1_6789.01000000000000000000000000.pdf")
+
+
+knitr::include_graphics("/home/john/pari/dirichletseriesquiescence/graph_dirichletetabasedzeta_0.500000000000000000000000000000_6789.01000000000000000000000000.pdf")
+
+knitr::include_graphics("/home/john/pari/dirichletseriesquiescence/graph_oscdivergentbasedzeta_0.500000000000000000000000000000_6789.01000000000000000000000000.pdf")
+
+
+knitr::include_graphics("/home/john/pari/dirichletseriesquiescence/graph_dirichletetabasedzeta_0.E-38_6789.01000000000000000000000000.pdf")
+
+knitr::include_graphics("/home/john/pari/dirichletseriesquiescence/graph_oscdivergentbasedzeta_0.E-38_6789.01000000000000000000000000.pdf")
+
+
+
+
+```
+
+\clearpage
+
+### The first quiescent region at $\sqrt{\frac{t}{2\pi}}$
+
+Figures 8 and 9 show that higher up on the imaginary axis the $\sqrt{\frac{t}{2\pi}}$ region is in a plateau for the direct Dirichlet series sum and corresponds closely to the quiescent part of that plateau. The t values investigated 6820051.2 and 6850051.89 in these figures belong to the main peak and one of the zeroes associated with the first Rosser violation point.
+
+The number of integers $\le 3000$ used in the series sums shown in the results is insufficient for these estimates to reach convergence given the large value of t. The $\sqrt{\frac{t}{2\pi}}$ behaviour of the real component however can be used successfully in the Riemann-Siegel formula because of resurgence behaviour in the series sum [8,9].
+
+The point in this paper, is to show that as t grows larger and larger the $\sqrt{\frac{t}{2\pi}}$ region is a quiescent part of a plateau in the series sum. In Figures 8 and 9, the $\sqrt{\frac{t}{2\pi}}$ region is around $N \sim 1042$ and the direct Dirichlet series sum in the right column shows a small plateau around N=1042 particularly for $\sigma=1/2, 0$. Without the original Riemann-Siegel formula derivation it would be very difficult to suggest such a plateau in the real component of a series sum plot might be informative of the asymptotic behaviour.
+
+Figure 10 shows the behaviour of the direct Dirichlet series sum for t=37821473.86909 which is a Riemann Zeta zero position on the critical line further up the imaginary axis to make the plateau around $\sqrt{\frac{t}{2\pi}}$ larger. The second panel which magnifies the region 2300-2600 surrounding $\sqrt{\frac{37821473.86909}{2\pi}}=2453$ clearly shows that point in a plateau region and relatively quiescent within the plateau. The real component has value zero at that point which is informative of the Riemann Zeta function value which is know to be zero.
+
+
+```{r fig_cap__zetaZ_6820051p2, echo=FALSE}
+cap2 <- "\\scriptsize{The preliminary behaviour of two Riemann Zeta truncated series Z function based calculations for t=6820050.2 which is a Riemann Zeta peak on the critical line and three real axis values (i) first row $\\sigma=1$, (ii) second row $\\sigma=1/2$ and third row $\\sigma=0$. Left panel: Dirichlet Eta function based Z function calculation, Right panel: Riemann Zeta Dirichlet series Z function calculation. The real component is shown in red, the imaginary component in green where the x axis in the number of included integers in the series sum. The number of integers $\\le 3000$ is insufficient for these estimates to reach convergence. The $\\sqrt{\\frac{t}{2\\pi}}$ behaviour of the real component however can be used successfully in the Riemann-Siegel formula because of resurgence behaviour in the series sum [8,9].}"
+
+```
+
+```{r image_6820051p2, fig.show = "hold", out.width = c("50%","50%"), fig.align = "default", fig.cap=cap2, fig.height=5}
+
+knitr::include_graphics("/home/john/pari/dirichletseriesquiescence/graph_dirichletetabasedzeta_1_6820051.20000000000000000000000.pdf")
+
+knitr::include_graphics("/home/john/pari/dirichletseriesquiescence/graph_oscdivergentbasedzeta_1_6820051.20000000000000000000000.pdf")
+
+
+knitr::include_graphics("/home/john/pari/dirichletseriesquiescence/graph_dirichletetabasedzeta_graph_dirichletetabasedzeta_0.500000000000000000000000000000_6820051.20000000000000000000000.pdf")
+
+knitr::include_graphics("/home/john/pari/dirichletseriesquiescence/graph_oscdivergentbasedzeta_0.500000000000000000000000000000_6820051.20000000000000000000000.pdf")
+
+
+knitr::include_graphics("/home/john/pari/dirichletseriesquiescence/graph_dirichletetabasedzeta_0_6820051.20000000000000000000000.pdf")
+
+knitr::include_graphics("/home/john/pari/dirichletseriesquiescence/graph_oscdivergentbasedzeta_0_6820051.20000000000000000000000.pdf")
+
+
+
+
+```
+
+
+
+```{r fig_cap__zetaZ_6820051p89, echo=FALSE}
+cap2 <- "\\scriptsize{The preliminary behaviour of two Riemann Zeta truncated series Z function based calculations for t=6820051.89 which is a Riemann Zeta zero position on the critical line and three real axis values (i) first row $\\sigma=1$, (ii) second row $\\sigma=1/2$ and third row $\\sigma=0$. Left panel: Dirichlet Eta function based Z function calculation, Right panel: Riemann Zeta Dirichlet series Z function calculation. The real component is shown in red, the imaginary component in green where the x axis in the number of included integers in the series sum. The number of integers $\\le 3000$ is insufficient for these estimates to reach convergence. The $\\sqrt{\\frac{t}{2\\pi}}$ behaviour of the real component however can be used successfully in the Riemann-Siegel formula because of resurgence behaviour in the series sum [8,9].}"
+
+```
+
+```{r image_6820051p89, fig.show = "hold", out.width = c("50%","50%"), fig.align = "default", fig.cap=cap2, fig.height=5}
+
+knitr::include_graphics("/home/john/pari/dirichletseriesquiescence/graph_dirichletetabasedzeta_1_6820051.89000000000000000000000.pdf")
+
+knitr::include_graphics("/home/john/pari/dirichletseriesquiescence/graph_oscdivergentbasedzeta_1_6820051.89000000000000000000000.pdf")
+
+
+knitr::include_graphics("/home/john/pari/dirichletseriesquiescence/graph_dirichletetabasedzeta_graph_dirichletetabasedzeta_0.500000000000000000000000000000_6820051.89000000000000000000000.pdf")
+
+knitr::include_graphics("/home/john/pari/dirichletseriesquiescence/graph_oscdivergentbasedzeta_0.500000000000000000000000000000_6820051.89000000000000000000000.pdf")
+
+
+knitr::include_graphics("/home/john/pari/dirichletseriesquiescence/graph_dirichletetabasedzeta_0_6820051.89000000000000000000000.pdf")
+
+knitr::include_graphics("/home/john/pari/dirichletseriesquiescence/graph_oscdivergentbasedzeta_0_6820051.89000000000000000000000.pdf")
+
+
+
+
+```
+
+
+
+
+
+
+```{r fig_cap__zetaZ_37821473p86909, echo=FALSE}
+cap2 <- "\\scriptsize{The preliminary behaviour of the truncated Riemann Zeta Dirichlet series Z function calculation for t=37821473.86909 which is a Riemann Zeta zero position on the critical line (i) first row series sum for 1-3000 integers, (ii) second row series sum for 2300-2600 integers. The real component is shown in red, the imaginary component in green where the x axis in the number of included integers in the series sum. The number of integers $\\le 3000$ is insufficient for these estimates to reach convergence. A plateau is expected around $\\sqrt{\\frac{37821473.86909}{2\\pi}}=2453$ with the real component = zero to be consistent with the Riemann-Siegel formula.}"
+
+```
+
+```{r image_37821473p86909, fig.show = "hold", out.width = c("100%","100%"), fig.align = "default", fig.cap=cap2, fig.height=5}
+
+knitr::include_graphics("/home/john/pari/dirichletseriesquiescence/graph_oscdivergentbasedzeta_0.500000000000000000000000000000_37821473.8690900000000000000000.pdf")
+
+knitr::include_graphics("/home/john/pari/dirichletseriesquiescence/graph_oscdivergentbasedzeta_magnifiednear_2453integers_0.5_37821473.86909.pdf")
+
+
+
+
+```
+
+
+
+## Conclusion
+
+The direct Dirichlet series sum for the Riemann Zeta function exhibits a quiescent region at $\frac{t}{\pi}$ that gives useful truncated series estimates of the Riemann Zeta function within the critical strip. The approximation has montonically decreasing error providing more accurate estimates than the zeroth order Riemann-Siegel term and provides both real and imaginary Riemann Zeta function component estimates.
+
+Given the approximation uses $\frac{t}{\pi}$ integers compared to $\sqrt{\frac{t}{2\pi}}$ for the Riemann-Siegel formula the number of computations is higher. However, the error term appears to quite simple and decreasing in its behaviour so perhaps a very precise Riemann Zeta calculation based on this quiescent point may be feasible to compete with Euler Maclaurin based calculations.    
+
+
+
+\clearpage
+
+## References
+
+1. Hasse, Helmut (1930). "Ein Summierungsverfahren für die Riemannsche $\zeta$-Reihe". Math. Z. 32: 458–464.
+
+2. J. Sondow, (1994) "Analytic continuation of Riemann's zeta function and values at negative integers via Euler's transformation of series" Proc. Amer. Math. Soc. 120 (2): 421–424.
+
+3. Edwards, H.M. (1974). Riemann's zeta function. Pure and Applied Mathematics 58. New York-London: Academic Press. ISBN 0-12-242750-0. Zbl 0315.10035.
+
+4. Riemann, Bernhard (1859). "$\ddot{U}$ber die Anzahl der Primzahlen unter einer gegebenen Gr$\ddot{o}$sse". Monatsberichte der Berliner Akademie.. In Gesammelte Werke, Teubner, Leipzig (1892), Reprinted by Dover, New York (1953).
+
+5. Titchmarsh, E.C. (1986) The Theory of the Riemann Zeta Function. 2nd Revised (Heath-Brown, D.R. ) Edition, Oxford University Press, Oxford.
+
+6. S. M. Gonek, Finite Euler products and the Riemann hypothesis, Trans. Amer. Math. Soc. 364 (2012), no. 4, 2157–2191. MR 2869202, https://doi.org/10.1090/S0002-9947-2011-05546-7
+
+7. The PARI~Group, PARI/GP version {\tt 2.12.0}, Univ. Bordeaux, 2018,
+    \url{http://pari.math.u-bordeaux.fr/}.
+\normalfont
+
+8. M.V. Berry, "Riemann’s Saddle-point Method and the Riemann-Siegel Formula" Vol 35.1, pp. 69–78, The Legacy of Bernhard Riemann After One Hundred and Fifty Years, Advanced Lectures in Mathematics 2016
+
+9. J. Arias De Reyna, "High precision computation of Riemann's Zeta function by the Riemann-Siegel formula", Mathematics of Computation Vol 80, no. 274, 2011, Pages 995–1009
+
+10. Martin, J.P.D. "Extended Riemann Siegel Theta function further simplified using functional equation factor for the Riemann Zeta function." (2017)
+http://dx.doi.org/10.6084/m9.figshare.5735268
+
+
