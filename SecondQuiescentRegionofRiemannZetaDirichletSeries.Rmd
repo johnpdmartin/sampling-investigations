@@ -17,13 +17,13 @@ knitr::opts_chunk$set(echo = FALSE)
 
 ##Executive Summary
 
-A (second) quiescent region about $N \approx \frac{t}{\pi}$ is observed for the Riemann Zeta Dirichlet series sum ($\sum_{n=1}^N \frac{1}{n^s}$) inside the critical strip. The zeroth order sum based on $\lfloor\frac{t}{\pi}\rfloor$ and a first order sum involving simple interpolation of $\lfloor\frac{t}{\pi}\rfloor$ and $\lceil\frac{t}{\pi}\rceil$ sums provides much closer estimates of $\zeta(s)$ than the zeroth order Riemann-Siegel Z formula results (which uses the first quiescent region about $\sqrt{(\frac{t}{2\pi})}$). The quiescent region is present for the whole range $0 \le \sigma \le 1$ but the error is higher as $\sigma \rightarrow 0$.
+A (second) quiescent region about $N \approx \frac{t}{\pi}$ is observed for the Riemann Zeta Dirichlet series sum ($\sum_{n=1}^N \frac{1}{n^s}$) inside the critical strip. The zeroth order sum based on $\lfloor\frac{t}{\pi}\rfloor$ and a first order sum involving simple interpolation of $\lfloor\frac{t}{\pi}\rfloor$ and $\lceil\frac{t}{\pi}\rceil$ sums provides much closer estimates of $\zeta(s)$ than the zeroth order Riemann-Siegel Z formula results (which uses the first quiescent region about $\sqrt{(\frac{t}{2\pi})}$). The quiescent region is present for the whole range $0 \le \sigma \le 1$ but the error is higher as $\sigma \rightarrow 0$. Using a simple weighted approach to the end of the sum produces further improvements in the calculations. 
 
 ##Introduction
 
 In this paper, the oscillating divergence of the Riemann Zeta Dirichlet Series is displayed compared to the convergent behavior of the Dirichlet Eta Series and a known globally convergent (accelerated) series [1,2] based calculations of the Riemann Zeta function [3-6]. The observed quiescence in the divergence about $N \approx \frac{t}{\pi}$ of the Riemann Zeta Dirichlet series then motivated an investigation to approximate the Riemann Zeta function using this behaviour. 
 
-The paper shows that simple zeroth and first order expressions using truncation at $N \approx \frac{t}{\pi}$ of the Riemann Zeta Dirichlet series are well behaved and monotonically decreasing. All the calculations and graphs are produced using the pari-gp language [7].
+The paper shows that simple zeroth, first order expressions and a simple end point weighted approach using truncation at $N \approx \frac{t}{\pi}$ of the Riemann Zeta Dirichlet series are well behaved and monotonically decreasing. All the calculations and graphs are produced using the pari-gp language [7].
 
 ## $N \approx \frac{t}{\pi}$ partial Riemann Zeta Dirichlet Series sums
 
@@ -416,6 +416,52 @@ knitr::include_graphics("/home/john/pari/dirichletseriesquiescence/graph_oscdive
 
 ```
 
+\clearpage
+
+### Improved partial Riemann Zeta Dirichlet Series sums by weighting the end points $\approx t/\pi$
+
+The following partial Riemann Zeta Dirichlet Series sums exhibit sequentially closer agreement with the Riemann Zeta function than the zeroth order eqn \eqref {eq:0thodr_Ztpi} (or linear interpolation eqn \eqref {eq:1stodr_Ztpi}) truncated Riemann Zeta Dirichlet series sum Z function at $\lfloor\frac{t}{\pi}\rfloor$ ,
+
+\begin{align}
+Z_{\frac{t}{\pi},\text{lower2}} &= e^{i\theta(t)}\left[\sum_{n=1}^{\left(\lfloor\frac{t}{\pi}\rfloor-1\right)}\frac{1}{n^s} + \frac{1}{2}\frac{1}{\lfloor\frac{t}{\pi}\rfloor^s}  \right] \label {eq:exp1_Ztpi} 
+\end{align}
+
+
+\begin{align}
+Z_{\frac{t}{\pi},\text{upper2}} &= e^{i\theta(t)}\left[\sum_{n=1}^{\left(\lfloor\frac{t}{\pi}\rfloor\right)}\frac{1}{n^s} + \frac{1}{2}\frac{1}{\lceil\frac{t}{\pi}\rceil^s}  \right] \label {eq:exp2_Ztpi} 
+\end{align}
+
+\begin{align}
+Z_{\frac{t}{\pi},\text{symm2}} &= e^{i\theta(t)}\left[\sum_{n=1}^{\left(\lfloor\frac{t}{\pi}\rfloor-1\right)}\frac{1}{n^s} + \frac{3}{4}\frac{1}{\lfloor\frac{t}{\pi}\rfloor^s} + \frac{1}{4}\frac{1}{\lceil\frac{t}{\pi}\rceil^s}   \right] \label {eq:exp3_Ztpi} 
+\end{align}
+
+\begin{align}
+Z_{\frac{t}{\pi},\text{lower3}} &= e^{i\theta(t)}\left[\sum_{n=1}^{\left(\lfloor\frac{t}{\pi}\rfloor-2\right)}\frac{1}{n^s} + \frac{7}{8}\frac{1}{\left(\lfloor\frac{t}{\pi}\rfloor-1\right)^s} + \frac{1}{2}\frac{1}{\lfloor\frac{t}{\pi}\rfloor^s} + \frac{1}{8}\frac{1}{\lceil\frac{t}{\pi}\rceil^s}  \right] \label {eq:exp4_Ztpi} 
+\end{align}
+
+
+\begin{align}
+Z_{\frac{t}{\pi},\text{upper3}} &= e^{i\theta(t)}\left[\sum_{n=1}^{\left(\lfloor\frac{t}{\pi}\rfloor-1\right)}\frac{1}{n^s} + \frac{7}{8}\frac{1}{\lfloor\frac{t}{\pi}\rfloor^s} + \frac{1}{2}\frac{1}{\lceil\frac{t}{\pi}\rceil^s} + \frac{1}{8}\frac{1}{\left(\lceil\frac{t}{\pi}\rceil+1\right)^s}  \right] \label {eq:exp5_Ztpi} 
+\end{align}
+
+\begin{align}
+Z_{\frac{t}{\pi},\text{symm3}} &= e^{i\theta(t)}\left[\sum_{n=1}^{\left(\lfloor\frac{t}{\pi}\rfloor-2\right)}\frac{1}{n^s} + \frac{15}{16}\frac{1}{\left(\lfloor\frac{t}{\pi}\rfloor-1\right)^s} + \frac{11}{16}\frac{1}{\lfloor\frac{t}{\pi}\rfloor^s} + \frac{5}{16}\frac{1}{\lceil\frac{t}{\pi}\rceil^s} + \frac{1}{16}\frac{1}{\left(\lceil\frac{t}{\pi}\rceil+1\right)^s}  \right] \label {eq:exp6_Ztpi} 
+\end{align}
+
+\begin{align}
+Z_{\frac{t}{\pi},\text{lower4}} &= e^{i\theta(t)}\left[\sum_{n=1}^{\left(\lfloor\frac{t}{\pi}\rfloor-3\right)}\frac{1}{n^s} + \frac{31}{32}\frac{1}{\left(\lfloor\frac{t}{\pi}\rfloor-2\right)^s} + \frac{26}{32}\frac{1}{\left(\lfloor\frac{t}{\pi}\rfloor-1\right)^s} + \frac{16}{32}\frac{1}{\lfloor\frac{t}{\pi}\rfloor^s} + \frac{6}{32}\frac{1}{\lceil\frac{t}{\pi}\rceil^s}+ \frac{1}{32}\frac{1}{\left(\lceil\frac{t}{\pi}\rceil+1\right)^s} \right] \label {eq:exp7_Ztpi} 
+\end{align}
+
+
+\begin{align}
+Z_{\frac{t}{\pi},\text{upper4}} &= e^{i\theta(t)}\left[\sum_{n=1}^{\left(\lfloor\frac{t}{\pi}\rfloor-2\right)}\frac{1}{n^s} + \frac{31}{32}\frac{1}{\left(\lfloor\frac{t}{\pi}\rfloor-1\right)^s} + \frac{26}{32}\frac{1}{\lfloor\frac{t}{\pi}\rfloor^s} + \frac{16}{32}\frac{1}{\lceil\frac{t}{\pi}\rceil^s} + \frac{6}{32}\frac{1}{\left(\lceil\frac{t}{\pi}\rceil+1\right)^s}+ \frac{1}{32}\frac{1}{\left(\lceil\frac{t}{\pi}\rceil+2\right)^s}  \right] \label {eq:exp8_Ztpi} 
+\end{align}
+
+\begin{align}
+Z_{\frac{t}{\pi},\text{symm4}} &= e^{i\theta(t)}\left[\sum_{n=1}^{\left(\lfloor\frac{t}{\pi}\rfloor-3\right)}\frac{1}{n^s} + \frac{63}{64}\frac{1}{\left(\lfloor\frac{t}{\pi}\rfloor-2\right)^s} + \frac{57}{64}\frac{1}{\left(\lfloor\frac{t}{\pi}\rfloor-1\right)^s} + \frac{42}{64}\frac{1}{\lfloor\frac{t}{\pi}\rfloor^s} + \frac{22}{64}\frac{1}{\lceil\frac{t}{\pi}\rceil^s}+ \frac{7}{64}\frac{1}{\left(\lceil\frac{t}{\pi}\rceil+1\right)^s}+ \frac{1}{64}\frac{1}{\left(\lceil\frac{t}{\pi}\rceil+2\right)^s}  \right] \label {eq:exp9_Ztpi} 
+\end{align}
+
+where the error in estimating $e^{i\theta(t)}\zeta(s)$ as additional end points are weighted as $\Im(s)$ increases, empirically lowers by several orders of magnitude per additional weighted end point from $Z_{\frac{t}{\pi},0}$ through  $Z_{\frac{t}{\pi},\text{symm2}}$, $Z_{\frac{t}{\pi},\text{symm3}}$, to $Z_{\frac{t}{\pi},\text{symm4}}$. This low pass filter approach produces better error reduction than the linear interpolation approximation eqn \eqref {eq:1stodr_Ztpi}. 
 
 
 ## Conclusion
@@ -423,8 +469,6 @@ knitr::include_graphics("/home/john/pari/dirichletseriesquiescence/graph_oscdive
 The direct Dirichlet series sum for the Riemann Zeta function exhibits a quiescent region at $\frac{t}{\pi}$ that gives useful truncated series estimates of the Riemann Zeta function within the critical strip. The approximation has montonically decreasing error providing more accurate estimates than the zeroth order Riemann-Siegel term and provides both real and imaginary Riemann Zeta function component estimates.
 
 Given the approximation uses $\frac{t}{\pi}$ integers compared to $\sqrt{\frac{t}{2\pi}}$ for the Riemann-Siegel formula the number of computations is higher. However, the error term appears to quite simple and decreasing in its behaviour so perhaps a very precise Riemann Zeta calculation based on this quiescent point may be feasible to compete with Euler Maclaurin based calculations.    
-
-
 
 \clearpage
 
