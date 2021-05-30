@@ -1,0 +1,596 @@
+---
+title: "Tapered end point weighting of finite Riemann Zeta Dirichlet Series using partial sums of binomial coefficients to produce higher order approximations of the Riemann Siegel Z function."
+author: "John Martin"
+date: \today
+header-includes:  \usepackage{xcolor}
+output:
+  pdf_document:
+    fig_crop: no
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+
+```
+
+
+
+##Executive Summary
+
+Tapering of the end points of the finite Riemann Zeta Dirichlet series sum about the two quiescent regions at $N \approx \sqrt{(\frac{t}{2\pi})} \text{ } \& \text{ } \frac{t}{\pi}$ based on partial sums of binomial coefficients produces accurate approximations of the Riemann Siegel Z function in the critical strip, away from the real axis. 
+
+##Introduction
+
+As presented in [1], the following approximate Riemann Siegel Z functions calculated by partial Riemann Zeta Dirichlet Series sums truncated at $N \sim \lfloor\frac{t}{\pi}\rfloor$ exhibit sequentially closer agreement with the Riemann Siegel Z function away from the real axis,
+
+\begin{align}
+Z_{\frac{t}{\pi},0} &= e^{i\theta(t)}\left[\sum_{n=1}^{\lfloor\frac{t}{\pi}\rfloor}\frac{1}{n^s}  \right] \label {eq:0thodr_Ztpi} 
+\end{align}
+
+\begin{align}
+Z_{\frac{t}{\pi},\text{symm2}} &= e^{i\theta(t)}\left[\sum_{n=1}^{\left(\lfloor\frac{t}{\pi}\rfloor-1\right)}\frac{1}{n^s} + \frac{3}{4}\frac{1}{\lfloor\frac{t}{\pi}\rfloor^s} + \frac{1}{4}\frac{1}{\lceil\frac{t}{\pi}\rceil^s}   \right] \label {eq:exp3_Ztpi} 
+\end{align}
+
+
+\begin{align}
+Z_{\frac{t}{\pi},\text{symm3}} &= e^{i\theta(t)}\left[\sum_{n=1}^{\left(\lfloor\frac{t}{\pi}\rfloor-2\right)}\frac{1}{n^s} + \frac{15}{16}\frac{1}{\left(\lfloor\frac{t}{\pi}\rfloor-1\right)^s} + \frac{11}{16}\frac{1}{\lfloor\frac{t}{\pi}\rfloor^s} + \frac{5}{16}\frac{1}{\lceil\frac{t}{\pi}\rceil^s} + \frac{1}{16}\frac{1}{\left(\lceil\frac{t}{\pi}\rceil+1\right)^s}  \right] \label {eq:exp6_Ztpi} 
+\end{align}
+
+
+\begin{align}
+Z_{\frac{t}{\pi},\text{symm4}} &= e^{i\theta(t)}\left[\sum_{n=1}^{\left(\lfloor\frac{t}{\pi}\rfloor-3\right)}\frac{1}{n^s} + \frac{63}{64}\frac{1}{\left(\lfloor\frac{t}{\pi}\rfloor-2\right)^s} + \frac{57}{64}\frac{1}{\left(\lfloor\frac{t}{\pi}\rfloor-1\right)^s} + \frac{42}{64}\frac{1}{\lfloor\frac{t}{\pi}\rfloor^s} + \frac{22}{64}\frac{1}{\lceil\frac{t}{\pi}\rceil^s}+ \frac{7}{64}\frac{1}{\left(\lceil\frac{t}{\pi}\rceil+1\right)^s}+ \frac{1}{64}\frac{1}{\left(\lceil\frac{t}{\pi}\rceil+2\right)^s}  \right] \label {eq:exp9_Ztpi} 
+\end{align}
+
+where the error in estimating $e^{i\theta(t)}\zeta(s)$ as additional end points are weighted as $\Im(s)$ increases, empirically lowers by several orders of magnitude per additional weighted end point from $Z_{\frac{t}{\pi},0}$ through  $Z_{\frac{t}{\pi},\text{symm2}}$, $Z_{\frac{t}{\pi},\text{symm3}}$, to $Z_{\frac{t}{\pi},\text{symm4}}$. This tapering about the end point of the finite series can be considered as a low pass filter approach to the finite Riemann Zeta Dirichlet series sum. 
+
+
+On closer inspection, the pattern of the coefficients in equations \eqref {eq:0thodr_Ztpi}-\eqref {eq:exp9_Ztpi} can be easily identified as partial sums of the binomial coefficients (from Pascal's triangle).
+
+\begin{align}
+Z_{\frac{t}{\pi},\text{binomial}} &= e^{i\theta(t)}\left[\sum_{k=1}^{\left(\lfloor\frac{t}{\pi}\rfloor-p\right)}\left(\frac{1}{k^s}\right) +
+\sum_{i=\left(-p+1\right)}^{p}\frac{\frac{1}{2^{2p}} \sum_{k=0}^{i+p-1}\binom{2p}{2p-k}}{(\lfloor\frac{t}{\pi}\rfloor+i)^s}\cdot   \right] \label {eq:expbin_Ztpi} 
+\end{align}
+
+That is, the tapered truncated Riemann Zeta Dirichlet series sum for $s=\sigma+I\cdot t$ has unit weights for integers k=1 to $(\lfloor\frac{t}{\pi}\rfloor-p)$ and then the end point series integers from $k=(\lfloor\frac{t}{\pi}\rfloor-p+1)$ to  $(\lfloor\frac{t}{\pi}\rfloor+p)$ have tapered weights based on partial sums of the binomial coefficients $\frac{1}{2^{2p}} \sum_{k=0}^{i+p-1}\binom{2p}{2p-k}$.
+
+In this paper, it is shown that (i) using equation \eqref {eq:expbin_Ztpi} with larger partial sums of the binomial coefficients continues to display improved accuracy at approximating the Riemann Zeta function and (ii) the tapered finite Riemann Zeta Dirichlet series sum based on partial sums of binomial coefficients locally averages (de-noises) the convergence behaviour of the series sum in a robust manner particularly at $N \approx \sqrt{(\frac{t}{2\pi})} \text{ } \& \text{ } \frac{t}{\pi}$. Hence the finite tapered Riemann Zeta Dirichlet series sum based Riemann-Siegel Z function at $N \approx \sqrt{(\frac{t}{2\pi})}$ 
+
+\begin{align}
+Z_{\sqrt{\frac{t}{2\pi}},\text{binomial}} &= 2 \cdot \Re\left\{ e^{i\theta(t)}\left[\sum_{k=1}^{\left(\lfloor\sqrt{\frac{t}{2\pi}}\rfloor-p\right)}\left(\frac{1}{k^s}\right) +
+\sum_{i=\left(-p+1\right)}^{p}\frac{\frac{1}{2^{2p}} \sum_{k=0}^{i+p-1}\binom{2p}{2p-k}}{(\lfloor\sqrt{\frac{t}{2\pi}}\rfloor+i)^s}\cdot   \right] \right\} \label {eq:expbin_Zsqrtpi} 
+\end{align}
+
+also produces improved approximation of the Riemann Zeta Z function (away from the real axis) competitive with the standard Riemann-Siegel Z function formula [2,3] on the critical line 
+
+\begin{align}\label {eq:RS_Z}
+Z_{RS\sqrt{\frac{t}{2\pi}}} &= e^{i\theta(t)}\sum_{n=1}^{\lfloor\sqrt{\frac{t}{2\pi}}\rfloor}\frac{1}{n^{(1/2+I\cdot t)}} + e^{-i\theta(t)}\sum_{n=1}^{\lfloor\sqrt{\frac{t}{2\pi}}\rfloor}\frac{1}{n^{1-(1/2+I\cdot t)}} + R_{RS\sqrt{\frac{t}{2\pi}}}(1/2+I\cdot t) \\
+&= 2 \cdot \Re \left\{e^{i\theta(t)}\sum_{n=1}^{\lfloor\sqrt{\frac{t}{2\pi}}\rfloor}\frac{1}{n^{(1/2+I\cdot t)}} \right\} + R_{RS\sqrt{\frac{t}{2\pi}}}(1/2+I\cdot t)
+\end{align}
+
+where $R_{RS\sqrt{\frac{t}{2\pi}}}(1/2+I\cdot t)$ are the known higher order corrections [4,5] using the Bernoulli numbers and $\theta(t)$ is the Riemann-Siegel Theta function. 
+
+All the calculations and graphs are produced using the pari-gp language [6]. Easy access to the list of Riemann Zeta function zeroes was provided by the LMFDB Collaboration [7] and a useful list of large Riemann Zeta peaks for $t < 10^{12}$  by [8,9].
+
+
+
+## Riemann Zeta Dirichlet Series oscillating divergence and its reduction about quiescent regions using tapered endpoint weighting
+
+In a previous paper [1], the quiescent region of the oscillating divergence Riemann Zeta Dirichlet series sum based Riemann Zeta Z(s) function at $\lfloor\frac{t}{\pi}\rfloor$ integers 
+
+\begin{equation}
+e^{i\theta(t)} \zeta_{\text{Dirichlet series}}(s) = e^{i\theta(t)} \sum_{n=1}^{N}\frac{1}{n^s}  
+\end{equation}
+
+was compared to the truncated Riemann Zeta Z function convergence given by Dirichlet Eta based Riemann Zeta function calculations
+
+\begin{equation}
+e^{i\theta(t)}\zeta_{eta}(s) = e^{i\theta(t)} \frac{1}{(1-2^{(1-s)})} \sum_{n=1}^N \frac{(-1)^{(n+1)}}{n^s}
+\end{equation}
+
+and the truncated Riemann Zeta Z function estimates using an accelerated series Dirichlet Eta based Riemann Zeta function [10,11] calculation
+
+\begin{equation}
+e^{i\theta(t)} \zeta_{acc-eta}(s) = e^{i\theta(t)} \frac{1}{(1-2^{(1-s)})} \sum_{n=0}^N \frac{1}{2^{(n+1)}} \sum_{k=0}^n {n\choose k} \frac{(-1)^{k}}{(k+1)^s} \label {eq:acc}
+\end{equation}
+
+Later in that paper, it was presented that several tapered end point weighted series in equations \eqref {eq:0thodr_Ztpi}-\eqref {eq:exp9_Ztpi} obtained by trial and error iteration gave successively more accurate approximations of the Riemann Zeta Z function across the critical strip.
+
+In this paper, the generalised form of such tapered end point weighting of truncated Riemann Zeta Dirichlet series sum can be written as
+
+\begin{align}
+Z_{N,\text{binomial}} &= e^{i\theta(t)}\left[\sum_{k=1}^{\left(N-p\right)}\left(\frac{1}{k^s}\right) +
+\sum_{i=\left(-p+1\right)}^{p}\frac{\frac{1}{2^{2p}} \sum_{k=0}^{i+p-1}\binom{2p}{2p-k}}{(N+i)^s}\cdot   \right] = e^{i\theta(t)}\left[\sum_{k=1}^{\left(N-p\right)}\left(\frac{1}{k^s}\right) +
+\sum_{i=\left(-p+1\right)}^{p}\frac{w_{(N+i)}}{(N+i)^s} \right]\label {eq:expbin_ZN} 
+\end{align}
+
+using partial sums of the binomial coefficients (which can be contrasted with accelerating the sum of all elements in the sum as in equation \eqref {eq:acc}). The convergence behaviour of the tapered end point weighting is displayed, in figures 1-3 (and later) using p=0, 3, 7, 64 which results in 0, 6, 14, 128 tapered endpoints of the Dirichlet series spanning the integers [N-p+1,N+p]. 
+
+Explicitly, the set of tapered weights using partial sums of binomial coefficients in the numerator of the second term of equation \eqref {eq:expbin_ZN} are
+
+$p=0:$ $w_{N+1}=0$, etc
+
+$p=3:$ $w_{N-2}=\frac{63}{64}$, $w_{N-1}=\frac{57}{64}$, $w_{N-0}=\frac{42}{64}$, $w_{N+1}=\frac{22}{64}$, $w_{N+2}=\frac{7}{64}$, $w_{N+3}=\frac{1}{64}$ 
+
+$p=7:$ $w_{N-6}=\frac{16383}{16384}$, $w_{N-5}=\frac{16369}{16384}$, $w_{N-4}=\frac{16278}{16384}$, $w_{N-3}=\frac{15914}{16384}$, $w_{N-2}=\frac{14913}{16384}$, $w_{N-1}=\frac{12911}{16384}$, 
+
+$w_{N-0}=\frac{9908}{16384}$, $w_{N+1}=\frac{6476}{16384}$, $w_{N+2}=\frac{3473}{16384}$, $w_{N+3}=\frac{1471}{16384}$, $w_{N+4}=\frac{470}{16384}$, $w_{N+5}=\frac{106}{16384}$,
+
+$w_{N+6}=\frac{15}{16384}$, $w_{N+7}=\frac{1}{16384}$ 
+
+and a selection of the endpoint weights for 
+
+$p=64:$ $w_{N-63}=\frac{2^{128}-1}{2^{128}}$, $w_{N-64}=\frac{2^{128}-1-2(64)}{2^{128}}$, $w_{N-63}=\frac{340282366920938463463374607431768203199}{2^{128}}$, 
+
+$w_{N-62}=\frac{340282366920938463463374607431767861823}{2^{128}}$, ...,  $w_{N-0}=\frac{182116756481433273164755097604074381603}{2^{128}}$, 
+
+$w_{N+1}=\frac{158165610439505190298619509827693829853}{2^{128}}$, ..., $w_{N+61}=\frac{275584033}{2^{128}}$, $w_{N+62}=\frac{11017633}{2^{128}}$, $w_{N+4}=\frac{349633}{2^{128}}$, 
+
+$w_{N+63}=\frac{8257}{2^{128}}$, $w_{N+64}=\frac{1+2(64)}{2^{128}}$, $w_{N+7}=\frac{1}{2^{128}}$ 
+
+\clearpage
+
+In figures 1-2, 
+
+\begin{enumerate}
+\item the left, middle and right columns correspond to (0, 6, 14) term endpoint tapered Riemann Zeta Dirichlet series sum convergence behaviour of Riemann Zeta Z function estimates, 
+\item the top, middle and bottom rows correspond to the three real axis values $\sigma=1,1/2,0$ respectively convergence behaviour of the Riemann Zeta (Dirichlet Eta function and accelerated series) based calculations [1,2] and 
+\item at t=280.8 (a peak) and t=279.22925 (a zero) on the critical line.
+\item The real (imaginary) component of each estimator is shown in red (green) respectively, with zero value shown in blue.
+\end{enumerate}
+
+In figures 3, 
+
+\begin{enumerate}
+\item the left, middle left, middle right and right columns correspond to (0, 6, 14, 128) term endpoint tapered Riemann Zeta Dirichlet series sum convergence behaviour of Riemann Zeta Z function estimates, 
+\item the top, middle and bottom rows correspond to the three real axis values $\sigma=1,1/2,0$ respectively convergence behaviour of the Riemann Zeta (Dirichlet Eta function and accelerated series) based calculations [1,2] and 
+\item at 6789.01 (a peak) on the critical line.
+\item The real (imaginary) component of each estimator is shown in red (green) respectively, with zero value shown in blue.
+\end{enumerate}
+
+For closer comparison of the $\sigma=0,1$ behaviour to the critical line results the transformation $e^{i\theta(t)}\zeta(s)$ is used rather than the more general $e^{i\theta_{ext}(s)}\zeta(s)$ transformation [12].
+
+The important features to note are
+\begin{enumerate}
+\item The convergence behaviour at t=280.8, 279.22925 and 6789.01 values show three types of features (i) some rapid changes in value for low N as more terms are added, (ii) some areas of plateau (with oscillation behaviour) and (iii) asymptotically a long plateau (with oscillation behaviour)
+\item The final asymptotic plateau region starts $N \sim \frac{t}{6}$ for the Riemann Zeta Dirichlet series sum estimators.
+\item The oscillations in the plateaus have a region away from the ends of the plateau where the magnitude of the oscillations is quiescent.
+\item Using tapered endpoints for the Riemann Zeta Dirichlet series sum based on partial sums of the binomial coefficients in the middle and right columns,  the oscillations in the plateaus are greatly reduced. At $t \rightarrow \infty$ this oscillatory divergence will reappear (as for the intermediate plateaus) but at $N \sim \frac{t}{\pi}$ these series give improved quiescent approximations of the Riemann Zeta Z function (away from the real axis).
+\item Note that near the real axis, the tapered endpoint approach cannot yield an calculated value. That is, the tapered Riemann Zeta Dirichlet series sums estimates for p=3, 7, 64 start at N=4, 8, 65 respectively, such that (N-p+1)>1.
+\end{enumerate}
+
+
+```{r fig_cap__zetaZ_280p8, echo=FALSE}
+cap2 <- "\\scriptsize{The convergence behaviour of three tapered Riemann Zeta Dirichlet series sum Z function calculations using tapering based on partial sums of binomial coefficients for t=280.8 which is a Riemann Zeta peak on the critical line and three real axis values (i) first row $\\sigma=1$, (ii) second row $\\sigma=1/2$ and (iii) third row $\\sigma=0$. Left panel: equally weighted series, Middle panel: 6 tapered end point weights. Right panel: 14 tapered end point weights. The real component is shown in red, the imaginary component in green where the x axis in the number of included integers in the series sum. The quiescent region at $N=\\frac{t}{\\pi}=89.3814$ provides a good estimate of both the real and imaginary components of the Riemann Zeta Z function. With large tapering approximate estimates of the Riemann Zeta Z function may be obtained closer to $N \\gtrsim \\frac{t}{6}$.}"
+
+```
+
+```{r image_280p8, fig.show = "hold", out.width = c("33%","33%","33%"), fig.align = "default", fig.cap=cap2, fig.height=5}
+
+
+knitr::include_graphics("/home/john/pari/dirichletseriesquiescence/graph_dirichlettaper2p0basedzeta_1_280.80000000000000000000000000000000000.pdf")
+
+knitr::include_graphics("/home/john/pari/dirichletseriesquiescence/graph_dirichlettaper2p6basedzeta_1_280.80000000000000000000000000000000000.pdf")
+
+knitr::include_graphics("/home/john/pari/dirichletseriesquiescence/graph_dirichlettaper2p14basedzeta_1_280.80000000000000000000000000000000000.pdf")
+
+
+knitr::include_graphics("/home/john/pari/dirichletseriesquiescence/graph_dirichlettaper2p0basedzeta_0.50000000000000000000000000000000000000_280.80000000000000000000000000000000000.pdf")
+
+knitr::include_graphics("/home/john/pari/dirichletseriesquiescence/graph_dirichlettaper2p6basedzeta_0.50000000000000000000000000000000000000_280.80000000000000000000000000000000000.pdf")
+
+knitr::include_graphics("/home/john/pari/dirichletseriesquiescence/graph_dirichlettaper2p14basedzeta_0.50000000000000000000000000000000000000_280.80000000000000000000000000000000000.pdf")
+
+
+knitr::include_graphics("/home/john/pari/dirichletseriesquiescence/graph_dirichlettaper2p0basedzeta_0_280.80000000000000000000000000000000000.pdf")
+
+knitr::include_graphics("/home/john/pari/dirichletseriesquiescence/graph_dirichlettaper2p6basedzeta_0_280.80000000000000000000000000000000000.pdf")
+
+knitr::include_graphics("/home/john/pari/dirichletseriesquiescence/graph_dirichlettaper2p14basedzeta_0_280.80000000000000000000000000000000000.pdf")
+
+
+
+
+```
+
+
+
+
+```{r fig_cap__zetaZ_279p22925, echo=FALSE}
+cap2 <- "\\scriptsize{The convergence behaviour of three tapered Riemann Zeta Dirichlet series sum Z function calculations using tapering based on partial sums of binomial coefficients for t=279.22925 which is a Riemann Zeta zero on the critical line and three real axis values (i) first row $\\sigma=1$, (ii) second row $\\sigma=1/2$ and (iii) third row $\\sigma=0$. Left panel: equally weighted series, Middle panel: 6 tapered end point weights. Right panel: 14 tapered end point weights. The real component is shown in red, the imaginary component in green where the x axis in the number of included integers in the series sum. The quiescent region at $N=\\frac{t}{\\pi}=88.8814$ provides a good estimate of both the real and imaginary components of the Riemann Zeta Z function. With large tapering approximate estimates of the Riemann Zeta Z function may be obtained closer to $N \\gtrsim \\frac{t}{6}$.}"
+
+```
+
+```{r image_279p22925, fig.show = "hold", out.width = c("33%","33%","33%"), fig.align = "default", fig.cap=cap2}
+
+knitr::include_graphics("/home/john/pari/dirichletseriesquiescence/graph_dirichlettaper2p0basedzeta_1_279.22925000000000000000000000000000000.pdf")
+
+knitr::include_graphics("/home/john/pari/dirichletseriesquiescence/graph_dirichlettaper2p6basedzeta_1_279.22925000000000000000000000000000000.pdf")
+
+knitr::include_graphics("/home/john/pari/dirichletseriesquiescence/graph_dirichlettaper2p14basedzeta_1_279.22925000000000000000000000000000000.pdf")
+
+
+knitr::include_graphics("/home/john/pari/dirichletseriesquiescence/graph_dirichlettaper2p0basedzeta_0.50000000000000000000000000000000000000_279.22925000000000000000000000000000000.pdf")
+
+knitr::include_graphics("/home/john/pari/dirichletseriesquiescence/graph_dirichlettaper2p6basedzeta_0.50000000000000000000000000000000000000_279.22925000000000000000000000000000000.pdf")
+
+knitr::include_graphics("/home/john/pari/dirichletseriesquiescence/graph_dirichlettaper2p14basedzeta_0.50000000000000000000000000000000000000_279.22925000000000000000000000000000000.pdf")
+
+
+knitr::include_graphics("/home/john/pari/dirichletseriesquiescence/graph_dirichlettaper2p0basedzeta_0_279.22925000000000000000000000000000000.pdf")
+
+knitr::include_graphics("/home/john/pari/dirichletseriesquiescence/graph_dirichlettaper2p6basedzeta_0_279.22925000000000000000000000000000000.pdf")
+
+knitr::include_graphics("/home/john/pari/dirichletseriesquiescence/graph_dirichlettaper2p14basedzeta_0_279.22925000000000000000000000000000000.pdf")
+
+
+
+
+```
+
+
+
+```{r fig_cap__zetaZ_6789, echo=FALSE}
+cap2 <- "\\scriptsize{The convergence behaviour of three tapered Riemann Zeta Dirichlet series sum Z function calculations using tapering based on partial sums of binomial coefficients for t=6489.01 which is a Riemann Zeta peak on the critical line and three real axis values (i) first row $\\sigma=1$, (ii) second row $\\sigma=1/2$ and (iii) third row $\\sigma=0$. Left panel: equally weighted series, Middle Left panel: 6 tapered end point weights, Middle Right panel: 14 tapered end point weights. Right panel: 128 tapered end point weights. The real component is shown in red, the imaginary component in green where the x axis in the number of included integers in the series sum. The quiescent region at $N=\\frac{t}{\\pi}=2161.009$ provides a good estimate of both the real and imaginary components of the Riemann Zeta Z function. With large tapering approximate estimates of the Riemann Zeta Z function may be obtained closer to $N \\gtrsim \\frac{t}{6}$.}"
+
+```
+
+```{r image_6789, fig.show = "hold", out.width = c("24%","24%","24%","24%"), fig.align = "default", fig.cap=cap2, fig.height=5}
+
+knitr::include_graphics("/home/john/pari/dirichletseriesquiescence/graph_dirichlettaper2p0basedzeta_1_6789.0100000000000000000000000000000000.pdf")
+
+knitr::include_graphics("/home/john/pari/dirichletseriesquiescence/graph_dirichlettaper2p6basedzeta_1_6789.0100000000000000000000000000000000.pdf")
+
+knitr::include_graphics("/home/john/pari/dirichletseriesquiescence/graph_dirichlettaper2p14basedzeta_1_6789.0100000000000000000000000000000000.pdf")
+
+knitr::include_graphics("/home/john/pari/dirichletseriesquiescence/graph_dirichlettaper2p128basedzeta_1_6789.0100000000000000000000000000000000.pdf")
+
+
+knitr::include_graphics("/home/john/pari/dirichletseriesquiescence/graph_dirichlettaper2p0basedzeta_0.50000000000000000000000000000000000000_6789.0100000000000000000000000000000000.pdf")
+
+knitr::include_graphics("/home/john/pari/dirichletseriesquiescence/graph_dirichlettaper2p6basedzeta_0.50000000000000000000000000000000000000_6789.0100000000000000000000000000000000.pdf")
+
+knitr::include_graphics("/home/john/pari/dirichletseriesquiescence/graph_dirichlettaper2p14basedzeta_0.50000000000000000000000000000000000000_6789.0100000000000000000000000000000000.pdf")
+
+knitr::include_graphics("/home/john/pari/dirichletseriesquiescence/graph_dirichlettaper2p128basedzeta_0.50000000000000000000000000000000000000_6789.0100000000000000000000000000000000.pdf")
+
+
+
+knitr::include_graphics("/home/john/pari/dirichletseriesquiescence/graph_dirichlettaper2p0basedzeta_0_6789.0100000000000000000000000000000000.pdf")
+
+knitr::include_graphics("/home/john/pari/dirichletseriesquiescence/graph_dirichlettaper2p6basedzeta_0_6789.0100000000000000000000000000000000.pdf")
+
+knitr::include_graphics("/home/john/pari/dirichletseriesquiescence/graph_dirichlettaper2p14basedzeta_0_6789.0100000000000000000000000000000000.pdf")
+
+knitr::include_graphics("/home/john/pari/dirichletseriesquiescence/graph_dirichlettaper2p128basedzeta_0_6789.0100000000000000000000000000000000.pdf")
+
+
+
+```
+
+\clearpage
+
+### Using tapered end point Riemann Zeta Dirichlet series sum for $\Re{(Z(s))}$ estimates at the first quiescent region at $\sqrt{\frac{t}{2\pi}}$
+
+The point in this section, is to illustrate that tapered end point weighting based on partial sums of the binomial coefficients as in equations \eqref {eq:expbin_ZN} and \eqref {eq:expbin_Zsqrtpi} also works very effectively at the $\sqrt{\frac{t}{2\pi}}$ quiescent region at estimating the real part of the Riemann Zeta Z function. 
+
+Figures 4-6 show that higher up on the imaginary axis the $\sqrt{\frac{t}{2\pi}}$ region is in a plateau for the direct Dirichlet series sum and corresponds closely to the quiescent part of that plateau. The t value investigated 6850051.8909855 in these figures belong to one of the zeroes associated with the first Rosser violation point of the Riemann Zeta function. (The behaviour for the main peak at t=6820051.05 of the first Rosser violation point is shown in the appendix).
+
+The number of integers $\le 3000$ used in the series sums shown in the results is insufficient for these estimates to reach convergence given the large value of t. The $\sqrt{\frac{t}{2\pi}}$ behaviour of the real component however can be used successfully in the Riemann-Siegel formula because of resurgence behaviour in the series sum [4,5].
+
+The second and third rows of figures 4-6, show the impact of tapered end point weighted Riemann Zeta Dirichlet zeroes sums at producing better and better estimates of the real part of the Riemann Zeta Z function. As a guide, the blue line indicating zero magnitude in figure 5 (on the critical line) helps show that the estimate (for 6850051.8909855 a known zero position) is accurate. The use of longer tapered end points performance at improving the estimate is consistent across the critical strip when comparing figures 4-6.
+
+
+
+```{r fig_cap__zetaZ_6820051p89_1mag, echo=FALSE}
+cap2 <- "\\scriptsize{The convergence behaviour on the line $\\sigma=1$ of finite Riemann Zeta Dirichlet series sum based Z function calculations for t=6820051.8909855 which is a Riemann Zeta zero position. First row shows the unweighted series and tapered series (last 128 terms) in the large interval N=1-1200, Second and third rows show the narrow interval N=950-1150 about the $\\sqrt{\\frac{t}{2\\pi}}=1041.8469$ quiescent (resurgence [4,5]) point for (second row) unweighted series and tapered series (last 6 terms)  and (third row) for tapered series (last 14 terms) and tapered series (last 128 terms). Where the tapering weights are based on partial sums of the binomial coefficients.}"
+
+```
+
+```{r image_6820051p89_1mag, fig.show = "hold", out.width = c("50%","50%"), fig.align = "default", fig.cap=cap2, fig.height=5}
+
+
+
+knitr::include_graphics("/home/john/pari/dirichletseriesquiescence/graph_dirichlettaper2p0basedzeta_1_6820051.8909855000000000000000000000000.pdf")
+
+knitr::include_graphics("/home/john/pari/dirichletseriesquiescence/graph_dirichlettaper2p128basedzeta_1_6820051.8909855000000000000000000000000.pdf")
+
+
+knitr::include_graphics("/home/john/pari/dirichletseriesquiescence/graph_dirichlettaper2p0basedzetamag_1_6820051.8909855000000000000000000000000.pdf")
+
+knitr::include_graphics("/home/john/pari/dirichletseriesquiescence/graph_dirichlettaper2p6basedzetamag_1_6820051.8909855000000000000000000000000.pdf")
+
+knitr::include_graphics("/home/john/pari/dirichletseriesquiescence/graph_dirichlettaper2p14basedzetamag_1_6820051.8909855000000000000000000000000.pdf")
+
+knitr::include_graphics("/home/john/pari/dirichletseriesquiescence/graph_dirichlettaper2p128basedzetamag_1_6820051.8909855000000000000000000000000.pdf")
+
+
+
+```
+
+
+```{r fig_cap__zetaZ_6820051p89_0.5mag, echo=FALSE}
+cap2 <- "\\scriptsize{The convergence behaviour on the critical line $\\sigma=0.5$ of finite Riemann Zeta Dirichlet series sum based Z function calculations for t=6820051.8909855 which is a Riemann Zeta zero position. First row shows the unweighted series and tapered series (last 128 terms) in the large interval N=1-1200, Second and third rows show the narrow interval N=950-1150 about the $\\sqrt{\\frac{t}{2\\pi}}=1041.8469$ quiescent (resurgence [4,5]) point for (second row) unweighted series and tapered series (last 6 terms)  and (third row) for tapered series (last 14 terms) and tapered series (last 128 terms). Where the tapering weights are based on partial sums of the binomial coefficients.}"
+
+```
+
+```{r image_6820051p89_0.5mag, fig.show = "hold", out.width = c("50%","50%"), fig.align = "default", fig.cap=cap2, fig.height=5}
+
+knitr::include_graphics("/home/john/pari/dirichletseriesquiescence/graph_dirichlettaper2p0basedzeta_0.50000000000000000000000000000000000000_6820051.8909855000000000000000000000000.pdf")
+
+
+knitr::include_graphics("/home/john/pari/dirichletseriesquiescence/graph_dirichlettaper2p128basedzeta_0.50000000000000000000000000000000000000_6820051.8909855000000000000000000000000.pdf")
+
+
+
+knitr::include_graphics("/home/john/pari/dirichletseriesquiescence/graph_dirichlettaper2p0basedzetamag_0.50000000000000000000000000000000000000_6820051.8909855000000000000000000000000.pdf")
+
+knitr::include_graphics("/home/john/pari/dirichletseriesquiescence/graph_dirichlettaper2p6basedzetamag_0.50000000000000000000000000000000000000_6820051.8909855000000000000000000000000.pdf")
+
+knitr::include_graphics("/home/john/pari/dirichletseriesquiescence/graph_dirichlettaper2p14basedzetamag_0.50000000000000000000000000000000000000_6820051.8909855000000000000000000000000.pdf")
+
+knitr::include_graphics("/home/john/pari/dirichletseriesquiescence/graph_dirichlettaper2p128basedzetamag_0.50000000000000000000000000000000000000_6820051.8909855000000000000000000000000.pdf")
+
+
+
+```
+
+
+
+```{r fig_cap__zetaZ_6820051p89_0mag, echo=FALSE}
+cap2 <- "\\scriptsize{The convergence behaviour on the line $\\sigma=0$ of finite Riemann Zeta Dirichlet series sum based Z function calculations for t=6820051.8909855 which is a Riemann Zeta zero position. First row shows the unweighted series and tapered series (last 128 terms) in the large interval N=1-1200, Second and third rows show the narrow interval N=950-1150 about the $\\sqrt{\\frac{t}{2\\pi}}=1041.8469$ quiescent (resurgence [4,5]) point for (second row) unweighted series and tapered series (last 6 terms)  and (third row) for tapered series (last 14 terms) and tapered series (last 128 terms). Where the tapering weights are based on partial sums of the binomial coefficients.}"
+
+```
+
+```{r image_6820051p89_0mag, fig.show = "hold", out.width = c("50%","50%"), fig.align = "default", fig.cap=cap2, fig.height=5}
+
+
+
+knitr::include_graphics("/home/john/pari/dirichletseriesquiescence/graph_dirichlettaper2p0basedzeta_0_6820051.8909855000000000000000000000000.pdf")
+
+knitr::include_graphics("/home/john/pari/dirichletseriesquiescence/graph_dirichlettaper2p128basedzeta_0_6820051.8909855000000000000000000000000.pdf")
+
+
+knitr::include_graphics("/home/john/pari/dirichletseriesquiescence/graph_dirichlettaper2p0basedzetamag_0_6820051.8909855000000000000000000000000.pdf")
+
+knitr::include_graphics("/home/john/pari/dirichletseriesquiescence/graph_dirichlettaper2p6basedzetamag_0_6820051.8909855000000000000000000000000.pdf")
+
+knitr::include_graphics("/home/john/pari/dirichletseriesquiescence/graph_dirichlettaper2p14basedzetamag_0_6820051.8909855000000000000000000000000.pdf")
+
+knitr::include_graphics("/home/john/pari/dirichletseriesquiescence/graph_dirichlettaper2p128basedzetamag_0_6820051.8909855000000000000000000000000.pdf")
+
+
+
+```
+
+
+\clearpage
+
+Figure 7 shows the similar behaviour of the tapered end point Dirichlet series sum on the critical line for t=37821473.86909 which is a Riemann Zeta zero position on the critical line further up the imaginary axis. The second  and third rows which magnifies the region 2300-2600 surrounding $\sqrt{\frac{37821473.86909}{2\pi}}=2453$ clearly shows that point in a plateau region and that tapered end point weight using partial sum of binomial coefficients locally averages away the high frequency fluctuations in the convergence behaviour in a convincing manner. 
+
+Figure 8 shows the behaviour of the tapered end point Dirichlet series sum on the critical line for t=363991205.82542 which is a Riemann Zeta zero position on the critical line further up the imaginary axis. The second and third rows which magnifies the region 7000-8000 surrounding $\sqrt{\frac{363991205.82542}{2\pi}}=7611.2417$ clearly shows that point as occurring as a transition between two plateau regions. In this case the local smoothing of the adjacent two plateaus by 6, 14, 128 term tapering end points is not particularing affecting the $\sqrt{\frac{363991205.82542}{2\pi}}$ point. 
+
+The resurgence estimate of $\Re(Z_{7611.241,128terms}(s=0.5+I\cdot 363991205.82542))\approx -.002$ seems much further away from 0.0 by many decimal places than when the $\sqrt{\frac{t}{2\pi}}$ point (corresponding to a Riemann Zeta zero position) is in the middle of a convergence plateau so probably much higher tapering end points are needed to increase precision of the approximation for such points on the critical line. (The behaviour for the main peak at t=363991205.17884 close to this zero position is shown in the appendix and it also has the $\sqrt{\frac{t}{2\pi}}$ point in a transition region between two plateaus in the convergence behaviour.)
+
+
+
+
+
+```{r fig_cap__zetaZ_37821473p86909, echo=FALSE}
+cap2 <- "\\scriptsize{The convergence behaviour on the critical line $\\sigma=0.5$ of finite Riemann Zeta Dirichlet series sum based Z function calculations for t=37821473.86909 which is a Riemann Zeta zero position. First row shows the unweighted series and tapered series (last 128 terms) in the large interval N=1-3000, Second and third rows show the narrow interval N=2300-2600 about the $\\sqrt{\\frac{t}{2\\pi}}=2453.4617$ quiescent (resurgence [4,5]) point for (second row) unweighted series and tapered series (last 6 terms)  and (third row) for tapered series (last 14 terms) and tapered series (last 128 terms). Where the tapering weights are based on partial sums of the binomial coefficients.}"
+
+```
+
+```{r image_37821473p86909, fig.show = "hold", out.width = c("50%","50%"), fig.align = "default", fig.cap=cap2, fig.height=5}
+
+knitr::include_graphics("/home/john/pari/dirichletseriesquiescence/graph_dirichlettaper2p0basedzeta_0.50000000000000000000000000000000000000_37821473.869090000000000000000000000000.pdf")
+
+knitr::include_graphics("/home/john/pari/dirichletseriesquiescence/graph_dirichlettaper2p128basedzeta_0.50000000000000000000000000000000000000_37821473.869090000000000000000000000000.pdf")
+
+
+knitr::include_graphics("/home/john/pari/dirichletseriesquiescence/graph_dirichlettaper2p0basedzetamag_0.50000000000000000000000000000000000000_37821473.869090000000000000000000000000.pdf")
+
+knitr::include_graphics("/home/john/pari/dirichletseriesquiescence/graph_dirichlettaper2p6basedzetamag_0.50000000000000000000000000000000000000_37821473.869090000000000000000000000000.pdf")
+
+knitr::include_graphics("/home/john/pari/dirichletseriesquiescence/graph_dirichlettaper2p14basedzetamag_0.50000000000000000000000000000000000000_37821473.869090000000000000000000000000.pdf")
+
+knitr::include_graphics("/home/john/pari/dirichletseriesquiescence/graph_dirichlettaper2p128basedzetamag_0.50000000000000000000000000000000000000_37821473.869090000000000000000000000000.pdf")
+
+
+
+```
+
+
+```{r fig_cap__zetaZ_363991205p82542, echo=FALSE}
+cap2 <- "\\scriptsize{The convergence behaviour on the critical line $\\sigma=0.5$ of finite Riemann Zeta Dirichlet series sum based Z function calculations for t=363991205.82542 which is a Riemann Zeta zero position. First row shows the unweighted series and tapered series (last 128 terms) in the large interval N=1-10000, Second and third rows show the narrow interval N=7000-8000 about the $\\sqrt{\\frac{t}{2\\pi}}=7611.2417$ quiescent (resurgence [4,5]) point for (second row) unweighted series and tapered series (last 6 terms)  and (third row) for tapered series (last 14 terms) and tapered series (last 128 terms). Where the tapering weights are based on partial sums of the binomial coefficients.}"
+
+```
+
+
+```{r image_363991205p82542, fig.show = "hold", out.width = c("50%","50%"), fig.align = "default", fig.cap=cap2, fig.height=5}
+
+knitr::include_graphics("/home/john/pari/dirichletseriesquiescence/graph_dirichlettaper2p0basedzeta_0.50000000000000000000000000000000000000_363991205.82542000000000000000000000000.pdf")
+
+knitr::include_graphics("/home/john/pari/dirichletseriesquiescence/graph_dirichlettaper2p128basedzeta_0.50000000000000000000000000000000000000_363991205.82542000000000000000000000000.pdf")
+
+
+knitr::include_graphics("/home/john/pari/dirichletseriesquiescence/graph_dirichlettaper2p0basedzetamag_0.50000000000000000000000000000000000000_363991205.82542000000000000000000000000.pdf")
+
+knitr::include_graphics("/home/john/pari/dirichletseriesquiescence/graph_dirichlettaper2p6basedzetamag_0.50000000000000000000000000000000000000_363991205.82542000000000000000000000000.pdf")
+
+knitr::include_graphics("/home/john/pari/dirichletseriesquiescence/graph_dirichlettaper2p14basedzetamag_0.50000000000000000000000000000000000000_363991205.82542000000000000000000000000.pdf")
+
+knitr::include_graphics("/home/john/pari/dirichletseriesquiescence/graph_dirichlettaper2p128basedzetamag_0.50000000000000000000000000000000000000_363991205.82542000000000000000000000000.pdf")
+
+
+
+```
+
+
+
+\clearpage
+
+
+
+## Conclusion
+
+The tapered end point weighted Riemann Zeta Dirichlet series sum based on partial sums of the binomial coefficients for the Riemann Zeta Z function exhibits excellent local smoothing of quiescent regions at $\frac{t}{\pi}$ and $\sqrt{\frac{t}{2\pi}}$ that give useful higher order truncated series estimates of the Riemann Zeta Z function within the critical strip. The estimates based on $\frac{t}{\pi}$ provide both the real and imaginary components of the Riemann Zeta Z function. The estimates based on $\sqrt{\frac{t}{2\pi}}$ provide a resurgence [4,5] based estimate  of the real component of the Riemann Zeta Z function.
+
+The tapered end point weighted Riemann Zeta Dirichlet series sum approximation based on $\sqrt{\frac{t}{2\pi}}$ is competitive with the existing Riemann-Siegel Z formula which uses Bernoulli numbers for the higher order corrections.
+
+
+\clearpage
+
+## References
+
+1. Martin, J.P.D. "A quiescent region about $\frac{t}{\pi}$ in the oscillating divergence of the Riemann Zeta Dirichlet Series inside the critical strip." (2021)
+http://dx.doi.org/10.6084/m9.figshare.14213516
+
+2. Edwards, H.M. (1974). Riemann's zeta function. Pure and Applied Mathematics 58. New York-London: Academic Press. ISBN 0-12-242750-0. Zbl 0315.10035.
+
+3. Titchmarsh, E.C. (1986) The Theory of the Riemann Zeta Function. 2nd Revised (Heath-Brown, D.R. ) Edition, Oxford University Press, Oxford.
+
+4. M.V. Berry, "Riemann’s Saddle-point Method and the Riemann-Siegel Formula" Vol 35.1, pp. 69–78, The Legacy of Bernhard Riemann After One Hundred and Fifty Years, Advanced Lectures in Mathematics 2016
+
+5. J. Arias De Reyna, "High precision computation of Riemann's Zeta function by the Riemann-Siegel formula", Mathematics of Computation Vol 80, no. 274, 2011, Pages 995–1009
+
+6. The PARI~Group, PARI/GP version {\tt 2.12.0}, Univ. Bordeaux, 2018,
+    \url{http://pari.math.u-bordeaux.fr/}.
+\normalfont
+
+7. The LMFDB Collaboration, The L-functions and Modular Forms Database, home page of The Riemann Zeta zeroes https://www.lmfdb.org/zeros/zeta/ 2021,
+
+8.  X. Gourdon and P. Sebah \url{http://numbers.computation.free.fr/Constants/Miscellaneous/MaxiZAll.txt} 2011 from  \url{http://numbers.computation.free.fr/Constants/constants.html}
+
+9. A. M. Odlyzko, "On the Distribution of Spacings Between Zeros of the Zeta Function", Mathematics of Computation Vol 48, no. 177, 1987, pages 273-308 
+
+10. Hasse, Helmut (1930). "Ein Summierungsverfahren für die Riemannsche $\zeta$-Reihe". Math. Z. 32: 458–464.
+
+11. J. Sondow, (1994) "Analytic continuation of Riemann's zeta function and values at negative integers via Euler's transformation of series" Proc. Amer. Math. Soc. 120 (2): 421–424.
+
+12. Martin, J.P.D. "Extended Riemann Siegel Theta function further simplified using functional equation factor for the Riemann Zeta function." (2017)
+http://dx.doi.org/10.6084/m9.figshare.5735268
+
+
+
+
+
+
+\clearpage
+
+#Appendix I
+
+Figures 9-11 show the covergence behaviour up to and just beyond the $\sqrt{\frac{t}{2\pi}}$ region for t=6850051.05. The $\sqrt{\frac{t}{2\pi}}$ region is in a plateau for the Riemann Zeta Dirichlet series sum and corresponds closely to the quiescent part of that plateau. The t value investigated 6850051.05 in these figures belong to main peak associated with the first Rosser violation point of the Riemann Zeta function. The figures show the benefit of tapered end point weighting of the Riemann Zeta Dirichlet series sum at improving the approximate estimate of the $\Re(Z(s))$ function using resurgence.
+
+
+```{r fig_cap__zetaZ_6820051p05_1mag, echo=FALSE}
+cap2 <- "\\scriptsize{The convergence behaviour on the line $\\sigma=1$ of finite Riemann Zeta Dirichlet series sum based Z function calculations for t=6820051.05 which is a Riemann Zeta peak position. First row shows the unweighted series and tapered series (last 128 terms) in the large interval N=1-1200, Second and third rows show the narrow interval N=950-1150 about the $\\sqrt{\\frac{t}{2\\pi}}=1041.8468$ quiescent (resurgence [4,5]) point for (second row) unweighted series and tapered series (last 6 terms)  and (third row) for tapered series (last 14 terms) and tapered series (last 128 terms). Where the tapering weights are based on partial sums of the binomial coefficients.}"
+
+```
+
+```{r image_6820051p05_1mag, fig.show = "hold", out.width = c("50%","50%"), fig.align = "default", fig.cap=cap2, fig.height=5}
+
+
+
+knitr::include_graphics("/home/john/pari/dirichletseriesquiescence/graph_dirichlettaper2p0basedzeta_1_6820051.0500000000000000000000000000000.pdf")
+
+knitr::include_graphics("/home/john/pari/dirichletseriesquiescence/graph_dirichlettaper2p128basedzeta_1_6820051.0500000000000000000000000000000.pdf")
+
+
+knitr::include_graphics("/home/john/pari/dirichletseriesquiescence/graph_dirichlettaper2p0basedzetamag_1_6820051.0500000000000000000000000000000.pdf")
+
+knitr::include_graphics("/home/john/pari/dirichletseriesquiescence/graph_dirichlettaper2p6basedzetamag_1_6820051.0500000000000000000000000000000.pdf")
+
+knitr::include_graphics("/home/john/pari/dirichletseriesquiescence/graph_dirichlettaper2p14basedzetamag_1_6820051.0500000000000000000000000000000.pdf")
+
+knitr::include_graphics("/home/john/pari/dirichletseriesquiescence/graph_dirichlettaper2p128basedzetamag_1_6820051.0500000000000000000000000000000.pdf")
+
+
+
+```
+
+
+```{r fig_cap__zetaZ_6820051p05_0.5mag, echo=FALSE}
+cap2 <- "\\scriptsize{The convergence behaviour on the critical line $\\sigma=0.5$ of finite Riemann Zeta Dirichlet series sum based Z function calculations for t=6820051.05 which is a Riemann Zeta peak position. First row shows the unweighted series and tapered series (last 128 terms) in the large interval N=1-1200, Second and third rows show the narrow interval N=950-1150 about the $\\sqrt{\\frac{t}{2\\pi}}=1041.8468$ quiescent (resurgence [4,5]) point for (second row) unweighted series and tapered series (last 6 terms)  and (third row) for tapered series (last 14 terms) and tapered series (last 128 terms). Where the tapering weights are based on partial sums of the binomial coefficients.}"
+
+```
+
+```{r image_6820051p05_0.5mag, fig.show = "hold", out.width = c("50%","50%"), fig.align = "default", fig.cap=cap2, fig.height=5}
+
+knitr::include_graphics("/home/john/pari/dirichletseriesquiescence/graph_dirichlettaper2p0basedzeta_0.50000000000000000000000000000000000000_6820051.0500000000000000000000000000000.pdf")
+
+
+knitr::include_graphics("/home/john/pari/dirichletseriesquiescence/graph_dirichlettaper2p128basedzeta_0.50000000000000000000000000000000000000_6820051.0500000000000000000000000000000.pdf")
+
+
+
+knitr::include_graphics("/home/john/pari/dirichletseriesquiescence/graph_dirichlettaper2p0basedzetamag_0.50000000000000000000000000000000000000_6820051.0500000000000000000000000000000.pdf")
+
+knitr::include_graphics("/home/john/pari/dirichletseriesquiescence/graph_dirichlettaper2p6basedzetamag_0.50000000000000000000000000000000000000_6820051.0500000000000000000000000000000.pdf")
+
+knitr::include_graphics("/home/john/pari/dirichletseriesquiescence/graph_dirichlettaper2p14basedzetamag_0.50000000000000000000000000000000000000_6820051.0500000000000000000000000000000.pdf")
+
+knitr::include_graphics("/home/john/pari/dirichletseriesquiescence/graph_dirichlettaper2p128basedzetamag_0.50000000000000000000000000000000000000_6820051.0500000000000000000000000000000.pdf")
+
+
+
+```
+
+
+
+```{r fig_cap__zetaZ_6820051p05_0mag, echo=FALSE}
+cap2 <- "\\scriptsize{The convergence behaviour on the line $\\sigma=0$ of finite Riemann Zeta Dirichlet series sum based Z function calculations for t=6820051.05 which is a Riemann Zeta peak position. First row shows the unweighted series and tapered series (last 128 terms) in the large interval N=1-1200, Second and third rows show the narrow interval N=950-1150 about the $\\sqrt{\\frac{t}{2\\pi}}=1041.8468$ quiescent (resurgence [4,5]) point for (second row) unweighted series and tapered series (last 6 terms)  and (third row) for tapered series (last 14 terms) and tapered series (last 128 terms). Where the tapering weights are based on partial sums of the binomial coefficients.}"
+
+```
+
+```{r image_6820051p05_0mag, fig.show = "hold", out.width = c("50%","50%"), fig.align = "default", fig.cap=cap2, fig.height=5}
+
+
+
+knitr::include_graphics("/home/john/pari/dirichletseriesquiescence/graph_dirichlettaper2p0basedzeta_0_6820051.0500000000000000000000000000000.pdf")
+
+knitr::include_graphics("/home/john/pari/dirichletseriesquiescence/graph_dirichlettaper2p128basedzeta_0_6820051.0500000000000000000000000000000.pdf")
+
+
+knitr::include_graphics("/home/john/pari/dirichletseriesquiescence/graph_dirichlettaper2p0basedzetamag_0_6820051.0500000000000000000000000000000.pdf")
+
+knitr::include_graphics("/home/john/pari/dirichletseriesquiescence/graph_dirichlettaper2p6basedzetamag_0_6820051.0500000000000000000000000000000.pdf")
+
+knitr::include_graphics("/home/john/pari/dirichletseriesquiescence/graph_dirichlettaper2p14basedzetamag_0_6820051.0500000000000000000000000000000.pdf")
+
+knitr::include_graphics("/home/john/pari/dirichletseriesquiescence/graph_dirichlettaper2p128basedzetamag_0_6820051.0500000000000000000000000000000.pdf")
+
+
+
+```
+
+\clearpage
+
+#Appendix II
+
+Figure 12 shows that higher up on the imaginary axis the $\sqrt{\frac{t}{2\pi}}$ point is sometimes located in a transition region between two plateaus of the direct Dirichlet series sum convergence. The t value investigated t=363991205.17884 in this figure belongs to the largest peak of the Riemann Zeta function on the critical line in the Gram index interval n=100000-1000100000 [8].
+
+
+```{r fig_cap__zetaZ_363991205p17884, echo=FALSE}
+cap2 <- "\\scriptsize{The convergence behaviour on the critical line $\\sigma=0.5$ of finite Riemann Zeta Dirichlet series sum based Z function calculations for t=363991205.17884 which is a Riemann Zeta zero position. First row shows the unweighted series and tapered series (last 128 terms) in the large interval N=1-10000, Second and third rows show the narrow interval N=7000-8000 about the $\\sqrt{\\frac{t}{2\\pi}}=7611.2417$ quiescent (resurgence [4,5]) point for (second row) unweighted series and tapered series (last 6 terms)  and (third row) for tapered series (last 14 terms) and tapered series (last 128 terms). Where the tapering weights are based on partial sums of the binomial coefficients.}"
+
+```
+
+```{r image_363991205p17884, fig.show = "hold", out.width = c("50%","50%"), fig.align = "default", fig.cap=cap2, fig.height=5}
+
+knitr::include_graphics("/home/john/pari/dirichletseriesquiescence/graph_dirichlettaper2p0basedzeta_0.50000000000000000000000000000000000000_363991205.17884000000000000000000000000.pdf")
+
+knitr::include_graphics("/home/john/pari/dirichletseriesquiescence/graph_dirichlettaper2p128basedzeta_0.50000000000000000000000000000000000000_363991205.17884000000000000000000000000.pdf")
+
+
+knitr::include_graphics("/home/john/pari/dirichletseriesquiescence/graph_dirichlettaper2p0basedzetamag_0.50000000000000000000000000000000000000_363991205.17884000000000000000000000000.pdf")
+
+knitr::include_graphics("/home/john/pari/dirichletseriesquiescence/graph_dirichlettaper2p6basedzetamag_0.50000000000000000000000000000000000000_363991205.17884000000000000000000000000.pdf")
+
+knitr::include_graphics("/home/john/pari/dirichletseriesquiescence/graph_dirichlettaper2p14basedzetamag_0.50000000000000000000000000000000000000_363991205.17884000000000000000000000000.pdf")
+
+knitr::include_graphics("/home/john/pari/dirichletseriesquiescence/graph_dirichlettaper2p128basedzetamag_0.50000000000000000000000000000000000000_363991205.17884000000000000000000000000.pdf")
+
+
+
+```
+
