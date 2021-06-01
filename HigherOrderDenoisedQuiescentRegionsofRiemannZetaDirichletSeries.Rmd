@@ -48,7 +48,7 @@ On closer inspection, the pattern of the coefficients in equations \eqref {eq:0t
 
 \begin{align}
 Z_{\frac{t}{\pi},\text{binomial}} &= e^{i\theta(t)}\left[\sum_{k=1}^{\left(\lfloor\frac{t}{\pi}\rfloor-p\right)}\left(\frac{1}{k^s}\right) +
-\sum_{i=\left(-p+1\right)}^{p}\frac{\frac{1}{2^{2p}} \sum_{k=0}^{i+p-1}\binom{2p}{2p-k}}{(\lfloor\frac{t}{\pi}\rfloor+i)^s}\cdot   \right] \label {eq:expbin_Ztpi} 
+\sum_{i=\left(-p+1\right)}^{p}\frac{\frac{1}{2^{2p}} \left( 2^{2p}-\sum_{k=0}^{i+p-1}\binom{2p}{2p-k}\right)}{(\lfloor\frac{t}{\pi}\rfloor+i)^s}\cdot   \right] \label {eq:expbin_Ztpi} 
 \end{align}
 
 That is, the tapered truncated Riemann Zeta Dirichlet series sum for $s=\sigma+I\cdot t$ has unit weights for integers k=1 to $(\lfloor\frac{t}{\pi}\rfloor-p)$ and then the end point series integers from $k=(\lfloor\frac{t}{\pi}\rfloor-p+1)$ to  $(\lfloor\frac{t}{\pi}\rfloor+p)$ have tapered weights based on partial sums of the binomial coefficients $\frac{1}{2^{2p}} \sum_{k=0}^{i+p-1}\binom{2p}{2p-k}$.
@@ -57,7 +57,7 @@ In this paper, it is shown that (i) using equation \eqref {eq:expbin_Ztpi} with 
 
 \begin{align}
 Z_{\sqrt{\frac{t}{2\pi}},\text{binomial}} &= 2 \cdot \Re\left\{ e^{i\theta(t)}\left[\sum_{k=1}^{\left(\lfloor\sqrt{\frac{t}{2\pi}}\rfloor-p\right)}\left(\frac{1}{k^s}\right) +
-\sum_{i=\left(-p+1\right)}^{p}\frac{\frac{1}{2^{2p}} \sum_{k=0}^{i+p-1}\binom{2p}{2p-k}}{(\lfloor\sqrt{\frac{t}{2\pi}}\rfloor+i)^s}\cdot   \right] \right\} \label {eq:expbin_Zsqrtpi} 
+\sum_{i=\left(-p+1\right)}^{p}\frac{\frac{1}{2^{2p}} \left( 2^{2p}-\sum_{k=0}^{i+p-1}\binom{2p}{2p-k}\right)}{(\lfloor\sqrt{\frac{t}{2\pi}}\rfloor+i)^s}\cdot   \right] \right\} \label {eq:expbin_Zsqrtpi} 
 \end{align}
 
 also produces improved approximation of the Riemann Zeta Z function (away from the real axis) competitive with the standard Riemann-Siegel Z function formula [2,3] on the critical line 
@@ -99,7 +99,7 @@ In this paper, the generalised form of such tapered end point weighting of trunc
 
 \begin{align}
 Z_{N,\text{binomial}} &= e^{i\theta(t)}\left[\sum_{k=1}^{\left(N-p\right)}\left(\frac{1}{k^s}\right) +
-\sum_{i=\left(-p+1\right)}^{p}\frac{\frac{1}{2^{2p}} \sum_{k=0}^{i+p-1}\binom{2p}{2p-k}}{(N+i)^s}\cdot   \right] = e^{i\theta(t)}\left[\sum_{k=1}^{\left(N-p\right)}\left(\frac{1}{k^s}\right) +
+\sum_{i=\left(-p+1\right)}^{p}\frac{\frac{1}{2^{2p}} \left( 2^{2p}-\sum_{k=0}^{i+p-1}\binom{2p}{2p-k}\right)}{(N+i)^s}\cdot   \right] = e^{i\theta(t)}\left[\sum_{k=1}^{\left(N-p\right)}\left(\frac{1}{k^s}\right) +
 \sum_{i=\left(-p+1\right)}^{p}\frac{w_{(N+i)}}{(N+i)^s} \right]\label {eq:expbin_ZN} 
 \end{align}
 
@@ -371,8 +371,9 @@ Figure 8 shows the behaviour of the tapered end point Dirichlet series sum on th
 
 The resurgence estimate of $\Re(Z_{7611.241,128terms}(s=0.5+I\cdot 363991205.82542))\approx -.002$ seems much further away from 0.0 by many decimal places than when the $\sqrt{\frac{t}{2\pi}}$ point (corresponding to a Riemann Zeta zero position) is in the middle of a convergence plateau so probably much higher tapering end points are needed to increase precision of the approximation for such points on the critical line. (The behaviour for the main peak at t=363991205.17884 close to this zero position is shown in the appendix and it also has the $\sqrt{\frac{t}{2\pi}}$ point in a transition region between two plateaus in the convergence behaviour.)
 
+Figure 9 shows the similar behaviour of the tapered end point Dirichlet series sum on the critical line for t=715980056.760665 which is a Riemann Zeta zero position on the critical line further up the imaginary axis. The second  and third rows which magnifies the region 10000-11000 surrounding $\sqrt{\frac{715980056.760665}{2\pi}}=10674.819$ clearly shows that point in a plateau region and that tapered end point weight using partial sum of binomial coefficients locally averages away the high frequency fluctuations in the convergence behaviour in a convincing manner. 
 
-
+Figure 10 shows the behaviour of the tapered end point Dirichlet series sum on the critical line for t=52577665073.1094 which is a Riemann Zeta peak position on the critical line further up the imaginary axis [9] with gram number n=184,155,671,040. The second and third rows which magnifies the region 91000-92000 surrounding $\sqrt{\frac{52577665073.1094}{2\pi}}=91476.747$ clearly shows that point as occurring as a transition between two plateau regions. In this case the local smoothing of the adjacent two plateaus by 6, 14, 128 term tapering end points is not particularing affecting the $\sqrt{\frac{52577665073.1094}{2\pi}}$ point. 
 
 
 ```{r fig_cap__zetaZ_37821473p86909, echo=FALSE}
@@ -420,6 +421,56 @@ knitr::include_graphics("/home/john/pari/dirichletseriesquiescence/graph_dirichl
 knitr::include_graphics("/home/john/pari/dirichletseriesquiescence/graph_dirichlettaper2p14basedzetamag_0.50000000000000000000000000000000000000_363991205.82542000000000000000000000000.pdf")
 
 knitr::include_graphics("/home/john/pari/dirichletseriesquiescence/graph_dirichlettaper2p128basedzetamag_0.50000000000000000000000000000000000000_363991205.82542000000000000000000000000.pdf")
+
+
+
+```
+
+
+```{r fig_cap__zetaZ_715980056p760665, echo=FALSE}
+cap2 <- "\\scriptsize{The convergence behaviour on the critical line $\\sigma=0.5$ of finite Riemann Zeta Dirichlet series sum based Z function calculations for t=715980056.760665 which is a Riemann Zeta zero position. First row shows the unweighted series and tapered series (last 128 terms) in the large interval N=1-12000, Second and third rows show the narrow interval N=10000-11000 about the $\\sqrt{\\frac{t}{2\\pi}}=10674.819$ quiescent (resurgence [4,5]) point for (second row) unweighted series and tapered series (last 6 terms)  and (third row) for tapered series (last 14 terms) and tapered series (last 128 terms). Where the tapering weights are based on partial sums of the binomial coefficients.}"
+
+```
+
+
+
+```{r image_715980056p760665, fig.show = "hold", out.width = c("50%","50%"), fig.align = "default", fig.cap=cap2, fig.height=5}
+
+knitr::include_graphics("/home/john/pari/dirichletseriesquiescence/graph_dirichlettaper2p0basedzeta_0.50000000000000000000000000000000000000_715980056.76066500000000000000000000000.pdf")
+
+knitr::include_graphics("/home/john/pari/dirichletseriesquiescence/graph_dirichlettaper2p128basedzeta_0.50000000000000000000000000000000000000_715980056.76066500000000000000000000000.pdf")
+
+
+knitr::include_graphics("/home/john/pari/dirichletseriesquiescence/graph_dirichlettaper2p0basedzetamag_0.50000000000000000000000000000000000000_715980056.76066500000000000000000000000.pdf")
+
+knitr::include_graphics("/home/john/pari/dirichletseriesquiescence/graph_dirichlettaper2p6basedzetamag_0.50000000000000000000000000000000000000_715980056.76066500000000000000000000000.pdf")
+
+knitr::include_graphics("/home/john/pari/dirichletseriesquiescence/graph_dirichlettaper2p14basedzetamag_0.50000000000000000000000000000000000000_715980056.76066500000000000000000000000.pdf")
+
+knitr::include_graphics("/home/john/pari/dirichletseriesquiescence/graph_dirichlettaper2p128basedzetamag_0.50000000000000000000000000000000000000_715980056.76066500000000000000000000000.pdf")
+```
+
+
+```{r fig_cap__zetaZ_52577665073p1094, echo=FALSE}
+cap2 <- "\\scriptsize{The convergence behaviour on the critical line $\\sigma=0.5$ of finite Riemann Zeta Dirichlet series sum based Z function calculations for t=52577665073.1094 which is a Riemann Zeta peak position [9] with gram number n=184,155,671,040. First row shows the unweighted series and tapered series (last 128 terms) in the large interval N=1-10000, Second and third rows show the narrow interval N=91000-92000 about the $\\sqrt{\\frac{t}{2\\pi}}=91476.747$ quiescent (resurgence [4,5]) point for (second row) unweighted series and tapered series (last 6 terms)  and (third row) for tapered series (last 14 terms) and tapered series (last 128 terms). Where the tapering weights are based on partial sums of the binomial coefficients.}"
+
+```
+
+
+```{r image_52577665073p1094, fig.show = "hold", out.width = c("50%","50%"), fig.align = "default", fig.cap=cap2, fig.height=5}
+
+knitr::include_graphics("/home/john/pari/dirichletseriesquiescence/graph_dirichlettaper2p0basedzeta_0.50000000000000000000000000000000000000_52577665073.109400000000000000000000000.pdf")
+
+knitr::include_graphics("/home/john/pari/dirichletseriesquiescence/graph_dirichlettaper2p128basedzeta_0.50000000000000000000000000000000000000_52577665073.109400000000000000000000000.pdf")
+
+
+knitr::include_graphics("/home/john/pari/dirichletseriesquiescence/graph_dirichlettaper2p0basedzetamag_0.50000000000000000000000000000000000000_52577665073.109400000000000000000000000.pdf")
+
+knitr::include_graphics("/home/john/pari/dirichletseriesquiescence/graph_dirichlettaper2p6basedzetamag_0.50000000000000000000000000000000000000_52577665073.109400000000000000000000000.pdf")
+
+knitr::include_graphics("/home/john/pari/dirichletseriesquiescence/graph_dirichlettaper2p14basedzetamag_0.50000000000000000000000000000000000000_52577665073.109400000000000000000000000.pdf")
+
+knitr::include_graphics("/home/john/pari/dirichletseriesquiescence/graph_dirichlettaper2p128basedzetamag_0.50000000000000000000000000000000000000_52577665073.109400000000000000000000000.pdf")
 
 
 
@@ -479,7 +530,7 @@ http://dx.doi.org/10.6084/m9.figshare.5735268
 
 #Appendix I
 
-Figures 9-11 show the covergence behaviour up to and just beyond the $\sqrt{\frac{t}{2\pi}}$ region for t=6850051.05. The $\sqrt{\frac{t}{2\pi}}$ region is in a plateau for the Riemann Zeta Dirichlet series sum and corresponds closely to the quiescent part of that plateau. The t value investigated 6850051.05 in these figures belong to main peak associated with the first Rosser violation point of the Riemann Zeta function. The figures show the benefit of tapered end point weighting of the Riemann Zeta Dirichlet series sum at improving the approximate estimate of the $\Re(Z(s))$ function using resurgence.
+Figures 11-13 show the covergence behaviour up to and just beyond the $\sqrt{\frac{t}{2\pi}}$ region for t=6850051.05. The $\sqrt{\frac{t}{2\pi}}$ region is in a plateau for the Riemann Zeta Dirichlet series sum and corresponds closely to the quiescent part of that plateau. The t value investigated 6850051.05 in these figures belong to main peak associated with the first Rosser violation point of the Riemann Zeta function. The figures show the benefit of tapered end point weighting of the Riemann Zeta Dirichlet series sum at improving the approximate estimate of the $\Re(Z(s))$ function using resurgence.
 
 
 ```{r fig_cap__zetaZ_6820051p05_1mag, echo=FALSE}
@@ -567,7 +618,7 @@ knitr::include_graphics("/home/john/pari/dirichletseriesquiescence/graph_dirichl
 
 #Appendix II
 
-Figure 12 shows that higher up on the imaginary axis the $\sqrt{\frac{t}{2\pi}}$ point is sometimes located in a transition region between two plateaus of the direct Dirichlet series sum convergence. The t value investigated t=363991205.17884 in this figure belongs to the largest peak of the Riemann Zeta function on the critical line in the Gram index interval n=100000-1000100000 [8].
+Figure 14 shows that higher up on the imaginary axis the $\sqrt{\frac{t}{2\pi}}$ point is sometimes located in a transition region between two plateaus of the direct Dirichlet series sum convergence. The t value investigated t=363991205.17884 in this figure belongs to the largest peak of the Riemann Zeta function on the critical line in the Gram index interval n=100000-1000100000 [8].
 
 
 ```{r fig_cap__zetaZ_363991205p17884, echo=FALSE}
