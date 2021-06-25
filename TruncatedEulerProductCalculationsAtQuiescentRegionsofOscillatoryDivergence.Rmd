@@ -1,0 +1,473 @@
+---
+title: "Truncated Exponential Series based partial Euler Product calculations at quiescent regions of oscillatory divergence to produce approximations of the Riemann Siegel Z function."
+author: "John Martin"
+date: \today
+header-includes:  \usepackage{xcolor} \usepackage[justification=raggedright,labelfont=bf,singlelinecheck=false]{caption}
+
+output:
+  pdf_document:
+    fig_crop: no
+
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+
+```
+
+
+
+##Executive Summary
+
+Truncated exponential series based partial Euler Product calculations about the two quiescent regions at $N \approx \sqrt{(\frac{t}{2\pi})} \text{ } \& \text{ } \frac{t}{\pi}$ match finite Riemann Zeta Dirichlet series sum approximations of the Riemann Siegel Z function in the critical strip, away from the real axis. Since the calculation is computationally expensive some approximations of the Euler product calculations are also explored.
+
+##Introduction
+
+As presented in [1,2], the approximate Riemann Siegel Z functions calculated by partial Riemann Zeta Dirichlet Series sums truncated at $N \sim \lfloor\frac{t}{\pi}\rfloor$ and ($N \sim \lfloor\sqrt{\frac{t}{2\pi}}\rfloor$) quiescent regions of the oscillatory divergence in the Riemann Zeta function for $\sigma \le 1, |t| > 0$, exhibit sequentially closer agreement with the Riemann Siegel Z function (real part of Riemann Siegel Z function, respectively) as more tapered end points are used, away from the real axis. 
+
+Using the second quiescent region $N \sim \lfloor\frac{t}{\pi}\rfloor$
+
+\begin{align}
+Z_{\frac{t}{\pi},\text{binomial}} &= e^{i\theta(t)}\left[\sum_{k=1}^{\left(\lfloor\frac{t}{\pi}\rfloor-p\right)}\left(\frac{1}{k^s}\right) +
+\sum_{i=\left(-p+1\right)}^{p}\frac{\frac{1}{2^{2p}} \left( 2^{2p}-\sum_{k=0}^{i+p-1}\binom{2p}{2p-k}\right)}{(\lfloor\frac{t}{\pi}\rfloor+i)^s}\cdot   \right] \label {eq:expbin_Ztpi} 
+\end{align}
+
+where, (i) the above tapered truncated Riemann Zeta Dirichlet series sum for $s=\sigma+I\cdot t$ has unit weights for integers k=1 to $(\lfloor\frac{t}{\pi}\rfloor-p)$ and then the end point series integers from $k=(\lfloor\frac{t}{\pi}\rfloor-p+1)$ to  $(\lfloor\frac{t}{\pi}\rfloor+p)$ have tapered weights based on partial sums of the binomial coefficients $\frac{1}{2^{2p}} \sum_{k=0}^{i+p-1}\binom{2p}{2p-k}$, and (ii) $\theta(t)$ is the Riemann-Siegel theta function.
+
+Likewise using the first quiescent region $N \sim \lfloor\sqrt{\frac{t}{2\pi}}\rfloor$, the tapered truncated Riemann Zeta Dirichlet series sum for $s=\sigma+I\cdot t$ can usefully estimate the Re(Z(s)) due to resurgence behaviour [3,4]
+
+\begin{align}
+\Re\left(Z_{\sqrt{\frac{t}{2\pi}},\text{binomial}}\right) &= 2 \cdot \Re\left\{ e^{i\theta(t)}\left[\sum_{k=1}^{\left(\lfloor\sqrt{\frac{t}{2\pi}}\rfloor-p\right)}\left(\frac{1}{k^s}\right) +
+\sum_{i=\left(-p+1\right)}^{p}\frac{\frac{1}{2^{2p}} \left( 2^{2p}-\sum_{k=0}^{i+p-1}\binom{2p}{2p-k}\right)}{(\lfloor\sqrt{\frac{t}{2\pi}}\rfloor+i)^s}\cdot   \right] \right\} \label {eq:expbin_Zsqrtpi} 
+\end{align}
+
+
+and has unit weights for integers k=1 to $(\lfloor\sqrt{\frac{t}{2\pi}}{\pi}\rfloor-p)$ and then the end point series integers from $k=(\lfloor\sqrt{\frac{t}{2\pi}}{\pi}\rfloor-p+1)$ to  $(\lfloor\sqrt{\frac{t}{2\pi}}\rfloor+p)$ have tapered weights based on partial sums of the binomial coefficients $\frac{1}{2^{2p}} \sum_{k=0}^{i+p-1}\binom{2p}{2p-k}$.
+
+In this paper, an algorithm for the counterpart partial Euler Product calculation of the leading term using primes instead of the integers is presented. In addition since the algorithm quickly becomes computationally inefficient, some approximations are investigated.
+
+All the calculations and graphs are produced using the pari-gp language [5] and easy access to the list of Riemann Zeta function zeroes was provided by the LMFDB Collaboration [6].
+
+
+
+## Truncated Euler Product calculation at quiescent regions in oscillatory divergence of the function
+
+For $\Re(s) > 1$, the infinite Euler Product of the primes absolutely converges to the Riemann Zeta function sum of the integers [7,9]
+
+\begin{equation}
+\zeta(s) = {\Large\sum_{k=1}^\infty} \frac{1}{k^s} = {\Large\prod_{\rho=2}^\infty} \frac{1}{(1-1/\rho^{s})} \qquad \text{for } \Re(s) > 1
+\end{equation}
+
+Importantly, using the log(1-x) expansion of $\log(\zeta(s))$ [8,10,11] the Euler product also has the form
+
+\begin{equation}
+{\Large\prod_{\rho=2}^\infty} \frac{1}{(1-1/\rho^{s})} = {\Large\text{exp}}{\left(\sum_{\rho=2}^\infty \sum_{n=1}^{\infty} \frac{1}{n\cdot\rho^{ns}}\right)}
+\end{equation}
+
+
+For $\Re(s) \le 1$, the partial Euler Product diverges, however, using the above equations for finite sums (products) of integers (primes) the following relationship holds
+
+\begin{align} \label{eq:truncEP}
+{\Large\sum_{k=1}^N} \frac{1}{k^s} &= 1+\left(\sum_{\rho=2}^\infty \sum_{n=1}^{\infty} \frac{1}{n\cdot\rho^{ns}}\cdot \delta(\rho^n \le N)\right) \nonumber\\
+&+\left(\sum_{\rho_1=2}^\infty \sum_{n=1}^{\infty} \sum_{\rho_2=2}^\infty \sum_{m=1}^{\infty} \frac{1}{n\cdot\rho_1^{ns}}\cdot \frac{1}{m\cdot\rho_2^{ms}} \cdot \delta(\rho_1^n\cdot\rho_2^m \le N) \right)\nonumber\\
+&+\left(\sum_{\rho_1=2}^\infty \sum_{n=1}^{\infty} \sum_{\rho_2=2}^\infty \sum_{m=1}^{\infty} \sum_{\rho_3=2}^\infty \sum_{o=1}^{\infty} \frac{1}{n\cdot\rho_1^{ns}}\cdot \frac{1}{m\cdot\rho_2^{ms}}\cdot  \frac{1}{o\cdot\rho_3^{os}} \cdot \delta(\rho_1^n\cdot\rho_2^{m}\cdot\rho_3^{o} \le N) \right) \nonumber \\
+&+ \qquad \ldots
+\end{align}
+
+where the delta functions play a crucial role in appropriately truncating the Euler Product terms. Hence the above expression can be used with the $N \sim \lfloor\frac{t}{\pi}\rfloor$ and ($N \sim \lfloor\sqrt{\frac{t}{2\pi}}\rfloor$) quiescent regions of the oscillatory divergence of the Riemann Zeta function to obtain useful partial Euler Product based approximations of the Riemann Zeta function in the critical strip (and below). 
+
+That is, the above equation can be used to obtain the leading term of equations \eqref {eq:expbin_Ztpi} and \eqref {eq:expbin_Zsqrtpi}. To achieve, higher order approximations of the Riemann Siegel Z function the second term from equations \eqref {eq:expbin_Ztpi} and \eqref {eq:expbin_Zsqrtpi} should then be included.  
+
+In Appendix I, an example algorithm (using pari-gp language [5]) for the truncated exponential series version of the finite Euler product is given to approximate $\zeta(s)$ and Z(s). 
+
+In Table 1, the accuracy and speed of the approximate methods compared to standard pari-gp functions is provided using the second quiescent region at $N = \lfloor\frac{t}{\pi}\rfloor$. It can be seen that the truncated exponential series version of the finite Euler product is a slower running algorithm at the points presented compared to the simple Dirichlet Series. This is due to the extra multiplication operations and truncation checks that are required at each higher order term of the power series calculation.  
+
+
+```{r, cache = FALSE, echo = FALSE}
+
+
+all_tabs=t(cbind(c("I*80+0.5  ","1.969872 + 1.825E-11*I","na","1.988058 - 0.097279*I","na","1.988058 - 0.097279*I","na","1.969916 + 5.491E-6*I"),
+                 c("I*280.8+0.5 ","-7.002925 - 4.314E-13*I","4ms","-6.960590 - 0.032668*I","4ms","-6.960590 - 0.032668*I","4ms","-7.002925 - 4.319E-13*I"),
+                 c("I*1378.32+0.5 ","-10.46826 - 1.114E-15*I","4ms","-10.47467 + 0.023000*I","4ms","-10.47467 + 0.023000*I","12ms","-10.46826 - 1.114E-15*I"),
+                 c("I*17143.8+0.5 ","0.002031 + 9.039E-24*I","296ms","0.008222 + 0.00273*I","64ms","0.008222 + 0.00273*I","1061ms","0.002031 + 9.039E-24*I"),
+                  c("I*1E6+0.5 ","-2.806134 - 1.0787E-27*I","7min27s","-2.806514 + 0.000800*I","3.8s","-2.806514 + 0.000800*I","56min40s","-2.806134 - 1.0787E-27*I")
+                ))
+
+colnames(all_tabs) = c("point","Riemann-Siegel Z function","time","dirichlet series","time","truncated Euler product ","time","tapered dirichlet series method")
+
+knitr::kable(all_tabs,caption="estimate and calculation time using the second quiescent region t/pi for the approximate methods",align = "lrlrlrlr")  
+#$\\lfloor(\\frac{t}{\\pi})\\rfloor$
+```
+
+In Table 2, the accuracy and speed of the approximate methods to estimate the Re(Z) compared to standard pari-gp functions and [12] (for t > 1E8) is provided using the first quiescent region at $N = \lfloor\sqrt{\frac{t}{2\pi}}\rfloor$. 
+
+
+```{r, cache = FALSE, echo = FALSE}
+
+
+all_tabs=t(cbind(c("I*80+0.5  ","1.969872 + 1.825E-11*I","na","1.763271 - 3.621*I","na","1.763271 - 3.621*I","na","1.969916 + 0.001031*I"),
+                 c("I*280.8+0.5 ","-7.002925 - 4.314E-13*I","4ms","-6.831267 + 0.187584*I","na","-6.831267 + 0.187584*I","na","-6.762323 + 0.040861*I
+"),
+                 c("I*1378.32+0.5 ","-10.46826 - 1.114E-15*I","4ms","-10.320160 - 0.065950*I","na","-10.320160 - 0.065950*I","na","-10.396227 + 0.232178*I"),
+                 c("I*17143.8+0.5 ","0.002031 + 9.039E-24*I","296ms","0.073357 + 0.424177*I","4ms","0.073357 + 0.424177*I","4ms","0.042801 + 0.387486*I"),
+                  c("I*1E6+0.5 ","-2.806134 - 1.0787E-27*I","7min27s","-2.766388 + 3.263821*I","4ms","-2.766388 + 3.263821*I","32ms","-2.806236 + 3.29773*I"),
+                  c("I*363991205.17884\n+0.5 ","|114.446|+0*I","na","-114.4519 - 0.948780*I","168ms","-114.4519 - 0.948780*I","1.9s","-114.4502 - 1.04918*I"),
+                  c("I*27331684151.57795\n+0.5 ","|209.054|+0*I","na","209.0557 + 1.00471*I","797ms","209.0557 + 1.00471*I","2min16.7s","209.05398 + 0.99601*I"),
+                  c("I*722931694992.24036\n+0.5 ","|309.014|+0*I","na","309.0152 + 11.0965*I","3.8s","309.0152 + 11.0965*I","68min15.7s","309.0143 + 11.1101*I")
+                ))
+
+colnames(all_tabs) = c("point","full Riemann-Siegel Z function","time","dirichlet series","time","truncated Euler product ","time","tapered dirichlet series method ")
+
+knitr::kable(all_tabs,caption="estimate and calculation time using the first quiescent region sqrt(t/2/pi) for resurgence based approximate methods where only the real part of the approximate method is informative.",align = "lrlrlrlr")  
+#$\\lfloor(\\frac{t}{\\pi})\\rfloor$
+```
+
+## Approximations of the Truncated Euler Product calculation at quiescent regions
+
+Since the truncated Euler Product at quiescent regions is computationally inefficient compared to the truncated Dirichlet Series as shown above, it is worthwhile attempting approximations of the truncated Euler Product calculation. 
+
+### 1. Using only the first sum of the exponential series
+
+Gonek et al [10,11] has already proposed the use of the approximation
+
+\begin{equation}
+P_X(s)=\exp\left[\sum_{n < X} \frac{\Lambda(n)}{n^slog(n)}\right]
+\end{equation}
+
+in hybrid Euler-Hadamad product and Euler-(Zeta zeroes polynomial) calculations where the companion product function constrains and modifies the amplitude of the $P_X$ (approximate Euler product term) behaviour to fit the Riemann Zeta zero positions. $\Lambda(n)$ is von Mangoldt's function which is zero for integers which are not primes or powers of primes and otherwise equals $\log(\rho)$.
+
+In terms of the oscillating divergence quiescent regions of the Riemann Zeta function and equation \eqref {eq:truncEP}, the above approximation is of the form
+
+\begin{align} \label{eq:Gonekapprox}
+P_{N = \lfloor\frac{t}{\pi}\rfloor}(s) &\approx 1+\left(\sum_{\rho=2}^{N = \lfloor\frac{t}{\pi}\rfloor} \sum_{n=1}^{\lfloor\frac{\log(N)}{\log(\rho)}\rfloor} \frac{1}{n\cdot\rho^{ns}}\cdot \delta(\rho^n \le N)\right) \nonumber\\
+&+\left(\sum_{\rho=2}^{N = \lfloor\frac{t}{\pi}\rfloor} \sum_{n=1}^{\lfloor\frac{\log(N)}{\log(\rho)}\rfloor} \frac{1}{n\cdot\rho^{ns}}\cdot \delta(\rho^n \le N)\right)^2\nonumber\\
+&+\left(\sum_{\rho=2}^{N = \lfloor\frac{t}{\pi}\rfloor} \sum_{n=1}^{\lfloor\frac{\log(N)}{\log(\rho)}\rfloor} \frac{1}{n\cdot\rho^{ns}}\cdot \delta(\rho^n \le N)\right)^3 \nonumber \\
+&+ \qquad \ldots
+\end{align}
+
+and the kernel term $\left(\sum_{\rho=2}^{N = \lfloor\frac{t}{\pi}\rfloor} \sum_{n=1}^{\lfloor\frac{\log(N)}{\log(\rho)}\rfloor} \frac{1}{n\cdot\rho^{ns}}\cdot \delta(\rho^n \le N)\right)$ is only calculated once and reused for the higher order terms significantly reducing the calculation overhead.
+
+Figure 1 gives a comparison of (i) exact Z(s) (real:red, imaginary:black), (ii) truncated Euler Product based Riemann-Siegel Z function (real:green, imaginary:violet red) via equation \eqref {eq:truncEP} and (iii) $P_N(s)$ based Riemann-Siegel Z function (real:blue, imaginary:gray) both using the $N = \lfloor\frac{t}{\pi}\rfloor$ quiescent region for two intervals along the critical line.
+
+
+
+```{r fig_cap__zetaZ_270, echo=FALSE}
+cap2 <- "\\scriptsize{Comparison of exact (real:red, imaginary:black), truncated Euler product (real:green, imaginary:violet red) and approximate truncated Euler product equation \\eqref {eq:Gonekapprox} (real:blue, imaginary:gray) Riemann-Siegel Z functions on the critical line $\\sigma=0.5$ (i) upper panel in the interval $270 < t < 290$, (ii) lower panel in the interval $17140 < t < 17150$.}"
+
+```
+
+
+```{r image_270, fig.show = "hold", out.width = c("100%"), fig.align = "default", fig.cap=cap2, fig.height=5}
+
+knitr::include_graphics("/home/john/pari/eulerproductquiescence/graph_EPbasedzeta_0.50000000000000000000000000000000000000_270.pdf")
+
+knitr::include_graphics("/home/john/pari/eulerproductquiescence/graph_EPbasedzeta_0.50000000000000000000000000000000000000_17140.pdf")
+
+
+```
+
+\clearpage
+It can be seen that 
+
+\begin{enumerate}
+\item in agreement with table 1, equation \eqref {eq:truncEP} (real:green, imaginary:violet red) using the second quiescent region provides a good approximation of the Riemann Zeta function, similar to the zeroth order Riemann-Siegel approximation [3,4,8] and equivalent to the truncated dirichlet series sum [1]. As t increases the imaginary component of the approximate Riemann Siegel Z function (violet red) reduces to zero. This approximation would then be further improved by adding tapered endpoint weighting [2].
+\item the $P_X(s)$ approach of Gonek et al [10,11] co-opted as $P_N(s)$ when using the second quiescent region provides useful estimates of the positions of the Riemann Zeta zeroes but
+\item has weak performance at approximating the behaviour of the Riemann Zeta peaks and
+\item a non zero imaginary component (gray) 
+\end{enumerate}
+
+(as mentioned) to greatly improve the overall behaviour of the approximation to estimate the Riemann Zeta function, Gonek et al [10,11] then added a multiplicative function dependent on knowledge of the zeroes positions.
+
+
+A major implication from this comparison is that (i) the set of primes (and their higher powers etc) that lie below $\lfloor\frac{t}{\pi}\rfloor$ adequately describes (through the first term of the Euler Product exponential series and its square, cube etc) the spacing of the Riemann Zeta zeroes, and (ii) the higher order terms in the exact exponential series equation \eqref {eq:truncEP} adjusts the magnitude and lineshape of the function (and cancels out the imaginary component). In contrast the dirichlet series sum by including all the integers up to $\lfloor\frac{t}{\pi}\rfloor$ more smoothly approximates both the zero positions and general function lineshape (for both the real and imaginary components).   
+
+### 2. Using a heuristic approach to remove the imaginary component and modify the real component of $Z(s)\approx e^{i\theta(t)}P_N(s)$ respectively
+
+When using exact quiescent region truncation of the Euler product exponential series (or the Dirichlet Series) the imaginary component of the approximation for the Riemann Siegel Z function (~horizontal violet red line in figure 1) is weak, low frequency and goes to zero for (i) higher t and (ii) using tapered endpoint weighting. Therefore, it can be recognized that the larger imaginary component with high frequency features appearing in $P_N(s)$ (gray line in figure 1) arises from the presence of frequency components $\frac{1}{n\cdot\rho_1^{ns}}\cdot \frac{1}{m\cdot\rho_2^{ms}}\cdot  \frac{1}{o\cdot\rho_3^{os}}$ where $\rho_1^n\cdot\rho_2^{m}\cdot\rho_3^{o} > N$ or missing weight $\frac{1}{n}\cdot \frac{1}{m}\cdot  \frac{1}{o}$  that appears in higher order terms of the exact exponential series equation \eqref {eq:truncEP}. 
+
+Therefore, it can be argued that the nonzero imaginary component of such approximations to the Riemann Siegel Z function contains information about the presence of the high frequency terms and missing weight contributions and furthermore at the single term level information about the real component of such terms can be obtained from the derivative of the imaginary component. That is, for each term
+
+\begin{align}
+\frac{\partial {\left( \frac{w}{i^s} \right)}}{\partial t} &= -I*log(i)\left( \frac{w}{i^s} \right) \\
+&\text{ where } w=weight, s=\sigma+I*t \nonumber \\
+\left( \frac{w}{i^s} \right) &= -\frac{\Im \left[ \frac{\partial {\left( \frac{w}{i^s} \right)}}{\partial t}\right]}{log(i)}
+\end{align}
+
+So in a heuristic approach the imaginary component of the modified approximate Riemann Siegel Z function using $e^{i\theta(t)}P_N(s)^\prime$ is trivially assigned to zero. That is,
+
+\begin{align} \label{eq:imagapprox}
+\Im \left[ e^{i\theta(t)}P_{N = \lfloor\frac{t}{\pi}\rfloor}^\prime(s) \right] &\approx  0
+\end{align}
+
+and the real component is approximated by removing some of the effects of the included high frequencies and missing weight using the derivative of the original imaginary component. That is,
+
+\begin{align} \label{eq:realapprox}
+\Re \left[ e^{i\theta(t)}P_{N = \lfloor\frac{t}{\pi}\rfloor}^\prime(s) \right] &\approx  \Re \left\{ \left[ e^{i\theta(t)}P_{N = \lfloor\frac{t}{\pi}\rfloor}(s) \right] + \frac{1}{log(t)} \cdot \Im \left[
+\frac{\partial \left( {e^{i\theta(t)}P_{N = \lfloor\frac{t}{\pi}\rfloor}(s)}\right)}{\partial t}\right]  \right\}
+\end{align}
+
+The choice of a single denominator log(N) for the correction terms is not properly justified/optimised given there are many extraneous terms $1/i^s$ in $P_N(s)$ however the point is to judge whether the heuristic makes a useful difference.
+
+
+
+```{r fig_cap__zetaZ_heuristic_270, echo=FALSE}
+cap2 <- "\\scriptsize{Comparison of exact (real:red, imaginary:black), truncated Euler product (real:green, imaginary:violet red) and heuristically corrected approximate truncated Euler product equation \\eqref {eq:realapprox} (real:blue, imaginary:gray) Riemann-Siegel Z functions on the critical line $\\sigma=0.5$ (i) upper panel in the interval $270 < t < 290$, (ii) lower panel in the interval $17140 < t < 17150$.}"
+
+```
+
+
+```{r image_Heuristic_270, fig.show = "hold", out.width = c("100%"), fig.align = "default", fig.cap=cap2, fig.height=5}
+
+knitr::include_graphics("/home/john/pari/eulerproductquiescence/graph_EPHeuristicbasedzeta_0.50000000000000000000000000000000000000_270.pdf")
+
+knitr::include_graphics("/home/john/pari/eulerproductquiescence/graph_EPHeuristicbasedzeta_0.50000000000000000000000000000000000000_17140.pdf")
+
+
+```
+
+
+Figure 2 gives a comparison of this heuristically modified truncated Euler Product based function (real:blue, imaginary:gray) to (i) the exact Z(s) (real:red, imaginary:black), and (ii) truncated Euler Product based Riemann-Siegel Z function (real:green, imaginary:violet red) via equation \eqref {eq:truncEP} using the $N = \lfloor\frac{t}{\pi}\rfloor$ quiescent region for two intervals along the critical line.
+
+It can be seen that using as a correction term the scaled (1/log(t)) imaginary part of the derivative of the Riemann Siegel Z function approximation  equation \eqref {eq:realapprox}, the overall lineshape of the approximation has been greatly improved without needing independent knowledge/input of the Riemann Zeta zero positions.
+
+The interpretation is that a significant amount of the effect of high frequency terms (and incorrect weights) not meant to be present due to the approximation used in the quiescent region truncated Euler product equation \eqref {eq:Gonekapprox} have been cancelled out. However, the approximation still contains some high frequency features at larger lineshape peaks
+
+
+### 3. Using a low pass filter approach to further reduce unwanted high frequency terms of approximate truncated Euler product $Z(s)\approx e^{i\theta(t)}P_N(s)$.
+
+To reduce the residual high frequency terms, a 31 term sinc function is applied as a low pass averaging filter to equation \eqref {eq:realapprox} with the terms spaced by 1/log(t).
+
+Figure 3 gives a comparison of this 31-term average of the heuristically modified truncated Euler Product based function (real:blue, imaginary:gray) to (i) the exact Z(s) (real:red, imaginary:black), and (ii) truncated Euler Product based Riemann-Siegel Z function (real:green, imaginary:violet red) via equation \eqref {eq:truncEP} using the $N = \lfloor\frac{t}{\pi}\rfloor$ quiescent region for two intervals along the critical line.
+
+It can be seen that using this simple low pass filter, a significant further reduction in high frequency artifacts in quiescent region truncated Euler product approximations of the Riemann Siegel Z function is achieved but the comparison in lineshape is not exact. 
+
+\begin{align} \label{eq:avgdrealapprox}
+\Re \left[ e^{i\theta(t)}P_{N = \lfloor\frac{t}{\pi}\rfloor}^{\prime\prime}(s) \right] &\approx  \frac{1}{\left(\sum_{i=-15}^{15} \frac{sin(i)}{i}\right)}\Re \Bigg\{ \sum_{i=-15}^{15} \frac{sin(i)}{i} \cdot  \Bigg[\left[ e^{i\theta(t+i/log(t))}P_{N = \lfloor\frac{t+i/log(t)}{\pi}\rfloor}(s+I*i/log(t)) \right] \nonumber \\ &+ \frac{1}{log(t+i/log(t))} \cdot 
+\frac{\partial \left( \Im \Big[ {e^{i\theta(t+i/log(t))}P_{N = \lfloor\frac{t+i/log(t)}{\pi}\rfloor}(s+I*i/log(t))}\right) \Big]}{\partial t}  \Bigg]\Bigg\}
+\end{align}
+
+
+
+
+```{r fig_cap__zetaZ_avgdheuristic_270, echo=FALSE}
+cap2 <- "\\scriptsize{Comparison of exact (real:red, imaginary:black), truncated Euler product (real:green, imaginary:violet red) and low pass filtered (31 terms) heuristically corrected approximate truncated Euler product equation \\eqref {eq:avgdrealapprox} (real:blue, imaginary:gray) Riemann-Siegel Z functions on the critical line $\\sigma=0.5$ (i) upper panel in the interval $270 < t < 290$, (ii) lower panel in the interval $17140 < t < 17150$.}"
+
+```
+
+
+```{r image_avgdHeuristic_270, fig.show = "hold", out.width = c("100%"), fig.align = "default", fig.cap=cap2, fig.height=5}
+
+knitr::include_graphics("/home/john/pari/eulerproductquiescence/graph_EPavgdHeuristicbasedzeta_0.50000000000000000000000000000000000000_270.pdf")
+
+knitr::include_graphics("/home/john/pari/eulerproductquiescence/graph_EPavgdHeuristicbasedzeta_0.50000000000000000000000000000000000000_17140.pdf")
+
+
+```
+
+\clearpage 
+
+### 4. Applying the above techniques to standard finite Euler product calculations 
+
+The two techniques of using (i) the derivative of the imaginary component and (ii) low pass filtering can be applied directly to the standard finite Euler product calculation approximations of the Riemann Siegel Z function
+
+
+\begin{align} \label{eq:stdavgdrealapprox}
+\Re \left[ e^{i\theta(t)}{\Large\prod_{\rho=2}^{N= \lfloor\frac{t}{\pi}\rfloor}} \frac{1}{(1-1/\rho^{s})} \right] &\approx  \frac{1}{\left(\sum_{i=-15}^{15} \frac{sin(i)}{i}\right)}\Re \Bigg\{ \sum_{i=-15}^{15} \frac{sin(i)}{i} \cdot  \Bigg[\left[ e^{i\theta(t+i/log(t))}{\Large\prod_{\rho=2}^{N= \lfloor\frac{t+i/log(t)}{\pi}\rfloor}} \frac{1}{(1-1/\rho^{s+I*i/log(t)})} \right] \nonumber \\ &+ \frac{1}{log(t+i/log(t))} \cdot 
+\frac{\partial \left( \Im \Big[ {e^{i\theta(t+i/log(t))}{\Large\prod_{\rho=2}^{N= \lfloor\frac{t+i/log(t)}{\pi}\rfloor}} \frac{1}{(1-1/\rho^{s+I*i/log(t)})}}\right) \Big]}{\partial t}  \Bigg]\Bigg\}
+\end{align}
+
+
+
+
+```{r fig_cap__zetaZ_stdavgHeur_270, echo=FALSE}
+cap2 <- "\\scriptsize{Comparison of exact (real:red, imaginary:black), low pass filtered (31 terms) heuristically corrected finite Euler product equation \\eqref {eq:stdavgdrealapprox} (real:green, imaginary:violet red) and low pass filtered (31 terms) heuristically corrected approximate truncated Euler product equation \\eqref {eq:avgdrealapprox} (real:blue, imaginary:gray) Riemann-Siegel Z functions on the critical line $\\sigma=0.5$ (i) upper panel in the interval $270 < t < 290$, (ii) lower panel in the interval $17140 < t < 17150$.}"
+
+```
+
+
+```{r image_stdavgHeur_270, fig.show = "hold", out.width = c("100%"), fig.align = "default", fig.cap=cap2, fig.height=5}
+
+knitr::include_graphics("/home/john/pari/eulerproductquiescence/graph_stdavgHeurEPbasedzeta_0.50000000000000000000000000000000000000_270.pdf")
+
+knitr::include_graphics("/home/john/pari/eulerproductquiescence/graph_stdavgHeurEPbasedzeta_0.50000000000000000000000000000000000000_17140.pdf")
+
+
+```
+
+
+\clearpage
+
+## Conclusion
+
+The exponential series expansion of the truncated Euler product can be used with quiescent regions of the oscillatory divergence of the Riemann Zeta function to obtain equivalent estimates to Riemann Zeta Dirichlet series sums. The algorithm requires more multiplication operation and repeated truncation checks so is less computationally efficient.
+
+The exponential series expansion can be further approximated using only the first order term and its higher powers [10,11] resulting in useful estimates of the zero positions but additional processing using (i) the derivative of the imaginary component and (ii) low pass filtering is needed to improve the overall approximation of the Riemann Siegel Z function lineshape. The performance of the standard Euler Product calculation based on the quiescent regions for approximating the Riemann Siegel Z function can also be improved using the same additional processing.
+
+
+\clearpage
+
+## References
+
+1. Martin, J.P.D. "A quiescent region about $\frac{t}{\pi}$ in the oscillating divergence of the Riemann Zeta Dirichlet Series inside the critical strip." (2021)
+http://dx.doi.org/10.6084/m9.figshare.14213516
+
+2. Martin, J.P.D. "Tapered end point weighting of finite Riemann Zeta Dirichlet Series using partial sums of binomial coefficients to produce higher order approximations of the Riemann Siegel Z function." 
+http://dx.doi.org/10.6084/m9.figshare.14702760
+
+3. M.V. Berry, "Riemann’s Saddle-point Method and the Riemann-Siegel Formula" Vol 35.1, pp. 69–78, The Legacy of Bernhard Riemann After One Hundred and Fifty Years, Advanced Lectures in Mathematics 2016
+
+4. J. Arias De Reyna, "High precision computation of Riemann's Zeta function by the Riemann-Siegel formula", Mathematics of Computation Vol 80, no. 274, 2011, Pages 995–1009
+
+5. The PARI~Group, PARI/GP version {\tt 2.12.0}, Univ. Bordeaux, 2018,
+    \url{http://pari.math.u-bordeaux.fr/}.
+\normalfont
+
+6. The LMFDB Collaboration, The L-functions and Modular Forms Database, home page of The Riemann Zeta zeroes https://www.lmfdb.org/zeros/zeta/ 2021,
+
+7. Riemann, Bernhard (1859). "$\ddot{U}$ber die Anzahl der Primzahlen unter einer gegebenen Gr$\ddot{o}$sse". Monatsberichte der Berliner Akademie.. In Gesammelte Werke, Teubner, Leipzig (1892), Reprinted by Dover, New York (1953).
+
+8. Edwards, H.M. (1974). Riemann's zeta function. Pure and Applied Mathematics 58. New York-London: Academic Press. ISBN 0-12-242750-0. Zbl 0315.10035.
+
+9. Titchmarsh, E.C. (1986) The Theory of the Riemann Zeta Function. 2nd Revised (Heath-Brown, D.R. ) Edition, Oxford University Press, Oxford.
+
+10. S. M. Gonek, C. P. Hughes, and J. P. Keating, A hybrid Euler-Hadamard product for the Riemann zeta function, Duke Math. J. 136 (2007), no. 3, 507–549. MR 2309173 
+
+11. S. M. Gonek, Finite Euler products and the Riemann hypothesis, Trans. Amer. Math. Soc. 364 (2012), no. 4, 2157–2191. MR 2869202, https://doi.org/10.1090/S0002-9947-2011-05546-7
+
+12.  X. Gourdon and P. Sebah \url{http://numbers.computation.free.fr/Constants/Miscellaneous/MaxiZAll.txt} 2011 from  \url{http://numbers.computation.free.fr/Constants/constants.html}
+
+
+
+
+
+
+\clearpage
+
+#Appendix I - example pari-gp [5] code for partial Euler Product (Dirichlet Series) approximation of $\zeta(s)$ and Z(s) using primes (integers) up to $N=\frac{t}{\pi}$, useful away from the real axis.
+
+
+For the point s=res+I*t. 
+
+The finite Dirichler Series calculations run much faster than the finite Euler product calculations truncated to the quiescent region N=t/Pi (or sqrt(t/2/Pi)) since there is a lot more multiplication and checking for truncation in the exponential series algorithm of the finite Euler product. 
+
+Be careful copying and pasting the below code as line breaks due to wrapping in the pdf copy will cause runtime syntax errors and need to be removed. Each complete command line ends in ";". 
+
+A. Initialising pari-gp session, standard Riemann-Siegel functions $\theta(t)$, (floor(sqrt(t/(2*Pi)) resurgence based zeroth order approximation $Z(t)$) and the Riemann Zeta functional equation multiplier $\chi(s)$ in exact and (high t) Stirling Series form.
+
+\begin{verbatim}
+allocatemem(6400000000)  
+default(graphcolors,[4,5,2,3,1,6]); \\red, green, blue, violetred, black, grey
+\\the following two functions are from https://riemann-siegel.com/downloads/Riemann.gp
+vtheta(t)={t/2*log(t/(2*Pi))-t/2-Pi/8+1/(48*t)+7/(5760*t^3)+31/(80640*t^4)};
+Z(t)={tt=vtheta(t);2*sum(i=1,floor(sqrt(t/(2*Pi))),cos(tt-t*log(i))/sqrt(i))};
+\\the following Riemann Zeta functional equation multiplier functions
+\\with the last version useful for Riemann Siegel Z calculations at high t
+fun_chi(res,t)=2^(res+I*t)*Pi^((res+I*t)-1)*sin(Pi/2*(res+I*t))*gamma(1-(res+I*t));
+fun_chi2(res,t)=exp(log(2)*(res+I*t)+log(Pi)*((res+I*t)-1)+(Pi/2*t-log(2)+
+I/2*Pi*(1-res))+((1-(res+I*t)-1/2)*log(1-(res+I*t))-(1-(res+I*t))+1/2*log(2*Pi)));
+logfun_chi2(res,t)=(log(2)*(res+I*t)+log(Pi)*((res+I*t)-1)+
+(Pi/2*t-log(2)+I/2*Pi*(1-res))+((1-(res+I*t)-1/2)*log(1-(res+I*t))-(1-(res+I*t))+1/2*log(2*Pi)));
+\end{verbatim}
+
+
+B. Riemann Zeta function code for Riemann Siegel Z function calculation
+
+\begin{verbatim}
+z_zeta(res,t)={zeta(res+I*t)*exp(I*vtheta(t))};
+\end{verbatim}
+
+
+C. Dirichlet series sum code for quiescent region (t/Pi) based $\zeta(s)$ and Riemann Siegel Z function approximation  
+
+\begin{verbatim}
+dirich_test(res,t)={
+num=floor(t/Pi);
+rotate=exp(I*vtheta(t));\\exp(-1/2*I*imag(logfun_chi2(res,t)));
+s=rotate*(sum(i=1,num,1/i^(res+I*t)));
+};
+\end{verbatim}
+
+D. Truncated Euler product code for quiescent region (t/Pi) based $\zeta(s)$ and Riemann Siegel Z function approximation
+
+The program sequentially calculates the higher order terms to reduce multiplication operations by 
+
+(i) filtering the previous lower order term by N/2 and the first order terms by N/2^(rank-1) (denoted "_value" variables in the code) and 
+
+(ii) using a running tally of $1/\rho_1^n\cdot 1/\rho_2^m\cdot ... 1/\rho_n^j=W/R$ to more efficiently evaluate the delta function condition $\delta(W/R \cdot 1 /\rho_h^i < N)$ (denoted "_list" variables in the code).
+
+1. Higher order exponential series terms function.
+
+\begin{verbatim}
+next_term(N,rank,input_trunc1_list,input_trunc1_value,input_truncprev_list,input_truncprev_value,
+output_trunc_list,output_trunc_value,output_list,output_value)={
+output_trunc_list=listcreate(10);output_trunc_value=listcreate(10);
+forstep(x=1,length(input_trunc1_list),1,[if(input_trunc1_list[x] <= N/2^(rank-1),
+[listput(output_trunc_list,input_trunc1_list[x]),
+listput(output_trunc_value,input_trunc1_value[x])])]);
+int_prev_list=listcreate(10);int_prev_value=listcreate(10);
+forstep(x=1,length(input_truncprev_list),1,[if(input_truncprev_list[x] <= N/2,
+[listput(int_prev_list,input_truncprev_list[x]),listput(int_prev_value,input_truncprev_value[x])])]);
+\\rank order terms
+output_list=listcreate(10);output_value=listcreate(10);trunc_length=length(output_trunc_list);
+trunc_prev_length=length(int_prev_list);
+\\off-diagonal terms
+for(i=1,trunc_prev_length,for(j=1,trunc_length,[n_pro=int_prev_list[i]*output_trunc_list[j],
+if(n_pro<=N,[listput(output_list,n_pro),
+listput(output_value,int_prev_value[i]*output_trunc_value[j])])]));
+\\ sum of higher order terms
+out_length=length(output_list);
+p_out=1/factorial(rank)*sum(i=1,out_length,output_value[i]);
+out=[p_out,output_list,output_value,output_trunc_list,output_trunc_value];
+};
+\end{verbatim}
+
+2. Main code calculating truncated exponential power series for Euler product (calling next_term() to calculate the higher order series contributions)
+
+\begin{verbatim}
+truncated_euler_product_v(res,t)={
+\\maximum integer for zeroth order dirichlet series sum using 2nd quiescent region
+N=floor(t/Pi);
+\\maximum prime for zeroth order Euler product using 2nd quiescent region
+Nprime=precprime(N);
+\\maximum number of terms for truncated exponential power series version of Euler product
+maxPower=floor(log(N)/log(2));
+\\leading term sum of truncated exponential power series
+p0=1;
+\\truncated exponential power series first order (i) elements, (ii) their weights
+out1_list=listcreate(10);w_list=listcreate(10);out1_value=listcreate(10);
+forprime(x=2,Nprime,[forstep(j=1,floor(log(N)/log(x)),1,[listput(out1_list,x^j),
+listput(w_list,1/j)])]);
+\\ and (iii) values w*1/p^(ns)
+out1_length=length(out1_list);
+forstep(j=1,out1_length,1,[listput(out1_value,w_list[j]/out1_list[j]^(res+I*t))]);
+\\sum of first order terms for truncated exponential power series
+p1=sum(i=1,out1_length,out1_value[i]);
+\\truncated exponential power series allowed (i) elements 
+\\ and (ii) values for second order calculations
+int2_list=listcreate(10);int2_value=listcreate(10);
+forstep(x=1,out1_length,1,[if(out1_list[x] <= N/2,
+[listput(int2_list,out1_list[x]),listput(int2_value,out1_value[x])])]);
+\\second order terms
+out2_list=listcreate(10);out2_value=listcreate(10);int2_length=length(int2_list);
+\\diagonal terms
+for(i=1,int2_length,[n_pro=int2_list[i]^2,if(n_pro<=N,[listput(out2_list,n_pro),
+listput(out2_value,int2_value[i]^2)])]);
+\\off-diagonal terms
+for(i=1,int2_length-1,for(j=i+1,int2_length,[n_pro=int2_list[i]*int2_list[j],
+if(n_pro<=N,[listput(out2_list,n_pro),listput(out2_value,2*int2_value[i]*int2_value[j])])]));
+\\ sum of second order terms
+out2_length=length(out2_list);
+p2=1/factorial(2)*sum(i=1,out2_length,out2_value[i]);
+p_list=listcreate(10);
+listput(p_list,p0);
+listput(p_list,p1);
+listput(p_list,p2);
+forstep(i=3,if(maxPower > 3,maxPower,3),1,[if(i==3,[in1_list=int2_list,in1_value=int2_value,
+in2_list=out2_list,in2_value=out2_value]),
+next_term(N,i,in1_list,in1_value,in2_list,in2_value,ou1_list,ou1_value,ou2_list,ou2_value),
+in2_list=out[2],in2_value=out[3],listput(p_list,out[1]),in1_list=out[4],in1_value=out[5]]);
+power_length=length(p_list);
+p_sum=sum(i=1,power_length,p_list[i]);
+p_sum*exp(I*vtheta(t));\\exp(-1/2*I*imag(logfun_chi2(res,t)));
+};
+\end{verbatim}
