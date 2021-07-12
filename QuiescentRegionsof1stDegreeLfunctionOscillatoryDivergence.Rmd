@@ -1,0 +1,653 @@
+---
+title: "Examples of quiescent regions in the oscillatory divergence of several 1st degree L functions and their Davenport Heilbronn counterparts."
+author: "John Martin"
+date: \today
+header-includes:  \usepackage{xcolor}
+output:
+  pdf_document:
+    fig_crop: no
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+
+```
+
+
+
+##Executive Summary
+
+Empirically the location of quiescent regions in the oscillatory divergence of 1st degree L functions has a simple dependence on the conductor value $N_C$ where the 1st degree L function has dirichlet character $L(\text{\scalebox{1.4}{$\chi$}}_{N_C}(q,.),\sigma+I\cdot t)$. Tapering of the end points of the finite L function Dirichlet series sum $\sum_{k=1}^N \frac{\text{\scalebox{1.4}{$\chi$}}_{N_C}(q,k)}{k^{(\sigma+I\cdot t)}}$ about the two quiescent regions at $N \approx \sqrt{(\frac{t\cdot N_C}{2\pi})} \text{ } \& \text{ } \frac{t\cdot N_C}{\pi}$ based on partial sums of binomial coefficients produces accurate approximations of the L function Riemann Siegel Z function analogues in and below the critical strip, away from the real axis. As contrast, the quiescent regions of the 2nd degree Ramanujan Tau L function are also seen to depend on d=2. 
+
+##Introduction
+
+
+In this paper, the oscillatory divergence behaviour for the dirichlet series of some 1st degree L function for their respective Riemann Siegel Z function analogues is presented graphically
+
+\begin{align}
+Z_{N, L(\text{\scalebox{1}{$\chi$}}_{N_C}(q,.),s)} &= e^{i\theta_{ L(\text{\scalebox{1}{$\chi$}}_{N_C}(q,.),s)}(t)}\left[\sum_{k=1}^{N}\left(\frac{\text{\scalebox{1}{$\chi$}}_{N_C}(q,k)}{k^s}\right) \right]  \label {eq:exp_Z} \\
+Z_{N, L(\text{\scalebox{1}{$\chi$}}_{N_C}(q,.),s),\text{Bin}} &= e^{i\theta_{ L(\text{\scalebox{1}{$\chi$}}_{N_C}(q,.),s)}(t)}\left[\sum_{k=1}^{\left(N-p\right)}\left(\frac{\text{\scalebox{1}{$\chi$}}_{N_C}(q,k)}{k^s}\right) +
+\sum_{i=\left(-p+1\right)}^{p}\frac{\frac{1}{2^{2p}} \left( 2^{2p}-\sum_{k=0}^{i+p-1}\binom{2p}{2p-k}\right)}{(N+i)^s}\cdot   \right] \label {eq:expbin_Z} 
+\end{align}
+
+where (i) $\theta_{ L(\text{\scalebox{1}{$\chi$}}_{N_C}(q,.),s)}(t)$ is the L function Riemann Siegel Theta function obtained from the functional equation of the L function and (ii) $Z_{N, L(\text{\scalebox{1}{$\chi$}}_{N_C}(q,.),s),\text{Bin}}$ employs tapered end point weighting of the dirichlet series using partial sums of the binomial coefficients [1-3] to provide useful approximations of the L function (and its Riemann Siegel Z function analogue) at quiescent regions in the oscillatory divergence of the function, away from the real axis.
+
+The first degree L functions presented are
+
+\begin{align}
+ L(\text{\scalebox{1}{$\chi$}}_{1}(1,.),s) &= \zeta(s) \\
+ L(\text{\scalebox{1}{$\chi$}}_{3}(2,.),s) & \\
+ L(\text{\scalebox{1}{$\chi$}}_{4}(3,.),s) & \\
+ L(\text{\scalebox{1}{$\chi$}}_{5}(4,.),s) & \\
+ L(\text{\scalebox{1}{$\chi$}}_{5}(3,.),s) & \\
+ L(\text{\scalebox{1}{$\chi$}}_{5}(2,.),s) & \\
+ L(\text{\scalebox{1}{$\chi$}}_{15}(14,.),s)
+\end{align}
+
+and for comparison 
+
+(i) the Davenport Heilbronn counterparts of $L(\text{\scalebox{1}{$\chi$}}_{5}(3,.),s)$, $L(\text{\scalebox{1}{$\chi$}}_{5}(2,.),s)$ [4-6] and 
+
+(ii) the (second degree L function) the Ramanujan Tau L function [7]. 
+
+These two Davenport Heilbronn 5-periodic functions and the Ramanujan Tau L functions are further described in Appendix I.
+
+All the calculations and most graphs are produced using the pari-gp language [8] and exact L functions values were available for all the considered L functions. Easy access to the definitions of L functions and their dirichlet series was provided by the LMFDB Collaboration [9]. Some of the Ramanujan Tau L function graphs where converted to pdf from large svg files using Inkscape [10].
+
+## Results
+
+In figure 1, the oscillatory divergence behavior of the finite dirichlet series sums for six 1st degree L functions at the point $s=\sigma+I\cdot t$ is compared for four $\Re(s)$ values ($\sigma=\{1,0.5,0,-1\}$) when $\Im(s)=560$. The truncated series results span the range of values $N=1-1000$ in equations \eqref {eq:exp_Z} and \eqref {eq:expbin_Z}. 
+
+The black line (grey line) is the oscillatory divergence behaviour of the real part (imaginary part) of the dirichlet series based Riemann Siegel Z function for each 1st degree L function. The choice of the Riemann Siegel Z function is employed in this presentation because on the critical line ($\sigma=0.5$) the imaginary part of the exact L function's Riemann Siegel Z function is zero, shown as horizontal red line (which is a useful reference marker).
+
+\begin{enumerate}
+\item the four columns correspond to the real value of the point $s=\sigma+I\cdot 560$, i.e. $\sigma=\{1,0.5,0,-1\}$ where $\sigma=\{1,0.5,0\}$ lie in the critical strip and $\sigma=-1$ is below the critical strip.
+\item in sequence top to bottom, the six rows correspond to the 1st degree L functions $L(\text{\scalebox{1}{$\chi$}}_{1}(1,.),s) = \zeta(s)$, $L(\text{\scalebox{1}{$\chi$}}_{3}(2,.),s)$, $L(\text{\scalebox{1}{$\chi$}}_{4}(3,.),s)$, $L(\text{\scalebox{1}{$\chi$}}_{5}(4,.),s)$, $L(\text{\scalebox{1}{$\chi$}}_{5}(3,.),s)$, $L(\text{\scalebox{1}{$\chi$}}_{5}(2,.),s)$
+\item the horizontal red line is the imaginary part of the exact Riemann Siegel Z function for the L function
+\item the horizontal blue line (covering the final plateau of the oscillatory divergence) is the real part of the exact Riemann Siegel Z function for the L function
+\item the second horizontal blue line corresponds to 0 on the y axis and is visible for $\sigma=\{1,0,-1\}$ but is covered by the red line for $\sigma=\{0.5\}$ in the second column.
+\item near the y axis is a vertical green line at $\sqrt{\frac{t\cdot N_C}{2\pi}}=\sqrt{\frac{560\cdot N_C}{2\pi}}$ identifying the first quiescent point used for resurgence based $\Re(Z)$ estimates.
+\item consistently at the lower boundary of the final plateau in the oscillatory divergence is a vertical blue line at $\frac{t\cdot N_C}{2\pi}=\frac{560\cdot N_C}{2\pi}$ where $N_C={1,3,4,5,5,5}$ respectively
+\item inside the final plateau in the oscillatory divergence is a vertical gray line at $\frac{t\cdot N_C}{\pi}=\frac{560\cdot N_C}{\pi}$ where $N_C={1,3,4,5,5,5}$ respectively identifying the second quiescent region which has prominent features for some panels such as $\zeta(s)$ function (first row) and $\sigma=\{0,-1\}$ (the last two columns)
+\item superimposed on the oscillatory divergence black line is a red line which are the real part results of tapered end point weighted dirichlet series calculations equation \eqref {eq:expbin_Z} which dampens the oscillatory divergence allowing accurate approximations of the Riemann Siegel Z function (and L function) at the quiescent regions
+\item superimposed on the oscillatory divergence gray line is a green line which are the imaginary part results of tapered end point weighted dirichlet series calculations equation \eqref {eq:expbin_Z} which dampens the oscillatory divergence allowing accurate approximations of the Riemann Siegel Z function (and L function) at the quiescent regions
+\end{enumerate}
+
+As seen in all the figures 1-8, the final plateau of oscillatory divergence has the exact L function values real part  (horizontal blue) and imaginary part (horizontal red) as a trend line.
+
+In figure 2, the oscillatory divergence behavior of the finite dirichlet series sums for the 1st degree L function $L(\text{\scalebox{1}{$\chi$}}_{15}(14,.),s)$ at the point $s=\sigma+I\cdot t$ is compared for four $\Re(s)$ values ($\sigma=\{1,0.5,0,-1\}$) when $\Im(s)=560$. Since the oscillatory divergence for this function requires a lot more terms in the dirichlet series sum to reach the final plateau, the results span the range of values $N=1-3000$, otherwise the graphical elements are as described above for figure 1. 
+
+Near the y axis, in figure 2 is a vertical green line at $\sqrt{\frac{t\cdot N_C}{2\pi}}=\sqrt{\frac{560\cdot 15}{2\pi}}$ identifying the first quiescent point used for resurgence based $\Re(Z)$ estimates, again consistently at the lower boundary of the final plateau in the oscillatory divergence is a vertical blue line at $\frac{t\cdot N_C}{2\pi}=\frac{560\cdot 15}{2\pi}$ and inside the final plateau in the oscillatory divergence is a vertical gray line at $\frac{t\cdot N_C}{\pi}=\frac{560\cdot 15}{\pi}$ identifying the second quiescent region. 
+ 
+In figure 3, the oscillatory divergence behavior of the finite dirichlet series sums for the two Davenport Heilbronn [4,5,6] counterparts $f_1(s)$ and $f_2(s)$ of the 1st degree L function dual pair $L(\text{\scalebox{1}{$\chi$}}_{5}(3,.),s)$ and$L(\text{\scalebox{1}{$\chi$}}_{5}(2,.),s)$ at the point $s=\sigma+I\cdot t$ is compared for four $\Re(s)$ values ($\sigma=\{1,0.5,0,-1\}$) when $\Im(s)=560$. The truncated series results span the range of values $N=1-1000$ displaying similar behaviour to the dual pair oscillatory divergence which is expected since the Davenport Heilbronn functions are linear combinations of the dual pair functions (see Appendix) and share the same conductor value $N_C=5$. The graphical elements are as described above for figure 1. 
+
+As contrast, in figure 4, the oscillatory divergence behavior of the finite dirichlet series sums for the Ramanujan Tau L function [7] a 2nd degree L function 2-1-1.1-c11-0-0 [9] which has degree 2 and character $\\chi_{1}(1,.)$ at the point $s=\sigma+I\cdot t$ is compared for four $\Re(s)$ values ($\sigma=\{1,0.5,0,-1\}$) when $\Im(s)=560$. Since the oscillatory divergence for this function requires a much higher number of terms in the dirichlet series sum to reach the final plateau, the results span the range of values $N=1-36000$, otherwise the graphical elements are as described above for figure 1. 
+
+In figure 4, firstly agreeing with comments in [7] is a vertical green line at $\sqrt{\frac{t\cdot N_C}{2\pi}}^d=\frac{560}{2\pi}$ identifying the first quiescent point used for resurgence based $\Re(Z)$ estimates. At the lower boundary of the final plateau in the oscillatory divergence is a vertical blue line at $\left(\frac{t\cdot N_C}{2\pi}\right)^d=\left(\frac{560\cdot 1}{2\pi}\right)^2$ and inside the final plateau in the oscillatory divergence is a vertical gray line at $2 \cdot \left(\frac{t\cdot N_C}{2\pi}\right)^d=2 \cdot \left(\frac{560\cdot 1}{2\pi}\right)^2$ identifying the second quiescent region. 
+
+As support, figures 5-7 present similar behaviour higher up the imaginary axis at t=17143.8 for the same dirichlet series sums of the above functions used in figures 1-3. While figure 8 uses t=2046.3, identified by [7] as a peak for the Ramanujan Tau L function since the second quiescent region location $2 \cdot \left(\frac{t\cdot N_C}{2\pi}\right)^d$ increases non-linearly in required integers for the series sum with d=2.
+
+```{r fig_cap__zetaZ_560, echo=FALSE}
+cap2 <- "\\scriptsize{The convergence behaviour of six 1st degree L function Dirichlet series sum Z function calculations real part (black), imaginary part (grey) for t=560 (as well as tapered versions based on partial sums of binomial coefficients real part (red) imaginary part (green)) . First row - sixth row respectively $L(\\chi_{1}(1,.),s)$, $L(\\chi_{3}(2,.),s)$, $L(\\chi_{4}(3,.),s)$, $L(\\chi_{5}(4,.),s)$, $L(\\chi_{5}(3,.),s)$, $L(\\chi_{5}(2,.),s)$. First column - fourth column $\\sigma=\\{1,1/2,0,-1\\}$. Where the x axis indicates the number of included integers in the series sum. The quiescent regions at $N=\\sqrt{\\frac{t\\cdot N_C}{2\\pi}}$ and $N=\\frac{t\\cdot N_C}{\\pi}$ are indicated by green and grey vertical lines with the initial entry into the final plateau region $N=\\frac{t\\cdot N_C}{2\\pi}$ the most prominent feature indicated by a vertical blue line.}"
+
+```
+
+<!-- , $L(\\text{\\scalebox{1}{$\\chi$}}_{3}(2,.),s)$, $L(\\text{\\scalebox{1}{$\\chi$}}_{4}(3,.),s)$, $L(\\text{\\scalebox{1}{$\\chi$}}_{5}(4,.),s)$, $L(\\text{\\scalebox{1}{$\\chi$}}_{5}(3,.),s)$, $L(\\text{\\scalebox{1}{$\\chi$}}_{5}(2,.),s)$ First column - fourth column $\\sigma=\\{1,1/2,0,-1\\}$. Where the x axis indicates the number of included integers in the series sum. The quiescent regions at $N=\\sqrt{\\frac{t\\cdot N_C}{2\\pi}}$ and $N=\\frac{t\\cdot N_C}{\\pi}$ are indicates by green and grey vertical lines with the initial entry into the final plateau region $N=\\frac{t\\cdot N_C}{2\\pi}$ the most prominent feature indicated by a vertical blue line. -->
+
+
+```{r image_560, fig.show = "hold",  out.width = c("24%","24%","24%","24%"), fig.align = "center", fig.cap=cap2, fig.height=5}
+
+
+knitr::include_graphics("/home/john/pari/Lfndirichletseriesquiescence/graph_zetabased_1_560.pdf")
+
+knitr::include_graphics("/home/john/pari/Lfndirichletseriesquiescence/graph_zetabased_0.50000000000000000000000000000000000000_560.pdf")
+
+knitr::include_graphics("/home/john/pari/Lfndirichletseriesquiescence/graph_zetabased_0_560.pdf")
+
+knitr::include_graphics("/home/john/pari/Lfndirichletseriesquiescence/graph_zetabased_-1_560.pdf")
+
+
+knitr::include_graphics("/home/john/pari/Lfndirichletseriesquiescence/graph_L32based_1_560.pdf")
+
+knitr::include_graphics("/home/john/pari/Lfndirichletseriesquiescence/graph_L32based_0.50000000000000000000000000000000000000_560.pdf")
+
+knitr::include_graphics("/home/john/pari/Lfndirichletseriesquiescence/graph_L32based_0_560.pdf")
+
+knitr::include_graphics("/home/john/pari/Lfndirichletseriesquiescence/graph_L32based_-1_560.pdf")
+
+
+knitr::include_graphics("/home/john/pari/Lfndirichletseriesquiescence/graph_L43based_1_560.pdf")
+
+knitr::include_graphics("/home/john/pari/Lfndirichletseriesquiescence/graph_L43based_0.50000000000000000000000000000000000000_560.pdf")
+
+knitr::include_graphics("/home/john/pari/Lfndirichletseriesquiescence/graph_L43based_0_560.pdf")
+
+knitr::include_graphics("/home/john/pari/Lfndirichletseriesquiescence/graph_L43based_-1_560.pdf")
+
+
+knitr::include_graphics("/home/john/pari/Lfndirichletseriesquiescence/graph_L54based_1_560.pdf")
+
+knitr::include_graphics("/home/john/pari/Lfndirichletseriesquiescence/graph_L54based_0.50000000000000000000000000000000000000_560.pdf")
+
+knitr::include_graphics("/home/john/pari/Lfndirichletseriesquiescence/graph_L54based_0_560.pdf")
+
+knitr::include_graphics("/home/john/pari/Lfndirichletseriesquiescence/graph_L54based_-1_560.pdf")
+
+
+knitr::include_graphics("/home/john/pari/Lfndirichletseriesquiescence/graph_L53based_1_560.pdf")
+
+knitr::include_graphics("/home/john/pari/Lfndirichletseriesquiescence/graph_L53based_0.50000000000000000000000000000000000000_560.pdf")
+
+knitr::include_graphics("/home/john/pari/Lfndirichletseriesquiescence/graph_L53based_0_560.pdf")
+
+knitr::include_graphics("/home/john/pari/Lfndirichletseriesquiescence/graph_L53based_-1_560.pdf")
+
+
+knitr::include_graphics("/home/john/pari/Lfndirichletseriesquiescence/graph_L52based_1_560.pdf")
+
+knitr::include_graphics("/home/john/pari/Lfndirichletseriesquiescence/graph_L52based_0.50000000000000000000000000000000000000_560.pdf")
+
+knitr::include_graphics("/home/john/pari/Lfndirichletseriesquiescence/graph_L52based_0_560.pdf")
+
+knitr::include_graphics("/home/john/pari/Lfndirichletseriesquiescence/graph_L52based_-1_560.pdf")
+
+
+```
+
+
+
+
+```{r fig_cap__zetaZ_560long, echo=FALSE}
+cap2 <- "\\scriptsize{The convergence behaviour of the $L(\\chi_{15}(14,.),s)$ a 1st degree L function Dirichlet series sum Z function calculations real part (black), imaginary part (grey) for t=560, (as well as tapered versions based on partial sums of binomial coefficients real part (red) imaginary part (green)) . First panel - fourth panel $\\sigma=\\{1,1/2,0,-1\\}$. Where the x axis indicates the number of included integers in the series sum. For $N_C=15$, the quiescent regions at $N=\\sqrt{\\frac{t\\cdot N_C}{2\\pi}}$ and $N=\\frac{t\\cdot N_C}{\\pi}$ are indicated by green and grey vertical lines with the initial entry into the final plateau region $N=\\frac{t\\cdot N_C}{2\\pi}$ the most prominent feature indicated by a vertical blue line.}"
+
+```
+
+```{r image_560long, fig.show = "hold", out.width = c("24%","24%","24%","24%"), fig.align = "center", fig.cap=cap2, fig.height=5}
+
+
+
+knitr::include_graphics("/home/john/pari/Lfndirichletseriesquiescence/graph_L15p14based_1_560.pdf")
+
+knitr::include_graphics("/home/john/pari/Lfndirichletseriesquiescence/graph_L15p14based_0.50000000000000000000000000000000000000_560.pdf")
+
+knitr::include_graphics("/home/john/pari/Lfndirichletseriesquiescence/graph_L15p14based_0_560.pdf")
+
+knitr::include_graphics("/home/john/pari/Lfndirichletseriesquiescence/graph_L15p14based_-1_560.pdf")
+
+
+
+```
+
+
+
+
+```{r fig_cap__zetaZ_560DH, echo=FALSE}
+cap2 <- "\\scriptsize{The convergence behaviour of $f_1(s)$ and $f_2(s)$ the two Davenport Heilbronn 5-periodic counterparts  of the dual pair $L(\\chi_{5}(3,.),s)$ and $L(\\chi_{5}(2,.),s)$ Dirichlet series sum Z function calculations real part (black), imaginary part (grey) for t=560, (as well as tapered versions based on partial sums of binomial coefficients real part (red) imaginary part (green)) . First column - fourth column $\\sigma=\\{1,1/2,0,-1\\}$. Where the x axis indicates the number of included integers in the series sum. For $N_C=5$, the quiescent regions at $N=\\sqrt{\\frac{t\\cdot N_C}{2\\pi}}$ and $N=\\frac{t\\cdot N_C}{\\pi}$ are indicated by green and grey vertical lines with the initial entry into the final plateau region $N=\\frac{t\\cdot N_C}{2\\pi}$ the most prominent feature indicated by a vertical blue line.}"
+
+```
+
+```{r image_560DH, fig.show = "hold", out.width = c("24%","24%","24%","24%"), fig.align = "center", fig.cap=cap2, fig.height=5}
+
+knitr::include_graphics("/home/john/pari/Lfndirichletseriesquiescence/graph_L5DHbased_1_560.pdf")
+
+knitr::include_graphics("/home/john/pari/Lfndirichletseriesquiescence/graph_L5DHbased_0.50000000000000000000000000000000000000_560.pdf")
+
+knitr::include_graphics("/home/john/pari/Lfndirichletseriesquiescence/graph_L5DHbased_0_560.pdf")
+
+knitr::include_graphics("/home/john/pari/Lfndirichletseriesquiescence/graph_L5DHbased_-1_560.pdf")
+
+
+knitr::include_graphics("/home/john/pari/Lfndirichletseriesquiescence/graph_L5DHRbased_1_560.pdf")
+
+knitr::include_graphics("/home/john/pari/Lfndirichletseriesquiescence/graph_L5DHRbased_0.50000000000000000000000000000000000000_560.pdf")
+
+knitr::include_graphics("/home/john/pari/Lfndirichletseriesquiescence/graph_L5DHRbased_0_560.pdf")
+
+knitr::include_graphics("/home/john/pari/Lfndirichletseriesquiescence/graph_L5DHRbased_-1_560.pdf")
+
+
+
+
+```
+
+
+
+```{r fig_cap_Ramanujan_560, echo=FALSE}
+cap2 <- "\\scriptsize{The convergence behaviour of the 2nd degree L function 2-1-1.1-c11-0-0 (d-$N_C$-q.k-x-y-i) [9] which has degree d=2 and character $\\chi_{1}(1,.)$ Dirichlet series sum Z function calculations real part (black), imaginary part (grey) for t=560, (as well as tapered versions based on partial sums of binomial coefficients real part (red) imaginary part (green)) . First panel - fourth panel $\\sigma=\\{6.5,6,5.5,4.5\\}$. Where the x axis indicates the number of included integers in the series sum. For d=2 and $N_C=1$, the quiescent regions at $N=\\sqrt{\\frac{t\\cdot N_C}{2\\pi}}^d=\\frac{t\\cdot N_C}{2\\pi}$ and $N=2 \\cdot \\left(\\frac{t\\cdot N_C}{2\\pi}\\right)^d$ are indicated by green and grey vertical lines with the initial entry into the final plateau region $N=\\left(\\frac{t\\cdot N_C}{2\\pi}\\right)^d$ the most prominent feature indicated by a vertical blue line.}"
+
+```
+
+```{r image_560Ramanujan, fig.show = "hold", out.width = c("24%","24%","24%","24%"), fig.align = "center", fig.cap=cap2, fig.height=5}
+
+
+
+knitr::include_graphics("/home/john/pari/Lfndirichletseriesquiescence/graph_Ramanbased_6.5000000000000000000000000000000000000_560.pdf")
+
+knitr::include_graphics("/home/john/pari/Lfndirichletseriesquiescence/graph_Ramanbased_6_560.pdf")
+
+knitr::include_graphics("/home/john/pari/Lfndirichletseriesquiescence/graph_Ramanbased_5.5000000000000000000000000000000000000_560.pdf")
+
+knitr::include_graphics("/home/john/pari/Lfndirichletseriesquiescence/graph_Ramanbased_4.5000000000000000000000000000000000000_560.pdf")
+
+```
+
+
+\clearpage
+
+
+```{r fig_cap__zetaZ_17143p8, echo=FALSE}
+cap2 <- "\\scriptsize{The convergence behaviour of six 1st degree L function Dirichlet series sum Z function calculations real part (black), imaginary part (grey) for t=17143.8 (as well as tapered versions based on partial sums of binomial coefficients real part (red) imaginary part (green)) . First row - sixth row respectively $L(\\chi_{1}(1,.),s)$, $L(\\chi_{3}(2,.),s)$, $L(\\chi_{4}(3,.),s)$, $L(\\chi_{5}(4,.),s)$, $L(\\chi_{5}(3,.),s)$, $L(\\chi_{5}(2,.),s)$. First column - fourth column $\\sigma=\\{1,1/2,0,-1\\}$. Where the x axis indicates the number of included integers in the series sum. The quiescent regions at $N=\\sqrt{\\frac{t\\cdot N_C}{2\\pi}}$ and $N=\\frac{t\\cdot N_C}{\\pi}$ are indicated by green and grey vertical lines with the initial entry into the final plateau region $N=\\frac{t\\cdot N_C}{2\\pi}$ the most prominent feature indicated by a vertical blue line.}"
+
+```
+
+```{r image_17143p8, fig.show = "hold",  out.width = c("24%","24%","24%","24%"), fig.align = "center", fig.cap=cap2, fig.height=5}
+
+
+knitr::include_graphics("/home/john/pari/Lfndirichletseriesquiescence/graph_zetabased_1_17143.800000000000000000000000000000000.pdf")
+
+knitr::include_graphics("/home/john/pari/Lfndirichletseriesquiescence/graph_zetabased_0.50000000000000000000000000000000000000_17143.800000000000000000000000000000000.pdf")
+ 
+knitr::include_graphics("/home/john/pari/Lfndirichletseriesquiescence/graph_zetabased_0_17143.800000000000000000000000000000000.pdf")
+ 
+knitr::include_graphics("/home/john/pari/Lfndirichletseriesquiescence/graph_zetabased_-1_17143.800000000000000000000000000000000.pdf")
+
+
+knitr::include_graphics("/home/john/pari/Lfndirichletseriesquiescence/graph_L32based_1_17143.800000000000000000000000000000000.pdf")
+
+knitr::include_graphics("/home/john/pari/Lfndirichletseriesquiescence/graph_L32based_0.50000000000000000000000000000000000000_17143.800000000000000000000000000000000.pdf")
+
+knitr::include_graphics("/home/john/pari/Lfndirichletseriesquiescence/graph_L32based_0_17143.800000000000000000000000000000000.pdf")
+
+knitr::include_graphics("/home/john/pari/Lfndirichletseriesquiescence/graph_L32based_-1_17143.800000000000000000000000000000000.pdf")
+
+
+knitr::include_graphics("/home/john/pari/Lfndirichletseriesquiescence/graph_L43based_1_17143.800000000000000000000000000000000.pdf")
+
+knitr::include_graphics("/home/john/pari/Lfndirichletseriesquiescence/graph_L43based_0.50000000000000000000000000000000000000_17143.800000000000000000000000000000000.pdf")
+
+knitr::include_graphics("/home/john/pari/Lfndirichletseriesquiescence/graph_L43based_0_17143.800000000000000000000000000000000.pdf")
+
+knitr::include_graphics("/home/john/pari/Lfndirichletseriesquiescence/graph_L43based_-1_17143.800000000000000000000000000000000.pdf")
+
+
+knitr::include_graphics("/home/john/pari/Lfndirichletseriesquiescence/graph_L54based_1_17143.800000000000000000000000000000000.pdf")
+ 
+knitr::include_graphics("/home/john/pari/Lfndirichletseriesquiescence/graph_L54based_0.50000000000000000000000000000000000000_17143.800000000000000000000000000000000.pdf")
+ 
+knitr::include_graphics("/home/john/pari/Lfndirichletseriesquiescence/graph_L54based_0_17143.800000000000000000000000000000000.pdf")
+ 
+knitr::include_graphics("/home/john/pari/Lfndirichletseriesquiescence/graph_L54based_-1_17143.800000000000000000000000000000000.pdf")
+
+
+knitr::include_graphics("/home/john/pari/Lfndirichletseriesquiescence/graph_L53based_1_17143.800000000000000000000000000000000.pdf")
+
+knitr::include_graphics("/home/john/pari/Lfndirichletseriesquiescence/graph_L53based_0.50000000000000000000000000000000000000_17143.800000000000000000000000000000000.pdf")
+
+knitr::include_graphics("/home/john/pari/Lfndirichletseriesquiescence/graph_L53based_0_17143.800000000000000000000000000000000.pdf")
+
+knitr::include_graphics("/home/john/pari/Lfndirichletseriesquiescence/graph_L53based_-1_17143.800000000000000000000000000000000.pdf")
+
+ 
+knitr::include_graphics("/home/john/pari/Lfndirichletseriesquiescence/graph_L52based_1_17143.800000000000000000000000000000000.pdf")
+
+knitr::include_graphics("/home/john/pari/Lfndirichletseriesquiescence/graph_L52based_0.50000000000000000000000000000000000000_17143.800000000000000000000000000000000.pdf")
+
+knitr::include_graphics("/home/john/pari/Lfndirichletseriesquiescence/graph_L52based_0_17143.800000000000000000000000000000000.pdf")
+
+knitr::include_graphics("/home/john/pari/Lfndirichletseriesquiescence/graph_L52based_-1_17143.800000000000000000000000000000000.pdf")
+
+
+```
+
+
+```{r fig_cap__zetaZ_17143p8long, echo=FALSE}
+cap2 <- "\\scriptsize{The convergence behaviour of the $L(\\chi_{15}(14,.),s)$ a 1st degree L function Dirichlet series sum Z function calculations real part (black), imaginary part (grey) for t=17143.8, (as well as tapered versions based on partial sums of binomial coefficients real part (red) imaginary part (green)) . First panel - fourth panel $\\sigma=\\{1,1/2,0,-1\\}$. Where the x axis indicates the number of included integers in the series sum. For $N_C=15$, the quiescent regions at $N=\\sqrt{\\frac{t\\cdot N_C}{2\\pi}}$ and $N=\\frac{t\\cdot N_C}{\\pi}$ are indicated by green and grey vertical lines with the initial entry into the final plateau region $N=\\frac{t\\cdot N_C}{2\\pi}$ the most prominent feature indicated by a vertical blue line.}"
+
+```
+
+```{r image_17143p8long, fig.show = "hold", out.width = c("24%","24%","24%","24%"), fig.align = "center", fig.cap=cap2, fig.height=5}
+
+
+
+knitr::include_graphics("/home/john/pari/Lfndirichletseriesquiescence/graph_L15p14based_1_17143.800000000000000000000000000000000.pdf")
+
+knitr::include_graphics("/home/john/pari/Lfndirichletseriesquiescence/graph_L15p14based_0.50000000000000000000000000000000000000_17143.800000000000000000000000000000000.pdf")
+
+knitr::include_graphics("/home/john/pari/Lfndirichletseriesquiescence/graph_L15p14based_0_17143.800000000000000000000000000000000.pdf")
+
+knitr::include_graphics("/home/john/pari/Lfndirichletseriesquiescence/graph_L15p14based_-1_17143.800000000000000000000000000000000.pdf")
+
+
+
+```
+
+
+```{r fig_cap__zetaZ_17143p8DH, echo=FALSE}
+cap2 <- "\\scriptsize{The convergence behaviour of $f_1(s)$ and $f_2(s)$ the two Davenport Heilbronn 5-periodic counterparts  of the dual pair $L(\\chi_{5}(3,.),s)$ and $L(\\chi_{5}(2,.),s)$ Dirichlet series sum Z function calculations real part (black), imaginary part (grey) for t=17143.8, (as well as tapered versions based on partial sums of binomial coefficients real part (red) imaginary part (green)) . First column - fourth column $\\sigma=\\{1,1/2,0,-1\\}$. Where the x axis indicates the number of included integers in the series sum. For $N_C=5$, the quiescent regions at $N=\\sqrt{\\frac{t\\cdot N_C}{2\\pi}}$ and $N=\\frac{t\\cdot N_C}{\\pi}$ are indicated by green and grey vertical lines with the initial entry into the final plateau region $N=\\frac{t\\cdot N_C}{2\\pi}$ the most prominent feature indicated by a vertical blue line.}"
+
+```
+
+```{r image_17143p8DH, fig.show = "hold", out.width = c("24%","24%","24%","24%"), fig.align = "center", fig.cap=cap2, fig.height=5}
+
+knitr::include_graphics("/home/john/pari/Lfndirichletseriesquiescence/graph_L5DHbased_1_17143.800000000000000000000000000000000.pdf")
+
+knitr::include_graphics("/home/john/pari/Lfndirichletseriesquiescence/graph_L5DHbased_0.50000000000000000000000000000000000000_17143.800000000000000000000000000000000.pdf")
+
+knitr::include_graphics("/home/john/pari/Lfndirichletseriesquiescence/graph_L5DHbased_0_17143.800000000000000000000000000000000.pdf")
+
+knitr::include_graphics("/home/john/pari/Lfndirichletseriesquiescence/graph_L5DHbased_-1_17143.800000000000000000000000000000000.pdf")
+
+
+knitr::include_graphics("/home/john/pari/Lfndirichletseriesquiescence/graph_L5DHRbased_1_17143.800000000000000000000000000000000.pdf")
+
+knitr::include_graphics("/home/john/pari/Lfndirichletseriesquiescence/graph_L5DHRbased_0.50000000000000000000000000000000000000_17143.800000000000000000000000000000000.pdf")
+
+knitr::include_graphics("/home/john/pari/Lfndirichletseriesquiescence/graph_L5DHRbased_0_17143.800000000000000000000000000000000.pdf")
+
+knitr::include_graphics("/home/john/pari/Lfndirichletseriesquiescence/graph_L5DHRbased_-1_17143.800000000000000000000000000000000.pdf")
+
+
+
+
+```
+
+
+
+```{r fig_cap_Ramanujan_2046p3, echo=FALSE}
+cap2 <- "\\scriptsize{The convergence behaviour of the 2nd degree L function 2-1-1.1-c11-0-0 (d-$N_C$-q.k-x-y-i) [9] which has degree d=2 and character $\\chi_{1}(1,.)$ Dirichlet series sum Z function calculations real part (black), imaginary part (grey) for t=2046.3, (as well as tapered versions based on partial sums of binomial coefficients real part (red) imaginary part (green)) . First panel - fourth panel $\\sigma=\\{6.5,6,5.5,4.5\\}$. Where the x axis indicates the number of included integers in the series sum. For d=2 and $N_C=1$, the quiescent regions at $N=\\sqrt{\\frac{t\\cdot N_C}{2\\pi}}^d=\\frac{t\\cdot N_C}{2\\pi}$ and $N=2 \\cdot \\left(\\frac{t\\cdot N_C}{2\\pi}\\right)^d$ are indicated by green and grey vertical lines with the initial entry into the final plateau region $N=\\left(\\frac{t\\cdot N_C}{2\\pi}\\right)^d$ the most prominent feature indicated by a vertical blue line.}"
+
+```
+
+```{r image_2046p3Ramanujan, fig.show = "hold", out.width = c("24%","24%","24%","24%"), fig.align = "center", fig.cap=cap2, fig.height=5}
+
+
+
+knitr::include_graphics("/home/john/pari/Lfndirichletseriesquiescence/graph_Ramanbased_6.5000000000000000000000000000000000000_2046.3000000000000000000000000000000000.pdf")
+
+knitr::include_graphics("/home/john/pari/Lfndirichletseriesquiescence/graph_Ramanbased_6_2046.3000000000000000000000000000000000.pdf")
+
+knitr::include_graphics("/home/john/pari/Lfndirichletseriesquiescence/graph_Ramanbased_5.5000000000000000000000000000000000000_2046.3000000000000000000000000000000000.pdf")
+
+knitr::include_graphics("/home/john/pari/Lfndirichletseriesquiescence/graph_Ramanbased_4.5000000000000000000000000000000000000_2046.3000000000000000000000000000000000.pdf")
+
+```
+
+
+
+\clearpage
+
+### Oscillatory divergence behaviour at the first quiescent region at $\left(\sqrt{\frac{t\cdot N_C}{2\pi}}\right)^d$
+
+In this section, the real part of the L function dirichlet series sum oscillatory divergence behaviour at the first quiescent region at $\left(\sqrt{\frac{t\cdot N_C}{2\pi}}\right)^d$ is highlighted since it is not particularly visible on the scale of figures 1-8. 
+
+The t value investigated 6850051.8909855 in figures 9-11 belongs to one of the zeroes associated with the first Rosser violation point of the Riemann Zeta function and t=10358.2 in figure 12 for the Ramanujan Tau L function  belongs to a known peak [7] on the critical line. The expected behaviour when $\sigma=0.5$ is for the oscillatory divergence to display approximately odd symmetry about the first quiescent point and that the real part of L function Riemann Siegel Z function can be estimated by 
+
+\begin{equation}
+\Re(Z(1/2+I\cdot t)) \sim 2\cdot \Re(\sum_{k=1}^{\text{1st quiescent pt}}\left(\frac{\text{\scalebox{1}{$\chi$}}_{N_C}(q,k)}{k^{(1/2+I\cdot t)}}\right))
+\end{equation}
+
+In the figures, the black line and red line are given by the following finite dirichlet series sums
+
+\begin{align}
+Z_{\left\lfloor(\frac{t\cdot N_C}{2\pi})^{\frac{d}{2}}\right\rfloor+\delta, L(\text{\scalebox{1}{$\chi$}}_{N_C}(q,.),s)} &= e^{i\theta_{ L(\text{\scalebox{1}{$\chi$}}_{N_C}(q,.),s)}(t)}\left[\sum_{k=1}^{\left\lfloor(\frac{t\cdot N_C}{2\pi})^{\frac{d}{2}}\right\rfloor+\delta}\left(\frac{\text{\scalebox{1}{$\chi$}}_{N_C}(q,k)}{k^s}\right) \right]  \label {eq:exp1st_Z} \\
+Z_{\left\lfloor(\frac{t\cdot N_C}{2\pi})^{\frac{d}{2}}\right\rfloor+\delta, L(\text{\scalebox{1}{$\chi$}}_{N_C}(q,.),s),\text{Bin}} &= e^{i\theta_{ L(\text{\scalebox{1}{$\chi$}}_{N_C}(q,.),s)}(t)}\left[\sum_{k=1}^{\left(\left\lfloor(\frac{t\cdot N_C}{2\pi})^{\frac{d}{2}}\right\rfloor+\delta-p\right)}\left(\frac{\text{\scalebox{1}{$\chi$}}_{N_C}(q,k)}{k^s}\right) +
+\sum_{i=\left(-p+1\right)}^{p}\frac{\frac{1}{2^{2p}} \left( 2^{2p}-\sum_{k=0}^{i+p-1}\binom{2p}{2p-k}\right)}{(\left\lfloor(\frac{t\cdot N_C}{2\pi})^{\frac{d}{2}}\right\rfloor+\delta+i)^s}\cdot   \right] \label {eq:exp1stbin_Z} 
+\end{align}
+
+where $N_C$ is the conductor value of the L function, d is the degree of the L function and $\delta$ are small  increments of integers $(\pm150, \pm250)$ in the number of terms used in dirichlet series sum about the 1st quiescent point.
+
+The odd symmetry is particularly strong for most of the L functions, but is weaker for (i) the Ramanujan Tau L function (figure 12) and (ii) when $\sigma \ne 0.5$ for the $L(\chi_{5}(3,.),s)$, $L(\chi_{5}(2,.),s)$ dual pair L functions (5th and 6th row and columns 1,3,4 of figure 9). 
+
+```{r fig_cap__zetaZ_6p82e6, echo=FALSE}
+cap2 <- "\\scriptsize{The convergence behaviour of six 1st degree L function Dirichlet series sum Z function calculations real part (black) around the first quiescent region for t=6820051.8909855 (as well as tapered versions based on partial sums of binomial coefficients real part (red)) . First row - sixth row respectively $L(\\chi_{1}(1,.),s)$, $L(\\chi_{3}(2,.),s)$, $L(\\chi_{4}(3,.),s)$, $L(\\chi_{5}(4,.),s)$, $L(\\chi_{5}(3,.),s)$, $L(\\chi_{5}(2,.),s)$. First column - fourth column $\\sigma=\\{1,1/2,0,-1\\}$. Where the x axis indicates the number of included integers in the series sum. The quiescent region at $N=\\sqrt{\\frac{t\\cdot N_C}{2\\pi}}$ is indicated by the vertical green line and resurgence estimates of $\\Re(Z(1/2+I\\cdot t) \\sim 2*\\Re(\\text{equation (11)})$ ONLY applies to $\\sigma=1/2$.}"
+
+```
+
+```{r image_6p82e6, fig.show = "hold",  out.width = c("24%","24%","24%","24%"), fig.align = "center", fig.cap=cap2, fig.height=5}
+
+
+knitr::include_graphics("/home/john/pari/Lfndirichletseriesquiescence/graph_zetabased_1_6820051.8909855000000000000000000000000.pdf")
+
+knitr::include_graphics("/home/john/pari/Lfndirichletseriesquiescence/graph_zetabased_0.50000000000000000000000000000000000000_6820051.8909855000000000000000000000000.pdf")
+
+knitr::include_graphics("/home/john/pari/Lfndirichletseriesquiescence/graph_zetabased_0_6820051.8909855000000000000000000000000.pdf")
+
+knitr::include_graphics("/home/john/pari/Lfndirichletseriesquiescence/graph_zetabased_-1_6820051.8909855000000000000000000000000.pdf")
+
+
+knitr::include_graphics("/home/john/pari/Lfndirichletseriesquiescence/graph_L32based_1_6820051.8909855000000000000000000000000.pdf")
+
+knitr::include_graphics("/home/john/pari/Lfndirichletseriesquiescence/graph_L32based_0.50000000000000000000000000000000000000_6820051.8909855000000000000000000000000.pdf")
+
+knitr::include_graphics("/home/john/pari/Lfndirichletseriesquiescence/graph_L32based_0_6820051.8909855000000000000000000000000.pdf")
+
+knitr::include_graphics("/home/john/pari/Lfndirichletseriesquiescence/graph_L32based_-1_6820051.8909855000000000000000000000000.pdf")
+
+
+knitr::include_graphics("/home/john/pari/Lfndirichletseriesquiescence/graph_L43based_1_6820051.8909855000000000000000000000000.pdf")
+
+knitr::include_graphics("/home/john/pari/Lfndirichletseriesquiescence/graph_L43based_0.50000000000000000000000000000000000000_6820051.8909855000000000000000000000000.pdf")
+
+knitr::include_graphics("/home/john/pari/Lfndirichletseriesquiescence/graph_L43based_0_6820051.8909855000000000000000000000000.pdf")
+
+knitr::include_graphics("/home/john/pari/Lfndirichletseriesquiescence/graph_L43based_-1_6820051.8909855000000000000000000000000.pdf")
+
+
+knitr::include_graphics("/home/john/pari/Lfndirichletseriesquiescence/graph_L54based_1_6820051.8909855000000000000000000000000.pdf")
+
+knitr::include_graphics("/home/john/pari/Lfndirichletseriesquiescence/graph_L54based_0.50000000000000000000000000000000000000_6820051.8909855000000000000000000000000.pdf")
+
+knitr::include_graphics("/home/john/pari/Lfndirichletseriesquiescence/graph_L54based_0_6820051.8909855000000000000000000000000.pdf")
+
+knitr::include_graphics("/home/john/pari/Lfndirichletseriesquiescence/graph_L54based_-1_6820051.8909855000000000000000000000000.pdf")
+
+
+knitr::include_graphics("/home/john/pari/Lfndirichletseriesquiescence/graph_L53based_1_6820051.8909855000000000000000000000000.pdf")
+
+knitr::include_graphics("/home/john/pari/Lfndirichletseriesquiescence/graph_L53based_0.50000000000000000000000000000000000000_6820051.8909855000000000000000000000000.pdf")
+
+knitr::include_graphics("/home/john/pari/Lfndirichletseriesquiescence/graph_L53based_0_6820051.8909855000000000000000000000000.pdf")
+
+knitr::include_graphics("/home/john/pari/Lfndirichletseriesquiescence/graph_L53based_-1_6820051.8909855000000000000000000000000.pdf")
+
+
+knitr::include_graphics("/home/john/pari/Lfndirichletseriesquiescence/graph_L52based_1_6820051.8909855000000000000000000000000.pdf")
+
+knitr::include_graphics("/home/john/pari/Lfndirichletseriesquiescence/graph_L52based_0.50000000000000000000000000000000000000_6820051.8909855000000000000000000000000.pdf")
+
+knitr::include_graphics("/home/john/pari/Lfndirichletseriesquiescence/graph_L52based_0_6820051.8909855000000000000000000000000.pdf")
+
+knitr::include_graphics("/home/john/pari/Lfndirichletseriesquiescence/graph_L52based_-1_6820051.8909855000000000000000000000000.pdf")
+
+
+```
+
+
+
+```{r fig_cap__zetaZ_6p82e6long, echo=FALSE}
+cap2 <- "\\scriptsize{The convergence behaviour of the $L(\\chi_{15}(14,.),s)$ a 1st degree L function Dirichlet series sum Z function calculations real part (black) for t=6820051.8909855, (as well as tapered versions based on partial sums of binomial coefficients real part (red)).  First panel - fourth panel $\\sigma=\\{1,1/2,0,-1\\}$. Where the x axis indicates the number of included integers in the series sum. The quiescent region at $N=\\sqrt{\\frac{t\\cdot N_C}{2\\pi}}$ is indicated by the vertical green line and resurgence estimates of $\\Re(Z(1/2+I\\cdot t) \\sim 2*\\Re(\\text{equation (11)})$ ONLY applies to $\\sigma=1/2$.}"
+
+```
+
+```{r image_6p82e6long, fig.show = "hold", out.width = c("24%","24%","24%","24%"), fig.align = "center", fig.cap=cap2, fig.height=5}
+
+
+
+knitr::include_graphics("/home/john/pari/Lfndirichletseriesquiescence/graph_L15p14based_1_6820051.8909855000000000000000000000000.pdf")
+
+knitr::include_graphics("/home/john/pari/Lfndirichletseriesquiescence/graph_L15p14based_0.50000000000000000000000000000000000000_6820051.8909855000000000000000000000000.pdf")
+
+knitr::include_graphics("/home/john/pari/Lfndirichletseriesquiescence/graph_L15p14based_0_6820051.8909855000000000000000000000000.pdf")
+
+knitr::include_graphics("/home/john/pari/Lfndirichletseriesquiescence/graph_L15p14based_-1_6820051.8909855000000000000000000000000.pdf")
+
+
+
+```
+
+
+```{r fig_cap__zetaZ_6p82e6DH, echo=FALSE}
+cap2 <- "\\scriptsize{The convergence behaviour of $f_1(s)$ and $f_2(s)$ the two Davenport Heilbronn 5-periodic counterparts  of the dual pair $L(\\chi_{5}(3,.),s)$ and $L(\\chi_{5}(2,.),s)$ Dirichlet series sum Z function calculations real part (black) for t=6820051.8909855, (as well as tapered versions based on partial sums of binomial coefficients real part (red)). First column - fourth column $\\sigma=\\{1,1/2,0,-1\\}$. Where the x axis indicates the number of included integers in the series sum. For $N_C=5$, the quiescent regions at $N=\\sqrt{\\frac{t\\cdot N_C}{2\\pi}}$ is indicated by the green vertical line and resurgence estimates of $\\Re(Z(1/2+I\\cdot t) \\sim 2*\\Re(\\text{equation (11)})$ ONLY applies to $\\sigma=1/2$.
+}"
+
+```
+
+```{r image_6p82e6DH, fig.show = "hold", out.width = c("24%","24%","24%","24%"), fig.align = "center", fig.cap=cap2, fig.height=5}
+
+knitr::include_graphics("/home/john/pari/Lfndirichletseriesquiescence/graph_LDHbased_1_6820051.8909855000000000000000000000000.pdf")
+
+knitr::include_graphics("/home/john/pari/Lfndirichletseriesquiescence/graph_LDHbased_0.50000000000000000000000000000000000000_6820051.8909855000000000000000000000000.pdf")
+
+knitr::include_graphics("/home/john/pari/Lfndirichletseriesquiescence/graph_LDHbased_0_6820051.8909855000000000000000000000000.pdf")
+
+knitr::include_graphics("/home/john/pari/Lfndirichletseriesquiescence/graph_LDHbased_-1_6820051.8909855000000000000000000000000.pdf")
+
+
+knitr::include_graphics("/home/john/pari/Lfndirichletseriesquiescence/graph_LDHRbased_1_6820051.8909855000000000000000000000000.pdf")
+
+knitr::include_graphics("/home/john/pari/Lfndirichletseriesquiescence/graph_LDHRbased_0.50000000000000000000000000000000000000_6820051.8909855000000000000000000000000.pdf")
+
+knitr::include_graphics("/home/john/pari/Lfndirichletseriesquiescence/graph_LDHRbased_0_6820051.8909855000000000000000000000000.pdf")
+
+knitr::include_graphics("/home/john/pari/Lfndirichletseriesquiescence/graph_LDHRbased_-1_6820051.8909855000000000000000000000000.pdf")
+
+
+
+
+```
+
+
+
+```{r fig_cap_Ramanujan_10358p02, echo=FALSE}
+cap2 <- "\\scriptsize{The convergence behaviour of the 2nd degree L function 2-1-1.1-c11-0-0 (d-$N_C$-q.k-x-y-i) [9] which has degree d=2 and character $\\chi_{1}(1,.)$ Dirichlet series sum Z function calculations real part (black) for t=10358.02, (as well as tapered version based on partial sums of binomial coefficients real part (red)) . First panel - fourth panel $\\sigma=\\{6.5,6,5.5,4.5\\}$. Where the x axis indicates the number of included integers in the series sum. For d=2 and $N_C=1$, the quiescent regions at $N=\\sqrt{\\frac{t\\cdot N_C}{2\\pi}}^d=\\frac{t\\cdot N_C}{2\\pi}$ is indicated by the green vertical line and resurgence estimates of $\\Re(Z(1/2+I\\cdot t) \\sim 2*\\Re(\\text{equation (11)})$ ONLY applies to $\\sigma=1/2$.}"
+
+```
+
+```{r image_10358p02Ramanujan, fig.show = "hold", out.width = c("24%","24%","24%","24%"), fig.align = "center", fig.cap=cap2, fig.height=5}
+
+
+
+knitr::include_graphics("/home/john/pari/Lfndirichletseriesquiescence/graph_Ramanbased_6.5000000000000000000000000000000000000_10358.020000000000000000000000000000000.pdf")
+
+knitr::include_graphics("/home/john/pari/Lfndirichletseriesquiescence/graph_Ramanbased_6_10358.020000000000000000000000000000000.pdf")
+
+knitr::include_graphics("/home/john/pari/Lfndirichletseriesquiescence/graph_Ramanbased_5.5000000000000000000000000000000000000_10358.020000000000000000000000000000000.pdf")
+
+knitr::include_graphics("/home/john/pari/Lfndirichletseriesquiescence/graph_Ramanbased_4.5000000000000000000000000000000000000_10358.020000000000000000000000000000000.pdf")
+
+```
+
+
+\clearpage
+
+
+
+## Conclusion
+
+The location of the first quiescent region, the second quiescent region and the entry region to the final plateau of the oscillatory divergence of the dirichlet series sums of some example L functions, their Davenport Heilbronn counterparts strongly depends on $N_C$ the conductor value and d the degree of the L function. The second quiescent region is not always distinctive but is more readily visible for the Riemann Zeta function (and $\sigma < 0.5$) and indeed given enough tapered endpoints dirichlet series sums the endpoint only need to be roughly similar to $2 \cdot \left\lfloor(\frac{t\cdot N_C}{2\pi})^d\right\rfloor$ to give useful approximations of the L function value.
+
+The most striking behaviour is that empirically the first quiescent point ~$\left\lfloor(\frac{t\cdot N_C}{2\pi})^{\frac{d}{2}}\right\rfloor$ appears to be well approximated by the square root of the entry region $\left\lfloor(\frac{t\cdot N_C}{2\pi})^{d}\right\rfloor$ to the final plateau of the oscillatory divergence of the dirichlet series sum of these example L functions. 
+
+\clearpage
+
+## References
+
+1. Martin, J.P.D. "A quiescent region about $\frac{t}{\pi}$ in the oscillating divergence of the Riemann Zeta Dirichlet Series inside the critical strip." (2021)
+http://dx.doi.org/10.6084/m9.figshare.14213516
+
+2. Martin, J.P.D. "Tapered end point weighting of finite Riemann Zeta Dirichlet Series using partial sums of binomial coefficients to produce higher order approximations of the Riemann Siegel Z function." (2021)
+http://dx.doi.org/10.6084/m9.figshare.14702760
+
+3. Martin, J.P.D. "Truncated Exponential Series based partial Euler Product calculations at quiescent regions of oscillatory divergence to produce approximations of the Riemann Siegel Z function." (2021)
+http://dx.doi.org/10.6084/m9.figshare.14842803
+
+4. Spira, R. Mathematics of Computation, Volume 63, Number 208,
+October 1994, Pages 747-748
+
+5. Balanzario, E.P. and Sanchez-Ortiz, J. Mathematics of Computation,
+Volume 76, Number 260, October 2007, Pages 2045–2049
+
+6. E. Bombieri, A. Ghosh, “Around the Davenport–Heilbronn function”, Uspekhi Mat. Nauk, 66:2(398) (2011), 15–66; Russian Math. Surveys, 66:2 (2011), 221–270
+https://doi.org/10.4213/rm9410 
+IAS lecture https://www.youtube.com/watch?v=-JUHypc2_9A
+
+7. Keiper, J. B. "On the Zeros of the Ramanujan $tau$-Dirichlet Series in the Critical Strip." Mathematics of Computation 65, no. 216 (1996): 1613-619. Accessed February 10, 2021. http://www.jstor.org/stable/2153727.
+
+8. The PARI~Group, PARI/GP version {\tt 2.12.0}, Univ. Bordeaux, 2018,
+    \url{http://pari.math.u-bordeaux.fr/}.
+\normalfont
+
+9. The LMFDB Collaboration, The L-functions and Modular Forms Database, home page of The Riemann Zeta zeroes https://www.lmfdb.org/zeros/zeta/ 2021,
+
+
+10. Inkscape Project. (2020). Inkscape. Retrieved from https://inkscape.org
+
+
+\clearpage
+
+##Appendix I. Dirichlet series functions to be used as alternative examples to 1st degree L functions 
+
+In L-function, Dirichlet series and Hurwitz Zeta function form, the two Davenport Heilbronn 5-periodic functions are [4,5]
+
+\begin{align}
+f_{1}(s) &= \frac{1}{2cos(\theta_1)} \Big [ e^{i\theta_1}L(\chi_5(2,.),s) + e^{-i\theta_1}L(\chi_5(3,.),s) \Big ] \label{eq:func1_Lcomb} \\ 
+&= 1 + \frac{tan(\theta_1)}{2^s} - \frac{tan(\theta_1)}{3^s} - \frac{1}{4^s} + \frac{0}{5^s} + ... \label{eq:func1_series} \\ 
+&= 5^{-s}\Big ( \zeta(s,\frac{1}{5}) + tan(\theta_1)\cdot\zeta(s,\frac{2}{5}) - tan(\theta_1)\cdot\zeta(s,\frac{3}{5}) - \zeta(s,\frac{4}{5})\Big ) \label{eq:func1_hurwitz}
+\end{align}
+
+where $\tan(\theta_1) = \frac{(\sqrt{10-2\sqrt{5}}-2)}{(\sqrt{5}-1)} = 0.284079043840412296028291832393$ and $\theta_1=0.276787179448522625754266365045$
+
+and [5]
+
+\begin{align}
+f_{2}(s) &= \frac{1}{2cos(\theta_2)} \Big [ e^{i\theta_2}L(\chi_5(2,.),s) + e^{-i\theta_2}L(\chi_5(3,.),s) \Big ] \label{eq:func2_Lcomb} \\ 
+&= 1 - \frac{tan(\theta_2)}{2^s} + \frac{tan(\theta_2)}{3^s} - \frac{1}{4^s} + \frac{0}{5^s} + ... \label{eq:func2_series}\\ 
+&= 5^{-s}\Big ( \zeta(s,\frac{1}{5}) - tan(\theta_2)\cdot\zeta(s,\frac{2}{5}) + tan(\theta_2)\cdot\zeta(s,\frac{3}{5}) - \zeta(s,\frac{4}{5})\Big ) \label{eq:func2_hurwitz}
+\end{align}
+
+where $\tan(\theta_2) = \frac{1}{0.284079043840412296028291832393}$ and $\theta_2=1.2940091473463739934770553265951171821$
+
+The two Davenport-Heilbronn functions $f_{1}$(s) \& $f_{2}$(s) share the functional equation
+
+\begin{equation}
+f_{i}(s) = 5^{(\frac{1}{2}-s)}2(2\pi)^{(s-1)}cos(\frac{\pi s}{2})\Gamma(1-s)f_{i}(1-s) = \chi(f_{i}(s))\cdot f_{i}(1-s) \label{eq:eq_funcDH}
+\end{equation}
+
+from which the $f_{1}$(s) \& $f_{2}$(s) Riemann Siegel Theta function analogue is obtained
+\begin{equation}
+\theta_{f_i}(s) = -\frac{1}{2}\Im\big(log(5^{(\frac{1}{2}-s)}2(2\pi)^{(s-1)}cos(\frac{\pi s}{2})\Gamma(1-s))\big) \label{eq:thetafuncDH}
+\end{equation}
+
+in practice for calculations the continuous version of $\theta_{f_i}(s)$ is used based on Stirling's approximation. 
+
+\vspace{1cm} 
+
+The second degree L function, Ramanujan Tau L function in dirichlet series [7] form is written
+
+\begin{equation}
+\tau L(s) = \sum_{k=1}^{\infty}\left(\frac{\tau(k)}{k^s}\right)
+\end{equation}
+
+where $\tau(k)$ the  Ramanujan Tau function satisfies the generating function
+\begin{equation}
+g(q) = \sum_{k\ge1} \tau(k)q^k = q\prod_{k\ge1} (1-q^k)^{24} 
+\end{equation}
+and $q=e^{2\pi I z}$ with $\Im(z) > 0$.
+
+The globally convergent integral form of the Ramanujan Tau L function is 
+
+\begin{equation}
+\tau L(s) = \frac{1}{\Gamma{(s)}} \int_0^\infty x^{s-1}g(e^{-x})dx
+\end{equation}
+
+In contrast, the dirichlet series is only convergent for $\Re(s) > 6.5$ and displays oscillatory divergence below that upper complex plane. 
+
+The Riemann Siegel Theta function for the  Ramanujan Tau L-function is given by
+
+\begin{align}
+\theta_{\tau L}(s) &= -\frac{1}{2}\Im\big(log((2*\pi)^{2s-12}\Gamma(12-s)/\Gamma(s))\big) \label{eq:thetatauL}
+\end{align}
+
+
+
+
