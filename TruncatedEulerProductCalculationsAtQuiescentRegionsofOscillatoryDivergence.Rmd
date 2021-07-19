@@ -69,8 +69,8 @@ For $\Re(s) \le 1$, the partial Euler Product diverges, however, using the above
 
 \begin{align} \label{eq:truncEP}
 {\Large\sum_{k=1}^N} \frac{1}{k^s} &= 1+\left(\sum_{\rho=2}^\infty \sum_{n=1}^{\infty} \frac{1}{n\cdot\rho^{ns}}\cdot \delta(\rho^n \le N)\right) \nonumber\\
-&+\left(\sum_{\rho_1=2}^\infty \sum_{n=1}^{\infty} \sum_{\rho_2=2}^\infty \sum_{m=1}^{\infty} \frac{1}{n\cdot\rho_1^{ns}}\cdot \frac{1}{m\cdot\rho_2^{ms}} \cdot \delta(\rho_1^n\cdot\rho_2^m \le N) \right)\nonumber\\
-&+\left(\sum_{\rho_1=2}^\infty \sum_{n=1}^{\infty} \sum_{\rho_2=2}^\infty \sum_{m=1}^{\infty} \sum_{\rho_3=2}^\infty \sum_{o=1}^{\infty} \frac{1}{n\cdot\rho_1^{ns}}\cdot \frac{1}{m\cdot\rho_2^{ms}}\cdot  \frac{1}{o\cdot\rho_3^{os}} \cdot \delta(\rho_1^n\cdot\rho_2^{m}\cdot\rho_3^{o} \le N) \right) \nonumber \\
+&+\frac{1}{2!}\left(\sum_{\rho_1=2}^\infty \sum_{n=1}^{\infty} \sum_{\rho_2=2}^\infty \sum_{m=1}^{\infty} \frac{1}{n\cdot\rho_1^{ns}}\cdot \frac{1}{m\cdot\rho_2^{ms}} \cdot \delta(\rho_1^n\cdot\rho_2^m \le N) \right)\nonumber\\
+&+\frac{1}{3!}\left(\sum_{\rho_1=2}^\infty \sum_{n=1}^{\infty} \sum_{\rho_2=2}^\infty \sum_{m=1}^{\infty} \sum_{\rho_3=2}^\infty \sum_{o=1}^{\infty} \frac{1}{n\cdot\rho_1^{ns}}\cdot \frac{1}{m\cdot\rho_2^{ms}}\cdot  \frac{1}{o\cdot\rho_3^{os}} \cdot \delta(\rho_1^n\cdot\rho_2^{m}\cdot\rho_3^{o} \le N) \right) \nonumber \\
 &+ \qquad \ldots
 \end{align}
 
@@ -140,8 +140,8 @@ In terms of the oscillating divergence quiescent regions of the Riemann Zeta fun
 
 \begin{align} \label{eq:Gonekapprox}
 P_{N = \lfloor\frac{t}{\pi}\rfloor}(s) &\approx 1+\left(\sum_{\rho=2}^{N = \lfloor\frac{t}{\pi}\rfloor} \sum_{n=1}^{\lfloor\frac{\log(N)}{\log(\rho)}\rfloor} \frac{1}{n\cdot\rho^{ns}}\cdot \delta(\rho^n \le N)\right) \nonumber\\
-&+\left(\sum_{\rho=2}^{N = \lfloor\frac{t}{\pi}\rfloor} \sum_{n=1}^{\lfloor\frac{\log(N)}{\log(\rho)}\rfloor} \frac{1}{n\cdot\rho^{ns}}\cdot \delta(\rho^n \le N)\right)^2\nonumber\\
-&+\left(\sum_{\rho=2}^{N = \lfloor\frac{t}{\pi}\rfloor} \sum_{n=1}^{\lfloor\frac{\log(N)}{\log(\rho)}\rfloor} \frac{1}{n\cdot\rho^{ns}}\cdot \delta(\rho^n \le N)\right)^3 \nonumber \\
+&+\frac{1}{2!}\left(\sum_{\rho=2}^{N = \lfloor\frac{t}{\pi}\rfloor} \sum_{n=1}^{\lfloor\frac{\log(N)}{\log(\rho)}\rfloor} \frac{1}{n\cdot\rho^{ns}}\cdot \delta(\rho^n \le N)\right)^2\nonumber\\
+&+\frac{1}{3!}\left(\sum_{\rho=2}^{N = \lfloor\frac{t}{\pi}\rfloor} \sum_{n=1}^{\lfloor\frac{\log(N)}{\log(\rho)}\rfloor} \frac{1}{n\cdot\rho^{ns}}\cdot \delta(\rho^n \le N)\right)^3 \nonumber \\
 &+ \qquad \ldots
 \end{align}
 
@@ -311,7 +311,7 @@ The exponential series expansion can be further approximated using only the firs
 1. Martin, J.P.D. "A quiescent region about $\frac{t}{\pi}$ in the oscillating divergence of the Riemann Zeta Dirichlet Series inside the critical strip." (2021)
 http://dx.doi.org/10.6084/m9.figshare.14213516
 
-2. Martin, J.P.D. "Tapered end point weighting of finite Riemann Zeta Dirichlet Series using partial sums of binomial coefficients to produce higher order approximations of the Riemann Siegel Z function." 
+2. Martin, J.P.D. "Tapered end point weighting of finite Riemann Zeta Dirichlet Series using partial sums of binomial coefficients to produce higher order approximations of the Riemann Siegel Z function." (2021)
 http://dx.doi.org/10.6084/m9.figshare.14702760
 
 3. M.V. Berry, "Riemann’s Saddle-point Method and the Riemann-Siegel Formula" Vol 35.1, pp. 69–78, The Legacy of Bernhard Riemann After One Hundred and Fifty Years, Advanced Lectures in Mathematics 2016
