@@ -1,0 +1,303 @@
+---
+title: "Examples of quiescent regions in the oscillatory divergence of Box-Cox transformation series related to 1st degree L functions and their Dirichlet series."
+author: "John Martin"
+date: \today
+header-includes:  \usepackage{xcolor}
+output:
+  pdf_document:
+    fig_crop: no
+
+
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+
+```
+
+<!-- https://stackoverflow.com/questions/41655383/r-markdown-similar-feature-to-newcommand-in-latex/41664105 -->
+\newcommand{\mychi}{\raisebox{0pt}[1ex][1ex]{$\chi$}}
+
+
+##Executive Summary
+
+Empirically the location of a critical quiescent region in the oscillatory divergence of two series related to 1st Degree L functions via the Box-Cox transformation has a simple dependence $\left(\frac{t\cdot N_C}{\pi}\right)^{\frac{1}{(1-\lambda_{boxcox})}}$ based on the conductor value $N_C$ of the L function and the Box-Cox transformation parameter $\lambda_{boxcox}$ of the series. The calculated series $\left(\sum_{k=1}^N a(\mychi_{N_{C}})  e^{-\lambda_k s}\right)$ where $\lambda_k =\frac{k^{\left(\lambda_{boxcox}\right)}-1}{\lambda_{boxcox}}$ is an increasing sequence using the Box-Cox transformation function, provides (i) a family of general Dirichlet series for $0 \le \lambda_{boxcox} \le 1$ since $\lambda_k \uparrow \infty$ and (ii) a related series family with $-\infty < \lambda_{boxcox} < 0$ where $\lambda_k$ is monotonically increasing but $\lambda_k \uparrow \frac{1}{|\lambda_{boxcox}|}$ has a finite bound. Using partial sums of binomial coefficients to taper the endpoints of the finite series produces smoothed function values (in the quiescent region) inside and outside the oscillatory divergence regions, allowing investigation of non-trivial zeroes behaviour away from the real axis. In particular, when $\lambda_{boxcox} \ne 0$ and $\therefore \lambda_k \ne \log(k)$, non-trivial zeroes off the critical line are readily observed in the Box-Cox transformation series which can be regarded as due to symmetry breaking of the corresponding L function. 
+
+##Introduction
+
+
+In this paper, the oscillatory divergence behaviour away from the real axis, for two families of finite series obtained from several 1st degree L functions using the Box-Cox transformation is presented graphically
+
+\begin{align}
+\mathcal{D}_{N, L(\text{\scalebox{1}{$\chi$}}_{N_C}(q,.),s),\lambda_{boxcox}} &= \sum_{k=1}^{N}\left(\text{\scalebox{1}{$\chi$}}_{N_C}(q,k) e^{-\lambda_k s}\right)   \label {eq:exp_D} \\
+\mathcal{D}_{N, L(\text{\scalebox{1}{$\chi$}}_{N_C}(q,.),s),\lambda_{boxcox},\text{Bin}} &= \sum_{k=1}^{\left(N-p\right)}\left(\text{\scalebox{1}{$\chi$}}_{N_C}(q,k) e^{-\lambda_k s}\right) +
+\sum_{i=\left(-p+1\right)}^{p}\frac{1}{2^{2p}} \left( 2^{2p}-\sum_{k=0}^{i+p-1}\binom{2p}{2p-k}\right) \text{\scalebox{1}{$\chi$}}_{N_C}(q,N+i) e^{-\lambda_{(N+i)} s}    \label {eq:expbin_D} \\
+\lambda_k &= \begin{cases} \label {eq:boxcox}
+\frac{k^{\left(\lambda_{boxcox}\right)}-1}{\lambda_{boxcox}} \qquad \text{if } \lambda_{boxcox} \ne 0 \\
+ \log(k) \qquad \qquad \text{ if } \lambda_{boxcox} = 0
+\end{cases}
+\end{align}
+
+where (i) $s=(\sigma+i t)$ is a point in the complex plane, (ii) $L(\text{\scalebox{1}{$\chi$}}_{N_C}(q,.),s)$ are 1st degree L functions [1], (ii) $\text{\scalebox{1}{$\chi$}}_{N_C}(q,.)$ are the coefficients of the related Dirichlet series, (iii) $\lambda_k$ is the Box-Cox transformation [2]  and (iv) $\mathcal{D}_{N, L(\text{\scalebox{1}{$\chi$}}_{N_C}(q,.),s),\text{Bin}}$ employs tapered end point weighting of the Box-Cox transformation series using partial sums of the binomial coefficients [3-6] to provide useful approximations of the infinite series arising from resurgence behaviour at quiescent regions in the oscillatory divergence of the function, to allow estimation away from the real axis of the non-trivial zero positions of the infinite series.
+
+The two families of series obtained from equations \eqref{eq:exp_D}, \eqref{eq:expbin_D} and \eqref{eq:boxcox} given $k \in \mathbb{Z}^+$ are
+\begin{enumerate}
+\item A general Dirichlet series family when $0 \le \lambda_{boxcox} \le 1$, since $0 \le \lambda_k \uparrow \infty$. For example,  
+\subitem $\lambda_{boxcox}=0$, $\lambda_k = \log(k) \uparrow \infty$ as $k \rightarrow \infty$, 
+\subitem $\lambda_{boxcox}=0.5$, $\lambda_k = 2 \cdot (\sqrt{k}-1) \uparrow \infty$ as $k \rightarrow \infty$, 
+\subitem $\lambda_{boxcox}=1$, $\lambda_k = (k-1) \uparrow \infty$ as $k \rightarrow \infty$  
+\item A second series family when $-\infty < \lambda_{boxcox} < 0$, since $\lambda_k$ is monotonically increasing but $0 \le \lambda_k \uparrow \frac{1}{|\lambda_{boxcox}|} < \infty$. For example,  
+\subitem $\lambda_{boxcox}=-0.5$, $\lambda_k = 2 \cdot (1-\frac{1}{\sqrt{k}}) \uparrow 2$ as $k \rightarrow \infty$, 
+\subitem $\lambda_{boxcox}=-1$, $\lambda_k = (1-\frac{1}{k}) \uparrow 1$ as $k \rightarrow \infty$, 
+\subitem $\lambda_{boxcox}=-12$, $\lambda_k = \frac{1}{12} \cdot (1-\frac{1}{k^{12}}) \uparrow \frac{1}{12}$ as $k \rightarrow \infty$  
+\end{enumerate}
+A third series family in principle occurs when $\lambda_{boxcox} > 1$ but in that case the expected location of the quiescent region in the finite series corresponds to $0 < k \le 1$ which is infeasible given $k \in \mathbb{Z}^+$. 
+
+The 1st degree L functions used for comparison are
+
+\begin{align}
+ &L(\text{\scalebox{1}{$\chi$}}_{1}(1,.),s) = \zeta(s) \\
+ &L(\text{\scalebox{1}{$\chi$}}_{3}(2,.),s)  \\
+ &L(\text{\scalebox{1}{$\chi$}}_{15}(14,.),s)
+\end{align}
+
+All the calculations and most graphs are produced using the pari-gp language [7] and exact L functions values were available for all the considered L functions. Easy access to the definitions of L functions and their Dirichlet series was provided by the LMFDB Collaboration [1]. 
+
+## Results
+
+In figure 1, the oscillatory divergence behavior of the finite Box-Cox transformation series sums related to the Riemann Zeta function at the point $s=\sigma+I\cdot t$ is compared for two $\Re(s)$ values ($\sigma=\{0.5,-1\}$) when $\Im(s)=2000$. The truncated series results span the range of values $N=1-1400$ in equations \eqref {eq:exp_D} and \eqref {eq:expbin_D}. 
+
+The red line (green line) is the oscillatory divergence behaviour of the real part (imaginary part) of the Box-Cox transformation series equations \eqref {eq:exp_D} for several values of the Box-Cox parameter $\lambda_{boxcox}=\{-0.3,-0.1,1e-11,0.1\}$.
+
+The black line (gray line) is the smoothed oscillatory divergence behaviour of the real part (imaginary part) of the Box-Cox transformation series equations \eqref {eq:expbin_D} (using 128 $\{N-63,N+64\}$ tapered values about the endpoint N) for several values of the Box-Cox parameter $\lambda_{boxcox}=\{-0.3,-0.1,1e-11,0.1\}$. It can be seen that smoothing using partial binomial coefficient tapered sums enhances the stability of the quiescent region series sum just as occurs for the associated L function [3,4,6] but the quiescent region position now also depends on $\lambda_{boxcox}$ with the Box-Cox transformation based series. 
+
+In more detail,
+
+\begin{enumerate}
+\item the two columns correspond to the real value of the point $s=\sigma+I\cdot 2000$, i.e. $\sigma=\{0.5,-1\}$.
+\item in sequence top to bottom, the four rows correspond to the Box-Cox transformation series 
+\subitem $\mathcal{D}_{N, L(\text{\scalebox{1}{$\chi$}}_{1}(1,.),s),\lambda_{boxcox}=-0.3}$, 
+\subitem $\mathcal{D}_{N, L(\text{\scalebox{1}{$\chi$}}_{1}(1,.),s),\lambda_{boxcox}=-0.1}$,  
+\subitem $\mathcal{D}_{N, L(\text{\scalebox{1}{$\chi$}}_{1}(1,.),s),\lambda_{boxcox}=1e-11} \approx \sum_{k=1}^N \frac{1}{k^s}$ (even smaller $\lambda_{boxcox}$ values are needed as $t \rightarrow \infty$ to approximately match $\zeta(s)$ behaviour using quiescent region sums), 
+\subitem $\mathcal{D}_{N, L(\text{\scalebox{1}{$\chi$}}_{1}(1,.),s),\lambda_{boxcox}=0.1}$
+\item the horizontal red line corresponds to 0 on the y axis
+\item near the y axis is a vertical green line at $\sqrt{\left(\frac{t\cdot N_C}{2\pi}\right)^{\left(\frac{1}{1-\lambda_{boxcox}}\right)}}$ attempting to identify a first quiescent point. On closer inspection this region does not display interesting behaviour except for $\lambda_{boxcox}=0$.
+\item consistently at the lower boundary of the final plateau in the oscillatory divergence is a vertical blue line at $\left(\frac{t\cdot N_C}{2\pi}\right)^{\left(\frac{1}{1-\lambda_{boxcox}}\right)}$ where $N_C={1}$ and  $\lambda_{boxcox}=\{-0.3,-0.1,1e-11,0.1\}$ respectively
+\item inside the final plateau in the oscillatory divergence is a vertical gray line at $\left(\frac{t\cdot N_C}{\pi}\right)^{\left(\frac{1}{1-\lambda_{boxcox}}\right)}$ where $N_C={1}$ and  $\lambda_{boxcox}=\{-0.3,-0.1,1e-11,0.1\}$ respectively and the oscillatory divergence behaviour identifies as a quiescent region whose prominence varies but the tapered endpoint series exhibits very smooth behaviour in this region.
+\end{enumerate}
+
+Using the close similarity in behaviour with the Riemann Zeta Dirichlet series [3-5] it is speculated that the quiescent region at $\left(\frac{t\cdot N_C}{\pi}\right)^{\left(\frac{1}{1-\lambda_{boxcox}}\right)}$ is also a resurgence point for Box-Cox transformation series sums that via using tapered end point weighted calculations equation \eqref {eq:expbin_D} will allow accurate approximations of the infinite series, away from the real axis.
+
+Figure 2 presents similar behaviour higher up the imaginary axis at t=17143.8 for the same series used in figure 1 where the series sums span the range of values $N=1-15000$ . 
+
+Figures 3 and 4, then show similar behaviour for Box-Cox transformation series based on $L(\text{\scalebox{1}{$\chi$}}_{3}(2,.),s)$ and $L(\text{\scalebox{1}{$\chi$}}_{15}(14,.),s)$ where the x-axis is allowed to vary in figures 3 and 4 to accomodate the large change in quiescent region location  (in $\left(\frac{t\cdot N_C}{\pi}\right)^{\left(\frac{1}{1-\lambda_{boxcox}}\right)}$) due to $N_C= 3, 15$ respectively for these L functions.
+
+
+```{r fig_cap_boxcox_2000, echo=FALSE}
+cap2 <- "\\scriptsize{The convergence behaviour of Box-Cox transformation series related to the Riemann Zeta Dirichlet series real part (red), imaginary part (green) for t=2000 (as well as tapered versions based on partial sums of binomial coefficients real part (black) imaginary part (gray)) . First row - fourth row respectively $\\lambda_{boxcox}=-0.3$, $\\lambda_{boxcox}=-0.1$, $\\lambda_{boxcox}=1e-11$ and $\\lambda_{boxcox}=0.1$. First column - second column $\\sigma=\\{1/2,-1\\}$. Where the x axis indicates the number of included integers in the series sum. The quiescent region at $N=\\left(\\frac{t\\cdot N_C}{\\pi}\\right)^{\\left(\\frac{1}{(1-\\lambda_{boxcox})}\\right)}$ is highlighted by a gray vertical line and the initial entry into the final plateau region $N=\\left(\\frac{t\\cdot N_C}{2\\pi}\\right)^{\\left(\\frac{1}{(1-\\lambda_{boxcox})}\\right)}$ is the most prominent feature indicated by a vertical blue line.}"
+
+```
+
+
+
+```{r image_boxcox_2000, fig.show = "hold",  out.width = c("49.5%","49.5%"), fig.align = "center", fig.cap=cap2, fig.height=5}
+
+
+knitr::include_graphics("/home/john/pari/BOXCOXseriesquiescence/graph_zetabased_-0.3_0.5_2000.pdf")
+
+knitr::include_graphics("/home/john/pari/BOXCOXseriesquiescence/graph_zetabased_-0.3_-1_2000.pdf")
+
+knitr::include_graphics("/home/john/pari/BOXCOXseriesquiescence/graph_zetabased_-0.1_0.5_2000.pdf")
+
+knitr::include_graphics("/home/john/pari/BOXCOXseriesquiescence/graph_zetabased_-0.1_-1_2000.pdf")
+
+knitr::include_graphics("/home/john/pari/BOXCOXseriesquiescence/graph_zetabased_1e-11_0.5_2000.pdf")
+
+knitr::include_graphics("/home/john/pari/BOXCOXseriesquiescence/graph_zetabased_1e-11_-1_2000.pdf")
+
+knitr::include_graphics("/home/john/pari/BOXCOXseriesquiescence/graph_zetabased_0.1_0.5_2000.pdf")
+
+knitr::include_graphics("/home/john/pari/BOXCOXseriesquiescence/graph_zetabased_0.1_-1_2000.pdf")
+
+```
+
+
+
+
+```{r fig_cap_boxcox_17143p8, echo=FALSE}
+cap2 <- "\\scriptsize{The convergence behaviour of Box-Cox transformation series related to the Riemann Zeta Dirichlet series real part (red), imaginary part (green) for t=17143.8 (as well as tapered versions based on partial sums of binomial coefficients real part (black) imaginary part (gray)) . First row - fourth row respectively $\\lambda_{boxcox}=-0.3$, $\\lambda_{boxcox}=-0.1$, $\\lambda_{boxcox}=1e-11$ and $\\lambda_{boxcox}=0.1$. First column - second column $\\sigma=\\{1/2,-1\\}$. Where the x axis indicates the number of included integers in the series sum. The quiescent region at $N=\\left(\\frac{t\\cdot N_C}{\\pi}\\right)^{\\left(\\frac{1}{(1-\\lambda_{boxcox})}\\right)}$ is highlighted by a gray vertical line and the initial entry into the final plateau region $N=\\left(\\frac{t\\cdot N_C}{2\\pi}\\right)^{\\left(\\frac{1}{(1-\\lambda_{boxcox})}\\right)}$ is the most prominent feature indicated by a vertical blue line.}"
+
+```
+
+```{r image_boxcox_17143p8, fig.show = "hold", out.width = c("49.5%","49.5%"), fig.align = "center", fig.cap=cap2, fig.height=5}
+
+
+
+knitr::include_graphics("/home/john/pari/BOXCOXseriesquiescence/graph_zetabased_-0.3_0.5_17143.8.pdf")
+
+knitr::include_graphics("/home/john/pari/BOXCOXseriesquiescence/graph_zetabased_-0.3_-1_17143.8.pdf")
+
+knitr::include_graphics("/home/john/pari/BOXCOXseriesquiescence/graph_zetabased_-0.1_0.5_17143.8.pdf")
+
+knitr::include_graphics("/home/john/pari/BOXCOXseriesquiescence/graph_zetabased_-0.1_-1_17143.8.pdf")
+
+knitr::include_graphics("/home/john/pari/BOXCOXseriesquiescence/graph_zetabased_1e-11_0.5_17143.8.pdf")
+
+knitr::include_graphics("/home/john/pari/BOXCOXseriesquiescence/graph_zetabased_1e-11_-1_17143.8.pdf")
+
+knitr::include_graphics("/home/john/pari/BOXCOXseriesquiescence/graph_zetabased_0.1_0.5_17143.8.pdf")
+
+knitr::include_graphics("/home/john/pari/BOXCOXseriesquiescence/graph_zetabased_0.1_-1_17143.8.pdf")
+
+
+
+```
+
+
+
+
+```{r fig_cap_L32_5000, echo=FALSE}
+cap2 <- "\\scriptsize{The convergence behaviour of Box-Cox transformation series related to the $L(\\chi_{3}(2,.),s)$ Dirichlet series real part (red), imaginary part (green) for t=5000 (as well as tapered versions based on partial sums of binomial coefficients real part (black) imaginary part (gray)) . First row - fourth row respectively $\\lambda_{boxcox}=-0.3$, $\\lambda_{boxcox}=-0.1$, $\\lambda_{boxcox}=1e-11$ and $\\lambda_{boxcox}=0.1$. First column - second column $\\sigma=\\{1/2,0\\}$. Where the x axis indicates the number of included integers in the series sum and the span of the axis varies with $\\lambda_{boxcox}$. The quiescent region at $N=\\left(\\frac{t\\cdot N_C}{\\pi}\\right)^{\\left(\\frac{1}{(1-\\lambda_{boxcox})}\\right)}$ is highlighted by a gray vertical line and the initial entry into the final plateau region $N=\\left(\\frac{t\\cdot N_C}{2\\pi}\\right)^{\\left(\\frac{1}{(1-\\lambda_{boxcox})}\\right)}$ is the most prominent feature indicated by a vertical blue line.}"
+
+```
+
+```{r image_L32_5000, fig.show = "hold", out.width = c("49.5%","49.5%"), fig.align = "center", fig.cap=cap2, fig.height=5}
+
+knitr::include_graphics("/home/john/pari/BOXCOXseriesquiescence/graph_L32based_-0.3_0.5_5000.0.pdf")
+
+knitr::include_graphics("/home/john/pari/BOXCOXseriesquiescence/graph_L32based_-0.3_0_5000.0.pdf")
+
+knitr::include_graphics("/home/john/pari/BOXCOXseriesquiescence/graph_L32based_-0.1_0.5_5000.0.pdf")
+
+knitr::include_graphics("/home/john/pari/BOXCOXseriesquiescence/graph_L32based_-0.1_0_5000.0.pdf")
+
+knitr::include_graphics("/home/john/pari/BOXCOXseriesquiescence/graph_L32based_1e-11_0.5_5000.0.pdf")
+
+knitr::include_graphics("/home/john/pari/BOXCOXseriesquiescence/graph_L32based_1e-11_0_5000.0.pdf")
+
+knitr::include_graphics("/home/john/pari/BOXCOXseriesquiescence/graph_L32based_0.1_0.5_5000.0.pdf")
+
+knitr::include_graphics("/home/john/pari/BOXCOXseriesquiescence/graph_L32based_0.1_0_5000.0.pdf")
+
+
+```
+
+
+
+```{r fig_cap_L15p14_2000, echo=FALSE}
+cap2 <- "\\scriptsize{The convergence behaviour of Box-Cox transformation series related to the $L(\\chi_{15}(14,.),s)$ Dirichlet series real part (red), imaginary part (green) for t=2000 (as well as tapered versions based on partial sums of binomial coefficients real part (black) imaginary part (gray)) . First row - fourth row respectively $\\lambda_{boxcox}=-0.3$, $\\lambda_{boxcox}=-0.1$, $\\lambda_{boxcox}=1e-11$ and $\\lambda_{boxcox}=0.1$. First column - second column $\\sigma=\\{1/2,0\\}$. Where the x axis indicates the number of included integers in the series sum and the span of the axis varies with $\\lambda_{boxcox}$. The quiescent region at $N=\\left(\\frac{t\\cdot N_C}{\\pi}\\right)^{\\left(\\frac{1}{(1-\\lambda_{boxcox})}\\right)}$ is highlighted by a gray vertical line and the initial entry into the final plateau region $N=\\left(\\frac{t\\cdot N_C}{2\\pi}\\right)^{\\left(\\frac{1}{(1-\\lambda_{boxcox})}\\right)}$ is the most prominent feature indicated by a vertical blue line.}"
+
+```
+
+```{r image_L15p14_2000, fig.show = "hold", out.width = c("49.5%","49.5%"), fig.align = "center", fig.cap=cap2, fig.height=5}
+
+knitr::include_graphics("/home/john/pari/BOXCOXseriesquiescence/graph_L15p14based_-0.3_0.5_2000.pdf")
+
+knitr::include_graphics("/home/john/pari/BOXCOXseriesquiescence/graph_L15p14based_-0.3_0_2000.pdf")
+
+knitr::include_graphics("/home/john/pari/BOXCOXseriesquiescence/graph_L15p14based_-0.1_0.5_2000.pdf")
+
+knitr::include_graphics("/home/john/pari/BOXCOXseriesquiescence/graph_L15p14based_-0.1_0_2000.pdf")
+
+knitr::include_graphics("/home/john/pari/BOXCOXseriesquiescence/graph_L15p14based_1e-11_0.5_2000.pdf")
+
+knitr::include_graphics("/home/john/pari/BOXCOXseriesquiescence/graph_L15p14based_1e-11_0_2000.pdf")
+
+knitr::include_graphics("/home/john/pari/BOXCOXseriesquiescence/graph_L15p14based_0.1_0.5_2000.pdf")
+
+knitr::include_graphics("/home/john/pari/BOXCOXseriesquiescence/graph_L15p14based_0.1_0_2000.pdf")
+
+```
+
+
+\clearpage
+
+### Useful approximation of the Box-Cox transformation series function away from the real axis, arising from resurgence behaviour at the quiescent region $\left(\frac{t\cdot N_C}{\pi}\right)^{\left(\frac{1}{1-\lambda_{boxcox}}\right)}$
+
+In [4,6] it was presented how tapered endpoint weighting of finite Dirichlet series for 1st degree L functions at the (second) quiescent region $\left(\frac{t\cdot N_C}{\pi}\right)$ becomes an increasingly accurate approximation of the L function, as $t \rightarrow \infty$. Given the similar oscillatory divergence behaviour of the Box-Cox transformation series with quiescent region $\left(\frac{t\cdot N_C}{\pi}\right)^{\left(\frac{1}{1-\lambda_{boxcox}}\right)}$ presented in figures 1-4 and the L function approximation being present when $\lambda_{boxcox}=0$ it is speculated that the tapered endpoint weighting of finite Box-Cox transformation series will also be an accurate approximation away from the real axis, of the analytic continuation of the Box-Cox transformation series for $-\infty < \lambda_{boxcox} \le 1$.
+
+Adapting equation \eqref{eq:expbin_D}, a tapered endpoint weighted Box-Cox transformation series for the point $s=\sigma+i t$ obtained at the quiescent region $N_{QR}$ is given by
+
+\begin{align}
+N_{QR} &= \left\lfloor(\frac{t\cdot N_C}{2\pi})^{\left(\frac{1}{1-\lambda_{boxcox}}\right)}\right\rfloor \\
+\mathcal{D}_{N_{QR}, L(\text{\scalebox{1}{$\chi$}}_{N_C}(q,.),s),\lambda_{boxcox},\text{Bin}} &= \sum_{k=1}^{\left(N_{QR}-p\right)}\left(\text{\scalebox{1}{$\chi$}}_{N_C}(q,k) e^{-\lambda_k s}\right) + \nonumber \\
+&\sum_{i=\left(-p+1\right)}^{p}\frac{1}{2^{2p}} \left( 2^{2p}-\sum_{k=0}^{i+p-1}\binom{2p}{2p-k}\right) \text{\scalebox{1}{$\chi$}}_{N_C}(q,N+i) e^{-\lambda_{(N_{QR}+i)} s}    \label {eq:expbin_DQR} \\
+\lambda_k &= \begin{cases} \label {eq:boxcoxrpt}
+\frac{k^{\left(\lambda_{boxcox}\right)}-1}{\lambda_{boxcox}} \qquad \text{if } \lambda_{boxcox} \ne 0 \\
+ \log(k) \qquad \qquad \text{ if } \lambda_{boxcox} = 0
+\end{cases}
+\end{align}
+
+
+
+At $\lambda_{boxcox}=1$, the quiescent region $\left(\frac{t\cdot N_C}{\pi}\right)^{\left(\frac{1}{1-1}\right)} \rightarrow \infty$ which is in general infeasible to calculate but of course the infinite series has a known closed form  (the geometic series) for $\mathcal{D}_{N=\infty, L(\text{\scalebox{1}{$\chi$}}_{1}(1,.),s),\lambda_{boxcox}=1} = \frac{1}{1-e^{-s}}$  
+
+Using the above approximation, figures 5 and 6 illustrate symmetry breaking of the Riemann Zeta function as $\lambda_{boxcox}$ is perturbed away from 0 and there is evidence of non-trivial zeroes away from the critical line for $\lambda_{boxcox} \ne 0$. 
+
+
+```{r fig_cap_zeta_1378, echo=FALSE}
+cap2 <- "\\scriptsize{The absolute value of tapered endpoint weighted finite Box-Cox transformation series $\\{N_{QR}-63,N_{QR}+64\\}$ for (i) first row $\\lambda_{boxcox}={-.00002,.00002}$ (green, blue) and (ii) second row $\\lambda_{boxcox}=\\{-.00005,.00005\\}$ (green, blue) compared to the magnitude of the Riemann Zeta function on the critical line $|\\zeta(1/2+It)|$ (red) in the interval t=[1373,1383] where $\\lambda_{boxcox}=0$ for $\\zeta(s)$.}"
+
+```
+
+```{r image_zeta_1378, fig.show = "hold", out.width = c("100%"), fig.align = "center", fig.cap=cap2, fig.height=5}
+
+knitr::include_graphics("/home/john/pari/BOXCOXseriesquiescence/zeta_boxcox_1378p32_lam_p00002.pdf")
+
+knitr::include_graphics("/home/john/pari/BOXCOXseriesquiescence/zeta_boxcox_1378p32_lam_p00005.pdf")
+
+```
+
+
+```{r fig_cap_zeta_1378_part2, echo=FALSE}
+cap2 <- "\\scriptsize{The absolute value of tapered endpoint weighted finite Box-Cox transformation series $\\{N_{QR}-63,N_{QR}+64\\}$ for (i) first row $\\lambda_{boxcox}={-.0001,.0001}$ (green, blue) and (ii) second row $\\lambda_{boxcox}=\\{-.0002,.0002\\}$ (green, blue) compared to the magnitude of the Riemann Zeta function on the critical line $|\\zeta(1/2+It)|$ (red) in the interval t=[1373,1383] where $\\lambda_{boxcox}=0$ for $\\zeta(s)$.}"
+
+```
+
+```{r image_zeta_1378_part2, fig.show = "hold", out.width = c("100%"), fig.align = "center", fig.cap=cap2, fig.height=5}
+
+knitr::include_graphics("/home/john/pari/BOXCOXseriesquiescence/zeta_boxcox_1378p32_lam_p0001.pdf")
+
+knitr::include_graphics("/home/john/pari/BOXCOXseriesquiescence/zeta_boxcox_1378p32_lam_p0002.pdf")
+
+```
+
+\clearpage
+
+
+
+## Conclusion
+
+The location of a quiescent region, and the entry region to the final plateau of the oscillatory divergence of Box-Cox transformation series related to 1st degree L functions has many similarities to the oscillatory divergence of the Dirichlet series sums of 1st degree L functions and strongly depends on $N_C$ the conductor value and $\lambda_{boxcox}$ the Box-Cox transformation parameter. 
+
+For $0 \le \lambda_{boxcox} \le 1$ since the Box-Cox transformation series related to 1st degree L functions have $\lambda_k \uparrow \infty$ the series family corresponds to general Dirichlet series. In contrast, for $-\infty < \lambda_{boxcox} < 0$ the $\lambda_k$ is monotonically increasing but $\lambda_k \uparrow \frac{1}{|\lambda_{boxcox}|}$ has a finite bound so the second family of series do not formally correspond to general Dirichlet series. 
+
+\clearpage
+
+## References
+
+1. The LMFDB Collaboration, The L-functions and Modular Forms Database, home page of The Riemann Zeta zeroes https://www.lmfdb.org/zeros/zeta/ 2021,
+
+2. Box, G. E. P. and Cox, D. R. "An analysis of transformations." (1964) Journal of the Royal Statistical Society, Series B. Volume 26, Number 2, Pages 211–252
+
+3. Martin, J.P.D. "A quiescent region about $\frac{t}{\pi}$ in the oscillating divergence of the Riemann Zeta Dirichlet Series inside the critical strip." (2021)
+http://dx.doi.org/10.6084/m9.figshare.14213516
+
+4. Martin, J.P.D. "Tapered end point weighting of finite Riemann Zeta Dirichlet Series using partial sums of binomial coefficients to produce higher order approximations of the Riemann Siegel Z function." (2021)
+http://dx.doi.org/10.6084/m9.figshare.14702760
+
+5. Martin, J.P.D. "Truncated Exponential Series based partial Euler Product calculations at quiescent regions of oscillatory divergence to produce approximations of the Riemann Siegel Z function." (2021)
+http://dx.doi.org/10.6084/m9.figshare.14842803
+
+6. Martin, J.P.D. "Examples of quiescent regions in the oscillatory divergence of several 1st degree L functions and their Davenport Heilbronn counterparts." (2021)
+https://dx.doi.org/10.6084/m9.figshare.14956053
+
+7. The PARI~Group, PARI/GP version {\tt 2.12.0}, Univ. Bordeaux, 2018,
+    \url{http://pari.math.u-bordeaux.fr/}.
+\normalfont
+
+
+
+
+
+
