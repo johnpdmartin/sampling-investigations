@@ -1,0 +1,527 @@
+---
+title: "Intersection of (scaled) L function conjugate pair ratio and related first derivative functions at known non-trivial zero co-ordinates."
+author: "John Martin"
+date: \today
+header-includes:  \usepackage{xcolor}
+                 \usepackage{pdflscape}
+                 \usepackage{breqn}
+output:
+  pdf_document:
+    fig_crop: no
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+
+```
+
+<!-- https://stackoverflow.com/questions/41655383/r-markdown-similar-feature-to-newcommand-in-latex/41664105 -->
+\newcommand{\mychi}{\raisebox{0pt}[1ex][1ex]{$\chi$}}
+
+###Executive Summary
+
+Examination of the normalized real and imaginary components of scaled Riemann Zeta conjugate pair ratio functions $\frac{1}{|\mychi(s)|}\frac{\zeta (s)}{\zeta (1-s)}$, and scaled versions of the total derivative functions $\frac{-1}{|\mychi(s)|}\frac{\zeta '(s)}{\zeta'(1-s)}$, $\frac{-1}{2I\Theta'(t)|\mychi(s)|}\frac{d}{d s}\left\{\frac{\zeta (s)}{\zeta (1-s)}\right\}$, and $\frac{1}{4I\Theta'(t)|\mychi(s)|}\frac{d}{d s}\left\{\frac{\zeta '(s)}{\zeta' (1-s)}\right\}$ highlights the intersection of the 4 function values at the positions of the known non-trivial zeroes, where $s=(\sigma+I\cdot t)$, $\Theta'(t)$ is ($\frac{\partial}{\partial t}$) derivative  of the Riemann-Siegel Theta function  (the exponent function in $e^{-I\Theta(t)}=\frac{Z(t)}{\zeta(\frac{1}{2}+It)}$) on the critical line, and $|\mychi(s)|$ is the absolute value of the multiplier function in the Riemann Zeta functional equation. 
+
+
+```{r fig_cap_zetafncrossing_75_78, echo=FALSE}
+cap2 <- "\\scriptsize{The crossing of the real components of normalized Riemann Zeta ratio functions along critical line $\\sigma=1/2$ for the interval t=(75,78) at non-trivial zero positions. (Blue) $\\frac{1}{|\\mychi(s)|}\\frac{\\zeta(s)}{\\zeta(1-s)}$ and $\\frac{1}{-2I\\Theta'(t)|\\mychi(s)|}\\frac{d}{d s}\\left\\{\\frac{\\zeta(s)}{\\zeta(1-s)}\\right\\}$, (Green) $\\frac{1}{|\\mychi(s)|}\\frac{-\\zeta'(s)}{\\zeta'(1-s)}$, (Dark-Red) $\\frac{1}{4I\\Theta'(t)|\\mychi(s)|}\\frac{d}{d s}\\left\\{\\frac{\\zeta'(s)}{\\zeta'(1-s)}\\right\\}$, (Black) $-\\frac{1}{2}\\text{imag}(\\log(\\zeta(s)))$ and (Grey) $\\pm1$ function value markers. The vertical discontinuities of length $\\frac{\\pi}{2}$ in $-\\frac{1}{2}\\text{imag}(\\log(\\zeta(s)))$ indicate non-trivial zeroes and intersections of the four scaled functions occur at these positions. A characteristic feature is that at the majority of such intersections the slopes of $\\frac{1}{|\\mychi(s)|}\\frac{-\\zeta'(s)}{\\zeta'(1-s)}$ and $\\frac{1}{4I\\Theta'(t)|\\mychi(s)|}\\frac{d}{d s}\\left\\{\\frac{\\zeta'(s)}{\\zeta'(1-s)}\\right\\}$ are often $\\sim2$ times the slope of the $\\frac{1}{|\\mychi(s)|}\\frac{\\zeta(s)}{\\zeta(1-s)}$ and $\\frac{1}{-2I\\Theta'(t)|\\mychi(s)|}\\frac{d}{d s}\\left\\{\\frac{\\zeta(s)}{\\zeta(1-s)}\\right\\}$ functions, as occurs with the bisection of the red/green lines with the black and blue lines in the figure.}"
+
+```
+
+
+```{r image_zetafncrossing_75_78,  fig.show="hold", fig.align = "center", fig.cap=cap2, out.width = "75%", fig.height = 4}
+
+
+knitr::include_graphics("/home/john/pari/intersectingcurves/graph_zetabased_0.5_75_78.pdf")
+
+```
+\clearpage
+Inclusion of the functional equation term for the L function (or linear combination of L functions) $\frac{1}{|\mychi(L,s)|}$ (for the Riemann Zeta specific term $\frac{1}{|\mychi(s)|}$), and the generalisation of the $\frac{\partial\Theta(t)}{\partial t}$ term to  $\frac{\partial\Theta_{ext}(s)}{\partial t}$ has most benefit when investigating non-trivial zero positions (e.g., the Davenport-Heilbronn 5-periodic functions ($f_1(s)$, $f_2(s)$)) away from the critical line of the function. Note that the small imaginary component of $\Theta_{ext}(s)$ is a necessary factor in the intersection of the 4 function values for non-trivial zeroes located off the critical line. 
+
+
+
+```{r fig_cap_DHf2fncrossing_1.94374_17.5_20.5, echo=FALSE}
+cap2 <- "\\scriptsize{The crossing of the real components of normalized f2 Davenport-Heilbronn 5-periodic ratio functions outside the critical strip along the line $\\sigma=1.94374$ for the interval t=(17.5,20.5) at non-trivial zero positions. (Blue) $\\frac{1}{|\\mychi(f_{2},s)|}\\frac{f2(s)}{f2(1-s)}$ and $\\frac{1}{-2I\\frac{\\partial\\Theta_{ext}(s)}{\\partial t}|\\mychi(f_{2},s)|}\\frac{d}{d s}\\left\\{\\frac{f2(s)}{f2(1-s)}\\right\\}$, (Green) $\\frac{1}{|\\mychi(f_{2},s)|}\\frac{-f2'(s)}{f2'(1-s)}$, (Dark-Red) $\\frac{1}{4I\\frac{\\partial\\Theta_{ext}(s)}{\\partial t}|\\mychi(f_{2},s)|}\\frac{d}{d s}\\left\\{\\frac{f2'(s)}{f2'(1-s)}\\right\\}$, (Black) $-\\frac{1}{2}\\text{imag}(\\log(f2(s)))$ and (Grey) $\\pm1$ function value markers. The vertical discontinuities of length $\\frac{\\pi}{2}$ in $-\\frac{1}{2}\\text{imag}(\\log(f2(s)))$ indicate non-trivial zeroes and intersections of the four scaled functions occur at these positions, e.g., $\\rho=(1.94374 + I18.8994)$. 
+A characteristic feature is that at the majority of such intersections the slopes of $\\frac{1}{|\\mychi(f_{2},s)|}\\frac{-f2'(s)}{f2'(1-s)}$ and $\\frac{1}{4I\\frac{\\partial\\Theta_{ext}(s)}{\\partial t}|\\mychi(f_{2},s)|}\\frac{d}{d s}\\left\\{\\frac{f2'(s)}{f2'(1-s)}\\right\\}$ are $\\sim2$ times the slope of the $\\frac{1}{|\\mychi(f_{2},s)|}\\frac{f2(s)}{f2(1-s)}$ and $\\frac{1}{-2I\\frac{\\partial\\Theta_{ext}(s)}{\\partial t}|\\mychi(f_{2},s)|}\\frac{d}{d s}\\left\\{\\frac{f2(s)}{f2(1-s)}\\right\\}$ functions, as occurs with the bisection of the red/green lines with the black and blue lines in the figure.}"
+
+```
+
+
+```{r image_DHf2fncrossing_1.94374_17.5_20.5,  fig.show = "hold",  fig.align = "center", fig.cap=cap2, out.width = c("85%")}
+
+
+knitr::include_graphics("/home/john/pari/intersectingcurves/graph_DHf2based_1.94374_17.5_20.5.pdf")
+
+```
+
+
+
+
+
+
+###Introduction
+
+The Riemann Zeta function is defined [1-3], in the complex plane by the integral 
+
+\begin{equation}
+\zeta(s) = \frac{\prod(-s)}{2\pi i}\int_{C_{\epsilon,\delta}} \frac{(-x)^s}{(e^{x}-1)x}dx
+\end{equation}
+
+
+where $s \thinspace \epsilon \thinspace \mathbb{C}$ and $C_{\epsilon,\delta}$ is the contour about the imaginary poles.
+
+The Riemann Zeta function has been shown to obey the functional equation [1-3]
+
+\begin{align}
+\zeta(s) &= \mychi(s)\zeta(1-s) \\
+&= 2^s\pi^{s-1}sin(\frac{\pi s}{2})\Gamma(1-s)\zeta(1-s) \label{eq:func}
+\end{align}
+
+Following directly from the form of the functional equation and the properties of the coefficients on the RHS of eqn \eqref{eq:func} any zeroes off the critical line would be paired, ie. if $\zeta(s)$ = 0 was true then $\zeta(1-s) = 0$.
+
+In this paper, the properties of (i) the normalized Riemann Zeta conjugate pair ratio function is examined along with related first derivative functions and (ii) the analogous functions for some L functions and Davenport_Heilbronn 5 periodic functions (4-5) are also examined. The unnormalized Riemann Zeta functions of interest are
+
+\begin{align}
+&\frac{\zeta(s)}{\zeta(1-s)} \\
+&\frac{d}{d s}\left\{\frac{\zeta(s)}{\zeta(1-s)}\right\} \\
+&\frac{\zeta'(s)}{\zeta'(1-s)} \\
+&\frac{d}{d s}\left\{\frac{\zeta'(s)}{\zeta'(1-s)}\right\}
+\end{align}
+
+When $\zeta(1-s)$ and/or $\zeta'(1-s)$ are zero, then discontinuities may be naively anticipated but the above ratio functions appear well behaved for the regions of the complex plane explored in this paper (presumably) because (for L functions in general) a functional equation  relationship exists (e.g., equation \eqref{eq:func}).
+
+The intersection behaviour informs a set of equations that are satisfied between the Riemann Zeta function and its 1st and 2nd derivatives at the non-trivial zero co-ordinates ($s=\rho$) and likewise for the L functions investigated in this paper. All the calculations and most graphs are produced using the pari-gp language [6] and exact L functions values were available for all the considered L functions. Easy access to the definitions of L functions and their Dirichlet series was provided by the LMFDB Collaboration [7]. The paper was written as an rmarkdown file R [8] and Rstudio [9].
+
+
+###Using the Riemann Siegel Theta function to normalize the zeroth and first order Riemann Zeta ratio function
+
+Figure 3 illustrates the behaviour of the real components for the four ratio functions equations (4-7). It can be seen that pairs (1) $\frac{\zeta(s)}{\zeta(1-s)}$ and $\frac{d}{d s}\left\{\frac{\zeta(s)}{\zeta(1-s)}\right\}$ and (2) $\frac{\zeta'(s)}{\zeta'(1-s)}$, $\frac{d}{d s}\left\{\frac{\zeta'(s)}{\zeta'(1-s)}\right\}$ are of opposite sign respectively and cross on the critical line.
+
+
+
+```{r fig_cap_zetafnunnormalised_0_25, echo=FALSE}
+cap2 <- "\\scriptsize{The behaviour of the real components of four unnormalised Riemann Zeta ratio functions along critical line $\\sigma=1/2$ for the interval t=(0,25). (Bright-Red) $\\frac{\\zeta(s)}{\\zeta(1-s)}$ and (Blue) $\\frac{d}{d s}\\left\\{\\frac{\\zeta(s)}{\\zeta(1-s)}\\right\\}$, (Green) $\\frac{\\zeta'(s)}{\\zeta'(1-s)}$, (Dark-Red) $\\frac{d}{d s}\\left\\{\\frac{\\zeta'(s)}{\\zeta'(1-s)}\\right\\}$, as well as (Black) $-\\frac{1}{2}\\text{imag}(\\log(\\zeta(s)))$ and (Grey) $\\pm1$ function value markers. The vertical discontinuities of length $\\frac{\\pi}{2}$ in $-\\frac{1}{2}\\text{imag}(\\log(\\zeta(s)))$ indicate non-trivial zeroes and intersections of the four scaled functions occur at these positions. Characteristic features are that the pairs (1) (Bright-Red) $\\frac{\\zeta(s)}{\\zeta(1-s)}$ and (Blue) $\\frac{d}{d s}\\left\\{\\frac{\\zeta(s)}{\\zeta(1-s)}\\right\\}$ and (2) (Green) $\\frac{\\zeta'(s)}{\\zeta'(1-s)}$, (Dark-Red) $\\frac{d}{d s}\\left\\{\\frac{\\zeta'(s)}{\\zeta'(1-s)}\\right\\}$ are opposite in sign and cross on the critical line.}"
+
+```
+
+
+
+
+```{r image_zetafnunnormalised_0_25,  fig.show = "hold",  fig.align = "center", fig.cap=cap2, out.width = c("75%")}
+
+
+knitr::include_graphics("/home/john/pari/intersectingcurves/graph_zetabasedunnormalised_0.5_0_25.pdf")
+
+```
+
+Using the Riemann Siegel function and its Theta and Z components. The Riemann Siegel function is an approximating function [2,3] for the Riemann Zeta function along the critical line (0.5+it) of the form
+
+\begin{equation}
+\zeta(0.5+it) = Z(t)e^{-i\theta(t)} \label{eq:rs}
+\end{equation}
+
+where 
+
+\begin{equation}
+\theta(t) = Im(ln(\Gamma(\frac{1}{4}+\frac{1}{2}it)))-\frac{t}{2}ln(\pi) \label{eq:rs}
+\end{equation}
+
+which since Z(t) (with or without the remainder terms) is a real valued function, equation (4) on the critical line reduces to
+
+\begin{align}
+\frac{\zeta(0.5+it)}{\zeta(0.5-it)} &=  \frac{Z(t)e^{-i\theta(t)}}{Z(t)e^{i\theta(t)}} = e^{-i2\theta(t)} \label{eq:critlinetheta} 
+\end{align}
+
+
+Therefore, on the critical line
+
+
+\begin{align}
+\frac{d}{d s}\left\{\frac{\zeta(0.5+it)}{\zeta(0.5-it)}\right\} &=   \frac{d}{d s}\left\{e^{-i2\Theta(t)}\right\} \\
+&= -i2\Theta'(t)e^{-i2\Theta(t)} \label{eq:critlinetheta} \\
+&= -i2\Theta'(t)\left\{\frac{\zeta(0.5+it)}{\zeta(0.5-it)}\right\} 
+\end{align}
+
+So using the above factor for both $\frac{d}{d s}\left\{\frac{\zeta(0.5+it)}{\zeta(0.5-it)}\right\}$ and $\frac{d}{d s}\left\{\frac{\zeta'(s)}{\zeta'(1-s)}\right\}$ in figure 4 the real components of the four functions has been effectively reduced to only 3 numerically different ratio functions as $\frac{\zeta(s)}{\zeta(1-s)}=\frac{1}{-2I\Theta'(t)}\frac{d}{d s}\left\{\frac{\zeta(s)}{\zeta(1-s)}\right\}$ on the critical line.
+
+
+
+```{r fig_cap_zetafnadjustby_-2Itheta_10_25, echo=FALSE}
+cap2 <- "\\scriptsize{The behaviour of the real components of four partly normalised Riemann Zeta ratio functions along critical line $\\sigma=1/2$ for the interval t=(0,35) with two functions adjusted by $\\frac{1}{-2I\\Theta'(t)}$. (Bright-Red) $\\frac{\\zeta(s)}{\\zeta(1-s)}$ and (Blue) $\\frac{1}{-2I\\Theta'(t)}$$\\frac{d}{d s}\\left\\{\\frac{\\zeta(s)}{\\zeta(1-s)}\\right\\}$, (Green) $\\frac{\\zeta'(s)}{\\zeta'(1-s)}$, (Dark-Red) $\\frac{1}{-2I\\Theta'(t)}\\frac{d}{d s}\\left\\{\\frac{\\zeta'(s)}{\\zeta'(1-s)}\\right\\}$, as well as (Black) $-\\frac{1}{2}\\text{imag}(\\log(\\zeta(s)))$ and (Grey) $\\pm1$ function value markers. The vertical discontinuities of length $\\frac{\\pi}{2}$ in $-\\frac{1}{2}\\text{imag}(\\log(\\zeta(s)))$ indicate non-trivial zeroes and intersections of the four scaled functions occur at these positions. Characteristic features are that (i) the pairs  (Bright-Red) $\\frac{\\zeta(s)}{\\zeta(1-s)}$ and (Blue) $\\frac{1}{-2I\\Theta'(t)}\\frac{d}{d s}\\left\\{\\frac{\\zeta(s)}{\\zeta(1-s)}\\right\\}$ are equal (only Blue line is visible) and (ii) (Green) $\\frac{\\zeta'(s)}{\\zeta'(1-s)}$, (Dark-Red) $\\frac{1}{-2I\\Theta'(t)}\\frac{d}{d s}\\left\\{\\frac{\\zeta'(s)}{\\zeta'(1-s)}\\right\\}$ are opposite in sign, cross on the critical line.}"
+
+```
+
+
+
+
+```{r image_zetafnadjustby_-2Itheta,  fig.show = "hold",  fig.align = "center", fig.cap=cap2, out.width = c("75%")}
+
+
+knitr::include_graphics("/home/john/pari/intersectingcurves/graph_zetabasedthetaadj_0.5_10_35.pdf")
+
+```
+
+
+
+By trial and error, an additional factors of -1 & -1/2 respectively, converting equation (6) to $-\frac{\zeta'(s)}{\zeta'(1-s)}$ and equation (7) to $\frac{1}{4I\Theta'(t)}\frac{d}{d s}\left\{\frac{\zeta'(s)}{\zeta'(1-s)}\right\}$ gives intersection of all four curves at the non-trivial zero co-ordinates as shown in figure 5 and confirmed by manual inspection at various co-ordinate positions shown in figure 5 and known non-trivial zero co-ordinates elsewhere on the critical line. The following equations list the combined adjustments to the unnormalised functions equations (4-7) on the critical line.
+
+
+\begin{align}
+\frac{\zeta(s)}{\zeta(1-s)}  &\rightarrow 1 \cdot \frac{\zeta(s)}{\zeta(1-s)} \\
+\frac{d}{d s}\left\{\frac{\zeta(s)}{\zeta(1-s)}\right\} &\rightarrow \frac{1}{-2I\Theta'(t)} \cdot \frac{d}{d s}\left\{\frac{\zeta(s)}{\zeta(1-s)}\right\} \\
+\frac{\zeta'(s)}{\zeta'(1-s)} &\rightarrow -1 \cdot \frac{\zeta'(s)}{\zeta'(1-s)}\\
+\frac{d}{d s}\left\{\frac{\zeta'(s)}{\zeta'(1-s)}\right\} &\rightarrow \frac{-1}{2} \cdot \frac{1}{-2I\Theta'(t)} \cdot \frac{d}{d s}\left\{\frac{\zeta'(s)}{\zeta'(1-s)}\right\}
+\end{align}
+
+Figures 5 & 6, show the typical behaviour of the intersection of the four normalised Riemann Zeta ratio functions at non-trivial zero co-ordinates along the critical line at the intervals t=(10,35) and t=(1375,1385) respectively. 
+
+Figure 7, shows the less typical behaviour of the intersection of the four normalised Riemann Zeta ratio functions along the critical line at the intervals t=(282.25,282.65) nearby to the first (bad) gram point associated with $\rho_{126}$ [1]. The intersection of the four normalised Riemann Zeta ratio functions at this non-trivial zero co-ordinate $\rho_{127}=0.5+I282.465114$ associated with gram point belonging to $\rho_{127}$ exhibits unusual behaviour in that the slopes of $\frac{-\zeta'(\rho_{127})}{\zeta'(1-\rho_{127})}$ and $\frac{1}{4I\Theta'(t)}\frac{d}{d s}\left\{\frac{\zeta'(\rho_{127})}{\zeta'(1-\rho_{127})}\right\}$ have different signs and are NOT 2 times the slope of the $\frac{\zeta(\rho_{127})}{\zeta(1-\rho_{127})}$ and $\frac{1}{-2I\Theta'(t)}\frac{d}{d s}\left\{\frac{\zeta(\rho_{127})}{\zeta(1-\rho_{127})}\right\}$ functions. 
+
+```{r fig_cap_zetafn_0.5_10_35, echo=FALSE}
+cap2 <- "\\scriptsize{The behaviour of the real components of four normalised Riemann Zeta ratio functions along critical line $\\sigma=1/2$ for the interval t=(0,35). (Blue) $\\frac{1}{|\\mychi(s)|}\\frac{\\zeta(s)}{\\zeta(1-s)}$ and $\\frac{1}{-2I\\Theta'(t)|\\mychi(s)|}\\frac{d}{d s}\\left\\{\\frac{\\zeta(s)}{\\zeta(1-s)}\\right\\}$, (Green) $\\frac{1}{|\\mychi(s)|}\\frac{-\\zeta'(s)}{\\zeta'(1-s)}$, (Dark-Red) $\\frac{1}{4I\\Theta'(t)|\\mychi(s)|}\\frac{d}{d s}\\left\\{\\frac{\\zeta'(s)}{\\zeta'(1-s)}\\right\\}$, (Black) $-\\frac{1}{2}\\text{imag}(\\log(\\zeta(s)))$ and (Grey) $\\pm1$ function value markers. The vertical discontinuities of length $\\frac{\\pi}{2}$ in $-\\frac{1}{2}\\text{imag}(\\log(\\zeta(s)))$ indicate non-trivial zeroes and intersections of the four scaled functions occur at these positions. A characteristic feature is that at the majority of such intersections the slopes of $\\frac{1}{|\\mychi(s)|}\\frac{-\\zeta'(s)}{\\zeta'(1-s)}$ and $\\frac{1}{4I\\Theta'(t)|\\mychi(s)|}\\frac{d}{d s}\\left\\{\\frac{\\zeta'(s)}{\\zeta'(1-s)}\\right\\}$ are often $\\sim2$ times the slope of the $\\frac{1}{|\\mychi(s)|}\\frac{\\zeta(s)}{\\zeta(1-s)}$ and $\\frac{1}{-2I\\Theta'(t)|\\mychi(s)|}\\frac{d}{d s}\\left\\{\\frac{\\zeta(s)}{\\zeta(1-s)}\\right\\}$ functions, as occurs with the bisection of the red/green lines with the black and blue lines in the figure.}"
+
+```
+
+
+
+
+```{r image_zetafn_0.5_10_35,   fig.show = "hold",  fig.align = "center", fig.cap=cap2, out.width = c("95%")}
+
+
+knitr::include_graphics("/home/john/pari/intersectingcurves/graph_zetabased_0.5_10_35.pdf")
+
+```
+
+
+
+```{r fig_cap_zetafncrossing_1375_to_1385, echo=FALSE}
+cap2 <- "\\scriptsize{The crossing of the real components of normalized Riemann Zeta ratio functions along critical line $\\sigma=1/2$ for the interval t=(1379.5,1385) at non-trivial zero positions. (Blue) $\\frac{1}{|\\mychi(s)|}\\frac{\\zeta(s)}{\\zeta(1-s)}$ and $\\frac{1}{-2I\\Theta'(t)|\\mychi(s)|}\\frac{d}{d s}\\left\\{\\frac{\\zeta(s)}{\\zeta(1-s)}\\right\\}$, (Green) $\\frac{1}{|\\mychi(s)|}\\frac{-\\zeta'(s)}{\\zeta'(1-s)}$, (Dark-Red) $\\frac{1}{4I\\Theta'(t)|\\mychi(s)|}\\frac{d}{d s}\\left\\{\\frac{\\zeta'(s)}{\\zeta'(1-s)}\\right\\}$, (Black) $-\\frac{1}{2}\\text{imag}(\\log(\\zeta(s)))$ and (Grey) $\\pm1$ function value markers. The vertical discontinuities of length $\\frac{\\pi}{2}$ in $-\\frac{1}{2}\\text{imag}(\\log(\\zeta(s)))$ indicate non-trivial zeroes and intersections of the four scaled functions occur at these positions. A characteristic feature is that at the majority of such intersections the slopes of $\\frac{1}{|\\mychi(s)|}\\frac{-\\zeta'(s)}{\\zeta'(1-s)}$ and $\\frac{1}{4I\\Theta'(t)|\\mychi(s)|}\\frac{d}{d s}\\left\\{\\frac{\\zeta'(s)}{\\zeta'(1-s)}\\right\\}$ are $\\sim2$ times the slope of the $\\frac{1}{|\\mychi(s)|}\\frac{\\zeta(s)}{\\zeta(1-s)}$ and $\\frac{1}{-2I\\Theta'(t)|\\mychi(s)|}\\frac{d}{d s}\\left\\{\\frac{\\zeta(s)}{\\zeta(1-s)}\\right\\}$ functions.}"
+
+```
+
+
+```{r image_zetafncrossing_1375_to_1385,   fig.show = "hold",  fig.align = "center", fig.cap=cap2, out.width = c("95%")}
+
+
+knitr::include_graphics("/home/john/pari/intersectingcurves/graph_zetabased_0.5_1379.5_1385.pdf")
+
+```
+
+```{r fig_cap_zetafncrossing_282_282, echo=FALSE}
+cap2 <- "\\scriptsize{The atypical crossing of the real components of normalized Riemann Zeta ratio functions along critical line $\\sigma=1/2$ for the interval t=(282.25,282.65) at the next non-trivial zero position after the first (bad) gram point t=279.2292509. (Blue) $\\frac{1}{|\\mychi(s)|}\\frac{\\zeta(s)}{\\zeta(1-s)}$ and $\\frac{1}{-2I\\Theta'(t)|\\mychi(s)|}\\frac{d}{d s}\\left\\{\\frac{\\zeta(s)}{\\zeta(1-s)}\\right\\}$, (Green) $\\frac{1}{|\\mychi(s)|}\\frac{-\\zeta'(s)}{\\zeta'(1-s)}$, (Dark-Red) $\\frac{1}{4I\\Theta'(t)|\\mychi(s)|}\\frac{d}{d s}\\left\\{\\frac{\\zeta'(s)}{\\zeta'(1-s)}\\right\\}$, (Black) $-\\frac{1}{2}\\text{imag}(\\log(\\zeta(s)))$ and (Grey) $\\pm1$ function value markers. The vertical discontinuities of length $\\frac{\\pi}{2}$ in $-\\frac{1}{2}\\text{imag}(\\log(\\zeta(s)))$ indicate non-trivial zeroes and intersections of the four scaled functions occur at these positions e.g., $\\rho_{127}=0.5+I282.465114$. The vertical discontinuity of length $\\pi$ arises from principal logarithm bounding of $-\\frac{1}{2}\\text{imag}(\\log(\\zeta(s)))$. The atypical nature of this intersection neighbouring a (bad) gram point is that the slopes of $\\frac{1}{|\\mychi(s)|}\\frac{-\\zeta'(s)}{\\zeta'(1-s)}$ and $\\frac{1}{4I\\Theta'(t)|\\mychi(s)|}\\frac{d}{d s}\\left\\{\\frac{\\zeta'(s)}{\\zeta'(1-s)}\\right\\}$ have different signs and are NOT 2 times the slope of the $\\frac{1}{|\\mychi(s)|}\\frac{\\zeta(s)}{\\zeta(1-s)}$ and $\\frac{1}{-2I\\Theta'(t)|\\mychi(s)|}\\frac{d}{d s}\\left\\{\\frac{\\zeta(s)}{\\zeta(1-s)}\\right\\}$ functions.}"
+
+```
+
+
+```{r image_zetafncrossing_282_282,  fig.show = "hold",  fig.align = "center", fig.cap=cap2, out.width = c("95%")}
+
+knitr::include_graphics("/home/john/pari/intersectingcurves/graph_zetabased_0.5_282.25_282.65.pdf")
+
+```
+
+
+\clearpage
+
+###Extending the above results, off the critical line and to apply to other L functions
+
+To normalize the Riemann Zeta conjugate pair ratio functions off the critical line, it has been found sufficient (for investigations conducted in this paper) to identify the normalisation required for the first equation (eqn \eqref{eq:func}) and apply the required factor to each of the four ratio functions. That is, to normalize eqn \eqref{eq:func} it is divided on both sides by $\zeta(1-s)|\mychi(s)|$.
+
+\begin{align}
+\frac{1}{|\mychi(s)|}\frac{\zeta(s)}{\zeta(1-s)} &=  \frac{\mychi(s)}{|\mychi(s)|} \\
+&=  Re(\frac{\mychi(s)}{|\mychi(s)|}) + I \cdot Im(\frac{\mychi(s)}{|\mychi(s)|}) \\ 
+&= e^{-i2\theta_{ext}(s)}  \label{eq:ratio}
+\end{align}
+
+For values of s away from the critical line, the extended Riemann Siegel Theta function could in principle be derived from an off the critical line version of equation (8) based on series expansions for Z(t) [3]. Much more simply the extended Riemann Siegel Theta function can be obtained by modifying the $\theta_{ext}(s)$ definition in [10] to 
+
+\begin{align}
+\theta_{ext}(s) &= (log(\sqrt{\frac{\zeta(1-s)abs(\mychi(s))}{\zeta(s)}})) \label{eq:thetaext} \\
+&= \frac{1}{2}\cdot (\log(\mychi(s))) 
+\end{align}
+
+where in [10] only the imaginary component was retained i.e., $\theta_{ext}(s)_{ref [10]} = -\frac{1}{2}\cdot \Im(\log(\mychi(s))))$. Using only principal logarithm values of $\theta_{ext}(s)$ it is straightforward to observe 
+
+\begin{align}
+\frac{\mychi(s)}{|\mychi(s)|} &= e^{-i2\theta_{ext}(s)} \qquad \text{if when using equation (22)} \qquad \log(\mychi(s)) \qquad \epsilon \qquad (-\pi,\pi) \\
+ &= e^{-i2\theta(t)} \qquad \qquad \text{if} \qquad \sigma=\frac{1}{2} 
+\end{align}
+
+
+In this paper, it was observed that while $\Im(\theta_{ext}(s)) \gg \Re(\theta_{ext}(s))$ for $0 \le \sigma \le 3$, exact numerical intersection of the four normalised functions will not occur at non-trivial zero co-ordinates unless the small real component $\Re(\theta_{ext}(s))$ is explicitly included.
+
+Thus extending the four normalised Riemann Zeta ratio functions off the critical line is given by 
+
+\begin{align}
+&\frac{1}{|\mychi(s)|}\frac{\zeta(s)}{\zeta(1-s)} \\
+&\frac{1}{-2I\Theta'(t)|\mychi(s)|}\frac{d}{d s}\left\{\frac{\zeta (s)}{\zeta (1-s)}\right\} \\
+&\frac{-1}{|\mychi(s)|}\frac{\zeta '(s)}{\zeta'(1-s)} \\
+&\frac{1}{4I\Theta'(t)|\mychi(s)|}\frac{d}{d s}\left\{\frac{\zeta '(s)}{\zeta' (1-s)}\right\}
+\end{align}
+
+and the straightforward extension of the above functions to other L functions (or linear combinations of L functions) and for $\sigma \text{ } \epsilon \text{ } (-\infty, \infty)$ produces normalized functions of the form
+
+\begin{align}
+&\frac{1}{|\mychi(L,s)|}\frac{L(s)}{L(p-s)} \\
+&\frac{1}{-2I\frac{\partial\Theta_{ext}(s)}{\partial t}|\mychi(L,s)|}\frac{d}{d s}\left\{\frac{L(s)}{L(p-s)}\right\} \\
+&\frac{-1}{|\mychi(L,s)|}\frac{L'(s)}{L'(p-s)} \\
+&\frac{1}{4I\frac{\partial\Theta_{ext}(s)}{\partial t}|\mychi(L,s)|}\frac{d}{d s}\left\{\frac{L'(s)}{L'(1-s)}\right\}
+\end{align}
+
+and the following figures 
+
+\begin{itemize}
+\item figure 8 for Ramanujan's $tau$-L function [11],
+\item figures 9,10 for the Davenport-Heilbronn 5-periodic functions f1(s) [4,5]
+\item figures 11,12 for the Davenport-Heilbronn 5-periodic functions f2(s) [5]
+\item figure 13 for $L(\mychi_{3(2,.)},s)$ L function [7]
+\end{itemize}
+
+illustrate the behaviour of the intersection of the above normalised L ratio functions at known non-trivial zero co-ordinates on and off the critical line.
+
+
+
+```{r fig_cap_LRamanbased_6.0_155_165, echo=FALSE}
+cap2 <- "\\scriptsize{The crossing of the real components of normalized Riemann Zeta ratio functions along critical line $\\sigma=6$ for the interval t=(155,165) at non-trivial zero positions. (Blue) $\\frac{1}{|\\mychi(LRaman,s)|}\\frac{LRaman(s)}{LRaman(12-s)}$ and $\\frac{1}{-2I\\frac{\\partial\\Theta_{ext}(s)}{\\partial t}|\\mychi(LRaman,s)|}\\frac{d}{d s}\\left\\{\\frac{LRaman(s)}{LRaman(12-s)}\\right\\}$, (Green) $\\frac{1}{|\\mychi(LRaman,s)|}\\frac{-f1'(s)}{f1'(12-s)}$, (Dark-Red) $\\frac{1}{4I\\frac{\\partial\\Theta_{ext}(s)}{\\partial t}|\\mychi(LRaman,s)|}\\frac{d}{d s}\\left\\{\\frac{f1'(s)}{f1'(12-s)}\\right\\}$, (Black) $-\\frac{1}{2}\\text{imag}(\\log(LRaman(s)))$ and (Grey) $\\pm1$ function value markers. The vertical discontinuities of length $\\frac{\\pi}{2}$ in $-\\frac{1}{2}\\text{imag}(\\log(LRaman(s)))$ indicate non-trivial zeroes and intersections of the four scaled functions occur at these positions. The vertical discontinuity of length $\\pi$ arises from principal logarithm bounding of $-\\frac{1}{2}\\text{imag}(\\log(LRaman(s)))$. A characteristic feature is that at the majority of such intersections the slopes of $\\frac{1}{|\\mychi(LRaman,s)|}\\frac{-f1'(s)}{f1'(12-s)}$ and $\\frac{1}{4I\\frac{\\partial\\Theta_{ext}(s)}{\\partial t}|\\mychi(LRaman,s)|}\\frac{d}{d s}\\left\\{\\frac{f1'(s)}{f1'(12-s)}\\right\\}$ are 2 times the slope of the $\\frac{1}{|\\mychi(LRaman,s)|}\\frac{LRaman(s)}{LRaman(12-s)}$ and $\\frac{1}{-2I\\frac{\\partial\\Theta_{ext}(s)}{\\partial t}|\\mychi(LRaman,s)|}\\frac{d}{d s}\\left\\{\\frac{LRaman(s)}{LRaman(12-s)}\\right\\}$ functions (except near t=161.3 which may indicate a bad L_Raman gram point nearby).}"
+```
+
+
+```{r image_LRamanbased_6.0_155_165,   fig.show = "hold",  fig.align = "center", fig.cap=cap2, out.width = c("95%")}
+
+
+knitr::include_graphics("/home/john/pari/intersectingcurves/graph_LRamanbased_6.0_155_165.pdf")
+
+```
+
+
+
+```{r fig_cap_DHf1fncrossing_0.5_81_91, echo=FALSE}
+cap2 <- "\\scriptsize{The crossing of the real components of normalized f1 Davenport-Heilbronn 5-periodic ratio functions along the critical line $\\sigma=1/2$ for the interval t=(81,91) at non-trivial zero positions. (Blue) $\\frac{1}{|\\mychi(f_{1},s)|}\\frac{f1(s)}{f1(1-s)}$ and $\\frac{1}{-2I\\frac{\\partial\\Theta_{ext}(s)}{\\partial t}|\\mychi(f_{1},s)|}\\frac{d}{d s}\\left\\{\\frac{f1(s)}{f1(1-s)}\\right\\}$, (Green) $\\frac{1}{|\\mychi(f_{1},s)|}\\frac{-f1'(s)}{f1'(1-s)}$, (Dark-Red) $\\frac{1}{4I\\frac{\\partial\\Theta_{ext}(s)}{\\partial t}|\\mychi(f_{1},s)|}\\frac{d}{d s}\\left\\{\\frac{f1'(s)}{f1'(1-s)}\\right\\}$, (Black) $-\\frac{1}{2}\\text{imag}(\\log(f1(s)))$ and (Grey) $\\pm1$ function value markers. The vertical discontinuities of length $\\frac{\\pi}{2}$ in $-\\frac{1}{2}\\text{imag}(\\log(f1(s)))$ indicate non-trivial zeroes and intersections of the four scaled functions occur at these positions. The vertical discontinuity of length $\\pi$ arises from principal logarithm bounding of $-\\frac{1}{2}\\text{imag}(\\log(f1(s)))$. A characteristic feature is that at the majority of such intersections the slopes of $\\frac{1}{|\\mychi(f_{1},s)|}\\frac{-f1'(s)}{f1'(1-s)}$ and $\\frac{1}{4I\\frac{\\partial\\Theta_{ext}(s)}{\\partial t}|\\mychi(f_{1},s)|}\\frac{d}{d s}\\left\\{\\frac{f1'(s)}{f1'(1-s)}\\right\\}$ are 2 times the slope of the $\\frac{1}{|\\mychi(f_{1},s)|}\\frac{f1(s)}{f1(1-s)}$ and $\\frac{1}{-2I\\frac{\\partial\\Theta_{ext}(s)}{\\partial t}|\\mychi(f_{1},s)|}\\frac{d}{d s}\\left\\{\\frac{f1(s)}{f1(1-s)}\\right\\}$ functions. The complicated  asymmetric lineshapes of (Green) $\\frac{1}{|\\mychi(f_{1},s)|}\\frac{-f1'(s)}{f1'(1-s)}$ and (Dark-Red)  $\\frac{1}{4I\\frac{\\partial\\Theta_{ext}(s)}{\\partial t}|\\mychi(f_{1},s)|}\\frac{d}{d s}\\left\\{\\frac{f1'(s)}{f1'(1-s)}\\right\\}$ in the region t=(85,87) indicates the likely presence of a non-trivial zero away from the critical line.}"
+
+```
+
+
+```{r image_DHf1fncrossing_0.5_81_91,  fig.show = "hold",  fig.align = "center", fig.cap=cap2, out.width = c("100%")}
+
+
+knitr::include_graphics("/home/john/pari/intersectingcurves/graph_DHf1based_0.5_81_91.pdf")
+
+```
+
+
+
+
+
+
+```{r fig_cap_DHf1fncrossing_0.808517_81_91, echo=FALSE}
+cap2 <- "\\scriptsize{The crossing of the real components of normalized f1 Davenport-Heilbronn 5-periodic ratio functions away from the critical line along  $\\sigma=0.808517$ for the interval t=(81,91) at non-trivial zero positions. (Blue) $\\frac{1}{|\\mychi(f_{1},s)|}\\frac{f1(s)}{f1(1-s)}$ and $\\frac{-1}{2I\\frac{\\partial\\Theta_{ext}(s)}{\\partial t}|\\mychi(f_{1},s)|}\\frac{d}{d s}\\left\\{\\frac{f1(s)}{f1(1-s)}\\right\\}$, (Green) $\\frac{1}{|\\mychi(f_{1},s)|}\\frac{-f1'(s)}{f1'(1-s)}$, (Dark-Red) $\\frac{1}{4I\\frac{\\partial\\Theta_{ext}(s)}{\\partial t}|\\mychi(f_{1},s)|}\\frac{d}{d s}\\left\\{\\frac{f1'(s)}{f1'(1-s)}\\right\\}$, (Black) $-\\frac{1}{2}\\text{imag}(\\log(f1(s)))$ and (Grey) $\\pm1$ function value markers. The vertical discontinuities of length $\\frac{\\pi}{2}$ in $-\\frac{1}{2}\\text{imag}(\\log(f1(s)))$ indicate non-trivial zeroes and intersections of the four scaled functions occur at these positions e.g., s=0.808517 + I85.699348 [4,5]. A characteristic feature is that at the majority of such intersections the slopes of $\\frac{1}{|\\mychi(f_{1},s)|}\\frac{-f1'(s)}{f1'(1-s)}$ and $\\frac{1}{4I\\frac{\\partial\\Theta_{ext}(s)}{\\partial t}|\\mychi(f_{1},s)|}\\frac{d}{d s}\\left\\{\\frac{f1'(s)}{f1'(1-s)}\\right\\}$ are 2 times the slope of the $\\frac{1}{|\\mychi(f_{1},s)|}\\frac{f1(s)}{f1(1-s)}$ and $\\frac{1}{-2I\\frac{\\partial\\Theta_{ext}(s)}{\\partial t}|\\mychi(f_{1},s)|}\\frac{d}{d s}\\left\\{\\frac{f1(s)}{f1(1-s)}\\right\\}$ functions.}"
+
+```
+
+
+
+```{r image_DHf1fncrossing_0.808517_81_91,  fig.show = "hold",  fig.align = "center", fig.cap=cap2, out.width = c("100%")}
+
+
+knitr::include_graphics("/home/john/pari/intersectingcurves/graph_DHf1based_0.808517_81_91.pdf")
+
+```
+
+
+
+```{r fig_cap_DHf2fncrossing_0.5_5_25, echo=FALSE}
+cap2 <- "\\scriptsize{The crossing of the real components of normalized f2 Davenport-Heilbronn 5-periodic ratio functions along the critical line $\\sigma=1/2$ for the interval t=(5,25) at non-trivial zero positions. (Blue) $\\frac{1}{|\\mychi(f_{2},s)|}\\frac{f2(s)}{f2(1-s)}$ and $\\frac{1}{-2I\\frac{\\partial\\Theta_{ext}(s)}{\\partial t}|\\mychi(f_{2},s)|}\\frac{d}{d s}\\left\\{\\frac{f2(s)}{f2(1-s)}\\right\\}$, (Green) $\\frac{1}{|\\mychi(f_{2},s)|}\\frac{-f2'(s)}{f2'(1-s)}$, (Dark-Red) $\\frac{1}{4I\\frac{\\partial\\Theta_{ext}(s)}{\\partial t}|\\mychi(f_{2},s)|}\\frac{d}{d s}\\left\\{\\frac{f2'(s)}{f2'(1-s)}\\right\\}$, (Black) $-\\frac{1}{2}\\text{imag}(\\log(f2(s)))$ and (Grey) $\\pm1$ function value markers. The vertical discontinuities of length $\\frac{\\pi}{2}$ in $-\\frac{1}{2}\\text{imag}(\\log(f2(s)))$ indicate non-trivial zeroes and intersections of the four scaled functions occur at these positions. The vertical discontinuity of length $\\pi$ arises from principal logarithm bounding of $-\\frac{1}{2}\\text{imag}(\\log(f2(s)))$. A characteristic feature is that at the majority of such intersections the slopes of $\\frac{1}{|\\mychi(f_{2},s)|}\\frac{-f2'(s)}{f2'(1-s)}$ and $\\frac{1}{4I\\frac{\\partial\\Theta_{ext}(s)}{\\partial t}|\\mychi(f_{2},s)|}\\frac{d}{d s}\\left\\{\\frac{f2'(s)}{f2'(1-s)}\\right\\}$ are 2 times the slope of the $\\frac{1}{|\\mychi(f_{2},s)|}\\frac{f2(s)}{f2(1-s)}$ and $\\frac{1}{-2I\\frac{\\partial\\Theta_{ext}(s)}{\\partial t}|\\mychi(f_{2},s)|}\\frac{d}{d s}\\left\\{\\frac{f2(s)}{f2(1-s)}\\right\\}$ functions. The complicated  asymmetric lineshapes of (Green) $\\frac{1}{|\\mychi(f_{2},s)|}\\frac{-f2'(s)}{f2'(1-s)}$ and (Dark-Red)  $\\frac{1}{4I\\frac{\\partial\\Theta_{ext}(s)}{\\partial t}|\\mychi(f_{2},s)|}\\frac{d}{d s}\\left\\{\\frac{f2'(s)}{f2'(1-s)}\\right\\}$ in the regions t=(8,10), t=(17.5,19) indicates the likely presence of a non-trivial zero away from the critical line.}"
+
+```
+
+
+```{r image_DHf2fncrossing_0.5_5_25,  fig.show = "hold",  fig.align = "center", fig.cap=cap2, out.width = c("100%")}
+
+
+knitr::include_graphics("/home/john/pari/intersectingcurves/graph_DHf2based_0.5_5_25.pdf")
+
+```
+
+
+
+```{r fig_cap_DHf2fncrossing_2.30862_5_25, echo=FALSE}
+cap2 <- "\\scriptsize{The crossing of the real components of normalized f2 Davenport-Heilbronn 5-periodic ratio functions outside the critical strip along the line $\\sigma=2.30862$ for the interval t=(5,25) at non-trivial zero positions. (Blue) $\\frac{1}{|\\mychi(f_{2},s)|}\\frac{f2(s)}{f2(1-s)}$ and $\\frac{1}{-2I\\frac{\\partial\\Theta_{ext}(s)}{\\partial t}|\\mychi(f_{2},s)|}\\frac{d}{d s}\\left\\{\\frac{f2(s)}{f2(1-s)}\\right\\}$, (Green) $\\frac{1}{|\\mychi(f_{2},s)|}\\frac{-f2'(s)}{f2'(1-s)}$, (Dark-Red) $\\frac{1}{4I\\frac{\\partial\\Theta_{ext}(s)}{\\partial t}|\\mychi(f_{2},s)|}\\frac{d}{d s}\\left\\{\\frac{f2'(s)}{f2'(1-s)}\\right\\}$, (Black) $-\\frac{1}{2}\\text{imag}(\\log(f2(s)))$ and (Grey) $\\pm1$ function value markers. The vertical discontinuities of length $\\frac{\\pi}{2}$ in $-\\frac{1}{2}\\text{imag}(\\log(f2(s)))$ indicate non-trivial zeroes and intersections of the four scaled functions occur at these positions e.g, s=2.30862 + I8.91836 [5]. The vertical discontinuities of length $\\pi$ arises from principal logarithm bounding of $-\\frac{1}{2}\\text{imag}(\\log(f2(s)))$. A characteristic feature is that at the majority of such intersections the slopes of $\\frac{1}{|\\mychi(f_{2},s)|}\\frac{-f2'(s)}{f2'(1-s)}$ and $\\frac{1}{4I\\frac{\\partial\\Theta_{ext}(s)}{\\partial t}|\\mychi(f_{2},s)|}\\frac{d}{d s}\\left\\{\\frac{f2'(s)}{f2'(1-s)}\\right\\}$ are 2 times the slope of the $\\frac{1}{|\\mychi(f_{2},s)|}\\frac{f2(s)}{f2(1-s)}$ and $\\frac{1}{-2I\\frac{\\partial\\Theta_{ext}(s)}{\\partial t}|\\mychi(f_{2},s)|}\\frac{d}{d s}\\left\\{\\frac{f2(s)}{f2(1-s)}\\right\\}$ functions.}"
+
+```
+
+
+```{r image_DHf2fncrossing_2.30862_5_25,  fig.show = "hold",  fig.align = "center", fig.cap=cap2, out.width = c("100%")}
+
+
+knitr::include_graphics("/home/john/pari/intersectingcurves/graph_DHf2based_2.30862_5_25.pdf")
+
+```
+
+```{r fig_cap_L32fncrossing_0.5_5_30, echo=FALSE}
+cap2 <- "\\scriptsize{The crossing of the real components of normalized $L(\\mychi_{3(2,.)},s)$ L function ratio functions along the critical line $\\sigma=1/2$ for the interval t=(5,30) at non-trivial zero positions. (Blue) $\\frac{1}{|\\mychi(L32,s)|}\\frac{L32(s)}{L32(1-s)}$ and $\\frac{1}{-2I\\frac{\\partial\\Theta_{ext}(L32,s)}{\\partial t}|\\mychi(L32,s)|}\\frac{d}{d s}\\left\\{\\frac{L32(s)}{L32(1-s)}\\right\\}$, (Green) $\\frac{1}{|\\mychi(L32,s)|}\\frac{-L32'(s)}{L32'(1-s)}$, (Dark-Red) $\\frac{1}{4I\\frac{\\partial\\Theta_{ext}(L32,s)}{\\partial t}|\\mychi(L32,s)|}\\frac{d}{d s}\\left\\{\\frac{L32'(s)}{L32'(1-s)}\\right\\}$, (Black) $-\\frac{1}{2}\\text{imag}(\\log(L32(s)))$ and (Grey) $\\pm1$ function value markers. The vertical discontinuities of length $\\frac{\\pi}{2}$ in $-\\frac{1}{2}\\text{imag}(\\log(L32(s)))$ indicate non-trivial zeroes and intersections of the four scaled functions occur at these positions. The vertical discontinuity of length $\\pi$ arises from principal logarithm bounding of $-\\frac{1}{2}\\text{imag}(\\log(L32(s)))$. A characteristic feature is that at the majority of such intersections the slopes of $\\frac{1}{|\\mychi(L32,s)|}\\frac{-L32'(s)}{L32'(1-s)}$ and $\\frac{1}{4I\\frac{\\partial\\Theta_{ext}(L32,s)}{\\partial t}|\\mychi(L32,s)|}\\frac{d}{d s}\\left\\{\\frac{L32'(s)}{L32'(1-s)}\\right\\}$ are 2 times the slope of the $\\frac{1}{|\\mychi(L32,s)|}\\frac{L32(s)}{L32(1-s)}$ and $\\frac{1}{-2I\\frac{\\partial\\Theta_{ext}(L32,s)}{\\partial t}|\\mychi(L32,s)|}\\frac{d}{d s}\\left\\{\\frac{L32(s)}{L32(1-s)}\\right\\}$ functions.}"
+
+```
+
+
+```{r image_L32fncrossing_0.5_5_30,  fig.show = "hold",  fig.align = "center", fig.cap=cap2, out.width = c("100%")}
+
+
+knitr::include_graphics("/home/john/pari/intersectingcurves/graph_L32based_0.5_5_30.pdf")
+
+```
+
+\clearpage
+
+###Constraints on $\zeta(s)$, $\zeta'(s)$, $\zeta''(s)$ and conjugate pair functions at non-trivial zero co-ordinates
+
+Before giving the above constraints broken down the real and imaginary components of equations (25-28). Figure 14 illustrates the analogous behaviour of the imaginary components of the four normalised Riemann Zeta ratio functions to the real component behaviour shown early in figure 5, 
+
+
+
+```{r fig_cap_zetafnIMAGCOMP_0.5_10_35, echo=FALSE}
+cap2 <- "\\scriptsize{The behaviour of the (left) \\textbf{imaginary} and (right) \\textbf{real} components of four normalised Riemann Zeta ratio functions along critical line $\\sigma=1/2$ for the interval t=(0,35). (Blue) $\\frac{1}{|\\mychi(s)|}\\frac{\\zeta(s)}{\\zeta(1-s)}$ and $\\frac{1}{-2I\\Theta'(t)|\\mychi(s)|}\\frac{d}{d s}\\left\\{\\frac{\\zeta(s)}{\\zeta(1-s)}\\right\\}$, (Green) $\\frac{1}{|\\mychi(s)|}\\frac{-\\zeta'(s)}{\\zeta'(1-s)}$, (Dark-Red) $\\frac{1}{4I\\Theta'(t)|\\mychi(s)|}\\frac{d}{d s}\\left\\{\\frac{\\zeta'(s)}{\\zeta'(1-s)}\\right\\}$, (Black) $-\\frac{1}{2}\\text{imag}(\\log(\\zeta(s)))$ and (Grey) $\\pm1$ function value markers. The vertical discontinuities of length $\\frac{\\pi}{2}$ in $-\\frac{1}{2}\\text{imag}(\\log(\\zeta(s)))$ indicate non-trivial zeroes and intersections of the four scaled functions occur at these positions. A characteristic feature is that at the majority of such intersections the slopes of $\\frac{1}{|\\mychi(s)|}\\frac{-\\zeta'(s)}{\\zeta'(1-s)}$ and $\\frac{1}{4I\\Theta'(t)|\\mychi(s)|}\\frac{d}{d s}\\left\\{\\frac{\\zeta'(s)}{\\zeta'(1-s)}\\right\\}$ are often $\\sim2$ times the slope of the $\\frac{1}{|\\mychi(s)|}\\frac{\\zeta(s)}{\\zeta(1-s)}$ and $\\frac{1}{-2I\\Theta'(t)|\\mychi(s)|}\\frac{d}{d s}\\left\\{\\frac{\\zeta(s)}{\\zeta(1-s)}\\right\\}$ functions, as occurs with the bisection of the red/green lines with the black and blue lines in the figure.}"
+
+```
+
+
+
+
+```{r image_zetafnIMAGCOMP_0.5_10_35,   fig.show = "hold",  fig.align = "center", fig.cap=cap2, out.width = c("49.5%","49.5%")}
+
+
+knitr::include_graphics("/home/john/pari/intersectingcurves/graph_zetaIMAGCOMPbased_0.5_10_35.pdf")
+knitr::include_graphics("/home/john/pari/intersectingcurves/graph_zetabased_0.5_10_35.pdf")
+
+```
+
+That is, the imaginary components of the four normalised function intersect at non-trivial zero co-ordinates of the investigated L functions (and linear combinations of L functions). Therefore, equations (25-28) give the following constraints on  $\zeta(\rho)$, $\zeta'(\rho)$, $\zeta''(\rho)$ and conjugate pair functions at non-trivial zero co-ordinates $\rho$.
+
+\begin{dmath}
+\Re\left(\frac{1}{|\mychi(\rho)|}\frac{\zeta(\rho)}{\zeta(1-\rho)}\right) =
+\Re\left(\frac{1}{-2I\frac{\partial \Theta_{ext}(\rho)}{\partial t}|\mychi(\rho)|}\frac{d}{d s}\left\{\frac{\zeta (\rho)}{\zeta (1-\rho)}\right\}\right)
+= \Re\left(\frac{-1}{|\mychi(\rho)|}\frac{\zeta '(\rho)}{\zeta'(1-\rho)}\right) \\
+= \Re\left(\frac{1}{4I\frac{\partial \Theta_{ext}(\rho)}{\partial t}|\mychi(\rho)|}\frac{d}{d s}\left\{\frac{\zeta '(\rho)}{\zeta' (1-\rho)}\right\}\right) \\
+\Im\left(\frac{1}{|\mychi(\rho)|}\frac{\zeta(\rho)}{\zeta(1-\rho)}\right) =
+\Im\left(\frac{1}{-2I\frac{\partial \Theta_{ext}(\rho)}{\partial t}|\mychi(\rho)|}\frac{d}{d s}\left\{\frac{\zeta (\rho)}{\zeta (1-\rho)}\right\}\right)
+= \Im\left(\frac{-1}{|\mychi(\rho)|}\frac{\zeta '(\rho)}{\zeta'(1-\rho)}\right) \\
+= \Im\left(\frac{1}{4I\frac{\partial \Theta_{ext}(\rho)}{\partial t}|\mychi(\rho)|}\frac{d}{d s}\left\{\frac{\zeta '(\rho)}{\zeta' (1-\rho)}\right\}\right) 
+\end{dmath}
+
+Explicitly, expanding the derivatives 
+
+\begin{dmath}
+\Re\left(\frac{1}{|\mychi(\rho)|}\frac{\zeta(\rho)}{\zeta(1-\rho)}\right) =
+\Re\left(\frac{1}{-2I\frac{\partial \Theta_{ext}(\rho)}{\partial t}|\mychi(\rho)|}\left\{\frac{\zeta'(\rho)}{\zeta (1-\rho)}+\frac{\zeta(\rho)\zeta'(1-\rho)}{\zeta (1-\rho)^2}\right\}\right) \\
+= \Re\left(\frac{-1}{|\mychi(\rho)|}\frac{\zeta '(\rho)}{\zeta'(1-\rho)}\right) 
+= \Re\left(\frac{1}{4I\frac{\partial \Theta_{ext}(\rho)}{\partial t}|\mychi(\rho)|}\left\{\frac{\zeta''(\rho)}{\zeta'(1-\rho)}+\frac{\zeta '(\rho)\zeta''(1-\rho)}{\zeta' (1-\rho)^2}\right\}\right)
+\end{dmath}
+
+\begin{dmath}
+\Im\left(\frac{1}{|\mychi(\rho)|}\frac{\zeta(\rho)}{\zeta(1-\rho)}\right) =
+\Im\left(\frac{1}{-2I\frac{\partial \Theta_{ext}(\rho)}{\partial t}|\mychi(\rho)|}\left\{\frac{\zeta'(\rho)}{\zeta (1-\rho)}+\frac{\zeta(\rho)\zeta'(1-\rho)}{\zeta (1-\rho)^2}\right\}\right) \\
+= \Im\left(\frac{-1}{|\mychi(\rho)|}\frac{\zeta '(\rho)}{\zeta'(1-\rho)}\right) 
+= \Im\left(\frac{1}{4I\frac{\partial \Theta_{ext}(\rho)}{\partial t}|\mychi(\rho)|}\left\{\frac{\zeta''(\rho)}{\zeta'(1-\rho)}+\frac{\zeta '(\rho)\zeta''(1-\rho)}{\zeta' (1-\rho)^2}\right\}\right)
+\end{dmath}
+
+
+Noting the common real factor $\frac{1}{|\mychi(\rho)|}$ regardless of the non-trivial zero co-ordinate the above expressions reduce to
+
+\begin{dmath}
+\Re\left(\frac{\zeta(\rho)}{\zeta(1-\rho)}\right) =
+\Re\left(\frac{1}{-2I\frac{\partial \Theta_{ext}(\rho)}{\partial t}}\left\{\frac{\zeta'(\rho)}{\zeta (1-\rho)}+\frac{\zeta(\rho)\zeta'(1-\rho)}{\zeta (1-\rho)^2}\right\}\right) \\
+= \Re\left(-\frac{\zeta '(\rho)}{\zeta'(1-\rho)}\right)
+= \Re\left(\frac{1}{4I\frac{\partial \Theta_{ext}(\rho)}{\partial t}}\left\{\frac{\zeta''(\rho)}{\zeta'(1-\rho)}+\frac{\zeta '(\rho)\zeta''(1-\rho)}{\zeta' (1-\rho)^2}\right\}\right)
+\end{dmath}
+
+\begin{dmath}
+\Im\left(\frac{\zeta(\rho)}{\zeta(1-\rho)}\right) =
+\Im\left(\frac{1}{-2I\frac{\partial \Theta_{ext}(\rho)}{\partial t}}\left\{\frac{\zeta'(\rho)}{\zeta (1-\rho)}+\frac{\zeta(\rho)\zeta'(1-\rho)}{\zeta (1-\rho)^2}\right\}\right) \\
+= \Im\left(-\frac{\zeta '(\rho)}{\zeta'(1-\rho)}\right) 
+= \Im\left(\frac{1}{4I\frac{\partial \Theta_{ext}(\rho)}{\partial t}}\left\{\frac{\zeta''(\rho)}{\zeta'(1-\rho)}+\frac{\zeta '(\rho)\zeta''(1-\rho)}{\zeta' (1-\rho)^2}\right\}\right)
+\end{dmath}
+
+
+Using the above equations, some conditions that occur at the Riemann Zeta non-trivial zero co-ordinates are
+\begin{dmath}
+\frac{\zeta(\rho)}{\zeta (1-\rho)}=-\frac{\zeta'(\rho)}{\zeta'(1-\rho)}
+\end{dmath}
+\begin{dmath}
+\frac{\zeta'(\rho)}{\zeta (1-\rho)}+\frac{\zeta(\rho)\zeta'(1-\rho)}{\zeta (1-\rho)^2}
+= -\frac{1}{2}\left\{\frac{\zeta''(\rho)}{\zeta'(1-\rho)}+\frac{\zeta '(\rho)\zeta''(1-\rho)}{\zeta' (1-\rho)^2}\right\}
+\end{dmath}
+
+
+The numerical calculation of $\frac{\zeta'(\rho)}{\zeta (1-\rho)}+\frac{\zeta(\rho)\zeta'(1-\rho)}{\zeta (1-\rho)^2}$ at the Riemann Zeta non-trivial zero co-ordinates is sensitive and best achieved using limit $s\rightarrow \rho$.
+
+Two tests of the Riemann Hypothesis arising from the intersection of the four normalised Riemann Zeta ratio functions would be whether the following conditions can occur off the critical line?
+
+\begin{equation}
+\frac{\zeta(\rho)}{\zeta(1-\rho)} =
+\frac{1}{-2I\frac{\partial \Theta_{ext}(\rho)}{\partial t}}\left\{\frac{\zeta'(\rho)}{\zeta (1-\rho)}+\frac{\zeta(\rho)\zeta'(1-\rho)}{\zeta (1-\rho)^2}\right\} = \mychi(\rho)
+\end{equation}
+
+\begin{equation}
+\frac{\zeta(\rho)}{\zeta(1-\rho)} =
+\frac{1}{4I\frac{\partial \Theta_{ext}(\rho)}{\partial t}}\left\{\frac{\zeta''(\rho)}{\zeta'(1-\rho)}+\frac{\zeta '(\rho)\zeta''(1-\rho)}{\zeta' (1-\rho)^2}\right\} = \mychi(\rho)
+\end{equation}
+
+For example, taking equation (40) and multiplying all terms by $\zeta(1-\rho)$
+
+\begin{align}
+\zeta(\rho) =
+\frac{1}{-2I\frac{\partial \Theta_{ext}(\rho)}{\partial t}}\left\{\zeta'(\rho)+\frac{\zeta(\rho)\zeta'(1-\rho)}{\zeta (1-\rho)}\right\} = \mychi(\rho)\zeta(1-\rho) \\
+\zeta(\rho) =
+\frac{1}{-2I\frac{\partial \Theta_{ext}(\rho)}{\partial t}}\left\{\zeta'(\rho)+\mychi(\rho)\zeta'(1-\rho)\right\} 
+\end{align}
+
+is inconclusive since if $\rho$ is a non-trivial zero co-ordinate, yes $\zeta(\rho) = 0$ and $\left\{\zeta'(\rho)+\mychi(\rho)\zeta'(1-\rho)\right\} = \left\{\zeta'(\rho)+-\frac{\zeta'(\rho)}{\zeta'(1-\rho)}\zeta'(1-\rho)\right\} = 0$ but the derivation doesn't force the issue of whether $\Re(\rho)$ equals 1/2 or not.
+
+Whereas taking equation (41) and multiplying all terms by $\zeta'(1-\rho)$
+
+\begin{align}
+\frac{1}{4I\frac{\partial \Theta_{ext}(\rho)}{\partial t}}\left\{\zeta''(\rho)+\frac{\zeta'(\rho)\zeta''(1-\rho)}{\zeta (1-\rho)'}\right\} = \mychi(\rho)\zeta'(1-\rho) \\
+\frac{1}{-2I\frac{\partial \Theta_{ext}(\rho)}{\partial t}}\left\{\zeta''(\rho)-\mychi(\rho)\zeta''(1-\rho)\right\} = \mychi(\rho)\zeta'(1-\rho)
+\end{align}
+
+may be a substantive test for the Riemann Hypothesis.
+
+
+###Conclusions
+
+The L function conjugate pair ratio function and related first derivative ratio functions can be easily normalised to demonstrate intersection at known non-trivial zero co-ordinates on and off the critical line. The behaviour of the intersection of the normalised functions at some non-trivial zero co-ordinates near bad gram points differs with respect to the relative magnitude of the slopes of the functions.
+
+Based on the behaviour some constraints exist between L functions and their 1st and 2nd derivative at non-trivial zero co-ordinates on and off the critical line that may help test the Riemann Hypothesis. 
+
+
+
+
+###References
+
+1. Edwards, H.M. (1974). Riemann's zeta function. Pure and Applied Mathematics 58. New York-London: Academic Press. ISBN 0-12-232750-0. Zbl 0315.10035.
+
+2. Riemann, Bernhard (1859). "?ber die Anzahl der Primzahlen unter einer gegebenen Gr?sse". Monatsberichte der Berliner Akademie.. In Gesammelte Werke, Teubner, Leipzig (1892), Reprinted by Dover, New York (1953).
+
+3. Berry, M. V. "The Riemann-Siegel Expansion for the Zeta Function: High Orders and Remainders." Proc. Roy. Soc. London A 450, 439-462, 1995.
+
+4. Spira, R. Mathematics of Computation, Volume 63, Number 208,
+October 1994, Pages 747-748
+
+5. Balanzario, E.P. and Sanchez-Ortiz, J. Mathematics of Computation,
+Volume 76, Number 260, October 2007, Pages 2045–2049
+
+6. The PARI~Group, PARI/GP version {\tt 2.12.0}, Univ. Bordeaux, 2018,
+    \url{http://pari.math.u-bordeaux.fr/}.
+\normalfont
+
+7. The LMFDB Collaboration, The L-functions and Modular Forms Database, home page of The Riemann Zeta zeroes https://www.lmfdb.org/zeros/zeta/ 2021,
+
+8. R Core Team (2017). R: A language and environment for statistical computing.
+R Foundation for Statistical Computing, Vienna, Austria. URL
+https://www.R-project.org/.
+
+9. RStudio Team (2015). RStudio: Integrated Development for R. RStudio, Inc., Boston, MA URL http://www.rstudio.com/.
+
+10. Martin, J.P.D. "Extended Riemann Siegel Theta function further simplified using functional equation factor for the Riemann Zeta function." (2017)
+http://dx.doi.org/10.6084/m9.figshare.5735268
+
+11. Keiper, J. B. "On the Zeros of the Ramanujan $tau$-Dirichlet Series in the Critical Strip." Mathematics of Computation 65, no. 216 (1996): 1613-619. Accessed February 10, 2021. http://www.jstor.org/stable/2153727.
+
