@@ -484,6 +484,60 @@ Whereas taking equation (41) and multiplying all terms by $\zeta'(1-\rho)$
 
 may be a substantive test for the Riemann Hypothesis.
 
+###Illustrating the impact of constraint equation (39) against the assertion by Newman [12,13] that the Riemann Hypothesis if true, it is only “barely so”
+
+Figures 15-18 using fourier transformed parts of real and imaginary parts of the LHS and RHS of non-trivial zero constraint equation (39) (and equations (20) and (26)) generally applied to L functions (and linear combinations of L functions)
+
+\begin{align}
+e^{(-2*\Theta_{ext}(L,\rho))}\left\{\frac{L'(\rho)}{L (1-\rho)}+\frac{L(\rho)L'(1-\rho)}{L(1-\rho)^2}\right\} = 2I\frac{\partial \Theta_{ext}(\rho)}{\partial t}\\
+-\frac{1}{2}e^{(-2*\Theta_{ext}(L,s))}\left\{\frac{L''(\rho)}{L'(1-\rho)}+\frac{L'(\rho)L''(1-\rho)}{L' (1-\rho)^2}\right\}
+\end{align}
+
+displays crossings of the real (imaginary) components of equations (46) and (47) respectively for different L functions (and the Davenport-Heilbronn 5-periodic functions which are linear combinations of L functions). 
+
+The tranformation of equation (46) is similar to the impact of Riemann-Siegel Theta function on deriving the Riemann-Siegel Z function, however the function $e^{(-2*\Theta_{ext}(L,\rho))}$ transforms the LHS of equation (39) into a pure monotonic function of $2I\frac{\partial \Theta_{ext}(\rho)}{\partial t}$ which reduces to $-2\Theta'(t)$ on the critical line.
+
+The intersections of the monotonic red line (real(eqn(46))) and the green line real(eqn(47) that correspond to the blue line discontinuities highlighting the Riemann Zeta zeroes. Likewise, the intersections of the horizontal red line (imag(eqn(46))) and the black line imag(eqn(47) also correspond to the blue line discontinuities highlighting the Riemann Zeta zeroes. The monotonic decreasing red line  $2I\frac{\partial \Theta_{ext}(\rho)}{\partial t}$  however puts an apparently stronger phenomena in that the green line needs to continually expand at at least  $2I\frac{\partial \Theta_{ext}(\rho)}{\partial t}$ to match and intersect where the majority of such intersections is occurring at the extrema of the green line. Therefore the satisfaction of equation (39) is only "barely so" at the non-trivial zero co-ordinates as in the left panel $\sigma=0.5$ but not in the right panel $\sigma=0.55$. That is, adjusting away from the critical line, e.g. $\sigma=0.55$ the red and green lines readily do not intersect.
+
+
+```{r fig_cap_zetafnconstraint_0.5_0_60, echo=FALSE}
+cap2 <- "\\scriptsize{The behaviour of the constraint (39) for Riemann Zeta function after fourier transformation by $e^{(-2*\\Theta_{ext}(L(\\mychi_1(1,.),\\rho))}$. along (left) critical line $\\sigma=1/2$ and (right) $\\sigma=0.55$ for the interval t=(0,60). (Red) real(eqn(46)), (Green) real(eqn(47)), (Blue) $-\\frac{1}{2}\\text{imag}(\\log(\\zeta(s)))$, (Dark-Red) imag(eqn(46))=0 and (Black) imag(eqn(47)). The vertical discontinuities of length $\\frac{\\pi}{2}$ in $-\\frac{1}{2}\\text{imag}(\\log(\\zeta(s)))$ indicate non-trivial zero co-ordinates. A characteristic feature is that at the majority of intersections of the red and green line in the left panel $\\sigma=0.5$ are very close to the negative extrema of real(eqn(47)) and there are no intersections in the right panel $\\sigma=0.55$.}"
+
+```
+
+
+
+
+```{r image_zetafnconstraint_0.5_0_60,   fig.show = "hold",  fig.align = "center", fig.cap=cap2, out.width = c("49.5%","49.5%")}
+
+
+knitr::include_graphics("/home/john/pari/intersectingcurves/graph_zetaconstraintbased_0.5_0_60.pdf")
+knitr::include_graphics("/home/john/pari/intersectingcurves/graph_zetaconstraintbased_0.55_0_60.pdf")
+
+```
+
+Does this make the zeroes on the critical line fragile? Probably not. The following behaviour for Davenport-Heilbronn f2 function shows that the more critical feature is whether the real(eqn(47)) (green line) exhibits full magnitude to reach the red line real(eqn(46)).
+
+
+```{r fig_cap_DHf2fnconstraint_0.5_0.01_30.01, echo=FALSE}
+cap2 <- "\\scriptsize{The behaviour of the constraint (39) for Riemann Zeta function after fourier transformation by $e^{(-2*\\Theta_{ext}(f2(\\rho)))}$ along (left) critical line $\\sigma=1/2$ and (right) $\\sigma=2.30862$ for the interval t=(0.01,30.01). (Red) real(eqn(46)), (Green) real(eqn(47)), (Blue) $-\\frac{1}{2}\\text{imag}(\\log(f2(s)))$, (Dark-Red) imag(eqn(46))=0 and (Black) imag(eqn(47)). The vertical discontinuities of length $\\frac{\\pi}{2}$ in $-\\frac{1}{2}\\text{imag}(\\log(f2(s)))$ indicate non-trivial zero co-ordinates. The vertical discontinuities of length $\\pi$ arises from principal logarithm bounding of $-\\frac{1}{2}\\text{imag}(\\log(f2(s)))$. A characteristic feature is that at the majority of intersections of the red and green line in the left panel $\\sigma=0.5$ are very close to the positive extrema of real(eqn(47)) and there is one intersection in the right panel $\\sigma=2.30862$. }"
+
+```
+
+
+
+
+```{r image_DHf2fnconstraint_0.5_0.01_30.01,   fig.show = "hold",  fig.align = "center", fig.cap=cap2, out.width = c("49.5%","49.5%")}
+
+
+knitr::include_graphics("/home/john/pari/intersectingcurves/graph_DHf2constraintbased_0.5_0.01_30.01.pdf")
+knitr::include_graphics("/home/john/pari/intersectingcurves/graph_DHf2constraintbased_2.30862_0.01_30.01.pdf")
+
+```
+
+
+
+
 
 ###Conclusions
 
@@ -525,3 +579,6 @@ http://dx.doi.org/10.6084/m9.figshare.5735268
 
 11. Keiper, J. B. "On the Zeros of the Ramanujan $tau$-Dirichlet Series in the Critical Strip." Mathematics of Computation 65, no. 216 (1996): 1613-619. Accessed February 10, 2021. http://www.jstor.org/stable/2153727.
 
+12. M. Newman,Fourier transforms with only real zeroes, Proc. Amer. Math. Soc.61(1976), 246–251.
+
+13. Rodgers, B., & Tao, T. (2020). THE DE BRUIJN–NEWMAN CONSTANT IS NON-NEGATIVE. Forum of Mathematics, Pi, 8, E6. doi:10.1017/fmp.2020.6
