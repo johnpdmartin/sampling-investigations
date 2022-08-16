@@ -36,7 +36,7 @@ knitr::include_graphics("/home/john/pari/intersectingcurves/graph_zetabased_0.5_
 
 ```
 \clearpage
-Inclusion of the functional equation term for the L function (or linear combination of L functions) $\frac{1}{|\mychi(L,s)|}$ (for the Riemann Zeta specific term $\frac{1}{|\mychi(s)|}$), and the generalisation of the $\frac{\partial\Theta(t)}{\partial t}$ term to  $\frac{\partial\Theta_{ext}(s)}{\partial t}$ has most benefit when investigating non-trivial zero positions (e.g., the Davenport-Heilbronn 5-periodic functions ($f_1(s)$, $f_2(s)$)) away from the critical line of the function. Note that the small imaginary component of $\Theta_{ext}(s)$ is a necessary factor in the intersection of the 4 function values for non-trivial zeroes located off the critical line. 
+Inclusion of the functional equation term for the L function (or linear combination of L functions) $\frac{1}{|\mychi(L,s)|}$ (for the Riemann Zeta specific term $\frac{1}{|\mychi(s)|}$), and the generalisation of the $\frac{\partial\Theta(t)}{\partial t}$ term to  $\frac{\partial\Theta_{ext}(s)}{\partial t}$ has most benefit when investigating non-trivial zero positions (e.g., the Davenport-Heilbronn 5-periodic functions ($f_1(s)$, $f_2(s)$)) away from the critical line of the function. Note that the small real component of $\Theta_{ext}(s)$ is a necessary factor in the intersection of the 4 function values for non-trivial zeroes located off the critical line. 
 
 
 
@@ -479,7 +479,7 @@ Whereas taking equation (41) and multiplying all terms by $\zeta'(1-\rho)$
 
 \begin{align}
 \frac{1}{4I\frac{\partial \Theta_{ext}(\rho)}{\partial t}}\left\{\zeta''(\rho)+\frac{\zeta'(\rho)\zeta''(1-\rho)}{\zeta (1-\rho)'}\right\} = \mychi(\rho)\zeta'(1-\rho) \\
-\frac{1}{-2I\frac{\partial \Theta_{ext}(\rho)}{\partial t}}\left\{\zeta''(\rho)-\mychi(\rho)\zeta''(1-\rho)\right\} = \mychi(\rho)\zeta'(1-\rho)
+\frac{1}{4I\frac{\partial \Theta_{ext}(\rho)}{\partial t}}\left\{\zeta''(\rho)-\mychi(\rho)\zeta''(1-\rho)\right\} = \mychi(\rho)\zeta'(1-\rho)
 \end{align}
 
 may be a substantive test for the Riemann Hypothesis.
