@@ -1,0 +1,617 @@
+---
+title: "Partial sum trend growth rates of the positive and negative components of the Real and Imaginary parts of finite Dirichlet Series."
+author: "John Martin"
+date: \today
+header-includes:  \usepackage{xcolor}
+output:
+  pdf_document:
+    fig_crop: no
+
+
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+
+```
+
+<!-- https://stackoverflow.com/questions/41655383/r-markdown-similar-feature-to-newcommand-in-latex/41664105 -->
+\newcommand{\mychi}{\raisebox{0pt}[1ex][1ex]{$\chi$}}
+
+
+##Executive Summary
+
+As the number of terms, in the finite Riemann Zeta Dirichlet series exceed $N=\left(\frac{t\cdot N_C}{\pi}\right)$ where t is the imaginary component of a point in the complex plane (away from the real axis) and $N_C$ is the conductor value of the Riemann Zeta function, the leading trend term of the growth rates of the 4 separate partial sums $\sum\limits_{n=1}^\infty (\Re(\frac{1}{n^s}))^+$, $\sum\limits_{n=1}^\infty (\Re(\frac{1}{n^s}))^-$, $\sum\limits_{n=1}^\infty (\Im(\frac{1}{n^s}))^+$, $\sum\limits_{n=1}^\infty (\Im(\frac{1}{n^s}))^-$ respectively of the positive and negative components of the Real and Imaginary parts of Riemann Zeta Dirichlet Series exhibit an absolute magnitude $\sim \frac{1}{\pi}\left(\frac{n^{(1-\sigma)}-1}{1-\sigma}\right)$, for $s=\sigma+It$. Such an absolute magnitude of growth of the leading term is similar in magnitude to generous (older) known upper bounds of the magnitude of the Riemann Zeta function growth ($|\zeta(s)| < \sum\limits_{n<t} \frac{1}{n^\sigma} + .. \le \frac{t^{(1-\sigma)}}{1-\sigma} + ..$). This empirical study shows the Box-Cox transformation functional behaviour also extends outside the critical strip and the Mellin transform representation of the Riemann Zeta function as a Dirac comb aids in interpretation of the empirical behaviour.
+
+##Introduction
+
+
+In this paper, the partial sum growth behaviour away from the real axis, for Dirichlet Series for several 1st degree L functions [1] both using raw scale and Box-Cox transformation [2] is presented graphically. For example, the Riemann Zeta Dirichlet Series is decomposed into 4 partial components 
+
+\begin{align}
+\sum\limits_{n=1}^X \frac{1}{n^s} = \sum\limits_{n=1}^X (\Re(\frac{1}{n^s}))^+ + \sum\limits_{n=1}^X (\Re(\frac{1}{n^s}))^- + I \cdot \left(\sum\limits_{n=1}^X (\Im(\frac{1}{n^s}))^+ + \sum\limits_{n=1}^X (\Im(\frac{1}{n^s}))^- \right)
+\end{align}
+
+
+
+where (i) $s=(\sigma+i t)$ is a point in the complex plane, (ii) $(\Re(\frac{1}{n^s}))^{+,-}$ ($(\Im(\frac{1}{n^s}))^{+,-}$) are the positive and negative components of the Real (Imaginary) part of the Riemann Zeta Dirichlet Series for a given integer $n\thinspace\in \thinspace \mathbb{Z}^+$ in the interval [1,X]. 
+
+Logically, (i) 
+
+\begin{align}
+\text{if } \Im(\frac{1}{n^s}) &< 0 \text{ is true for a given n, then } \Im(\frac{1}{n^s})^- = \Im(\frac{1}{n^s}) \text{, } \Im(\frac{1}{n^s})^+ = 0
+\end{align}
+
+(ii) vice versa that 
+
+\begin{align}
+\text{if } \Im(\frac{1}{n^s}) &> 0 \text{ is true for a given n, then } \Im(\frac{1}{n^s})^- = 0 \text{, } \Im(\frac{1}{n^s})^+ = \Im(\frac{1}{n^s})
+\end{align}
+
+and (iii) 
+
+\begin{align}
+\text{if both } \Im(\frac{1}{n^s}) = 0 \text{ is true for a given n, then } 
+\Im(\frac{1}{n^s})^- = 0 \text{, } \Im(\frac{1}{n^s})^+ = 0
+\end{align}
+
+The analogous classification applies to $(\Re(\frac{1}{n^s}))^{+,-}$ depending on the sign of $\Re(\frac{1}{n^s})$ for a given n. 
+
+Graphically, for display purposes it is easiest to ignore the sign of the function values and compare the behaviour of the absolute value of the Riemann Zeta Dirichlet series 
+
+\begin{align}
+\left|\sum\limits_{n=1}^X \frac{1}{n^s}\right|
+\end{align}
+
+to the absolute value of the 4 partial sums 
+
+\begin{align}
+\sum\limits_{n=1}^X (\Re(\frac{1}{n^s}))^+ \\
+\left|\sum\limits_{n=1}^X (\Re(\frac{1}{n^s}))^-\right| \\
+\sum\limits_{n=1}^X (\Im(\frac{1}{n^s}))^+ \\
+\left|\sum\limits_{n=1}^X (\Im(\frac{1}{n^s}))^-\right|
+\end{align}
+
+Another relevant linear combination of interest (aside from the Riemann Zeta Dirichlet Series) also compared in this paper is the simple arithmetic mean of the absolute values of the 4 partial sums
+
+\begin{equation}
+\frac{1}{4} \left\{\sum\limits_{n=1}^\infty (\Re(\frac{1}{n^s}))^++\left|\sum\limits_{n=1}^\infty (\Re(\frac{1}{n^s}))^-\right|+\sum\limits_{n=1}^\infty (\Im(\frac{1}{n^s}))^++\left|\sum\limits_{n=1}^\infty (\Im(\frac{1}{n^s}))^-\right| \right\}
+\end{equation}
+
+The interest in this partial sum investigation arose from the work on the second quiescent region of L functions and end-tapered Riemann Zeta Dirichlet Series approximations (away from the real axis) of the Riemann Zeta function [3-6]. In particular, what individual behaviour of the partial components of the L function Dirichlet Series occurs when contributing to the overall quiescent behaviour of the whole 1st degree L functions at $N=\left(\frac{t\cdot N_C}{\pi}\right)$.
+
+The Dirichlet series (and 1st degree L functions) investigated are
+
+\begin{align}
+ &L(\text{\scalebox{1}{$\chi$}}_{1}(1,.),s) = \zeta(s) \\
+ &L(\text{\scalebox{1}{$\chi$}}_{3}(2,.),s)  \\
+ &L(\text{\scalebox{1}{$\chi$}}_{15}(14,.),s)
+\end{align}
+
+where $L(\text{\scalebox{1}{$\chi$}}_{N_C}(q,.),s)$ are 1st degree L functions [1] and $\text{\scalebox{1}{$\chi$}}_{N_C}(q,.)$ are the coefficients of the related Dirichlet series.
+
+All the calculations and most graphs are produced using the pari-gp language [7] and exact L functions values were available for all the considered L functions. This document published using RStudio [8] and the graphs on Dirac comb behaviour were prepared using R [9] and RStudio. Easy access to the definitions of L functions and their Dirichlet series was provided by the LMFDB Collaboration [1]. 
+
+## Results
+
+For t=280.8 corresponding to a Riemann Zeta function peak on the critical line, figure 1 illustrates three views of the 4 partial Riemann Zeta Dirichlet series sums equations (6-9), shown in red, green, blue, violet-red respectively when $N \in [1,300]$.
+
+\begin{enumerate}
+\item Other series sums also shown are  
+
+\begin{itemize}
+\item the absolute value of the (red) Dirichlet Series (red) $\left|\sum\limits_{n=1}^N \frac{1}{n^s}\right|$ which has a horizontal trend behaviour as $N \rightarrow \infty$ and 
+\item the (black) arithmetic mean of the 4 partial Riemann Zeta Dirichlet series sums equation (10) and
+\item the scaled (gray) Box-Cox function $f(N,\sigma)=\frac{1}{\pi}\left(\frac{N^{(1-\sigma)}-1}{(1-\sigma)}\right)$ 
+\end{itemize}
+
+\item Each row in figure 1 displays the partial sum behaviour for a different real axis value $(\sigma=1.05,0.5,-0.
+1,-1)$ along the line $s=\sigma+I\cdot 280.8$ in the complex plane.
+\item The lefthand column displays a first view of the partial sums in raw (natural) scale as a function of N.
+\item The middle column displays a second view of the partial sums using an x axis that is the Box-Cox transformed scale $N^*=\frac{1}{\pi}\left(\frac{N^{(1-\sigma)}-1}{1-\sigma}\right)$ and exhibits linear trend growth when $N > \left(\frac{t\cdot N_C}{\pi}\right) = \left(\frac{280.8}{\pi}\right)$.
+\item The righthand column displays a third view of the partial sums by detrending the partial series sums in raw scale by subtracting $\frac{1}{\pi}\left(\frac{N^{(1-\sigma)}-1}{(1-\sigma)}\right)$ from each series sum.
+\item The Riemann Zeta Dirichlet Series quiescent region at $N=\left(\frac{t\cdot N_C}{\pi}\right) = \left(\frac{280.8}{\pi}\right)$ using t=280.8 and the Riemann Zeta conductor value $N_C=1$ is highlighted by a gray vertical line and
+\item The initial entry into the final plateau region $N=\left(\frac{t\cdot N_C}{2\pi}\right) = \left(\frac{280.8}{2\pi}\right)$ which is the most prominent feature of the Dirichlet Series sum is indicated by a vertical blue line. 
+\end{enumerate}
+
+The main contrasting behaviour to the Riemann Zeta Dirichlet Series sum is that the 4 partial sums all have significant features at the quiescent region $N=\left(\frac{t\cdot N_C}{\pi}\right)$ which strongly cancel each other when forming the whole Riemann Zeta Dirichlet Series sum. As with the whole Riemann Zeta Dirichlet series, the 4 component partial sums exhibit oscillating divergence about the trend line as $N \rightarrow \infty$ when $\sigma \le 1$, i.e. see rows 2-4. The (black) arithmetic mean of the absolute value of the 4 partial sums is relatively smooth and is closely approximated by the Box-Cox function $\frac{1}{\pi}\left(\frac{N^{(1-\sigma)}-1}{(1-\sigma)}\right)$. So in essence the arithmetic sum of the absolute value of the 4 partial sums concentrates on the common trend component and the Riemann Zeta Dirchlet series reveals information on the (constructive) detrended behaviour.  
+
+
+```{r fig_cap_boxcox_280.8A, echo=FALSE}
+cap2 <- "\\scriptsize{Three views of the 4 partial Riemann Zeta Dirichlet series sums (red) $\\sum\\limits_{n=1}^N (\\Re(\\frac{1}{n^s}))^+$, (green) $\\left|\\sum\\limits_{n=1}^N (\\Re(\\frac{1}{n^s}))^-\\right|$, (blue) $\\sum\\limits_{n=1}^N (\\Im(\\frac{1}{n^s}))^+$, (violet-red) $\\left|\\sum\\limits_{n=1}^N (\\Im(\\frac{1}{n^s}))^-\\right|$ as $N \\rightarrow \\infty$, for t=280.8 (a Riemann Zeta function peak), by rows (1-4) $(\\sigma=1.05,0.5,-0.1,-1)$, for (left column) in raw scale (N), (middle column) Box-Cox transformed scale $N^*=\\frac{1}{\\pi}\\left(\\frac{N^{(1-\\sigma)}-1}{1-\\sigma}\\right)$, and (right column) detrended series sums on raw scale (N) compared to (a) the absolute sum of the (red - asymptotically horizontal, naturally detrended) Dirichlet Series $\\left|\\sum\\limits_{n=1}^N \\frac{1}{n^s}\\right|$, (b) (black) the arithmetic average of the four partial sums $\\frac{1}{4}\\left(\\sum\\limits_{n=1}^N (\\Re(\\frac{1}{n^s}))^++\\left|\\sum\\limits_{n=1}^N (\\Re(\\frac{1}{n^s}))^-\\right|+\\sum\\limits_{n=1}^N (\\Im(\\frac{1}{n^s}))^++\\left|\\sum\\limits_{n=1}^N (\\Im(\\frac{1}{n^s}))^-\\right|\\right)$ as $N \\rightarrow \\infty$ and (c) (gray) the empirical trend curve $\\frac{1}{\\pi}\\left(\\frac{N^{(1-\\sigma)}-1}{1-\\sigma}\\right)$. To repeat, the x axis in the left and right columns indicates the number of included integers in the series sum and in the middle column the Box-Cox transformation value of the number of included integers . The quiescent region at $N=\\left(\\frac{t\\cdot N_C}{\\pi}\\right)$ where (i) t=280.8, (ii) the Riemann Zeta conductor value $N_C=1$ is highlighted by a gray vertical line and is useful for end tapered Dirichlet series calculations (away from the real axis) and the initial entry into the final plateau region $N=\\left(\\frac{t\\cdot N_C}{2\\pi}\\right)$ which is the most prominent feature of the Dirichlet Series sum is indicated by a vertical blue line. As a main contrasting behaviour to the Riemann Zeta Dirichlet Series sum the 4 partial sums all have significant features at $N=\\left(\\frac{t\\cdot N_C}{\\pi}\\right)$ which strongly cancel each other in forming the whole Riemann Zeta Dirichlet Series sum. As with the whole Riemann Zeta Dirichlet series, the 4 component partial sums exhibit oscillating divergence about the trend line as $N \\rightarrow \\infty$ when $\\sigma \\le 1$, i.e. see rows 2-4.}"
+
+```
+
+
+
+```{r image_boxcox_280.8A, fig.show = "hold",  out.width = c("32.5%","32.5%","32.5%"), fig.align = "center", fig.cap=cap2, fig.height=3}
+
+
+
+knitr::include_graphics("/home/john/pari/dirichletpartialsums/graph_zeta_rawscale_1.05_280.8_300.pdf")
+
+knitr::include_graphics("/home/john/pari/dirichletpartialsums/graph_zeta_Box_Cox_transformed_1.05_280.8_300.pdf")
+
+knitr::include_graphics("/home/john/pari/dirichletpartialsums/graph_zeta_detrended_1.05_280.8_300.pdf")
+
+
+knitr::include_graphics("/home/john/pari/dirichletpartialsums/graph_zeta_rawscale_0.5_280.8_300.pdf")
+
+knitr::include_graphics("/home/john/pari/dirichletpartialsums/graph_zeta_Box_Cox_transformed_0.5_280.8_300.pdf")
+
+knitr::include_graphics("/home/john/pari/dirichletpartialsums/graph_zeta_detrended_0.5_280.8_300.pdf")
+
+
+knitr::include_graphics("/home/john/pari/dirichletpartialsums/graph_zeta_rawscale_-0.1_280.8_300.pdf")
+
+knitr::include_graphics("/home/john/pari/dirichletpartialsums/graph_zeta_Box_Cox_transformed_-0.1_280.8_300.pdf")
+
+knitr::include_graphics("/home/john/pari/dirichletpartialsums/graph_zeta_detrended_-0.1_280.8_300.pdf")
+
+
+knitr::include_graphics("/home/john/pari/dirichletpartialsums/graph_zeta_rawscale_-1_280.8_300.pdf")
+
+knitr::include_graphics("/home/john/pari/dirichletpartialsums/graph_zeta_Box_Cox_transformed_-1_280.8_300.pdf")
+
+knitr::include_graphics("/home/john/pari/dirichletpartialsums/graph_zeta_detrended_-1_280.8_300.pdf")
+
+
+
+```
+
+
+
+Figure 2 shows similar behaviour at t=29986.206 corresponding to another known Riemann Zeta function peak on the critical line. Notable variations to figure 1 are (i) the quiescent region is now occurring at $N=\left(\frac{t\cdot N_C}{\pi}\right) = \left(\frac{29986.206}{\pi}\right)$, (ii) in the first two columns the trend growth for $\sigma=-0.1,-1$ overwhelms the scale of the differences between the partial sums, and (iii) in the last column also for $\sigma=-0.1,-1$ there are strong features in the detrended partial sums for $N=\left(\frac{t\cdot N_C}{\pi}\right)$,  $N=2*\left(\frac{t\cdot N_C}{\pi}\right)$, $3*N=\left(\frac{t\cdot N_C}{\pi}\right)$ while the Riemann Zeta function remains a horizontal trend with oscillatory divergence. 
+
+```{r fig_cap_boxcox_29986.206, echo=FALSE}
+cap2 <- "\\scriptsize{Three views of the 4 partial Riemann Zeta Dirichlet series sums (red) $\\sum\\limits_{n=1}^N (\\Re(\\frac{1}{n^s}))^+$, (green) $\\left|\\sum\\limits_{n=1}^N (\\Re(\\frac{1}{n^s}))^-\\right|$, (blue) $\\sum\\limits_{n=1}^N (\\Im(\\frac{1}{n^s}))^+$, (violet-red) $\\left|\\sum\\limits_{n=1}^N (\\Im(\\frac{1}{n^s}))^-\\right|$ as $N \\rightarrow \\infty$, for t=29986.206 (a Riemann Zeta function peak), by rows (1-4) $(\\sigma=1.05,0.5,-0.1,-1)$, for (left column) in raw scale (N), (middle column) Box-Cox transformed scale $N^*=\\frac{1}{\\pi}\\left(\\frac{N^{(1-\\sigma)}-1}{1-\\sigma}\\right)$, and (right column) detrended series sums on raw scale (N) compared to (a) the absolute sum of the (red - asymptotically horizontal, naturally detrended) Dirichlet Series $\\left|\\sum\\limits_{n=1}^N \\frac{1}{n^s}\\right|$, (b) (black) the arithmetic average of the four partial sums $\\frac{1}{4}\\left(\\sum\\limits_{n=1}^N (\\Re(\\frac{1}{n^s}))^++\\left|\\sum\\limits_{n=1}^N (\\Re(\\frac{1}{n^s}))^-\\right|+\\sum\\limits_{n=1}^N (\\Im(\\frac{1}{n^s}))^++\\left|\\sum\\limits_{n=1}^N (\\Im(\\frac{1}{n^s}))^-\\right|\\right)$ as $N \\rightarrow \\infty$ and (c) (gray) the empirical trend curve $\\frac{1}{\\pi}\\left(\\frac{N^{(1-\\sigma)}-1}{1-\\sigma}\\right)$. To repeat, the x axis in the left and right columns indicates the number of included integers in the series sum and in the middle column the Box-Cox transformation value of the number of included integers . The quiescent region at $N=\\left(\\frac{t\\cdot N_C}{\\pi}\\right)$ where (i) t=29986.206, (ii) the Riemann Zeta conductor value $N_C=1$ is highlighted by a gray vertical line and is useful for end tapered Dirichlet series calculations (away from the real axis) and the initial entry into the final plateau region $N=\\left(\\frac{t\\cdot N_C}{2\\pi}\\right)$ which is the most prominent feature of the Dirichlet Series sum is indicated by a vertical blue line. As a main contrasting behaviour to the Riemann Zeta Dirichlet Series sum the 4 partial sums all have significant features at $N=\\left(\\frac{t\\cdot N_C}{\\pi}\\right)$ which strongly cancel each other in forming the whole Riemann Zeta Dirichlet Series sum. As with the whole Riemann Zeta Dirichlet series, the 4 component partial sums exhibit oscillating divergence about the trend line as $N \\rightarrow \\infty$ when $\\sigma \\le 1$, i.e. see rows 2-4.}"
+
+```
+
+
+
+```{r image_boxcox_29986.206, fig.show = "hold",  out.width = c("32.5%","32.5%","32.5%"), fig.align = "center", fig.cap=cap2, fig.height=3}
+
+
+knitr::include_graphics("/home/john/pari/dirichletpartialsums/graph_zeta_rawscale_1.05_29986.206_32700.pdf")
+
+knitr::include_graphics("/home/john/pari/dirichletpartialsums/graph_zeta_Box_Cox_transformed_1.05_29986.206_32700.pdf")
+
+knitr::include_graphics("/home/john/pari/dirichletpartialsums/graph_zeta_detrended_1.05_29986.206_32700.pdf")
+
+
+knitr::include_graphics("/home/john/pari/dirichletpartialsums/graph_zeta_rawscale_0.5_29986.206_32700.pdf")
+
+knitr::include_graphics("/home/john/pari/dirichletpartialsums/graph_zeta_Box_Cox_transformed_0.5_29986.206_32700.pdf")
+
+knitr::include_graphics("/home/john/pari/dirichletpartialsums/graph_zeta_detrended_0.5_29986.206_32700.pdf")
+
+
+knitr::include_graphics("/home/john/pari/dirichletpartialsums/graph_zeta_rawscale_-0.1_29986.206_32700.pdf")
+
+knitr::include_graphics("/home/john/pari/dirichletpartialsums/graph_zeta_Box_Cox_transformed_-0.1_29986.206_32700.pdf")
+
+knitr::include_graphics("/home/john/pari/dirichletpartialsums/graph_zeta_detrended_-0.1_29986.206_32700.pdf")
+
+
+knitr::include_graphics("/home/john/pari/dirichletpartialsums/graph_zeta_rawscale_-1_29986.206_32700.pdf")
+
+knitr::include_graphics("/home/john/pari/dirichletpartialsums/graph_zeta_Box_Cox_transformed_-1_29986.206_32700.pdf")
+
+knitr::include_graphics("/home/john/pari/dirichletpartialsums/graph_zeta_detrended_-1_29986.206_32700.pdf")
+
+```
+
+Figure 3 compares the Riemann Zeta Dirichlet Series partial sums behaviour at a pair of nearby peak and zero of the Riemann Zeta function. peak $s=1/2+I*6820051.05$, zero $s=1/2+I*6820051.8909855008717960249913127374968$ in particular showing how the partial sums for a known Riemann Zeta function zero on the critical line closely track the average trend behaviour.
+
+```{r fig_cap_boxcox_6820051_peakandzero, echo=FALSE}
+cap2 <- "\\scriptsize{Three views of the 4 partial Riemann Zeta Dirichlet series sums (red) $\\sum\\limits_{n=1}^N (\\Re(\\frac{1}{n^s}))^+$, (green) $\\left|\\sum\\limits_{n=1}^N (\\Re(\\frac{1}{n^s}))^-\\right|$, (blue) $\\sum\\limits_{n=1}^N (\\Im(\\frac{1}{n^s}))^+$, (violet-red) $\\left|\\sum\\limits_{n=1}^N (\\Im(\\frac{1}{n^s}))^-\\right|$ as $N \\rightarrow \\infty$, for rows (i) s=1/2+I*6820051.05 (a Riemann Zeta function peak), and (ii)  $s=1/2+I*6820051.8909855008717960249913127374968$ for (left column) in raw scale (N), (middle column) Box-Cox transformed scale $N^*=\\frac{1}{\\pi}\\left(\\frac{N^{(1-\\sigma)}-1}{1-\\sigma}\\right)$, and (right column) detrended series sums on raw scale (N) compared to (a) the absolute sum of the (red - asymptotically horizontal, naturally detrended) Dirichlet Series $\\left|\\sum\\limits_{n=1}^N \\frac{1}{n^s}\\right|$, (b) (black) the arithmetic average of the four partial sums $\\frac{1}{4}\\left(\\sum\\limits_{n=1}^N (\\Re(\\frac{1}{n^s}))^++\\left|\\sum\\limits_{n=1}^N (\\Re(\\frac{1}{n^s}))^-\\right|+\\sum\\limits_{n=1}^N (\\Im(\\frac{1}{n^s}))^++\\left|\\sum\\limits_{n=1}^N (\\Im(\\frac{1}{n^s}))^-\\right|\\right)$ as $N \\rightarrow \\infty$ and (c) (gray) the empirical trend curve $\\frac{1}{\\pi}\\left(\\frac{N^{(1-\\sigma)}-1}{1-\\sigma}\\right)$. To repeat, the x axis in the left and right columns indicates the number of included integers in the series sum and in the middle column the Box-Cox transformation value of the number of included integers . The quiescent region at $N=\\left(\\frac{t\\cdot N_C}{\\pi}\\right)$ is highlighted by a gray vertical line and is useful for end tapered Dirichlet series calculations (away from the real axis) and the initial entry into the final plateau region $N=\\left(\\frac{t\\cdot N_C}{2\\pi}\\right)$ which is the most prominent feature of the Dirichlet Series sum is indicated by a vertical blue line. The main contrasting behaviour of the two rows is the almost complete overlap of the average trend curve (gray) $\\frac{1}{\\pi}\\left(\\frac{N^{(1-\\sigma)}-1}{1-\\sigma}\\right)$ with the partial sums for the case of a Riemann Zeta function zero co-ordinate.}"
+
+```
+
+
+
+```{r image_boxcox_6820051_peakandzero, fig.show = "hold",  out.width = c("32.5%","32.5%","32.5%"), fig.align = "center", fig.cap=cap2, fig.height=3}
+
+
+
+knitr::include_graphics("/home/john/pari/dirichletpartialsums/graph_zeta_rawscale_0.5_6820051.05_7365708.pdf")
+
+knitr::include_graphics("/home/john/pari/dirichletpartialsums/graph_zeta_Box_Cox_transformed_0.5_6820051.05_7365708.pdf")
+
+knitr::include_graphics("/home/john/pari/dirichletpartialsums/graph_zeta_detrended_0.5_6820051.05_7365708.pdf")
+
+
+knitr::include_graphics("/home/john/pari/dirichletpartialsums/graph_zeta_rawscale_0.5_6820051.8909855008717960249913127374968_7365708.pdf")
+
+knitr::include_graphics("/home/john/pari/dirichletpartialsums/graph_zeta_Box_Cox_transformed_0.5_6820051.8909855008717960249913127374968_7365708.pdf")
+
+knitr::include_graphics("/home/john/pari/dirichletpartialsums/graph_zeta_detrended_0.5_6820051.8909855008717960249913127374968_7365708.pdf")
+
+
+```
+
+Figure 4 displays the initial Riemann Zeta Dirichlet Series partial sums behaviour up to N=6820000 compared to the (gray) trend growth at a large peak of the Riemann Zeta function $s=1/2+I*39246764589894309155251169284104.050622$. The detrended partial series sum in the righthand column still has a long way to go to reach the Riemann Zeta peak height |16244.8652| [10,11] as the (second^[The calculationally efficient approach of estimating Riemann Zeta function values on the critical line [15-17] using the resurgence based first quiescent region at $N_1=\sqrt{\left(\frac{t * N_C}{\pi}\right)}$ is not discussed in this paper.]) quiescent region at $N=\left(\frac{39246764589894309155251169284104.050622 * 1
+}{\pi}\right)=2499263208396755.0294329861269263733694$) is a much higher numbers of integers than 6820000.
+
+
+
+
+
+
+```{r fig_cap_boxcox_3.92e32, echo=FALSE}
+cap2 <- "\\scriptsize{Three views of the 4 partial Riemann Zeta Dirichlet series sums (red) $\\sum\\limits_{n=1}^N (\\Re(\\frac{1}{n^s}))^+$, (green) $\\left|\\sum\\limits_{n=1}^N (\\Re(\\frac{1}{n^s}))^-\\right|$, (blue) $\\sum\\limits_{n=1}^N (\\Im(\\frac{1}{n^s}))^+$, (violet-red) $\\left|\\sum\\limits_{n=1}^N (\\Im(\\frac{1}{n^s}))^-\\right|$ as 1 < N < 6820000, for rows $s=1/2+I*39246764589894309155251169284104.050622$ (a Riemann Zeta function peak), and for (left column) in raw scale (N), (middle column) Box-Cox transformed scale $N^*=\\frac{1}{\\pi}\\left(\\frac{N^{(1-\\sigma)}-1}{1-\\sigma}\\right)$, and (right column) detrended series sums on raw scale (N) compared to (a) the absolute sum of the (red - naturally detrended) Dirichlet Series $\\left|\\sum\\limits_{n=1}^N \\frac{1}{n^s}\\right|$, (b) (black) the arithmetic average of the four partial sums $\\frac{1}{4}\\left(\\sum\\limits_{n=1}^N (\\Re(\\frac{1}{n^s}))^++\\left|\\sum\\limits_{n=1}^N (\\Re(\\frac{1}{n^s}))^-\\right|+\\sum\\limits_{n=1}^N (\\Im(\\frac{1}{n^s}))^++\\left|\\sum\\limits_{n=1}^N (\\Im(\\frac{1}{n^s}))^-\\right|\\right)$ as $N \\rightarrow \\infty$ and (c) (gray) the empirical trend curve $\\frac{1}{\\pi}\\left(\\frac{N^{(1-\\sigma)}-1}{1-\\sigma}\\right)$. For this point in the complex plane the (black) arithmetic mean is overlayed by the (gray) Box-Cox trend curve and with only 1 < N < 6820000 integers included the (red) Dirichlet Series is a long way from asymptotically horizontal. To repeat, the x axis in the left and right columns indicates the number of included integers in the series sum and in the middle column the Box-Cox transformation value of the number of included integers.}"
+
+```
+
+
+
+```{r image_boxcox_3.92e32, fig.show = "hold",  out.width = c("32.5%","32.5%","32.5%"), fig.align = "center", fig.cap=cap2, fig.height=3}
+
+
+
+knitr::include_graphics("/home/john/pari/dirichletpartialsums/graph_zeta_rawscale_0.5_39246764589894309155251169284104.050622_6820000.pdf")
+
+knitr::include_graphics("/home/john/pari/dirichletpartialsums/graph_zeta_Box_Cox_transformed_0.5_39246764589894309155251169284104.050622_6820000.pdf")
+
+knitr::include_graphics("/home/john/pari/dirichletpartialsums/graph_zeta_detrended_0.5_39246764589894309155251169284104.050622_6820000.pdf")
+
+
+```
+
+
+
+```{r fig_cap_boxcox_6.002865e297, echo=FALSE}
+cap2 <- "\\scriptsize{Three views of the 4 partial Riemann Zeta Dirichlet series sums (red) $\\sum\\limits_{n=1}^N (\\Re(\\frac{1}{n^s}))^+$, (green) $\\left|\\sum\\limits_{n=1}^N (\\Re(\\frac{1}{n^s}))^-\\right|$, (blue) $\\sum\\limits_{n=1}^N (\\Im(\\frac{1}{n^s}))^+$, (violet-red) $\\left|\\sum\\limits_{n=1}^N (\\Im(\\frac{1}{n^s}))^-\\right|$ as 1 < N < 6820000, for rows $s=1/2+I*6.002865e297$ (a Riemann Zeta function peak), and for (left column) in raw scale (N), (middle column) Box-Cox transformed scale $N^*=\\frac{1}{\\pi}\\left(\\frac{N^{(1-\\sigma)}-1}{1-\\sigma}\\right)$, and (right column) detrended series sums on raw scale (N) compared to (a) the absolute sum of the (red - naturally detrended) Dirichlet Series $\\left|\\sum\\limits_{n=1}^N \\frac{1}{n^s}\\right|$, (b) (black) the arithmetic average of the four partial sums $\\frac{1}{4}\\left(\\sum\\limits_{n=1}^N (\\Re(\\frac{1}{n^s}))^++\\left|\\sum\\limits_{n=1}^N (\\Re(\\frac{1}{n^s}))^-\\right|+\\sum\\limits_{n=1}^N (\\Im(\\frac{1}{n^s}))^++\\left|\\sum\\limits_{n=1}^N (\\Im(\\frac{1}{n^s}))^-\\right|\\right)$ as $N \\rightarrow \\infty$ and (c) (gray) the empirical trend curve $\\frac{1}{\\pi}\\left(\\frac{N^{(1-\\sigma)}-1}{1-\\sigma}\\right)$. For this graph with only 1 < N < 6820000 integers included the (red) Dirichlet Series is a long way from asymptotically horizontal. To repeat, the x axis in the left and right columns indicates the number of included integers in the series sum and in the middle column the Box-Cox transformation value of the number of included integers.The full imaginary component co-ordinate is t=60028650529164855662727182866658078254623951331806272090681489175149146567402484921091698448663978921744160380274990
+2965358902350052338458231124297318923513447146746407996791105366995037335707698554237789614274918235051574545430872531
+7154819018276836700697197020938978446939833728659770140616741673.}"
+
+```
+
+
+
+```{r image_boxcox_6.002865e297, fig.show = "hold",  out.width = c("32.5%","32.5%","32.5%"), fig.align = "center", fig.cap=cap2, fig.height=3}
+
+
+
+knitr::include_graphics("/home/john/pari/dirichletpartialsums/graph_zeta_rawscale_0.5_6.002865e297_6820000.pdf")
+
+knitr::include_graphics("/home/john/pari/dirichletpartialsums/graph_zeta_Box_Cox_transformed_0.5_6.002865e297_6820000.pdf")
+
+knitr::include_graphics("/home/john/pari/dirichletpartialsums/graph_zeta_detrended_0.5_6.002865e297_6820000.pdf")
+
+
+```
+
+
+\clearpage
+
+Figure 5 displays the initial Riemann Zeta Dirichlet Series partial sums behaviour up to N=6820000 compared to the (gray) trend growth at a large peak of the Riemann Zeta function $s=1/2+I*6.002865e297$ [18]. The detrended partial series sum in the righthand column has a very long way to go to reach the Riemann Zeta peak height which has a rough estimate |3.2e6| [18] as the quiescent region at $N=\left(\frac{6.002865e297 * 1}{\pi}\right)$) is 293 orders of magnitude higher than 6820000.
+
+Such behaviour of the partial sums at the co-ordinates of large Riemann Zeta function peaks where $\sum\limits_{n=1}^X (\Re(\frac{1}{n^s}))^+ \gg \left|\sum\limits_{n=1}^X (\Re(\frac{1}{n^s}))^-\right|$ or vice versa and $\sum\limits_{n=1}^X (\Im(\frac{1}{n^s}))^+ \gg \left|\sum\limits_{n=1}^X (\Im(\frac{1}{n^s}))^-\right|$ or vice versa is occurring is consistent with the Diophantine approach to identifying critical line co-ordinates with large peaks [10-14]. In the original approach [12] for finding candidate $\zeta(0.5+iT)$ large peaks the Lenstra-Lenstra-Lovász (LLL) basis reduction algorithm [14] was used to identify when $log(p_j)T \approx n_j 2\pi$ where $n_j$ are integers, for multiple primes $p_j$  based on the properties of the partial Euler Product formula to solve the diophantine approximation $\frac{log(2*\mathbb{N}_1) T}{2\pi} \approx n_j$.
+
+
+### Dirac comb sampling by Riemann Zeta Dirichlet Series of a continuous function in the complex plane
+
+A known view of the applicability of the Diophantine approximation to the Riemann Zeta Dirichlet Series is that the Dirichlet Series can be understood perform  Dirac comb sampling of an underlying continuous function. Specifically, the Riemann Zeta Dirichlet Series $\sum\limits_{n=1}^X \frac{1}{n^s}$ where $n \in \mathbb{Z}^+ \thinspace \& \thinspace s \in \mathbb{C}$  samples the continuous function $\frac{1}{x^s}$ where $x \in \mathbb{R} \& \thinspace s \in \mathbb{C}$ when $x \in \mathbb{R} \thinspace \&  \thinspace \mathbb{Z}^+$. (Noting that the Dirichlet Series is divergent when $X \rightarrow \infty$ and $\sigma \le 1$ but exhibits quiescent regions at $\sqrt{t/(2\pi)}$ and $t/\pi$). Decomposing into real and imaginary components, the continuous function is 
+
+
+\begin{equation}
+\Re(\frac{1}{x^s})=\Re(e^{-slog(x)})=\frac{1}{x^\sigma}\cdot \cos(t\cdot log(x))
+\end{equation}
+\begin{equation}
+\Im(\frac{1}{x^s})=\Im(e^{-slog(x)})=\frac{1}{x^\sigma}\cdot \sin(t\cdot log(x))
+\end{equation}
+
+and in figure 6, the Dirac comb sampling when $s=1/2+I*280.8$ and $s=0+I*280.8$ for the four partial sum components is explicitly given for n=1 to 20. The Dirac comb samples have been colour coded according to the earlier figures and the sign of the function sample at each integer has been retained (whereas in equations (7,9) and the earlier figures the absolute magnitude is displayed). 
+
+Thus in order to get large peaks, especially for $\sigma > 0$ where the Dirac comb contributions decay montonically away from n=1, the Diophantine condition $\frac{log(2*\mathbb{N}_1) T}{2\pi} \approx n_j$ is one way to enable $\sum\limits_{n=1}^N (\Re(\frac{1}{n^s}))^+ \gg \left|\sum\limits_{n=1}^N (\Re(\frac{1}{n^s}))^-\right|$. 
+
+
+
+
+```{r dirac_comb, echo=FALSE, fig.cap=cap2}
+
+x1=seq(.5,20,l=20001)
+yr1=1/x1^0.5*cos(log(x1)*280.8)
+yi1=1/x1^0.5*sin(log(x1)*280.8)
+yr0=1/x1^0*cos(log(x1)*280.8)
+yi0=1/x1^0*sin(log(x1)*280.8)
+
+x2=seq(1,20,l=20)
+yr2=1/x2^0.5*cos(log(x2)*280.8)
+yi2=1/x2^0.5*sin(log(x2)*280.8)
+yr3=1/x2^0*cos(log(x2)*280.8)
+yi3=1/x2^0*sin(log(x2)*280.8)
+
+
+#par(mfrow=c(2,2))
+par(mar=c(2,2,2,2))
+par(mgp=c(0.5,1,0))
+par(fig=c(0,0.5,0.5,1))
+plot(x1,yr1,typ="l",col="gray",main="Cos(log(t)*280.8)/t^0.5",xlab="t",ylab="value",
+     cex.main=0.75,cex.axis=0.5,cex.lab=0.5)
+points(x2[yr2 > 0],yr2[yr2 > 0],col=2,pch=20)
+points(x2[yr2 < 0],yr2[yr2 < 0],col=3,pch=20)
+grid()
+abline(h=0,col="darkgray",lty=6)
+
+mtext(expression(paste(sigma," = 0.5")),line=0.5,adj=1.3,cex=0.85,col="darkblue")
+
+par(fig=c(0.5,1,0.5,1), new=TRUE)
+plot(x1,yi1,typ="l",col="gray",main="Sin(log(t)*280.8)/t^0.5",xlab="t",ylab="value",
+     cex.main=0.75,cex.axis=0.5,cex.lab=0.5)
+points(x2[yi2 > 0],yi2[yi2 > 0],col="#0000CD",pch=20)
+points(x2[yi2 < 0],yi2[yi2 < 0],col=6,pch=20)
+grid()
+abline(h=0,col="darkgray",lty=6)
+
+par(fig=c(0,0.5,0,0.5), new=TRUE)
+plot(x1,yr0,typ="l",col="gray",main="Cos(log(t)*280.8)/t^0",xlab="t",ylab="value",
+     cex.main=0.75,cex.axis=0.5,cex.lab=0.5)
+points(x2[yr3 > 0],yr3[yr3 > 0],col=2,pch=20)
+points(x2[yr3 < 0],yr3[yr3 < 0],col=3,pch=20)
+grid()
+abline(h=0,col="darkgray",lty=6)
+
+mtext(expression(paste(sigma," = 0.0")),line=0.5,adj=1.3,cex=0.85,col="darkblue")
+
+par(fig=c(0.5,1,0,0.5), new=TRUE)
+plot(x1,yi0,typ="l",col="gray",main="Sin(log(t)*280.8)/t^0",xlab="t",ylab="value",
+     cex.main=0.75,cex.axis=0.5,cex.lab=0.5)
+points(x2[yi3 > 0],yi3[yi3 > 0],col="#0000CD",pch=20)
+points(x2[yi3 < 0],yi3[yi3 < 0],col=6,pch=20)
+grid()
+abline(h=0,col="darkgray",lty=6)
+
+
+
+```
+***Figure 6. Dirac comb sampling of the Riemann Zeta Dirichlet series for $\sigma = (0.5,0)$ of the related continuous function. The interval of integers is [1,20], (red dot) elements of $\sum\limits_{n=1}^N (\Re(\frac{1}{n^s}))^+$, (green dots) signed elements of $\left|\sum\limits_{n=1}^N (\Re(\frac{1}{n^s}))^-\right|$, (blue dots) elements of $\sum\limits_{n=1}^N (\Im(\frac{1}{n^s}))^+$, (violet-red dots) signed elements of $\left|\sum\limits_{n=1}^N (\Im(\frac{1}{n^s}))^-\right|$. (gray) sinusoidal curves representing equations (14,15) for t=280.8***
+
+
+### Scaling of the trend growth rate of the partial sums of the Riemann Zeta Dirichlet Series
+
+Firstly, when $\sigma = 0$, the elements of the partial sums do not decay (as seen in the bottom row of figure 6). Therefore a simple argument of the trend growth for $\sigma = 0$ using the average properties of equations (14,15) is that over any one cycle integrating over the portion that is the same sign
+
+\begin{equation}
+\int_{1/4}^{3/4} \cos(2\pi y)dy = [\frac{1}{2*\pi}\cdot(-\sin(2\pi y))]^{3/4}_{1/4} = -\frac{1}{\pi}
+\end{equation}
+
+\begin{equation}
+\int_{0}^{1/2} \sin(2\pi y)dy = [\frac{1}{2*\pi}\cdot(\cos(2\pi y))]^{0}_{1/2} = \frac{1}{\pi}
+\end{equation}
+
+So the absolute value of the expected (trend) growth of each of the four partial sums of the Riemann Zeta Dirichlet Series as $N \rightarrow \infty$ (i.e. which involves many cycles of equations (14) and (15)) when $\sigma = 0$ is $\sim \frac{N}{\pi}$.
+
+
+Next noting historical upper bounds for Riemann Zeta function growth [19,20] away from the real axis, $|\zeta(s)| \le \frac{X^{1-\sigma}}{1-\sigma} + ...$ for $\sigma > 0$ and $|\zeta(s)| \le \log{X}+ ...$ for $\sigma \ge 1$ which are reminiscent of Box-Cox parametrization and that there are identified quiescent regions in Box-Cox transformations of Dirichlet Series [21] the following trend curve 
+
+\begin{equation}
+\frac{1}{\pi}\left(\frac{N^{(1-\sigma)}-1}{(1-\sigma)}\right)*\frac{1}{1}
+\end{equation}
+
+was trialled and found to exhibit behaviour similar to 
+
+\begin{equation}
+\frac{1}{4} \left\{\sum\limits_{n=1}^\infty (\Re(\frac{1}{n^s}))^++\left|\sum\limits_{n=1}^\infty (\Re(\frac{1}{n^s}))^-\right|+\sum\limits_{n=1}^\infty (\Im(\frac{1}{n^s}))^++\left|\sum\limits_{n=1}^\infty (\Im(\frac{1}{n^s}))^-\right| \right\}
+\end{equation}
+
+Particular values of the leading term in the trend growth for the 4 partial sums of the Riemann Zeta Dirichlet Series are therefore estimated to be  $\frac{\log(N)}{\pi}, \frac{\sqrt{N}}{\pi}, \frac{N}{\pi}$ for $\sigma = (1,1/2,0)$. The use of the fraction $\frac{1}{1}$ in equation (18) is introduced in preparation for the trend behaviour of partial sums of other 1st degree L function Dirichlet Series
+
+## Partial sum Dirichlet series behaviour of $L(\mychi_{3}(2,.),s)$ 
+
+
+Figure 7 illustrates three views of the 4 partial $L(\mychi_{3}(2,.),\sigma+I*3000)$ function Dirichlet series sums shown in red, green, blue, violet-red respectively when $N \in [1,3000]$.
+
+\begin{enumerate}
+\item Other series sums also shown are  
+
+\begin{itemize}
+\item the absolute value of the (red) $L(\mychi_{3}(2,.),s)$ Dirichlet Series (red) $\left|\sum\limits_{n=1}^N \frac{\mychi_3(2,.)}{n^s}\right|$ which has a horizontal trend behaviour as $N \rightarrow \infty$ and 
+\item the (black) arithmetic mean of the 4 absolute value partial $L(\mychi_{3}(2,.),s)$ Dirichlet series sums and
+\item the scaled (gray) Box-Cox function $f_{\mychi_3(2,.)}(N,\sigma)=\frac{1}{\pi}\left(\frac{N^{(1-\sigma)}-1}{(1-\sigma)}\right)\cdot\frac{2}{3}$ 
+\end{itemize}
+
+\item Each row in figure 7 displays the partial sum behaviour for a different real axis value $(\sigma=1,0.5,0,-1)$ along the line $s=\sigma+I\cdot 3000$ in the complex plane.
+\item The lefthand column displays a first view of the partial sums in raw (natural) scale as a function of N.
+\item The middle column displays a second view of the partial sums using an x axis that is the Box-Cox transformed scale $N^*=\frac{1}{\pi}\left(\frac{N^{(1-\sigma)}-1}{1-\sigma}\right)\cdot\frac{2}{3}$ and exhibits linear trend growth when $N > \left(\frac{t\cdot N_C}{\pi}\right) = \left(\frac{3000* 3}{\pi}\right)$.
+\item The righthand column displays a third view of the partial sums by detrending the partial series sums in raw scale by subtracting $\frac{1}{\pi}\left(\frac{N^{(1-\sigma)}-1}{(1-\sigma)}\right)\cdot\frac{2}{3}$ from each series sum.
+\item The $L(\mychi_{3}(2,.),s)$ Dirichlet Series quiescent region at $N=\left(\frac{t\cdot N_C}{\pi}\right) = \left(\frac{3000*3}{\pi}\right)$ using t=3000 and the $L(\mychi_{3}(2,.),s)$ conductor value $N_C=3$ is highlighted by a gray vertical line and
+\item The initial entry into the final plateau region $N=\left(\frac{t\cdot N_C}{2\pi}\right) = \left(\frac{3000*3}{2\pi}\right)$ which is the most prominent feature of the Dirichlet Series sum is indicated by a vertical blue line. 
+\end{enumerate}
+
+The only adjustment in behaviour to the Riemann Zeta Dirichlet Series sum is that the (black) arithmetic mean of the absolute value of the 4 partial sums is closely approximated by the Box-Cox function $\frac{1}{\pi}\left(\frac{N^{(1-\sigma)}-1}{(1-\sigma)}\right)\cdot\frac{2}{3}$ where the numerator is the number of non-zero terms in the Dirichlet Character and the denominator is the conductor value $N_C=3$. Such an adjustment factor (2/3) arises since 1 cycle out of 3 cycles are missing during Dirac comb sampling because of $\mychi_{3}(2,.)$ behaviour.
+
+
+
+```{r fig_cap_boxcox_chi32_3000, echo=FALSE}
+cap2 <- "\\scriptsize{Three views of the 4 partial $L(\\mychi_{3}(2,.),s)$ Dirichlet series sums (red) $\\sum\\limits_{n=1}^N (\\Re(\\frac{\\mychi_3(2,.)}{n^s}))^+$, (green) $\\left|\\sum\\limits_{n=1}^N (\\Re(\\frac{\\mychi_3(2,.)}{n^s}))^-\\right|$, (blue) $\\sum\\limits_{n=1}^N (\\Im(\\frac{\\mychi_3(2,.)}{n^s}))^+$, (violet-red) $\\left|\\sum\\limits_{n=1}^N (\\Im(\\frac{\\mychi_3(2,.)}{n^s}))^-\\right|$ as $N \\rightarrow \\infty$, for t=3000, by rows (1-4) $(\\sigma=1,0.5,0,-1)$, for (left column) in raw scale (N), (middle column) Box-Cox transformed scale $N^*=\\frac{1}{\\pi}\\left(\\frac{N^{(1-\\sigma)}-1}{1-\\sigma}\\right)\\frac{2}{3}$, and (right column) detrended series sums on raw scale (N) compared to (a) the absolute sum of the (red - asymptotically horizontal, naturally detrended) Dirichlet Series $\\left|\\sum\\limits_{n=1}^N \\frac{\\mychi_3(2,.)}{n^s}\\right|$, (b) (black) the arithmetic average of the four partial sums $\\frac{1}{4}\\left(\\sum\\limits_{n=1}^N (\\Re(\\frac{\\mychi_3(2,.)}{n^s}))^++\\left|\\sum\\limits_{n=1}^N (\\Re(\\frac{\\mychi_3(2,.)}{n^s}))^-\\right|+\\sum\\limits_{n=1}^N (\\Im(\\frac{\\mychi_3(2,.)}{n^s}))^++\\left|\\sum\\limits_{n=1}^N (\\Im(\\frac{\\mychi_3(2,.)}{n^s}))^-\\right|\\right)$ as $N \\rightarrow \\infty$ and (c) (gray) the empirical trend curve $\\frac{1}{\\pi}\\left(\\frac{N^{(1-\\sigma)}-1}{1-\\sigma}\\right)\\frac{2}{3}$. To repeat, the x axis in the left and right columns indicates the number of included integers in the series sum and in the middle column the Box-Cox transformation value of the number of included integers . The quiescent region at $N=\\left(\\frac{t\\cdot N_C}{\\pi}\\right)$ where (i) t=3000, (ii) the $L(\\mychi_{3}(2,.),s)$ conductor value $N_C=3$ is highlighted by a gray vertical line and is useful for end tapered $L(\\mychi_{3}(2,.),s)$ Dirichlet series calculations (away from the real axis) and the initial entry into the final plateau region $N=\\left(\\frac{t\\cdot N_C}{2\\pi}\\right)$ which is the most prominent feature of the $L(\\mychi_{3}(2,.),s)$ Dirichlet Series sum is indicated by a vertical blue line. As a main contrasting behaviour to the $L(\\mychi_{3}(2,.),s)$ Dirichlet Series sum the 4 partial sums all have significant features at $N=\\left(\\frac{t\\cdot N_C}{\\pi}\\right)$ which strongly cancel each other in forming the whole $L(\\mychi_{3}(2,.),s)$ Dirichlet Series sum.}"
+
+```
+
+
+\setcounter{figure}{6}
+```{r image_boxcox_chi32_3000, fig.show = "hold",  out.width = c("32.5%","32.5%","32.5%"), fig.align = "center", fig.cap=cap2, fig.height=3}
+
+
+
+knitr::include_graphics("/home/john/pari/dirichletpartialsums/graph_Chi32_rawscale_1_3000_4499.pdf")
+
+knitr::include_graphics("/home/john/pari/dirichletpartialsums/graph_Chi32_Box_Cox_transformed_1_3000_4499.pdf")
+
+knitr::include_graphics("/home/john/pari/dirichletpartialsums/graph_Chi32_detrended_1_3000_4499.pdf")
+
+
+knitr::include_graphics("/home/john/pari/dirichletpartialsums/graph_Chi32_rawscale_0.5_3000_4499.pdf")
+
+knitr::include_graphics("/home/john/pari/dirichletpartialsums/graph_Chi32_Box_Cox_transformed_0.5_3000_4499.pdf")
+
+knitr::include_graphics("/home/john/pari/dirichletpartialsums/graph_Chi32_detrended_0.5_3000_4499.pdf")
+
+
+knitr::include_graphics("/home/john/pari/dirichletpartialsums/graph_Chi32_rawscale_0_3000_4499.pdf")
+
+knitr::include_graphics("/home/john/pari/dirichletpartialsums/graph_Chi32_Box_Cox_transformed_0_3000_4499.pdf")
+
+knitr::include_graphics("/home/john/pari/dirichletpartialsums/graph_Chi32_detrended_0_3000_4499.pdf")
+
+
+knitr::include_graphics("/home/john/pari/dirichletpartialsums/graph_Chi32_rawscale_-1_3000_4499.pdf")
+
+knitr::include_graphics("/home/john/pari/dirichletpartialsums/graph_Chi32_Box_Cox_transformed_-1_3000_4499.pdf")
+
+knitr::include_graphics("/home/john/pari/dirichletpartialsums/graph_Chi32_detrended_-1_3000_4499.pdf")
+
+
+
+```
+
+\clearpage
+
+## Partial sums behaviour of $L(\mychi_{15}(14,.),s)$ Dirichlet series
+
+Figure 8 illustrates three views of the 4 partial $L(\mychi_{15}(14,.),\sigma+I*1767.45)$ function Dirichlet series sums shown in red, green, blue, violet-red respectively when $N \in [1,28510]$.
+
+\begin{enumerate}
+\item Other series sums also shown are  
+
+\begin{itemize}
+\item the absolute value of the (red) $L(\mychi_{15}(14,.),s)$ Dirichlet Series (red) $\left|\sum\limits_{n=1}^N \frac{\mychi_{15}(14,.)}{n^s}\right|$ which has a horizontal trend behaviour as $N \rightarrow \infty$ and 
+\item the (black) arithmetic mean of the 4 absolute value partial $L(\mychi_{15}(14,.),s)$ Dirichlet series sums and
+\item the scaled (gray) Box-Cox function $f_{\mychi_{15}(14,.)}(N,\sigma)=\frac{1}{\pi}\left(\frac{N^{(1-\sigma)}-1}{(1-\sigma)}\right)\cdot\frac{8}{15}$ 
+\end{itemize}
+
+\item Each row in figure 7 displays the partial sum behaviour for a different real axis value $(\sigma=1,0.5,0,-1)$ along the line $s=\sigma+I\cdot 1767.45$ in the complex plane.
+\item The lefthand column displays a first view of the partial sums in raw (natural) scale as a function of N.
+\item The middle column displays a second view of the partial sums using an x axis that is the Box-Cox transformed scale $N^*=\frac{1}{\pi}\left(\frac{N^{(1-\sigma)}-1}{1-\sigma}\right)\cdot\frac{8}{15}$ and exhibits linear trend growth when $N > \left(\frac{t\cdot N_C}{\pi}\right) = \left(\frac{1767.45*15}{\pi}\right)$.
+\item The righthand column displays a third view of the partial sums by detrending the partial series sums in raw scale by subtracting $\frac{1}{\pi}\left(\frac{N^{(1-\sigma)}-1}{(1-\sigma)}\right)\cdot\frac{8}{15}$ from each series sum.
+\item The $L(\mychi_{15}(14,.),s)$ Dirichlet Series quiescent region at $N=\left(\frac{t\cdot N_C}{\pi}\right) = \left(\frac{1767.45*15}{\pi}\right)$ using t=1767.45 and the $L(\mychi_{15}(14,.),s)$ conductor value $N_C=15$ is highlighted by a gray vertical line and
+\item The initial entry into the final plateau region $N=\left(\frac{t\cdot N_C}{2\pi}\right) = \left(\frac{1767.45*15}{2\pi}\right)$ which is the most prominent feature of the Dirichlet Series sum is indicated by a vertical blue line. 
+\end{enumerate}
+
+The only adjustment in behaviour to the Riemann Zeta Dirichlet Series sum and $L(\mychi_{3}(2,.),s)$ Dirichlet Series sum is that the (black) arithmetic mean of the absolute value of the 4 partial sums is closely approximated by the Box-Cox function $\frac{1}{\pi}\left(\frac{N^{(1-\sigma)}-1}{(1-\sigma)}\right)\cdot\frac{8}{15}$ where the numerator is the number of non-zero terms in the Dirichlet Character and the denominator is the conductor value $N_C=15$. Such an adjustment factor (8/15) arises since 7 cycles out of 15 cycles are missing during Dirac comb sampling because of $\mychi_{15}(14,.)$ behaviour. 
+
+```{r fig_cap_boxcox_chi15p14_1767.45, echo=FALSE}
+cap2 <- "\\scriptsize{Three views of the 4 partial $L(\\mychi_{15}(14,.),s)$ Dirichlet series sums (red) $\\sum\\limits_{n=1}^N (\\Re(\\frac{\\mychi_{15}(14,.)}{n^s}))^+$, (green) $\\left|\\sum\\limits_{n=1}^N (\\Re(\\frac{\\mychi_{15}(14,.)}{n^s}))^-\\right|$, (blue) $\\sum\\limits_{n=1}^N (\\Im(\\frac{\\mychi_{15}(14,.)}{n^s}))^+$, (violet-red) $\\left|\\sum\\limits_{n=1}^N (\\Im(\\frac{\\mychi_{15}(14,.)}{n^s}))^-\\right|$ as $N \\rightarrow \\infty$, for t=1767.45 (a $L(\\mychi_{15}(14,.),s)$ peak on the critical line), by rows (1-4) $(\\sigma=1,0.5,0,-1)$, for (left column) in raw scale (N), (middle column) Box-Cox transformed scale $N^*=\\frac{1}{\\pi}\\left(\\frac{N^{(1-\\sigma)}-1}{1-\\sigma}\\right)\\frac{8}{15}$, and (right column) detrended series sums on raw scale (N) compared to (a) the absolute sum of the (red - asymptotically horizontal, naturally detrended) Dirichlet Series $\\left|\\sum\\limits_{n=1}^N \\frac{\\mychi_{15}(14,.)}{n^s}\\right|$, (b) (black) the arithmetic average of the four partial sums $\\frac{1}{4}\\left(\\sum\\limits_{n=1}^N (\\Re(\\frac{\\mychi_{15}(14,.)}{n^s}))^++\\left|\\sum\\limits_{n=1}^N (\\Re(\\frac{\\mychi_{15}(14,.)}{n^s}))^-\\right|+\\sum\\limits_{n=1}^N (\\Im(\\frac{\\mychi_{15}(14,.)}{n^s}))^++\\left|\\sum\\limits_{n=1}^N (\\Im(\\frac{\\mychi_{15}(14,.)}{n^s}))^-\\right|\\right)$ as $N \\rightarrow \\infty$ and (c) (gray) the empirical trend curve $\\frac{1}{\\pi}\\left(\\frac{N^{(1-\\sigma)}-1}{1-\\sigma}\\right)\\frac{8}{15}$. To repeat, the x axis in the left and right columns indicates the number of included integers in the series sum and in the middle column the Box-Cox transformation value of the number of included integers . The quiescent region at $N=\\left(\\frac{t\\cdot N_C}{\\pi}\\right)$ where (i) t=1767.45, (ii) the $L(\\mychi_{15}(14,.),s)$ conductor value $N_C=15$ is highlighted by a gray vertical line and is useful for end tapered $L(\\mychi_{15}(14,.),s)$ Dirichlet series calculations (away from the real axis) and the initial entry into the final plateau region $N=\\left(\\frac{t\\cdot N_C}{2\\pi}\\right)$ which is the most prominent feature of the $L(\\mychi_{15}(14,.),s)$ Dirichlet Series sum is indicated by a vertical blue line. As a main contrasting behaviour to the $L(\\mychi_{15}(14,.),s)$ Dirichlet Series sum the 4 partial sums all have significant features at $N=\\left(\\frac{t\\cdot N_C}{\\pi}\\right)$ which strongly cancel each other in forming the whole $L(\\mychi_{15}(14,.),s)$ Dirichlet Series sum.}"
+
+```
+
+
+```{r image_boxcox_chi15p14_1767.45, fig.show = "hold",  out.width = c("32.5%","32.5%","32.5%"), fig.align = "center", fig.cap=cap2, fig.height=3}
+
+
+
+knitr::include_graphics("/home/john/pari/dirichletpartialsums/graph_Chi15p14_rawscale_1_1767.45_28510.pdf")
+
+knitr::include_graphics("/home/john/pari/dirichletpartialsums/graph_Chi15p14_Box_Cox_transformed_1_1767.45_28510.pdf")
+
+knitr::include_graphics("/home/john/pari/dirichletpartialsums/graph_Chi15p14_detrended_1_1767.45_28510.pdf")
+
+
+knitr::include_graphics("/home/john/pari/dirichletpartialsums/graph_Chi15p14_rawscale_0.5_1767.45_28510.pdf")
+
+knitr::include_graphics("/home/john/pari/dirichletpartialsums/graph_Chi15p14_Box_Cox_transformed_0.5_1767.45_28510.pdf")
+
+knitr::include_graphics("/home/john/pari/dirichletpartialsums/graph_Chi15p14_detrended_0.5_1767.45_28510.pdf")
+
+
+knitr::include_graphics("/home/john/pari/dirichletpartialsums/graph_Chi15p14_rawscale_0_1767.45_28510.pdf")
+
+knitr::include_graphics("/home/john/pari/dirichletpartialsums/graph_Chi15p14_Box_Cox_transformed_0_1767.45_28510.pdf")
+
+knitr::include_graphics("/home/john/pari/dirichletpartialsums/graph_Chi15p14_detrended_0_1767.45_28510.pdf")
+
+
+knitr::include_graphics("/home/john/pari/dirichletpartialsums/graph_Chi15p14_rawscale_-1_1767.45_28510.pdf")
+
+knitr::include_graphics("/home/john/pari/dirichletpartialsums/graph_Chi15p14_Box_Cox_transformed_-1_1767.45_28510.pdf")
+
+knitr::include_graphics("/home/john/pari/dirichletpartialsums/graph_Chi15p14_detrended_-1_1767.45_28510.pdf")
+
+
+
+```
+
+
+
+
+\clearpage
+
+## Conclusion
+
+The leading term of the absolute value of the trend growth rate of the 4 separate partial sums $\sum\limits_{n=1}^N (\Re(\frac{\mychi(s)}{n^s}))^+$, $\left|\sum\limits_{n=1}^N (\Re(\frac{\mychi(s)}{n^s}))^-\right|$, $\sum\limits_{n=1}^N (\Im(\frac{\mychi(s)}{n^s}))^+$, $\left|\sum\limits_{n=1}^N (\Im(\frac{\mychi(s)
+}{n^s}))^-\right|$ respectively, (of the positive and negative components of the Real and Imaginary parts) of 1st Degree L function Dirichlet Series exhibit an absolute magnitude of  $\sim\frac{1}{\pi}\left(\frac{N^{(1-\sigma)}-1}{1-\sigma}\right)\frac{m}{N_C}$ as $N \rightarrow \infty$  where (i) N is the number of terms in the Dirichlet Series sum, (ii) $N_C$ is the L function conductor value, (iii) m is the number of non-zero terms in $\mychi(s)$ and $s=\sigma+I*t$. The Box-Cox transformation functional behaviour extends outside the critical strip and the Dirac comb description of the Dirichlet Series combined with the Dirichlet character \mychi(s) aids in interpretation of the multiplicative factor $\sim\frac{1}{\pi}\frac{m}{N_C}$.
+
+At the location of the second quiescent region, $\frac{t*N_C}{\pi}$ [3,6] the partial sums of the 1st Degree L function Dirichlet Series sums display significant features which strongly cancel each other in forming the whole L function Dirichlet Series sum $\sum\limits_{n=1}^{\lfloor\frac{t*N_C}{\pi}\rfloor} (\frac{\mychi(s)}{n^s})$ (which displays quiescence). 
+
+An important aspect of the Dirac comb behaviour for 1st degree L function Dirichlet Series is that the sign of each real(imaginary) component of the Dirichlet series (over the integers 1<n<N) is independent of $\sigma$. That is for each partial sum, the same integers $n_i$ always contribute but with a different weight depending on the $\sigma$ value. This behaviour helps explain why the position of Series sum features at $\frac{t*N_C}{\pi}$ and $\frac{t*N_C}{2\pi}$ are independent of $\sigma$ even though the size of the features varies with $\sigma$.
+
+The growth of the whole L function Dirichlet Series (eg. the Riemann Zeta Dirichlet Series function magnitude) is a deterministic competition between real and imaginary pairs of sums (from the four signed partial sums) arising from Dirac comb sampling of a continuous function and as such the $N \rightarrow \infty$ trend growth of $\sim t^\frac{1}{2}$ observed for each partial sum on the critical line, is not present in the whole function. 
+
+
+\clearpage
+
+## References
+
+1. The LMFDB Collaboration, The L-functions and Modular Forms Database, home page of The Riemann Zeta zeroes https://www.lmfdb.org/zeros/zeta/ 2021,
+
+2. Box, G. E. P. and Cox, D. R. "An analysis of transformations." (1964) Journal of the Royal Statistical Society, Series B. Volume 26, Number 2, Pages 211–252
+
+3. Martin, J.P.D. "A quiescent region about $\frac{t}{\pi}$ in the oscillating divergence of the Riemann Zeta Dirichlet Series inside the critical strip." (2021)
+http://dx.doi.org/10.6084/m9.figshare.14213516
+
+4. Martin, J.P.D. "Tapered end point weighting of finite Riemann Zeta Dirichlet Series using partial sums of binomial coefficients to produce higher order approximations of the Riemann Siegel Z function." (2021)
+http://dx.doi.org/10.6084/m9.figshare.14702760
+
+5. Martin, J.P.D. "Truncated Exponential Series based partial Euler Product calculations at quiescent regions of oscillatory divergence to produce approximations of the Riemann Siegel Z function." (2021)
+http://dx.doi.org/10.6084/m9.figshare.14842803
+
+6. Martin, J.P.D. "Examples of quiescent regions in the oscillatory divergence of several 1st degree L functions and their Davenport Heilbronn counterparts." (2021)
+https://dx.doi.org/10.6084/m9.figshare.14956053
+
+7. The PARI~Group, PARI/GP version {\tt 2.12.0}, Univ. Bordeaux, 2018,
+    \url{http://pari.math.u-bordeaux.fr/}.
+\normalfont
+
+8. RStudio Team (2015). RStudio: Integrated Development for R. RStudio, Inc., Boston, MA URL
+http://www.rstudio.com/.
+
+9. R Core Team (2017). R: A language and environment for statistical computing. R Foundation for
+Statistical Computing, Vienna, Austria. \url{https://www.R-project.org/}.
+
+10. Hiary G.A. (2011) Fast methods to compute the Riemann zeta function Ann. Math., 174-2, 891-946
+also available; https://people.math.osu.edu/hiary.1/fastmethods.html
+
+11. Bober, J.W., Hiary, G.A. (2016) New computations of the Riemann Zeta function on the critical line.
+Exp. Math., 27, 1–13
+
+12. Odlyzko, A.M. (1992) The 10 20 -th zero of the Riemann zeta function and 175 million of its neighbors.
+http://www.dtc.umn.edu/~odlyzko/unpublished/zeta.10to20.1992.pdf
+
+13. Tihanyi, N., Kovács, A. & Kovács, J. “Computing Extremely Large Values of the Riemann Zeta
+Function” J Grid Computing (2017) 15: 527. https://doi.org/10.1007/s10723-017-9416-0
+
+14. Lenstra, A.K., H.W. Lenstra Jr. & L. Lovász, (1982) Factoring polynomials with rational coefficients,
+Math. Ann., 261(4) ,515–534.
+
+15. Edwards, H.M. (1974). Riemann’s zeta function. Pure and Applied Mathematics 58. New York-London:
+Academic Press. ISBN 0-12-232750-0. Zbl 0315.10035.
+
+16. Riemann, Bernhard (1859). “$\ddot{U}$ber die Anzahl der Primzahlen unter einer gegebenen Gr$\ddot{o}$sse”. Monats-
+berichte der Berliner Akademie.. In Gesammelte Werke, Teubner, Leipzig (1892), Reprinted by Dover,
+New York (1953).
+
+17. Berry, M. V. “The Riemann-Siegel Expansion for the Zeta Function: High Orders and Remainders.”
+Proc. Roy. Soc. London A 450, 439-462, 1995.
+
+18. Martin, J.P.D. (2018) “Some high peaks of partial Euler Product of the lowest primes on the Riemann
+Zeta critical line in the interval $10^{20} < T < 10^{400}$ providing a proxy lower bound on Riemann Zeta
+function growth”. https://figshare.com/articles/journal_contribution/_/7185092
+
+19. K. Chandrasekharan (1953) "Lectures on the Riemann Zeta-Function", p98, Tata Institute of Fundamental Research, Bombay
+
+20. Ingham A.E. (1932) "The Distribution of Prime Numbers", p27, Cambridge
+
+21. Martin, J.P.D. "Examples of quiescent regions in the oscillatory divergence of Box-Cox transformation series related to 1st degree L functions and their Dirichlet series" (2021) 
+https://dx.doi.org/10.6084/m9.figshare.17087651
