@@ -1,0 +1,464 @@
+---
+title: "Tapered end point weighting of Hurwitz Zeta finite Dirichlet Series when the shift parameter $0 < a < \\frac{\\Im(s)}{\\pi} \\in \\mathbb{R}$."
+author: "John Martin"
+date: \today
+header-includes:  
+- \usepackage{xcolor}
+output:
+  pdf_document:
+    fig_crop: no
+
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+
+```
+
+<!-- https://stackoverflow.com/questions/41655383/r-markdown-similar-feature-to-newcommand-in-latex/41664105 -->
+\newcommand{\mychi}{\raisebox{0pt}[1ex][1ex]{$\chi$}}
+
+
+##Executive Summary
+
+Empirically, when $0 < a < \frac{t}{2\pi} \in \mathbb{R}$ the location of the first and second quiescent regions in the Hurwitz Zeta finite Dirichlet Series $\sum\limits_{n=0}^{(N-1)} \frac{1}{(n+a)^s}$ are well behaved, respectively $N_{\lfloor\sqrt{\frac{t}{2\pi}}\rfloor,\zeta(s,a)} \mapsto \sqrt{\frac{t}{2\pi}}+1-a$ and $N_{\lfloor\frac{t}{\pi}\rfloor,\zeta(s,a)} \mapsto \frac{t}{\pi}+1-a$, where $s=(\sigma+I*t)$ and $N_C$ is the conductor value of the Riemann Zeta L function. This linear translation behaviour is consistent with the Dirac comb interpretation of the Hurwitz Zeta and Riemann Zeta Dirichlet Series. However, it also means that the second quiescent region no longer exists when $a > \frac{t}{\pi} \in \mathbb{R}$ and beforehand when $a > \frac{t}{2\pi} \in \mathbb{R}$ the oscillation behaviour within the second quiescent region dominates the finite series sum. In practice, away from the real axis over the wide interval $0 < a \lesssim  \frac{t}{\pi} \in \mathbb{R}$, end tapered Hurwitz Zeta Dirichlet series sums based on partial sums of binomial coefficients continues to produce accurate approximations of the Hurwitz Zeta function around the second quiescent region $N_{\lfloor\frac{t}{\pi}\rfloor,\zeta(s,a)} \mapsto \frac{t}{\pi}+1-a$. 
+
+##Introduction
+
+In this paper, the behaviour of the finite Dirichlet series (and an end tapered Dirichlet series) of the Hurwitz Zeta function [1-3] is presented and discussed
+
+\begin{align}
+\zeta(s,a)_{\text{Dirichlet Series}} &= \sum_{k=0}^{(N-1)}\left(\frac{1}{(k+a)^s}\right)   \label {eq:seriesHZ} \\
+\zeta(s,a)_{\text{Dirichlet Series, End tapered}} &= \sum_{k=0}^{\left(N-1-p\right)}\left(\frac{1}{(k+a)^s}\right) +
+\sum_{i=\left(-p+1\right)}^{p}\frac{\frac{1}{2^{2p}} \left( 2^{2p}-\sum_{k=0}^{i+p-1}\binom{2p}{2p-k}\right)}{(N-1+i+a)^s} \label {eq:endtapseriesHZ} 
+\end{align}
+
+
+where (i) $a > 0$ is the Hurwitz Zeta shift parameter and (ii) away from the real axis across the complex plane, equation \eqref{eq:endtapseriesHZ} employs tapered end point weighting of the Dirichlet series using partial sums of the binomial coefficients [4-7] to provide a useful approximation of the Hurwitz Zeta function based on series sums at the second quiescent region $N \approx \frac{t}{\pi}$ of the Hurwitz Zeta Dirichlet series .
+
+A useful interpretation of the Hurwitz Zeta Dirichlet series sum $\sum_{k=0}^{N-1}\left(\frac{1}{(k+a)^s}\right)$ is that it acts as a Dirac comb of the continuous function $1/x^s \text{ where } x \in \mathbb{R}, \text{ } a > 0$. Figures 1 and 2, show the Dirac comb sampling points of $1/x^s$ in the interval x=(0,20), for two points in the complex plane $s=1/2+I*281.0063$, $s=0+I*281.0063$ when a=1/2 and 10 respectively. 
+
+Use cases to note are  (i) when the shift parameter $a \in (0,1]$, all integers n=1 to N are surrounded by the Dirac comb sample of points, (ii) when the shift parameter $a=1/2$, $\zeta(s,1/2)=(2^s-1)\zeta(s)$ for example in figure 1 $\zeta(0+I*281.0063,1/2) \approx 0$ because of the $(2^s-1)$ factor, (iii) when $a > 1$, the interval (0,a) is effectively excluded from the Dirac comb sample of points (see figure 2 where no sample points in the Dirichlet Series occur for n < 10) and instead includes sample points from the interval (N-1,N-1+a] and (iv) when $a > \Im(s)$ the series oscillation magnitude at the second quiescent region is growing and more terms are needed in equation \eqref{eq:endtapseriesHZ} to get a close approximation of the Hurwitz Zeta function. 
+
+In summary, the Riemann Zeta finite Dirichlet Series is the series (sum) of the integer sequence k=1-N raised to the power (-s) while the Hurwitz Zeta finite Dirichlet Series allows one additional degree of freedom to translate the series (sum) of the integer sequence 0-N raised to the power (-s) to the (real) sequence k=a-(N-1+a) raised to the power (-s). So the Hurwitz Zeta finite Dirichlet Series allows for a choice on where to sample the $1/x^s \in \mathbb{R}$ continuous function by a sequence of equally spaced points x=[a,(N+a)] where each sample point is separated by unit distance. 
+
+
+```{r dirac_comb, echo=FALSE, fig.height=3}
+
+tpt=62*pi/log(2)
+
+x1=seq(.5,20,l=20001)
+yr1=1/x1^0.5*cos(log(x1)*tpt)
+yi1=1/x1^0.5*sin(log(x1)*tpt)
+yr0=1/x1^0*cos(log(x1)*tpt)
+yi0=1/x1^0*sin(log(x1)*tpt)
+
+a=1/2
+
+x2=seq(0+a,19+a,l=20)
+yr2=1/x2^0.5*cos(log(x2)*tpt)
+yi2=1/x2^0.5*sin(log(x2)*tpt)
+yr3=1/x2^0*cos(log(x2)*tpt)
+yi3=1/x2^0*sin(log(x2)*tpt)
+
+
+#par(mfrow=c(2,2))
+par(mar=c(2,2,2,2))
+par(mgp=c(0.5,1,0))
+par(fig=c(0,0.5,0.5,1))
+plot(x1,yr1,typ="l",col="gray",main="Cos(log(x)*281.0063)/x^0.5",xlab="t",ylab="value",
+     cex.main=0.75,cex.axis=0.5,cex.lab=0.5)
+points(x2[yr2 > 0],yr2[yr2 > 0],col=2,pch=20)
+points(x2[yr2 < 0],yr2[yr2 < 0],col=3,pch=20)
+grid()
+abline(h=0,col="darkgray",lty=6)
+
+mtext(expression(paste(sigma," = 0.5")),line=0.5,adj=1.3,cex=0.85,col="darkblue")
+
+par(fig=c(0.5,1,0.5,1), new=TRUE)
+plot(x1,yi1,typ="l",col="gray",main="Sin(log(x)*281.0063)/x^0.5",xlab="t",ylab="value",
+     cex.main=0.75,cex.axis=0.5,cex.lab=0.5)
+points(x2[yi2 > 0],yi2[yi2 > 0],col="#0000CD",pch=20)
+points(x2[yi2 < 0],yi2[yi2 < 0],col=6,pch=20)
+grid()
+abline(h=0,col="darkgray",lty=6)
+
+par(fig=c(0,0.5,0,0.5), new=TRUE)
+plot(x1,yr0,typ="l",col="gray",main="Cos(log(x)*281.0063)/x^0",xlab="t",ylab="value",
+     cex.main=0.75,cex.axis=0.5,cex.lab=0.5)
+points(x2[yr3 > 0],yr3[yr3 > 0],col=2,pch=20)
+points(x2[yr3 < 0],yr3[yr3 < 0],col=3,pch=20)
+grid()
+abline(h=0,col="darkgray",lty=6)
+
+mtext(expression(paste(sigma," = 0.0")),line=0.5,adj=1.3,cex=0.85,col="darkblue")
+
+par(fig=c(0.5,1,0,0.5), new=TRUE)
+plot(x1,yi0,typ="l",col="gray",main="Sin(log(x)*281.0063)/x^0",xlab="t",ylab="value",
+     cex.main=0.75,cex.axis=0.5,cex.lab=0.5)
+points(x2[yi3 > 0],yi3[yi3 > 0],col="#0000CD",pch=20)
+points(x2[yi3 < 0],yi3[yi3 < 0],col=6,pch=20)
+grid()
+abline(h=0,col="darkgray",lty=6)
+
+
+
+```
+***Figure 1. Lower bound of Dirac comb sampling points for a=1/2, of the Hurwitz Zeta Dirichlet series for $\sigma = (0.5,0)$ of the related continuous function. The interval displayed is [1,20], (red +ve, green -ve) elements of $\sum\limits_{k=0}^{N-1} \Re(\frac{1}{(k+a)^s})$, (blue +ve, violet -ve) elements of $\sum\limits_{k=0}^{N-1} \Im(\frac{1}{(k+a)^s})$. (gray) sinusoidal curves representing the real and imaginary components of $\frac{1}{x^s}$ at $t=62*\pi/log(2)\approx281.0063$***
+
+
+
+```{r dirac_comb10, echo=FALSE,fig.height=3}
+
+tpt=62*pi/log(2)
+
+x1=seq(.5,20,l=20001)
+yr1=1/x1^0.5*cos(log(x1)*tpt)
+yi1=1/x1^0.5*sin(log(x1)*tpt)
+yr0=1/x1^0*cos(log(x1)*tpt)
+yi0=1/x1^0*sin(log(x1)*tpt)
+
+a=10
+
+x2=seq(0+a,19+a,l=20)
+yr2=1/x2^0.5*cos(log(x2)*tpt)
+yi2=1/x2^0.5*sin(log(x2)*tpt)
+yr3=1/x2^0*cos(log(x2)*tpt)
+yi3=1/x2^0*sin(log(x2)*tpt)
+
+
+#par(mfrow=c(2,2))
+par(mar=c(2,2,2,2))
+par(mgp=c(0.5,1,0))
+par(fig=c(0,0.5,0.5,1))
+plot(x1,yr1,typ="l",col="gray",main="Cos(log(x)*281.0063)/x^0.5",xlab="t",ylab="value",
+     cex.main=0.75,cex.axis=0.5,cex.lab=0.5)
+points(x2[yr2 > 0],yr2[yr2 > 0],col=2,pch=20)
+points(x2[yr2 < 0],yr2[yr2 < 0],col=3,pch=20)
+grid()
+abline(h=0,col="darkgray",lty=6)
+
+mtext(expression(paste(sigma," = 0.5")),line=0.5,adj=1.3,cex=0.85,col="darkblue")
+
+par(fig=c(0.5,1,0.5,1), new=TRUE)
+plot(x1,yi1,typ="l",col="gray",main="Sin(log(x)*281.0063)/x^0.5",xlab="t",ylab="value",
+     cex.main=0.75,cex.axis=0.5,cex.lab=0.5)
+points(x2[yi2 > 0],yi2[yi2 > 0],col="#0000CD",pch=20)
+points(x2[yi2 < 0],yi2[yi2 < 0],col=6,pch=20)
+grid()
+abline(h=0,col="darkgray",lty=6)
+
+par(fig=c(0,0.5,0,0.5), new=TRUE)
+plot(x1,yr0,typ="l",col="gray",main="Cos(log(x)*281.0063)/x^0",xlab="t",ylab="value",
+     cex.main=0.75,cex.axis=0.5,cex.lab=0.5)
+points(x2[yr3 > 0],yr3[yr3 > 0],col=2,pch=20)
+points(x2[yr3 < 0],yr3[yr3 < 0],col=3,pch=20)
+grid()
+abline(h=0,col="darkgray",lty=6)
+
+mtext(expression(paste(sigma," = 0.0")),line=0.5,adj=1.3,cex=0.85,col="darkblue")
+
+par(fig=c(0.5,1,0,0.5), new=TRUE)
+plot(x1,yi0,typ="l",col="gray",main="Sin(log(x)*281.0063)/x^0",xlab="t",ylab="value",
+     cex.main=0.75,cex.axis=0.5,cex.lab=0.5)
+points(x2[yi3 > 0],yi3[yi3 > 0],col="#0000CD",pch=20)
+points(x2[yi3 < 0],yi3[yi3 < 0],col=6,pch=20)
+grid()
+abline(h=0,col="darkgray",lty=6)
+
+
+
+```
+***Figure 2. Lower bound of Dirac comb sampling points for a=10, of the Hurwitz Zeta Dirichlet series for $\sigma = (0.5,0)$ of the related continuous function. The interval displayed is [1,20], (red +ve, green -ve) elements of $\sum\limits_{k=0}^{N-1} \Re(\frac{1}{(k+10)^s})$, (blue +ve, violet -ve) elements of $\sum\limits_{k=0}^{N-1} \Im(\frac{1}{(k+10)^s})$. (gray) sinusoidal curves representing the real and imaginary components of $\frac{1}{x^s}$ at $t=62*\pi/log(2)\approx281.0063$***
+
+\setcounter{figure}{2}
+
+
+All the calculations and most graphs are produced using the pari-gp language [8] and exact Hurwitz Zeta values were available to complement the finite Hurwitz Zeta Dirichlet Series sums. This document was published using RStudio [9] and the graphs on Dirac comb behaviour were prepared using R [10] and RStudio. 
+
+## Hurwitz Zeta finite Dirichlet Series behaviour when $0 < a < \frac{t}{2\pi} \in \mathbb{R}$
+
+
+In figure 3, the oscillatory behavior of the finite Hurwitz Zeta Dirichlet series sums for several low values of the shift parameter $a=\{100,1,0.5,0.1\}$, is compared for four $\Re(s)$ values ($\sigma=\{1,0.5,0,-1\}$) when $s=(\sigma+I\cdot 1378.32)$. The finite series sum results span the range $k+a=[a,876+a]$ in equation \eqref {eq:seriesHZ} and $k+a=[a,876+64+a]$ in equation \eqref {eq:endtapseriesHZ}. 
+
+The black line (grey line) is the oscillatory behaviour of the real part (imaginary part) of the Hurwitz Zeta Dirichlet series equation \eqref{eq:seriesHZ}.
+
+\begin{enumerate}
+\item the four columns correspond to the real value of the point $s=\sigma+I\cdot 1378.32$, i.e. $\sigma=\{1,0.5,0,-1\}$ where $\sigma=\{1,0.5,0\}$ lie in the critical strip and $\sigma=-1$ is below the critical strip.
+\item in sequence top to bottom, the four rows correspond to Hurwitz Zeta Dirichlet Series with different shift parameters $\sum_{k=0}^{(N-1)}\left(\frac{1}{(k+10)^s}\right)$, $\sum_{k=0}^{(N-1)}\left(\frac{1}{(k+1)^s}\right)$, $\sum_{k=0}^{(N-1)}\left(\frac{1}{(k+1/2)^s}\right)$, $\sum_{k=0}^{(N-1)}\left(\frac{1}{(k+0.1)^s}\right)$
+\item the horizontal blue line (covering the final plateau of the (black line) oscillatory behavior) is the real part of the corresponding exact Hurwitz Zeta function
+\item the horizontal red line (covering the final plateau of the (grey line) oscillatory behaviour) is the imaginary part of the corresponding exact Riemann Siegel Z function
+\item the second horizontal blue line corresponds to 0 on the y axis.
+\item consistently at the lower boundary of the final plateau in the oscillatory behaviour is a vertical blue line at $\frac{t\cdot (N_C=1)}{2\pi}+1-a=\frac{1378.32}{2\pi}+1-a$ where $N_C={1}$ is used based on Riemann Zeta function.
+\item near the y axis is a vertical green line at $\sqrt{\frac{t\cdot (N_C=1)}{2\pi}}+1-a=\sqrt{\frac{1378.32}{2\pi}}+1-a$ nominally identifying the shifted position of the first quiescent point (used for resurgence based $\zeta(s)=\zeta(s,1)$ estimates) as $a\ne1$. 
+\item inside the final plateau in the oscillatory behaviour is a vertical gray line at $\frac{t\cdot (N_C=1)}{\pi}+1-a=\frac{1378.32}{\pi}+1-a$ identifying the second quiescent region which has prominent features for some panels such as $\sigma=\{0,-1\}$ (the last two columns)
+\item superimposed on the oscillatory behaviour black line is a red line which are the real part results of tapered end point weighted dirichlet series calculations equation \eqref {eq:endtapseriesHZ} which dampens the oscillatory divergence allowing accurate approximations of the Riemann Siegel Z function (and L function) at the quiescent regions
+\item superimposed on the oscillatory behaviour gray line is a green line which are the imaginary part results of tapered end point weighted Hurwitz Zeta Dirichlet series calculations (128 point taper) equation \eqref {eq:endtapseriesHZ} which dampens the oscillatory behaviour allowing accurate approximations of the Hurwitz Zeta function at the second quiescent region
+\end{enumerate}
+
+Importantly, the first row of the figure belonging to the large shift parameter value a=100 (for different values of the $\Re(s)$) displays markedly shifted positions of the second quiescent region $\frac{1378.32}{\pi} \mapsto \frac{1378.32}{\pi}+1-a$ and the entry point to the final plateau $\frac{1378.32}{2\pi} \mapsto \frac{1378.32}{2\pi}+1-a$.
+
+As support, figure 4 presents similar behaviour higher up the imaginary axis at t=17143.8 for the same Hurwitz Zeta Dirichlet series sums of the above functions used in figure 3 except the highest shift parameter $a=\{2000,1,0.5,0.1\}$ has been increased to 2000. The finite series sum results span the range $k+a=[a,10913+a]$ in equation \eqref {eq:seriesHZ} and $k+a=[a,10913+64+a]$ in equation \eqref {eq:endtapseriesHZ}. Importantly, the first row of the figure belonging to the large shift parameter value a=2000 (for different values of the $\Re(s)$) displays markedly shifted positions of the second quiescent region $\frac{17143.82}{\pi} \mapsto \frac{17143.82}{\pi}+1-a$ and the entry point to the final plateau $\frac{17143.82}{2\pi} \mapsto \frac{17143.82}{2\pi}+1-a$.
+
+As seen in both figures, the final plateau of oscillatory behaviour has the exact Hurwitz Zeta function values real part  (horizontal blue) and imaginary part (horizontal red) as a trend line.
+
+
+```{r fig_cap__zeta_1378.32, echo=FALSE}
+cap2 <- "\\scriptsize{The behaviour of the finite Hurwitz Zeta Dirichlet series sum calculations real part (black), imaginary part (grey) for t=1378.32 (as well as tapered versions based on partial sums of binomial coefficients real part (red) imaginary part (green)) . First row - fourth row respectively a=(100,1,1/2,0.1) i.e., $\\sum_{k=0}^{(N-1)}\\left(\\frac{1}{(k+10)^s}\\right)$, $\\sum_{k=0}^{(N-1)}\\left(\\frac{1}{(k+1)^s}\\right)$, $\\sum_{k=0}^{(N-1)}\\left(\\frac{1}{(k+1/2)^s}\\right)$, $\\sum_{k=0}^{(N-1)}\\left(\\frac{1}{(k+0.1)^s}\\right)$. First column - fourth column $\\sigma=\\{1,1/2,0,-1\\}$. Where the x axis indicates the number of included integers in the series sum. The quiescent regions at $N=\\sqrt{\\frac{t}{2\\pi}}+1-a$ and $N=\\frac{t}{\\pi}+1-a$ are indicated by green and grey vertical lines with the initial entry into the final plateau region $N=\\frac{t\\cdot N_C}{2\\pi}+1-a$ the most prominent feature indicated by a vertical blue line. The red (green) vertical lines at k=65 is an artifact of the truncated start of the 128 point end tapered series sums as k > 64. The red (blue) horizontal lines bisecting the asymptotic $k \\rightarrow \\infty$ behaviour are the exact values of the real (imaginary) parts of $\\zeta(s,a)$ and the second blue horizontal line is the x axis.}"
+
+```
+
+
+```{r image_1378.32, fig.show = "hold",  out.width = c("24%","24%","24%","24%"), fig.align = "center", fig.cap=cap2, fig.height=5}
+
+knitr::include_graphics("/home/john/pari/HurwitzZeta/graph_HZbased_100_1_1378.32.pdf")
+
+knitr::include_graphics("/home/john/pari/HurwitzZeta/graph_HZbased_100_0.5_1378.32.pdf")
+
+knitr::include_graphics("/home/john/pari/HurwitzZeta/graph_HZbased_100_0_1378.32.pdf")
+
+knitr::include_graphics("/home/john/pari/HurwitzZeta/graph_HZbased_100_-1_1378.32.pdf")
+
+
+knitr::include_graphics("/home/john/pari/HurwitzZeta/graph_HZbased_1_1_1378.32.pdf")
+
+knitr::include_graphics("/home/john/pari/HurwitzZeta/graph_HZbased_1_0.5_1378.32.pdf")
+
+knitr::include_graphics("/home/john/pari/HurwitzZeta/graph_HZbased_1_0_1378.32.pdf")
+
+knitr::include_graphics("/home/john/pari/HurwitzZeta/graph_HZbased_1_-1_1378.32.pdf")
+
+
+knitr::include_graphics("/home/john/pari/HurwitzZeta/graph_HZbased_0.5_1_1378.32.pdf")
+
+knitr::include_graphics("/home/john/pari/HurwitzZeta/graph_HZbased_0.5_0.5_1378.32.pdf")
+
+knitr::include_graphics("/home/john/pari/HurwitzZeta/graph_HZbased_0.5_0_1378.32.pdf")
+
+knitr::include_graphics("/home/john/pari/HurwitzZeta/graph_HZbased_0.5_-1_1378.32.pdf")
+
+
+knitr::include_graphics("/home/john/pari/HurwitzZeta/graph_HZbased_0.1_1_1378.32.pdf")
+
+knitr::include_graphics("/home/john/pari/HurwitzZeta/graph_HZbased_0.1_0.5_1378.32.pdf")
+
+knitr::include_graphics("/home/john/pari/HurwitzZeta/graph_HZbased_0.1_0_1378.32.pdf")
+
+knitr::include_graphics("/home/john/pari/HurwitzZeta/graph_HZbased_0.1_-1_1378.32.pdf")
+
+
+```
+
+
+
+```{r fig_cap__zeta_17143.8, echo=FALSE}
+cap2 <- "\\scriptsize{The behaviour of the finite Hurwitz Zeta Dirichlet series sum calculations real part (black), imaginary part (grey) for t=17143.8 (as well as tapered versions based on partial sums of binomial coefficients real part (red) imaginary part (green)) . First row - fourth row respectively a=(2000,1,1/2,0.1) i.e., $\\sum_{k=0}^{(N-1)}\\left(\\frac{1}{(k+10)^s}\\right)$, $\\sum_{k=0}^{(N-1)}\\left(\\frac{1}{(k+1)^s}\\right)$, $\\sum_{k=0}^{(N-1)}\\left(\\frac{1}{(k+1/2)^s}\\right)$, $\\sum_{k=0}^{(N-1)}\\left(\\frac{1}{(k+0.1)^s}\\right)$. First column - fourth column $\\sigma=\\{1,1/2,0,-1\\}$. Where the x axis indicates the number of included integers in the series sum. The quiescent regions at $N=\\sqrt{\\frac{t}{2\\pi}}+1-a$ and $N=\\frac{t}{\\pi}+1-a$ are indicated by green and grey vertical lines with the initial entry into the final plateau region $N=\\frac{t\\cdot N_C}{2\\pi}+1-a$ the most prominent feature indicated by a vertical blue line. The red (green) vertical lines at k=65 is an artifact of the truncated start of the 128 point end tapered series sums as k > 64. The red (blue) horizontal lines bisecting the asymptotic $k \\rightarrow \\infty$ behaviour are the exact values of the real (imaginary) parts of $\\zeta(s,a)$ and the second blue horizontal line is the x axis.}"
+
+```
+
+
+```{r image_17143.8, fig.show = "hold",  out.width = c("24%","24%","24%","24%"), fig.align = "center", fig.cap=cap2, fig.height=5}
+
+knitr::include_graphics("/home/john/pari/HurwitzZeta/graph_HZbased_2000_1_17143.8.pdf")
+
+knitr::include_graphics("/home/john/pari/HurwitzZeta/graph_HZbased_2000_0.5_17143.8.pdf")
+
+knitr::include_graphics("/home/john/pari/HurwitzZeta/graph_HZbased_2000_0_17143.8.pdf")
+
+knitr::include_graphics("/home/john/pari/HurwitzZeta/graph_HZbased_2000_-1_17143.8.pdf")
+
+
+knitr::include_graphics("/home/john/pari/HurwitzZeta/graph_HZbased_1_1_17143.8.pdf")
+
+knitr::include_graphics("/home/john/pari/HurwitzZeta/graph_HZbased_1_0.5_17143.8.pdf")
+
+knitr::include_graphics("/home/john/pari/HurwitzZeta/graph_HZbased_1_0_17143.8.pdf")
+
+knitr::include_graphics("/home/john/pari/HurwitzZeta/graph_HZbased_1_-1_17143.8.pdf")
+
+
+knitr::include_graphics("/home/john/pari/HurwitzZeta/graph_HZbased_0.5_1_17143.8.pdf")
+
+knitr::include_graphics("/home/john/pari/HurwitzZeta/graph_HZbased_0.5_0.5_17143.8.pdf")
+
+knitr::include_graphics("/home/john/pari/HurwitzZeta/graph_HZbased_0.5_0_17143.8.pdf")
+
+knitr::include_graphics("/home/john/pari/HurwitzZeta/graph_HZbased_0.5_-1_17143.8.pdf")
+
+
+knitr::include_graphics("/home/john/pari/HurwitzZeta/graph_HZbased_0.1_1_17143.8.pdf")
+
+knitr::include_graphics("/home/john/pari/HurwitzZeta/graph_HZbased_0.1_0.5_17143.8.pdf")
+
+knitr::include_graphics("/home/john/pari/HurwitzZeta/graph_HZbased_0.1_0_17143.8.pdf")
+
+knitr::include_graphics("/home/john/pari/HurwitzZeta/graph_HZbased_0.1_-1_17143.8.pdf")
+
+
+```
+
+\clearpage
+
+## Hurwitz Zeta finite Dirichlet Series behaviour near the first quiescent region for different integer shift parameters $A \in \mathbb{Z}^+$
+
+In figure 5, the early behaviour of the finite Hurwitz Zeta Dirichlet series sums for several low integer values of the shift parameter $A=\{1,333,666,1000\}$, is compared for $s=(1/2+I\cdot 6820051.8909855)$ (a Riemann Zeta non-trivial zero co-ordinate). The finite series sum results span the range $k+A=[A,1999+A]$ in equation \eqref {eq:seriesHZ} and $k+A=[A,1999+64+A]$ in equation \eqref {eq:endtapseriesHZ}. 
+
+The black line (grey line) is the oscillatory behaviour of the real part (imaginary part) of the Hurwitz Zeta Dirichlet series equation \eqref{eq:seriesHZ}.
+
+\begin{enumerate}
+\item in sequence top to bottom, the four rows correspond to short sums of Hurwitz Zeta finite Dirichlet Series with different shift parameters $\sum_{k=0}^{(N-1)}\left(\frac{1}{(k+1)^s}\right)$, $\sum_{k=0}^{(N-1)}\left(\frac{1}{(k+333)^s}\right)$, $\sum_{k=0}^{(N-1)}\left(\frac{1}{(k+666)^s}\right)$, $\sum_{k=0}^{(N-1)}\left(\frac{1}{(k+1000)^s}\right)$
+\item the two columns correspond $k+A=[A,1999+A]$ in equation \eqref {eq:seriesHZ} and $k+A=[A,1999+64+A]$ in equation \eqref {eq:endtapseriesHZ}, where the second column figures are magnified close ups surrounding the shifted first quiescent region $\sqrt{\frac{6820051.8909855}{2\pi}}\pm100 \mapsto \sqrt{\frac{6820051.8909855}{2\pi}}+1-A\pm100$.
+\item the horizontal violet-red line corresponds to 0 on the y axis which is applicable for the first row as when a=1, the real part of the corresponding exact Hurwitz Zeta function is 0.
+\item superimposed on the oscillatory behaviour black (gray) line is a red (green) line respectively which are the real  (imaginary) part results of tapered end point weighted dirichlet series calculations equation \eqref {eq:endtapseriesHZ} which dampens the oscillatory divergence allowing accurate approximations of the Riemann Siegel Z function (and L function) at the second quiescent region $\frac{6820051.8909855}{\pi}+1-A$
+\end{enumerate}
+
+Since all four values of A in figure 5 are integers, the difference between the Series sums in figure 5 is equivalent to 
+\begin{align}
+\sum_{k=0}^{(N-1)}\left(\frac{1}{(k+A)^s}\right) &\mapsto \sum_{k=A}^{(N-1+A)}\left(\frac{1}{(k)^s}\right) , A \in \mathbb{Z}^+ \\
+ &\mapsto \sum_{k=1}^{(N-1+A)}\left(\frac{\delta_{k \ge A}}{(k)^s}\right) , A \in \mathbb{Z}^+ \label{eq:shift}
+ \end{align}
+ 
+So for a given integer shift parameter A, early terms in the last equivalence expression equation \eqref{eq:shift} contribute zero $\delta_{k \ge A}=0$ and the apparent position of the first quiescent region Series sum contribution shifts to the left on the horizontal axis and the real and imaginary components of the Series sum are different in magnitude (to the first row Riemann Zeta case A=1) because of the absence of the contribution $\frac{1}{k^s}$ from the early integers k < A.
+
+
+
+```{r fig_cap__zeta_6820051.8909855, echo=FALSE}
+cap2 <- "\\scriptsize{The initial behaviour (up to the first 2000 terms) of the finite Hurwitz Zeta Dirichlet series sum calculations real part (black), imaginary part (grey) for $s=0.5+I*6820051.8909855$ (as well as tapered versions based on partial sums of binomial coefficients real part (red) imaginary part (green)) . First row - fourth row respectively a=(1,333,666,1000) i.e., $\\sum_{k=0}^{(N-1)}\\left(\\frac{1}{(k+1)^s}\\right)$, $\\sum_{k=0}^{(N-1)}\\left(\\frac{1}{(k+333)^s}\\right)$, $\\sum_{k=0}^{(N-1)}\\left(\\frac{1}{(k+666)^s}\\right)$, $\\sum_{k=0}^{(N-1)}\\left(\\frac{1}{(k+1000)^s}\\right)$. First column $k+a=[a,1999+a]$ in equation \\eqref {eq:seriesHZ} and $k+a=[a,1999+64+a]$ in equation \\eqref {eq:endtapseriesHZ}, Second column magnified close up near shifted first quiescent region $\\frac{6820051.8909855}{2\\pi}\\pm100 \\mapsto \\frac{6820051.8909855}{2\\pi}+1-a\\pm100$. Where the x axis indicates the number of included integers in the series sum. The shifted quiescent regions at $N=\\sqrt{\\frac{t}{2\\pi}}+1-a$ is indicated by blue vertical line. The red (green) vertical lines at k=65 is an artifact of the truncated start of the 128 point end tapered series sums as k > 64. The violet red horizontal line is the x axis.}"
+
+```
+
+
+```{r image_6820051.8909855, fig.show = "hold",  out.width = c("49%","40%"), fig.align = "center", fig.cap=cap2, fig.height=5}
+
+
+knitr::include_graphics("/home/john/pari/HurwitzZeta/graph_HZbased_1_0.5_6820051.8909855.pdf")
+knitr::include_graphics("/home/john/pari/HurwitzZeta/graph_HZbasedmag_1_0.5_6820051.8909855.pdf")
+
+knitr::include_graphics("/home/john/pari/HurwitzZeta/graph_HZbased_333_0.5_6820051.8909855.pdf")
+knitr::include_graphics("/home/john/pari/HurwitzZeta/graph_HZbasedmag_333_0.5_6820051.8909855.pdf")
+
+knitr::include_graphics("/home/john/pari/HurwitzZeta/graph_HZbased_666_0.5_6820051.8909855.pdf")
+knitr::include_graphics("/home/john/pari/HurwitzZeta/graph_HZbasedmag_666_0.5_6820051.8909855.pdf")
+
+knitr::include_graphics("/home/john/pari/HurwitzZeta/graph_HZbased_1000_0.5_6820051.8909855.pdf")
+knitr::include_graphics("/home/john/pari/HurwitzZeta/graph_HZbasedmag_1000_0.5_6820051.8909855.pdf")
+
+
+
+```
+
+\clearpage
+
+## Hurwitz Zeta finite Dirichlet Series behaviour when $a \gtrsim \frac{t}{2\pi} \in \mathbb{R}$
+
+In figure 6, the oscillatory behavior of the finite Hurwitz Zeta Dirichlet series sums for several high values of the shift parameter first column $a=\{3817,4772,6363,8677\}$, second column $a=\{3817+0.5,4772+0.5,6363+0.5,8677+0.5\}$, is compared to exact Hurwitz Zeta function values for $s=(0+I\cdot 29986.206)$. The finite series sum results span the range $k+a=[a,15272+a]$ in equation \eqref {eq:seriesHZ} and $k+a=[a,15272+64+a]$ in equation \eqref {eq:endtapseriesHZ}. 
+
+The black line (grey line) is the oscillatory behaviour of the real part (imaginary part) of the Hurwitz Zeta Dirichlet series equation \eqref{eq:seriesHZ}.
+
+\begin{enumerate}
+\item in sequence top to bottom, the four rows of the first column correspond to Hurwitz Zeta Dirichlet Series with different shift parameters $\sum_{k=0}^{(N-1)}\left(\frac{1}{(k+3817)^s}\right)$, $\sum_{k=0}^{(N-1)}\left(\frac{1}{(k+4772)^s}\right)$, $\sum_{k=0}^{(N-1)}\left(\frac{1}{(k+6363)^s}\right)$, $\sum_{k=0}^{(N-1)}\left(\frac{1}{(k+8677)^s}\right)$ and the second column corresponds to Hurwitz Zeta Dirichlet Series with different shift parameters $\sum_{k=0}^{(N-1)}\left(\frac{1}{(k+3817.5)^s}\right)$, $\sum_{k=0}^{(N-1)}\left(\frac{1}{(k+4772.5)^s}\right)$, $\sum_{k=0}^{(N-1)}\left(\frac{1}{(k+6363.5)^s}\right)$, $\sum_{k=0}^{(N-1)}\left(\frac{1}{(k+8677.5)^s}\right)$
+\item the horizontal blue line (covering the final plateau of the (black line) oscillatory behavior) is the real part of the corresponding exact Hurwitz Zeta function only visible for the first 64 points
+\item the horizontal red line (covering the final plateau of the (grey line) oscillatory behaviour) is the imaginary part of the corresponding exact Riemann Siegel Z function only visible for the first 64 points
+\item the second horizontal blue line corresponds to 0 on the y axis.
+\item in the first row only at the lower boundary of the final plateau in the oscillatory behaviour is a vertical blue line at $\frac{t\cdot (N_C=1)}{2\pi}+1-a=\frac{29986.206}{2\pi}+1-a$ where $N_C={1}$ is used based on Riemann Zeta function.
+\item inside the final plateau in the oscillatory behaviour is a vertical gray line at $\frac{t\cdot (N_C=1)}{\pi}+1-a=\frac{29986.206}{\pi}+1-a$ identifying the second quiescent region and how it shifts to the left in the lower rows as the shift parameter a increases
+\item superimposed on the oscillatory behaviour black (gray) line is a red (green) line respectively which are the real  (imaginary) part results of tapered end point weighted dirichlet series calculations equation \eqref {eq:endtapseriesHZ} which dampens the oscillatory divergence allowing accurate approximations of the Riemann Siegel Z function (and L function) at the second quiescent region $\frac{29986.206}{\pi}+1-a$ if $a < \frac{29986.206}{\pi} \in \mathbb{R}$
+\end{enumerate}
+
+Importantly, simple but large shifted positions of the second quiescent region $\frac{29986.206}{\pi} \mapsto \frac{29986.206}{\pi}+1-a$ occur when $a \gtrsim \frac{t}{2\pi} \in \mathbb{R}$.
+
+In figure 7, the second quiescent region of the Hurwitz Zeta Dirichlet Series sum behaves similarly when $s=(1+I\cdot 29986.206)$. 
+
+
+```{r fig_cap__zeta_29986.206_0, echo=FALSE}
+cap2 <- "\\scriptsize{The behaviour of the finite Hurwitz Zeta Dirichlet series sum calculations real part (black), imaginary part (grey) for $s=0+I*29986.206$ (as well as tapered versions based on partial sums of binomial coefficients real part (red) imaginary part (green)) with large shift parameter values. The four rows of the first column correspond to Hurwitz Zeta Dirichlet Series with different shift parameters respectively a=(3817,4772,6363,8677), the four rows of the second column correspond to Hurwitz Zeta Dirichlet Series with slightly different shift parameters respectively a=(3817.5,4772.5,6363.5,8677.5). The shifted second quiescent region at $N=\\frac{t}{\\pi}+1-a$ is indicated by gray vertical line. The red (green) vertical lines at k=65 is an artifact of the truncated start of the 128 point end tapered series sums as k > 64. The red (blue) horizontal lines bisecting the asymptotic $k \\rightarrow \\infty$ behaviour at the first 64 points (near the y axis) are the exact values of the real (imaginary) parts of $\\zeta(s,a)$ and the second blue horizontal line is the x axis. }"
+
+```
+
+
+
+```{r image_29986.206_0, fig.show = "hold",  out.width = c("49%","49%"), fig.align = "center", fig.cap=cap2, fig.height=5}
+
+
+knitr::include_graphics("/home/john/pari/HurwitzZeta/graph_HZbased_3817_0_29986.206.pdf")
+knitr::include_graphics("/home/john/pari/HurwitzZeta/graph_HZbased_3817.5_0_29986.206.pdf")
+
+knitr::include_graphics("/home/john/pari/HurwitzZeta/graph_HZbased_4772_0_29986.206.pdf")
+knitr::include_graphics("/home/john/pari/HurwitzZeta/graph_HZbased_4772.5_0_29986.206.pdf")
+
+knitr::include_graphics("/home/john/pari/HurwitzZeta/graph_HZbased_6363_0_29986.206.pdf")
+knitr::include_graphics("/home/john/pari/HurwitzZeta/graph_HZbased_6363.5_0_29986.206.pdf")
+
+knitr::include_graphics("/home/john/pari/HurwitzZeta/graph_HZbased_8677_0_29986.206.pdf")
+knitr::include_graphics("/home/john/pari/HurwitzZeta/graph_HZbased_8677.5_0_29986.206.pdf")
+
+
+
+```
+
+
+
+```{r fig_cap__zeta_29986.206_1, echo=FALSE}
+cap2 <- "\\scriptsize{The behaviour of the finite Hurwitz Zeta Dirichlet series sum calculations real part (black), imaginary part (grey) for $s=1+I*29986.206$ (as well as tapered versions based on partial sums of binomial coefficients real part (red) imaginary part (green)) with large shift parameter values. The four rows of the first column correspond to Hurwitz Zeta Dirichlet Series with different shift parameters respectively a=(3817,4772,6363,8677), the four rows of the second column correspond to Hurwitz Zeta Dirichlet Series with slightly different shift parameters respectively a=(3817.5,4772.5,6363.5,8677.5). The shifted second quiescent region at $N=\\frac{t}{\\pi}+1-a$ is indicated by gray vertical line. The red (green) vertical lines at k=65 is an artifact of the truncated start of the 128 point end tapered series sums as k > 64. The red (blue) horizontal lines bisecting the asymptotic $k \\rightarrow \\infty$ behaviour at the first 64 points (near the y axis) are the exact values of the real (imaginary) parts of $\\zeta(s,a)$ and the second blue horizontal line is the x axis. }"
+
+```
+
+
+
+```{r image_29986.206_1, fig.show = "hold",  out.width = c("49%","49%"), fig.align = "center", fig.cap=cap2, fig.height=5}
+
+
+knitr::include_graphics("/home/john/pari/HurwitzZeta/graph_HZbased_3817_1_29986.206.pdf")
+knitr::include_graphics("/home/john/pari/HurwitzZeta/graph_HZbased_3817.5_1_29986.206.pdf")
+
+knitr::include_graphics("/home/john/pari/HurwitzZeta/graph_HZbased_4772_1_29986.206.pdf")
+knitr::include_graphics("/home/john/pari/HurwitzZeta/graph_HZbased_4772.5_1_29986.206.pdf")
+
+knitr::include_graphics("/home/john/pari/HurwitzZeta/graph_HZbased_6363_1_29986.206.pdf")
+knitr::include_graphics("/home/john/pari/HurwitzZeta/graph_HZbased_6363.5_1_29986.206.pdf")
+
+knitr::include_graphics("/home/john/pari/HurwitzZeta/graph_HZbased_8677_1_29986.206.pdf")
+knitr::include_graphics("/home/john/pari/HurwitzZeta/graph_HZbased_8677.5_1_29986.206.pdf")
+
+
+
+```
+
+
+\clearpage
+
+## Conclusion
+
+In practice, away from the real axis over the wide interval $0 < a \lesssim  \frac{t}{\pi} \in \mathbb{R}$, end tapered Hurwitz Zeta Dirichlet series sums based on partial sums of binomial coefficients produce accurate approximations of the Hurwitz Zeta function around the second quiescent region $N_{\lfloor\frac{t}{\pi}\rfloor,\zeta(s,a)} \mapsto \frac{t}{\pi}+1-a$. The second quiescent region no longer exists when $a > \frac{t}{\pi} \in \mathbb{R}$
+
+\clearpage
+
+## References
+
+1. Hurwitz, Adolf (1882). "Einige Eigenschaften der Dirichlet'schen Functionen ${\textstyle F(s)=\sum \left({\frac {D}{n}}\right)\cdot {\frac {1}{n}}}$, die bei der Bestimmung der Classenanzahlen binärer quadratischer Formen auftreten". Zeitschrift für Mathematik und Physik (in German). 27: 86–101.
+
+2. Apostol, T. M. (2010), "Hurwitz zeta function", in Olver, Frank W. J.; Lozier, Daniel M.; Boisvert, Ronald F.; Clark, Charles W. (eds.), NIST Handbook of Mathematical Functions, Cambridge University Press, ISBN 978-0-521-19225-5, MR 2723248
+
+3. Wikipedia contributors, "Hurwitz zeta function," Wikipedia, The Free Encyclopedia, https://en.wikipedia.org/w/index.php?title=Hurwitz_zeta_function&oldid=1096389477 (accessed October 18, 2022).
+
+4. Martin, J.P.D. "A quiescent region about $\frac{t}{\pi}$ in the oscillating divergence of the Riemann Zeta Dirichlet Series inside the critical strip." (2021)
+http://dx.doi.org/10.6084/m9.figshare.14213516
+
+5. Martin, J.P.D. "Tapered end point weighting of finite Riemann Zeta Dirichlet Series using partial sums of binomial coefficients to produce higher order approximations of the Riemann Siegel Z function." (2021)
+http://dx.doi.org/10.6084/m9.figshare.14702760
+
+6. Martin, J.P.D. "Examples of quiescent regions in the oscillatory divergence of several 1st degree L functions and their Davenport Heilbronn counterparts." (2021)
+https://dx.doi.org/10.6084/m9.figshare.14956053
+
+7. Martin, J.P.D. "Examples of quiescent regions in the oscillatory divergence of Box-Cox transformation series related to 1st degree L functions and their Dirichlet series" (2021) 
+https://dx.doi.org/10.6084/m9.figshare.17087651
+
+8. The PARI~Group, PARI/GP version {\tt 2.12.0}, Univ. Bordeaux, 2018,
+    \url{http://pari.math.u-bordeaux.fr/}.
+\normalfont
+
+9. RStudio Team (2015). RStudio: Integrated Development for R. RStudio, Inc., Boston, MA URL
+http://www.rstudio.com/.
+
+10. R Core Team (2017). R: A language and environment for statistical computing. R Foundation for
+Statistical Computing, Vienna, Austria. \url{https://www.R-project.org/}.
