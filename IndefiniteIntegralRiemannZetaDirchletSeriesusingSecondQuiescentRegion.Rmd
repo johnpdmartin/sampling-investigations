@@ -122,6 +122,7 @@ Note that
 \begin{itemize}
 \item the 4 cross terms $\left(\frac{1}{k^s n^{(1-s)}}\right)$, $\frac{1}{ k^s (\lfloor\frac{t}{\pi}\rfloor+i)^{(1-s)}}$, $\frac{1}{ (\lfloor\frac{t}{\pi}\rfloor+i)^s n^{(1-s)}}$ and $\frac{1}{ (\lfloor\frac{t}{\pi}\rfloor+i)^s (\lfloor\frac{t}{\pi}\rfloor+j)^{(1-s)}}$ need to be explicitly used as is, i.e. \textbf{without} any further simplication (e.g. $\frac{1}{k^s n^{(1-s)}} \rightarrow e^{((-log(k)+log(n))\cdot s -log(n))}$) for the indefinite integral only to contain turning points associated with the Riemann Zeta non-trivial zero co-ordinates presumably due to conditional summation requirements
 \item the approximation in the equation includes two correction terms for nuisance discontinuities at $\Im(s)/Pi \in \mathbb{Z}^+$ that were found to occur in the approximation
+\item see equation \eqref {eq:endtap2ndmoment_indefiniteintegral_improved} for an improved version of the above equation fully correcting for real component nuisance discontinuities
 \end{itemize}
 
 
@@ -167,34 +168,8 @@ Importantly in figure 1, $\Im(\int \zeta(s)~ds-I*280)$ is shown rather than $\Im
 \item On the second row, only the indefinite integral and the Riemann Zeta function approximations are overlayed, i.e, imag(indefinite integral)\textbf{-280}, real(indefinite integral), imag(Dirichlet sum), real(Dirichlet sum) in {\color{red}{red}}, {\color{violet}violet-red}, {\color{blue}blue}, {\color{green}green} along with the (principal logarithm) argument function S=imag(log($\zeta(s)$)) in black.
 \end{enumerate}
 
-This second row more closely inspects whether the turning points of indefinite integral line up with the non-trivial zero co-ordinates of the Riemann Zeta function. In particular, the frequent $\pi$ vertical discontinuities correspond to Riemann Zeta non-trivial zero co-ordinates while the principal logarithm calculation for imag(log($\zeta(s)$)) is the cause of the $2\pi$ vertical discontinuity at t=282.454721.  Again, unsurprisingly \textbf{both} the real(indefinite integral) and imag(indefinite integral) have turning points at the co-ordinates of Riemann Zeta non-trivial zeroes. Interestingly, the real(indefinite integral) \textcolor{violet}{violet-red} also has additional turning points at the regular (continuous) zero crossings of the (principal logarithm) Riemann Zeta argument function. The horizontal grey line is the y=0 value and the diagonal grey line has slope 1.  
+This second row more closely inspects whether the turning points of indefinite integral line up with the non-trivial zero co-ordinates of the Riemann Zeta function. In particular, the frequent $\pi$ vertical discontinuities correspond to Riemann Zeta non-trivial zero co-ordinates 
 
-Figures 3-5 give further examples at other intervals on the critical line concentrating on the end tapered finite Dirichlet Series sum approximations equation \eqref {eq:endtapindefiniteintegral} for the indefinite integral of the Riemann Zeta function and equation \eqref {eq:endtapseries} for the Riemann Zeta function. 
-
-Figure 3, first row displays the interval $t=(6820040,6820061)$ along $s=0.5+I*t$ known to contain the first Rosser rule violation of gram points and a large Riemann Zeta function peak, it includes 
-\begin{enumerate}
-\item (i) the full $I*t$ contribution in $\Im(\int \zeta(s)~ds)$ \textcolor{red}{red} in the first panel, 
-\item (ii) $\Re(\int \zeta(s)~ds)$ \textcolor{blue}{blue} in the middle panel and 
-\item (iii) an overlay of $\Im(\int \zeta(s)~ds -I*6820050.5)$ \textcolor{red}{red} and $\Re(\int \zeta(s)~ds)$ \textcolor{blue}{blue} in the right panel. 
-\end{enumerate}
-The second row displays the narrower interval $t=(6820045,6820055)$ also along $s=0.5+I*t$ and compares 
-\begin{enumerate}
-\item (i) $\Im(\int \zeta(s)~ds -I*6820045)$ \textcolor{red}{red} and $\Re(\zeta(s)$ \textcolor{blue}{blue} in the left panel, 
-\item (ii) where $\Re(\int \zeta(s)~ds)$ \textcolor{violet}{violet-red} and $\Im(\zeta(s)$ \textcolor{blue}{blue} in the middle panel and 
-\item (iii) $\Im(\int \zeta(s)~ds -I*6820045)$ \textcolor{red}{red}, $\Re(\int \zeta(s)~ds)$ \textcolor{violet}{violet-red} and principal logarithm based $\Im(log(\zeta(s)))$ \textcolor{black}{black} in the right panel. 
-\end{enumerate}
-The horizontal grey line is the y=0 line and the diagonal grey line has slope 1.
-
-Figure 4, first panel displays the interval $t=(9820,9830)$ along $s=0.5+I*t$ containing a large Riemann Zeta peak, it includes an overlay of $\Im(\int \zeta(s)~ds -I*9825)$ \textcolor{red}{red}, $\Re(\int \zeta(s)~ds)$ \textcolor{violet}{violet-red}, $\Im(\zeta(s))$ \textcolor{blue}{blue}, $\Re(\zeta(s))$ \textcolor{green}{green} and principal logarithm based $\Im(log(\zeta(s)))$ \textcolor{black}{black}. The second panel displays the interval $t=(17140,17146)$ along $s=0.5+I*t$ known to contain a very small spacing between Riemann Zeta non-trivial zeroes, it includes an overlay of $\Im(\int \zeta(s)~ds -I*17143)$ \textcolor{red}{red}, $\Re(\int \zeta(s)~ds)$ \textcolor{violet}{violet-red}, $\Im(\zeta(s))$ \textcolor{blue}{blue}, $\Re(\zeta(s))$ \textcolor{green}{green} and principal logarithm based $\Im(log(\zeta(s)))$ \textcolor{black}{black}. The horizontal grey line is the y=0 line and the diagonal grey line has slope 1. 
-
-Figure 4 shows that on the critical line, (i) the zeroes of the imag(Dirichlet series sum) line up with the vertical discontinuites or natural zero crossings the principal logarithm of the imag(log($\zeta(1/2+I*t)$)), (ii) the $\Im(\int \zeta(s)~ds)$ and $\Re(\int \zeta(s)~ds)$ both have turning points at the Riemann Zeta non-trivial zero co-ordinates and (iii) all the turning points of $\Re(\int \zeta(s)~ds)$ line up with the zeroes of imag(Dirichlet series sum).
-
-Figure 5, is an inspection of the narrow interval $t=(17143.7,17143.86)$ along $s=0.5+I*t$ containing the two closely spaced Riemann Zeta non-trivial zeroes and a principal logarithm imag(log($\zeta(1/2+I*t)$)) discontinuity. The left panel shows the lineshapes in normal scale for the indefinite integral and the Riemann Zeta function using equations \eqref  {eq:endtapindefiniteintegral} and \eqref {eq:endtapseries}. The right panel vertically displaces and magnifies the real \textcolor{violet}{violet-red} and imaginary components \textcolor{red}{red} of the indefinite integral and downscales the imag(log($\zeta(1/2+I*t)$)) function shown in black while the real and imaginary Riemann Zeta function values have their original values. The closeup shows that (i) even for closely spaced Riemann Zeta non-trivial zeroes the indefinite integral has minima or maxima (i.e., turning points) in both its real and imaginary components and (ii) real(indefinite integral) has turning points and the $\Im(\zeta(s))=0$ at $2\pi$ vertical discontinuities in the principal logarithm of the imag(log($\zeta(1/2+I*t)$)).
-
-####\textcolor{blue}{behaviour 5: Above the critical line ($\sigma > 0.5$) the number of turning points in imag(indefinite integral) for low values of $\Im(s)$ appears to only slowly decrease within the critical strip.}
-####\textcolor{blue}{behaviour 6: On the critical line, the real component of the Rieman Siegel Z analogue function (real(Z(indefinite integral)) of equation \eqref {eq:Zfn_indefiniteintegral} of the Riemann Zeta Dirichlet Series sum exhibits turning points at the known Riemann Zeta non-trivial zero co-ordinates. It also has additional turnings points at the other $\Re(\zeta(1/2+I*t))$ zero co-ordinates that are not Riemann Zeta non-trivial zero co-ordinates.}
-
-Given the above plausible behaviour on the critical line in figures 1,3-5, for the indefinite integral based on equation \eqref {eq:endtapindefiniteintegral}, it is worthwhile inspecting the behaviour off the critical line. Figure 6 gives an exploration
 
 \blandscape
 
@@ -220,6 +195,32 @@ knitr::include_graphics("/home/john/pari/IndefiniteIntegral/graph_zetabased_0.5_
 
 ```
 \elandscape
+
+while the principal logarithm calculation for imag(log($\zeta(s)$)) is the cause of the $2\pi$ vertical discontinuity at t=282.454721.  Again, unsurprisingly \textbf{both} the real(indefinite integral) and imag(indefinite integral) have turning points at the co-ordinates of Riemann Zeta non-trivial zeroes. Interestingly, the real(indefinite integral) \textcolor{violet}{violet-red} also has additional turning points at the regular (continuous) zero crossings of the (principal logarithm) Riemann Zeta argument function. The horizontal grey line is the y=0 value and the diagonal grey line has slope 1.  
+
+Figures 3-5 give further examples at other intervals on the critical line concentrating on the end tapered finite Dirichlet Series sum approximations equation \eqref {eq:endtapindefiniteintegral} for the indefinite integral of the Riemann Zeta function and equation \eqref {eq:endtapseries} for the Riemann Zeta function. 
+
+Figure 3, first row displays the interval $t=(6820040,6820061)$ along $s=0.5+I*t$ known to contain the first Rosser rule violation of gram points and a large Riemann Zeta function peak, it includes 
+\begin{enumerate}
+\item (i) the full $I*t$ contribution in $\Im(\int \zeta(s)~ds)$ \textcolor{red}{red} in the first panel, 
+\item (ii) $\Re(\int \zeta(s)~ds)$ \textcolor{blue}{blue} in the middle panel and 
+\item (iii) an overlay of $\Im(\int \zeta(s)~ds -I*6820050.5)$ \textcolor{red}{red} and $\Re(\int \zeta(s)~ds)$ \textcolor{blue}{blue} in the right panel. 
+\end{enumerate}
+The second row displays the narrower interval $t=(6820045,6820055)$ also along $s=0.5+I*t$ and compares 
+\begin{enumerate}
+\item (i) $\Im(\int \zeta(s)~ds -I*6820045)$ \textcolor{red}{red} and $\Re(\zeta(s)$ \textcolor{blue}{blue} in the left panel, 
+\item (ii) where $\Re(\int \zeta(s)~ds)$ \textcolor{violet}{violet-red} and $\Im(\zeta(s)$ \textcolor{blue}{blue} in the middle panel and 
+\item (iii) $\Im(\int \zeta(s)~ds -I*6820045)$ \textcolor{red}{red}, $\Re(\int \zeta(s)~ds)$ \textcolor{violet}{violet-red} and principal logarithm based $\Im(log(\zeta(s)))$ \textcolor{black}{black} in the right panel. 
+\end{enumerate}
+The horizontal grey line is the y=0 line and the diagonal grey line has slope 1.
+
+Figure 4, first panel displays the interval $t=(9820,9830)$ along $s=0.5+I*t$ containing a large Riemann Zeta peak, it includes an overlay of $\Im(\int \zeta(s)~ds -I*9825)$ \textcolor{red}{red}, $\Re(\int \zeta(s)~ds)$ \textcolor{violet}{violet-red}, $\Im(\zeta(s))$ \textcolor{blue}{blue}, $\Re(\zeta(s))$ \textcolor{green}{green} and principal logarithm based $\Im(log(\zeta(s)))$ \textcolor{black}{black}. The second panel displays the interval $t=(17140,17146)$ along $s=0.5+I*t$ known to contain a very small spacing between Riemann Zeta non-trivial zeroes, it includes an overlay of $\Im(\int \zeta(s)~ds -I*17143)$ \textcolor{red}{red}, $\Re(\int \zeta(s)~ds)$ \textcolor{violet}{violet-red}, $\Im(\zeta(s))$ \textcolor{blue}{blue}, $\Re(\zeta(s))$ \textcolor{green}{green} and principal logarithm based $\Im(log(\zeta(s)))$ \textcolor{black}{black}. The horizontal grey line is the y=0 line and the diagonal grey line has slope 1. 
+
+Figure 4 shows that on the critical line, (i) the zeroes of the imag(Dirichlet series sum) line up with the vertical discontinuites or natural zero crossings the principal logarithm of the imag(log($\zeta(1/2+I*t)$)), (ii) the $\Im(\int \zeta(s)~ds)$ and $\Re(\int \zeta(s)~ds)$ both have turning points at the Riemann Zeta non-trivial zero co-ordinates and (iii) all the turning points of $\Re(\int \zeta(s)~ds)$ line up with the zeroes of imag(Dirichlet series sum).
+
+Figure 5, is an inspection of the narrow interval $t=(17143.7,17143.86)$ along $s=0.5+I*t$ containing the two closely spaced Riemann Zeta non-trivial zeroes and a principal logarithm imag(log($\zeta(1/2+I*t)$)) discontinuity. The left panel shows the lineshapes in normal scale for the indefinite integral and the Riemann Zeta function using equations \eqref  {eq:endtapindefiniteintegral} and \eqref {eq:endtapseries}. The right panel vertically displaces and magnifies the real \textcolor{violet}{violet-red} and imaginary components \textcolor{red}{red} of the indefinite integral and downscales the imag(log($\zeta(1/2+I*t)$)) function shown in black while the real and imaginary Riemann Zeta function values have their original values. The closeup shows that (i) even for closely spaced Riemann Zeta non-trivial zeroes the indefinite integral has minima or maxima (i.e., turning points) in both its real and imaginary components and (ii) real(indefinite integral) has turning points and the $\Im(\zeta(s))=0$ at $2\pi$ vertical discontinuities in the principal logarithm of the imag(log($\zeta(1/2+I*t)$)).
+
+####\textcolor{blue}{behaviour 5: Above the critical line ($\sigma > 0.5$) the number of turning points in imag(indefinite integral) for low values of $\Im(s)$ appears to only slowly decrease within the critical strip.}
 
 
 
@@ -258,7 +259,10 @@ knitr::include_graphics("/home/john/pari/IndefiniteIntegral/graph_zetabasedadj_0
 
 ```
 
- across the critical strip $\sigma=\{1,0.75,0.5,0.25,0\}$ in the interval $t=(9810,9840)$ of the imag(indefinite integral) \textcolor{red}{red}, real(indefinite integral) \textcolor{violet}{violet-red} using equation \eqref {eq:endtapindefiniteintegral}, and the extended Riemann Siegel Z analogue components imag(Z(indefinite integral)) \textcolor{blue}{blue} and real(Z(indefinite integral)) \textcolor{green}{green} using equation \eqref {eq:Zfn_indefiniteintegral}. 
+
+####\textcolor{blue}{behaviour 6: On the critical line, the real component of the Rieman Siegel Z analogue function (real(Z(indefinite integral)) of equation \eqref {eq:Zfn_indefiniteintegral} of the Riemann Zeta Dirichlet Series sum exhibits turning points at the known Riemann Zeta non-trivial zero co-ordinates. It also has additional turnings points at the other $\Re(\zeta(1/2+I*t))$ zero co-ordinates that are not Riemann Zeta non-trivial zero co-ordinates.}
+
+Given the above plausible behaviour on the critical line in figures 1,3-5, for the indefinite integral based on equation \eqref {eq:endtapindefiniteintegral}, it is worthwhile inspecting the behaviour off the critical line. Figure 6 gives an exploration across the critical strip $\sigma=\{1,0.75,0.5,0.25,0\}$ in the interval $t=(9810,9840)$ of the imag(indefinite integral) \textcolor{red}{red}, real(indefinite integral) \textcolor{violet}{violet-red} using equation \eqref {eq:endtapindefiniteintegral}, and the extended Riemann Siegel Z analogue components imag(Z(indefinite integral)) \textcolor{blue}{blue} and real(Z(indefinite integral)) \textcolor{green}{green} using equation \eqref {eq:Zfn_indefiniteintegral}. 
 
 Looking at the first two columns of figure 6, the imaginary and real components of the indefinite integral have progressively larger oscillations as $\sigma$ gets smaller which is not surprising given analogous Riemann Zeta function behaviour.
 
@@ -268,6 +272,9 @@ Given the differences between the middle two columns real(indefinite integral) a
 
 Another interesting feature in the first column (and fourth column) of the second row of figure 6 is that the turning point near the central feature is still present in imag(indefinite integral) at $\sigma=0.75$ and higher. Such behaviour would also apply to large Riemann Zeta peaks further up the imaginary axis. Presumably, since it is known there are no non-trivial zeroes for $\sigma\ge1$, it is likely by  $\sigma=1$ there are no turning points in imag(indefinite integral). Below $\sigma=0.5$ the oscillations in imag(indefinite integral) grow in magnitude.
 
+
+
+ 
 
 ```{r fig_cap_9810, echo=FALSE}
 cap2 <- "\\scriptsize{The behaviour of the real and imaginary components of the \\textbf{indefinite integral} and its extended Riemann Siegel Z analogue function of the {\\color{blue}\\textbf{end tapered}} finite Riemann Zeta Dirichlet Series sum (using the second quiescent region) along several lines in the critical strip for the interval $t = (9810, 9840)$. The five rows belong to respectively $\\sigma=\\{1,0.75,0.5,0.25,0\\}$. First column Imag(indefinite integral) {\\color{red}red}, second column real(indefinite integral) {\\color{violet}violet-red}, third column imag(Z(indefinite integral)) {\\color{blue}blue} and the fourth column real(Z(indefinite integral)) {\\color{green}green}. The horizontal grey line is the y=0 line and the diagonal grey line has slope 1.}"
@@ -320,6 +327,8 @@ knitr::include_graphics("/home/john/pari/IndefiniteIntegral/graph_z_zetabased_re
 
 ```
 
+\clearpage
+
 ### Riemann Zeta second moment indefinite integral approximation
 
 
@@ -333,9 +342,26 @@ Figure 8 displays the behaviour of the approximate Riemann Zeta second moment in
 
 Inspecting figure 8, across the critical strip for the interval $t=(265,295)$ the approximate second moment indefinite integral displays even (odd) symmetry in the imaginary (real) components. Hence suggesting the real component correction term $\sum_{k=1}^{\lfloor\frac{t}{\pi}\rfloor} \left(\frac{1}{2k}\right)$ in equation \eqref {eq:endtap2ndmoment_indefiniteintegral} needs some more improvement.
 
+\textbf{Note added later}; The real component nuisance discontinuities are fully resolved by using (i) a (s-1/2) factor in the first term (instead of s) and (ii) dropping the approximate real component correction term ($\sum_{k=1}^{\lfloor\frac{t}{\pi}\rfloor} \left(\frac{1}{2k}\right)$)  from equation \eqref {eq:endtap2ndmoment_indefiniteintegral}. This improved approximation of the indefinite integral of the second moment of the Riemann Zeta function is given below.
+
+\begin{align}
+\left[\int \zeta(s)\zeta(1-s) ds\right]_{\Im(s) \rightarrow \infty} &\approx (s-\frac{1}{2})*\left[\sum_{k=1}^{\left(\lfloor\frac{t}{\pi}\rfloor-p\right)}\left(\frac{1}{k}\right) +
+\sum_{i=\left(-p+1\right)}^{p}\frac{\frac{1}{2^{2p}} \left( 2^{2p}-\sum_{k=1}^{i+p}\binom{2p}{2p-k}\right)}{(\lfloor\frac{t}{\pi}\rfloor+i)} \right] \nonumber \\ 
+&+ \left[\sum_{k=2}^{\left(\lfloor\frac{t}{\pi}\rfloor-p\right)}\left(\frac{1}{-log(k)\cdot k^s}\right) +
+\sum_{i=\left(-p+1\right)}^{p}\frac{\frac{1}{2^{2p}} \left( 2^{2p}-\sum_{k=1}^{i+p}\binom{2p}{2p-k}\right)}{-log(\lfloor\frac{t}{\pi}\rfloor+i)\cdot (\lfloor\frac{t}{\pi}\rfloor+i)^s} \right] \nonumber \\
+&+ \left[\sum_{n=2}^{\left(\lfloor\frac{t}{\pi}\rfloor-p\right)}\left(\frac{1}{log(n)\cdot n^{(1-s)}}\right) +
+\sum_{i=\left(-p+1\right)}^{p}\frac{\frac{1}{2^{2p}} \left( 2^{2p}-\sum_{k=1}^{i+p}\binom{2p}{2p-k}\right)}{log(\lfloor\frac{t}{\pi}\rfloor+i)\cdot (\lfloor\frac{t}{\pi}\rfloor+i)^{(1-s)}} \right] \nonumber \\ 
+&+ \Bigg[\sum_{k=2}^{\left(\lfloor\frac{t}{\pi}\rfloor-p\right)}\sum_{n=2}^{\left(\lfloor\frac{t}{\pi}\rfloor-p\right)}\left(\frac{\delta(n \ne k)}{(-log(k)+log(n))\cdot k^s n^{(1-s)}}\right)  \nonumber \\ 
+&+ \sum_{k=2}^{\left(\lfloor\frac{t}{\pi}\rfloor-p\right)}\sum_{i=\left(-p+1\right)}^{p}\frac{\delta(k\ne (i+k))\cdot \frac{1}{2^{2p}} \left( 2^{2p}-\sum_{m=1}^{i+p}\binom{2p}{2p-m}\right)}{(-log(k)+log(\lfloor\frac{t}{\pi}\rfloor+i))\cdot k^s (\lfloor\frac{t}{\pi}\rfloor+i)^{(1-s)}}   \nonumber \\
+&+ \sum_{i=\left(-p+1\right)}^{p}\sum_{n=2}^{\left(\lfloor\frac{t}{\pi}\rfloor-p\right)}\frac{\delta(n\ne (i+n))\cdot \frac{1}{2^{2p}} \left( 2^{2p}-\sum_{m=1}^{i+p}\binom{2p}{2p-m}\right)}{(-log(\lfloor\frac{t}{\pi}\rfloor+i)+log(n))\cdot (\lfloor\frac{t}{\pi}\rfloor+i)^s n^{(1-s)}} \Bigg]  \nonumber \\
+&+ \sum_{i=\left(-p+1\right)}^{p}\sum_{j=\left(-p+1\right)}^{p}\frac{\delta(i\ne j)\cdot \frac{1}{2^{2p}} \left( 2^{2p}-\sum_{m=1}^{i+p}\binom{2p}{2p-m}\right)\cdot\frac{1}{2^{2p}}\left( 2^{2p}-\sum_{q=1}^{i+p}\binom{2p}{2p-q}\right)}{(-log(\lfloor\frac{t}{\pi}\rfloor+i)+log(\lfloor\frac{t}{\pi}\rfloor+j))\cdot (\lfloor\frac{t}{\pi}\rfloor+i)^s (\lfloor\frac{t}{\pi}\rfloor+j)^{(1-s)}} \Bigg] \nonumber \\
+&- \left(I\cdot\lfloor\frac{t}{\pi}\rfloor\cdot\pi \right), \Im(s) > \infty  \label {eq:endtap2ndmoment_indefiniteintegral_improved}
+\end{align}
+
+
 
 ```{r fig_cap_mixed, echo=FALSE}
-cap2 <- "\\scriptsize{The behaviour of the real and imaginary components of the \\textbf{approximate} Riemann Zeta function second moment \\textbf{indefinite integral} based on 128 point {\\color{blue}\\textbf{end tapered}} finite Riemann Zeta Dirichlet Series sum (using the second quiescent region) along the critical line for several intervals, row (i) $t=(265,295)$, row (ii) $t=(500,600)$ , row (iii) $t=(1275,1475)$ and row (iv) $t=(9820,9830)$. First column Imag(second moment indefinite integral) {\\color{red}red} and $\\Im(1/2+I*t) \\rightarrow \\infty$ limit $t*\\log(t) -t*(1+\\log(2\\pi)-2\\gamma)$ [12-14] {\\color{green}green}, second column real(second moment indefinite integral) {\\color{violet}violet-red} and the horizontal y=0 line {\\color{gray}gray}.}"
+cap2 <- "\\scriptsize{The behaviour of the real and imaginary components of the \\textbf{approximate} Riemann Zeta function second moment \\textbf{indefinite integral} based on 128 point {\\color{blue}\\textbf{end tapered}} finite Riemann Zeta Dirichlet Series sum (using the second quiescent region) equation \\eqref {eq:endtap2ndmoment_indefiniteintegral} along the critical line for several intervals, row (i) $t=(265,295)$, row (ii) $t=(500,600)$ , row (iii) $t=(1275,1475)$ and row (iv) $t=(9820,9830)$. First column Imag(second moment indefinite integral) {\\color{red}red} and $\\Im(1/2+I*t) \\rightarrow \\infty$ limit $t*\\log(t) -t*(1+\\log(2\\pi)-2\\gamma)$ [12-14] {\\color{green}green}, second column real(second moment indefinite integral) {\\color{violet}violet-red} and the horizontal y=0 line {\\color{gray}gray}. Using equation \\eqref {eq:endtap2ndmoment_indefiniteintegral_improved} instead fully resolves the non-zero nuisance discontinuities present in the righthand column.}"
 
 ```
 
@@ -366,7 +392,7 @@ cap2 <- "\\scriptsize{The behaviour of the real and imaginary components of the 
 
 
 ```{r fig_cap_265, echo=FALSE}
-cap2 <- "\\scriptsize{The behaviour of the real and imaginary components of the \\textbf{approximate} Riemann Zeta function second moment \\textbf{indefinite integral} based on 128 point {\\color{blue}\\textbf{end tapered}} finite Riemann Zeta Dirichlet Series sum (using the second quiescent region) along several lines in the critical strip. The five rows belong to respectively $\\sigma=\\{1,0.75,0.5,0.25,0\\}$ for the interval $t=(265,295)$. First column Imag(second moment indefinite integral) {\\color{red}red} and $\\Im(1/2+I*t) \\rightarrow \\infty$ limit $t*\\log(t) -t*(1+\\log(2\\pi)-2\\gamma)$ [12-14] {\\color{green}green}, second column real(second moment indefinite integral) {\\color{violet}violet-red} and the horizontal y=0 line {\\color{gray}gray}.}"
+cap2 <- "\\scriptsize{The behaviour of the real and imaginary components of the \\textbf{approximate} Riemann Zeta function second moment \\textbf{indefinite integral} based on 128 point {\\color{blue}\\textbf{end tapered}} finite Riemann Zeta Dirichlet Series sum (using the second quiescent region) equation \\eqref {eq:endtap2ndmoment_indefiniteintegral} along several lines in the critical strip. The five rows belong to respectively $\\sigma=\\{1,0.75,0.5,0.25,0\\}$ for the interval $t=(265,295)$. First column Imag(second moment indefinite integral) {\\color{red}red} and $\\Im(1/2+I*t) \\rightarrow \\infty$ limit $t*\\log(t) -t*(1+\\log(2\\pi)-2\\gamma)$ [12-14] {\\color{green}green}, second column real(second moment indefinite integral) {\\color{violet}violet-red} and the horizontal y=0 line {\\color{gray}gray}. Using equation \\eqref {eq:endtap2ndmoment_indefiniteintegral_improved} instead fully resolves the non-zero nuisance discontinuities present in the third row of the righthand column.}"
 
 ```
 
