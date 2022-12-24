@@ -1,0 +1,310 @@
+---
+title: "An integration constant for the second moment indefinite integral $\\int \\zeta(s)\\zeta(1-s) ds$ when using the end tapered finite Riemann Zeta Dirichlet Series approximation, away from the real axis."
+author: "John Martin"
+date: \today
+header-includes:  
+  - \usepackage{xcolor}
+  - \usepackage{pdflscape}
+  - \newcommand{\blandscape}{\begin{landscape}}
+  - \newcommand{\elandscape}{\end{landscape}}
+output:
+  pdf_document:
+  fig_crop: no
+
+---
+  
+  ```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+
+```
+
+<!-- https://stackoverflow.com/questions/41655383/r-markdown-similar-feature-to-newcommand-in-latex/41664105 -->
+  \newcommand{\mychi}{\raisebox{0pt}[1ex][1ex]{$\chi$}}
+
+
+##Executive Summary
+
+The integration constant of the second moment indefinite integral $\int \zeta(s)\zeta(1-s) ds$ (away from the real axis) approximated by \textbf{end tapered} Riemann Zeta Dirichlet Series sums at the second quiescent region, exhibits a small dependence on the number of tapering points which can be effectively modelled.
+
+
+
+
+##Introduction
+
+##Riemann Zeta finite Dirichlet Series sums
+
+As is known, the infinite Riemann Zeta Dirichlet Series sum [1] and indefinite integral [2] in their region of convergence are given respectively (explicitly including integration constants $\textbf{C}_{[]}$) by
+
+\begin{align}
+\zeta(s) &= \sum_{k=1}^{\infty}\left(\frac{1}{k^s}\right), \qquad \qquad \qquad \qquad \Re(s) > 1   \label {eq:infseries} \\
+\int \zeta(s)~ds &= s + \sum_{k=2}^{\infty}\left(\frac{1}{-log(k) \cdot k^s}\right) + \textbf{C}_{[\int \zeta(s)~ds]}, \qquad \Re(s) > 1   \label {eq:infindefiniteintegral} 
+\end{align}
+
+Similarly, in principle
+
+\begin{align}
+\left[\int \zeta(s)\zeta(1-s) ds\right]_{\Re(s) > 1} &= \int \left[\sum_{k=1}^{\infty}\left(\frac{1}{k^s}\right)\sum_{n=1}^{\infty}\left(\frac{1}{n^{(1-s)}}\right)\right] ds, \qquad  \Re(s) > 1   \label {eq:2ndmoment_indefiniteintegral} \\
+&= s*\sum_{k=1}^{\infty}\left(\frac{1}{k}\right) + \sum_{k=2}^{\infty}\left(\frac{1}{-log(k)\cdot k^s}\right) + \sum_{n=2}^{\infty}\left(\frac{1}{log(n)\cdot n^{(1-s)}}\right) \nonumber \\
+&+ \sum_{k=2}^{\infty}\sum_{n=2}^{\infty}\left(\frac{\delta(n \ne k)}{(-log(k)+log(n))\cdot k^s n^{(1-s)}}\right) + \textbf{C}_{[\int \zeta(s)\zeta(1-s) ds]}, \qquad \Re(s) > 1   \label {eq:2ndmoment_indefiniteintegralexpanded2}
+\end{align}
+
+
+More recently described [3-7] end point tapering of finite Dirichlet Series sums at the second quiescent region with partial sums of binomial coefficients, provides useful approximations of the Riemann Zeta function and the indefinite integrals $\int \zeta(s)~ds$ and $\int \zeta(s)\zeta(1-s) ds$ [8] can be obtained \textbf{away from the real axis} across the complex plane. In this paper, the integration constants $\textbf{C}_{[]}$ are formally included below since that is the topic of interest for the end point tapering of finite Dirichlet Series approximation of $\int \zeta(s)\zeta(1-s) ds$.
+
+\begin{align}
+\zeta(s) &\approx \sum_{k=1}^{\left(\lfloor\frac{t\cdot N_c}{\pi}\rfloor-p\right)}\left(\frac{1}{k^s}\right) +\sum_{i=\left(-p+1\right)}^{p}\frac{\frac{1}{2^{2p}} \left( 2^{2p}-\sum_{k=1}^{i+p}\binom{2p}{2p-k}\right)}{(\lfloor\frac{t\cdot N_c}{\pi}\rfloor+i)^s},  \qquad \qquad  \Im(s) \rightarrow \infty \label {eq:endtapseries} \\
+\left[\int \zeta(s)~ds\right]_{\Im(s) \rightarrow \infty} &\approx s + \sum_{k=2}^{\left(\lfloor\frac{t}{\pi}\rfloor-p\right)}\left(\frac{1}{-log(k) \cdot k^s}\right)+\sum_{i=\left(-p+1\right)}^{p}\frac{\frac{1}{2^{2p}} \left( 2^{2p}-\sum_{k=1}^{i+p}\binom{2p}{2p-k}\right)}{\left(-log(\lfloor\frac{t}{\pi}\rfloor+i) \cdot (\lfloor\frac{t}{\pi}\rfloor+i)^s\right)} \nonumber \\
+&\qquad \qquad+ \textbf{C}_{[\int \zeta(s)~ds]_{\Im(s) \rightarrow \infty}},  \qquad \qquad  \qquad \qquad \qquad  \qquad \qquad \qquad  \Im(s) \rightarrow \infty    \label {eq:endtapindefiniteintegral}
+\end{align}
+\begin{align}
+\left[\int \zeta(s)\zeta(1-s) ds\right]_{\Im(s) \rightarrow \infty} &\approx (s-\frac{1}{2})*\left[\sum_{k=1}^{\left(\lfloor\frac{t}{\pi}\rfloor-p\right)}\left(\frac{1}{k}\right) +
+\sum_{i=\left(-p+1\right)}^{p}\frac{\frac{1}{2^{2p}} \left( 2^{2p}-\sum_{k=1}^{i+p}\binom{2p}{2p-k}\right)}{(\lfloor\frac{t}{\pi}\rfloor+i)} \right] \nonumber \\ 
+&+ \left[\sum_{k=2}^{\left(\lfloor\frac{t}{\pi}\rfloor-p\right)}\left(\frac{1}{-log(k)\cdot k^s}\right) +
+\sum_{i=\left(-p+1\right)}^{p}\frac{\frac{1}{2^{2p}} \left( 2^{2p}-\sum_{k=1}^{i+p}\binom{2p}{2p-k}\right)}{-log(\lfloor\frac{t}{\pi}\rfloor+i)\cdot (\lfloor\frac{t}{\pi}\rfloor+i)^s} \right] \nonumber \\
+&+ \left[\sum_{n=2}^{\left(\lfloor\frac{t}{\pi}\rfloor-p\right)}\left(\frac{1}{log(n)\cdot n^{(1-s)}}\right) +
+\sum_{i=\left(-p+1\right)}^{p}\frac{\frac{1}{2^{2p}} \left( 2^{2p}-\sum_{k=1}^{i+p}\binom{2p}{2p-k}\right)}{log(\lfloor\frac{t}{\pi}\rfloor+i)\cdot (\lfloor\frac{t}{\pi}\rfloor+i)^{(1-s)}} \right] \nonumber \\ 
+&+ \Bigg[\sum_{k=2}^{\left(\lfloor\frac{t}{\pi}\rfloor-p\right)}\sum_{n=2}^{\left(\lfloor\frac{t}{\pi}\rfloor-p\right)}\left(\frac{\delta(n \ne k)}{(-log(k)+log(n))\cdot k^s n^{(1-s)}}\right)  \nonumber \\ 
+&+ \sum_{k=2}^{\left(\lfloor\frac{t}{\pi}\rfloor-p\right)}\sum_{i=\left(-p+1\right)}^{p}\frac{\delta(k\ne (i+k))\cdot \frac{1}{2^{2p}} \left( 2^{2p}-\sum_{m=1}^{i+p}\binom{2p}{2p-m}\right)}{(-log(k)+log(\lfloor\frac{t}{\pi}\rfloor+i))\cdot k^s (\lfloor\frac{t}{\pi}\rfloor+i)^{(1-s)}}   \nonumber \\
+&+ \sum_{i=\left(-p+1\right)}^{p}\sum_{n=2}^{\left(\lfloor\frac{t}{\pi}\rfloor-p\right)}\frac{\delta(n\ne (i+n))\cdot \frac{1}{2^{2p}} \left( 2^{2p}-\sum_{m=1}^{i+p}\binom{2p}{2p-m}\right)}{(-log(\lfloor\frac{t}{\pi}\rfloor+i)+log(n))\cdot (\lfloor\frac{t}{\pi}\rfloor+i)^s n^{(1-s)}} \Bigg]  \nonumber \\
+&+ \sum_{i=\left(-p+1\right)}^{p}\sum_{j=\left(-p+1\right)}^{p}\frac{\delta(i\ne j)\cdot \frac{1}{2^{2p}} \left( 2^{2p}-\sum_{m=1}^{i+p}\binom{2p}{2p-m}\right)\cdot\frac{1}{2^{2p}}\left( 2^{2p}-\sum_{q=1}^{i+p}\binom{2p}{2p-q}\right)}{(-log(\lfloor\frac{t}{\pi}\rfloor+i)+log(\lfloor\frac{t}{\pi}\rfloor+j))\cdot (\lfloor\frac{t}{\pi}\rfloor+i)^s (\lfloor\frac{t}{\pi}\rfloor+j)^{(1-s)}} \Bigg] \nonumber \\
+&- \left(I\cdot\lfloor\frac{t}{\pi}\rfloor\cdot\pi \right) + \textbf{C}_{\left[\int \zeta(s)\zeta(1-s) ds\right]_{\Im(s) \rightarrow \infty}}, \qquad \qquad  \qquad  \qquad \quad   \Im(s) \rightarrow \infty  \label {eq:endtap2ndmoment_indefiniteintegral_improved}
+\end{align}
+
+Where (i) $\frac{t\cdot(N_c=1)}{\pi}=\frac{t}{\pi}$ is the location of the second quiescent region in the final plateau of the (first degree L-function) Riemann Zeta ($N_c=1$) Dirichlet Series sum oscillating divergence, and (ii) 2p is the number of end taper weighted points, using partial sums of binomial coefficients, present in the second term of equations \eqref {eq:endtapseries}-\eqref{eq:endtap2ndmoment_indefiniteintegral_improved} which produces excellent smoothing of the Series sum.
+
+In this paper, it is highlighted that empirically (at least for $13 > \Im(s) > 30000$) the integration constant $C_{\left[\int \zeta(s)\zeta(1-s) ds\right]_{\Im(s) \rightarrow \infty}}$ in equation \eqref {eq:endtap2ndmoment_indefiniteintegral_improved} is a function of 2p (the number of end taper points) which can be effectively modelled by the leading term.
+
+\begin{equation}
+\textbf{C}_{\left[\int \zeta(s)\zeta(1-s) ds\right]_{\Im(s) \rightarrow \infty}} \approx  0.892257\cdot I \cdot (2p)^{0.49934} \label {eq:integration_constant_model_firstterm}
+\end{equation}
+
+All the calculations and most graphs are produced using the pari-gp language [9], some model fits/graphs were performed with R/RStudio [10,11] and the Riemann Zeta non-trivial zero co-ordinates checked via the LMFDB Collaboration [12].
+
+###Results
+
+Figures 1 & 2, show examples of the imaginary component behaviour of the indefinite integral $\Im\left(\int \zeta(s)\zeta(1-s) ds\right)$ approximated using equation \eqref {eq:endtap2ndmoment_indefiniteintegral_improved} \textbf{without} any integration constant $\textbf{C}_{\left[\int \zeta(s)\zeta(1-s) ds\right]_{\Im(s) \rightarrow \infty}}$ on (fig 1) and off (fig 2) the critical line respectively.
+
+In the two figures, end point tapering for $2p=\{4 {\color{red} (red)},8{\color{green} (green)},16{\color{blue}(blue)},24{\color{violet}(violet-red)},32{\color{black}(black)}\}$ using partial sums of the binomial coefficients in equation \eqref {eq:endtap2ndmoment_indefiniteintegral_improved} is shown along the critical line $\Re(s)=1/2$ in the interval $\Im(s)=(1,61)$, away from the real axis. The vertical lines ${\color{red}red}, {\color{green}green}, {\color{blue}blue}, {\color{violet}violet-red}, {\color{black}black}$ correspond to lower bound thresholds ($(p+1)\cdot\pi \text{ where } p > 0$) away from the real axis $\Im(s)=\{3\pi,5\pi,9\pi,13\pi,17\pi\}$ respectively where the end tapered finite Riemann Zeta Dirichlet Series approximation based on the use of the second quiescent region $(\frac{\Im(s)\cdot(N_c=1)}{\pi})$ becomes effective.  
+
+Also shown in the figures are 
+\begin{enumerate}
+\item $\Re\left(\zeta(s)\zeta(1-s)\right)$ (horizontal aperiodic ${\color{gray}gray}$ lineshape), 
+\item the real component of the numerical derivative of the $2p=\{4 {\color{red} (red)},8{\color{green} (green)},16{\color{blue}(blue)},24{\color{violet}(violet-red)},32{\color{black}(black)}\}$ indefinite integral functions (horizontal increasingly overlapping with $\Re\left(\zeta(s)\zeta(1-s)\right)$ as $\Im(s) \rightarrow \infty$) and 
+\item the known trend behaviour (monotonic ${\color{gray}gray}$ lineshape) of the critical line second moment integral growth $t\cdot \log(t) -t\cdot(1+\log(2\pi)-2\gamma)$ [13-15] for the critical line $\Im(1/2+I*t) \rightarrow \infty$ limit.
+\end{enumerate}
+
+Figure 1, shows the behaviour on the critical line, left panel for $\Im(s)=(1,61)$, and magnified in right panel for $\Im(s)=(53.44,61)$. For small end point tapering finite Dirichlet Series (eg. $2p=\{4,8\}$ ${\color{red}red}, {\color{green}green}$) the approximation of $\int \zeta(1/2+I*t)\zeta(1-(1/2+I*t))ds$ and $\zeta(1/2+I*t)\zeta(1-(1/2+I*t))$ is at its coarsest. By $2p=\{32\}$  ${\color{black}black}$ the agreement with $\zeta(1/2+I*t)\zeta(1-(1/2+I*t))$ for $\Im(s) > 17*\pi$ is to several decimal places. However on the left panel, it can be clearly seen that the indefinite integrals for different values of 2p are slightly shifted indicating a change in the underlying integration constant. On numerical inspection at many $\Im(s)$ values between 250 and 30000 the precise numerical difference between the $2p=(4,8,32,128)$ indefinite integrals was very consistent to 6 decimal places. The right panel indicates graphically the same consistency in shifting of the integration constant value for $53.44 < \Im(s) < 61$ for $2p=\{4,8,16,24,32\}$.
+
+
+```{r fig_cap_61, echo=FALSE}
+cap2 <- "\\scriptsize{The behaviour of the imaginary component of the \\textbf{approximate} Riemann Zeta function second moment \\textbf{indefinite integral} based on {\\color{blue}\\textbf{end tapered}} finite Riemann Zeta Dirichlet Series (using the second quiescent region) equation \\eqref {eq:endtap2ndmoment_indefiniteintegral_improved} \\textbf{without} any integration constant along the critical line for (i) $t=(1,61)$, (ii) $t=(53.44,61)$. In the two panels, Imag(second moment indefinite integral) using 2p=4 {\\color{red}red}, 2p=8 {\\color{green}green}, 2p=16 {\\color{blue}blue}, 2p=24 {\\color{violet}violet-red}, 2p=32 {\\color{black}black} and $t*\\log(t) -t*(1+\\log(2\\pi)-2\\gamma)$ [13-15] {\\color{gray}gray}. In the first panel, the Real(numerical derivative) of the indefinite integrals (red $\\rightarrow$ black again) and $\\zeta(1/2+I*t)\\zeta(1-(1/2+I*t))$ {\\color{gray}gray}.}"
+
+```
+
+
+
+```{r image_61, fig.show = "hold",  out.width = c("49%","49%"), fig.align = "center", fig.cap=cap2, fig.height=5}
+
+
+knitr::include_graphics("/home/john/pari/IndefiniteIntegral/graph_zetabased_2ndmoment_integration_constant_0.5_1_60.pdf")
+
+
+
+
+knitr::include_graphics("/home/john/pari/IndefiniteIntegral/graph_zetabased_2ndmoment_integration_constant_0.5_53.44_7.56.pdf")
+
+
+
+
+
+
+```
+
+\clearpage
+
+Figure 2, shows the behaviour of the approximation $\Im\left[\int \zeta(s)\zeta(1-s) ds\right]_{\Im(s) \rightarrow \infty}$, the real component of the numerical derivative of the approximation $\Re\left[\frac{d}{ds}\left[\int \zeta(s)\zeta(1-s) ds\right]_{\Im(s) \rightarrow \infty}\right]$ and $\Re\left(\zeta(s)\zeta(1-s)\right)$ off the critical line for $\Im(s)=(1,61)$, left panel for $\Re(s)=1$, and right panel for $\Re(s)=0$. The results are symmetric as expected. For small end point tapering finite Dirichlet Series (eg. $2p=\{4,8\}$ ${\color{red}red}, {\color{green}green}$) the approximation of $\int \zeta(1/2+I*t)\zeta(1-(1/2+I*t))ds$ and $\zeta(1/2+I*t)\zeta(1-(1/2+I*t))$ is at its coarsest. The precise numerical difference between the $2p=(4,8,32,128)$ indefinite integrals off the critical line was very consistent with the critical line behaviour.
+
+
+```{r fig_cap_61b, echo=FALSE}
+cap2 <- "\\scriptsize{The behaviour of the imaginary component of the \\textbf{approximate} Riemann Zeta function second moment \\textbf{indefinite integral} based on {\\color{blue}\\textbf{end tapered}} finite Riemann Zeta Dirichlet Series (using the second quiescent region) equation \\eqref {eq:endtap2ndmoment_indefiniteintegral_improved} \\textbf{without} any integration constant \\textbf{off} the critical line $t=(1,61)$, at (i) left panel $\\Re(s)=1$ and (ii) right panel $\\Re(s)=0$. In the two panels, sloping upward Imag(second moment indefinite integral) using 2p=4 {\\color{red}red}, 2p=8 {\\color{green}green}, 2p=16 {\\color{blue}blue}, 2p=24 {\\color{violet}violet-red}, 2p=32 {\\color{black}black} and $t*\\log(t) -t*(1+\\log(2\\pi)-2\\gamma)$ [13-15] {\\color{gray}gray}. Likewise, progressing more horizontally the Real(numerical derivative) of the indefinite integrals (red $\\rightarrow$ black again) and $\\zeta(1/2+I*t)\\zeta(1-(1/2+I*t))$ {\\color{gray}gray}.}"
+
+```
+
+
+```{r image_61b, fig.show = "hold",  out.width = c("49%","49%"), fig.align = "center", fig.cap=cap2, fig.height=5}
+
+knitr::include_graphics("/home/john/pari/IndefiniteIntegral/graph_zetabased_2ndmoment_integration_constant_1_1_60.pdf")
+
+knitr::include_graphics("/home/john/pari/IndefiniteIntegral/graph_zetabased_2ndmoment_integration_constant_0_1_60.pdf")
+
+
+```
+
+
+
+
+The integration constant behaviour was then investigated for several $\Im(s)$ points and modelling of the functional dependence attempted. For example given the following data where the second moment indefinite integral was calculated at $\Im(s)=\{2000,13000,29986.206\}$ on the critical line using different values of 2p. As shown, the differences between indefinite integral values by 2p is consistent across different $\Im(s)$ points. (See Rmd file for full precision of values)
+
+Figure 3 shows two model fits using $\alpha=\{0.49934,0.5\}$ with the simple parameterization 
+
+\begin{equation}
+\textbf{C}_{\left[\int \zeta(s)\zeta(1-s) ds\right]_{\Im(s) \rightarrow \infty}} \sim \beta \cdot (2p)^\alpha \label {eq:integration_constant_model}
+\end{equation}
+
+and numerically $\alpha=0.49934$, $\beta=0.829957$ is a superior fit when using only a leading term model parametrization than when using $\alpha=0.5$.
+
+
+
+
+```{r data, echo=FALSE}
+
+x2p=c(4,8,32,128,1024,8192,16384)
+y2k=c(13824.831316181456209,13824.0815828820290015,13821.5556619668284606,13816.5326480883895225272,13798.19357447256755,NA,NA)
+y13k=c(114318.3683530846,114317.6186199787,114315.0926990635317,114310.06968518509276,114291.73061156927080,114239.87553071330999,NA)
+y26k=c(246617.089167129934,246616.339434019991,246613.8135131047808,246608.790499226341954,246590.451425610519988,246538.59634475455918,246505.371044607229888)
+y29986.206=c(288595.2811671223760,288594.531434013251,288592.005513098040,288586.982499219601779,288568.6434256037798,288516.788344747819,288483.5630446004897)
+y2kdiff=diff(y2k);y2kdiff=c(NA,y2kdiff[-7])
+y13kdiff=diff(y13k);y13kdiff=c(NA,y13kdiff[-7])
+y26kdiff=diff(y26k);y26kdiff=c(NA,y26kdiff[-7])
+y29986.206diff=diff(y29986.206);y29986.206diff=c(NA,y29986.206diff[-7])
+
+df=cbind(x2p,y2k,y2kdiff,y13k,y13kdiff,y29986.206,y29986.206diff)
+
+knitr::kable(df)
+```
+***Table 1:End tapered Riemann Zeta Dirichlet Series approximations of $\\$ $\Im\left[\int\zeta(1/2+I*t)\zeta(1-(1/2+I*t)) ds\right]_{\Im(s) \rightarrow \infty}$ for $\Im(s)=\{13000,26000,29986.206\}$***
+
+
+```{r modelling, echo=FALSE, fig.height=3.5}
+
+alpha=0.5
+yt=y29986.206
+
+xt2=x2p^alpha
+
+plot(xt2,yt,xlim=range(c(0,xt2)),ylim=range(c(yt,yt+10)),
+     main="differences in indefinite integral as function of 2p \n when alpha =0.5",ylab="indefinite integral at s=1/2+I*29986.206",xlab="2p^alpha")
+grid()
+abline(lm(yt~xt2),col=2)
+
+summary(lm(yt~xt2))$coefficients
+
+alpha=0.49934
+yt=y29986.206
+
+xt2=x2p^alpha
+
+plot(xt2,yt,xlim=range(c(0,xt2)),ylim=range(c(yt,yt+10)),
+     main="differences in indefinite integral as function of 2p \n when alpha =0.49934",ylab="indefinite integral at s=1/2+I*29986.206",xlab="2p^alpha")
+grid()
+abline(lm(yt~xt2),col=2)
+
+summary(lm(yt~xt2))$coefficients
+
+
+```
+***Figure 3. Modelling of Integration Constant function dependence on 2p in equation 7***
+
+
+\setcounter{figure}{3}
+Taking the above best model fit parameters, figure 4 shows (for $\Re(s)=\{1/2,1\}$) that with equation (8) used in equation (7) the indefinite integrals with different 2p values now align closely as an approximation for the second moment $\int \zeta(s)\zeta(1-s) ds$ on and off the critical line.
+
+
+
+```{r fig_cap_61_withC, echo=FALSE}
+cap2 <- "\\scriptsize{The behaviour of the \textbf{imaginary} component of the \\textbf{approximate} Riemann Zeta function second moment \\textbf{indefinite integral} based on {\\color{blue}\\textbf{end tapered}} finite Riemann Zeta Dirichlet Series (using the second quiescent region) equation \\eqref {eq:endtap2ndmoment_indefiniteintegral_improved} \\textbf{WITH} an integration constant function dependent on 2p in the interval $t=(1,61)$, at (i) left panel $\\Re(s)=1/2$ and (ii) right panel $\\Re(s)=1$. In the two panels, sloping upward Imag(second moment indefinite integral) using 2p=4 {\\color{red}red}, 2p=8 {\\color{green}green}, 2p=16 {\\color{blue}blue}, 2p=24 {\\color{violet}violet-red}, 2p=32 {\\color{black}black} and $t*\\log(t) -t*(1+\\log(2\\pi)-2\\gamma)$ [13-15] {\\color{gray}gray}. Likewise, progressing more horizontally the Real(numerical derivative) of the indefinite integrals (red $\\rightarrow$ black again) and $\\zeta(1/2+I*t)\\zeta(1-(1/2+I*t))$ {\\color{gray}gray}. The two additional curves with the highest growth rates are (i) the second quiescent region based scaled finite harmonic series $t \\cdot \\sum_{k=1}^{\\lfloor\\frac{t}{\\pi}\\rfloor}\\frac{1}{k}$ and second quiescent region based  Euler-Maclaurin approximation of the scaled harmonic series ${\\color{green}green}$ $t \\cdot \\log(\\frac{t}{\\pi})+\\gamma+\\frac{1}{2}(\\frac{1}{\\frac{t}{\\pi}})$ ${\\color{red}red}$. With equation (8) used in equation (7) the indefinite integrals with different 2p values now align closely.  }"
+
+```
+
+
+```{r image_61_withC, fig.show = "hold",  out.width = c("99%","99%"), fig.align = "center", fig.cap=cap2, fig.height=5}
+
+knitr::include_graphics("/home/john/pari/IndefiniteIntegral/graph_zetabased_2ndmoment_integration_constantFIXED_0.5_1_60.pdf")
+
+knitr::include_graphics("/home/john/pari/IndefiniteIntegral/graph_zetabased_2ndmoment_integration_constantFIXED_1_1_60.pdf")
+
+
+```
+
+
+\clearpage
+To help interpret what is happening in equation (7) when approximating $\int \zeta(s)\zeta(1-s) ds$, in figure 4 there are two additional functions 
+\begin{enumerate}
+\item the second quiescent region based scaled finite harmonic series  $t\cdot\sum_{k=1}^{\lfloor\frac{t}{\pi}\rfloor}\frac{1}{k}$ ${\color{green}green}$ and 
+\item the second quiescent region based Euler-Maclaurin approximation [16] of the above scaled harmonic series    $t \cdot\left(\log(\frac{t}{\pi})+\gamma+\frac{1}{2}(\frac{1}{\frac{t}{\pi}})+ ...\right)$ ${\color{red}red}$.
+\end{enumerate}
+
+Firstly, $(s-1/2)*\sum_{k=1}^{\lfloor\frac{t}{\pi}\rfloor}\frac{1}{k}$ is the dominant part of the first term in equation (7) (pure imaginary for $\Re(s)=1/2$), and given that the $\sum_{k=1}^{\lfloor\frac{t}{\pi}\rfloor}\frac{1}{k}$ ${\color{green}green}$ line lies well above the $\int \zeta(s)\zeta(1-s) ds$ approximation the other terms in equation (7) tends to reduce the influence of the harmonic series when forming $\int \zeta(s)\zeta(1-s) ds$.
+
+Secondly, Figure 5 shows what happens if the nuisance discontinuities in the harmonic series $\sum_{k=1}^{\lfloor\frac{t}{\pi}\rfloor}\frac{1}{k}$ ${\color{green}green}$ are removed, i.e, comparing $\left(t\cdot\sum_{k=1}^{\lfloor\frac{t}{\pi}\rfloor}\frac{1}{k}\right) - \lfloor\frac{t}{\pi}\rfloor\cdot \pi$ which is higher in magnitude than $t*\log(t) -t*(1+\log(2\pi)-2\gamma)$ and as $\Im(s) \rightarrow \infty$ grows at a higher rate than the second moment indefinite integral. So the imaginary components of the second, third etc terms in equation (7) are increasingly cancel out with the first term.
+
+```{r fig_cap_harmonicseries_withC, echo=FALSE}
+cap2 <- "\\scriptsize{The behaviour of the \textbf{imaginary} component of the \\textbf{approximate} Riemann Zeta function second moment \\textbf{indefinite integral} based on {\\color{blue}\\textbf{end tapered}} finite Riemann Zeta Dirichlet Series (using the second quiescent region) equation \\eqref {eq:endtap2ndmoment_indefiniteintegral_improved} \\textbf{WITH} an integration constant function dependent on 2p in the interval $t=(1,61)$, at (i) left panel $\\Re(s)=1/2$. In figure, sloping upward Imag(second moment indefinite integral) using 2p=4 {\\color{red}red}, 2p=8 {\\color{green}green}, 2p=16 {\\color{blue}blue}, 2p=24 {\\color{violet}violet-red}, 2p=32 {\\color{black}black} and $t*\\log(t) -t*(1+\\log(2\\pi)-2\\gamma)$ [13-15] {\\color{gray}gray}. As in figure 5, there are two additional curves with the highest growth rates are (i) the second quiescent region based scaled finite harmonic series $t \\cdot \\sum_{k=1}^{\\lfloor\\frac{t}{\\pi}\\rfloor}\\frac{1}{k}$ and second quiescent region based  Euler-Maclaurin approximation of the scaled harmonic series ${\\color{green}green}$ $t \\cdot \\log(\\frac{t}{\\pi})+\\gamma+\\frac{1}{2}(\\frac{1}{\\frac{t}{\\pi}})$ ${\\color{red}red}$. Also added to the comparison is $t\\cdot\\sum_{k=1}^{\\lfloor\\frac{t}{\\pi}\\rfloor}\\frac{1}{k} - \\lfloor\\frac{t}{\\pi}\\rfloor\\cdot \\pi$  {\\color{blue}blue} which is slightly higher in magnitude than $t*\\log(t) -t*(1+\\log(2\\pi)-2\\gamma)$ but is growing at a higher rate than the second moment indefinite integral.}"
+
+```
+
+
+```{r image_61_harmonicserieswithC, fig.show = "hold",  out.width = c("99%","99%"), fig.align = "center", fig.cap=cap2, fig.height=5}
+
+knitr::include_graphics("/home/john/pari/IndefiniteIntegral/graph_zetabased_2ndmoment_integration_constantFIXED_removeNuisanceiscontinuitiesfromfiniteHarmonicSeries_0.5_1_60.pdf")
+
+
+
+```
+
+
+
+
+
+\clearpage
+
+## Conclusion
+
+A simple integration constant function dependence on 2p the number of end taper points when using end tapered finite Dirichlet Series calculations of the indefinite integral of the symmetric $\int \zeta(s)\zeta(1-s) ds$ second moment of the Riemann Zeta function, away from the real axis. 
+
+
+
+#References
+
+1. Edwards, H.M. (1974). Riemann’s zeta function. Pure and Applied Mathematics 58. New York-London:
+Academic Press. ISBN 0-12-232750-0. Zbl 0315.10035.
+
+2. https://functions.wolfram.com/ZetaFunctionsandPolylogarithms/Zeta/21/01/01/ , "Zeta Functions and Polylogarithms > Zeta[s] > Integration > Indefinite integration > Involving only one direct function (1 formula)", 1998–2022 Wolfram Research, Inc.
+
+3. Martin, J.P.D. "A quiescent region about $\frac{t}{\pi}$ in the oscillating divergence of the Riemann Zeta Dirichlet Series inside the critical strip." (2021)
+http://dx.doi.org/10.6084/m9.figshare.14213516
+
+4. Martin, J.P.D. "Tapered end point weighting of finite Riemann Zeta Dirichlet Series using partial sums of binomial coefficients to produce higher order approximations of the Riemann Siegel Z function." (2021)
+http://dx.doi.org/10.6084/m9.figshare.14702760
+
+5. Martin, J.P.D. "Examples of quiescent regions in the oscillatory divergence of several 1st degree L functions and their Davenport Heilbronn counterparts." (2021)
+https://dx.doi.org/10.6084/m9.figshare.14956053
+
+6. Martin, J.P.D. "Examples of quiescent regions in the oscillatory divergence of Box-Cox transformation series related to 1st degree L functions and their Dirichlet series" (2021) 
+https://dx.doi.org/10.6084/m9.figshare.17087651
+
+7. Martin, J.P.D. "Tapered end point weighting of Hurwitz Zeta finite Dirichlet Series when the shift parameter $0<a< \frac{\Im(s)}{\pi} \in \mathbb{R}$." (2022) 
+https://dx.doi.org/10.6084/m9.figshare.21351720
+
+8. Martin, J.P.D. "Away from the real axis an examination of the behaviour of the indefinite integral of the Riemann Zeta finite Dirichlet Series across the complex plane" (2022)
+https://dx.doi.org/10.6084/m9.figshare.21652073
+
+9. The PARI~Group, PARI/GP version {\tt 2.12.0}, Univ. Bordeaux, 2018,
+    \url{http://pari.math.u-bordeaux.fr/}.
+\normalfont
+
+10. R Core Team (2017). R: A language and environment for statistical computing. R Foundation for
+Statistical Computing, Vienna, Austria. \url{https://www.R-project.org/}.
+
+11. RStudio Team (2015). RStudio: Integrated Development for R. RStudio, Inc., Boston, MA URL
+http://www.rstudio.com/.
+
+12. The LMFDB Collaboration, The L-functions and Modular Forms Database, home page of The Riemann Zeta zeroes https://www.lmfdb.org/zeros/zeta/ 2021,
+
+13. Atkinson, F. V. ‘The mean value of the zeta-function on the critical line’, Proc. London Math. Soc.(2) 47 (1941) 174--200.
+
+14. Hardy, G. H. and Littlewood, J. E. ‘Contributions to the theory of the Riemann zeta-function and the theory of the distribution of primes’, Acta Math 41 (1918) pp. 119,196.
+
+15. Conrey, J. B., Farmer, D. W., Keating, J. P., Rubinstein M. O. and Snaith, N. C. "INTEGRAL MOMENTS OF L-FUNCTIONS", Proc. London Math. Soc.(3) 91 (2005) pp. 33,104
+
+16. Bressoud, David M. (2007). A Radical Approach to Real Analysis. Classroom Resource Materials Series (2nd ed.). Washington, DC: Mathematical Association of America. pp. 137–138. 
