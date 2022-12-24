@@ -172,7 +172,7 @@ df=cbind(x2p,y2k,y2kdiff,y13k,y13kdiff,y29986.206,y29986.206diff)
 
 knitr::kable(df)
 ```
-***Table 1:End tapered Riemann Zeta Dirichlet Series approximations of $\\$ $\Im\left[\int\zeta(1/2+I*t)\zeta(1-(1/2+I*t)) ds\right]_{\Im(s) \rightarrow \infty}$ for $\Im(s)=\{13000,26000,29986.206\}$***
+***Table 1:End tapered Riemann Zeta Dirichlet Series approximations of $\\$ $\Im\left[\int\zeta(1/2+I*t)\zeta(1-(1/2+I*t)) ds\right]_{\Im(s) \rightarrow \infty}$ for $\Im(s)=\{2000,13000,29986.206\}$***
 
 
 ```{r modelling, echo=FALSE, fig.height=3.5}
