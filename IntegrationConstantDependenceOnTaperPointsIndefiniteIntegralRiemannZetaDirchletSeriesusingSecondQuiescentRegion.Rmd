@@ -148,7 +148,7 @@ The integration constant behaviour was then investigated for several $\Im(s)$ po
 Figure 3 shows two model fits using $\alpha=\{0.49934,0.5\}$ with the simple parameterization 
 
 \begin{equation}
-\textbf{C}_{\left[\int \zeta(s)\zeta(1-s) ds\right]_{\Im(s) \rightarrow \infty}} \sim \beta \cdot (2p)^\alpha \label {eq:integration_constant_model}
+\Im\left(\textbf{C}_{\left[\int \zeta(s)\zeta(1-s) ds\right]_{\Im(s) \rightarrow \infty}}\right) \sim \beta \cdot (2p)^\alpha \label {eq:integration_constant_model}
 \end{equation}
 
 and numerically $\alpha=0.49934$, $\beta=0.829957$ is a superior fit when using only a leading term model parametrization than when using $\alpha=0.5$.
@@ -159,10 +159,20 @@ and numerically $\alpha=0.49934$, $\beta=0.829957$ is a superior fit when using 
 ```{r data, echo=FALSE}
 
 x2p=c(4,8,32,128,1024,8192,16384)
-y2k=c(13824.831316181456209,13824.0815828820290015,13821.5556619668284606,13816.5326480883895225272,13798.19357447256755,NA,NA)
-y13k=c(114318.3683530846,114317.6186199787,114315.0926990635317,114310.06968518509276,114291.73061156927080,114239.87553071330999,NA)
-y26k=c(246617.089167129934,246616.339434019991,246613.8135131047808,246608.790499226341954,246590.451425610519988,246538.59634475455918,246505.371044607229888)
-y29986.206=c(288595.2811671223760,288594.531434013251,288592.005513098040,288586.982499219601779,288568.6434256037798,288516.788344747819,288483.5630446004897)
+y2k=c(11826.778388498347709438054035434821834,11826.028655198920501918030608530192533,
+      11823.502734283719960953619182081212301,11818.479720405281022865044861326745171,
+      11800.140646789459056553045483545792479,NA,NA)
+y13k=c(101318.45795253006318318490345957614968,101317.70821942417797860189017830029342,
+       101315.18229850896728571270204226214198,101310.15928463052834762412772150767459,
+       101291.82021101470638131212834372672190,101239.96513015874557434620027070220536,NA)
+y26k=c(220617.26836602080532186063775025586487,220616.51863291086273886990422939498064,
+       220613.99271199565205120438073094916283,220608.96969811721311311580641019469544,
+       220590.63062450139114680380703241374274,220538.77554364543033983787895938922657,
+       220505.55024349810104736036798268806751)
+y29986.206=c(258611.92088126138936236270690420524706,258611.17114815226473772487606945593964,
+             258608.64522723705404987555428981407434,258603.62221335861511178697996905960695,
+             258585.28313974279314547498059127865426,258533.42805888683233850905251825413809,
+             258500.20275873950304603154154155298024)
 y2kdiff=diff(y2k);y2kdiff=c(NA,y2kdiff[-7])
 y13kdiff=diff(y13k);y13kdiff=c(NA,y13kdiff[-7])
 y26kdiff=diff(y26k);y26kdiff=c(NA,y26kdiff[-7])
@@ -183,7 +193,7 @@ yt=y29986.206
 xt2=x2p^alpha
 
 plot(xt2,yt,xlim=range(c(0,xt2)),ylim=range(c(yt,yt+10)),
-     main="differences in indefinite integral as function of 2p \n when alpha =0.5",ylab="indefinite integral at s=1/2+I*29986.206",xlab="2p^alpha")
+     main="differences in imag(indefinite integral) as function of 2p \n when alpha =0.5",ylab="imag(indefinite integral) at s=1/2+I*29986.206",xlab="2p^alpha",cex.lab=0.9)
 grid()
 abline(lm(yt~xt2),col=2)
 
@@ -195,7 +205,7 @@ yt=y29986.206
 xt2=x2p^alpha
 
 plot(xt2,yt,xlim=range(c(0,xt2)),ylim=range(c(yt,yt+10)),
-     main="differences in indefinite integral as function of 2p \n when alpha =0.49934",ylab="indefinite integral at s=1/2+I*29986.206",xlab="2p^alpha")
+     main="differences in imag(indefinite integral) as function of 2p \n when alpha =0.49934",ylab="imag(indefinite integral) at s=1/2+I*29986.206",xlab="2p^alpha",cex.lab=0.9)
 grid()
 abline(lm(yt~xt2),col=2)
 
@@ -212,7 +222,7 @@ Taking the above best model fit parameters, figure 4 shows (for $\Re(s)=\{1/2,1\
 
 
 ```{r fig_cap_61_withC, echo=FALSE}
-cap2 <- "\\scriptsize{The behaviour of the \textbf{imaginary} component of the \\textbf{approximate} Riemann Zeta function second moment \\textbf{indefinite integral} based on {\\color{blue}\\textbf{end tapered}} finite Riemann Zeta Dirichlet Series (using the second quiescent region) equation \\eqref {eq:endtap2ndmoment_indefiniteintegral_improved} \\textbf{WITH} an integration constant function dependent on 2p in the interval $t=(1,61)$, at (i) left panel $\\Re(s)=1/2$ and (ii) right panel $\\Re(s)=1$. In the two panels, sloping upward Imag(second moment indefinite integral) using 2p=4 {\\color{red}red}, 2p=8 {\\color{green}green}, 2p=16 {\\color{blue}blue}, 2p=24 {\\color{violet}violet-red}, 2p=32 {\\color{black}black} and $t*\\log(t) -t*(1+\\log(2\\pi)-2\\gamma)$ [13-15] {\\color{gray}gray}. Likewise, progressing more horizontally the Real(numerical derivative) of the indefinite integrals (red $\\rightarrow$ black again) and $\\zeta(1/2+I*t)\\zeta(1-(1/2+I*t))$ {\\color{gray}gray}. The two additional curves with the highest growth rates are (i) the second quiescent region based scaled finite harmonic series $t \\cdot \\sum_{k=1}^{\\lfloor\\frac{t}{\\pi}\\rfloor}\\frac{1}{k}$ and second quiescent region based  Euler-Maclaurin approximation of the scaled harmonic series ${\\color{green}green}$ $t \\cdot \\log(\\frac{t}{\\pi})+\\gamma+\\frac{1}{2}(\\frac{1}{\\frac{t}{\\pi}})$ ${\\color{red}red}$. With equation (8) used in equation (7) the indefinite integrals with different 2p values now align closely.  }"
+cap2 <- "\\scriptsize{The behaviour of the \\textbf{imaginary} component of the \\textbf{approximate} Riemann Zeta function second moment \\textbf{indefinite integral} based on {\\color{blue}\\textbf{end tapered}} finite Riemann Zeta Dirichlet Series (using the second quiescent region) equation \\eqref {eq:endtap2ndmoment_indefiniteintegral_improved} \\textbf{WITH} an integration constant function dependent on 2p in the interval $t=(1,61)$, at (i) left panel $\\Re(s)=1/2$ and (ii) right panel $\\Re(s)=1$. In the two panels, sloping upward Imag(second moment indefinite integral) using 2p=4 {\\color{red}red}, 2p=8 {\\color{green}green}, 2p=16 {\\color{blue}blue}, 2p=24 {\\color{violet}violet-red}, 2p=32 {\\color{black}black} and $t*\\log(t) -t*(1+\\log(2\\pi)-2\\gamma)$ [13-15] {\\color{gray}gray}. Likewise, progressing more horizontally the Real(numerical derivative) of the indefinite integrals (red $\\rightarrow$ black again) and $\\zeta(1/2+I*t)\\zeta(1-(1/2+I*t))$ {\\color{gray}gray}. The two additional curves with the highest growth rates are (i) the second quiescent region based scaled finite harmonic series $t \\cdot \\sum_{k=1}^{\\lfloor\\frac{t}{\\pi}\\rfloor}\\frac{1}{k}$ and second quiescent region based  Euler-Maclaurin approximation of the scaled harmonic series ${\\color{green}green}$ $t \\cdot (\\log(\\frac{t}{\\pi})+\\gamma+\\frac{1}{2}(\\frac{1}{\\frac{t}{\\pi}}))$ ${\\color{red}red}$. With equation (8) used in equation (7) the indefinite integrals with different 2p values now align closely.  }"
 
 ```
 
@@ -236,10 +246,10 @@ To help interpret what is happening in equation (7) when approximating $\int \ze
 
 Firstly, $(s-1/2)*\sum_{k=1}^{\lfloor\frac{t}{\pi}\rfloor}\frac{1}{k}$ is the dominant part of the first term in equation (7) (pure imaginary for $\Re(s)=1/2$), and given that the $\sum_{k=1}^{\lfloor\frac{t}{\pi}\rfloor}\frac{1}{k}$ ${\color{green}green}$ line lies well above the $\int \zeta(s)\zeta(1-s) ds$ approximation the other terms in equation (7) tends to reduce the influence of the harmonic series when forming $\int \zeta(s)\zeta(1-s) ds$.
 
-Secondly, Figure 5 shows what happens if the nuisance discontinuities in the harmonic series $\sum_{k=1}^{\lfloor\frac{t}{\pi}\rfloor}\frac{1}{k}$ ${\color{green}green}$ are removed, i.e, comparing $\left(t\cdot\sum_{k=1}^{\lfloor\frac{t}{\pi}\rfloor}\frac{1}{k}\right) - \lfloor\frac{t}{\pi}\rfloor\cdot \pi$ which is higher in magnitude than $t*\log(t) -t*(1+\log(2\pi)-2\gamma)$ and as $\Im(s) \rightarrow \infty$ grows at a higher rate than the second moment indefinite integral. So the imaginary components of the second, third etc terms in equation (7) are increasingly cancel out with the first term.
+Secondly, Figure 5 shows what happens if the nuisance discontinuities in the harmonic series $\sum_{k=1}^{\lfloor\frac{t}{\pi}\rfloor}\frac{1}{k}$ ${\color{green}green}$ are removed, i.e, comparing $\left(t\cdot\sum_{k=1}^{\lfloor\frac{t}{\pi}\rfloor}\frac{1}{k}\right) - \lfloor\frac{t}{\pi}\rfloor\cdot \pi$ ${\color{blue}\textbf{blue}}$ which is higher in magnitude than $t*\log(t) -t*(1+\log(2\pi)-2\gamma)$ ${\color{gray}gray}$ and as $\Im(s) \rightarrow \infty$ grows at a higher rate than the second moment indefinite integral. So the imaginary components of the second, third etc terms in equation (7) increasingly cancel out the first term as $\Im(s) \rightarrow \infty$.
 
 ```{r fig_cap_harmonicseries_withC, echo=FALSE}
-cap2 <- "\\scriptsize{The behaviour of the \textbf{imaginary} component of the \\textbf{approximate} Riemann Zeta function second moment \\textbf{indefinite integral} based on {\\color{blue}\\textbf{end tapered}} finite Riemann Zeta Dirichlet Series (using the second quiescent region) equation \\eqref {eq:endtap2ndmoment_indefiniteintegral_improved} \\textbf{WITH} an integration constant function dependent on 2p in the interval $t=(1,61)$, at (i) left panel $\\Re(s)=1/2$. In figure, sloping upward Imag(second moment indefinite integral) using 2p=4 {\\color{red}red}, 2p=8 {\\color{green}green}, 2p=16 {\\color{blue}blue}, 2p=24 {\\color{violet}violet-red}, 2p=32 {\\color{black}black} and $t*\\log(t) -t*(1+\\log(2\\pi)-2\\gamma)$ [13-15] {\\color{gray}gray}. As in figure 5, there are two additional curves with the highest growth rates are (i) the second quiescent region based scaled finite harmonic series $t \\cdot \\sum_{k=1}^{\\lfloor\\frac{t}{\\pi}\\rfloor}\\frac{1}{k}$ and second quiescent region based  Euler-Maclaurin approximation of the scaled harmonic series ${\\color{green}green}$ $t \\cdot \\log(\\frac{t}{\\pi})+\\gamma+\\frac{1}{2}(\\frac{1}{\\frac{t}{\\pi}})$ ${\\color{red}red}$. Also added to the comparison is $t\\cdot\\sum_{k=1}^{\\lfloor\\frac{t}{\\pi}\\rfloor}\\frac{1}{k} - \\lfloor\\frac{t}{\\pi}\\rfloor\\cdot \\pi$  {\\color{blue}blue} which is slightly higher in magnitude than $t*\\log(t) -t*(1+\\log(2\\pi)-2\\gamma)$ but is growing at a higher rate than the second moment indefinite integral.}"
+cap2 <- "\\scriptsize{The behaviour of the \\textbf{imaginary} component of the \\textbf{approximate} Riemann Zeta function second moment \\textbf{indefinite integral} based on {\\color{blue}\\textbf{end tapered}} finite Riemann Zeta Dirichlet Series (using the second quiescent region) equation \\eqref {eq:endtap2ndmoment_indefiniteintegral_improved} \\textbf{WITH} an integration constant function dependent on 2p in the interval $t=(1,61)$, at (i) left panel $\\Re(s)=1/2$. In figure, sloping upward Imag(second moment indefinite integral) using 2p=4 {\\color{red}red}, 2p=8 {\\color{green}green}, 2p=16 {\\color{blue}blue}, 2p=24 {\\color{violet}violet-red}, 2p=32 {\\color{black}black} and $t*\\log(t) -t*(1+\\log(2\\pi)-2\\gamma)$ [13-15] {\\color{gray}gray}. As in figure 5, there are two additional curves with the highest growth rates are (i) the second quiescent region based scaled finite harmonic series $t \\cdot \\sum_{k=1}^{\\lfloor\\frac{t}{\\pi}\\rfloor}\\frac{1}{k}$ and second quiescent region based  Euler-Maclaurin approximation of the scaled harmonic series ${\\color{green}green}$ $t \\cdot \\log(\\frac{t}{\\pi})+\\gamma+\\frac{1}{2}(\\frac{1}{\\frac{t}{\\pi}})$ ${\\color{red}red}$. Also added to the comparison is $t\\cdot\\sum_{k=1}^{\\lfloor\\frac{t}{\\pi}\\rfloor}\\frac{1}{k} - \\lfloor\\frac{t}{\\pi}\\rfloor\\cdot \\pi$  {\\color{blue}blue} which is slightly higher in magnitude than $t*\\log(t) -t*(1+\\log(2\\pi)-2\\gamma)$ but is growing at a higher rate than the second moment indefinite integral.}"
 
 ```
 
@@ -308,3 +318,42 @@ http://www.rstudio.com/.
 15. Conrey, J. B., Farmer, D. W., Keating, J. P., Rubinstein M. O. and Snaith, N. C. "INTEGRAL MOMENTS OF L-FUNCTIONS", Proc. London Math. Soc.(3) 91 (2005) pp. 33,104
 
 16. Bressoud, David M. (2007). A Radical Approach to Real Analysis. Classroom Resource Materials Series (2nd ed.). Washington, DC: Mathematical Association of America. pp. 137–138. 
+
+
+##Appendix A 
+
+An earlier version of Table 1 existed where the nuisance discontinuities term $-\lfloor\frac{\Im(s)}{\pi}\rfloor \cdot \pi$ in equation(7) was not included in the table cell calculation. This error did not impact the model fit as the nuisance discontinuities term for a fixed $\Im(s)$ value does not involve 2p the number of end taper points. The earlier version of the table is retained below for completeness.
+
+
+```{r earlier_version_data, echo=FALSE}
+
+x2p=c(4,8,32,128,1024,8192,16384)
+y2k=c(13824.831316181456209,13824.0815828820290015,13821.5556619668284606,
+      13816.5326480883895225272,13798.19357447256755,NA,NA)
+y13k=c(114318.3683530846,114317.6186199787,114315.0926990635317,
+       114310.06968518509276,114291.73061156927080,114239.87553071330999,NA)
+y26k=c(246617.089167129934,246616.339434019991,246613.8135131047808,
+       246608.790499226341954,246590.451425610519988,246538.59634475455918,246505.371044607229888)
+y29986.206=c(288595.2811671223760,288594.531434013251,288592.005513098040,
+             288586.982499219601779,288568.6434256037798,288516.788344747819,288483.5630446004897)
+y2kdiff=diff(y2k);y2kdiff=c(NA,y2kdiff[-7])
+y13kdiff=diff(y13k);y13kdiff=c(NA,y13kdiff[-7])
+y26kdiff=diff(y26k);y26kdiff=c(NA,y26kdiff[-7])
+y29986.206diff=diff(y29986.206);y29986.206diff=c(NA,y29986.206diff[-7])
+
+df=cbind(x2p,y2k,y2kdiff,y13k,y13kdiff,y29986.206,y29986.206diff)
+
+knitr::kable(df)
+```
+***Earlier version of Table 1:End tapered Riemann Zeta Dirichlet Series approximations of $\\$ $\Im\left[\int\zeta(1/2+I*t)\zeta(1-(1/2+I*t)) ds\right]_{\Im(s) \rightarrow \infty}$ for $\Im(s)=\{2000,13000,29986.206\}$ \color{red} Unfortunately, in error the calculation did not include the $- I \cdot \lfloor\frac{\Im(s)}{\pi}\rfloor \cdot \pi$ term.***
+
+The proper table cell values as shown in the main body of the paper are obtainable via
+
+\begin{align}
+y2k &\rightarrow y2k -\lfloor\frac{2000}{\pi}\rfloor \cdot \pi \\
+y13k &\rightarrow y13k -\lfloor\frac{13000}{\pi}\rfloor \cdot \pi \\
+y26k &\rightarrow y26k -\lfloor\frac{26000}{\pi}\rfloor \cdot \pi \qquad \text{ (in the Rmd file) } \\
+y29986.206k &\rightarrow y29986.206k -\lfloor\frac{29986.206}{\pi}\rfloor \cdot \pi
+\end{align}
+
+Another way to describe equation (7) is that it represents a continuous version of the indefinite integral of the second moment $\left[\int\zeta(s)\zeta(1-s) ds\right]_{\Im(s) \rightarrow \infty}$. Whilst retaining the nuisance discontinuities would be a discontinuous version of $\left[\int\zeta(s)\zeta(1-s) ds\right]_{\Im(s) \rightarrow \infty}$ (which does not contain $- I \cdot \lfloor\frac{\Im(s)}{\pi}\rfloor \cdot \pi$). This discontinuous version of $\left[\int\zeta(s)\zeta(1-s) ds\right]_{\Im(s) \rightarrow \infty}$ has a growth rate likely (conservatively) bounded as $\Im(s) \rightarrow \infty$ by the scaled harmonic series $t \cdot\left(\log(\frac{t}{\pi})+\gamma+\frac{1}{2}(\frac{1}{\frac{t}{\pi}})+ ...\right)$ by inspection of the leading imaginary term of equation (7) (which is the finite harmonic series capped at $\lfloor\frac{t}{\pi}\rfloor$). The integrand $\zeta(s)\zeta(1-s)$ (and hence $\zeta(s)$) is continuous as taking the total derivative ($\frac{d}{ds}$) of the indefinite integral is unaffected by using the discontinuous version of the indefinite integral or the continuous version equation (7).
