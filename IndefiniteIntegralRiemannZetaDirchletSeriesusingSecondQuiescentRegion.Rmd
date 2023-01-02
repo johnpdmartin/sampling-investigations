@@ -106,7 +106,7 @@ The end tapered finite Dirichlet Series version of the above equation is given i
 
 \begin{align}
 \left[\int \zeta(s)\zeta(1-s) ds\right]_{\Im(s) \rightarrow \infty} &\approx s*\left[\sum_{k=1}^{\left(\lfloor\frac{t}{\pi}\rfloor-p\right)}\left(\frac{1}{k}\right) +
-\sum_{i=\left(-p+1\right)}^{p}\frac{\frac{1}{2^{2p}} \left( 2^{2p}-\sum_{k=1}^{i+p}\binom{2p}{2p-k}\right)}{(\lfloor\frac{t}{\pi}\rfloor+i)} \right] \nonumber \\ 
+\sum_{i=\left(-p+1\right)}^{p}\frac{\left(\frac{1}{2^{2p}} \left( 2^{2p}-\sum_{k=1}^{i+p}\binom{2p}{2p-k}\right)\right)^2}{(\lfloor\frac{t}{\pi}\rfloor+i)} \right] \nonumber \\ 
 &+ \left[\sum_{k=2}^{\left(\lfloor\frac{t}{\pi}\rfloor-p\right)}\left(\frac{1}{-log(k)\cdot k^s}\right) +
 \sum_{i=\left(-p+1\right)}^{p}\frac{\frac{1}{2^{2p}} \left( 2^{2p}-\sum_{k=1}^{i+p}\binom{2p}{2p-k}\right)}{-log(\lfloor\frac{t}{\pi}\rfloor+i)\cdot (\lfloor\frac{t}{\pi}\rfloor+i)^s} \right] \nonumber \\
 &+ \left[\sum_{n=2}^{\left(\lfloor\frac{t}{\pi}\rfloor-p\right)}\left(\frac{1}{log(n)\cdot n^{(1-s)}}\right) +
@@ -115,7 +115,7 @@ The end tapered finite Dirichlet Series version of the above equation is given i
 &+ \sum_{k=2}^{\left(\lfloor\frac{t}{\pi}\rfloor-p\right)}\sum_{i=\left(-p+1\right)}^{p}\frac{\delta(k\ne (i+k))\cdot \frac{1}{2^{2p}} \left( 2^{2p}-\sum_{m=1}^{i+p}\binom{2p}{2p-m}\right)}{(-log(k)+log(\lfloor\frac{t}{\pi}\rfloor+i))\cdot k^s (\lfloor\frac{t}{\pi}\rfloor+i)^{(1-s)}}   \nonumber \\
 &+ \sum_{i=\left(-p+1\right)}^{p}\sum_{n=2}^{\left(\lfloor\frac{t}{\pi}\rfloor-p\right)}\frac{\delta(n\ne (i+n))\cdot \frac{1}{2^{2p}} \left( 2^{2p}-\sum_{m=1}^{i+p}\binom{2p}{2p-m}\right)}{(-log(\lfloor\frac{t}{\pi}\rfloor+i)+log(n))\cdot (\lfloor\frac{t}{\pi}\rfloor+i)^s n^{(1-s)}} \Bigg]  \nonumber \\
 &+ \sum_{i=\left(-p+1\right)}^{p}\sum_{j=\left(-p+1\right)}^{p}\frac{\delta(i\ne j)\cdot \frac{1}{2^{2p}} \left( 2^{2p}-\sum_{m=1}^{i+p}\binom{2p}{2p-m}\right)\cdot\frac{1}{2^{2p}}\left( 2^{2p}-\sum_{q=1}^{i+p}\binom{2p}{2p-q}\right)}{(-log(\lfloor\frac{t}{\pi}\rfloor+i)+log(\lfloor\frac{t}{\pi}\rfloor+j))\cdot (\lfloor\frac{t}{\pi}\rfloor+i)^s (\lfloor\frac{t}{\pi}\rfloor+j)^{(1-s)}} \Bigg] \nonumber \\
-&- \left(\sum_{k=1}^{\lfloor\frac{t}{\pi}\rfloor} \left(\frac{1}{2k}\right) + I\cdot\lfloor\frac{t}{\pi}\rfloor\cdot\pi \right), \Im(s) > \infty  \label {eq:endtap2ndmoment_indefiniteintegral}
+&- \left(\sum_{k=1}^{\lfloor\frac{t}{\pi}\rfloor} \left(\frac{1}{2k}\right) + I\cdot\lfloor\frac{t}{\pi}\rfloor\cdot\pi \right), \Im(s) \rightarrow \infty  \label {eq:endtap2ndmoment_indefiniteintegral}
 \end{align}
 
 Note that 
@@ -346,7 +346,7 @@ Inspecting figure 8, across the critical strip for the interval $t=(265,295)$ th
 
 \begin{align}
 \left[\int \zeta(s)\zeta(1-s) ds\right]_{\Im(s) \rightarrow \infty} &\approx (s-\frac{1}{2})*\left[\sum_{k=1}^{\left(\lfloor\frac{t}{\pi}\rfloor-p\right)}\left(\frac{1}{k}\right) +
-\sum_{i=\left(-p+1\right)}^{p}\frac{\frac{1}{2^{2p}} \left( 2^{2p}-\sum_{k=1}^{i+p}\binom{2p}{2p-k}\right)}{(\lfloor\frac{t}{\pi}\rfloor+i)} \right] \nonumber \\ 
+\sum_{i=\left(-p+1\right)}^{p}\frac{\left(\frac{1}{2^{2p}} \left( 2^{2p}-\sum_{k=1}^{i+p}\binom{2p}{2p-k}\right)\right)^2}{(\lfloor\frac{t}{\pi}\rfloor+i)} \right] \nonumber \\ 
 &+ \left[\sum_{k=2}^{\left(\lfloor\frac{t}{\pi}\rfloor-p\right)}\left(\frac{1}{-log(k)\cdot k^s}\right) +
 \sum_{i=\left(-p+1\right)}^{p}\frac{\frac{1}{2^{2p}} \left( 2^{2p}-\sum_{k=1}^{i+p}\binom{2p}{2p-k}\right)}{-log(\lfloor\frac{t}{\pi}\rfloor+i)\cdot (\lfloor\frac{t}{\pi}\rfloor+i)^s} \right] \nonumber \\
 &+ \left[\sum_{n=2}^{\left(\lfloor\frac{t}{\pi}\rfloor-p\right)}\left(\frac{1}{log(n)\cdot n^{(1-s)}}\right) +
@@ -355,7 +355,7 @@ Inspecting figure 8, across the critical strip for the interval $t=(265,295)$ th
 &+ \sum_{k=2}^{\left(\lfloor\frac{t}{\pi}\rfloor-p\right)}\sum_{i=\left(-p+1\right)}^{p}\frac{\delta(k\ne (i+k))\cdot \frac{1}{2^{2p}} \left( 2^{2p}-\sum_{m=1}^{i+p}\binom{2p}{2p-m}\right)}{(-log(k)+log(\lfloor\frac{t}{\pi}\rfloor+i))\cdot k^s (\lfloor\frac{t}{\pi}\rfloor+i)^{(1-s)}}   \nonumber \\
 &+ \sum_{i=\left(-p+1\right)}^{p}\sum_{n=2}^{\left(\lfloor\frac{t}{\pi}\rfloor-p\right)}\frac{\delta(n\ne (i+n))\cdot \frac{1}{2^{2p}} \left( 2^{2p}-\sum_{m=1}^{i+p}\binom{2p}{2p-m}\right)}{(-log(\lfloor\frac{t}{\pi}\rfloor+i)+log(n))\cdot (\lfloor\frac{t}{\pi}\rfloor+i)^s n^{(1-s)}} \Bigg]  \nonumber \\
 &+ \sum_{i=\left(-p+1\right)}^{p}\sum_{j=\left(-p+1\right)}^{p}\frac{\delta(i\ne j)\cdot \frac{1}{2^{2p}} \left( 2^{2p}-\sum_{m=1}^{i+p}\binom{2p}{2p-m}\right)\cdot\frac{1}{2^{2p}}\left( 2^{2p}-\sum_{q=1}^{i+p}\binom{2p}{2p-q}\right)}{(-log(\lfloor\frac{t}{\pi}\rfloor+i)+log(\lfloor\frac{t}{\pi}\rfloor+j))\cdot (\lfloor\frac{t}{\pi}\rfloor+i)^s (\lfloor\frac{t}{\pi}\rfloor+j)^{(1-s)}} \Bigg] \nonumber \\
-&- \left(I\cdot\lfloor\frac{t}{\pi}\rfloor\cdot\pi \right), \Im(s) > \infty  \label {eq:endtap2ndmoment_indefiniteintegral_improved}
+&- \left(I\cdot\lfloor\frac{t}{\pi}\rfloor\cdot\pi \right), \Im(s) \rightarrow \infty  \label {eq:endtap2ndmoment_indefiniteintegral_improved}
 \end{align}
 
 

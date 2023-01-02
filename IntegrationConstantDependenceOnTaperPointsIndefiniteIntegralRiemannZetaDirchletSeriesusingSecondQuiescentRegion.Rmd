@@ -58,7 +58,7 @@ More recently described [3-7] end point tapering of finite Dirichlet Series sums
 \end{align}
 \begin{align}
 \left[\int \zeta(s)\zeta(1-s) ds\right]_{\Im(s) \rightarrow \infty} &\approx (s-\frac{1}{2})*\left[\sum_{k=1}^{\left(\lfloor\frac{t}{\pi}\rfloor-p\right)}\left(\frac{1}{k}\right) +
-\sum_{i=\left(-p+1\right)}^{p}\frac{\frac{1}{2^{2p}} \left( 2^{2p}-\sum_{k=1}^{i+p}\binom{2p}{2p-k}\right)}{(\lfloor\frac{t}{\pi}\rfloor+i)} \right] \nonumber \\ 
+\sum_{i=\left(-p+1\right)}^{p}\frac{\left(\frac{1}{2^{2p}} \left( 2^{2p}-\sum_{k=1}^{i+p}\binom{2p}{2p-k}\right)\right)^2}{(\lfloor\frac{t}{\pi}\rfloor+i)} \right] \nonumber \\ 
 &+ \left[\sum_{k=2}^{\left(\lfloor\frac{t}{\pi}\rfloor-p\right)}\left(\frac{1}{-log(k)\cdot k^s}\right) +
 \sum_{i=\left(-p+1\right)}^{p}\frac{\frac{1}{2^{2p}} \left( 2^{2p}-\sum_{k=1}^{i+p}\binom{2p}{2p-k}\right)}{-log(\lfloor\frac{t}{\pi}\rfloor+i)\cdot (\lfloor\frac{t}{\pi}\rfloor+i)^s} \right] \nonumber \\
 &+ \left[\sum_{n=2}^{\left(\lfloor\frac{t}{\pi}\rfloor-p\right)}\left(\frac{1}{log(n)\cdot n^{(1-s)}}\right) +
