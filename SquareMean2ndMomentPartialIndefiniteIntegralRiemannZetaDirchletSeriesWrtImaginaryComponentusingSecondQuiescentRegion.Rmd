@@ -1,0 +1,222 @@
+---
+title: "Away from the real axis, the second moment partial indefinite integral $\\int \\zeta(\\sigma+I*t)\\zeta(\\sigma-I*t) dt$ of $\\Im(s)$ behaviour using the end tapered finite Riemann Zeta Dirichlet Series approximation."
+author: "John Martin"
+date: \today
+header-includes:  
+  - \usepackage{xcolor}
+  - \usepackage{pdflscape}
+  - \newcommand{\blandscape}{\begin{landscape}}
+  - \newcommand{\elandscape}{\end{landscape}}
+output:
+  pdf_document:
+  fig_crop: no
+
+---
+  
+  ```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+
+```
+
+<!-- https://stackoverflow.com/questions/41655383/r-markdown-similar-feature-to-newcommand-in-latex/41664105 -->
+  \newcommand{\mychi}{\raisebox{0pt}[1ex][1ex]{$\chi$}}
+
+
+##Executive Summary
+
+The square mean value indefinite integral of the Riemann Zeta function,$\int \zeta(\sigma+I*t)\zeta(\sigma-I*t) dt=\int |\zeta(\sigma+I*t)|^2 dt$ is a partial indefinite integral with respect to $\Im(s)$. In this paper the partial indefinite integral is usefully approximated by \textbf{end tapered} Riemann Zeta Dirichlet Series sums, away from the real axis, using the second quiescent region of the Series sum. Below the critical line, the low $\Im(s)$ trend growth of $\int |\zeta(\sigma+I*t)|^2 dt$ is usefully approximated by co-opting the known leading asymptotic growth term of the \textbf{definite} integral $\left(\zeta(2*\sigma)*t+\frac{\zeta(2*\sigma-1)*\Gamma(2*\sigma-1)*\sin(\pi*\sigma)}{(1-\sigma)}*t^{(2-2*\sigma)}\right)$. For the upper portion of the critical strip $1/2 < \sigma < 1$, the low $\Im(s)$ trend growth of $\int |\zeta(\sigma+I*t)|^2 dt$ is reasonably approximated by adding an offset term $\left(\zeta(2*\sigma)*t+\frac{\zeta(2*\sigma-1)*\Gamma(2*\sigma-1)*\sin(\pi*\sigma)}{(1-\sigma)}*t^{(2-2*\sigma)}\right)-\left(\zeta(2*\sigma)+\frac{\zeta(2*\sigma-1)*\Gamma(2*\sigma-1)*\sin(\pi*\sigma)}{(1-\sigma)}+\pi(1-\sigma)\right)$.
+
+
+
+
+##Introduction
+
+###Riemann Zeta finite Dirichlet Series sums
+
+As is known, the infinite Riemann Zeta Dirichlet Series sum [1] and total indefinite integral [2] in their region of convergence are given respectively (explicitly including integration constants $\textbf{C}_{[]}$) by
+
+\begin{align}
+\zeta(s) &= \sum_{k=1}^{\infty}\left(\frac{1}{k^s}\right), \qquad \qquad \qquad \qquad \Re(s) > 1   \label {eq:infseries} \\
+\int \zeta(s)~ds &= s + \sum_{k=2}^{\infty}\left(\frac{1}{-log(k) \cdot k^s}\right) + \textbf{C}_{[\int \zeta(s)~ds]}, \qquad \Re(s) > 1   \label {eq:infindefiniteintegral} 
+\end{align}
+
+Similarly, in principle the partial indefinite integral with respect to the $\Im(s)$ may be written
+
+\begin{align}
+\int \zeta(\sigma+I*t)~dt &= t + \sum_{k=2}^{\infty}\left(\frac{1}{-I*log(k) \cdot k^s}\right) + \textbf{C}_{[\int \zeta(\sigma+I*t)~dt]}(\sigma), \qquad \Re(s) > 1   \label {eq:partialinfindefiniteintegral} 
+\end{align}
+
+with the explicit form that the integration constant for the partial indefinite integral with respect to the $\Im(s)$ is allowed to be a function of $\Re(s)=\sigma$ as $\zeta(\sigma+I*t)$ is an analytic function.
+
+Of interest in this paper is the use of end tapered \textbf{end tapered} Riemann Zeta Dirichlet Series sums using the second quiescent region of the Series sum to approximate the mean square value partial indefinite integral of the Riemann Zeta function, $\int |\zeta(\sigma+I*t)|^2 dt$ which is a partial indefinite integral with respect to $\Im(s)$.
+
+\begin{equation}
+\int |\zeta(\sigma+I*t)|^2 dt = \int \zeta(\sigma+I*t)\zeta(\sigma-I*t) dt
+\end{equation}
+
+which in principle, can be calculated in its region of convergence via
+
+\begin{align}
+\left[\int \zeta(\sigma+I*t)\zeta(\sigma-I*t)~dt\right]_{\Re(s) > 1} &= \int \left[\sum_{k=1}^{\infty}\left(\frac{1}{k^{(\sigma+I*t)}}\right)\sum_{n=1}^{\infty}\left(\frac{1}{n^{(\sigma-I*t)}}\right)\right] dt, \qquad  \Re(s) > 1   \label {eq:2ndmoment_indefiniteintegral} \\
+&= t*\sum_{k=1}^{\infty}\left(\frac{1}{k^{(2*\sigma)}}\right) + \sum_{k=2}^{\infty}\left(\frac{1}{-I*log(k)\cdot k^{(\sigma+I*t)}}\right) + \sum_{n=2}^{\infty}\left(\frac{1}{I*log(n)\cdot n^{(\sigma-I*t)}}\right) \nonumber \\
+&+ \sum_{k=2}^{\infty}\sum_{n=2}^{\infty}\left(\frac{\delta(n \ne k)}{(-I*log(k)+I*log(n))\cdot k^{(\sigma+I*t)} n^{(\sigma-I*t)}}\right) \nonumber \\ &+ \textbf{C}_{[\int \zeta(\sigma+I*t)\zeta(\sigma-I*t)~dt]_{\Re(s) > 1}}(\sigma), \qquad \Re(s) > 1   \label {eq:2ndmoment_partialindefiniteintegralexpanded2}
+\end{align}
+
+However following [3,4], away from the real axis across all the complex plane, $\int \zeta(\sigma+I*t)\zeta(\sigma-I*t) dt$ can also be attempted to be approximated using \textbf{end tapered} Riemann Zeta Dirichlet Series sums
+
+\begingroup
+\allowdisplaybreaks
+\begin{flalign}
+&\left[\int \zeta(\sigma+I*t)\zeta(\sigma-I*t) dt\right]_{\Im(s) \rightarrow \infty} \nonumber \\ \nonumber \\
+&\approx t*\left[\sum_{k=1}^{\left(\lfloor\frac{t}{\pi}\rfloor-p\right)}\left(\frac{1}{k^{(2*\sigma)}}\right) +
+\sum_{i=\left(-p+1\right)}^{p}\frac{\left(\frac{1}{2^{2p}} \left( 2^{2p}-\sum_{k=1}^{i+p}\binom{2p}{2p-k}\right)\right)^2}{(\lfloor\frac{t}{\pi}\rfloor+i)^{(2*\sigma)}} \right] \nonumber \\ 
+&+ \left[\sum_{k=2}^{\left(\lfloor\frac{t}{\pi}\rfloor-p\right)}\left(\frac{1}{-I*log(k)\cdot k^{(\sigma+I*t)}}\right) +
+\sum_{i=\left(-p+1\right)}^{p}\frac{\frac{1}{2^{2p}} \left( 2^{2p}-\sum_{k=1}^{i+p}\binom{2p}{2p-k}\right)}{-I*log(\lfloor\frac{t}{\pi}\rfloor+i)\cdot (\lfloor\frac{t}{\pi}\rfloor+i)^{(\sigma+I*t)}} \right] \nonumber \\
+&+ \left[\sum_{n=2}^{\left(\lfloor\frac{t}{\pi}\rfloor-p\right)}\left(\frac{1}{I*log(n)\cdot n^{(\sigma-I*t)}}\right) +
+\sum_{i=\left(-p+1\right)}^{p}\frac{\frac{1}{2^{2p}} \left( 2^{2p}-\sum_{k=1}^{i+p}\binom{2p}{2p-k}\right)}{I*log(\lfloor\frac{t}{\pi}\rfloor+i)\cdot (\lfloor\frac{t}{\pi}\rfloor+i)^{(\sigma-I*t)}} \right] \nonumber \\ 
+&+ \Bigg[\sum_{k=2}^{\left(\lfloor\frac{t}{\pi}\rfloor-p\right)}\sum_{n=2}^{\left(\lfloor\frac{t}{\pi}\rfloor-p\right)}\left(\frac{\delta(n \ne k)}{(-I*log(k)+I*log(n))\cdot k^{(\sigma+I*t)} n^{(\sigma-I*t)}}\right)  \nonumber \\ 
+&+ \sum_{k=2}^{\left(\lfloor\frac{t}{\pi}\rfloor-p\right)}\sum_{i=\left(-p+1\right)}^{p}\frac{\delta(k\ne (i+k))\cdot \frac{1}{2^{2p}} \left( 2^{2p}-\sum_{m=1}^{i+p}\binom{2p}{2p-m}\right)}{(-I*log(k)+I*log(\lfloor\frac{t}{\pi}\rfloor+i))\cdot k^{(\sigma+I*t)} (\lfloor\frac{t}{\pi}\rfloor+i)^{(\sigma-I*t)}}   \nonumber \\
+&+ \sum_{i=\left(-p+1\right)}^{p}\sum_{n=2}^{\left(\lfloor\frac{t}{\pi}\rfloor-p\right)}\frac{\delta(n\ne (i+n))\cdot \frac{1}{2^{2p}} \left( 2^{2p}-\sum_{m=1}^{i+p}\binom{2p}{2p-m}\right)}{(-I*log(\lfloor\frac{t}{\pi}\rfloor+i)+I*log(n))\cdot (\lfloor\frac{t}{\pi}\rfloor+i)^{(\sigma+I*t)} n^{(\sigma-I*t)}} \Bigg]  \nonumber \\
+&+ \sum_{i=\left(-p+1\right)}^{p}\sum_{j=\left(-p+1\right)}^{p}\frac{\delta(i\ne j)\cdot \frac{1}{2^{2p}} \left( 2^{2p}-\sum_{m=1}^{i+p}\binom{2p}{2p-m}\right)\cdot\frac{1}{2^{2p}}\left( 2^{2p}-\sum_{q=1}^{i+p}\binom{2p}{2p-q}\right)}{(-I*log(\lfloor\frac{t}{\pi}\rfloor+i)+I*log(\lfloor\frac{t}{\pi}\rfloor+j))\cdot (\lfloor\frac{t}{\pi}\rfloor+i)^{(\sigma+I*t)} (\lfloor\frac{t}{\pi}\rfloor+j)^{(\sigma-I*t)}} \Bigg] \nonumber \\
+&- \text{sum}_{\text{discontinuities}}(\sigma,t,2p) \nonumber \\ 
+&+ \textbf{C}_{\left[\int \zeta(\sigma+I*t)\zeta(\sigma-I*t) dt\right]_{\Im(s) \rightarrow \infty}}(\sigma,2p), \qquad \qquad  \qquad  \qquad \quad   \Im(s) \rightarrow \infty  \label {eq:endtap2ndmoment_partialindefiniteintegral_improved}
+\end{flalign}
+\endgroup
+
+Where (i) $\frac{t\cdot(N_c=1)}{\pi}=\frac{t}{\pi}$ is the location of the second quiescent region in the final plateau of the (first degree L-function) Riemann Zeta ($N_c=1$) Dirichlet Series sum oscillating divergence, (ii) 2p is the number of end taper weighted points, using partial sums of binomial coefficients,
+(iii) $\textbf{C}_{\left[\int \zeta(\sigma+I*t)\zeta(\sigma-I*t) dt\right]_{\Im(s) \rightarrow \infty}}(\sigma,2p)$ is the integration constant and (iv) $-\text{sum}_{\text{discontinuities}}(\sigma,t,2p)$ cancels the total sum of the (nuisance) discontinuities occurring at $\lfloor\frac{k}{\pi}\rfloor$ in the 1st and 4th terms of equation \eqref {eq:endtap2ndmoment_partialindefiniteintegral_improved}.
+
+After some investigation a feasible estimator for $\text{sum}_{\text{discontinuities}}(\sigma,t,2p)$ is of the form
+
+\begin{align}
+  &\text{sum}_{\text{discontinuities}}(\sigma,t,2p) \nonumber \\ \nonumber \\
+  &\approx \sum_{k=1}^{\left(\lfloor\frac{t}{\pi}\rfloor-p\right)} \left(\sum_{n=1}^{\lfloor(k+\frac{\epsilon}{\pi})\rfloor}\frac{(k\pi+\epsilon)}{n^{(2*\sigma)}} - \sum_{n=1}^{\lfloor(k-\frac{\epsilon}{\pi})\rfloor}\frac{(k\pi-\epsilon)}{n^{(2*\sigma)}} \right)\nonumber \\
+  &+\sum_{i=\left(-p+1\right)}^{p}\left(\frac{1}{2^{2p}} \left( 2^{2p}-\sum_{k^\prime=1}^{i+p}\binom{2p}{2p-k^\prime}\right)\right)^2 \left( \sum_{n=1}^{\left\lfloor\lfloor\frac{t}{\pi}\rfloor+i+\frac{\epsilon}{\pi}\right\rfloor}\frac{((\lfloor\frac{t}{\pi}\rfloor+i)\pi+\epsilon)}{n^{(2*\sigma)}} -\sum_{n=1}^{\left\lfloor\lfloor\frac{t}{\pi}\rfloor+i-\frac{\epsilon}{\pi}\right\rfloor}\frac{((\lfloor\frac{t}{\pi}\rfloor+i)\pi-\epsilon)}{n^{(2*\sigma)}}\right) \label {eq:sum_disc}
+\end{align}
+
+where $\epsilon \rightarrow 0$ such that $\lfloor(k+\frac{\epsilon}{\pi})\rfloor = (\lfloor(k-\frac{\epsilon}{\pi})\rfloor + 1)$ \& $\left\lfloor\lfloor\frac{t}{\pi}\rfloor+i+\frac{\epsilon}{\pi}\right\rfloor = (\left\lfloor\lfloor\frac{t}{\pi}\rfloor+i-\frac{\epsilon}{\pi}\right\rfloor + 1)$ and basically equation \eqref {eq:sum_disc} determines the height of each individual discontinuity by using points just on either side of the discontinuity and then sums the individual values (consistent with the choice of 2p used in the end tapering). Using 38 digit precision calculations in pari-gp [5] $\epsilon \sim 1.0e-10$ was found to work well for the (low) t intervals investigated.
+
+For $\sigma=1/2$ the total sum of the discontinuities was  $\lfloor\frac{t}{\pi}\rfloor*\pi$ [4] as each discontinuity is of height $\pi$. For $\sigma>1/2$ ($\sigma<1/2$) the discontinuity height empirically for finite t appears to be a monotonically decreasing (increasing) staircase function aligning with the monotonic behaviour of $\sum_{n=1}^{\lfloor\frac{t}{\pi}\rfloor}\frac{1}{n^{2*\sigma}}$ for the (low) t intervals investigated.
+
+###Approximations for the trend growth of the indefinite integral
+
+As developed in [6-10] the functional dependency of the growth of the partial \textbf{definite} integral for $1/2 < \sigma < 1$ is of the form
+
+\begin{align}
+&\int_{0}^{T} \zeta(\sigma+I*t)\zeta(\sigma-I*t) dt \nonumber \\
+&= \int_{0}^{T} |\zeta(\sigma+I*t)|^2 dt \nonumber \\
+&= \zeta(2*\sigma)*T+\frac{\zeta(2*\sigma-1)*\Gamma(2*\sigma-1)*\sin(\pi*\sigma)}{(1-\sigma)}*T^{(2-2*\sigma)} + O(log(T)) \qquad \text{ for } 1/2 < \sigma < 1
+\end{align}
+
+Given the above, a straighforward approximation for the trend growth of the partial \textbf{indefinite} integral that was attempted and found to be useful is as follows
+
+\begin{align}
+&\text{TREND}_{\left[\int \zeta(\sigma+I*t)\zeta(\sigma-I*t) dt\right]_{\Im(s) \rightarrow \infty}} \nonumber \\
+&\approx \zeta(2*\sigma)*t+\frac{\zeta(2*\sigma-1)*\Gamma(2*\sigma-1)*\sin(\pi*\sigma)}{(1-\sigma)}*t^{(2-2*\sigma)} + f(\sigma,2p) \qquad \text{ for } \Im(s) \rightarrow \infty
+\end{align}
+
+where $f(\sigma,2p)$ is a integration constant function term for the trend growth.
+
+In practice, based on a comparison to end tapered Dirichlet series approximation calculations of $\left[\int \zeta(\sigma+I*t)\zeta(\sigma-I*t) dt\right]_{\Im(s) \rightarrow \infty}$ the following functions provide reasonable approximations to the low $\Im(s)$ trend growth of the partial indefinite integral $\left[\int \zeta(\sigma+I*t)\zeta(\sigma-I*t) dt\right]_{\Im(s) \rightarrow \infty}$, away from the real axis (i) below the critical line and (ii) in the upper half of the critical strip respectively
+
+\begin{align}
+&\text{TREND}_{\left[\int \zeta(\sigma+I*t)\zeta(\sigma-I*t) dt\right]_{\Im(s) \rightarrow \infty}} \nonumber \\
+&\approx \zeta(2*\sigma)*t+\frac{\zeta(2*\sigma-1)*\Gamma(2*\sigma-1)*\sin(\pi*\sigma)}{(1-\sigma)}*t^{(2-2*\sigma)} \qquad \text{ for } \Im(s) \rightarrow \infty, \sigma<1/2 \text{ excluding } \sigma = 0 \\
+&\approx \zeta(2*\sigma)*t+\frac{\zeta(2*\sigma-1)*\Gamma(2*\sigma-1)*\sin(\pi*\sigma)}{(1-\sigma)}*t^{(2-2*\sigma)} \nonumber \\ 
+&- \left(\zeta(2*\sigma)+\frac{\zeta(2*\sigma-1)*\Gamma(2*\sigma-1)*\sin(\pi*\sigma)}{(1-\sigma)} + \pi*(1-\sigma)\right) \qquad \text{ for } \Im(s) \rightarrow \infty, 1/2<\sigma<1 
+\end{align}
+
+For $\sigma > 1$, the required offset term appears to have oscillating divergence and a simple functional approximation has not been identified so far.
+
+All the calculations and graphs are produced using the pari-gp language [5].
+
+###Results
+
+Figure 1 shows examples of the real component behaviour of the partial indefinite integral $\Re\left(\int \zeta(\sigma+I*t)\zeta(\sigma-I*t)  dt\right)$ approximated using equation \eqref {eq:endtap2ndmoment_partialindefiniteintegral_improved} \textbf{without} any integration constant $\textbf{C}_{\left[\int \zeta(\sigma+I*t)\zeta(\sigma-I*t)  dt\right]_{\Im(s) \rightarrow \infty}}$. 
+
+To confirm that the partial indefinite integral can produce accurate integrand behaviour (i.e., be a good $\zeta(\sigma+I*t)\zeta(\sigma-I*t)$ approximation) (pari-gp) numerical derivative calculations are performed on the partial indefinite integral function and as displayed on the figures do accurately overlay the true $\zeta(\sigma+I*t)\zeta(\sigma-I*t)$ calculations (see the functions which follow the horizontal axis).
+
+In the figure, end point tapering for $2p=\{4 {\color{red} (red)}, 8{\color{green} (green)}, 32{\color{black}black}\}$ using partial sums of the binomial coefficients in equation \eqref {eq:endtap2ndmoment_partialindefiniteintegral_improved} is shown throughout and below the critical line at $\Re(s)=\{0.99999, 0.9, 0.8, 0.7, 0.6, 0.5, 0.4, 0.3, 0.2, 0.1, 0.0000001, -0.1, -0.999999\}$ for the interval  $t=(1,61)$. The vertical lines ${\color{red}red}, {\color{green}green}, {\color{black}black}$ correspond to lower bound thresholds ($(p+1)\cdot\pi \text{ where } p > 0$) away from the real axis $\Im(s)=\{3\pi,5\pi,17\pi\}$ respectively where the end tapered finite Riemann Zeta Dirichlet Series approximation based on the use of the second quiescent region $(\frac{\Im(s)\cdot(N_c=1)}{\pi})$ becomes effective.  
+
+Also shown in the figures are 
+\begin{enumerate}
+\item $\Re\left(\zeta(\sigma+I*t)\zeta(\sigma-I*t)\right)$ (horizontal aperiodic ${\color{gray}gray}$ lineshape), 
+\item the real component of the numerical derivative of the $2p=\{4 {\color{red} (red)}, 8{\color{green} (green)}, 32{\color{black}black}\}$ partial indefinite integral functions (horizontal increasingly overlapping with $\Re\left(\zeta(\sigma+I*t)\zeta(\sigma-I*t)\right)$ as $\Im(s) \rightarrow \infty$) and 
+\item for $\Re(s) =\{0.99999, 0.9, 0.8, 0.7, 0.6\}$ the approximated trend behaviour (monotonic ${\color{gray}gray}$ lineshape) of the second moment partial integral growth equation (12) adding an offset term to the [6-10] results.
+\item for $Re(s)=0.5$ the asymptotic trend behaviour (monotonic ${\color{gray}gray}$ lineshape) of the second moment partial integral growth $t\cdot \log(t) -t\cdot(1+\log(2\pi)-2\gamma)$ [6-10]
+\item for $Re(s) = \{0.4, 0.3, 0.2, 0.1, 0.0000001, -0.1, -0.999999\}$ the approximated trend behaviour (monotonic ${\color{gray}gray}$ lineshape) of the second moment partial integral growth equation (11) borrowing from [6-10],
+\end{enumerate}
+
+
+```{r fig_cap_61, echo=FALSE}
+cap2 <- "\\scriptsize{The behaviour of the real component of the \\textbf{approximate} Riemann Zeta function second moment \\textbf{partial indefinite integral} based on {\\color{blue}\\textbf{end tapered}} finite Riemann Zeta Dirichlet Series (using the second quiescent region) equation \\eqref {eq:endtap2ndmoment_partialindefiniteintegral_improved} \\textbf{without} any integration constant throughout and below the critical line $t=(1,61)$, at $\\Re(s)=\\{0.99999,0.9,0.8,0.7,0.6,0.5,0.4,0.3,0.2,0.1,0.0000001,-0.1,-0.999999\\}$. In the two panels, sloping upward Imag(second moment indefinite integral) using 2p=4 {\\color{red}red}, 2p=8 {\\color{green}green}, 2p=32 {\\color{black}black} and $t*\\log(t) -t*(1+\\log(2\\pi)-2\\gamma)$ [13-15] {\\color{gray}gray}. Likewise, progressing more horizontally the Real(numerical derivative) of the partial indefinite integrals (red $\\rightarrow$ black again) and $\\Re(\\zeta(\\sigma+I*t)\\zeta(\\sigma-I*t))$ {\\color{gray}gray}.}"
+
+```
+
+
+
+```{r image_61, fig.show = "hold",  out.width = c("32%","32%","32%"), fig.align = "center", fig.cap=cap2, fig.height=5}
+
+
+knitr::include_graphics("/home/john/pari/PartialIndefiniteIntegral/graph_zetabased_meansquarevalue_0.99999_0.5_60.pdf")
+
+
+
+
+knitr::include_graphics("/home/john/pari/PartialIndefiniteIntegral/graph_zetabased_meansquarevalue_0.9_0.5_60.pdf")
+knitr::include_graphics("/home/john/pari/PartialIndefiniteIntegral/graph_zetabased_meansquarevalue_0.8_0.5_60.pdf")
+knitr::include_graphics("/home/john/pari/PartialIndefiniteIntegral/graph_zetabased_meansquarevalue_0.7_0.5_60.pdf")
+knitr::include_graphics("/home/john/pari/PartialIndefiniteIntegral/graph_zetabased_meansquarevalue_0.6_0.5_60.pdf")
+knitr::include_graphics("/home/john/pari/PartialIndefiniteIntegral/graph_zetabased_meansquarevalue_0.5_0.5_60.pdf")
+knitr::include_graphics("/home/john/pari/PartialIndefiniteIntegral/graph_zetabased_meansquarevalue_0.4_0.5_60.pdf")
+knitr::include_graphics("/home/john/pari/PartialIndefiniteIntegral/graph_zetabased_meansquarevalue_0.3_0.5_60.pdf")
+knitr::include_graphics("/home/john/pari/PartialIndefiniteIntegral/graph_zetabased_meansquarevalue_0.2_0.5_60.pdf")
+knitr::include_graphics("/home/john/pari/PartialIndefiniteIntegral/graph_zetabased_meansquarevalue_0.1_0.5_60.pdf")
+knitr::include_graphics("/home/john/pari/PartialIndefiniteIntegral/graph_zetabased_meansquarevalue_1.0E-7_0.5_60.pdf")
+knitr::include_graphics("/home/john/pari/PartialIndefiniteIntegral/graph_zetabased_meansquarevalue_-0.1_0.5_60.pdf")
+knitr::include_graphics("/home/john/pari/PartialIndefiniteIntegral/graph_zetabased_meansquarevalue_-0.999999_0.5_60.pdf")
+
+
+
+
+```
+
+\clearpage
+ 
+On visual inspection, (i) an explicit integration constant function does not appear to be needed for $2p=\{4,8,32\}$ for the low t values shown, (ii) the [6-10] results for the trend growth behaviour of the square mean value $\int |\zeta(\sigma+I*t)|^2dt$ have application for the square mean value partial integral estimation as low as $\Im(s)>10$ and (iii) the equation (12) modification of [6-10] results may help resolve estimation issues with the square mean value partial integral for the interval $3/4 < \Re(s) < 1$ [9,10].
+
+
+## Conclusion
+
+Using end tapered finite Dirichlet Series calculations of the square mean value partial indefinite integral  $\int \zeta(\sigma+I*t)\zeta(\sigma-I*t) dt$, away from the real axis provides useful information for assessing existing square mean value partial definite integral theoretical results for the (low) t intervals investigated. The end tapered finite Dirichlet Series approach is also explicitly used to remove the (nuisance) discontinuities appearing in the calculation in order to construct a continuous function for $\int \zeta(\sigma+I*t)\zeta(\sigma-I*t) dt$.
+
+
+
+#References
+
+1. Edwards, H.M. (1974). Riemann’s zeta function. Pure and Applied Mathematics 58. New York-London:
+Academic Press. ISBN 0-12-232750-0. Zbl 0315.10035.
+
+2. https://functions.wolfram.com/ZetaFunctionsandPolylogarithms/Zeta/21/01/01/ , "Zeta Functions and Polylogarithms > Zeta[s] > Integration > Indefinite integration > Involving only one direct function (1 formula)", 1998–2022 Wolfram Research, Inc.
+
+3. Martin, J.P.D. "Away from the real axis an examination of the behaviour of the indefinite integral of the Riemann Zeta finite Dirichlet Series across the complex plane" (2022)
+https://dx.doi.org/10.6084/m9.figshare.21652073
+
+4. Martin, J.P.D. "An integration constant for the second moment indefinite integral $\int \zeta(s)\zeta(1-s) ds$ when using the end tapered finite Riemann Zeta Dirichlet Series approximation away from the real axis" (2022)
+https://dx.doi.org/10.6084/m9.figshare.21778532
+
+5. The PARI~Group, PARI/GP version {\tt 2.12.0}, Univ. Bordeaux, 2018,
+    \url{http://pari.math.u-bordeaux.fr/}.
+\normalfont
+
+6. Atkinson, F. V. ‘The mean value of the zeta-function on the critical line’, Proc. London Math. Soc.(2) 47 (1941) 174--200.
+
+7. Hardy, G. H. and Littlewood, J. E. ‘Contributions to the theory of the Riemann zeta-function and the theory of the distribution of primes’, Acta Math 41 (1918) pp. 119,196.
+
+8. Conrey, J. B., Farmer, D. W., Keating, J. P., Rubinstein M. O. and Snaith, N. C. "INTEGRAL MOMENTS OF L-FUNCTIONS", Proc. London Math. Soc.(3) 91 (2005) pp. 33,104
+
+9. Ivic, A. "Lectures on Mean Values of the Riemann Zeta Function", Tata Institute Lectures on Mathematics and Physics (1991)
+
+10. Matsumoto, K. "The mean square of the Riemann zeta-function inthe critical strip"", Japan. J. Math. New Ser. 15 (1989), 1-13.
+
+
