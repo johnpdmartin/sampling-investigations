@@ -1,0 +1,28 @@
+---
+title: "An alternative first order series expansion correction to the Riemann Zeta Dirichlet Series about the second  quiescent region $\\frac{t}{\\pi}$."
+author: "John Martin"
+date: \today
+header-includes:  \usepackage{xcolor}
+output:
+  pdf_document:
+    fig_crop: no
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+
+```
+
+
+
+##Executive Summary
+
+On the critical line, the following first order series expansion of the Dirichlet series for the Riemann Zeta function about the (second) quiescent region $N \approx \lfloor\frac{t}{\pi}\rfloor$ appears to asymptotically approach the Riemann Zeta function value 
+
+$\sum_{n=1}^{\lfloor\frac{t}{\pi}\rfloor}\frac{1}{n^{(1/2+I*t)}} + \cos(t-\pi(\frac{t}{\pi}-\lfloor\frac{t}{\pi}\rfloor))\exp(I(-t\log(t)+(1+\log(\pi))t+\pi+O(\frac{1}{t}))\cdot\frac{1}{\left(2\cdot(\frac{t}{\pi})^{\frac{1}{2}}\right)} + O\left(\frac{1}{(\frac{t}{\pi})^{\left(1+(\frac{1}{2})\right)}}\right) \approx \zeta(\frac{1}{2}+I*t) \text{ as } t \rightarrow \infty$
+
+Across the complex plane, the first order series expansion about the (second) quiescent region $N \approx  \lfloor\frac{t}{\pi}\rfloor$ is of the more general form 
+
+$\sum_{n=1}^{\lfloor\frac{t}{\pi}\rfloor}\frac{1}{n^s} + \frac{\cos(t-\pi(\frac{t}{\pi}-\lfloor\frac{t}{\pi}\rfloor))\exp(I(-\theta_{ext}(s)-\frac{1}{2}t\log(t)+\frac{1}{2}(1+\log(\pi)-log(2))t+\frac{7\pi}{8}+O(\frac{1}{t}))}{2^{\Big(\frac{(\sigma-\frac{1}{2})}{2}\Big)}}\cdot\frac{1}{\left(2\cdot(\frac{t}{\pi})^{(\frac{1}{4}+\frac{\sigma}{2})}\right)} + O(\frac{1}{(\frac{t}{\pi})^{\left(1+(\frac{1}{4}+\frac{\sigma}{2})\right)}}) \approx \zeta(\sigma+I*t) \text{ as } t \rightarrow \infty$ 
+
+and also provides a good approximation of the Riemann Zeta function away from the real axis, where $\theta_{ext}(s)$ is the extended Riemann-Siegel Theta function which contains both real and imaginary parts for $\sigma \ne \frac{1}{2}$ . 
