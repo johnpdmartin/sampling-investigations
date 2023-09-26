@@ -23,6 +23,535 @@ $\sum_{n=1}^{\lfloor\frac{t}{\pi}\rfloor}\frac{1}{n^{(1/2+I*t)}} + \cos(t-\pi(\f
 
 Across the complex plane, the first order series expansion about the (second) quiescent region $N \approx  \lfloor\frac{t}{\pi}\rfloor$ is of the more general form 
 
-$\sum_{n=1}^{\lfloor\frac{t}{\pi}\rfloor}\frac{1}{n^s} + \frac{\cos(t-\pi(\frac{t}{\pi}-\lfloor\frac{t}{\pi}\rfloor))\exp(I(-\theta_{ext}(s)-\frac{1}{2}t\log(t)+\frac{1}{2}(1+\log(\pi)-log(2))t+\frac{7\pi}{8}+O(\frac{1}{t}))}{2^{\Big(\frac{(\sigma-\frac{1}{2})}{2}\Big)}}\cdot\frac{1}{\left(2\cdot(\frac{t}{\pi})^{(\frac{1}{4}+\frac{\sigma}{2})}\right)} + O(\frac{1}{(\frac{t}{\pi})^{\left(1+(\frac{1}{4}+\frac{\sigma}{2})\right)}}) \approx \zeta(\sigma+I*t) \text{ as } t \rightarrow \infty$ 
+$\sum_{n=1}^{\lfloor\frac{t}{\pi}\rfloor}\frac{1}{n^s} + \frac{\cos(t-\pi(\frac{t}{\pi}-\lfloor\frac{t}{\pi}\rfloor))\exp(\frac{1}{2}\log(\chi(s)))\exp(I(-\frac{1}{2}t\log(t)+\frac{1}{2}(1+\log(\pi)-log(2))t+\frac{7\pi}{8}+O(\frac{1}{t}))}{2^{\Big(\frac{(\sigma-\frac{1}{2})}{2}\Big)}}\cdot\frac{1}{\left(2\cdot(\frac{t}{\pi})^{(\frac{1}{4}+\frac{\sigma}{2})}\right)} + O(\frac{1}{(\frac{t}{\pi})^{\left(1+(\frac{1}{4}+\frac{\sigma}{2})\right)}}) \approx \zeta(\sigma+I*t) \text{ as } t \rightarrow \infty$ 
 
-and also provides a good approximation of the Riemann Zeta function away from the real axis, where $\theta_{ext}(s)$ is the extended Riemann-Siegel Theta function which contains both real and imaginary parts for $\sigma \ne \frac{1}{2}$ . 
+and also provides a good approximation of the Riemann Zeta function away from the real axis, where $\theta_{ext}(s)$ is the extended Riemann-Siegel Theta function which contains both real and imaginary parts for $\sigma \ne \frac{1}{2}$.
+
+
+
+##Introduction
+
+In this paper, an alternative first order series expansion correction to the finite Riemann Zeta function Dirichlet Series [1-3] about the (second) quiescent region $N \approx  \lfloor\frac{t}{\pi}\rfloor$ is developed mainly based on the simple idea that the correction function is likely to have a factor with the parametrisation $\exp(I*(\alpha tlog(t)+\beta t + \gamma + O(1/t))$ in order to be comparable in nature with the known Riemann-Siegel Theta function $\theta(t)$ behaviour. The standard series expansion approach would have been to attempt to adapt the Riemann-Siegel formula [2-5] about $N \approx  \lfloor\frac{t}{\pi}\rfloor$ (rather than $N \approx  \sqrt{\lfloor\frac{t}{2\pi}\rfloor}$) but simple graphical analysis suggests a Riemann-Siegel type approach at $N \approx  \lfloor\frac{t}{\pi}\rfloor$ would likely require more complex series terms. 
+
+Since the (second) quiescent region in the final plateau of the oscillating divergence of the Riemann Zeta Dirichlet Series exhibits relatively low oscillations it is expected that any series expansion about $N \approx  \lfloor\frac{t}{\pi}\rfloor$ is likely to be be less complex in the number of series terms required. It already has been shown that end tapered Dirichlet series about $N \approx  \lfloor\frac{t}{\pi}\rfloor$ can provide useful $\zeta(s)$ approximations [6]. However this author's recent experience researching into aperiodic Dirichlet series associated with 2nd degree L functions indicated end tapered Dirichlet Series didn't show the same accuracy benefits (for number field and elliptical L function approximations) hence the motivation in identifying an alternate $N \approx  \lfloor\frac{t}{\pi}\rfloor$ based $\zeta(s)$ estimator. 
+
+In practice, in this paper a scaled version of the real and imaginary parts of the difference $\zeta(s)-\sum_{n=1}^{\lfloor\frac{t}{\pi}\rfloor}\frac{1}{n^s}$ is fitted empiricially for the first order dependence on $\sigma$, $t$ and proposed $\exp(I*(\alpha tlog(t)+\beta t + \gamma + O(1/t))$ behaviour and then the solution is backtransformed to obtain an approximation formula for $\zeta(s)$.
+
+The paper illustrates that the alternative first order series expansion about at $N \approx \frac{t}{\pi}$ of the Riemann Zeta Dirichlet series is well behaved and is empirically monotonically decreasing for the calculations performed. All the calculations and graphs are produced using the pari-gp language [7].
+
+## Finite Riemann Zeta Dirichlet Series sums at $N \approx \frac{t}{\pi}$ and $N \approx \sqrt{\frac{t}{2\pi}}$ on the critical line
+
+As a useful prompt on the magnitude and imaginary co-ordinate (i.e., t) dependence of Riemann Zeta approximation errors given by finite Dirichlet Series and the Riemann-Siegel formula, figure 1 shows a straightforward comparison of the zeroth order difference between (a) the Riemann Zeta function and the zeroth order Riemann-Siegel formula on the critical line (using the usual Riemann-Siegel formula series truncation at the first quiescent region $N \approx \sqrt{\frac{t}{2\pi}}$)
+
+\begin{align}\label {eq:RS_diff}
+\Delta_{\text{RS},\sqrt{\frac{t}{2\pi}}}(\text{zeroth order}) &= \nonumber \\ &\left[\sum_{n=1}^{\lfloor\sqrt{\frac{t}{2\pi}}\rfloor}\frac{1}{n^{(1/2+I\cdot t)}} + \chi(1-(1/2+I\cdot t))\sum_{n=1}^{\lfloor\sqrt{\frac{t}{2\pi}}\rfloor}\frac{1}{n^{1-(1/2+I\cdot t)}} - \zeta(1/2+I\cdot t)\right]\cdot \cos(\pi*\lfloor\sqrt{\frac{t}{2\pi}}\rfloor)
+\end{align}
+ 
+and (b) the Riemann Zeta function and the zeroth order truncated Riemann Zeta Dirichlet series sum at the (second) quiescent region $N \approx \lfloor\frac{t}{\pi}\rfloor$,
+
+\begin{align}
+\Delta_{\text{finiteDirichletSeries},\frac{t}{\pi}}(\text{zeroth order}) = \left[\sum_{n=1}^{\lfloor\frac{t}{\pi}\rfloor}\frac{1}{n^{(1/2+I\cdot t)}} - \zeta(1/2+I\cdot t)  \right]\cdot \cos(\pi*\lfloor\frac{t}{\pi}\rfloor)\label {eq:finiteDirichletSeries} 
+\end{align}
+
+where (i) $\chi(s)$ is the multiplicative factor of the Riemann Zeta functional equation [1-3]
+
+\begin{equation}
+\zeta(s)=\chi(s)\zeta(1-s)
+\end{equation}
+
+and (ii) importantly the factors $\cos(\pi*\lfloor\sqrt{\frac{t}{2\pi}}\rfloor)$ and $\cos(\pi*\lfloor\frac{t}{\pi}\rfloor)$ are used to mask discontinuities present in the zeroth order differences between finite dirichlet series and $\zeta(s)$ dependent on the series truncation point. 
+
+In figure 1, the lefthand (righthand) columns respectively contain the real (imaginary) part of $\Delta_{\text{RS},\sqrt{\frac{t}{2\pi}}}(\text{zeroth order})$ (red) and $\Delta_{\text{finiteDirichletSeries},\frac{t}{\pi}}(\text{zeroth order})$ (blue) for the intervals t=(10,110) (first row) and t=(100,250) (second row). It can be seen that $\Delta_{\text{finiteDirichletSeries},\frac{t}{\pi}}(\text{zeroth order})$ appears to exhibit a simple monotonic decaying sinusoidal behaviour while $\Delta_{\text{RS},\sqrt{\frac{t}{2\pi}}}(\text{zeroth order})$ appears to exhibit a modulated decaying sinusoidal behaviour indicating the standard Riemann-Siegel formula has a slightly higher maximum (and more complex) zeroth order difference behaviour compared to $\zeta(1/2+I\cdot t)$ than does the Dirichlet Series truncated at $N \approx \lfloor\frac{t}{\pi}\rfloor$. 
+
+As a comparison examination, figure 2 then compares the finite Dirichlet Series equation \eqref{eq:finiteDirichletSeries} to a zeroth order Riemann-Siegel formula type calculation where truncation of the series occurs at $N \approx \lfloor\frac{t}{\pi}\rfloor$ and a scaling factor of $\frac{1}{2}$ are employed
+
+
+
+
+```{r fig_cap_compRS, echo=FALSE}
+cap2 <- "\\scriptsize{The lefthand column contains the real part of $\\Delta_{\\text{RS},\\sqrt{\\frac{t}{2\\pi}}}(\\text{zeroth order})$ (red) and $\\Delta_{\\text{finiteDirichletSeries},\\frac{t}{\\pi}}(\\text{zeroth order})$ (blue) for the intervals t=(10,110) (first row) and t=(100,250) (second row). Likewise the righthand column contains the imaginary part of the same functions.}"
+
+```
+
+```{r image_compRS, fig.show = "hold", out.width = c("50%","50%"), fig.align = "default", fig.cap=cap2}
+
+knitr::include_graphics("/home/john/pari/series_expansion/graph_zeroth_order_diff_real_0.5_10_100.pdf")
+
+knitr::include_graphics("/home/john/pari/series_expansion/graph_zeroth_order_diff_imag_0.5_10_100.pdf")
+
+knitr::include_graphics("/home/john/pari/series_expansion/graph_zeroth_order_diff_real_0.5_100_150.pdf")
+
+knitr::include_graphics("/home/john/pari/series_expansion/graph_zeroth_order_diff_imag_0.5_100_150.pdf")
+
+```
+
+```{r fig_cap_compRSadapted, echo=FALSE}
+cap2 <- "\\scriptsize{The lefthand column contains the real part of $\\Delta_{\\text{RS},\\frac{t}{\\pi}}(\\text{zeroth order})$ (blue) and $\\Delta_{\\text{finiteDirichletSeries},\\frac{t}{\\pi}}(\\text{zeroth order})$ (red) for the interval t=(10,110). Likewise the righthand column contains the imaginary part of the same functions. Note the change in colour to red for $\\Delta_{\\text{finiteDirichletSeries},\\frac{t}{\\pi}}(\\text{zeroth order})$ compared to figure 1.}"
+
+```
+
+```{r image_compRSadapted, fig.show = "hold", out.width = c("50%","50%"), fig.align = "default", fig.cap=cap2}
+
+knitr::include_graphics("/home/john/pari/series_expansion/graph_zeroth_order_diff_real_adaptedRS_0.5_10_100.pdf")
+
+knitr::include_graphics("/home/john/pari/series_expansion/graph_zeroth_order_diff_imag_adaptedRS_0.5_10_100.pdf")
+
+```
+
+
+\newpage
+
+\begin{align}\label {eq:RS_at_t/Pi_diff}
+\Delta_{\text{RS},\frac{t}{\pi}}(\text{zeroth order}) &= \nonumber \\ &\frac{1}{2}\left[\sum_{n=1}^{\lfloor\frac{t}{\pi}\rfloor}\frac{1}{n^{(1/2+I\cdot t)}} + \chi(1-(1/2+I\cdot t))\sum_{n=1}^{\lfloor\frac{t}{\pi}\rfloor}\frac{1}{n^{1-(1/2+I\cdot t)}} - \zeta(1/2+I\cdot t)\right]\cdot \cos(\pi*\lfloor\frac{t}{\pi}\rfloor)
+\end{align}
+
+
+where first order nuisance discontinuities (present in the difference between the zeroth order modified Riemann-Siegel formula and the Riemann Zeta function) in the middle term of equation \eqref{eq:RS_at_t/Pi_diff} are efficiently masked away by the factor $\cos(\pi*\lfloor\frac{t}{\pi}\rfloor)$.
+
+In figure 2, the lefthand (righthand) panels respectively contain the real (imaginary) part of $\Delta_{\text{RS},\frac{t}{\pi}}(\text{zeroth order})$ (blue) and $\Delta_{\text{finiteDirichletSeries},\frac{t}{\pi}}(\text{zeroth order})$ (red) for the interval t=(10,110). It can be seen that $\Delta_{\text{RS},\frac{t}{\pi}}(\text{zeroth order})$ appears to be a complex modulated version of the $\Delta_{\text{finiteDirichletSeries},\frac{t}{\pi}}(\text{zeroth order})$ waveform. 
+
+On the basis of figure 2, it may be therefore be naively expected that the higher order series expansion terms of $\sum_{n=1}^{\lfloor\frac{t}{\pi}\rfloor}\frac{1}{n^{(1/2+I\cdot t)}}$ about $\frac{1}{\left(\frac{t}{\pi}\right)^{1/2}}, \frac{1}{\left(\frac{t}{\pi}\right)^{3/2}}, ...$ on the critical line could be simpler in form than the higher order series expansion terms needed to unravel the modulated signal in equation(s) \eqref{eq:RS_at_t/Pi_diff} (and \eqref{eq:RS_diff}). 
+
+
+## Difference behaviour between the (generalised) Riemann-Siegel Z function and zeroth order finite Dirichlet Series approximations
+
+To help make progress deriving the first order series expansion about $N \approx \lfloor\frac{t}{\pi}\rfloor$ it is beneficial to consider the finite Dirichlet Series approximations for the Riemann-Siegel Z function rather than approximating $real(\zeta(s))$ and $imag(\zeta(s))$ directly. This is because on the critical line (i) the series expansion should be $O(1/N^{1/2}) \rightarrow O\left(\frac{1}{\left(\frac{t}{\pi}\right)^{1/2}}\right), O(1/N^{3/2}) \rightarrow O\left(\frac{1}{\left(\frac{t}{\pi}\right)^{3/2}}\right), ...$ for $N \approx \lfloor\frac{t}{\pi}\rfloor$ and (ii) $imag(Z(1/2+I\cdot t))=0$ providing strong model fitting constraints.
+
+Therefore, on the critical line the finite Dirichlet series approximations equations \eqref{eq:RS_diff} and \eqref{eq:finiteDirichletSeries} based on $N \approx \sqrt{\frac{t}{2\pi}}$ and $N \approx \frac{t}{\pi}$) when scaled to unity should be of the form
+
+\begin{align}\label {eq:RS_gZ_diff}
+\Delta_{\text{scaled RS generalised Z},\sqrt{\frac{t}{2\pi}}}(\text{zeroth order}) =  \nonumber \\
+\exp(-\frac{1}{2}\log(\chi(s))) &\left[\sum_{n=1}^{\lfloor\sqrt{\frac{t}{2\pi}}\rfloor}\frac{1}{n^{(1/2+I\cdot t)}} 
++ \chi(1-(1/2+I\cdot t))\sum_{n=1}^{\lfloor\sqrt{\frac{t}{2\pi}}\rfloor}\frac{1}{n^{1-(1/2+I\cdot t)}} - \zeta(1/2+I\cdot t)\right] * \nonumber \\ &\cos(\pi*\lfloor\sqrt{\frac{t}{2\pi}}\rfloor) * \left[1*\left(\sqrt{\frac{t}{2\pi}}\right)^{1/2}\right]
+\end{align}
+ 
+and (b) the Riemann Zeta function and the zeroth order truncated Riemann Zeta Dirichlet series sum at the (second) quiescent region $N \approx \lfloor\frac{t}{\pi}\rfloor$,
+
+\begin{align}
+\Delta_{\text{scaled finiteDirichletSeries generalised Z},\frac{t}{\pi}}(\text{zeroth order}) = \nonumber \\ 
+\exp(-\frac{1}{2}\log(\chi(s))) &\left[\sum_{n=1}^{\lfloor\frac{t}{\pi}\rfloor}\frac{1}{n^{(1/2+I\cdot t)}} - \zeta(1/2+I\cdot t)  \right]\cdot \cos(\pi*\lfloor\frac{t}{\pi}\rfloor) * \left[2*\left(\frac{t}{\pi}\right)^{1/2}\right] \label {eq:finiteDirichletSeries_gZ} 
+\end{align}
+
+based on the generalised Riemann-Siegel Z function form
+
+\begin{align}
+Z_{gen}(s)&=e^{(-\frac{1}{2}\log(\chi(s)))}\cdot\zeta(s) \\
+&=e^{-\frac{1}{2}(\text{real}(\log(\chi(s))))}\cdot e^{-\frac{1}{2}I(\text{imag}(\log(\chi(s))))}\cdot\zeta(s) \\
+&=e^{-\frac{1}{2}(\text{real}(\log(\chi(s))))}\cdot Z(s)
+\end{align}
+
+where $Z_{ext}(s)$ is the extended Riemann-Siegel Z function [8]
+
+\begin{align}
+Z_{ext}(s) &= e^{-\frac{1}{2}I(\text{imag}(\log(\chi(s))))}\cdot\zeta(s) \\
+sqrt(Z_{ext}(s)^2) &= sqrt(\zeta(s)*\zeta(1-s)*abs(\chi(s)))
+\end{align}
+
+such that on the critical line the well used Riemann-Siegel Z function [1-3] is given by
+
+\begin{align}
+Z(1/2+I\cdot t) &= e^{I\theta(t)}\zeta(1/2+I\cdot t) \\
+&\equiv e^{-\frac{1}{2}I(\text{imag}(\log(\chi(1/2+I\cdot t))))}\cdot\zeta(1/2+I\cdot t)
+\end{align}
+
+where $\theta(t)$ is the Riemann-Siegel Theta function [1-3]. For completeness, the extended Riemann-Siegel Theta function [9] (i.e, the theta function across the complex plane rather than just the critical line) is given by
+
+\begin{align}
+\theta_{ext}(s) &= -\frac{1}{2}(\text{imag}(\log(\chi(s)))) \\
+ &= \text{imag}\left(log\sqrt{\frac{\zeta(1-s)*abs(\chi(s))}{\zeta(s)}}\right)
+\end{align}
+
+Note that in performing calculations of $(-\frac{1}{2}\log(\chi(s)))$ the continuous version of $(\log(\chi(s))$ needs to be employed to ensure continuous $Z(s)$ estimates (rather than $|Z(s)|$) are obtained.
+
+Given the above, figure 3 shows a comparison of the zeroth order difference between the Riemann Zeta Z function and (a) the zeroth order Riemann-Siegel formula on the critical line and (b) the zeroth order truncated Riemann Zeta Dirichlet series sum at the (second) quiescent region $N \approx \lfloor\frac{t}{\pi}\rfloor$. In figure 3, different values of $\sigma=(1,1/2,0)$ were used not just $\sigma=1/2$ which was used for the middle row and (expected to have absolute magnitude of 1 for equation \eqref{eq:finiteDirichletSeries_gZ}).  
+
+In figure 3, the lefthand (righthand) columns respectively contain the real (imaginary) part of $\Delta_{\text{scaled RS generalised Z},\sqrt{\frac{t}{2\pi}}}(\text{zeroth order})$ (blue) and $\Delta_{\text{scaled finiteDirichletSeries generalised Z},\frac{t}{\pi}}(\text{zeroth order})$ (red) for the interval t=(10,160). It can be seen that both the real and imaginary parts of $\Delta_{\text{scaled finiteDirichletSeries generalised Z},\frac{t}{\pi}}(\text{zeroth order})$ appears to exhibit an approximately constant magnitude sinusoidal behaviour for $\sigma=1/2$ the middle row. While $\Delta_{\text{scaled finiteDirichletSeries generalised Z},\frac{t}{\pi}}(\text{zeroth order})$ exhibits behaviour that is increasing (decreasing) in magnitude for $\sigma < 1/2$ ($\sigma > 1/2$).
+
+In contrast the real part of $\Delta_{\text{scaled RS generalised Z},\sqrt{\frac{t}{2\pi}}}(\text{zeroth order})$ appears to exhibit a catenary curve behaviour that appears independent of $\sigma$ and its imaginary part is zero (as expected and non-zero small) for $\sigma = 1/2$ ($\sigma \ne 1/2$) respectively. If the square wave function $\cos(\pi*\lfloor\sqrt{\frac{t}{2\pi}}\rfloor)$ were omitted the hyperbolic sections of the catenary pattern would be alternately present above and below the y axis after each discontinuity at $\lfloor\sqrt{\frac{t}{2\pi}}\rfloor$. 
+
+
+
+```{r fig_cap_compZgen0.5, echo=FALSE}
+cap2 <- "\\scriptsize{Generalised Riemann-Siegel Z function behaviour errors of zeroth order dirichlet series based approximations. The lefthand column contains the real part of $\\Delta_{\\text{scaled RS generalised Z},\\sqrt{\\frac{t}{2\\pi}}}(\\text{zeroth order})$ (blue) and $\\Delta_{\\text{scaled finiteDirichletSeries generalised Z},\\frac{t}{\\pi}}(\\text{zeroth order})$ (red) for the intervals t=(10,160). Likewise the righthand column contains the imaginary part of the same functions. First row $\\sigma=1$, second row $\\sigma=0.5$, third row $\\sigma=0$.}"
+
+```
+
+```{r image_compZgen0.5, fig.show = "hold", out.width = c("50%","50%"), fig.align = "default", fig.cap=cap2}
+
+knitr::include_graphics("/home/john/pari/series_expansion/graph_zeroth_order_Zgen_diff_real_1_10_150.pdf")
+
+knitr::include_graphics("/home/john/pari/series_expansion/graph_zeroth_order_Zgen_diff_imag_1_10_150.pdf")
+
+knitr::include_graphics("/home/john/pari/series_expansion/graph_zeroth_order_Zgen_diff_real_0.5_10_150.pdf")
+
+knitr::include_graphics("/home/john/pari/series_expansion/graph_zeroth_order_Zgen_diff_imag_0.5_10_150.pdf")
+
+knitr::include_graphics("/home/john/pari/series_expansion/graph_zeroth_order_Zgen_diff_real_0_10_150.pdf")
+
+knitr::include_graphics("/home/john/pari/series_expansion/graph_zeroth_order_Zgen_diff_imag_0_10_150.pdf")
+
+```
+
+## Adding a correction factor to adjust the t-dependence in the zeroth order errors
+
+Different powers of $\left(\frac{1}{\left(\frac{t}{\pi}\right)^x}\right)$ were then trialled when $\sigma \ne 1/2$ to make the zeroth order difference of constant magnitude. Mapping across different $\sigma$ values produces the following correction formula
+
+\begin{align}
+&\Delta_{\text{scaled finiteDirichletSeries generalised Z},\frac{t}{\pi}}(\text{zeroth order, correction1}) = \nonumber \\ 
+&\exp(-\frac{1}{2}\log(\chi(s))) \cdot\left[\sum_{n=1}^{\lfloor\frac{t}{\pi}\rfloor}\frac{1}{n^{s}} - \zeta(s)  \right]\cdot \cos(\pi*\lfloor\frac{t}{\pi}\rfloor) * \left[2*\left(\frac{t}{\pi}\right)^{(\frac{1}{4}+\frac{\sigma}{2})}\right] \label {eq:finiteDirichletSeries_gZ_corr1} 
+\end{align}
+
+
+In figure 4, the lefthand (righthand) columns respectively contain the real (imaginary) part of $\Delta_{\text{scaled RS generalised Z},\sqrt{\frac{t}{2\pi}}}(\text{zeroth order})$ (blue) and $\Delta_{\text{scaled finiteDirichletSeries generalised Z},\frac{t}{\pi}}(\text{zeroth order, correction1})$ (red) for the interval t=(10,160). It can be seen that both the real and imaginary parts of $\Delta_{\text{scaled finiteDirichletSeries generalised Z},\frac{t}{\pi}}(\text{zeroth order, correction1})$ appears to exhibit an approximately sinusoidal behaviour of constant magnitude (but the magnitude depends on $\sigma$).
+
+The benefit of equation \eqref{eq:finiteDirichletSeries_gZ_corr1} is that the t-dependence of the difference between the zeroth order approximate generalised Riemann-Siegel Z function and the true generalised Riemann-Siegel Z function appears to have been transformed away.   
+
+
+## Adding a correction factor to adjust the $\sigma$-dependence in the zeroth order errors
+
+The remaining $\sigma$-dependence in figure 4 can be attempted to be fitted by mapping the change in magnitude of equation \eqref{eq:finiteDirichletSeries_gZ_corr1} for many different $\sigma$ values. By inspection, a suitable correction factor of $2^{\left(\frac{(res-\frac{1}{2})}{2}\right)}$ for equation \eqref{eq:finiteDirichletSeries_gZ_corr1} produces a very similar magnitude of difference behaviour across different $\sigma$. Hence
+
+\begin{align}
+&\Delta_{\text{scaled finiteDirichletSeries generalised Z},\frac{t}{\pi}}(\text{zeroth order, correction2}) = \nonumber \\ 
+&\exp(-\frac{1}{2}\log(\chi(s)))\cdot \left[\sum_{n=1}^{\lfloor\frac{t}{\pi}\rfloor}\frac{1}{n^{(1/2+I\cdot t)}} - \zeta(1/2+I\cdot t)  \right]\cdot \cos(\pi*\lfloor\frac{t}{\pi}\rfloor) * \left[2*\left(\frac{t}{\pi}\right)^{(1/4+\frac{\sigma}{2})}\right]*2^{\left(\frac{(\sigma-\frac{1}{2})}{2}\right)} \label {eq:finiteDirichletSeries_gZ_corr2} 
+\end{align}
+
+In figure 5, the lefthand (righthand) columns respectively contain the real (imaginary) part of $\Delta_{\text{scaled RS generalised Z},\sqrt{\frac{t}{2\pi}}}(\text{zeroth order})$ (blue) and $\Delta_{\text{scaled finiteDirichletSeries generalised Z},\frac{t}{\pi}}(\text{zeroth order, correction2})$ (red) for the interval t=(10,160). It can be seen that both the real and imaginary parts of $\Delta_{\text{scaled finiteDirichletSeries generalised Z},\frac{t}{\pi}}(\text{zeroth order, correction2})$ appears to exhibit an approximately sinusoidal behaviour of constant scale unity.
+
+The benefit of equation \eqref{eq:finiteDirichletSeries_gZ_corr2} is that the $\sigma$-dependence of the difference between the zeroth order approximate generalised Riemann-Siegel Z function and the true generalised Riemann-Siegel Z function appears to have been transformed away.
+
+Empirically, for a range of values of $\Re(s)$ both inside and outside the critical strip and higher values of $\Im(s)$, equation \eqref{eq:finiteDirichletSeries_gZ_corr2} appears to maintain an close approximation to sinusoidal behaviour of constant scale unity.
+
+
+```{r fig_cap_compZgen, echo=FALSE}
+cap2 <- "\\scriptsize{Generalised Riemann-Siegel Z function behaviour errors of zeroth order dirichlet series based approximations adjusted to remove $\\Im(s)$ dependence. The lefthand column contains the real part of $\\Delta_{\\text{scaled RS generalised Z},\\sqrt{\\frac{t}{2\\pi}}}(\\text{zeroth order})$ (blue) and $\\Delta_{\\text{scaled finiteDirichletSeries generalised Z},\\frac{t}{\\pi}}(\\text{zeroth order corrected1})$ (red) for the intervals t=(10,160). Likewise the righthand column contains the imaginary part of the same functions.}"
+
+```
+
+```{r image_compZgen, fig.show = "hold", out.width = c("50%","50%"), fig.align = "default", fig.cap=cap2}
+
+knitr::include_graphics("/home/john/pari/series_expansion/graph_zeroth_order_Zgen_1stcorr_diff_real_1_10_150.pdf")
+
+knitr::include_graphics("/home/john/pari/series_expansion/graph_zeroth_order_Zgen_1stcorr_diff_imag_1_10_150.pdf")
+
+knitr::include_graphics("/home/john/pari/series_expansion/graph_zeroth_order_Zgen_1stcorr_diff_real_0.5_10_150.pdf")
+
+knitr::include_graphics("/home/john/pari/series_expansion/graph_zeroth_order_Zgen_1stcorr_diff_imag_0.5_10_150.pdf")
+
+knitr::include_graphics("/home/john/pari/series_expansion/graph_zeroth_order_Zgen_1stcorr_diff_real_0_10_150.pdf")
+
+knitr::include_graphics("/home/john/pari/series_expansion/graph_zeroth_order_Zgen_1stcorr_diff_imag_0_10_150.pdf")
+
+
+```
+
+
+
+
+
+```{r fig_cap_compZgen2, echo=FALSE}
+cap2 <- "\\scriptsize{Generalised Riemann-Siegel Z function behaviour errors of zeroth order dirichlet series based approximations adjusted to remove both $\\Im(s)$ and $\\Re(s)$ dependence. The lefthand column contains the real part of $\\Delta_{\\text{scaled RS generalised Z},\\sqrt{\\frac{t}{2\\pi}}}(\\text{zeroth order})$ (blue) and $\\Delta_{\\text{scaled finiteDirichletSeries generalised Z},\\frac{t}{\\pi}}(\\text{zeroth order correction2})$ (red) for the intervals t=(10,160). Likewise the righthand column contains the imaginary part of the same functions.}"
+
+```
+
+```{r image_compZgen2, fig.show = "hold", out.width = c("50%","50%"), fig.align = "default", fig.cap=cap2}
+
+knitr::include_graphics("/home/john/pari/series_expansion/graph_zeroth_order_Zgen_2ndcorr_diff_real_1_10_150.pdf")
+
+knitr::include_graphics("/home/john/pari/series_expansion/graph_zeroth_order_Zgen_2ndcorr_diff_imag_1_10_150.pdf")
+
+knitr::include_graphics("/home/john/pari/series_expansion/graph_zeroth_order_Zgen_2ndcorr_diff_real_0.5_10_150.pdf")
+
+knitr::include_graphics("/home/john/pari/series_expansion/graph_zeroth_order_Zgen_2ndcorr_diff_imag_0.5_10_150.pdf")
+
+knitr::include_graphics("/home/john/pari/series_expansion/graph_zeroth_order_Zgen_2ndcorr_diff_real_0_10_150.pdf")
+
+knitr::include_graphics("/home/john/pari/series_expansion/graph_zeroth_order_Zgen_2ndcorr_diff_imag_0_10_150.pdf")
+
+
+```
+
+\newpage
+
+## Model fitting the behaviour of imag(log(eqn\eqref{eq:finiteDirichletSeries_gZ_corr2}))
+
+Combining the relatively simple (frequency modulated) behaviour of the zeroth order differences equation \eqref{eq:finiteDirichletSeries_gZ_corr2} which is approximately independent of $\Im(s)$, $\Re(s)$ with the idea that the correction function is likely to have a factor with the parametrisation $\exp(I*(\alpha tlog(t)+\beta t + \gamma + O(1/t))$ in order to be comparable in nature with the known Riemann-Siegel Theta function $\theta(t)$ behaviour means that the coefficients ($\alpha, \beta, \gamma$) could be estimated by stepwise fitting of imag(log(eqn\eqref{eq:finiteDirichletSeries_gZ_corr2})) and its t derivatives.
+
+
+
+To model fit the parameterisation $f(t)=imag(log(eqn\eqref{eq:finiteDirichletSeries_gZ_corr2})) \approx imag(log(\exp(I*(\alpha tlog(t)+\beta t + \gamma + O(1/t)))$ the following constraints can be applied
+
+\begin{align}
+\hat{\alpha} &\approx f^{\prime\prime}(t)*t \\
+\hat{\beta} &\approx f^\prime(t)-\alpha*(log(t)+1) \text{ with - arising } \\
+\hat{\gamma} &\approx acos(real(\text{actual fn}))-acos(real(\exp(I*(\alpha tlog(t)+\beta t))))
+\end{align}
+
+Using the results shown in figures 6-8, particularly the asymptotic behaviour for larger t. The following model parameters are estimated.
+
+\begin{align}
+\hat{\alpha} &\approx -0.5 \\
+\hat{\beta} &\approx 0.725791354598 \\
+\hat{\gamma} &\approx \pm 0.1250488\cdot \pi \pm n \pi
+\end{align}
+
+Where the negative sign for $\alpha$ is assigned after reconcilation of the leading term in the first partial derivative behaviour of $imag(log(eqn\eqref{eq:finiteDirichletSeries_gZ_corr2}))$.
+
+Next applying the more restrictive model parameterisation 
+
+\begin{align}
+g(t) &= \exp(I*(\alpha \cdot t\cdot log(\frac{t}{\pi})+\beta^\prime t + \gamma^\prime + O(1/t))  \text{ where } \gamma^\prime \cdot \pi \quad \in \quad \mathbb{Q}
+\end{align}
+
+\begin{align}
+\hat{\alpha} &\approx -0.5 \\
+\hat{\beta}^\prime &\approx \frac{1}{2}\cdot(1+log(\pi)-log(2)) = 0.725791352644 \\
+\hat{\gamma}^\prime &\approx \{\pm\frac{\pi}{8}=0.125, \pm\frac{7\pi}{8}, \text{ etc }\}
+\end{align}
+
+Given some choice in the phase shift two possible model fits for equation \eqref{eq:finiteDirichletSeries_gZ_corr2} are given by
+
+\begin{align}
+\exp(-\frac{1}{2}\log(\chi(s)))\cdot &\left[\sum_{n=1}^{\lfloor\frac{t}{\pi}\rfloor}\frac{1}{n^{s}} - \zeta(s)  \right]\cdot \cos(\pi*\lfloor\frac{t}{\pi}\rfloor) *  \left[2*\left(\frac{t}{\pi}\right)^{(1/4+\frac{\sigma}{2})}\right]*2^{\left(\frac{(\sigma-\frac{1}{2})}{2}\right)} \nonumber \\ &\approx \exp(I*(-\frac{1}{2} \cdot t\cdot log(\frac{t}{\pi})+ \frac{1}{2}\cdot(1+log(\pi)-log(2)) \cdot t -\frac{\pi}{8} + O(1/t)) 
+\end{align}
+
+\[OR\]
+
+
+\begin{align}
+\exp(-\frac{1}{2}\log(\chi(s)))\cdot &\left[\sum_{n=1}^{\lfloor\frac{t}{\pi}\rfloor}\frac{1}{n^{s}} - \zeta(s)  \right]\cdot \cos(\pi*\lfloor\frac{t}{\pi}\rfloor) *  \left[2*\left(\frac{t}{\pi}\right)^{(1/4+\frac{\sigma}{2})}\right]*2^{\left(\frac{(\sigma-\frac{1}{2})}{2}\right)} \nonumber \\  &\approx -\exp(I*(-\frac{1}{2} \cdot t\cdot log(\frac{t}{\pi})+ \frac{1}{2}\cdot(1+log(\pi)-log(2)) \cdot t +\frac{7\pi}{8} + O(1/t))
+\end{align}
+
+Either equation (28) OR (29) has been observed to produce excellent asymptotic approximation of the real and imaginary parts of the zeroth order difference on the LHS of these equations for higher t and provides a useful first order approximation down to $t\sim10$.
+
+
+## Backtransformed expressions for first order finite Dirichlet series approximations of the Riemann Zeta function
+
+Using equation (29), a first order series expansion approximation of the Riemann Zeta function for a finite Dirichlet Series truncated at $t=\lfloor\frac{t}{\pi}\rfloor$ is obtained
+
+\begin{align}
+&\zeta(s) \approx \cdot \left[\sum_{n=1}^{\lfloor\frac{t}{\pi}\rfloor}\frac{1}{n^{s}}\right] +\exp(\frac{1}{2}\log(\chi(s)))\cdot \frac{\exp(I*(-\frac{1}{2} \cdot t\cdot log(\frac{t}{\pi})+ \frac{1}{2}\cdot(1+log(\pi)-log(2)) \cdot t +\frac{7\pi}{8} + O(1/t))}{\cos(\pi*\lfloor\frac{t}{\pi}\rfloor)*\left[2*\left(\frac{t}{\pi}\right)^{(1/4+\frac{\sigma}{2})}\right]*2^{\left(\frac{(\sigma-\frac{1}{2})}{2}\right)}} \nonumber \\
+&=  \left[\sum_{n=1}^{\lfloor\frac{t}{\pi}\rfloor}\frac{1}{n^{s}}\right] +\exp(\frac{1}{2}\log(\chi(s)))\cdot \frac{\cos(\pi*\lfloor\frac{t}{\pi}\rfloor)\exp(I*(-\frac{1}{2} \cdot t\cdot log(\frac{t}{\pi})+ \frac{1}{2}\cdot(1+log(\pi)-log(2)) \cdot t +\frac{7\pi}{8} + O(1/t))}{\left[2*\left(\frac{t}{\pi}\right)^{(1/4+\frac{\sigma}{2})}\right]*2^{\left(\frac{(\sigma-\frac{1}{2})}{2}\right)}} \nonumber \\ &\qquad \qquad + O\left(\frac{1}{\left(\frac{t}{\pi}\right)^{(1/4+\frac{\sigma}{2})}}\right)
+\end{align}
+
+where $\cos(\pi*\lfloor\frac{t}{\pi}\rfloor)=\frac{1}{\cos(\pi*\lfloor\frac{t}{\pi}\rfloor)}=\cos(t-(\frac{t}{\pi}-\pi*\lfloor\frac{t}{\pi}\rfloor)*\pi)$ are interchangeable expressions for square wave function behaviour scaled to (-1,1) range.
+
+On the critical line equation (30) reduces to
+
+\begin{align}
+&\zeta(1/2+I*t) \nonumber \\ &=  \left[\sum_{n=1}^{\lfloor\frac{t}{\pi}\rfloor}\frac{1}{n^{1/2+I*t}}\right] +\frac{\cos(\pi*\lfloor\frac{t}{\pi}\rfloor)\exp(I*(-t\log(t)+(1+\log(\pi))t+\pi + O(1/t))}{\left[2*\left(\frac{t}{\pi}\right)^{1/2}\right]} + O\left(\frac{1}{\left(\frac{t}{\pi}\right)^{3/2}}\right)
+\end{align}
+
+
+
+To provide a visual of the approximation performance, Figure 6 shows in the lefthand column that the first order approximation provides excellent first order overlap with $\zeta(s)$ from t > 10 and that in the righthand column the approximation appears to be converging for $\sigma\ge0$.
+
+Given the denominator term $\left(\frac{t}{\pi}\right)^{(1/4+\frac{\sigma}{2})}$ in equation (30) it may be speculated that the series expansion may not converge for $\sigma \le -1/2$. Figure 7 investigates the first order approximation on the line $s=-2+I*t$. In the righthand column, it can be seen that the remaining first order difference is not converging for this co-ordinate which satisfies $\sigma \le -1/2$. However it can be seen that the relative error is improving with higher t (66% at t=203, 0.5% at t=1000 and 0.000046% at t=100000) so the numerator term $\exp(\frac{1}{2}\log(\chi(-2+I*t)))$ must be helping produce a decreasing relative error with higher t.
+
+```{r fig_cap_comp1storderzeta, echo=FALSE}
+cap2 <- "\\scriptsize{First order Dirichlet series expansion approximations of Riemann Zeta function. The lefthand column contains the real (imaginary) parts of $\\zeta(s)$ red (gray) and the equation (30) first order series expansion approximation blue (green). The lefthand columns display results for the intervals t=(3,33). Since the approximation closely overlaps the actual function the righthand column display the residual differences remaining between the approximation and the actual function for the interval t=(3,203). In the first row $\\sigma=2$, second row $\\sigma=0.5$, third row $\\sigma=0$.}"
+
+```
+
+```{r image_comp1storderzeta, fig.show = "hold", out.width = c("50%","50%"), fig.align = "default", fig.cap=cap2}
+
+knitr::include_graphics("/home/john/pari/series_expansion/graph_first_order_zeta_2_3_30.pdf")
+
+knitr::include_graphics("/home/john/pari/series_expansion/graph_first_order_zeta_diff_2_3_200.pdf")
+
+knitr::include_graphics("/home/john/pari/series_expansion/graph_first_order_zeta_0.5_3_30.pdf")
+
+knitr::include_graphics("/home/john/pari/series_expansion/graph_first_order_zeta_diff_0.5_3_200.pdf")
+
+knitr::include_graphics("/home/john/pari/series_expansion/graph_first_order_zeta_0_3_30.pdf")
+
+knitr::include_graphics("/home/john/pari/series_expansion/graph_first_order_zeta_diff_0_3_200.pdf")
+
+```
+
+
+
+```{r fig_cap_comp1storderzeta-2, echo=FALSE}
+cap2 <- "\\scriptsize{First order Dirichlet series expansion approximations of Riemann Zeta function behaviour below the critical strip at $\\sigma=-2$. The lefthand column contains the real (imaginary) parts of $\\zeta(s)$ red (gray) and the equation (30) first order series expansion approximation blue (green). The lefthand columns display results for the intervals in the first row t=(3,30), second row t=(1000,1030), third row t=(100000,100030). The righthand column display the residual differences remaining between the approximation and the actual function for the intervals in the first row t=(3,203), second row t=(1000,1203), third row t=(100000,100203).}"
+
+```
+
+```{r image_comp1storderzeta-2, fig.show = "hold", out.width = c("50%","50%"), fig.align = "default", fig.cap=cap2}
+
+knitr::include_graphics("/home/john/pari/series_expansion/graph_first_order_zeta_-2_3_30.pdf")
+
+knitr::include_graphics("/home/john/pari/series_expansion/graph_first_order_zeta_diff_-2_3_200.pdf")
+
+knitr::include_graphics("/home/john/pari/series_expansion/graph_first_order_zeta_-2_1000_30.pdf")
+
+knitr::include_graphics("/home/john/pari/series_expansion/graph_first_order_zeta_diff_-2_1000_200.pdf")
+
+knitr::include_graphics("/home/john/pari/series_expansion/graph_first_order_zeta_-2_100000_30.pdf")
+
+knitr::include_graphics("/home/john/pari/series_expansion/graph_first_order_zeta_diff_-2_100000_200.pdf")
+
+```
+
+
+
+
+## Conclusion
+
+Using a series expansion approximation around the second quiescent region $t\sim\frac{t}{\pi}$ allows a useful first order finite Dirichlet Series based approximation of the Riemann Zeta function. Importantly, the functional form of the approximation is quite compact because of the intrinsically low oscillatory divergence around the second quiescent region. 
+
+Consideration of the behaviour of the generalised Riemann-Siegel Z function $exp(-1/2\log(\chi(s))\zeta(s)$ where $\zeta(s)=\chi(s)\zeta(1-s)$ also aided in deriving a compact form for the series approximation. It is noted that to produce continuous waveform calculations $\log(\chi(s))$ should used in its continuous function form. 
+
+
+
+\clearpage
+
+## References
+
+1. Edwards, H.M. (1974). Riemann's zeta function. Pure and Applied Mathematics 58. New York-London: Academic Press. ISBN 0-12-242750-0. Zbl 0315.10035.
+
+2. Riemann, Bernhard (1859). "$\ddot{U}$ber die Anzahl der Primzahlen unter einer gegebenen Gr$\ddot{o}$sse". Monatsberichte der Berliner Akademie.. In Gesammelte Werke, Teubner, Leipzig (1892), Reprinted by Dover, New York (1953).
+
+3. Titchmarsh, E.C. (1986) The Theory of the Riemann Zeta Function. 2nd Revised (Heath-Brown, D.R. ) Edition, Oxford University Press, Oxford.
+
+4. M.V. Berry, "Riemann’s Saddle-point Method and the Riemann-Siegel Formula" Vol 35.1, pp. 69–78, The Legacy of Bernhard Riemann After One Hundred and Fifty Years, Advanced Lectures in Mathematics 2016
+
+5. J. Arias De Reyna, "High precision computation of Riemann's Zeta function by the Riemann-Siegel formula", Mathematics of Computation Vol 80, no. 274, 2011, Pages 995–1009
+
+6. Martin, J.P.D. "Examples of quiescent regions in the oscillatory divergence of several 1st degree L functions and their Davenport Heilbronn counterparts." (2021)
+https://dx.doi.org/10.6084/m9.figshare.14956053
+
+7. The PARI~Group, PARI/GP version {\tt 2.12.0}, Univ. Bordeaux, 2018,
+    \url{http://pari.math.u-bordeaux.fr/}.
+\normalfont
+
+8. Martin, J.P.D. "Counting the non-trivial zeroes, using extended Riemann Siegel function analogues, for 5-periodic Dirichlet Series which obey functional equations" (2017)
+http://dx.doi.org/10.6084/m9.figshare.5721085
+
+9. Martin, J.P.D. "Extended Riemann Siegel Theta function further simplified using functional equation factor for the Riemann Zeta function." (2017)
+http://dx.doi.org/10.6084/m9.figshare.5735268
+
+
+\newpage
+
+## Appendix: Model fitting of $f(t)=\text{imag}(\log(\exp(I*(\alpha tlog(t)+\beta t + \gamma + O(1/t)))) \approx$ imag(log(eqn \eqref{eq:finiteDirichletSeries_gZ_corr2}))
+
+
+Given $f(t)=\text{imag}(\log(\exp(I*(\alpha \cdot tlog(t)+\beta\cdot t + \gamma + O(1/t))))$ is proposed. The model parameters are estimated in the following steps
+
+\textbf{Step 1:}
+
+$f''(t) \cdot t \rightarrow \alpha \qquad \text{ as } t \rightarrow \infty$
+
+Figure 10 displays the relationship between 
+
+$\frac{\partial^2}{\partial{t}^2} \left[\text{imag}(\log(\Delta_{\text{scaled finiteDirichletSeries generalised Z},\frac{t}{\pi}}(\text{zeroth order, correction2})))\right] \cdot t$ versus t
+
+Asymptotically (if the proposed model is correct) the second derivative of the t-dependence scaled by the multiplicative factor t should approach a constant value. For small t, the model is unlikely to be sufficient since $\Delta_{\text{scaled finiteDirichletSeries generalised Z},\frac{t}{\pi}}(\text{zeroth order, correction2})$ explicitly only uses corrections based on a first order series expansion about $\lfloor\frac{t}{\pi}\rfloor$. Examining Figure 10, the empirical asymptotic behaviour for the finite calculations performed does appear to be approaching a constant value.
+
+Computationally, the second partial derivative graph exhibits a positive asymptotic value of 0.5. However when reconciling the first partial derivative behaviour in figure 11, where $\alpha\cdot\log(t)$ is the leading first order derivative component $\alpha$ must clearly be negative in magnitude. So it may be possible that the numerical computation used for the second partial derivative of imag(log(fn(z))) may be only producing a positive solution.
+
+\begin{equation}
+\therefore \hat{\alpha} \approx \frac{-1}{2}
+\end{equation}
+
+\textbf{Step 2:}
+
+$f'(t) - \alpha\cdot(\log(t)+1) \rightarrow  \beta \qquad \text{ as } t \rightarrow \infty$
+
+Figure 11 displays the relationship between 
+
+$\frac{\partial}{\partial{t}} \left[\text{imag}(\log(\Delta_{\text{scaled finiteDirichletSeries generalised Z},\frac{t}{\pi}}(\text{zeroth order, correction2})))\right] - \hat{\alpha}\cdot(\log(t)+1)$ versus t
+
+Asymptotically (if the proposed model is correct) the first derivative of the t-dependence minus $\hat{\alpha}\cdot(\log(t)+1)$ should approach a constant value. For small t, the model is unlikely to be sufficient since $\Delta_{\text{scaled finiteDirichletSeries generalised Z},\frac{t}{\pi}}(\text{zeroth order, correction2})$ explicitly only uses corrections based on a first order series expansion about $\lfloor\frac{t}{\pi}\rfloor$. Examining Figure 11, the empirical asymptotic behaviour for the finite calculations performed does appear to be approaching a constant value with a very small sawtooth oscillation.
+
+\begin{equation}
+\therefore \hat{\beta} \approx 0.725791354598
+\end{equation}
+
+\newpage 
+
+\textbf{Step 3:}
+
+$\Delta_{\text{scaled finiteDirichletSeries generalised Z},\frac{t}{\pi}}(\text{zeroth order, correction2}) \rightarrow exp(I*(\alpha\cdot t \cdot \log(t) + \beta\cdot t + \gamma)) \qquad \text{ as } t \rightarrow \infty$
+
+Figure 12 displays the relationship between 
+
+$\text{real}\left[\Delta_{\text{scaled finiteDirichletSeries generalised Z},\frac{t}{\pi}}(\text{zeroth order, correction2})\right]$ and $\text{real}\left(exp(I*(\alpha\cdot t \cdot \log(t) + \beta\cdot t + \gamma))\right)$ versus t
+
+Which appears to be two sinusoidal waveforms closely overlapping.
+
+$\text{acos}\left[\text{real}\left[\Delta_{\text{scaled finiteDirichletSeries generalised Z},\frac{t}{\pi}}(\text{zeroth order, correction2})\right]\right] - \text{acos}\left[\text{real}\left(exp(I*(\alpha\cdot t \cdot \log(t) + \beta\cdot t + \gamma))\right)\right]$ versus t
+
+Which attempts to measure the phase difference between the two sinusoidal waveforms.
+
+Asymptotically (if the proposed model is correct) the phase difference of the t-dependence should approach a constant value. For small t, the model is unlikely to be sufficient since $\Delta_{\text{scaled finiteDirichletSeries generalised Z},\frac{t}{\pi}}(\text{zeroth order, correction2})$ explicitly only uses corrections based on a first order series expansion about $\lfloor\frac{t}{\pi}\rfloor$. Examining Figure 12, the empirical asymptotic behaviour for the finite calculations performed does appear to show a phase shift (sign undetermined and allowing $\gamma + n\cdot \pi$ solutions to be approaching a constant value.
+
+\begin{equation}
+\therefore \hat{\gamma} \sim \pm 0.1250488\cdot \pi \pm n \pi
+\end{equation}
+
+
+```{r fig_cap_compZalpha, echo=FALSE}
+cap2 <- "\\scriptsize{Second partial derivative wrt t of equation \\eqref{eq:finiteDirichletSeries_gZ_corr2} $\\cdot t$ as a function of t.  The lefthand column presents behaviour for t=(10,210), the righthand column for t=(5000,5050). The first row presents the behaviour for $\\sigma=1$, second row $\\sigma=0.5$, third row $\\sigma=0$.}"
+
+```
+
+```{r image_compZalpha, fig.show = "hold", out.width = c("50%","50%"), fig.align = "default", fig.cap=cap2}
+
+knitr::include_graphics("/home/john/pari/series_expansion/graph_zeroth_order_Zgen_alpha_fit_1_10_200.pdf")
+
+knitr::include_graphics("/home/john/pari/series_expansion/graph_zeroth_order_Zgen_alpha_fit_1_5000_50.pdf")
+
+knitr::include_graphics("/home/john/pari/series_expansion/graph_zeroth_order_Zgen_alpha_fit_0.5_10_200.pdf")
+
+knitr::include_graphics("/home/john/pari/series_expansion/graph_zeroth_order_Zgen_alpha_fit_0.5_5000_50.pdf")
+
+knitr::include_graphics("/home/john/pari/series_expansion/graph_zeroth_order_Zgen_alpha_fit_0_10_200.pdf")
+
+knitr::include_graphics("/home/john/pari/series_expansion/graph_zeroth_order_Zgen_alpha_fit_0_5000_50.pdf")
+
+```
+
+
+```{r fig_cap_compZbeta, echo=FALSE}
+cap2 <- "\\scriptsize{First partial derivative wrt t of equation \\eqref{eq:finiteDirichletSeries_gZ_corr2} $- \\hat{\\alpha}\\cdot(\\log(t)+1)$ as a function of t.  The lefthand column presents the behaviour for t=(10,210), the righthand column for t=(15000,15050). The first row presents the behaviour for $\\sigma=1$, second row $\\sigma=0.5$, third row $\\sigma=0$.}"
+
+```
+
+```{r image_compZbeta, fig.show = "hold", out.width = c("50%","50%"), fig.align = "default", fig.cap=cap2}
+
+knitr::include_graphics("/home/john/pari/series_expansion/graph_zeroth_order_Zgen_beta_fit_1_10_200.pdf")
+
+knitr::include_graphics("/home/john/pari/series_expansion/graph_zeroth_order_Zgen_beta_fit_1_15000_50.pdf")
+
+knitr::include_graphics("/home/john/pari/series_expansion/graph_zeroth_order_Zgen_beta_fit_0.5_10_200.pdf")
+
+knitr::include_graphics("/home/john/pari/series_expansion/graph_zeroth_order_Zgen_beta_fit_0.5_15000_50.pdf")
+
+knitr::include_graphics("/home/john/pari/series_expansion/graph_zeroth_order_Zgen_beta_fit_0_10_200.pdf")
+
+knitr::include_graphics("/home/john/pari/series_expansion/graph_zeroth_order_Zgen_beta_fit_0_15000_50.pdf")
+
+```
+
+
+```{r fig_cap_compZgamma, echo=FALSE}
+cap2 <- "\\scriptsize{Comparing the real parts of the partial model fit ($\\alpha$ and $\\beta$ only) to the true scaled zeroth order difference function.  For t=(10000,10010), the lefthand column presents the real parts of the true scaled zeroth order difference function and the model fit (ignoring the $\\gamma$ and higher order terms) suggesting that approximately the two sinusoidal waveforms differ to first order by a phase shift, the righthand column is the difference in phase for the true scaled zeroth order difference function and the model fit (using acos transformations of the real parts of the two functions). The first row presents the behaviour for $\\sigma=1$, second row $\\sigma=0.5$, third row $\\sigma=0$.}"
+
+```
+
+```{r image_compZgamma, fig.show = "hold", out.width = c("50%","50%"), fig.align = "default", fig.cap=cap2}
+
+knitr::include_graphics("/home/john/pari/series_expansion/graph_zeroth_order_Zgen_gamma_compare_1_10000_10.pdf")
+
+knitr::include_graphics("/home/john/pari/series_expansion/graph_zeroth_order_Zgen_gamma_fit_1_10000_10.pdf")
+
+knitr::include_graphics("/home/john/pari/series_expansion/graph_zeroth_order_Zgen_gamma_compare_0.5_10000_10.pdf")
+
+knitr::include_graphics("/home/john/pari/series_expansion/graph_zeroth_order_Zgen_gamma_fit_0.5_10000_10.pdf")
+
+knitr::include_graphics("/home/john/pari/series_expansion/graph_zeroth_order_Zgen_gamma_compare_0_10000_10.pdf")
+
+knitr::include_graphics("/home/john/pari/series_expansion/graph_zeroth_order_Zgen_gamma_fit_0_10000_10.pdf")
+```
+
