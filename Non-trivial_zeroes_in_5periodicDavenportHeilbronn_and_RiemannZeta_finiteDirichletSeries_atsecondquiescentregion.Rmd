@@ -1,0 +1,1020 @@
+---
+title: "The location and categorisation of non-trivial zeroes in finite Euler Products and Dirichlet Series about the second  quiescent region as a precursor for L function behaviour."
+author: "John Martin"
+date: \today
+header-includes:  \usepackage{xcolor}
+output:
+  pdf_document:
+    fig_crop: no
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+
+```
+
+
+
+##Executive Summary
+
+The real and imaginary components, of the two 5-periodic Davenport Heilbronn functions and the Riemann Zeta L function, can be usefully aproximated with truncation at the second quiescent region of their respective finite Euler Product and Dirichlet series. An investigation of the location and categorisation of the non-trivial zeroes of the finite Dirichlet Series approximations of the two 5-periodic Davenport Heilbronn functions applied to analogous results for the finite Riemann Zeta Dirichlet Series provides valuable insight into the probable precursor behaviour of the non-trivial zeroes of the Riemann Zeta function. In particular, (i) the precusor positions of the known Riemann Zeta non-trivial zeroes for two prime interactions are conjectured to originally lie closer to the critical line than for the 5-periodic Davenport Heilbronn functions, (ii) the property that the Dirichlet coefficients for the Riemann Zeta Euler Product and Dirichlet series allows higher order prime products to exist and interfere with the two prime interaction effect (which appears important in the Tau+ 5-periodic Davenport Heilbronn function behaviour) shrinking most non-trivial zeroes closer to the critical line and (iii) a further factor is that the 5-periodic Davenport Heilbronn functions are linear combinations of L functions (where these L functions only so far have known non-trivial zeroes on the critical line). Finally, the analytic continuation and functional equation constraints of the L function (and 5-periodic Davenport Heilbronn type functions) then forces most of the low-lying non-trivial zeroes of the finite Dirichlet series onto the critical line.  
+
+
+
+##Introduction
+
+In this paper, the locations and categorisation of many of the non-trivial zeroes for the finite Dirichlet Series about the second quiescent region for the two 5-periodic Davenport Heilbronn functions [1-4] and the Riemann Zeta function [5-7] is presented. Since (i) the Dirichlet Series of the L functions are convergent in the upper half plane ($\sigma > 1$), (ii) the Euler-Maclaurin approximation for the L function in the lower half plane contains the finite Dirichlet Series as a leading term, and (iii) the finite Dirichlet Series calculations truncated about the second quiescent region provide useful first order approximations of the L function [8-11], the low-lying non-trivial zeroes of the finite Dirichlet Series truncated about the second quiescent region can be regarded as precursor locations of the L function non-trivial zeroes.
+
+Importantly, Bombieri and Ghosh [3] presented results for the $\tau_+$ 5-periodic Davenport Heilbronn that showed good agreement with the pattern and upper bound of non-trivial zeroes in the critical strip based on different calculations using the two prime product interaction present in the Euler Product (which is convergent for $\tau_+$ when $\sigma>1$ where many non-trivial zeroes are located). Therefore in this paper, using the truncated Euler Product about the second quiescent region estimates of precursor non-trvivial zero behaviour are also derived for (i) when only the prime powers and pairwise products of prime powers are included and (ii) when prime powers and only pairwise products of prime powers with powers of prime 2 are included. This heirarchy of two finite Euler Products and finite Dirichlet series (truncated about the second quiescent region) results compared to the full (functional equation) function behaviour provides a interesting categorisation of the evolution in the location of the non-trivial zeroes with respect to the critical line and the influence (or lack thereof) of two prime product interactions.  
+
+
+This paper illustrates that contrary to the paraphrased description "that the non-trivial zeroes of the Riemann Zeta function are repelling each other along the critical line" [12] a more natural interpretation may be that (i) firstly the precursor non-trivial zeroes are (removed or) driven closer to the critical line arising from the interactions between the primes and that only non-zero Dirichlet coefficients are present in the Euler Product (Dirichlet Series) and (ii) the full Riemann Zeta function with the constraints of analytic continuation, convergence, functional equation and exhibiting s, 1-s symmetry will force most of the low-lying non-trivial zeroes onto the critical line. This paper's results are therefore more closely aligned with the alternate second paraphrased description "that if the riemann zeta hypotheisis is true it is only barely so" [13] in as much as the task of globalling driving each low-lying non-trivial zero of the finite Dirichlet Series (to satisfy analytic continuation, functional equation and symmetry constraints) exactly to the critical line is laborious.  
+
+
+## Truncated Euler Product calculation at quiescent regions in oscillatory divergence of the function
+
+For $\Re(s) > 1$, the infinite Euler Product of the primes absolutely converges to the Riemann Zeta function sum of the integers [5,7]
+
+\begin{equation}
+\zeta(s) = {\Large\sum_{k=1}^\infty} \frac{1}{k^s} = {\Large\prod_{\rho=2}^\infty} \frac{1}{(1-1/\rho^{s})} \qquad \text{for } \Re(s) > 1
+\end{equation}
+
+Importantly, using the log(1-x) expansion of $\log(\zeta(s))$ [6,14,15] the Euler product also has the form
+
+\begin{equation}
+{\Large\prod_{\rho=2}^\infty} \frac{1}{(1-1/\rho^{s})} = {\Large\text{exp}}{\left(\sum_{\rho=2}^\infty \sum_{n=1}^{\infty} \frac{1}{n\cdot\rho^{ns}}\right)}
+\end{equation}
+
+
+For $\Re(s) \le 1$, the partial Euler Product diverges, however, using the above equations for finite sums (products) of integers (primes) the following relationship [10] holds
+
+\begin{align} \label{eq:truncEP}
+{\Large\sum_{k=1}^N} \frac{1}{k^s} &= 1+\left(\sum_{\rho=2}^\infty \sum_{n=1}^{\infty} \frac{1}{n\cdot\rho^{ns}}\cdot \delta(\rho^n \le N)\right) \nonumber\\
+&+\frac{1}{2!}\left(\sum_{\rho_1=2}^\infty \sum_{n=1}^{\infty} \sum_{\rho_2=2}^\infty \sum_{m=1}^{\infty} \frac{1}{n\cdot\rho_1^{ns}}\cdot \frac{1}{m\cdot\rho_2^{ms}} \cdot \delta(\rho_1^n\cdot\rho_2^m \le N) \right)\nonumber\\
+&+\frac{1}{3!}\left(\sum_{\rho_1=2}^\infty \sum_{n=1}^{\infty} \sum_{\rho_2=2}^\infty \sum_{m=1}^{\infty} \sum_{\rho_3=2}^\infty \sum_{o=1}^{\infty} \frac{1}{n\cdot\rho_1^{ns}}\cdot \frac{1}{m\cdot\rho_2^{ms}}\cdot  \frac{1}{o\cdot\rho_3^{os}} \cdot \delta(\rho_1^n\cdot\rho_2^{m}\cdot\rho_3^{o} \le N) \right) \nonumber \\
+&+ \qquad \ldots
+\end{align}
+
+where the delta functions play a crucial role in appropriately truncating the Euler Product terms. Hence the above expression can be used with the $N \sim \lfloor\frac{t}{\pi}\rfloor$ and ($N \sim \lfloor\sqrt{\frac{t}{2\pi}}\rfloor$) quiescent regions of the oscillatory divergence of the Riemann Zeta function to obtain useful partial Euler Product based approximations of the Riemann Zeta function in the critical strip (and below). 
+
+The relevance of considering the above approximation lies with the work of Bombieri and Ghosh [3] where some of the non-trivial zeroes in the $\tau +$ 5-periodic Davenport Heilbronn function can be well explained by two prime interactions in the Euler Product and equation (3) represents another way to model this effect.
+
+## The $\tau_+$ and $\tau_-$ 5-periodic Davenport Heilbronn functions
+
+The two known 5-periodic Davenport Heilbronn functions (also known as the Titchmarsh counterexample [1]) [1-4] are periodic Dirichlet series with functional equations that have non-trivial zeroes off the critical line and are formed by linear combinations of the L-functions. 
+
+The first linear combination of 5-periodic L-functions $f_{2}$(s) [2,3] has the designation $\tau_+(s)$ [3] and arises as the linear combination of the $\chi_5(2,.)$ and $\chi_5(3,.)$ L-functions. The most recent work [3], estimates the highest(lowest) Re(s) values for non-trivial zeroes of $f_{2}$(s) are approximately bounded by Re(s)=2.37 (-1.37). 
+
+Expressed in L-function, Dirichlet series and Hurwitz Zeta function form the $f_{2}$(s) 5-periodic function is
+
+\begin{align}
+f_{2}(s) &= \frac{1}{2cos(\theta_2)} \Big [ e^{i\theta_2}L(\chi_5(2,.),s) + e^{-i\theta_2}L(\chi_5(3,.),s) \Big ] \label{eq:func2_Lcomb} \\ 
+&= 1 - \frac{tan(\theta_2)}{2^s} + \frac{tan(\theta_2)}{3^s} - \frac{1}{4^s} + \frac{0}{5^s} + ... \label{eq:func2_series}\\ 
+&= 5^{-s}\Big ( \zeta(s,\frac{1}{5}) - tan(\theta_2)\cdot\zeta(s,\frac{2}{5}) + tan(\theta_2)\cdot\zeta(s,\frac{3}{5}) - \zeta(s,\frac{4}{5})\Big ) \label{eq:func2_hurwitz}
+\end{align}
+
+where 
+
+\begin{align}
+tan(\theta_2) &= \frac{1}{0.284079043840412296028291832393}
+\end{align}
+
+and 
+
+\begin{align}
+\theta_2=1.2940091473463739934770553265951171821 \qquad radians \label{eq:theta2}
+\end{align}
+
+
+The Davenport-Heilbronn $f_{2}$(s) function has the functional equation
+
+\begin{equation}
+f_{2}(s) = 5^{(\frac{1}{2}-s)}2(2\pi)^{(s-1)}cos(\frac{\pi s}{2})\Gamma(1-s)f_{2}(1-s) = \chi(f_{2}(s))\cdot f_{2}(1-s) \label{eq:eq_func2}
+\end{equation}
+
+and has the following non-trivial zeroes off the critical line $0<|Im(s)|<110$
+
+\vspace*{0.5cm} 
+
+\footnotesize
+$2.3086229470433624646684745313382929775\pm i \cdot8.9183552921135375897304020319429105263$
+
+$1-2.3086229470433624646684745313382929775\pm i \cdot8.9183552921135375897304020319429105263$
+
+$1.9437413807034388245161449051459879086\pm i \cdot18.899390659174843919800253427568499108$
+
+$1-1.9437413807034388245161449051459879086\pm i \cdot18.899390659174843919800253427568499108$
+
+$2.0910625198293503224155591587306381132\pm i \cdot26.545011347433552936698152903217565537$
+
+$1-2.0910625198293503224155591587306381132\pm i \cdot26.545011347433552936698152903217565537$
+
+$2.1562639826862161678775397343642115545\pm i \cdot36.555612271261742825299296392621588623$
+
+$1-2.1562639826862161678775397343642115545\pm i \cdot36.555612271261742825299296392621588623$
+
+$2.3326248734630998436940787648857072480\pm i \cdot54.420129738497149832143525401383468617$
+
+$1-2.3326248734630998436940787648857072480\pm i \cdot54.420129738497149832143525401383468617$
+
+$1.7850944162864900022964753742188517475\pm i \cdot64.371090136530587674080528780000177847$
+
+$1-1.7850944162864900022964753742188517475\pm i \cdot64.371090136530587674080528780000177847$
+
+$2.0550252913225851071060269785994136540\pm i \cdot82.059817115159427949523358844812277054$
+
+$1-2.0550252913225851071060269785994136540\pm i \cdot82.059817115159427949523358844812277054$
+
+$2.3455123434516853975100902552096252279\pm i \cdot99.861375948502072751227875099201383184$
+
+$1-2.3455123434516853975100902552096252279\pm i \cdot99.861375948502072751227875099201383184$
+\normalsize
+\vspace*{0.5cm} 
+
+In L-function, Dirichlet series and Hurwitz Zeta function forming the second 5-periodic functions is of the form [1]
+
+\begin{align}
+f_{1}(s) &= \frac{1}{2cos(\theta_1)} \Big [ e^{i\theta_1}L(\chi_5(2,.),s) + e^{-i\theta_1}L(\chi_5(3,.),s) \Big ] \label{eq:func1_Lcomb} \\ 
+&= 1 + \frac{tan(\theta_1)}{2^s} - \frac{tan(\theta_1)}{3^s} - \frac{1}{4^s} + \frac{0}{5^s} + ... \label{eq:func1_series} \\ 
+&= 5^{-s}\Big ( \zeta(s,\frac{1}{5}) + tan(\theta_1)\cdot\zeta(s,\frac{2}{5}) - tan(\theta_1)\cdot\zeta(s,\frac{3}{5}) - \zeta(s,\frac{4}{5})\Big ) \label{eq:func1_hurwitz}
+\end{align}
+
+where 
+
+\begin{align}
+tan(\theta_1) &= \frac{(\sqrt{10-2\sqrt{5}}-2)}{(\sqrt{5}-1)} \label{eq:xi} \\
+&= 0.284079043840412296028291832393
+\end{align}
+
+and 
+
+\begin{align}
+\theta_1=0.276787179448522625754266365045 \qquad radians \label{eq:theta1}
+\end{align}
+
+
+The second 5-periodic Davenport-Heilbronn $f_{1}$(s) function has the functional equation
+
+\begin{equation}
+f_{1}(s) = 5^{(\frac{1}{2}-s)}2(2\pi)^{(s-1)}cos(\frac{\pi s}{2})\Gamma(1-s)f_{1}(1-s) = \chi(f_{1}(s))\cdot f_{1}(1-s) \label{eq:eq_func1}
+\end{equation}
+
+with the same multiplicative factor on the RHS as equation \eqref{eq:eq_func2} and has the following non-trivial zeroes off the critical line $0<|Im(s)|<110$
+
+\vspace*{0.5cm} 
+
+\footnotesize
+$0.80851718245663738555335196060684412785\pm i \cdot85.699348485377592171929267708941729038$
+
+$1-0.80851718245663738555335196060684412785\pm i \cdot85.699348485377592171929267708941729038$
+\normalsize
+
+\vspace*{0.5cm} 
+
+Since $\theta_1$ and $\theta_2$ are related an alternative formula for $f_2(s)$ that can be used for calculations is the following expression using $\theta_1$ (instead of $\theta_2$).
+
+\begin{align}
+f_{2}(s) &= \frac{-1}{2Isin(\theta_1)} \Big [ e^{i\theta_1}L(\chi_5(3,.),s) - e^{-i\theta_1}L(\chi_5(2,.),s) \Big ] \label{eq:func2_Lcombalt} 
+\end{align}
+
+Bombieri and Ghosh [3] showed that the interactions between two primes in the Euler Product is sufficient to produce the upper bound of ~2.3. This paper attempts to calculate the two prime interaction effect in a different attempt (via truncated Euler Product expressed as series formulae at the second quiescent region). In their associated video lecture Bombieri also discusses the noticeable lack of zeroes nearby the critical line, this observation is relevant to the action of forcing low-lying zeroes to the critical line that is suggested by this paper's analysis of precursor L function behaviour as the precursor function evolves to a higher order approximation.
+
+
+## Results
+
+All the calculations of non-trivial zero locations were performed using the pari-gp language [16] as a solution to second order taylor series in real(s) and imag(s) that produces iterative fourth order polynomials for imag(t) and then real(s) respectively. In lieu of computational instability issues encountered with the partial second derivative of $\zeta(s)$ (and the L53, L52 L functions forming the basis of the 5-periodic Davenport Heilbronn function) with respect to real(s) (in pari-gp), the tapered finite dirichlet series [9] was used (away from the real axis) instead for stability since explicit formulae for the first and second derivatives could be coded and the behaviour of the non-trivial zeroes for the $\zeta(s)$ in the interval of the calculations was known. Most of the known L-functions and their properties have been fully summarised in [17] with https://www.lmfdb.org/L/degree1 being the url of particular interest accessed in this paper. 
+
+Any fourth order complex solutions for imag(t) were rejected in the interative process (and by inspection the real(s) solutions were found to be real as expected). The data stored included the locations of the zeroes, its function value (capped at 1e-8 for graphing but most zeroes had 1e-25 to 1e-38 magnitude after 100 iterations) and the first, second, and third derivative function values. To aid finding the low-lying zeroes (using the quadrature search) so several sweeps of different initial values of real(s) were executed for the precursor functions through and outside the critical strip. The R language [18] and R-studio IDE [19] was used to piece the pari-gp based results together and produce graphs.
+
+Not all low-lying zeroes will have been identified by the conducted search algorithm but the ability of the search to find  zeroes such s=-0.514042267+I\*641.995462687 for the precursor, truncated Euler Product (only containing prime powers and two prime power products) of the L52 L function, gives confidence that the densest areas of the low-lying zeroes have been identified in the interval studied. the term low-lying zeroes in this paper refers to zeroes of a complex function occurring in the region -3 < real(s) <2.5 of the complex plane.
+
+### The precursor low-lying zeroes behaviour of the truncated Euler Product (EP) and finite dirichlet Series about the second quiescent region for the Riemann Zeta function
+
+Figure 1 illustrates the low-lying zeroes behaviour of precursor functions of the Riemann Zeta function in the interval t=(5,1000) calculated using truncation at the second quiescent region [8-11] ($N=\frac{t}{\pi}$) which displays resurgence behaviour [20,21].
+
+The precursor functions of interest to the Riemann Zeta function displayed in this paper are the following derived as approximations of equation (3)
+
+1. Truncated Euler Products including prime powers and prime power pairwise products with the prime number 2 (about the second quiescent region $N=\frac{t}{\pi}$)
+
+\begin{align} \label{eq:truncEP_2andpairsonly}
+\text{EP}_{\text{up to prime power pairwise interactions with prime=2 only}} &\approx 1+\left(\sum_{\rho=2}^{N=\lfloor\frac{t}{\pi}\rfloor} \sum_{n=1}^{\lfloor\frac{\log(N)}{\log(\rho)}\rfloor} \frac{1}{n\cdot\rho^{ns}}\cdot \delta(\rho^n \le N)\right) \nonumber\\
+&+\frac{1}{2!}\left(\sum_{\rho_1=2}^{N=\lfloor\frac{t}{\pi}\rfloor} \sum_{n=1}^{\lfloor\frac{\log(N)}{\log(\rho_1)}\rfloor} \sum_{m=1}^{\lfloor\frac{\log(N)}{\log(2)}\rfloor} \frac{1}{n\cdot\rho_1^{ns}}\cdot \frac{1}{m\cdot2^{ms}} \cdot \delta(\rho_1^n\cdot2^m \le N) \right)
+\end{align}
+
+where the delta functions play a crucial role in appropriately truncating the Euler Product terms.
+
+2. Truncated Euler Products including prime powers and all prime power pairwise products (about the second quiescent region $N=\frac{t}{\pi}$)
+
+\begin{align} \label{eq:truncEP_pairsonly}
+\text{EP}_{\text{up to all prime power pairwise interactions}} &\approx 1+\left(\sum_{\rho=2}^{N=\lfloor\frac{t}{\pi}\rfloor} \sum_{n=1}^{\lfloor\frac{\log(N)}{\log(\rho)}\rfloor} \frac{1}{n\cdot\rho^{ns}}\cdot \delta(\rho^n \le N)\right) \nonumber\\
+&+\frac{1}{2!}\left(\sum_{\rho_1=2}^{N=\lfloor\frac{t}{\pi}\rfloor} \sum_{n=1}^{\lfloor\frac{\log(N)}{\log(\rho_1)}\rfloor} \sum_{\rho_2=2}^{N=\lfloor\frac{t}{\pi}\rfloor} \sum_{m=1}^{\lfloor\frac{\log(N)}{\log(\rho_2)}\rfloor} \frac{1}{n\cdot\rho_1^{ns}}\cdot \frac{1}{m\cdot\rho_2^{ms}} \cdot \delta(\rho_1^n\cdot\rho_2^m \le N) \right)
+\end{align}
+
+where the delta functions play a crucial role in appropriately truncating the Euler Product terms.
+
+3. Finite Dirichlet Series about the second quiescent region $N=\frac{t}{\pi}$ (which is equivalent to the truncated Euler Product equation (3)).
+
+\begin{align} \label{eq:truncDirichletSeries}
+{\Large\sum_{k=1}^{N=\lfloor\frac{t}{\pi}\rfloor}} \frac{1}{k^s}
+\end{align}
+
+4. Tapered finite Dirichlet Series about the second quiescent region $N=\frac{t}{\pi}$ which is a useful approximation of the Riemann Zeta function away from the real axis.
+
+\begin{align}
+\sum_{k=1}^{\left(\lfloor\frac{t}{\pi}\rfloor-p\right)}\left(\frac{1}{k^s}\right) +
+\sum_{i=\left(-p+1\right)}^{p}\frac{\frac{1}{2^{2p}} \left( 2^{2p}-\sum_{k=0}^{i+p-1}\binom{2p}{2p-k}\right)}{(\lfloor\frac{t}{\pi}\rfloor+i)^s} \label {eq:taperedDiricihletSeries} 
+\end{align}
+
+where 2p=128 (for 128 point tapering) which is used in this paper.
+
+As can be seen in figure 1, (i) in rows 1-3 the low-lying non-trivial zeroes of the precursor functions of the Riemann Zeta appear to lie below the real(s) line, mostly in the interval 0 <= real(s) < 1, (ii) the widest spread of low-lying non-trivial zeroes occurs for truncated Euler Products only including pairwise prime power interactions with the prime 2, (iii) the spread of low-lying non-trivial zeroes decreases as imag(s) increases and (iv) in row 4 the only low-lying non-trivial zeroes of the 128 point tapered finite Dirichlet Series about the second quiescent region $N=\frac{t}{\pi}$ appear to be on critical, however, on inspection the zeroes are fractionally off the critical line (e.g., real(s)=0.50001, 0.49999 etc but getting closer as imag(s) increases.
+
+In principle, the above interpretation and categorisation for the precursor behaviour of the Riemann Zeta function lacks evidentiary meaning in isolation since all currently observed zeroes of the Riemann Zeta function are on the critical line. However, the value of the analysis becomes substantive when applied to the 5-periodic Davenport Heilbronn functions because these functions have non-trivial zeroes elsewhere in the complex plane other than just the critical line.
+
+\newpage
+
+```{r zetazeroesevolution1, fig.show = "hold", fig.align = "center", fig.height=4.4}
+
+par(mfrow=c(1,2))
+df_inpgrid=read.csv("/home/john/pari/zetadirichseries_truncEP_sqsandprimeprodsw2_gridsearch_zeroes_testp5start_bothposneg_original_position_estimate.csv",header=FALSE,colClasses = "numeric")
+df_inpextra=read.csv("/home/john/pari/zetadirichseries_truncEP_sqsandprimeprodsw2_gridsearch_zeroes_testm1p5start_bothposneg_original_position_estimate.csv",header=FALSE,colClasses = "numeric")
+df_inpgrid=rbind(df_inpgrid,df_inpextra)
+df_inpextra=read.csv("/home/john/pari/zetadirichseries_truncEP_sqsandprimeprodsw2_gridsearch_zeroes_test1p5start_bothposneg_original_position_estimate.csv",header=FALSE,colClasses = "numeric")
+df_inpgrid=rbind(df_inpgrid,df_inpextra)
+df_inpgrid=df_inpgrid[df_inpgrid$V25 < 4 ,]
+df_inpgrid=df_inpgrid[df_inpgrid$V5<1e-8 ,]
+df_inpgrid$round_t=round(df_inpgrid$V4,4)
+df_inpgrid$round_s=round(df_inpgrid$V3,4)
+df_check=aggregate(V4~V7,data=df_inpgrid,FUN=length)
+df_inpgrid=df_inpgrid[!duplicated(df_inpgrid[,c("round_t","round_s")]),]
+yspan=c(-2,2.5);brks=seq(yspan[1],yspan[2],l=71);
+plot(df_inpgrid$V4,df_inpgrid$V3,ylim=yspan,main="non-trivial zero positions for \n truncated finite EP about N=floor(t/pi) only including prime powers \n and all pairwise products involving prime 2",xlab="imag(s)",ylab="real(s)",cex=0.5,cex.main=0.5,cex.lab=0.5,cex.axis=0.5);grid();
+abline(h=0.5,lty=3,lwd=2,col="cyan")
+
+hist(df_inpgrid$V3,breaks=brks,xlim=yspan,main="non-trivial zero real component distribution for \n truncated finite EP about N=floor(t/pi) only including prime powers \n and all pairwise products of prime powers involving prime 2 ",xlab="real(s)",cex.main=0.5,cex.lab=0.5,cex.axis=0.5);grid();
+abline(v=0.5,lty=3,lwd=2,col="cyan")
+abline(v=mean(df_inpgrid$V3),lty=2,lwd=2)
+
+
+df_inpgrid=read.csv("/home/john/pari/zetadirichseries_truncEP_sqsandallprimeprods_gridsearch_zeroes_testp5start_bothposneg_original_position_estimate.csv",header=FALSE,colClasses = "numeric")
+# df_inpgrid=rbind(df_inpgrid,df_inpextra)
+df_inpgrid=df_inpgrid[df_inpgrid$V25 < 4 ,]
+df_inpgrid=df_inpgrid[df_inpgrid$V5<1e-8 ,]
+df_inpgrid$round_t=round(df_inpgrid$V4,4)
+df_inpgrid$round_s=round(df_inpgrid$V3,4)
+df_check=aggregate(V4~V7,data=df_inpgrid,FUN=length)
+df_inpgrid=df_inpgrid[!duplicated(df_inpgrid[,c("round_t","round_s")]),]
+plot(df_inpgrid$V4,df_inpgrid$V3,ylim=yspan,main="non-trivial zero positions for \n truncated finite EP about N=floor(t/pi) only including \n all pairwise products of prime powers",xlab="imag(s)",ylab="real(s)",cex=0.5,cex.main=0.5,cex.lab=0.5,cex.axis=0.5);grid();
+abline(h=0.5,lty=3,lwd=2,col="cyan");grid()
+
+hist(df_inpgrid$V3,breaks=brks,xlim=yspan,main="non-trivial zero real component distribution for \ntruncated finite EP about N=floor(t/pi) only including \n all pairwise products of prime powers",xlab="real(s)",cex.main=0.5,cex.lab=0.5,cex.axis=0.5);grid()
+abline(v=0.5,lty=3,lwd=2,col="cyan")
+abline(v=mean(df_inpgrid$V3),lty=2,lwd=2)
+
+df_inpgrid=read.csv("/home/john/pari/dirichseries_gridsearch_zeroes_testp5start_bothposneg_original_position_estimate.csv",header=FALSE,colClasses = "numeric")
+# df_inpgrid=rbind(df_inpgrid,df_inpextra)
+df_inpextra=read.csv("/home/john/pari/dirichseries_gridsearch_zeroes_testm1p5start_bothposneg_original_position_estimate.csv",header=FALSE,
+                     colClasses = "numeric")#,
+df_inpgrid=rbind(df_inpgrid,df_inpextra)
+df_inpgrid=df_inpgrid[df_inpgrid$V25 < 4 ,]
+df_inpgrid=df_inpgrid[df_inpgrid$V5<1e-8 ,]
+df_inpgrid$round_t=round(df_inpgrid$V4,4)
+df_inpgrid$round_s=round(df_inpgrid$V3,4)
+df_check=aggregate(V4~V7,data=df_inpgrid,FUN=length)
+df_inpgrid=df_inpgrid[!duplicated(df_inpgrid[,c("round_t","round_s")]),]
+plot(df_inpgrid$V4,df_inpgrid$V3,ylim=yspan,main="non-trivial zero positions for \n truncated dirichlet series about N=floor(t/pi) \n (equivalent to including all possible products of prime powers)",xlab="imag(s)",ylab="real(s)",cex=0.5,cex.main=0.5,cex.lab=0.5,cex.axis=0.5);grid();
+abline(h=0.5,lty=3,lwd=2,col="cyan");grid()
+
+hist(df_inpgrid$V3,breaks=brks,xlim=yspan,main="non-trivial zero real component distribution for \n truncated dirichlet series about N=floor(t/pi)  \n (equivalent to including all possible products of prime powers)",xlab="real(s)",cex.main=0.5,cex.lab=0.5,cex.axis=0.5);grid()
+abline(v=0.5,lty=3,lwd=2,col="cyan")
+abline(v=mean(df_inpgrid$V3),lty=2,lwd=2)
+
+df_inpgrid=read.csv("/home/john/pari/tapereddirichseries_gridsearch_zeroes_testp5start_bothposneg_original_position_estimate.csv",header=FALSE,colClasses = "numeric")
+# df_inpgrid=rbind(df_inpgrid,df_inpextra)
+df_inpgrid=df_inpgrid[df_inpgrid$V25 < 4 ,]
+df_inpgrid=df_inpgrid[df_inpgrid$V5<1e-8 ,]
+df_inpgrid$round_t=round(df_inpgrid$V4,4)
+df_inpgrid$round_s=round(df_inpgrid$V3,4)
+df_check=aggregate(V4~V7,data=df_inpgrid,FUN=length)
+df_inpgrid=df_inpgrid[!duplicated(df_inpgrid[,c("round_t","round_s")]),]
+plot(df_inpgrid$V4,df_inpgrid$V3,ylim=yspan,xlim=c(0,max(df_inpgrid$V4)),main="non-trivial zero positions for \n 128 point tapered truncated dirichlet series about N=floor(t/pi) \n a good approximation for zeta(s) away from real axis",xlab="imag(s)",ylab="real(s)",cex=0.5,cex.main=0.5,cex.lab=0.5,cex.axis=0.5);grid();
+abline(h=0.5,lty=3,lwd=2,col="cyan");grid()
+
+hist(df_inpgrid$V3,breaks=brks,xlim=yspan,main="non-trivial zero real component distribution for \n 128 point truncated dirichlet series about N=floor(t/pi)  \n a good approximation for zeta(s) away from real axis",xlab="real(s)",cex.main=0.5,cex.lab=0.5,cex.axis=0.5);grid()
+abline(v=0.5,lty=3,lwd=2,col="cyan")
+abline(v=mean(df_inpgrid$V3),lty=2,lwd=2)
+```
+***Figure 1. The lefthand column contains the real and imaginary parts of the non-trivial zeroes identified by search in the interval t=c(5,1000) for (i) truncated EP only including prime powers and pairwise products of powers involving the prime 2, (ii) truncated EP only including all pairwise products of prime powers, (iii) finite dirichlet series (effectively including all products of prime powers and (iv) 128 point tapered finite dirichlet series (in the interval t=(210,1000)) which is a good approximation of $\zeta(s)$ for t > 200. The righthand column displays the distribution of the real component for the zero positions of the four functions.***
+
+### Standardised real(s) behaviour for the distribution of the location of non-trivial zeroes of the finite Dirichlet Series about the critical line
+
+A useful visual is to standardise the relative distance of the non-trivial zero positions for the finite dirichlet series by (real(s)-1/2)*sqrt(imag(s))-1/2. In this second calculation, the first 20k non-trivial zeroes locations of the Riemann Zeta function are used as the initial values of the finite Dirichlet Series zero search. The interval considered was imag(s)=(14,18047). 
+
+Firstly, figure 2, shows the finite Dirichlet Series non-trivial zeroes in proper scale. It can be seen that the low-lying non-trivial zeroes are gradually getting closer to the critical line as imag(s) increases. 
+
+```{r finiteDirichletSerieszetazeroesfirst20k, fig.show = "hold", fig.align = "center", fig.height=3}
+
+df_inpgrid=read.csv("/home/john/pari/zetadirichseries_10k_zeroes_original_position_estimate.csv",header=FALSE,colClasses = "numeric")
+df_inpextra=read.csv("/home/john/pari/zetadirichseries_2nd10k_zeroes_original_position_estimate.csv",header=FALSE,
+                     colClasses = "numeric")#,
+df_inpgrid=rbind(df_inpgrid,df_inpextra)
+plot(df_inpgrid$V4,df_inpgrid$V3,main="non-trivial zero positions for \n truncated dirichlet series about N=floor(t/pi) using the known riemann zeta zeroes as initial values in search algorithm \n (equivalent to including all possible products of prime powers)",xlab="imag(s)",ylab="real(s)",cex=0.3,cex.main=0.5,cex.lab=0.5,cex.axis=0.5,pch=20);grid();
+abline(h=0.5,lty=3,lwd=2,col="cyan");grid()
+
+hist(df_inpgrid$V3,breaks=151,main="non-trivial zero real component distribution for \n truncated dirichlet series about N=floor(t/pi)  \n (equivalent to including all possible products of prime powers)",xlab="real(s)",cex.main=0.5,cex.lab=0.5,cex.axis=0.5);grid()
+abline(v=0.5,lty=3,lwd=2,col="cyan")
+abline(v=mean(df_inpgrid$V3),lty=2,lwd=2)
+
+```
+***Figure 2. Location of non-trivial zeroes for finite Dirichlet Series about second quiescent region N=(t/pi) using first 20k Riemann Zeta zeroes in search algorithm***
+
+Then as shown comparing figures 3 & figure 4, (i) the finite Dirichlet Series non-trivial zeroes appear to get closer to the critical line at the rate of $sqrt(imag(s))$ given the standardisation formulae produces a relatively constant distribution of standardised non-trivial zero locations, (ii) most of the standardised distances for the non-trivial zeroes of this precursor function are within a (standardised) 1/2 unit of the critical line and (iii) the precursor non-trivial zeroes that may be regarded as the hardest to move onto the critical line for the Riemann Zeta function would lie > (standardised) 1/2 unit away from the critical line. Whether the double peak structure in the histogram of figure 3 remains as more non-trivial zeroes higher up the imaginary axis are added is not known at this stage.  
+
+
+```{r finiteDirichletSerieszetazeroesStandardised, fig.show = "hold", fig.align = "center", fig.height=3}
+
+df_inpgrid=read.csv("/home/john/pari/zetadirichseries_10k_zeroes_original_position_estimate.csv",header=FALSE,colClasses = "numeric")
+df_inpextra=read.csv("/home/john/pari/zetadirichseries_2nd10k_zeroes_original_position_estimate.csv",header=FALSE,
+                     colClasses = "numeric")#,
+df_inpgrid=rbind(df_inpgrid,df_inpextra)
+plot(df_inpgrid$V4,(df_inpgrid$V3-1/2)*sqrt(df_inpgrid$V4)+1/2,main="standardised non-trivial zero positions for \n truncated dirichlet series about N=floor(t/pi) using the known riemann zeta zeroes as initial values in search algorithm \n (equivalent to including all possible products of prime powers)",xlab="imag(s)",ylab="rescaled real(s) about 1/2 line",cex=0.3,cex.main=0.5,cex.lab=0.5,cex.axis=0.5,pch=20);grid();
+abline(h=0.5,lty=3,lwd=2,col="cyan");grid()
+
+hist((df_inpgrid$V3-1/2)*sqrt(df_inpgrid$V4)+1/2,breaks=251,xlim=c(-1,1.5),main="standardised non-trivial zero real component distribution for \n truncated dirichlet series about N=floor(t/pi)  \n (equivalent to including all possible products of prime powers)",xlab="rescaled real(s) about 1/2 line",cex.main=0.5,cex.lab=0.5,cex.axis=0.5);grid()
+abline(v=0.5,lty=3,lwd=2,col="cyan")
+abline(v=mean(df_inpgrid$V3),lty=2,lwd=2)
+
+```
+***Figure 3. Standardised location of non-trivial zeroes for finite Dirichlet Series about second quiescent region N=(t/pi) using first 20k Riemann Zeta zeroes in search algorithm. To better identify the finite Dirichlet Series non-trivial zeroes that have the greatest relative distance away from the critical line.***
+
+```{r finiteDirichletSeries_zetazero_comparison, fig.show = "hold", fig.align = "center", fig.height=3}
+
+df_zeta_zeroes=read.csv("/home/john/pari/zeroes_1_10000",sep=" ",header=FALSE)
+df_zetaextra=read.csv("/home/john/pari/second_10000_zeroes.txt",sep=" ",header=FALSE)
+df_zeta_zeroes=rbind(df_zeta_zeroes,df_zetaextra)
+
+plot(df_zeta_zeroes$V2,df_inpgrid$V4-df_zeta_zeroes$V2,main="residual difference between finite Dirichlet Series non-trivial zero imaginary component \n to the known Riemann Zeta non-trivial zero locations",xlab="Riemann Zeta zero imaginary component",ylab="residual difference in location \n of finite Dirichlet Series imaginary component",cex=0.3,cex.main=0.5,cex.lab=0.5,cex.axis=0.5,pch=20);
+grid()
+
+```
+***Figure 4. Scatterplot of the relationship between the known Riemann Zeta non-trivial zero locations (imaginary component) and identified associated low-lying finite Dirichlet Series zeroes (imaginary component).***
+
+## Counterexamples
+
+### The precursor low-lying zeroes behaviour of the truncated Euler Product (EP) and finite dirichlet Series about the second quiescent region for $\tau +$ 5-periodic Davenport Heilbronn function
+
+As a counterexample to finite Euler product and Dirichlet Series non-trivial zeroes that are forced to the critical line as the finite approximation of a L function approaches the full L function, figure 5 firstly illustrates the low-lying zeroes behaviour of precursor functions of the $\tau +$ 5-periodic Davenport Heilbronn function in the interval t=(5,1000) calculated using truncation at the second quiescent region ($N=\frac{t\cdot 5}{\pi}$). The 5-periodic Davenport Heilbronn functions $\tau +$ (and $\tau -$) are linear combinations of the $L(\chi_5(3,.),s)$ and $L(\chi_5(2,.),s)$ L functions which have known non-trivial zeroes away from the critical line (as well as a majority of non-trivial zeroes on the critical line).
+
+Secondly, figures 6 and 7 shows the individual $L(\chi_5(3,.),s)$ and $L(\chi_5(2,.),s)$ function behaviour which as yet have no known non-trivial zeroes away from critical line. So these source L functions behave similarly to the Riemann Zeta behaviour shown in figure 1.
+
+Thridly, figure 8 illustrates the low-lying zeroes behaviour of precursor functions of the $\tau -$ 5-periodic Davenport Heilbronn function. 
+
+Given the L-function form of $\tau_+$ ($f_2(s)$) 5-periodic Davenport Heilbronn function
+
+\begin{align}
+f_{2}(s) &= \frac{1}{2cos(\theta_2)} \Big [ e^{i\theta_2}L(\chi_5(2,.),s) + e^{-i\theta_2}L(\chi_5(3,.),s) \Big ] \label{eq:func2_Lcomb}
+\end{align}
+
+
+The precursor functions of interest to the $\tau +$ 5-periodic Davenport Heilbronn function displayed in this paper are the following
+
+1. Truncated $\tau_+$ Euler Products including prime powers and prime power pairwise products with the prime number 2 (about the second quiescent region $N=\frac{t*5}{\pi}$)
+
+\begin{align} \label{eq:truncEP_2andpairsonly}
+\text{EP} \tau_+ &_{\text{up to prime power pairwise interactions with prime=2 only}} \nonumber\\
+&\approx \frac{1}{2cos(\theta_2)} \Big [ e^{i\theta_2} \cdot \Big\{ 1+\left(\sum_{\rho=2}^{N=\lfloor\frac{t*5}{\pi}\rfloor} \sum_{n=1}^{\lfloor\frac{\log(N)}{\log(\rho)}\rfloor} \frac{\chi_5(2,\rho^n)}{n\cdot\rho^{ns}}\cdot \delta(\rho^n \le N)\right) \nonumber\\
+&+\frac{1}{2!}\left(\sum_{\rho_1=2}^{N=\lfloor\frac{t*5}{\pi}\rfloor} \sum_{n=1}^{\lfloor\frac{\log(N)}{\log(\rho_1)}\rfloor} \sum_{m=1}^{\lfloor\frac{\log(N)}{\log(2)}\rfloor} \frac{\chi_5(2,\rho_1^n)}{n\cdot\rho_1^{ns}}\cdot \frac{\chi_5(2,2^m)}{m\cdot2^{ms}} \cdot \delta(\rho_1^n\cdot2^m \le N) \right)\Big\}\nonumber\\
+&+e^{-i\theta_2} \cdot \Big\{ 1+\left(\sum_{\rho=2}^{N=\lfloor\frac{t*5}{\pi}\rfloor} \sum_{n=1}^{\lfloor\frac{\log(N)}{\log(\rho)}\rfloor} \frac{\chi_5(3,\rho^n)}{n\cdot\rho^{ns}}\cdot \delta(\rho^n \le N)\right) \nonumber\\
+&+\frac{1}{2!}\left(\sum_{\rho_1=2}^{N=\lfloor\frac{t*5}{\pi}\rfloor} \sum_{n=1}^{\lfloor\frac{\log(N)}{\log(\rho_1)}\rfloor} \sum_{m=1}^{\lfloor\frac{\log(N)}{\log(2)}\rfloor} \frac{\chi_5(3,\rho_1^n)}{n\cdot\rho_1^{ns}}\cdot \frac{\chi_5(3,2^m)}{m\cdot2^{ms}} \cdot \delta(\rho_1^n\cdot2^m \le N) \right)\Big\} \Big ]
+\end{align}
+
+where (i) the delta functions play a crucial role in appropriately truncating the Euler Product terms and (ii) the factor 5 in $N=\frac{t*5}{\pi}$ arises from the conductor value of the component L-functions.
+
+2. Truncated Euler Products including prime powers and all prime power pairwise products (about the second quiescent region $N=\frac{t*5}{\pi}$)
+
+\begin{align} \label{eq:truncEP_allpairsonly}
+\text{EP} \tau_+ &_{\text{up to all prime power pairwise interactions}} \nonumber\\
+&\approx \frac{1}{2cos(\theta_2)} \Big [ e^{i\theta_2} \cdot \Big\{ 1+\left(\sum_{\rho=2}^{N=\lfloor\frac{t*5}{\pi}\rfloor} \sum_{n=1}^{\lfloor\frac{\log(N)}{\log(\rho)}\rfloor} \frac{\chi_5(2,.,\rho^n)}{n\cdot\rho^{ns}}\cdot \delta(\rho^n \le N)\right) \nonumber\\
+&+\frac{1}{2!}\left(\sum_{\rho_1=2}^{N=\lfloor\frac{t*5}{\pi}\rfloor} \sum_{n=1}^{\lfloor\frac{\log(N)}{\log(\rho_1)}\rfloor} \sum_{\rho_2=2}^{N=\lfloor\frac{t*5}{\pi}\rfloor} \sum_{m=1}^{\lfloor\frac{\log(N)}{\log(\rho_2)}\rfloor} \frac{\chi_5(2,\rho_1^n)}{n\cdot\rho_1^{ns}}\cdot \frac{\chi_5(2,\rho_2^m)}{m\cdot\rho_2^{ms}} \cdot \delta(\rho_1^n\cdot\rho_2^m \le N) \right) \nonumber\\
+&+e^{-i\theta_2} \cdot \Big\{ 1+\left(\sum_{\rho=2}^{N=\lfloor\frac{t*5}{\pi}\rfloor} \sum_{n=1}^{\lfloor\frac{\log(N)}{\log(\rho)}\rfloor} \frac{\chi_5(3,\rho^n)}{n\cdot\rho^{ns}}\cdot \delta(\rho^n \le N)\right) \nonumber\\
+&+\frac{1}{2!}\left(\sum_{\rho_1=2}^{N=\lfloor\frac{t*5}{\pi}\rfloor} \sum_{n=1}^{\lfloor\frac{\log(N)}{\log(\rho_1)}\rfloor} \sum_{\rho_2=2}^{N=\lfloor\frac{t*5}{\pi}\rfloor} \sum_{m=1}^{\lfloor\frac{\log(N)}{\log(\rho_2)}\rfloor} \frac{\chi_5(3,\rho_1^n)}{n\cdot\rho_1^{ns}}\cdot \frac{\chi_5(3,\rho_2^m)}{m\cdot\rho_2^{ms}} \cdot \delta(\rho_1^n\cdot\rho_2^m \le N) \right) \Big ]
+\end{align}
+
+where (i) the delta functions play a crucial role in appropriately truncating the Euler Product terms and (ii) the factor 5 in $N=\frac{t*5}{\pi}$ arises from the conductor value of the component L-functions.
+
+3. Finite Dirichlet Series about the second quiescent region $N=\frac{t*5}{\pi}$ (which is equivalent to the truncated Euler Product equation (3)).
+
+\begin{align} \label{eq:trunctau+DirichletSeries}
+\frac{1}{2cos(\theta_2)} \Big [ e^{i\theta_2}{\Large\sum_{k=1}^{N=\lfloor\frac{t*5}{\pi}\rfloor}} \frac{\chi_5(2,k)}{k^s} + e^{-i\theta_2}{\Large\sum_{k=1}^{N=\lfloor\frac{t*5}{\pi}\rfloor}} \frac{\chi_5(3,k)}{k^s} \Big ]
+\end{align}
+
+where the factor 5 in $N=\frac{t*5}{\pi}$ arises from the conductor value of the component L-functions.
+
+4. Tapered finite Dirichlet Series about the second quiescent region $N=\frac{t*5}{\pi}$ which is a useful approximation of the $\tau_+$ function away from the real axis.
+
+\begin{align}
+\frac{1}{2cos(\theta_2)} &\Big [ e^{i\theta_2} \Big\{\sum_{k=1}^{\left(\lfloor\frac{t*5}{\pi}\rfloor-p\right)}\left(\frac{\chi_5(2,k)}{k^s}\right) +
+\sum_{i=\left(-p+1\right)}^{p}\frac{\frac{1}{2^{2p}} \left( 2^{2p}-\sum_{k=0}^{i+p-1}\binom{2p}{2p-k}\right)\chi_5(2,\lfloor\frac{t*5}{\pi}\rfloor+i)}{(\lfloor\frac{t*5}{\pi}\rfloor+i)^s} \Big \} \nonumber\\
+&+e^{-i\theta_2} \Big\{\sum_{k=1}^{\left(\lfloor\frac{t*5}{\pi}\rfloor-p\right)}\left(\frac{\chi_5(3,k)}{k^s}\right) +
+\sum_{i=\left(-p+1\right)}^{p}\frac{\frac{1}{2^{2p}} \left( 2^{2p}-\sum_{k=0}^{i+p-1}\binom{2p}{2p-k}\right)\chi_5(3,\lfloor\frac{t*5}{\pi}\rfloor+i)}{(\lfloor\frac{t*5}{\pi}\rfloor+i)^s} \Big \} \Big ] \label {eq:taperedtau+DiricihletSeries} 
+\end{align}
+
+where 2p=128 (for 128 point tapering) which is used in this paper.
+
+As can be seen in figure 2, (i) in all rows there are non-trivial zeroes of the the precursor $\tau_+$ 5-periodic Davenport Heilbronn functions lying above real(s) = 1, (ii) the red dots show the known values of the $\tau_+$ 5-periodic Davenport Heilbronn function and there is good agreement in the positions of the precursor function zeroes for real(s) > 0.5, (iii) in rows 3 and 4 the agreement with the full function location of zeroes is closest, (iv) in rows 1 and 2 the non-trivial zeroes for real(s) < 0.5 has poorer agreement with the full function.
+
+Regarding the low-lying non-trivial zeroes, as with the Riemann Zeta precursors these zeroes in figure 2 are progressively forced closer to the critical line as the precursor functions becomes a better approximation of the full function.
+
+
+\newpage
+
+```{r DHf2zeroesevolution1, fig.show = "hold", fig.align = "center", fig.height=4.4}
+#known DHf2 zeroes in the critical strip
+xf2=c( 2.30862 + 8.91836*1i,1.94374 + 18.8994*1i,2.09106 + 26.5450*1i,2.15626 + 36.5556*1i,1.50497 + 44.8057*1i,2.33262 + 54.4201*1i,1.78509 + 64.3711*1i,2.17279 + 72.0637*1i,0.69340 + 77.3469*1i,2.05503 + 82.0598*1i,1.83279 + 89.9631*1i,2.34551 + 99.8614*1i,1.18952 + 107.106*1i,1.33795 + 109.439*1i,2.22293 + 117.572*1i )
+
+par(mfrow=c(1,2))
+df_inpgrid=read.csv("/home/john/pari/DHf2dirichseries_truncEP_2primes_finegridsearch_zeroes_test1p5start_bothposneg_original_position_estimate.csv",header=FALSE,colClasses = "numeric")#,
+df_inpextra=read.csv("/home/john/pari/DHf2dirichseries_truncEP_2primes_finegridsearch_zeroes_testm2p5start_bothposneg_original_position_estimate.csv",header=FALSE,colClasses = "numeric")#,
+df_inpgrid=rbind(df_inpgrid,df_inpextra)
+df_inpextra=read.csv("/home/john/pari/DHf2dirichseries_truncEP_2primes_finegridsearch_zeroes_testm1p5start_bothposneg_original_position_estimate.csv",header=FALSE,colClasses = "numeric")#,
+df_inpgrid=rbind(df_inpgrid,df_inpextra)
+df_inpextra=read.csv("/home/john/pari/DHf2dirichseries_truncEP_2primes_finegridsearch_zeroes_testp5start_bothposneg_original_position_estimate.csv",header=FALSE,colClasses = "numeric")#,
+df_inpgrid=rbind(df_inpgrid,df_inpextra)
+df_inpextra=read.csv("/home/john/pari/DHf2dirichseries_truncEP_2primes_finegridsearch_zeroes_testp5start100_bothposneg_original_position_estimate.csv",header=FALSE,colClasses = "numeric")#,
+df_inpgrid=rbind(df_inpgrid,df_inpextra)
+df_inpextra=read.csv("/home/john/pari/DHf2dirichseries_truncEP_2primes_finegridsearch_zeroes_testp5start200_bothposneg_original_position_estimate.csv",header=FALSE,colClasses = "numeric")#,
+df_inpgrid=rbind(df_inpgrid,df_inpextra)
+df_inpextra=read.csv("/home/john/pari/DHf2dirichseries_truncEP_2primes_finegridsearch_zeroes_testmp5start200_bothposneg_original_position_estimate.csv",header=FALSE,colClasses = "numeric")#,
+df_inpgrid=rbind(df_inpgrid,df_inpextra)
+df_inpextra=read.csv("/home/john/pari/DHf2dirichseries_truncEP_2primes_finegridsearch_zeroes_testm1p0start200_bothposneg_original_position_estimate.csv",header=FALSE,colClasses = "numeric")#,
+df_inpgrid=rbind(df_inpgrid,df_inpextra)
+df_inpgrid=df_inpgrid[df_inpgrid$V25 < 4 ,]
+df_inpgrid=df_inpgrid[df_inpgrid$V5<1e-8 ,]
+df_inpgrid$round_t=round(df_inpgrid$V4,4)
+df_inpgrid$round_s=round(df_inpgrid$V3,4)
+df_check=aggregate(V4~V7,data=df_inpgrid,FUN=length)
+df_inpgrid=df_inpgrid[!duplicated(df_inpgrid[,c("round_t","round_s")]),]
+yspan=c(-3,2.5);brks=seq(yspan[1],yspan[2],l=101);
+plot(df_inpgrid$V4,df_inpgrid$V3,ylim=yspan,
+     main="DH tau+ precursor non-trivial zero positions for \n truncated finite EP about floor(t/pi*5) only including prime powers \n and all pairwise products with prime 2",xlab="imag(s)",ylab="real(s)",cex=0.35,cex.main=0.5,cex.lab=0.5,cex.axis=0.5);grid();
+abline(h=0.5,lty=3,lwd=2,col="cyan")
+points(Im(xf2),Re(xf2),col=2,pch=20,cex=0.3)
+points(Im(xf2),1-Re(xf2),col=2,pch=20,cex=0.3)
+
+hist(df_inpgrid$V3,breaks=brks,xlim=yspan,main="DH tau+ precursor non-trivial zero real component distribution for \n truncated finite EP about floor(t/pi*5) only including prime powers \n and all pairwise products with prime 2",xlab="real(s)",cex.main=0.5,cex.lab=0.5,cex.axis=0.5);grid()
+abline(v=0.5,lty=3,lwd=2,col="cyan")
+abline(v=mean(df_inpgrid$V3),lty=2,lwd=2)
+
+df_inpgrid=read.csv("/home/john/pari/DHf2dirichseries_truncEP_sqsandallprimeprods_gridsearch_zeroes_test1p5start_bothposneg_original_position_estimate.csv",header=FALSE,colClasses = "numeric")
+df_inpextra=read.csv("/home/john/pari/DHf2dirichseries_truncEP_sqsandallprimeprods_gridsearch_zeroes_testm2p5start_bothposneg_original_position_estimate.csv",header=FALSE,colClasses = "numeric")#,
+df_inpgrid=rbind(df_inpgrid,df_inpextra)
+df_inpextra=read.csv("/home/john/pari/DHf2dirichseries_truncEP_sqsandallprimeprods_gridsearch_zeroes_testm1p5start_bothposneg_original_position_estimate.csv",header=FALSE,colClasses = "numeric")#,
+df_inpgrid=rbind(df_inpgrid,df_inpextra)
+df_inpextra=read.csv("/home/john/pari/DHf2dirichseries_truncEP_sqsandallprimeprods_gridsearch_zeroes_testp5start_bothposneg_original_position_estimate.csv",header=FALSE,colClasses = "numeric")#,
+df_inpgrid=rbind(df_inpgrid,df_inpextra)
+df_inpextra=read.csv("/home/john/pari/DHf2dirichseries_truncEP_sqsandallprimeprods_gridsearch_zeroes_testmp5start_bothposneg_original_position_estimate.csv",header=FALSE,colClasses = "numeric")#,
+df_inpgrid=rbind(df_inpgrid,df_inpextra)
+df_inpextra=read.csv("/home/john/pari/DHf2dirichseries_truncEP_sqsandallprimeprods_gridsearch_zeroes_testm1p0start_bothposneg_original_position_estimate.csv",header=FALSE,colClasses = "numeric")#,
+df_inpgrid=rbind(df_inpgrid,df_inpextra)
+df_inpextra=read.csv("/home/john/pari/DHf2dirichseries_truncEP_sqsandallprimeprods_gridsearch_zeroes_testp75start_bothposneg_original_position_estimate.csv",header=FALSE,colClasses = "numeric")#,
+df_inpgrid=rbind(df_inpgrid,df_inpextra)
+df_inpgrid=df_inpgrid[df_inpgrid$V25 < 4 ,]
+df_inpgrid=df_inpgrid[df_inpgrid$V5<1e-8 ,]
+df_inpgrid$round_t=round(df_inpgrid$V4,4)
+df_inpgrid$round_s=round(df_inpgrid$V3,4)
+df_check=aggregate(V4~V7,data=df_inpgrid,FUN=length)
+df_inpgrid=df_inpgrid[!duplicated(df_inpgrid[,c("round_t","round_s")]),]
+yspan=c(-3,2.5);brks=seq(yspan[1],yspan[2],l=101);
+plot(df_inpgrid$V4,df_inpgrid$V3,ylim=yspan,xlim=c(0,max(df_inpgrid$V4)),
+     main="DH tau+ precursor non-trivial zero positions for \n truncated finite EP about floor(t/pi*5) including prime powers \n and all pairwise products of prime powers",xlab="imag(s)",ylab="real(s)",cex=0.35,cex.main=0.5,cex.lab=0.5,cex.axis=0.5);grid();
+abline(h=0.5,lty=3,lwd=2,col="cyan")
+points(Im(xf2),Re(xf2),col=2,pch=20,cex=0.3)
+points(Im(xf2),1-Re(xf2),col=2,pch=20,cex=0.3)
+
+hist(df_inpgrid$V3,breaks=brks,xlim=yspan,main="DH tau+ precursor non-trivial zero real component distribution for \n truncated finite EP about floor(t/pi*5) including prime powers \n and all pairwise products of prime powers",xlab="real(s)",cex.main=0.5,cex.lab=0.5,cex.axis=0.5);grid()
+abline(v=0.5,lty=3,lwd=2,col="cyan")
+abline(v=mean(df_inpgrid$V3),lty=2,lwd=2)
+
+df_inpgrid=read.csv("/home/john/pari/DHf2dirichseries_gridsearch_zeroes_testp5start_bothposneg_original_position_estimate.csv",header=FALSE,colClasses = "numeric")#,
+df_inpextra=read.csv("/home/john/pari/DHf2dirichseries_gridsearch_zeroes_testm2p5start_bothposneg_original_position_estimate.csv",header=FALSE,colClasses = "numeric")#,
+df_inpgrid=rbind(df_inpgrid,df_inpextra)
+df_inpextra=read.csv("/home/john/pari/DHf2dirichseries_finegridsearch_zeroes_testp5start_bothposneg_original_position_estimate.csv",header=FALSE,colClasses = "numeric")#,
+df_inpgrid=rbind(df_inpgrid,df_inpextra)
+df_inpextra=read.csv("/home/john/pari/DHf2dirichseries_finegridsearch_zeroes_testp75start_bothposneg_original_position_estimate.csv",header=FALSE,colClasses = "numeric")#,
+df_inpgrid=rbind(df_inpgrid,df_inpextra)
+df_inpextra=read.csv("/home/john/pari/DHf2dirichseries_finegridsearch_zeroes_test1p5start_bothposneg_original_position_estimate.csv",header=FALSE,colClasses = "numeric")#,
+df_inpgrid=rbind(df_inpgrid,df_inpextra)
+df_inpgrid=df_inpgrid[df_inpgrid$V25 < 4 ,]
+df_inpgrid=df_inpgrid[df_inpgrid$V5<1e-8 ,]
+df_inpgrid$round_t=round(df_inpgrid$V4,4)
+df_inpgrid$round_s=round(df_inpgrid$V3,4)
+df_check=aggregate(V4~V7,data=df_inpgrid,FUN=length)
+df_inpgrid=df_inpgrid[!duplicated(df_inpgrid[,c("round_t","round_s")]),]
+yspan=c(-3,2.5);brks=seq(yspan[1],yspan[2],l=101);
+plot(df_inpgrid$V4,df_inpgrid$V3,ylim=yspan,
+     main="DH tau+ precursor non-trivial zero positions for \n truncated finite Dirichlet Series about floor(t/pi*5) ",xlab="imag(s)",ylab="real(s)",cex=0.3,cex.main=0.5,cex.lab=0.5,cex.axis=0.5);grid();
+abline(h=0.5,lty=3,lwd=2,col="cyan")
+points(Im(xf2),Re(xf2),col=2,pch=20,cex=0.3)
+points(Im(xf2),1-Re(xf2),col=2,pch=20,cex=0.3)
+
+hist(df_inpgrid$V3,breaks=brks,xlim=yspan,main="non-trivial zero real component distribution for \n truncated DH tau+ dirichlet series about N=floor(t/pi*5)  \n (equivalent to including all possible products of prime powers)",xlab="real(s)",cex.main=0.5,cex.lab=0.5,cex.axis=0.5);grid()
+abline(v=0.5,lty=3,lwd=2,col="cyan")
+abline(v=mean(df_inpgrid$V3),lty=2,lwd=2)
+
+
+df_inpgrid=read.csv("/home/john/pari/DHf2tapereddirichseries_finegridsearch_zeroes_testp5start_bothposneg_original_position_estimate.csv",header=FALSE,colClasses = "numeric")#,
+df_inpextra=read.csv("/home/john/pari/DHf2tapereddirichseries_finegridsearch_zeroes_test1p5start_bothposneg_original_position_estimate.csv",header=FALSE,colClasses = "numeric")#,
+df_inpgrid=rbind(df_inpgrid,df_inpextra)
+# df_inpextra=read.csv("/home/john/pari/DHf2dirichseries_finegridsearch_zeroes_testp5start_bothposneg_original_position_estimate.csv",header=FALSE,colClasses = "numeric")#,
+# df_inpgrid=rbind(df_inpgrid,df_inpextra)
+# df_inpextra=read.csv("/home/john/pari/DHf2dirichseries_finegridsearch_zeroes_testp75start_bothposneg_original_position_estimate.csv",header=FALSE,colClasses = "numeric")#,
+# df_inpgrid=rbind(df_inpgrid,df_inpextra)
+df_inpgrid=df_inpgrid[df_inpgrid$V25 < 4 ,]
+df_inpgrid=df_inpgrid[df_inpgrid$V5<1e-8 ,]
+df_inpgrid$round_t=round(df_inpgrid$V4,4)
+df_inpgrid$round_s=round(df_inpgrid$V3,4)
+df_check=aggregate(V4~V7,data=df_inpgrid,FUN=length)
+df_inpgrid=df_inpgrid[!duplicated(df_inpgrid[,c("round_t","round_s")]),]
+yspan=c(-3,2.5);brks=seq(yspan[1],yspan[2],l=101);
+plot(df_inpgrid$V4,df_inpgrid$V3,ylim=yspan,xlim=c(0,max(df_inpgrid$V4)),
+     main="DH tau+ non-trivial zero positions using \n tapered finite Dirichlet Series about floor(t/pi*5) ",xlab="imag(s)",ylab="real(s)",cex=0.3,cex.main=0.5,cex.lab=0.5,cex.axis=0.5);grid();
+abline(h=0.5,lty=3,lwd=2,col="cyan")
+points(Im(xf2),Re(xf2),col=2,pch=20,cex=0.3)
+points(Im(xf2),1-Re(xf2),col=2,pch=20,cex=0.3)
+
+hist(df_inpgrid$V3,breaks=brks,xlim=yspan,main="non-trivial zero real component distribution for \n 128 point truncated dirichlet series about N=floor(t/pi*5)  \n a good approximation for tau+(s) away from real axis",xlab="real(s)",cex.main=0.5,cex.lab=0.5,cex.axis=0.5);grid()
+abline(v=0.5,lty=3,lwd=2,col="cyan")
+abline(v=mean(df_inpgrid$V3),lty=2,lwd=2)
+
+```
+***Figure 5. The lefthand column contains the real and imaginary parts of the 5-periodic Davenport Heilbronn Tau+ non-trivial zeroes identified by search in the interval t=c(5,1000) for (i) truncated EP only including prime powers and pairwise products of powers involving the prime 2, (ii) truncated EP only including all pairwise products of prime powers, (iii) finite dirichlet series (effectively including all products of prime powers and (iv) 128 point tapered finite dirichlet series (in the interval t=(45,1000)) which is a good approximation of $\tau_+(s)$ for t > 45. The righthand column displays the distribution of the real component for the zero positions of the four functions. Also included for reference are the known positions of $\tau_+(s)$ critical strip non-trivial zeroes t=(8.9,120) shown in red.***
+
+A straightforward interpretation from the sequence of behaviour in figure 5 is that the two prime interaction in the Euler Product of the $\tau_+$ function  is sufficient to explain the presence of the non-trivial zeroes off the critical line and the upper bound of those zeroes. This is in agreement with Bombieri and Ghosh, row 1 of figure 2 however also suggests that solely the prime power pairwise product interactions with powers of prime 2 are sufficient to explain the dominant contribution to the location of the non-trivial zeroes closest to the upper (lower) bound. 
+
+This suggests that for the critical strip non-trivial zeroes in $\tau_+$ the prime power product interactions with powers of prime 2 are not being cancelled out by other prime power pairwise product interactions. To investigate whether this is a property of the underlying L functions and/or because the $\tau_+$ function a linear combination of L functions, the individual precursor behaviour for the underlying L functions L53 and L52 of the $\tau_+$ function are shown in figures 6 & 7. 
+
+As no surprise, given it is already known (for currently observed values of imag(s)) that degree 1 L functions do not exhibit non-trivial zeroes off the critical line, figure 6 & 7 behaviour is similar to Riemann Zeta precursor behaviour shown in figure 1. Hence it is the linear combination of the two L functions that is causing the critical strip non-trivial zeroes in $\tau_+$ function. 
+
+
+\newpage
+
+```{r L53zeroesevolution1, fig.show = "hold", fig.align = "center", fig.height=4.4}
+
+par(mfrow=c(1,2))
+df_inpgrid=read.csv("/home/john/pari/L53dirichseries_truncEP_2primes_gridsearch_zeroes_testp5start_bothposneg_original_position_estimate.csv",header=FALSE,colClasses = "numeric")#,
+df_inpextra=read.csv("/home/john/pari/L53dirichseries_truncEP_2primes_finegridsearch_zeroes_testp5start9end100_bothposneg_original_position_estimate.csv",header=FALSE,colClasses = "numeric")#,
+df_inpgrid=rbind(df_inpgrid,df_inpextra)
+df_inpextra=read.csv("/home/john/pari/L53dirichseries_truncEP_2primes_gridsearch_zeroes_test1p5start_bothposneg_original_position_estimate.csv",header=FALSE,colClasses = "numeric")#,
+df_inpgrid=rbind(df_inpgrid,df_inpextra)
+df_inpgrid=df_inpgrid[df_inpgrid$V25 < 4 ,]
+df_inpgrid=df_inpgrid[df_inpgrid$V5<1e-8 ,]
+df_inpgrid$round_t=round(df_inpgrid$V4,4)
+df_inpgrid$round_s=round(df_inpgrid$V3,4)
+df_check=aggregate(V4~V7,data=df_inpgrid,FUN=length)
+df_inpgrid=df_inpgrid[!duplicated(df_inpgrid[,c("round_t","round_s")]),]
+yspan=range(df_inpgrid$V3);brks=seq(yspan[1],yspan[2],l=51);
+yspan=c(-1,1);brks=seq(yspan[1],yspan[2],l=51);
+plot(df_inpgrid$V4,df_inpgrid$V3,xlim=c(0,max(df_inpgrid$V4)),ylim=yspan,
+     main="L53 precursor non-trivial zero positions for \n truncated finite Dirichlet Series about floor(t/pi*5) \n prime products with prime 2 ",xlab="imag(s)",ylab="real(s)",cex=0.5,cex.main=0.5,cex.lab=0.5,cex.axis=0.5);grid();
+abline(h=0.5,lty=3,lwd=2,col="cyan")
+
+
+hist(df_inpgrid$V3,breaks=brks,xlim=yspan,main="L53 non-trivial zero real component distribution for \n truncated finite EP about N=floor(t/pi*5) only including prime powers \n and all pairwise products of prime powers involving prime 2 ",xlab="real(s)",cex.main=0.5,cex.lab=0.5,cex.axis=0.5);grid();
+abline(v=0.5,lty=3,lwd=2,col="cyan")
+abline(v=mean(df_inpgrid$V3),lty=2,lwd=2)
+
+
+df_inpgrid=read.csv("/home/john/pari/L53dirichseries_truncEP_sqsandallprimeprods_gridsearch_zeroes_testp5start_bothposneg_original_position_estimate.csv",header=FALSE,colClasses = "numeric")
+df_inpgrid=df_inpgrid[df_inpgrid$V25 < 4 ,]
+df_inpgrid=df_inpgrid[df_inpgrid$V5<1e-8 ,]
+df_inpgrid$round_t=round(df_inpgrid$V4,4)
+df_inpgrid$round_s=round(df_inpgrid$V3,4)
+df_check=aggregate(V4~V7,data=df_inpgrid,FUN=length)
+df_inpgrid=df_inpgrid[!duplicated(df_inpgrid[,c("round_t","round_s")]),]
+plot(df_inpgrid$V4,df_inpgrid$V3,xlim=c(0,max(df_inpgrid$V4)),ylim=yspan,
+     main="L53 precursor non-trivial zero positions for \n truncated finite Dirichlet Series about floor(t/pi*5) \n all pairwise prime products",xlab="imag(s)",ylab="real(s)",cex=0.5,cex.main=0.5,cex.lab=0.5,cex.axis=0.5);grid();
+abline(h=0.5,lty=3,lwd=2,col="cyan")
+
+
+hist(df_inpgrid$V3,breaks=brks,xlim=yspan,main="L53 non-trivial zero real component distribution for \ntruncated finite EP about N=floor(t/pi*5) only including \n all pairwise products of prime powers",xlab="real(s)",cex.main=0.5,cex.lab=0.5,cex.axis=0.5);grid()
+abline(v=0.5,lty=3,lwd=2,col="cyan")
+abline(v=mean(df_inpgrid$V3),lty=2,lwd=2)
+
+df_inpgrid=read.csv("/home/john/pari/L53dirichseries_gridsearch_zeroes_testp5start_bothposneg_original_position_estimate.csv",header=FALSE,colClasses = "numeric")#,
+df_inpgrid=df_inpgrid[df_inpgrid$V25 < 4 ,]
+df_inpgrid=df_inpgrid[df_inpgrid$V5<1e-8 ,]
+df_inpgrid$round_t=round(df_inpgrid$V4,4)
+df_inpgrid$round_s=round(df_inpgrid$V3,4)
+df_check=aggregate(V4~V7,data=df_inpgrid,FUN=length)
+df_inpgrid=df_inpgrid[!duplicated(df_inpgrid[,c("round_t","round_s")]),]
+plot(df_inpgrid$V4,df_inpgrid$V3,ylim=yspan,
+     main="L53 precursor non-trivial zero positions for \n truncated finite Dirichlet Series about floor(t/pi*5) ",xlab="imag(s)",ylab="real(s)",cex=0.5,cex.main=0.5,cex.lab=0.5,cex.axis=0.5);grid();
+abline(h=0.5,lty=3,lwd=2,col="cyan")
+
+
+hist(df_inpgrid$V3,breaks=brks,xlim=yspan,main="L53 non-trivial zero real component distribution for \n truncated dirichlet series about N=floor(t/pi*5)  \n (equivalent to including all possible products of prime powers)",xlab="real(s)",cex.main=0.5,cex.lab=0.5,cex.axis=0.5);grid()
+abline(v=0.5,lty=3,lwd=2,col="cyan")
+abline(v=mean(df_inpgrid$V3),lty=2,lwd=2)
+
+df_inpgrid=read.csv("/home/john/pari/L53tapereddirichseries_finegridsearch_zeroes_testp5start_bothposneg_original_position_estimate.csv",header=FALSE,colClasses = "numeric")#,
+df_inpgrid=df_inpgrid[df_inpgrid$V25 < 4 ,]
+df_inpgrid=df_inpgrid[df_inpgrid$V5<1e-8 ,]
+df_inpgrid$round_t=round(df_inpgrid$V4,4)
+df_inpgrid$round_s=round(df_inpgrid$V3,4)
+df_check=aggregate(V4~V7,data=df_inpgrid,FUN=length)
+df_inpgrid=df_inpgrid[!duplicated(df_inpgrid[,c("round_t","round_s")]),]
+plot(df_inpgrid$V4,df_inpgrid$V3,xlim=c(0,max(df_inpgrid$V4)),ylim=yspan,
+     main="L53 non-trivial zero positions using \n tapered finite Dirichlet Series about floor(t/pi*5) ",xlab="imag(s)",ylab="real(s)",cex=0.5,cex.main=0.5,cex.lab=0.5,cex.axis=0.5);grid();
+abline(h=0.5,lty=3,lwd=2,col="cyan")
+
+hist(df_inpgrid$V3,breaks=brks,xlim=yspan,main="L53 non-trivial zero real component distribution for \n 128 point truncated dirichlet series about N=floor(t/pi*5)  \n a good approximation for zeta(s) away from real axis",xlab="real(s)",cex.main=0.5,cex.lab=0.5,cex.axis=0.5);grid()
+abline(v=0.5,lty=3,lwd=2,col="cyan")
+abline(v=mean(df_inpgrid$V3),lty=2,lwd=2)
+```
+***Figure 6. The lefthand column contains the real and imaginary parts of the L53 non-trivial zeroes identified by search in the interval t=c(5,1000) for (i) truncated EP only including prime powers and pairwise products of powers involving the prime 2, (ii) truncated EP only including all pairwise products of prime powers, (iii) finite dirichlet series (effectively including all products of prime powers and (iv) 128 point tapered finite dirichlet series (in the interval t=(45,1000)) which is a good approximation of L53(s) for t > 45. The righthand column displays the distribution of the real component for the zero positions of the four functions.***
+
+
+\newpage
+
+```{r L52zeroesevolution1, fig.show = "hold", fig.align = "center", fig.height=4.4}
+
+par(mfrow=c(1,2))
+df_inpgrid=read.csv("/home/john/pari/L52dirichseries_truncEP_2primes_gridsearch_zeroes_testp5start_bothposneg_original_position_estimate.csv",header=FALSE,colClasses = "numeric")#,
+df_inpextra=read.csv("/home/john/pari/L52dirichseries_truncEP_2primes_finegridsearch_zeroes_testp5start9end100_bothposneg_original_position_estimate.csv",header=FALSE,colClasses = "numeric")#,
+df_inpgrid=rbind(df_inpgrid,df_inpextra)
+df_inpextra=read.csv("/home/john/pari/L52dirichseries_truncEP_2primes_gridsearch_zeroes_test1p5start_bothposneg_original_position_estimate.csv",header=FALSE,colClasses = "numeric")#,
+df_inpgrid=rbind(df_inpgrid,df_inpextra)
+df_inpgrid=df_inpgrid[df_inpgrid$V25 < 4 ,]
+df_inpgrid=df_inpgrid[df_inpgrid$V5<1e-8 ,]
+df_inpgrid$round_t=round(df_inpgrid$V4,4)
+df_inpgrid$round_s=round(df_inpgrid$V3,4)
+df_check=aggregate(V4~V7,data=df_inpgrid,FUN=length)
+df_inpgrid=df_inpgrid[!duplicated(df_inpgrid[,c("round_t","round_s")]),]
+yspan=range(df_inpgrid$V3);brks=seq(yspan[1],yspan[2],l=51);
+yspan=c(-1,1);brks=seq(yspan[1],yspan[2],l=51);
+plot(df_inpgrid$V4,df_inpgrid$V3,xlim=c(0,max(df_inpgrid$V4)),ylim=yspan,
+     main="L52 precursor non-trivial zero positions for \n truncated finite Dirichlet Series about floor(t/pi*5) \n prime products with prime 2 ",xlab="imag(s)",ylab="real(s)",cex=0.5,cex.main=0.5,cex.lab=0.5,cex.axis=0.5);grid();
+abline(h=0.5,lty=3,lwd=2,col="cyan")
+
+
+hist(df_inpgrid$V3,breaks=brks,xlim=yspan,main="L52 non-trivial zero real component distribution for \n truncated finite EP about N=floor(t/pi*5) only including prime powers \n and all pairwise products of prime powers involving prime 2 ",xlab="real(s)",cex.main=0.5,cex.lab=0.5,cex.axis=0.5);grid();
+abline(v=0.5,lty=3,lwd=2,col="cyan")
+abline(v=mean(df_inpgrid$V3),lty=2,lwd=2)
+
+
+df_inpgrid=read.csv("/home/john/pari/L52dirichseries_truncEP_sqsandallprimeprods_gridsearch_zeroes_testp5start_bothposneg_original_position_estimate.csv",header=FALSE,colClasses = "numeric")
+df_inpextra=read.csv("/home/john/pari/L52dirichseries_truncEP_sqsandallprimeprods_finegridsearch_zeroes_testp5start9snd100_bothposneg_original_position_estimate.csv",header=FALSE,colClasses = "numeric")#,
+df_inpgrid=rbind(df_inpgrid,df_inpextra)
+df_inpextra=read.csv("/home/john/pari/L52dirichseries_truncEP_sqsandallprimeprods_finegridsearch_zeroes_testp5start9end100_bothposneg_original_position_estimate.csv",header=FALSE,colClasses = "numeric")#,
+df_inpgrid=rbind(df_inpgrid,df_inpextra)
+df_inpextra=read.csv("/home/john/pari/L52dirichseries_truncEP_sqsandallprimeprods_gridsearch_zeroes_test1p5start_bothposneg_original_position_estimate.csv",header=FALSE,colClasses = "numeric")#,
+df_inpgrid=rbind(df_inpgrid,df_inpextra)
+df_inpgrid=df_inpgrid[df_inpgrid$V5<1e-8 ,]
+df_inpgrid$round_t=round(df_inpgrid$V4,4)
+df_inpgrid$round_s=round(df_inpgrid$V3,4)
+df_check=aggregate(V4~V7,data=df_inpgrid,FUN=length)
+df_inpgrid=df_inpgrid[!duplicated(df_inpgrid[,c("round_t","round_s")]),]
+plot(df_inpgrid$V4,df_inpgrid$V3,xlim=c(0,max(df_inpgrid$V4)),ylim=yspan,
+     main="L52 precursor non-trivial zero positions for \n truncated finite Dirichlet Series about floor(t/pi*5) \n all pairwise prime products",xlab="imag(s)",ylab="real(s)",cex=0.5,cex.main=0.5,cex.lab=0.5,cex.axis=0.5);grid();
+abline(h=0.5,lty=3,lwd=2,col="cyan")
+
+
+hist(df_inpgrid$V3,breaks=brks,xlim=yspan,main="L52 non-trivial zero real component distribution for \ntruncated finite EP about N=floor(t/pi*5) only including \n all pairwise products of prime powers",xlab="real(s)",cex.main=0.5,cex.lab=0.5,cex.axis=0.5);grid()
+abline(v=0.5,lty=3,lwd=2,col="cyan")
+abline(v=mean(df_inpgrid$V3),lty=2,lwd=2)
+
+df_inpgrid=read.csv("/home/john/pari/L52dirichseries_gridsearch_zeroes_testp5start_bothposneg_original_position_estimate.csv",header=FALSE,colClasses = "numeric")#,
+df_inpgrid=df_inpgrid[df_inpgrid$V25 < 4 ,]
+df_inpgrid=df_inpgrid[df_inpgrid$V5<1e-8 ,]
+df_inpgrid$round_t=round(df_inpgrid$V4,4)
+df_inpgrid$round_s=round(df_inpgrid$V3,4)
+df_check=aggregate(V4~V7,data=df_inpgrid,FUN=length)
+df_inpgrid=df_inpgrid[!duplicated(df_inpgrid[,c("round_t","round_s")]),]
+plot(df_inpgrid$V4,df_inpgrid$V3,ylim=yspan,
+     main="L52 precursor non-trivial zero positions for \n truncated finite Dirichlet Series about floor(t/pi*5) ",xlab="imag(s)",ylab="real(s)",cex=0.5,cex.main=0.5,cex.lab=0.5,cex.axis=0.5);grid();
+abline(h=0.5,lty=3,lwd=2,col="cyan")
+
+
+hist(df_inpgrid$V3,breaks=brks,xlim=yspan,main="L52 non-trivial zero real component distribution for \n truncated dirichlet series about N=floor(t/pi*5)  \n (equivalent to including all possible products of prime powers)",xlab="real(s)",cex.main=0.5,cex.lab=0.5,cex.axis=0.5);grid()
+abline(v=0.5,lty=3,lwd=2,col="cyan")
+abline(v=mean(df_inpgrid$V3),lty=2,lwd=2)
+
+df_inpgrid=read.csv("/home/john/pari/L52tapereddirichseries_finegridsearch_zeroes_testp5start_bothposneg_original_position_estimate.csv",header=FALSE,colClasses = "numeric")#,
+df_inpgrid=df_inpgrid[df_inpgrid$V25 < 4 ,]
+df_inpgrid=df_inpgrid[df_inpgrid$V5<1e-8 ,]
+df_inpgrid$round_t=round(df_inpgrid$V4,4)
+df_inpgrid$round_s=round(df_inpgrid$V3,4)
+df_check=aggregate(V4~V7,data=df_inpgrid,FUN=length)
+df_inpgrid=df_inpgrid[!duplicated(df_inpgrid[,c("round_t","round_s")]),]
+plot(df_inpgrid$V4,df_inpgrid$V3,xlim=c(0,max(df_inpgrid$V4)),ylim=yspan,
+     main="L52 non-trivial zero positions using \n tapered finite Dirichlet Series about floor(t/pi*5) ",xlab="imag(s)",ylab="real(s)",cex=0.5,cex.main=0.5,cex.lab=0.5,cex.axis=0.5);grid();
+abline(h=0.5,lty=3,lwd=2,col="cyan")
+
+hist(df_inpgrid$V3,breaks=brks,xlim=yspan,main="L52 non-trivial zero real component distribution for \n 128 point truncated dirichlet series about N=floor(t/pi*5)  \n a good approximation for zeta(s) away from real axis",xlab="real(s)",cex.main=0.5,cex.lab=0.5,cex.axis=0.5);grid()
+abline(v=0.5,lty=3,lwd=2,col="cyan")
+abline(v=mean(df_inpgrid$V3),lty=2,lwd=2)
+```
+***Figure 7. The lefthand column contains the real and imaginary parts of the L52 non-trivial zeroes identified by search in the interval t=c(5,1000) for (i) truncated EP only including prime powers and pairwise products of powers involving the prime 2, (ii) truncated EP only including all pairwise products of prime powers, (iii) finite dirichlet series (effectively including all products of prime powers and (iv) 128 point tapered finite dirichlet series (in the interval t=(45,1000)) which is a good approximation of L52(s) for t > 45. The righthand column displays the distribution of the real component for the zero positions of the four functions.***
+
+### The precursor low-lying zeroes behaviour of the truncated Euler Product (EP) and finite dirichlet Series about the second quiescent region for $\tau -$ 5-periodic Davenport Heilbronn function
+
+As a second counterexample figure 8 illustrates the low-lying zeroes behaviour of precursor functions of the $\tau -$ 5-periodic Davenport Heilbronn function in the interval t=(5,1000) calculated using truncation at the second quiescent region ($N=\frac{t\cdot 5}{\pi}$). In variation to the $\tau +$ behaviour, the two prime interation in the precursor truncated Euler Product is not particularly dominant in predicting the position of the non-trivial zeroes away from the critical strip (in the full $\tau -$ function). That is, the location of the critical strip non-trivial zeroes have increased reliance on higher order interactions between the primes (under the Euler Product parametrisation). 
+
+Given the L-function form of $\tau_-$ ($f_1(s)$) 5-periodic Davenport Heilbronn function
+
+\begin{align}
+f_{1}(s) &= \frac{1}{2cos(\theta_1)} \Big [ e^{i\theta_1}L(\chi_5(2,.),s) + e^{-i\theta_1}L(\chi_5(3,.),s) \Big ] \label{eq:func1_Lcomb}
+\end{align}
+
+
+The precursor functions of interest to the $\tau -$ 5-periodic Davenport Heilbronn function displayed in this paper are the following
+
+1. Truncated $\tau_-$ Euler Products including prime powers and prime power pairwise products with the prime number 2 (about the second quiescent region $N=\frac{t*5}{\pi}$)
+
+\begin{align} \label{eq:truncEP_2andpairsonlyDHf1}
+\text{EP} \tau_- &_{\text{up to prime power pairwise interactions with prime=2 only}} \nonumber\\
+&\approx \frac{1}{2cos(\theta_1)} \Big [ e^{i\theta_1} \cdot \Big\{ 1+\left(\sum_{\rho=2}^{N=\lfloor\frac{t*5}{\pi}\rfloor} \sum_{n=1}^{\lfloor\frac{\log(N)}{\log(\rho)}\rfloor} \frac{\chi_5(2,\rho^n)}{n\cdot\rho^{ns}}\cdot \delta(\rho^n \le N)\right) \nonumber\\
+&+\frac{1}{2!}\left(\sum_{\rho_1=2}^{N=\lfloor\frac{t*5}{\pi}\rfloor} \sum_{n=1}^{\lfloor\frac{\log(N)}{\log(\rho_1)}\rfloor} \sum_{m=1}^{\lfloor\frac{\log(N)}{\log(2)}\rfloor} \frac{\chi_5(2,\rho_1^n)}{n\cdot\rho_1^{ns}}\cdot \frac{\chi_5(2,2^m)}{m\cdot2^{ms}} \cdot \delta(\rho_1^n\cdot2^m \le N) \right)\Big\}\nonumber\\
+&+e^{-i\theta_1} \cdot \Big\{ 1+\left(\sum_{\rho=2}^{N=\lfloor\frac{t*5}{\pi}\rfloor} \sum_{n=1}^{\lfloor\frac{\log(N)}{\log(\rho)}\rfloor} \frac{\chi_5(3,\rho^n)}{n\cdot\rho^{ns}}\cdot \delta(\rho^n \le N)\right) \nonumber\\
+&+\frac{1}{2!}\left(\sum_{\rho_1=2}^{N=\lfloor\frac{t*5}{\pi}\rfloor} \sum_{n=1}^{\lfloor\frac{\log(N)}{\log(\rho_1)}\rfloor} \sum_{m=1}^{\lfloor\frac{\log(N)}{\log(2)}\rfloor} \frac{\chi_5(3,\rho_1^n)}{n\cdot\rho_1^{ns}}\cdot \frac{\chi_5(3,2^m)}{m\cdot2^{ms}} \cdot \delta(\rho_1^n\cdot2^m \le N) \right)\Big\} \Big ]
+\end{align}
+
+where (i) the delta functions play a crucial role in appropriately truncating the Euler Product terms and (ii) the factor 5 in $N=\frac{t*5}{\pi}$ arises from the conductor value of the component L-functions.
+
+2. Truncated Euler Products including prime powers and all prime power pairwise products (about the second quiescent region $N=\frac{t*5}{\pi}$)
+
+\begin{align} \label{eq:truncEP_allpairsonlyDHf1}
+\text{EP} \tau_+ &_{\text{up to all prime power pairwise interactions}} \nonumber\\
+&\approx \frac{1}{2cos(\theta_1)} \Big [ e^{i\theta_1} \cdot \Big\{ 1+\left(\sum_{\rho=2}^{N=\lfloor\frac{t*5}{\pi}\rfloor} \sum_{n=1}^{\lfloor\frac{\log(N)}{\log(\rho)}\rfloor} \frac{\chi_5(2,.,\rho^n)}{n\cdot\rho^{ns}}\cdot \delta(\rho^n \le N)\right) \nonumber\\
+&+\frac{1}{2!}\left(\sum_{\rho_1=2}^{N=\lfloor\frac{t*5}{\pi}\rfloor} \sum_{n=1}^{\lfloor\frac{\log(N)}{\log(\rho_1)}\rfloor} \sum_{\rho_2=2}^{N=\lfloor\frac{t*5}{\pi}\rfloor} \sum_{m=1}^{\lfloor\frac{\log(N)}{\log(\rho_2)}\rfloor} \frac{\chi_5(2,\rho_1^n)}{n\cdot\rho_1^{ns}}\cdot \frac{\chi_5(2,\rho_2^m)}{m\cdot\rho_2^{ms}} \cdot \delta(\rho_1^n\cdot\rho_2^m \le N) \right) \nonumber\\
+&+e^{-i\theta_1} \cdot \Big\{ 1+\left(\sum_{\rho=2}^{N=\lfloor\frac{t*5}{\pi}\rfloor} \sum_{n=1}^{\lfloor\frac{\log(N)}{\log(\rho)}\rfloor} \frac{\chi_5(3,\rho^n)}{n\cdot\rho^{ns}}\cdot \delta(\rho^n \le N)\right) \nonumber\\
+&+\frac{1}{2!}\left(\sum_{\rho_1=2}^{N=\lfloor\frac{t*5}{\pi}\rfloor} \sum_{n=1}^{\lfloor\frac{\log(N)}{\log(\rho_1)}\rfloor} \sum_{\rho_2=2}^{N=\lfloor\frac{t*5}{\pi}\rfloor} \sum_{m=1}^{\lfloor\frac{\log(N)}{\log(\rho_2)}\rfloor} \frac{\chi_5(3,\rho_1^n)}{n\cdot\rho_1^{ns}}\cdot \frac{\chi_5(3,\rho_2^m)}{m\cdot\rho_2^{ms}} \cdot \delta(\rho_1^n\cdot\rho_2^m \le N) \right) \Big ]
+\end{align}
+
+where (i) the delta functions play a crucial role in appropriately truncating the Euler Product terms and (ii) the factor 5 in $N=\frac{t*5}{\pi}$ arises from the conductor value of the component L-functions.
+
+3. Finite Dirichlet Series about the second quiescent region $N=\frac{t*5}{\pi}$ (which is equivalent to the truncated Euler Product equation (3)).
+
+\begin{align} \label{eq:trunctau-DirichletSeries}
+\frac{1}{2cos(\theta_1)} \Big [ e^{i\theta_1}{\Large\sum_{k=1}^{N=\lfloor\frac{t*5}{\pi}\rfloor}} \frac{\chi_5(2,k)}{k^s} + e^{-i\theta_1}{\Large\sum_{k=1}^{N=\lfloor\frac{t*5}{\pi}\rfloor}} \frac{\chi_5(3,k)}{k^s} \Big ]
+\end{align}
+
+where the factor 5 in $N=\frac{t*5}{\pi}$ arises from the conductor value of the component L-functions.
+
+4. Tapered finite Dirichlet Series about the second quiescent region $N=\frac{t*5}{\pi}$ which is a useful approximation of the $\tau_-$ function away from the real axis.
+
+\begin{align}
+\frac{1}{2cos(\theta_1)} &\Big [ e^{i\theta_1} \Big\{\sum_{k=1}^{\left(\lfloor\frac{t*5}{\pi}\rfloor-p\right)}\left(\frac{\chi_5(2,k)}{k^s}\right) +
+\sum_{i=\left(-p+1\right)}^{p}\frac{\frac{1}{2^{2p}} \left( 2^{2p}-\sum_{k=0}^{i+p-1}\binom{2p}{2p-k}\right)\chi_5(2,\lfloor\frac{t*5}{\pi}\rfloor+i)}{(\lfloor\frac{t*5}{\pi}\rfloor+i)^s} \Big \} \nonumber\\
+&+e^{-i\theta_1} \Big\{\sum_{k=1}^{\left(\lfloor\frac{t*5}{\pi}\rfloor-p\right)}\left(\frac{\chi_5(3,k)}{k^s}\right) +
+\sum_{i=\left(-p+1\right)}^{p}\frac{\frac{1}{2^{2p}} \left( 2^{2p}-\sum_{k=0}^{i+p-1}\binom{2p}{2p-k}\right)\chi_5(3,\lfloor\frac{t*5}{\pi}\rfloor+i)}{(\lfloor\frac{t*5}{\pi}\rfloor+i)^s} \Big \} \Big ] \label {eq:taperedtau-DirichletSeries} 
+\end{align}
+
+where 2p=128 (for 128 point tapering) which is used in this paper.
+
+As can be seen in figure 8, (i) in all rows there are non-trivial zeroes of the the precursor $\tau_-$ 5-periodic Davenport Heilbronn functions lying above and below the critical line real(s)=0.5, (ii) the red dots show the known values of the $\tau_-$ 5-periodic Davenport Heilbronn function and there is only good agreement in the positions of the precursor function zeroes for real(s) > 0.5 for the last two columns where all prime interactions are included, (iii) in rows 1 and 2 the non-trivial zeroes for real(s) < 0.5 has poorer agreement with the full function.
+
+Regarding the low-lying non-trivial zeroes, as with the Riemann Zeta precursors these zeroes in figure 8 are progressively forced closer to the critical line as the precursor functions becomes a better approximation of the full function.
+
+\newpage
+
+```{r DHf1zeroesevolution1, fig.show = "hold", fig.align = "center", fig.height=4.4}
+#known DHf1 zeroes in the critical strip
+xf1=c(  0.808517+1i*85.699348,0.650830+1i*114.163343,0.574356+1i*166.479306,
+        0.724258+1i*176.702461,.86953 + 240.4046*1i,.81955 + 320.8764*1i,
+        .76822 + 331.0502*1i,.62850 + 366.6409*1i,.81587 + 411.7967*1i,
+        .70882 + 440.4845*1i,.51591 + 520.9438*1i,.84695 + 531.2797*1i,
+        .72953 + 548.9067*1i,.78655 + 566.5097*1i,.58285 + 595.0233*1i,
+        .62825 + 611.7750*1i,.61076 + 646.9868*1i,.76059 + 657.1083*1i,
+        .78870 + 692.8924*1i,.77736 + 737.7669*1i,.85300 + 783.6530*1i,
+        .66855 + 811.7657*1i,.56194 + 847.4657*1i,.85610 + 857.2958*1i,
+        .68089 + 864.1180*1i,
+        .68843 + 892.1490*1i,.75935 + 921.1726*1i,.76249 + 983.7521*1i,
+        .69140 + 1012.019*1i,.69809 + 1018.795*1i,.58613 + 1029.004*1i,
+        .61106 + 1078.490*1i,.85462 + 1092.454*1i,.60577 + 1109.548*1i)
+
+
+par(mfrow=c(1,2))
+df_inpgrid=read.csv("/home/john/pari/DHf1dirichseries_truncEP_2primes_gridsearch_zeroes_testp5start_bothposneg_original_position_estimate.csv",header=FALSE,colClasses = "numeric")#,
+df_inpgrid=df_inpgrid[df_inpgrid$V25 < 4 ,]
+df_inpgrid=df_inpgrid[df_inpgrid$V5<1e-8 ,]
+df_inpgrid$round_t=round(df_inpgrid$V4,4)
+df_inpgrid$round_s=round(df_inpgrid$V3,4)
+df_check=aggregate(V4~V7,data=df_inpgrid,FUN=length)
+df_inpgrid=df_inpgrid[!duplicated(df_inpgrid[,c("round_t","round_s")]),]
+df_inpx=read.csv("/home/john/pari/DHf1dirichseries_truncEP_2primes_coarsegridsearch_zeroes_test1p5start50end10k_bothposneg_original_position_estimate.csv",header=FALSE,colClasses = "numeric")#,
+df_inpx=read.csv("/home/john/pari/DHf1dirichseries_truncEP_2primes_finegridsearch_zeroes_testp95start_bothposneg_original_position_estimate.csv",header=FALSE,colClasses = "numeric")#,
+df_inpextra=read.csv("/home/john/pari/DHf1dirichseries_truncEP_2primes_finegridsearch_zeroes_testp95start200end1000_bothposneg_original_position_estimate.csv",header=FALSE,colClasses = "numeric")#,
+df_inpx=rbind(df_inpx,df_inpextra)
+df_inpx=df_inpx[df_inpx$V25 < 4 ,]
+df_inpx=df_inpx[df_inpx$V5<1e-8 ,]
+df_inpx$round_t=round(df_inpx$V4,4)
+df_inpx$round_s=round(df_inpx$V3,4)
+df_check=aggregate(V4~V7,data=df_inpx,FUN=length)
+df_inpx=df_inpx[!duplicated(df_inpx[,c("round_t","round_s")]),]
+yspan=1.5*range(c(df_inpgrid$V3,df_inpx$V3));brks=seq(yspan[1],yspan[2],l=101);
+plot(df_inpgrid$V4,df_inpgrid$V3,xlim=c(0,max(df_inpgrid$V4)),ylim=yspan,
+     main="DH tau- precursor non-trivial zero positions for \n truncated finite EP about floor(t/pi*5) only including prime powers \n and all pairwise products with prime 2",xlab="imag(s)",ylab="real(s)",cex=0.5,cex.main=0.5,cex.lab=0.5,cex.axis=0.5);grid();
+abline(h=0.5,lty=3,lwd=2,col="cyan")
+points(df_inpx$V4,df_inpx$V3,col=1,cex=0.5)
+points(Im(xf1),Re(xf1),col=2,pch=20,cex=0.5)
+points(Im(xf1),1-Re(xf1),col=2,pch=20,cex=0.5)
+
+
+hist(c(df_inpgrid$V3,df_inpx$V3),breaks=brks,xlim=yspan,main="DH tau- precursor non-trivial zero real component distribution for \n truncated finite EP about floor(t/pi*5) only including prime powers \n and all pairwise products with prime 2",xlab="real(s)",cex.main=0.5,cex.lab=0.5,cex.axis=0.5);grid()
+abline(v=0.5,lty=3,lwd=2,col="cyan")
+abline(v=mean(df_inpgrid$V3),lty=2,lwd=2)
+
+df_inpgrid=read.csv("/home/john/pari/DHf1dirichseries_truncEP_sqsandallprimeprods_gridsearch_zeroes_testp5start_bothposneg_original_position_estimate.csv",header=FALSE,colClasses = "numeric")
+df_inpgrid=df_inpgrid[df_inpgrid$V25 < 4 ,]
+df_inpgrid=df_inpgrid[df_inpgrid$V5<1e-8 ,]
+df_inpgrid$round_t=round(df_inpgrid$V4,4)
+df_inpgrid$round_s=round(df_inpgrid$V3,4)
+df_check=aggregate(V4~V7,data=df_inpgrid,FUN=length)
+df_inpgrid=df_inpgrid[!duplicated(df_inpgrid[,c("round_t","round_s")]),]
+df_inpx=read.csv("/home/john/pari/DHf1dirichseries_truncEP_sqsandallprimeprods_finegridsearch_zeroes_testp95start_bothposneg_original_position_estimate.csv",header=FALSE,colClasses = "numeric")#,
+df_inpx=df_inpx[df_inpx$V25 < 4 ,]
+df_inpx=df_inpx[df_inpx$V5<1e-8 ,]
+df_inpx$round_t=round(df_inpx$V4,4)
+df_inpx$round_s=round(df_inpx$V3,4)
+df_check=aggregate(V4~V7,data=df_inpx,FUN=length)
+df_inpx=df_inpx[!duplicated(df_inpx[,c("round_t","round_s")]),]
+plot(df_inpgrid$V4,df_inpgrid$V3,xlim=c(0,max(df_inpgrid$V4)),ylim=yspan,
+     main="DH tau- precursor non-trivial zero positions for \n truncated finite EP about floor(t/pi*5) including prime powers \n and all pairwise products of prime powers",xlab="imag(s)",ylab="real(s)",cex=0.5,cex.main=0.5,cex.lab=0.5,cex.axis=0.5);grid();
+abline(h=0.5,lty=3,lwd=2,col="cyan")
+points(df_inpx$V4,df_inpx$V3,col=1,cex=0.5)
+points(Im(xf1),Re(xf1),col=2,pch=20,cex=0.5)
+points(Im(xf1),1-Re(xf1),col=2,pch=20,cex=0.5)
+
+
+hist(c(df_inpgrid$V3,df_inpx$V3),breaks=brks,xlim=yspan,main="DH tau- precursor non-trivial zero real component distribution for \n truncated finite EP about floor(t/pi*5) including prime powers \n and all pairwise products of prime powers",xlab="real(s)",cex.main=0.5,cex.lab=0.5,cex.axis=0.5);grid()
+abline(v=0.5,lty=3,lwd=2,col="cyan")
+abline(v=mean(df_inpgrid$V3),lty=2,lwd=2)
+
+
+df_inpgrid=read.csv("/home/john/pari/DHf1dirichseries_gridsearch_zeroes_testp5start_bothposneg_original_position_estimate.csv",header=FALSE,colClasses = "numeric")#,
+df_inpextra=read.csv("/home/john/pari/DHf1dirichseries_gridsearch_zeroes_testp5start1000end1250_bothposneg_original_position_estimate.csv",header=FALSE,colClasses = "numeric")#,
+df_inpgrid=rbind(df_inpgrid,df_inpextra)
+df_inpgrid=df_inpgrid[df_inpgrid$V25 < 4 ,]
+df_inpgrid=df_inpgrid[df_inpgrid$V5<1e-8 ,]
+df_inpgrid$round_t=round(df_inpgrid$V4,4)
+df_inpgrid$round_s=round(df_inpgrid$V3,4)
+df_check=aggregate(V4~V7,data=df_inpgrid,FUN=length)
+df_inpgrid=df_inpgrid[!duplicated(df_inpgrid[,c("round_t","round_s")]),]
+plot(df_inpgrid$V4,df_inpgrid$V3,ylim=yspan,
+     main="DH tau- precursor non-trivial zero positions for \n truncated finite Dirichlet Series about floor(t/pi*5) ",xlab="imag(s)",ylab="real(s)",cex=0.5,cex.main=0.5,cex.lab=0.5,cex.axis=0.5);grid();
+abline(h=0.5,lty=3,lwd=2,col="cyan")
+points(Im(xf1),Re(xf1),col=2,pch=20,cex=0.5)
+points(Im(xf1),1-Re(xf1),col=2,pch=20,cex=0.5)
+
+
+hist(df_inpgrid$V3,breaks=brks,xlim=yspan,main="non-trivial zero real component distribution for \n truncated DH tau- dirichlet series about N=floor(t/pi*5)  \n (equivalent to including all possible products of prime powers)",xlab="real(s)",cex.main=0.5,cex.lab=0.5,cex.axis=0.5);grid()
+abline(v=0.5,lty=3,lwd=2,col="cyan")
+abline(v=mean(df_inpgrid$V3),lty=2,lwd=2)
+
+
+df_inpgrid=read.csv("/home/john/pari/DHf1tapereddirichseries_finegridsearch_zeroes_testp5start_bothposneg_original_position_estimate.csv",header=FALSE,colClasses = "numeric")#,
+df_inpextra=read.csv("/home/john/pari/DHf1tapereddirichseries_finegridsearch_zeroes_testp5start1000end1250_bothposneg_original_position_estimate.csv",header=FALSE,colClasses = "numeric")#,
+df_inpgrid=rbind(df_inpgrid,df_inpextra)
+df_inpgrid=df_inpgrid[df_inpgrid$V25 < 4 ,]
+df_inpgrid=df_inpgrid[df_inpgrid$V5<1e-8 ,]
+df_inpgrid$round_t=round(df_inpgrid$V4,4)
+df_inpgrid$round_s=round(df_inpgrid$V3,4)
+df_check=aggregate(V4~V7,data=df_inpgrid,FUN=length)
+df_inpgrid=df_inpgrid[!duplicated(df_inpgrid[,c("round_t","round_s")]),]
+plot(df_inpgrid$V4,df_inpgrid$V3,xlim=c(0,max(df_inpgrid$V4)),ylim=yspan,
+     main="DH tau- non-trivial zero positions using \n tapered finite Dirichlet Series about floor(t/pi*5) ",xlab="imag(s)",ylab="real(s)",cex=0.5,cex.main=0.5,cex.lab=0.5,cex.axis=0.5);grid();
+abline(h=0.5,lty=3,lwd=2,col="cyan")
+points(Im(xf1),Re(xf1),col=2,pch=20,cex=0.5)
+points(Im(xf1),1-Re(xf1),col=2,pch=20,cex=0.5)
+
+hist(df_inpgrid$V3,breaks=brks,xlim=yspan,main="non-trivial zero real component distribution for \n 128 point truncated dirichlet series about N=floor(t/pi*5)  \n a good approximation for tau-(s) away from real axis",xlab="real(s)",cex.main=0.5,cex.lab=0.5,cex.axis=0.5);grid()
+abline(v=0.5,lty=3,lwd=2,col="cyan")
+abline(v=mean(df_inpgrid$V3),lty=2,lwd=2)
+
+
+```
+***Figure 8. The lefthand column contains the real and imaginary parts of the 5-periodic Davenport Heilbronn Tau- non-trivial zeroes identified by search in the interval t=c(5,1000) for (i) truncated EP only including prime powers and pairwise products of powers involving the prime 2, (ii) truncated EP only including all pairwise products of prime powers, (iii) finite dirichlet series (effectively including all products of prime powers and (iv) 128 point tapered finite dirichlet series (in the interval t=(45,1000)) which is a good approximation of $\tau_-(s)$ for t > 45. The righthand column displays the distribution of the real component for the zero positions of the four functions. Also included for reference are the known positions of $\tau_(s)$ critical strip non-trivial zeroes t=(5,1109) shown in red.***
+
+For completeness, figure 9 shows a larger interval view of the (approximate) pattern of non-trivial zeroes away from the critical line for both the $\tau+$ and $\tau-$ functions. The histograms in the second and fourth row highlight the distributions of the non-trivial zeroes lying off the critical line (by excluding the non-trivial zeroes of the 128 point tapered Dirichlet Series approximation lying within 0.4999 < real(s) < 0.5001) as the majority of non-trivial zeroes in the full 5-periodic davenport Heilbronn functions do lie on the critical line.  
+
+
+```{r Both2andf1longtermpatterns, fig.show = "hold", fig.align = "center", fig.height=3.4}
+
+par(mfrow=c(1,1))
+df_inpgrid=read.csv("/home/john/pari/DHf2taperedquick_gridsearch_zeroes_orgres1p5_start45end1e5_maxiter10_bothposandneg.csv",header=FALSE,colClasses = "numeric")#,
+df_inpextra=read.csv("/home/john/pari/DHf2taperedquick_gridsearch_zeroes_orgres1p_start45end1e5_maxiter10_bothposandneg.csv",header=FALSE,colClasses = "numeric")#,
+df_inpgrid=rbind(df_inpgrid,df_inpextra)
+df_inpextra=read.csv("/home/john/pari/DHf2taperedquick_gridsearch_zeroes_orgres0p5_start45end1e5_maxiter10.csv",header=FALSE,colClasses = "numeric")#,
+df_inpgrid=rbind(df_inpgrid,df_inpextra)
+df_inpgrid$round_t=round(df_inpgrid$V3,4)
+df_inpgrid$round_s=round(df_inpgrid$V2,4)
+df_inpgrid=df_inpgrid[!duplicated(df_inpgrid[,c("round_t","round_s")]),]
+plot(df_inpgrid$V3[df_inpgrid$V3 <= 5000],df_inpgrid$V2[df_inpgrid$V3 <= 5000],xlim=c(0,max(df_inpgrid$V3[df_inpgrid$V3 <= 5000])),
+     main="DH tau+ non-trivial zero positions using \n tapered finite Dirichlet Series about floor(t/pi*5) ",xlab="imag(s)",ylab="real(s)",cex=0.3,cex.main=0.5,cex.lab=0.5,cex.axis=0.5);grid();
+abline(h=0.5,lty=3,lwd=2,col="cyan")
+points(Im(xf2),Re(xf2),col=2,pch=20,cex=0.3)
+points(Im(xf2),1-Re(xf2),col=2,pch=20,cex=0.3)
+
+plot(df_inpgrid$V3[df_inpgrid$V3 >= 5000 & df_inpgrid$V3 <= 10000],df_inpgrid$V2[df_inpgrid$V3 >= 5000 & df_inpgrid$V3 <= 10000],
+     main="DH tau+ non-trivial zero positions using \n tapered finite Dirichlet Series about floor(t/pi*5) ",xlab="imag(s)",ylab="real(s)",cex=0.3,cex.main=0.5,cex.lab=0.5,cex.axis=0.5);grid();
+abline(h=0.5,lty=3,lwd=2,col="cyan")
+points(Im(xf1),Re(xf1),col=2,pch=20,cex=0.3)
+points(Im(xf1),1-Re(xf1),col=2,pch=20,cex=0.3)
+
+hist(df_inpgrid$V2[(df_inpgrid$V2 <= 0.4999 | df_inpgrid$V2 >= 0.5001)],breaks=151,main="non-trivial zero real component distribution EXCLUDING critical line zeroes for \n 128 point truncated dirichlet series about N=floor(t/pi*5)  \n a good approximation for tau+(s) away from real axis",xlab="real(s)",cex.main=0.5,cex.lab=0.5,cex.axis=0.5);grid()
+abline(v=0.5,lty=3,lwd=2,col="cyan")
+abline(v=mean(df_inpgrid$V3),lty=2,lwd=2)
+
+df_inpgrid=read.csv("/home/john/pari/DHf1taperedquick_gridsearch_zeroes_orgres1p_start45end1e5_maxiter10_bothposandneg.csv",header=FALSE,colClasses = "numeric")#,
+df_inpextra=read.csv("/home/john/pari/DHf1taperedquick_gridsearch_zeroes_orgres0p5_start45end1e5_maxiter10.csv",header=FALSE,colClasses = "numeric")#,
+df_inpgrid=rbind(df_inpgrid,df_inpextra)
+df_inpgrid$round_t=round(df_inpgrid$V3,4)
+df_inpgrid$round_s=round(df_inpgrid$V2,4)
+df_inpgrid=df_inpgrid[!duplicated(df_inpgrid[,c("round_t","round_s")]),]
+plot(df_inpgrid$V3[df_inpgrid$V3 <= 5000],df_inpgrid$V2[df_inpgrid$V3 <= 5000],xlim=c(0,max(df_inpgrid$V3[df_inpgrid$V3 <= 5000])),
+     main="DH tau- non-trivial zero positions using \n tapered finite Dirichlet Series about floor(t/pi*5) ",xlab="imag(s)",ylab="real(s)",cex=0.3,cex.main=0.5,cex.lab=0.5,cex.axis=0.5);grid();
+abline(h=0.5,lty=3,lwd=2,col="cyan")
+points(Im(xf1),Re(xf1),col=2,pch=20,cex=0.3)
+points(Im(xf1),1-Re(xf1),col=2,pch=20,cex=0.3)
+
+plot(df_inpgrid$V3[df_inpgrid$V3 >= 5000 & df_inpgrid$V3 <= 10000],df_inpgrid$V2[df_inpgrid$V3 >= 5000 & df_inpgrid$V3 <= 10000],
+     main="DH tau- non-trivial zero positions using \n tapered finite Dirichlet Series about floor(t/pi*5) ",xlab="imag(s)",ylab="real(s)",cex=0.3,cex.main=0.5,cex.lab=0.5,cex.axis=0.5);grid();
+abline(h=0.5,lty=3,lwd=2,col="cyan")
+points(Im(xf1),Re(xf1),col=2,pch=20,cex=0.3)
+points(Im(xf1),1-Re(xf1),col=2,pch=20,cex=0.3)
+
+hist(df_inpgrid$V2[(df_inpgrid$V2 <= 0.4999 | df_inpgrid$V2 >= 0.5001)],breaks=151,main="non-trivial zero real component distribution EXCLUDING critical line zeroes for \n 128 point truncated dirichlet series about N=floor(t/pi*5)  \n a good approximation for tau-(s) away from real axis",xlab="real(s)",cex.main=0.5,cex.lab=0.5,cex.axis=0.5);grid()
+abline(v=0.5,lty=3,lwd=2,col="cyan")
+abline(v=mean(df_inpgrid$V3),lty=2,lwd=2)
+
+```
+***Figure 9. Rows 1 and 2 (3 and 4) contain the real and imaginary scatterplot of the 5-periodic Davenport Heilbronn Tau+ (Tau-) non-trivial zeroes identified by quadrature search in the interval t=c(5,5000) for their 128 point tapered finite dirichlet series calculated at the second quiescent region (which are good approximations of $\tau_+(s)$ ($\tau_-(s)$) when t > 45. Rows 3 and 6 display the distribution of the real component for the zero positions of the two functions for t=c(45,10000+). Also included for reference are the previously published positions of $\tau_(s)+$, $\tau_(s)-$  non-trivial zeroes away from the critical line shown in red.***
+
+
+## Conclusions
+
+The precursor (finite Euler Product and finite Dirichlet Series) of the Riemann Zeta function calculated at the second quiescent region indicate that the low lying precursor function non-trivial zeroes are (no longer present or) forced to move to the critical line due to the higher symmetry and functional equation of the full L function. The approximate spread of these low lying precursor non-trivial zeroes in the finite Riemann Zeta Dirichlet Series calculated at the second quiescent region narrows approximately at the rate of $\sqrt{imag(\sigma+I*t)}$ (see figure 3) as the imaginary co-ordinate in the complex plane increases for the interval investigated. Also by calculating a standardised version of finite dirichlet series non-trivial zeroes real component  $\sigma_{std}= (\sigma-1/2)*\sqrt{t}+1/2$ gives a different perspective on which precursor non-trivial zeroes had the longest relative distance to affix onto the critical line for the full function. In this paper it is also shown graphically that two other L functions $L(\chi_5(2,.),s)$ and $L(\chi_5(3,.),s)$ have similar precursor non-trivial zero behaviour. 
+
+The precursor function behaviour for the two 5-periodic Davenport Heilbronn functions (arising from $L(\chi_5(2,.),s)$ and $L(\chi_5(3,.),s)$ functions) have similarities and differences between themselves. Both functions also have low-lying precursor non-trivial zeroes forced to the critical line as the symmetry and functional equation constraints more fully apply to precursor functions that more closely approximate the true function. The known non-trivial zeroes away from the critical line for $\tau+$ function have location close to the positions expected with the simplest two prime interaction (in the Euler Product) in agreement with the work by [3]. In contrast, the known non-trivial zeroes away from the critical line for $\tau-$ function require higher order prime interactions (in the Euler Product) to explain the observed positions. 
+
+The remaining difference between the two 5-periodic Davenport Heilbronn functions and the single L functions ($\zeta(s)$, $L(\chi_5(2,.),s)$ and $L(\chi_5(3,.),s)$) is that the two 5-periodic Davenport Heilbronn are linear combinations of L functions which impacts on the dirichlet coefficients of their corresponding Dirichlet Series.
+
+
+## References
+
+1. Spira, R. Mathematics of Computation, Volume 63, Number 208,
+October 1994, Pages 747-748
+
+2. Balanzario, E.P. and Sanchez-Ortiz, J. Mathematics of Computation,
+Volume 76, Number 260, October 2007, Pages 2045–2049
+
+3. E. Bombieri, A. Ghosh, “Around the Davenport–Heilbronn function”, Uspekhi Mat. Nauk, 66:2(398) (2011), 15–66; Russian Math. Surveys, 66:2 (2011), 221–270
+\url{https://doi.org/10.4213/rm9410} 
+IAS lecture \url{https://www.youtube.com/watch?v=-JUHypc2_9A}
+
+4. Vaughan R.C. "Zeros of Dirichlet series", Indagationes Mathematicae, Volume 26, Issue 5, December 2015, Pages 897-909
+\url{https://doi.org/10.1016/j.indag.2015.09.007}
+
+5. Riemann, Bernhard (1859). "$\ddot{U}$ber die Anzahl der Primzahlen unter einer gegebenen Gr$\ddot{o}$sse". Monatsberichte der Berliner Akademie.. In Gesammelte Werke, Teubner, Leipzig (1892), Reprinted by Dover, New York (1953).
+
+6. Edwards, H.M. (1974). Riemann's zeta function. Pure and Applied Mathematics 58. New York-London: Academic Press. ISBN 0-12-242750-0. Zbl 0315.10035.
+
+7. Titchmarsh, E.C. (1986) The Theory of the Riemann Zeta Function. 2nd Revised (Heath-Brown, D.R. ) Edition, Oxford University Press, Oxford.
+
+8. Martin, J.P.D. "A quiescent region about $\frac{t}{\pi}$ in the oscillating divergence of the Riemann Zeta Dirichlet Series inside the critical strip." (2021)
+http://dx.doi.org/10.6084/m9.figshare.14213516
+
+9. Martin, J.P.D. "Tapered end point weighting of finite Riemann Zeta Dirichlet Series using partial sums of binomial coefficients to produce higher order approximations of the Riemann Siegel Z function." (2021)
+http://dx.doi.org/10.6084/m9.figshare.14702760
+
+10. Martin, J.P.D. "Truncated Exponential Series based partial Euler Product calculations at quiescent regions of oscillatory divergence to produce approximations of the Riemann Siegel Z function." (2021)
+http://dx.doi.org/10.6084/m9.figshare.14842803
+
+11. Martin, J.P.D. "Examples of quiescent regions in the oscillatory divergence of several 1st degree L functions and their Davenport Heilbronn counterparts." (2021)
+https://dx.doi.org/10.6084/m9.figshare.14956053
+
+12. Katz, N. M., & Sarnak, P. (1999). Zeroes of Zeta functions and symmetry. Bulletin of the American Mathematical Society, 36(1), 1-26. https://doi.org/10.1090/s0273-0979-99-00766-1
+
+13. Newman, C. M. Fourier transforms with only real zeros. Proc. Amer. Math. Soc. 61 (1976), no. 2, 245-251 (1977).
+
+14. S. M. Gonek, C. P. Hughes, and J. P. Keating, A hybrid Euler-Hadamard product for the Riemann zeta function, Duke Math. J. 136 (2007), no. 3, 507–549. MR 2309173 
+
+15. S. M. Gonek, Finite Euler products and the Riemann hypothesis, Trans. Amer. Math. Soc. 364 (2012), no. 4, 2157–2191. MR 2869202, https://doi.org/10.1090/S0002-9947-2011-05546-7
+
+16. The PARI~Group, PARI/GP version 2.12.0, Univ. Bordeaux, 2018,
+\url{http://pari.math.u-bordeaux.fr/}.
+
+17. The LMFDB Collaboration, The L-functions and Modular Forms Database, \url{http://www.lmfdb.org}, 2019, [Online; accessed January 2020].
+
+18. R Core Team (2017). R: A language and environment for statistical computing.
+R Foundation for Statistical Computing, Vienna, Austria. \url{https://www.R-project.org/}.
+
+19. RStudio Team (2015). RStudio: Integrated Development for R. RStudio, Inc., Boston, MA \url{http://www.rstudio.com/}.
+
+20. M.V. Berry, "Riemann’s Saddle-point Method and the Riemann-Siegel Formula" Vol 35.1, pp. 69–78, The Legacy of Bernhard Riemann After One Hundred and Fifty Years, Advanced Lectures in Mathematics 2016
+
+21. J. Arias De Reyna, "High precision computation of Riemann's Zeta function by the Riemann-Siegel formula", Mathematics of Computation Vol 80, no. 274, 2011, Pages 995–1009
+
+
+
