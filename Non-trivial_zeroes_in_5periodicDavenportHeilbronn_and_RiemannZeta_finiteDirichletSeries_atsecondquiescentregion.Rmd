@@ -25,7 +25,7 @@ The real and imaginary components, of the two 5-periodic Davenport Heilbronn fun
 
 In this paper, the locations and categorisation of many of the non-trivial zeroes for the finite Dirichlet Series about the second quiescent region for the two 5-periodic Davenport Heilbronn functions [1-4] and the Riemann Zeta function [5-7] is presented. Since (i) the Dirichlet Series of the L functions are convergent in the upper half plane ($\sigma > 1$), (ii) the Euler-Maclaurin approximation for the L function in the lower half plane contains the finite Dirichlet Series as a leading term, and (iii) the finite Dirichlet Series calculations truncated about the second quiescent region provide useful first order approximations of the L function [8-11], the low-lying non-trivial zeroes of the finite Dirichlet Series truncated about the second quiescent region can be regarded as precursor locations of the L function non-trivial zeroes.
 
-Importantly, Bombieri and Ghosh [3] presented results for the $\tau_+$ 5-periodic Davenport Heilbronn that showed good agreement with the pattern and upper bound of non-trivial zeroes in the critical strip based on different calculations using the two prime product interaction present in the Euler Product (which is convergent for $\tau_+$ when $\sigma>1$ where many non-trivial zeroes are located). Therefore in this paper, using the truncated Euler Product about the second quiescent region estimates of precursor non-trvivial zero behaviour are also derived for (i) when only the prime powers and pairwise products of prime powers are included and (ii) when prime powers and only pairwise products of prime powers with powers of prime 2 are included. This heirarchy of two finite Euler Products and finite Dirichlet series (truncated about the second quiescent region) results compared to the full (functional equation) function behaviour provides a interesting categorisation of the evolution in the location of the non-trivial zeroes with respect to the critical line and the influence (or lack thereof) of two prime product interactions.  
+Importantly, Bombieri and Ghosh [3] presented results for the $\tau_+$ 5-periodic Davenport Heilbronn function that showed good agreement with the pattern and upper bound of non-trivial zeroes in the critical strip based on different calculations using the two prime product interaction present in the Euler Product (which is convergent for $\tau_+$ when $\sigma>1$ where many non-trivial zeroes are located). Therefore in this paper, using the truncated Euler Product about the second quiescent region estimates of precursor non-trivial zero behaviour are also derived for (i) when only the prime powers and pairwise products of prime powers are included and (ii) when prime powers and only pairwise products of prime powers with powers of prime 2 are included. This heirarchy of two finite Euler Products and finite Dirichlet series (truncated about the second quiescent region) results compared to the full (functional equation) function behaviour provides a interesting categorisation of the evolution in the location of the non-trivial zeroes with respect to the critical line and the influence (or lack thereof) of two prime product interactions.  
 
 
 This paper illustrates that contrary to the paraphrased description "that the non-trivial zeroes of the Riemann Zeta function are repelling each other along the critical line" [12] a more natural interpretation may be that (i) firstly the precursor non-trivial zeroes are (removed or) driven closer to the critical line arising from the interactions between the primes and that only non-zero Dirichlet coefficients are present in the Euler Product (Dirichlet Series) and (ii) the full Riemann Zeta function with the constraints of analytic continuation, convergence, functional equation and exhibiting s, 1-s symmetry will force most of the low-lying non-trivial zeroes onto the critical line. This paper's results are therefore more closely aligned with the alternate second paraphrased description "that if the riemann zeta hypotheisis is true it is only barely so" [13] in as much as the task of globalling driving each low-lying non-trivial zero of the finite Dirichlet Series (to satisfy analytic continuation, functional equation and symmetry constraints) exactly to the critical line is laborious.  
@@ -367,7 +367,7 @@ As a counterexample to finite Euler product and Dirichlet Series non-trivial zer
 
 Secondly, figures 6 and 7 shows the individual $L(\chi_5(3,.),s)$ and $L(\chi_5(2,.),s)$ function behaviour which as yet have no known non-trivial zeroes away from critical line. So these source L functions behave similarly to the Riemann Zeta behaviour shown in figure 1.
 
-Thridly, figure 8 illustrates the low-lying zeroes behaviour of precursor functions of the $\tau -$ 5-periodic Davenport Heilbronn function. 
+Thirdly, figure 8 illustrates the low-lying zeroes behaviour of precursor functions of the $\tau -$ 5-periodic Davenport Heilbronn function. 
 
 Given the L-function form of $\tau_+$ ($f_2(s)$) 5-periodic Davenport Heilbronn function
 
@@ -549,9 +549,9 @@ abline(v=mean(df_inpgrid$V3),lty=2,lwd=2)
 ```
 ***Figure 5. The lefthand column contains the real and imaginary parts of the 5-periodic Davenport Heilbronn Tau+ non-trivial zeroes identified by search in the interval t=c(5,1000) for (i) truncated EP only including prime powers and pairwise products of powers involving the prime 2, (ii) truncated EP only including all pairwise products of prime powers, (iii) finite dirichlet series (effectively including all products of prime powers and (iv) 128 point tapered finite dirichlet series (in the interval t=(45,1000)) which is a good approximation of $\tau_+(s)$ for t > 45. The righthand column displays the distribution of the real component for the zero positions of the four functions. Also included for reference are the known positions of $\tau_+(s)$ critical strip non-trivial zeroes t=(8.9,120) shown in red.***
 
-A straightforward interpretation from the sequence of behaviour in figure 5 is that the two prime interaction in the Euler Product of the $\tau_+$ function  is sufficient to explain the presence of the non-trivial zeroes off the critical line and the upper bound of those zeroes. This is in agreement with Bombieri and Ghosh, row 1 of figure 2 however also suggests that solely the prime power pairwise product interactions with powers of prime 2 are sufficient to explain the dominant contribution to the location of the non-trivial zeroes closest to the upper (lower) bound. 
+A straightforward interpretation from the sequence of behaviour in figure 5 is that the two prime interaction in the Euler Product of the $\tau_+$ function  is sufficient to explain the presence of the non-trivial zeroes off the critical line and the upper bound of those zeroes. This is in agreement with Bombieri and Ghosh [3], row 1 of figure 2 however also suggests that solely the prime power pairwise product interactions with powers of prime 2 are sufficient to explain the dominant contribution to the location of the non-trivial zeroes closest to the upper (lower) bound. 
 
-This suggests that for the critical strip non-trivial zeroes in $\tau_+$ the prime power product interactions with powers of prime 2 are not being cancelled out by other prime power pairwise product interactions. To investigate whether this is a property of the underlying L functions and/or because the $\tau_+$ function a linear combination of L functions, the individual precursor behaviour for the underlying L functions L53 and L52 of the $\tau_+$ function are shown in figures 6 & 7. 
+This suggests that for the critical strip non-trivial zeroes in $\tau_+$ the prime power product interactions with powers of prime 2 are not being cancelled out by other prime power pairwise product interactions. To investigate whether this is a property of the underlying L functions and/or because the $\tau_+$ function is a linear combination of L functions, the individual precursor behaviour for the underlying L functions L53 and L52 of the $\tau_+$ function are shown in figures 6 & 7. 
 
 As no surprise, given it is already known (for currently observed values of imag(s)) that degree 1 L functions do not exhibit non-trivial zeroes off the critical line, figure 6 & 7 behaviour is similar to Riemann Zeta precursor behaviour shown in figure 1. Hence it is the linear combination of the two L functions that is causing the critical strip non-trivial zeroes in $\tau_+$ function. 
 
@@ -896,7 +896,7 @@ abline(v=mean(df_inpgrid$V3),lty=2,lwd=2)
 ```
 ***Figure 8. The lefthand column contains the real and imaginary parts of the 5-periodic Davenport Heilbronn Tau- non-trivial zeroes identified by search in the interval t=c(5,1000) for (i) truncated EP only including prime powers and pairwise products of powers involving the prime 2, (ii) truncated EP only including all pairwise products of prime powers, (iii) finite dirichlet series (effectively including all products of prime powers and (iv) 128 point tapered finite dirichlet series (in the interval t=(45,1000)) which is a good approximation of $\tau_-(s)$ for t > 45. The righthand column displays the distribution of the real component for the zero positions of the four functions. Also included for reference are the known positions of $\tau_(s)$ critical strip non-trivial zeroes t=(5,1109) shown in red.***
 
-For completeness, figure 9 shows a larger interval view of the (approximate) pattern of non-trivial zeroes away from the critical line for both the $\tau+$ and $\tau-$ functions. The histograms in the second and fourth row highlight the distributions of the non-trivial zeroes lying off the critical line (by excluding the non-trivial zeroes of the 128 point tapered Dirichlet Series approximation lying within 0.4999 < real(s) < 0.5001) as the majority of non-trivial zeroes in the full 5-periodic davenport Heilbronn functions do lie on the critical line.  
+For completeness, figure 9 shows a larger interval view of the (approximate) pattern of non-trivial zeroes away from the critical line for both the $\tau+$ and $\tau-$ functions. The histograms in the third and sixth row highlight the distributions of the non-trivial zeroes lying off the critical line (by excluding the non-trivial zeroes of the 128 point tapered Dirichlet Series approximation lying within 0.4999 < real(s) < 0.5001) as the majority of non-trivial zeroes in the full 5-periodic davenport Heilbronn functions do lie on the critical line.  
 
 
 ```{r Both2andf1longtermpatterns, fig.show = "hold", fig.align = "center", fig.height=3.4}
@@ -922,6 +922,12 @@ abline(h=0.5,lty=3,lwd=2,col="cyan")
 points(Im(xf1),Re(xf1),col=2,pch=20,cex=0.3)
 points(Im(xf1),1-Re(xf1),col=2,pch=20,cex=0.3)
 
+# plot(df_inpgrid$V3[df_inpgrid$V3 >= 10000 & df_inpgrid$V3 <= 15000],df_inpgrid$V2[df_inpgrid$V3 >= 10000 & df_inpgrid$V3 <= 15000],
+#      main="DH tau+ non-trivial zero positions using \n tapered finite Dirichlet Series about floor(t/pi*5) ",xlab="imag(s)",ylab="real(s)",cex=0.3,cex.main=0.5,cex.lab=0.5,cex.axis=0.5);grid();
+# abline(h=0.5,lty=3,lwd=2,col="cyan")
+# points(Im(xf1),Re(xf1),col=2,pch=20,cex=0.3)
+# points(Im(xf1),1-Re(xf1),col=2,pch=20,cex=0.3)
+
 hist(df_inpgrid$V2[(df_inpgrid$V2 <= 0.4999 | df_inpgrid$V2 >= 0.5001)],breaks=151,main="non-trivial zero real component distribution EXCLUDING critical line zeroes for \n 128 point truncated dirichlet series about N=floor(t/pi*5)  \n a good approximation for tau+(s) away from real axis",xlab="real(s)",cex.main=0.5,cex.lab=0.5,cex.axis=0.5);grid()
 abline(v=0.5,lty=3,lwd=2,col="cyan")
 abline(v=mean(df_inpgrid$V3),lty=2,lwd=2)
@@ -943,6 +949,12 @@ plot(df_inpgrid$V3[df_inpgrid$V3 >= 5000 & df_inpgrid$V3 <= 10000],df_inpgrid$V2
 abline(h=0.5,lty=3,lwd=2,col="cyan")
 points(Im(xf1),Re(xf1),col=2,pch=20,cex=0.3)
 points(Im(xf1),1-Re(xf1),col=2,pch=20,cex=0.3)
+
+# plot(df_inpgrid$V3[df_inpgrid$V3 >= 10000 & df_inpgrid$V3 <= 15000],df_inpgrid$V2[df_inpgrid$V3 >= 10000 & df_inpgrid$V3 <= 15000],
+#      main="DH tau- non-trivial zero positions using \n tapered finite Dirichlet Series about floor(t/pi*5) ",xlab="imag(s)",ylab="real(s)",cex=0.3,cex.main=0.5,cex.lab=0.5,cex.axis=0.5);grid();
+# abline(h=0.5,lty=3,lwd=2,col="cyan")
+# points(Im(xf1),Re(xf1),col=2,pch=20,cex=0.3)
+# points(Im(xf1),1-Re(xf1),col=2,pch=20,cex=0.3)
 
 hist(df_inpgrid$V2[(df_inpgrid$V2 <= 0.4999 | df_inpgrid$V2 >= 0.5001)],breaks=151,main="non-trivial zero real component distribution EXCLUDING critical line zeroes for \n 128 point truncated dirichlet series about N=floor(t/pi*5)  \n a good approximation for tau-(s) away from real axis",xlab="real(s)",cex.main=0.5,cex.lab=0.5,cex.axis=0.5);grid()
 abline(v=0.5,lty=3,lwd=2,col="cyan")
