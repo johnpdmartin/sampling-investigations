@@ -1,0 +1,651 @@
+---
+title: "The behaviour of non-trivial zeroes in tapered finite Dirichlet Series about the second  quiescent region with lower symmetry dirichlet coefficients near bad Gram points."
+author: "John Martin"
+date: \today
+header-includes:  \usepackage{xcolor}
+output:
+  pdf_document:
+    fig_crop: no
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+
+```
+
+
+
+##Executive Summary DRAFT
+
+An investigation of the non-trivial zero behaviour for simple perturbations of the dirichlet coefficients of tapered finite Dirichlet Series provides a useful approximation to functions that exhibit lower symmetry (compared to the Riemann Zeta functions and the two 5-periodic Davenport Heilbronn functions) and distinctive non-trivial zero behaviour is illustrated near bad gram points and Rosser rule violations (associated with their high symmetry function counterpart).  
+
+##Introduction
+
+The tapered finite Dirichlet Series truncated about the second quiescent region  in the final plateau of the oscillatory divergence of such dirichlet series provides a useful approximation of the mean value of the infinite series sum (i.e., averaging out the oscillatory divergence) [1-4]. Such an series approximation function about the second quiescent region provides access to a wider range of complex plane functions that encompasses (i) the high symmetry use case functions such as L functions [5-9] and Davenport Heilbronn functions [10-13] which have functional equation behaviour and (ii) lower symmetry functions. With lower symmetry dirichlet series functions, functional equation behaviour is not necessarily present.
+
+\begin{itemize}
+\item L Series where the location of the second quiescent region is given by $N=(\frac{t}{\pi})^d\cdot N_c$  where $N_c$ and d are the conductor and degree of the related L function [1-4], 
+\item power series via the Box-Cox transformation for 1st degree L Series where $N=\left(\frac{t\cdot N_C}{\pi}\right)^{\frac{1}{(1-\lambda_{boxcox})}}$ based on the conductor value $N_C$ of the L function and the Box-Cox transformation parameter $\lambda_{boxcox}$ applied to the L series [14] and 
+\item Hurwitz Zeta functions where for $0 < a < \frac{t}{2\pi} \in \mathbb{R}$ the location of the second quiescent regions in the Hurwitz Zeta finite Dirichlet Series [15] $\sum\limits_{n=0}^{(N-1)} \frac{1}{(n+a)^s}$ is given by $N_{\lfloor\frac{t}{\pi}\rfloor,\zeta(s,a)} \mapsto \frac{t}{\pi}+1-a$, where $s=(\sigma+I*t)$, a is the Hurwitz Zeta function shift parameter and $N_C$ is the conductor value of the Riemann Zeta L function.
+\end{itemize}
+
+In this paper, the non-trivial zero behaviour of two perturbations of the dirichlet coefficients of L series that do not change the location of the second quiescent region are investigated. The particular perturbations that are explored highlight the lower symmetry behaviour of non-trivial zeroes nearby bad gram points and Rosser rule violations.
+
+## Two simple perturbations of the Riemann Zeta Dirichlet Series that maintain the location of the second quiescent region $N=\frac{t}{\pi}$
+
+Starting from the tapered finite Dirichlet Series about the second quiescent region $N=\frac{t}{\pi}$ which is a useful approximation of the Riemann Zeta function away from the real axis.
+
+\begin{align}
+\zeta(s) \approx \sum_{k=1}^{\left(\lfloor\frac{t}{\pi}\rfloor-p\right)}\left(\frac{1}{k^s}\right) +
+\sum_{i=\left(-p+1\right)}^{p}\frac{\frac{1}{2^{2p}} \left( 2^{2p}-\sum_{k=0}^{i+p-1}\binom{2p}{2p-k}\right)}{(\lfloor\frac{t}{\pi}\rfloor+i)^s} \qquad \text{as } t \rightarrow \infty \label {eq:taperedDiricihletSeries} 
+\end{align}
+
+where 2p=128 (for 128 point tapering) which is used in this paper.
+
+The two simple perturbations investigated for the Riemann Zeta Dirichlet Series, in the region $0.005\le \alpha \le 1$ are 
+
+\begin{align}
+1 + \alpha \cdot \left [ \sum_{k=2}^{\left(\lfloor\frac{t}{\pi}\rfloor-p\right)}\left(\frac{1}{k^s}\right) +
+\sum_{i=\left(-p+1\right)}^{p}\frac{\frac{1}{2^{2p}} \left( 2^{2p}-\sum_{k=0}^{i+p-1}\binom{2p}{2p-k}\right)}{(\lfloor\frac{t}{\pi}\rfloor+i)^s} \right ]  \qquad \text{as } t \rightarrow \infty \label {eq:pertubationONEtaperedDiricihletSeries} 
+\end{align}
+
+\begin{align}
+\alpha + \left [ \sum_{k=2}^{\left(\lfloor\frac{t}{\pi}\rfloor-p\right)}\left(\frac{1}{k^s}\right) +
+\sum_{i=\left(-p+1\right)}^{p}\frac{\frac{1}{2^{2p}} \left( 2^{2p}-\sum_{k=0}^{i+p-1}\binom{2p}{2p-k}\right)}{(\lfloor\frac{t}{\pi}\rfloor+i)^s} \right ]  \qquad \text{as } t \rightarrow \infty \label {eq:pertubationTWOtaperedDiricihletSeries} 
+\end{align}
+
+
+where the constant perturbation $\alpha$ lowers the symmetry of the L series but does not change the location of the second quiescent region. In particular, the lowered symmetry of the perturbed dirichlet series results in distinctive non-trivial zero behaviour occurring nearby bad gram points [16] and Rosser Rule violations [17].
+
+
+
+## Results
+
+All the calculations of non-trivial zero locations for the tapered finite dirichlet series were performed using the pari-gp language [18] as a solution to second order taylor series in real(s) and imag(s) that produces iterative fourth order polynomials for imag(t) and then real(s) respectively. For information on the index of bad gram points [16] and Rosser rule violations [17] for the Riemann Zeta function the On-Line Encyclopedia of Integer Sequences [19] was accessed and used in conjunction with the searchable zeta zeroes list in https://www.lmfdb.org [9] to identify starting values for pari-gp calculations. The R language [20] and R-studio IDE [21] were used to piece the pari-gp based results together and produce graphs.
+
+Figures 1-5, illustrate the behaviour of non-trivial zeroes lying inside the critical strip or nearby when the symmetry of the Riemann Zeta dirichlet series is lowered due to the perturbation of the dirichlet coefficients described in equations (2) and (3). The magnitude of the perturbation (from the Riemann Zeta dirichlet series) decreases going from figure 1 to figure 5 as $\alpha=1$ results in the same dirichlet coefficients as the Riemann Zeta dirichlet series. The interval displayed t=(211,1010) is at the lower boundary of the imaginary axis when 128 point tapering of the (Riemann Zeta) dirichlet series becomes feasible.  
+
+Figure 1 displays the low-lying non-trivial zeroes when $\alpha=0.1$ for equations (2) and (3). For equation (3) (the top graph in blue) in the interval t=(211,1010) the non-trivial zeroes are spread out throughout the critical strip ($0<\sigma<1$) and above covering $0<\sigma < 3.5$. The pattern of dense zeroes within the critical strip and a sparser but psuedo-repetitive distribution above the critical strip is reminescent of $\tau +$ Davenport-Heilbronn non-trivial zeroes [11,12,22] off the critical line but lacking any non-trivial zeroes below the critical strip. For equation (2), (the bottom graph in black) the pattern of non-trivial zeroes exhibits curvature dependent on imag(s) and the values for t=(211,1010) cover $-0.1<\sigma<0.2$. The number of non-trivial zeroes under equation (2) in this interval is also reduced from the number observed for the Riemann Zeta function.
+
+Figure 2 displays the low-lying non-trivial zeroes when $\alpha=0.3$ for equations (2) and (3). For equation (3) (the top graph in blue) in the interval t=(211,1010) the non-trivial zeroes are less spread out both throughout the critical strip ($0<\sigma<1$) and above covering $0<\sigma < 2$. The density of the pattern of non-trivial zeroes above the critical strip appears more uniform. For equation (2), (the bottom graph in black) the pattern of non-trivial zeroes exhibits less curvature dependent on imag(s) but with a more uniform spread of 0.3 covering $0<\sigma<0.4$ (due to the curvature). The number of non-trivial zeroes under equation (2) under this perturbation has grown closer to the number observed for the Riemann Zeta function.
+
+Figure 3 displays the low-lying non-trivial zeroes when $\alpha=0.5$ for equations (2) and (3). For equation (3) (the top graph in blue) in the interval t=(211,1010) the non-trivial zeroes again are less spread out covering $0.35<\sigma < 1.4$ with the densest region about $\sigma\approx0.6$. For equation (2), (the bottom graph in black) the pattern of non-trivial zeroes exhibits even less curvature dependent on imag(s) with a relatively narrower uniform spread of 0.2 covering $0.2<\sigma<0.5$ (due to the curvature). The number of non-trivial zeroes under equation (2) under this perturbation is nominally equivalent to the number observed for the Riemann Zeta function.
+
+Figure 4 displays the low-lying non-trivial zeroes when $\alpha=0.7$ for equations (2) and (3) (using a similar vertical scale as figure 3 for emphasis of the contraction of the spread of the non-trivial zeroes as the perturbation reduces in magnitude). For equation (3) (the top graph in blue) in the interval t=(211,1010) the non-trivial zeroes again are less spread out covering $0.4<\sigma < 0.9$ with the densest region about $\sigma\approx0.55$. For equation (2), (the bottom graph in black) the pattern of non-trivial zeroes exhibits only a minor drop for lower imag(s) with a narrower uniform spread of 0.15 covering $0.3<\sigma<0.5$ (due to the curvature). It can be observed that a small proportion (of equation (2) based) non-trivial zeroes have real(s)>0.5.
+
+Figure 5 displays the low-lying non-trivial zeroes when $\alpha=0.9$ for equations (2) and (3). For equation (3) (the top graph in blue) in the interval t=(211,1010) the non-trivial zeroes are much less spread out covering $0.45<\sigma < 0.6$ with the densest region about $\sigma\approx0.525$. Only a few (equation (3) based) non-trivial zeroes have real(s)<0.5. For equation (2), (the bottom graph in black) the pattern of non-trivial zeroes now exhibits a narrow flat uniform spread of 0.05 covering $0.45<\sigma<0.5$ (due to the curvature). It can be observed that only a few (equation (2) based) non-trivial zeroes have real(s)>0.5. The number of low-lying non-trivial zeroes for each of these two weak perturbations is equivalent to the number of known Riemann Zeta non-trivial zeroes in the displayed interval t=(211,1010).
+
+As further acknowledgement of the complexity of assessing whether the Riemann Hypothesis is true, the behaviour of equation (2) non-trivial zeroes as the perturbation weakens is a case in point. It would have been somewhat convenient if the equation (2) results in figures 1-5 simply were a set of non-trivial zeroes that had real(s)<0.5 but were montonically getting closer to real(s)=0.5 and had the same number of zeroes as Riemann Zeta function until $\alpha=1$. However, a few of the non-trivial zeroes under equation (2) overshoot the real(s)=0.5 critical line as $\alpha \rightarrow 1$ so a more complex theory is required to justify why overshoot and recovery to real(s)=0.5 should always occur (if it does).
+
+As part of understanding which non-trivial zeroes overshoot as $\alpha \rightarrow 1$ figures 6-12 (mostly using equation (2) perturbation) illustrate the relationship with overshooting non-trivial zeroes and bad gram points and Rosser rule violations.
+
+
+
+\newpage
+
+```{r impactofdirichletcoefficientmagnitude_p1, fig.show = "hold", fig.align = "center", fig.height=6.4}
+ 
+par(mfrow=c(2,1))
+df_p1=read.csv("/home/john/pari/taperedzetaapprox_dirichletcoef_1_0p1_gridsearch_zeroes_orgresp5_start211end1010.csv",header=FALSE,colClasses = "numeric")
+#list.files("/home/john/pari")
+df_p1$round_t=round(df_p1$V3,4)
+df_p1$round_s=round(df_p1$V2,4)
+df_p1=df_p1[!duplicated(df_p1[,c("round_t","round_s")]),]
+df_p1=df_p1[df_p1$V3 > 64*pi/1+10,]
+
+df_p1_1=read.csv("/home/john/pari/taperedzetaapprox_dirichletcoef_0p1_1primes_gridsearch_zeroes_orgresp5_start211end1010.csv",header=FALSE,colClasses = "numeric")
+#list.files("/home/john/pari")
+df_p1_1$round_t=round(df_p1_1$V3,4)
+df_p1_1$round_s=round(df_p1_1$V2,4)
+df_p1_1=df_p1_1[!duplicated(df_p1_1[,c("round_t","round_s")]),]
+df_p1_1=df_p1_1[df_p1_1$V3 > 64*pi/1+10,]
+
+plot(df_p1_1$V3,(df_p1_1$V2-.5*0)/1,xlim=c(0,max(df_p1_1$V3,1000)),
+     #ylim=yspan,
+     col="darkblue",cex=0.5,
+     main="non-trivial zero positions as dirichlet coefficients approach zeta function \n using tapered finite Dirichlet Series about floor(t/pi*1) ",xlab="imag(s)",ylab="real(s)",
+     cex.main=0.8);grid()
+abline(h=(0.5-.5*0)/1,lty=3,lwd=2,col="cyan")
+legend(x="topleft",legend=c(paste0("dirichlet series \n",expression(0.1+1/2^s+1/3^s+...)),"non-trivial zeroes of series"),col=c(0,"darkblue"),lty=c(-1,-1),pch=c(-1,1),cex=0.5,bty="n")
+plot(df_p1$V3,(df_p1$V2-.5*0)/1,xlim=c(0,max(df_p1$V3,1000)),
+     #ylim=yspan,
+     main="non-trivial zero positions as dirichlet coefficients approach zeta function \n using tapered finite Dirichlet Series about floor(t/pi*1) ",xlab="imag(s)",ylab="real(s)",cex=0.5,cex.main=0.8);grid();
+abline(h=(0.5-.5*0)/1,lty=3,lwd=2,col="cyan")
+legend(x="topleft",legend=c(paste0("dirichlet series \n",expression(1+0.1*(1/2^s+1/3^s+...))),"non-trivial zeroes of series"),col=c(0,1),lty=c(-1,-1),pch=c(-1,1),cex=0.5,bty="n")
+
+```
+***Figure 1. Comparison of the low-lying non-trivial zero co-ordinates in the interval t=(211,1010) under two perturbations  ($\alpha=0.1$) of the tapered finite dirichlet series by (top blue) the leading term; 0.1 + ( 1/$2^s$ + 1/$3^s$ + 1/$4^s$ + ... + tapered terms ) and (bottom black) the 2nd, 3rd, 4th, ... etc dirichlet coefficients terms;  1 + 0.1 \* ( 1/$2^s$ + 1/$3^s$ + 1/$4^s$ + ... + tapered terms ). ***
+
+\newpage
+
+```{r impactofdirichletcoefficientmagnitude_p3, fig.show = "hold", fig.align = "center", fig.height=6.4}
+ 
+par(mfrow=c(2,1))
+df_p3=read.csv("/home/john/pari/taperedzetaapprox_dirichletcoef_1_0p3_gridsearch_zeroes_orgresp5_start211end1010.csv",header=FALSE,colClasses = "numeric")
+#list.files("/home/john/pari")
+df_p3$round_t=round(df_p3$V3,4)
+df_p3$round_s=round(df_p3$V2,4)
+df_p3=df_p3[!duplicated(df_p3[,c("round_t","round_s")]),]
+df_p3=df_p3[df_p3$V3 > 64*pi/1+10,]
+
+df_p3_1=read.csv("/home/john/pari/taperedzetaapprox_dirichletcoef_0p3_1primes_gridsearch_zeroes_orgresp5_start211end1010.csv",header=FALSE,colClasses = "numeric")
+#list.files("/home/john/pari")
+df_p3_1$round_t=round(df_p3_1$V3,4)
+df_p3_1$round_s=round(df_p3_1$V2,4)
+df_p3_1=df_p3_1[!duplicated(df_p3_1[,c("round_t","round_s")]),]
+df_p3_1=df_p3_1[df_p3_1$V3 > 64*pi/1+10,]
+
+plot(df_p3_1$V3,(df_p3_1$V2-.5*0)/1,xlim=c(0,max(df_p3_1$V3,1000)),
+     #ylim=yspan,
+     col="darkblue",cex=0.5,
+     main="non-trivial zero positions as dirichlet coefficients approach zeta function \n using tapered finite Dirichlet Series about floor(t/pi*1) ",xlab="imag(s)",ylab="real(s)",
+     cex.main=0.8);grid()
+abline(h=(0.5-.5*0)/1,lty=3,lwd=2,col="cyan")
+legend(x="topleft",legend=c(paste0("dirichlet series \n",expression(0.3+1/2^s+1/3^s+...)),"non-trivial zeroes of series"),col=c(0,"darkblue"),lty=c(-1,-1),pch=c(-1,1),cex=0.5,bty="n")
+plot(df_p3$V3,(df_p3$V2-.5*0)/1,xlim=c(0,max(df_p3$V3,1000)),
+     #ylim=yspan,
+     main="non-trivial zero positions as dirichlet coefficients approach zeta function \n using tapered finite Dirichlet Series about floor(t/pi*1) ",xlab="imag(s)",ylab="real(s)",cex=0.5,cex.main=0.8);grid();
+abline(h=(0.5-.5*0)/1,lty=3,lwd=2,col="cyan")
+legend(x="topleft",legend=c(paste0("dirichlet series \n",expression(1+0.3*(1/2^s+1/3^s+...))),"non-trivial zeroes of series"),col=c(0,1),lty=c(-1,-1),pch=c(-1,1),cex=0.5,bty="n")
+
+
+
+```
+
+***Figure 2. Comparison of the low-lying non-trivial zero co-ordinates in the interval t=(211,1010) under two perturbations  ($\alpha=0.3$) of the tapered finite dirichlet series by (top blue) the leading term; 0.3 + ( 1/$2^s$ + 1/$3^s$ + 1/$4^s$ + ... + tapered terms ) and (bottom black) the 2nd, 3rd, 4th, ... etc dirichlet coefficients terms;  1 + 0.3 \* ( 1/$2^s$ + 1/$3^s$ + 1/$4^s$ + ... + tapered terms ). ***
+
+
+\newpage
+
+```{r impactofdirichletcoefficientmagnitude_p5, fig.show = "hold", fig.align = "center", fig.height=6.4}
+ 
+par(mfrow=c(2,1))
+df_p5=read.csv("/home/john/pari/taperedzetaapprox_dirichletcoef_1_0p5_gridsearch_zeroes_orgresp5_start211end1010.csv",header=FALSE,colClasses = "numeric")
+#list.files("/home/john/pari")
+df_p5$round_t=round(df_p5$V3,4)
+df_p5$round_s=round(df_p5$V2,4)
+df_p5=df_p5[!duplicated(df_p5[,c("round_t","round_s")]),]
+df_p5=df_p5[df_p5$V3 > 64*pi/1+10,]
+
+df_p5_1=read.csv("/home/john/pari/taperedzetaapprox_dirichletcoef_0p5_1primes_gridsearch_zeroes_orgresp5_start211end1010.csv",header=FALSE,colClasses = "numeric")
+#list.files("/home/john/pari")
+df_p5_1$round_t=round(df_p5_1$V3,4)
+df_p5_1$round_s=round(df_p5_1$V2,4)
+df_p5_1=df_p5_1[!duplicated(df_p5_1[,c("round_t","round_s")]),]
+df_p5_1=df_p5_1[df_p5_1$V3 > 64*pi/1+10,]
+
+plot(df_p5_1$V3,(df_p5_1$V2-.5*0)/1,xlim=c(0,max(df_p5_1$V3,1000)),
+     ylim=range(c((df_p5_1$V2-.5*0)/1,0.3,1.5)),
+     col="darkblue",cex=0.5,
+     main="non-trivial zero positions as dirichlet coefficients approach zeta function \n using tapered finite Dirichlet Series about floor(t/pi*1) ",xlab="imag(s)",ylab="real(s)",
+     cex.main=0.8);grid()
+abline(h=(0.5-.5*0)/1,lty=3,lwd=2,col="cyan")
+legend(x="topleft",legend=c(paste0("dirichlet series \n",expression(0.5+1/2^s+1/3^s+...)),"non-trivial zeroes of series"),col=c(0,"darkblue"),lty=c(-1,-1),pch=c(-1,1),cex=0.5,bty="n")
+plot(df_p5$V3,(df_p5$V2-.5*0)/1,xlim=c(0,max(df_p5$V3,1000)),
+     ylim=range(c((df_p5$V2-.5*0)/1,0.1,0.55)),
+     main="non-trivial zero positions as dirichlet coefficients approach zeta function \n using tapered finite Dirichlet Series about floor(t/pi*1) ",xlab="imag(s)",ylab="real(s)",cex=0.5,cex.main=0.8);grid();
+abline(h=(0.5-.5*0)/1,lty=3,lwd=2,col="cyan")
+legend(x="topleft",legend=c(paste0("dirichlet series \n",expression(1+0.5*(1/2^s+1/3^s+...))),"non-trivial zeroes of series"),col=c(0,1),lty=c(-1,-1),pch=c(-1,1),cex=0.5,bty="n")
+
+
+
+```
+
+***Figure 3. Comparison of the low-lying non-trivial zero co-ordinates in the interval t=(211,1010) under two perturbations  ($\alpha=0.5$) of the tapered finite dirichlet series by (top blue) the leading term; 0.5 + ( 1/$2^s$ + 1/$3^s$ + 1/$4^s$ + ... + tapered terms ) and (bottom black) the 2nd, 3rd, 4th, ... etc dirichlet coefficients terms;  1 + 0.5 \* ( 1/$2^s$ + 1/$3^s$ + 1/$4^s$ + ... + tapered terms ). ***
+
+
+\newpage
+
+```{r impactofdirichletcoefficientmagnitude_p7, fig.show = "hold", fig.align = "center", fig.height=6.4}
+ 
+par(mfrow=c(2,1))
+df_p7=read.csv("/home/john/pari/taperedzetaapprox_dirichletcoef_1_0p7_gridsearch_zeroes_orgresp5_start211end1010.csv",header=FALSE,colClasses = "numeric")
+#list.files("/home/john/pari")
+df_p7$round_t=round(df_p7$V3,4)
+df_p7$round_s=round(df_p7$V2,4)
+df_p7=df_p7[!duplicated(df_p7[,c("round_t","round_s")]),]
+df_p7=df_p7[df_p7$V3 > 64*pi/1+10,]
+
+df_p7_1=read.csv("/home/john/pari/taperedzetaapprox_dirichletcoef_0p7_1primes_gridsearch_zeroes_orgresp5_start211end1010.csv",header=FALSE,colClasses = "numeric")
+#list.files("/home/john/pari")
+df_p7_1$round_t=round(df_p7_1$V3,4)
+df_p7_1$round_s=round(df_p7_1$V2,4)
+df_p7_1=df_p7_1[!duplicated(df_p7_1[,c("round_t","round_s")]),]
+df_p7_1=df_p7_1[df_p7_1$V3 > 64*pi/1+10,]
+
+plot(df_p7_1$V3,(df_p7_1$V2-.5*0)/1,xlim=c(0,max(df_p7_1$V3,1000)),
+     ylim=range(c((df_p7_1$V2-.5*0)/1,0.3,1.5)),
+     col="darkblue",cex=0.5,
+     main="non-trivial zero positions as dirichlet coefficients approach zeta function \n using tapered finite Dirichlet Series about floor(t/pi*1) ",xlab="imag(s)",ylab="real(s)",
+     cex.main=0.8);grid()
+abline(h=(0.5-.5*0)/1,lty=3,lwd=2,col="cyan")
+legend(x="topleft",legend=c(paste0("dirichlet series \n",expression(0.7+1/2^s+1/3^s+...)),"non-trivial zeroes of series"),col=c(0,"darkblue"),lty=c(-1,-1),pch=c(-1,1),cex=0.5,bty="n")
+plot(df_p7$V3,(df_p7$V2-.5*0)/1,xlim=c(0,max(df_p7$V3,1000)),
+     ylim=range(c((df_p7$V2-.5*0)/1,0.1,0.55)),
+     main="non-trivial zero positions as dirichlet coefficients approach zeta function \n using tapered finite Dirichlet Series about floor(t/pi*1) ",xlab="imag(s)",ylab="real(s)",cex=0.5,cex.main=0.8);grid();
+abline(h=(0.5-.5*0)/1,lty=3,lwd=2,col="cyan")
+legend(x="topleft",legend=c(paste0("dirichlet series \n",expression(1+0.7*(1/2^s+1/3^s+...))),"non-trivial zeroes of series"),col=c(0,1),lty=c(-1,-1),pch=c(-1,1),cex=0.5,bty="n")
+
+
+
+```
+
+***Figure 4. Comparison of the low-lying non-trivial zero co-ordinates in the interval t=(211,1010) under two perturbations  ($\alpha=0.7$) of the tapered finite dirichlet series by (top blue) the leading term; 0.7 + ( 1/$2^s$ + 1/$3^s$ + 1/$4^s$ + ... + tapered terms ) and (bottom black) the 2nd, 3rd, 4th, ... etc dirichlet coefficients terms;  1 + 0.7 \* ( 1/$2^s$ + 1/$3^s$ + 1/$4^s$ + ... + tapered terms ). ***
+
+\newpage
+
+```{r impactofdirichletcoefficientmagnitude_p9, fig.show = "hold", fig.align = "center", fig.height=6.4}
+ 
+par(mfrow=c(2,1))
+df_p9=read.csv("/home/john/pari/taperedzetaapprox_dirichletcoef_1_0p9_gridsearch_zeroes_orgresp5_start211end1010.csv",header=FALSE,colClasses = "numeric")
+#list.files("/home/john/pari")
+df_p9$round_t=round(df_p9$V3,4)
+df_p9$round_s=round(df_p9$V2,4)
+df_p9=df_p9[!duplicated(df_p9[,c("round_t","round_s")]),]
+df_p9=df_p9[df_p9$V3 > 64*pi/1+10,]
+
+df_p9_1=read.csv("/home/john/pari/taperedzetaapprox_dirichletcoef_0p9_1primes_gridsearch_zeroes_orgresp5_start211end1010.csv",header=FALSE,colClasses = "numeric")
+#list.files("/home/john/pari")
+df_p9_1$round_t=round(df_p9_1$V3,4)
+df_p9_1$round_s=round(df_p9_1$V2,4)
+df_p9_1=df_p9_1[!duplicated(df_p9_1[,c("round_t","round_s")]),]
+df_p9_1=df_p9_1[df_p9_1$V3 > 64*pi/1+10,]
+
+plot(df_p9_1$V3,(df_p9_1$V2-.5*0)/1,xlim=c(0,max(df_p9_1$V3,1000)),
+     ylim=range(c((df_p9_1$V2-.5*0)/1,0.3,0.9)),
+     col="darkblue",cex=0.5,
+     main="non-trivial zero positions as dirichlet coefficients approach zeta function \n using tapered finite Dirichlet Series about floor(t/pi*1) ",xlab="imag(s)",ylab="real(s)",
+     cex.main=0.8);grid()
+abline(h=(0.5-.5*0)/1,lty=3,lwd=2,col="cyan")
+legend(x="topleft",legend=c(paste0("dirichlet series \n",expression(0.9+1/2^s+1/3^s+...)),"non-trivial zeroes of series"),col=c(0,"darkblue"),lty=c(-1,-1),pch=c(-1,1),cex=0.5,bty="n")
+plot(df_p9$V3,(df_p9$V2-.5*0)/1,xlim=c(0,max(df_p9$V3,1000)),
+     ylim=range(c((df_p9$V2-.5*0)/1,0.1,0.55)),
+     main="non-trivial zero positions as dirichlet coefficients approach zeta function \n using tapered finite Dirichlet Series about floor(t/pi*1) ",xlab="imag(s)",ylab="real(s)",cex=0.5,cex.main=0.8);grid();
+abline(h=(0.5-.5*0)/1,lty=3,lwd=2,col="cyan")
+legend(x="topleft",legend=c(paste0("dirichlet series \n",expression(1+0.9*(1/2^s+1/3^s+...))),"non-trivial zeroes of series"),col=c(0,1),lty=c(-1,-1),pch=c(-1,1),cex=0.5,bty="n")
+
+
+
+```
+
+***Figure 5. Comparison of the low-lying non-trivial zero co-ordinates in the interval t=(211,1010) under two perturbations  ($\alpha=0.9$) of the tapered finite dirichlet series by (top blue) the leading term; 0.9 + ( 1/$2^s$ + 1/$3^s$ + 1/$4^s$ + ... + tapered terms ) and (bottom black) the 2nd, 3rd, 4th, ... etc dirichlet coefficients terms;  1 + 0.9 \* ( 1/$2^s$ + 1/$3^s$ + 1/$4^s$ + ... + tapered terms ). ***
+
+\newpage
+
+Figure 6 displays the low-lying non-trivial zeroes when $\alpha=0.95$ for equations (2) and (3) in the interval t=(211,1010). Present on both graphs in the figure are the vertical red lines indicating the imaginary axis co-ordinate of bad gram points using OEIS [16] and LMFDB [9] data. For equation (3) (the top graph in blue) in the interval t=(211,1010) the non-trivial zeroes are mostly in the interval $0.50<\sigma < 0.53$. The few non-trivial zeroes (under equation (3)) having real(s)<0.5 appear to be close (slightly in advance) of known bad gram points. For equation (2), (the bottom graph in black) the pattern of non-trivial zeroes exhibits a narrow uniform spread of covering $0.47<\sigma<0.5$. The few non-trivial zeroes (under equation (2)) having real(s)>0.5 appear to be close (slightly in advance) of known bad gram points.
+
+Figure 7 displays the low-lying non-trivial zeroes when $\alpha=0.999$ for equations (2) higher along the imaginary axis in the interval t=(9000,10000). Again present on the graphs in the figure are the vertical red lines indicating the imaginary axis co-ordinate of bad gram points using OEIS [16] and LMFDB [9] data. For equation (2), with $\alpha=0.999$ the pattern of non-trivial zeroes exhibits a narrow spread covering $0.499<\sigma<0.5005$. Most of the zeroes occur in the interval $0.49975<\sigma<0.5$ The few non-trivial zeroes (under equation (2)) having real(s)>0.5 all appear to be close (slightly in advance) of known bad gram points.
+
+
+\newpage
+
+```{r badgrampointbehaviourunderimpactofdirichletcoefficientmagnitude, fig.show = "hold", fig.align = "center", fig.height=6.4}
+
+
+df_inpx=read.csv("/home/john/pari/taperedzetaapprox_dirichletcoef_0p95_1_gridsearch_zeroes_orgresp5_start211end1010.csv",header=FALSE,colClasses = "numeric")
+df_inpx$round_t=round(df_inpx$V3,4)
+df_inpx$round_s=round(df_inpx$V2,4)
+df_inpx=df_inpx[!duplicated(df_inpx[,c("round_t","round_s")]),]
+df_inpx=df_inpx[df_inpx$V3 > 64*pi/1+10,]
+
+par(mfrow=c(2,1))
+df_inpgrid=read.csv("/home/john/pari/taperedzetaapprox_dirichletcoef_1_0p95_gridsearch_zeroes_orgresp5_start211end1010.csv",header=FALSE,colClasses = "numeric")#,
+df_inpgrid$round_t=round(df_inpgrid$V3,4)
+df_inpgrid$round_s=round(df_inpgrid$V2,4)
+df_inpgrid=df_inpgrid[!duplicated(df_inpgrid[,c("round_t","round_s")]),]
+df_inpgrid=df_inpgrid[df_inpgrid$V3 > 64*pi/1+10,]
+yspan=range(c(df_inpgrid$V2,df_inpx$V2))
+plot(df_inpx$V3,(df_inpx$V2-.5*0)/1,xlim=c(0,max(df_inpgrid$V3,1000)),
+     #ylim=yspan,
+     col="darkblue",cex=0.5,
+     main="non-trivial zero positions as dirichlet coefficients approach zeta function \n using tapered finite Dirichlet Series about floor(t/pi*1) ",xlab="imag(s)",ylab="real(s)",
+     cex.main=0.8);grid()
+points(x=c(279.229,293.558,388.846,413.262,444.319,476.769,525.077,635.5238,
+           648.786,650.668,676.139,679.742,760.282,820.7218,834.6519,848.489,
+           896.632,911.2349,931.852,961.669,971.071,985.1869,1005.543),
+       y=rep((0.5-0.5*0)/1,23),col=rgb(1,0,0,0.5),pch="|",cex=2)
+abline(h=(0.5-.5*0)/1,lty=3,lwd=2,col="cyan")
+legend(x="topleft",legend=c(paste0("dirichlet series \n",expression(0.95+1/2^s+1/3^s+...)),"non-trivial zeroes of series","known bad Gram point \n co-ordinate(s)"),col=c(0,"darkblue","red"),lty=c(-1,-1,1),pch=c(-1,1,-1),cex=0.5,bty="n")
+plot(df_inpgrid$V3,(df_inpgrid$V2-.5*0)/1,xlim=c(0,max(df_inpgrid$V3,1000)),
+     #ylim=yspan,
+     main="non-trivial zero positions as dirichlet coefficients approach zeta function \n using tapered finite Dirichlet Series about floor(t/pi*1) ",xlab="imag(s)",ylab="real(s)",cex=0.5,cex.main=0.8);grid();
+points(x=c(279.229,293.558,388.846,413.262,444.319,476.769,525.077,635.5238,
+           648.786,650.668,676.139,679.742,760.282,820.7218,834.6519,848.489,
+           896.632,911.2349,931.852,961.669,971.071,985.1869,1005.543),
+       y=rep((0.5-0.5*0)/1,23),col=rgb(1,0,0,0.5),pch="|",cex=2)
+abline(h=(0.5-.5*0)/1,lty=3,lwd=2,col="cyan")
+legend(x="topleft",legend=c(paste0("dirichlet series \n",expression(1+0.95*(1/2^s+1/3^s+...))),"non-trivial zeroes of series","known bad Gram point \n co-ordinate(s)"),col=c(0,1,"red"),lty=c(-1,-1,1),pch=c(-1,1,-1),cex=0.5,bty="n")
+
+
+```
+
+***Figure 6. Comparison of the low-lying non-trivial zero co-ordinates in the interval t=(211,1010) under two perturbations  ($\alpha=0.95$) of the tapered finite dirichlet series by (top blue) the leading term; 0.95 + ( 1/$2^s$ + 1/$3^s$ + 1/$4^s$ + ... + tapered terms ) and (bottom black) the 2nd, 3rd, 4th, ... etc dirichlet coefficients terms;  1 + 0.95 \* ( 1/$2^s$ + 1/$3^s$ + 1/$4^s$ + ... + tapered terms ). The red vertical line indicate bad gram points (the imag(s) co-ordinate). For the (blue) perturbed series 0.95 + ( 1/$2^s$ + 1/$3^s$ + 1/$4^s$ + ... + tapered terms ) there are non-trivial zeroes with real(s)<0.5 slightly in advance along the imaginary axis of the bad gram points. For the (black) perturbed series 1 + 0.95 \* ( 1/$2^s$ + 1/$3^s$ + 1/$4^s$ + ... + tapered terms ) conversely there are non-trivial zeroes with real(s)>0.5 slightly in advance along the imaginary axis of the bad gram points. There do not appear to be any counterexamples not flagged by bad gram point locations. ***
+
+
+\newpage
+
+```{r badgrampointbehaviourunderimpactofdirichletcoefficientmagnitude_near_t9000_10000, fig.show = "hold", fig.align = "center", fig.height=7.4}
+
+par(mfrow=c(2,1))
+df_badgram=read.csv("/home/john/bear/Projects/sampling-investigations/julia/bad_gram_points.csv",header=FALSE,colClasses = "numeric")
+df_inpgrid=read.csv("/home/john/pari/taperedzetaapprox_dirichletcoef_1_0p999_gridsearch_zeroes_orgresp5_start9e3end1e4.csv",header=FALSE,colClasses = "numeric")
+df_inpgrid$round_t=round(df_inpgrid$V3,4)
+df_inpgrid$round_s=round(df_inpgrid$V2,4)
+df_inpgrid=df_inpgrid[!duplicated(df_inpgrid[,c("round_t","round_s")]),]
+df_inpgrid=df_inpgrid[df_inpgrid$V3 > 64*pi/1+10,]
+plot(df_inpgrid$V3,(df_inpgrid$V2-.5*0)/1,xlim=c(9000,9250),
+     main="non-trivial zero positions as dirichlet coefficients approach zeta function \n using tapered finite Dirichlet Series about floor(t/pi*1) ",xlab="imag(s)",ylab="real(s)",cex=0.5,cex.main=0.8);grid();
+points(df_badgram$V3,y=rep((0.5-0.5*0)/1,1e4),col=rgb(1,0,0,0.5),pch="|",cex=2)
+abline(h=(0.5-.5*0)/1,lty=3,lwd=2,col="cyan")
+legend(x="bottomright",legend=c(paste0("dirichlet series \n",expression(1+0.999*(1/2^s+1/3^s+...))),"non-trivial zeroes of series","known bad Gram point \n co-ordinate(s)"),col=c(0,1,"red"),lty=c(-1,-1,1),pch=c(-1,1,-1),cex=0.5,bty="n")
+
+plot(df_inpgrid$V3,(df_inpgrid$V2-.5*0)/1,xlim=c(9250,9500),
+     main="non-trivial zero positions as dirichlet coefficients approach zeta function \n using tapered finite Dirichlet Series about floor(t/pi*1) ",xlab="imag(s)",ylab="real(s)",cex=0.5,cex.main=0.8);grid();
+points(df_badgram$V3,y=rep((0.5-0.5*0)/1,1e4),col=rgb(1,0,0,0.5),pch="|",cex=2)
+abline(h=(0.5-.5*0)/1,lty=3,lwd=2,col="cyan")
+legend(x="bottomright",legend=c(paste0("dirichlet series \n",expression(1+0.999*(1/2^s+1/3^s+...))),"non-trivial zeroes of series","known bad Gram point \n co-ordinate(s)"),col=c(0,1,"red"),lty=c(-1,-1,1),pch=c(-1,1,-1),cex=0.5,bty="n")
+
+plot(df_inpgrid$V3,(df_inpgrid$V2-.5*0)/1,xlim=c(9500,9750),
+     main="non-trivial zero positions as dirichlet coefficients approach zeta function \n using tapered finite Dirichlet Series about floor(t/pi*1) ",xlab="imag(s)",ylab="real(s)",cex=0.5,cex.main=0.8);grid();
+points(df_badgram$V3,y=rep((0.5-0.5*0)/1,1e4),col=rgb(1,0,0,0.5),pch="|",cex=2)
+abline(h=(0.5-.5*0)/1,lty=3,lwd=2,col="cyan")
+legend(x="bottomright",legend=c(paste0("dirichlet series \n",expression(1+0.999*(1/2^s+1/3^s+...))),"non-trivial zeroes of series","known bad Gram point \n co-ordinate(s)"),col=c(0,1,"red"),lty=c(-1,-1,1),pch=c(-1,1,-1),cex=0.5,bty="n")
+
+plot(df_inpgrid$V3,(df_inpgrid$V2-.5*0)/1,xlim=c(9750,10000),
+     main="non-trivial zero positions as dirichlet coefficients approach zeta function \n using tapered finite Dirichlet Series about floor(t/pi*1) ",xlab="imag(s)",ylab="real(s)",cex=0.5,cex.main=0.8);grid();
+points(df_badgram$V3,y=rep((0.5-0.5*0)/1,1e4),col=rgb(1,0,0,0.5),pch="|",cex=2)
+abline(h=(0.5-.5*0)/1,lty=3,lwd=2,col="cyan")
+legend(x="bottomright",legend=c(paste0("dirichlet series \n",expression(1+0.999*(1/2^s+1/3^s+...))),"non-trivial zeroes of series","known bad Gram point \n co-ordinate(s)"),col=c(0,1,"red"),lty=c(-1,-1,1),pch=c(-1,1,-1),cex=0.5,bty="n")
+
+```
+
+***Figure 7. Comparison of the low-lying non-trivial zero co-ordinates in the sequence of intervals t=(9000,9250), t=(9250,9500), t=(9500,9750), t=(9750,10000) under perturbation  ($\alpha=0.999$) of the tapered finite dirichlet series of the 2nd, 3rd, 4th, ... etc dirichlet coefficients terms;  1 + 0.999 \* ( 1/$2^s$ + 1/$3^s$ + 1/$4^s$ + ... + tapered terms ). The red vertical line indicate bad gram points (the imag(s) co-ordinate). For the perturbed series 1 + 0.999 \* ( 1/$2^s$ + 1/$3^s$ + 1/$4^s$ + ... + tapered terms ) there are non-trivial zeroes with real(s)>0.5 slightly in advance along the imaginary axis of the bad gram points. There do not appear to be any counterexamples not flagged by bad gram point locations. ***
+
+\newpage
+
+### Examples of non-trivial zero behaviour under equation (2) perturbation near bad gram points
+
+Figures 8 and 9 display examples of the trajectory of the perturbed location of non-trivial zeroes associated near Riemann Zeta function bad gram points.
+
+Figure 8 displays the behaviour of three low-lying non-trivial zeroes for $0.005 < \alpha < 1$ for equation (2) perturbation near the first bad gram point (n=126, t=279.2292509...) of the Riemann Zeta function. It can be observed that under perturbation equation (2), the Riemann Zeta non-trivial zero located at t=282.4651147... (gram point 127) overshoots the critical line to reach real(s)~0.5000476 when $\alpha$~0.99 finally settling back to real(s)=0.5 when $\alpha=1$.
+
+Figure 9 displays the behaviour of three low-lying non-trivial zeroes for $0.005 < \alpha < 1$ for equation (2) perturbation near the 14th bad gram point (n=507, t=820.7218984...) of the Riemann Zeta function. It can be observed that under perturbation equation (2), the Riemann Zeta non-trivial zero located at t=822.1977574... (gram point 509) overshoots the critical line to reach real(s)~0.525 when $\alpha$~0.8 finally settling back to real(s)=0.5 when $\alpha=1$.
+
+So it is generally observed that the non-trivial zero that initially overshoots the critical line before settling back to the critical line as $\alpha \rightarrow 1$ is a Riemann Zeta non-trivial zero slightly in advance of bad gram points (by one or two positions) along the imaginary axis. For bad gram points the sequence of the non-trivial zeroes appears unchanged.
+
+
+
+
+
+\newpage
+
+```{r impactofdirichletcoefficientmagnitude_on126grampt_zeroposition, fig.show = "hold", fig.align = "center", fig.height=6.4}
+
+par(mfrow=c(1,2))
+df_grampt=read.csv("/home/john/pari/taperedzetaapprox_dirichletcoef_gram_pt126_gridsearch_zeroes_orgresp5.csv",header=FALSE,colClasses = "numeric")
+df_grampt=df_grampt[order(df_grampt$V1),]
+df_grampt_plus2=read.csv("/home/john/pari/taperedzetaapprox_dirichletcoef_gram_pt127_gridsearch_zeroes_orgresp5.csv",header=FALSE,colClasses = "numeric")
+df_grampt_plus2=df_grampt_plus2[order(df_grampt_plus2$V1),]
+df_grampt_plus1=read.csv("/home/john/pari/taperedzetaapprox_dirichletcoef_gram_pt128_gridsearch_zeroes_orgresp5.csv",header=FALSE,colClasses = "numeric")
+df_grampt_plus1=df_grampt_plus1[order(df_grampt_plus1$V1),]
+
+xspan=range(c(df_grampt$V3,df_grampt_plus1$V3,df_grampt_plus2$V3,284.5));
+yspan=range(c(df_grampt$V2,df_grampt_plus1$V2,df_grampt_plus2$V2));
+plot(df_grampt_plus1$V3,df_grampt_plus1$V2,typ="b",
+     ylim=c(0.499,0.5001),xlim=xspan,main="Adjacent to the 1st bad gram point (gram point 126). \n A magnified view near real(s)=0.5. \nThe trajectory of non-trivial zero co-ordinates as dirichlet coefficients increase to unity \n tapered finite dirichlet series = 1 + alpha * ( 1/2^s + 1/3^s + 1/4^s + ... + tapered terms )",xlab="imag(s)",ylab="real(s)",cex=0.5,cex.main=0.4);grid()
+points(df_grampt$V3,df_grampt$V2,typ="b",pch=20,col=2,cex=0.5)
+points(df_grampt_plus2$V3,df_grampt_plus2$V2,typ="b",pch=2,col=3,cex=0.5)
+abline(h=0.5,lty=3,col="cyan",lwd=2)
+# legend(x="bottomright",legend=c("starting point \ns=0.5+I*279.2292509...","starting point \ns=0.5+I*282.4651147...","starting point \ns=0.5+I*283.2111857..."),col=c(2,1,3),pch=c(20,1,2),cex=0.4,bty="n",y.intersp=1.5)
+# legend(x="bottomleft",legend=c("alpha values = \n c(0.99999,0.9999,0.999,\n0.99,0.98,...,0.2,0.1,...\n.05,.04,.03,.02,.01,.005)"),cex=0.4,bty="n")
+
+xspan=range(c(df_grampt$V3,df_grampt_plus1$V3,df_grampt_plus2$V3,284.5));
+yspan=range(c(df_grampt$V2,df_grampt_plus1$V2,df_grampt_plus2$V2));
+plot(df_grampt_plus1$V3,df_grampt_plus1$V2,typ="b",
+     ylim=yspan,xlim=xspan,main="Adjacent to the 1st bad gram point (i.e., gram point 126). \nThe trajectory of non-trivial zero co-ordinates as dirichlet coefficients increase to unity \n tapered finite dirichlet series = 1 + alpha * ( 1/2^s + 1/3^s + 1/4^s + ... + tapered terms )",xlab="imag(s)",ylab="real(s)",cex=0.5,cex.main=0.4);grid()
+points(df_grampt$V3,df_grampt$V2,typ="b",pch=20,col=2,cex=0.5)
+points(df_grampt_plus2$V3,df_grampt_plus2$V2,typ="b",pch=2,col=3,cex=0.5)
+abline(h=0.5,lty=3,col="cyan",lwd=2)
+legend(x="bottomleft",legend=c("starting point \ns=0.5+I*279.2292509...","starting point \ns=0.5+I*282.4651147...","starting point \ns=0.5+I*283.2111857..."),col=c(2,1,3),pch=c(20,1,2),cex=0.4,bty="n",y.intersp=1.5)
+legend(x="left",legend=c("alpha values = \n c(0.99999,0.9999,0.999,\n0.99,0.98,...,0.2,0.1,...\n.05,.04,.03,.02,.01,.005)"),cex=0.4,bty="n")
+
+```
+***Figure 8. The trajectory of (three) non-trivial zero co-ordinates about the 1st bad gram point violation (gram point number 126, t=279.2292509277451892284098804519553) as the magnitude ($\alpha$) of the 2nd, 3rd, 4th, ... etc dirichlet coefficients of the tapered finite dirichlet series = 1 + $\alpha$ \* ( 1/$2^s$ + 1/$3^s$ + 1/$4^s$ + ... + tapered terms ) increases to unity. In principle, the graph illustrates that the non-trivial zero t=282.4651147... (gram point 127) which has value real(s)=0.5 for the (high symmetry) Riemann Zeta function had a (low symmetry function behaviour) of a non-trivial zero lying off the critical line at real(s)~0.5000476 when $\alpha$~0.99. Under this trajectory interpretation of the dirichlet coefficient magnitude, (i) the above non-trivial zero is the lowest gram point index non-trivial zero to have such a (increasing dirichlet coefficient based) trajectory history with real(s) > 0.5 and (ii) this non-trivial zero does not change its index position which may provide a useful heuristic for distinguishing ordinary bad gram point behaviour from Rosser rule violation.***
+
+
+\newpage
+
+```{r impactofdirichletcoefficientmagnitude_on507grampt_zeroposition, fig.show = "hold", fig.align = "center", fig.height=6.4}
+
+par(mfrow=c(1,1))
+df_grampt=read.csv("/home/john/pari/taperedzetaapprox_dirichletcoef_gram_pt507_gridsearch_zeroes_orgresp5.csv",header=FALSE,colClasses = "numeric")
+df_grampt=df_grampt[order(df_grampt$V1),]
+df_grampt_plus2=read.csv("/home/john/pari/taperedzetaapprox_dirichletcoef_gram_pt508_gridsearch_zeroes_orgresp5.csv",header=FALSE,colClasses = "numeric")
+df_grampt_plus2=df_grampt_plus2[order(df_grampt_plus2$V1),]
+df_grampt_plus1=read.csv("/home/john/pari/taperedzetaapprox_dirichletcoef_gram_pt509_gridsearch_zeroes_orgresp5.csv",header=FALSE,colClasses = "numeric")
+df_grampt_plus1=df_grampt_plus1[order(df_grampt_plus1$V1),]
+
+xspan=range(c(df_grampt$V3,df_grampt_plus1$V3,df_grampt_plus2$V3,823.5));
+yspan=range(c(df_grampt$V2,df_grampt_plus1$V2,df_grampt_plus2$V2));
+plot(df_grampt_plus1$V3,df_grampt_plus1$V2,typ="b",
+     ylim=yspan,xlim=xspan,main="Adjacent to the 14th bad gram point (i.e., gram point 507). \nThe trajectory of non-trivial zero co-ordinates as dirichlet coefficients increase to unity \n tapered finite dirichlet series = 1 + alpha * ( 1/2^s + 1/3^s + 1/4^s + ... + tapered terms )",xlab="imag(s)",ylab="real(s)",cex=0.5,cex.main=0.8);grid()
+points(df_grampt$V3,df_grampt$V2,typ="b",pch=20,col=2,cex=0.5)
+points(df_grampt_plus2$V3,df_grampt_plus2$V2,typ="b",pch=2,col=3,cex=0.5)
+abline(h=0.5,lty=3,col="cyan",lwd=2)
+legend(x="topright",legend=c("starting point \ns=0.5+I*820.7218984...","starting point \ns=0.5+I*821.7134541...","starting point \ns=0.5+I*822.1977574..."),col=c(2,1,3),pch=c(20,1,2),cex=0.6,bty="n",y.intersp=1.5)
+legend(x="right",legend=c("alpha values = \n c(0.99999,0.9999,0.999,\n0.99,0.98,...,0.2,0.1,...\n .05,.04,.03,.02,.01,.005)"),cex=0.5,bty="n")
+
+```
+***Figure 9. The trajectory of (three) non-trivial zero co-ordinates about the bad gram point violation (gram point number 507, t=820.7218984438692874664310218234593) as the magnitude ($\alpha$) of the 2nd, 3rd, 4th, ... etc dirichlet coefficients of the tapered finite dirichlet series = 1 + $\alpha$ \* ( 1/$2^s$ + 1/$3^s$ + 1/$4^s$ + ... + tapered terms ) increases to unity. In principle, the graph illustrates that the non-trivial zero t=822.1977574... (gram point 509) which has value real(s)=0.5 for the (high symmetry) Riemann Zeta function had a (low symmetry function behaviour) of a non-trivial zero lying off the critical line at real(s)~0.525 when $\alpha$~0.8. Under this trajectory interpretation of the dirichlet coefficient magnitude, the above non-trivial zero does not change its index position which may provide a useful heuristic for distinguishing ordinary bad gram point behaviour from Rosser rule violation.***
+
+\newpage
+
+### Examples of non-trivial zero behaviour under equation (2) perturbation near Rosser rule violations
+
+Figures 10-12 display examples of the trajectory of the perturbed location of non-trivial zeroes associated near Riemann Zeta function the first Rosser rule violation locations.
+
+Figure 10 displays the behaviour of three low-lying non-trivial zeroes for $0.005 < \alpha < 1$ for equation (2) perturbation near the first Rosser rule violation (gram point number 13999525, t=6820050.0586698...) of the Riemann Zeta function. It can be observed that under perturbation equation (2), the Riemann Zeta non-trivial zero located at t=6820052.0041220... (gram point 13999529) overshoots the critical line to reach real(s)~0.68 when $\alpha$~0.45 finally settling back to real(s)=0.5 when $\alpha=1$ changing the sequence of the non-trivial zeroes. The lefthand figure shows the complex plane \{imag(s),real(s)\} trajectory of the non-trivial zero under the perturbation while the righthand figure shows the \{$\alpha$, real(s)\} trajectory.
+
+Figure 11 displays the behaviour of three low-lying non-trivial zeroes for $0.005 < \alpha < 1$ for equation (2) perturbation near the second Rosser rule violation (gram point number 30783329, t=14190356.9683576...) of the Riemann Zeta function. It can be observed that under perturbation equation (2), the Riemann Zeta non-trivial zero located at t=14190358.8694475... (gram point 30783332) overshoots the critical line to reach real(s)~0.689 when $\alpha$~0.5 finally settling back to real(s)=0.5 when $\alpha=1$ changing the sequence of the non-trivial zeroes. The lefthand figure shows the complex plane \{imag(s),real(s)\} trajectory of the non-trivial zero under the perturbation while the righthand figure shows the \{$\alpha$, real(s)\} trajectory.
+
+Figure 12 displays the behaviour of three low-lying non-trivial zeroes for $0.005 < \alpha < 1$ for equation (2) perturbation near the second Rosser rule violation (gram point number 30930927, t=14253736.0289697...) of the Riemann Zeta function. It can be observed that under perturbation equation (2), the Riemann Zeta non-trivial zero located at t=14253736.5251151... (gram point 30930929) overshoots the critical line to reach real(s)~0.68 when $\alpha$~0.45 finally settling back to real(s)=0.5 when $\alpha=1$ changing the sequence of the non-trivial zeroes. The lefthand figure shows the complex plane \{imag(s),real(s)\} trajectory of the non-trivial zero under the perturbation while the righthand figure shows the \{$\alpha$, real(s)\} trajectory.
+
+So for the first three Rosser rule violation locations it is observed that a nearby non-trivial zero that initially heavily overshoots the critical line before settling back to the critical line as $\alpha \rightarrow 1$. For these Rosser rule violation locations the sequence of the non-trivial zeroes appears change going from a low symmetry dirichlet series to a higher symmetry dirichlet series.
+
+\newpage
+
+```{r impactofdirichletcoefficientmagnitude_on1stRosser_zeroposition, fig.show = "hold", fig.align = "center", fig.height=6.4}
+
+par(mfrow=c(1,2))
+df_grampt_minus1=read.csv("/home/john/pari/taperedzetaapprox_dirichletcoef_gram_pt13999525_gridsearch_zeroes_orgresp5.csv",header=FALSE,colClasses = "numeric")
+df_grampt_minus1=df_grampt_minus1[order(df_grampt_minus1$V1),]
+df_grampt=read.csv("/home/john/pari/taperedzetaapprox_dirichletcoef_gram_pt13999526_gridsearch_zeroes_orgresp5.csv",header=FALSE,colClasses = "numeric")
+df_grampt=df_grampt[order(df_grampt$V1),]
+df_grampt_plus2=read.csv("/home/john/pari/taperedzetaapprox_dirichletcoef_rosserpoint_gridsearch_zeroes_orgresp5.csv",header=FALSE,colClasses = "numeric")
+df_grampt_plus2=df_grampt_plus2[order(df_grampt_plus2$V1),]
+df_grampt_plus1=read.csv("/home/john/pari/taperedzetaapprox_dirichletcoef_justaboverosserpoint_gridsearch_zeroes_orgresp5.csv",header=FALSE,colClasses = "numeric")
+df_grampt_plus1=df_grampt_plus1[order(df_grampt_plus1$V1),]
+df_grampt_plus3=read.csv("/home/john/pari/taperedzetaapprox_dirichletcoef_2aboverosserpoint_gridsearch_zeroes_orgresp5.csv",header=FALSE,colClasses = "numeric")
+df_grampt_plus3=df_grampt_plus3[order(df_grampt_plus3$V1),]
+
+
+xspan=range(c(df_grampt_minus1$V3,df_grampt$V3,df_grampt_plus1$V3,df_grampt_plus2$V3,df_grampt_plus3$V3,6820049.85)-6820000);#,823.5
+yspan=range(c(df_grampt_minus1$V2,df_grampt$V2,df_grampt_plus1$V2,df_grampt_plus2$V2,df_grampt_plus3$V2));
+plot(df_grampt_plus1$V3-6820000,df_grampt_plus1$V2,typ="b",
+     ylim=yspan,xlim=xspan,cex=0.5,cex.main=0.5,
+     main="trajectory of non-trivial zero co-ordinates \n as dirichlet coefficients increase to unity \n for tapered finite dirichlet series \n 1 + alpha * ( 1/2^s + 1/3^s + 1/4^s + ... + tapered terms )",xlab="imag(s)-6820000",ylab="real(s)");grid()
+points(df_grampt$V3-6820000,df_grampt$V2,typ="b",pch=20,col=2,cex=0.5)
+points(df_grampt_plus2$V3-6820000,df_grampt_plus2$V2,typ="b",pch=2,col=3,cex=0.5)
+points(df_grampt_minus1$V3-6820000,df_grampt_minus1$V2,typ="b",pch=3,col=4,cex=0.5)
+points(df_grampt_plus3$V3-6820000,df_grampt_plus3$V2,typ="b",pch=4,col=6,cex=0.5)
+abline(h=0.5,lty=3,col="cyan",lwd=2)
+legend(x="bottom",legend=c("starting point \ns=0.5+I*6820050.0586698...","starting point \ns=0.5+I*6820050.4836581...","starting point \ns=0.5+I*6820051.8909855...","starting point \ns=0.5+I*6820052.0041220...","starting point \ns=0.5+I*6820052.0917739..."),col=c(4,2,3,1,6),pch=c(3,20,2,1,4),cex=0.4,bty="n",y.intersp=1.5)
+legend(x="topleft",legend=c("alpha values = \n c(0.99999,0.9999,0.999,\n0.99,0.98,...,0.2,0.1,...\n.05,.04,.03,.02,.01,.005)"),cex=0.5,bty="n")
+
+yspan=range(c(df_grampt_minus1$V2,df_grampt$V2,df_grampt_plus1$V2,df_grampt_plus2$V2,df_grampt_plus3$V2));
+plot(df_grampt_plus1$V1,df_grampt_plus1$V2,typ="b",ylim=yspan,cex=0.5,cex.main=0.5,
+     main="trajectory of non-trivial zero real component co-ordinate \n as dirichlet coefficients increase to unity \n for tapered finite dirichlet series \n 1 + alpha * ( 1/2^s + 1/3^s + 1/4^s + ... + tapered terms )",xlab="alpha",ylab="real(s)");grid()
+points(df_grampt$V1,df_grampt$V2,typ="b",pch=20,col=2,cex=0.5)
+points(df_grampt_plus2$V1,df_grampt_plus2$V2,typ="b",pch=2,col=3,cex=0.5)
+points(df_grampt_minus1$V1,df_grampt_minus1$V2,typ="b",pch=3,col=4,cex=0.5)
+points(df_grampt_plus3$V1,df_grampt_plus3$V2,typ="b",pch=4,col=6,cex=0.5)
+abline(h=0.5,lty=3,col="cyan",lwd=2)
+
+```
+***Figure 10. The trajectory of (five) non-trivial zero co-ordinates around the first Rosser rule gram point violation (gram point number 13999525, t=6820050.0586698640707479711315788404472) as the magnitude ($\alpha$) of the 2nd, 3rd, 4th, ... etc dirichlet coefficients of the tapered finite dirichlet series = 1 + $\alpha$ \* ( 1/$2^s$ + 1/$3^s$ + 1/$4^s$ + ... + tapered terms ) increases to unity. In principle, the graph illustrates that the non-trivial zero t=6820052.0041220... which has value real(s)=0.5 for the (high symmetry) Riemann Zeta function had a (low symmetry function behaviour) of a non-trivial zero lying off the critical line at real(s)~0.68 when $\alpha$~0.45. Furthermore, under this trajectory interpretation of the dirichlet coefficient magnitude, the above non-trivial zero has swapped its index position which may provide a useful heuristic for understanding Rosser rule violations.***
+
+
+```{r impactofdirichletcoefficientmagnitude_on2ndRosser_zeroposition, fig.show = "hold", fig.align = "center", fig.height=6.4}
+
+par(mfrow=c(1,2))
+df_grampt_minus2=read.csv("/home/john/pari/taperedzetaapprox_dirichletcoef_gram_pt30783329_gridsearch_zeroes_orgresp5.csv",header=FALSE,colClasses = "numeric")
+df_grampt_minus2=df_grampt_minus2[order(df_grampt_minus2$V1),]
+df_grampt_minus1=read.csv("/home/john/pari/taperedzetaapprox_dirichletcoef_gram_pt30783330_gridsearch_zeroes_orgresp5.csv",header=FALSE,colClasses = "numeric")
+df_grampt_minus1=df_grampt_minus1[order(df_grampt_minus1$V1),]
+df_grampt=read.csv("/home/john/pari/taperedzetaapprox_dirichletcoef_gram_pt30783331_gridsearch_zeroes_orgresp5.csv",header=FALSE,colClasses = "numeric")
+df_grampt=df_grampt[order(df_grampt$V1),]
+df_grampt_plus2=read.csv("/home/john/pari/taperedzetaapprox_dirichletcoef_gram_pt30783333_gridsearch_zeroes_orgresp5.csv",header=FALSE,colClasses = "numeric")
+df_grampt_plus2=df_grampt_plus2[order(df_grampt_plus2$V1),]
+df_grampt_plus1=read.csv("/home/john/pari/taperedzetaapprox_dirichletcoef_gram_pt30783332_gridsearch_zeroes_orgresp5.csv",header=FALSE,colClasses = "numeric")
+df_grampt_plus1=df_grampt_plus1[order(df_grampt_plus1$V1),]
+
+
+xspan=range(c(df_grampt_minus2$V3,df_grampt_minus1$V3,df_grampt$V3,df_grampt_plus1$V3,df_grampt_plus2$V3)-14190000);#,823.5
+yspan=range(c(df_grampt_minus2$V2,df_grampt_minus1$V2,df_grampt$V2,df_grampt_plus1$V2,df_grampt_plus2$V2));
+plot(df_grampt_plus1$V3-14190000,df_grampt_plus1$V2,typ="b",
+     ylim=yspan,xlim=xspan,cex=0.5,cex.main=0.5,
+     main="trajectory of non-trivial zero co-ordinates \n as dirichlet coefficients increase to unity \n for tapered finite dirichlet series \n 1 + alpha * ( 1/2^s + 1/3^s + 1/4^s + ... + tapered terms )",xlab="imag(s)-14190000",ylab="real(s)");grid()
+points(df_grampt$V3-14190000,df_grampt$V2,typ="b",pch=20,col=2,cex=0.5)
+points(df_grampt_plus2$V3-14190000,df_grampt_plus2$V2,typ="b",pch=2,col=3,cex=0.5)
+points(df_grampt_minus1$V3-14190000,df_grampt_minus1$V2,typ="b",pch=3,col=4,cex=0.5)
+points(df_grampt_minus2$V3-14190000,df_grampt_minus2$V2,typ="b",pch=4,col=6,cex=0.5)
+abline(h=0.5,lty=3,col="cyan",lwd=2)
+legend(x="bottom",legend=c("starting point \ns=0.5+I*14190356.9683576...","starting point \ns=0.5+I*14190357.5200062...","starting point \ns=0.5+I*14190358.6832662...","starting point \ns=0.5+I*14190358.8694475...","starting point \ns=0.5+I*14190358.8972486..."),col=c(6,4,2,1,3),pch=c(4,3,20,1,2),cex=0.5,bty="n",y.intersp=1.5)
+legend(x="topleft",legend=c("alpha values = \n c(0.99999,0.9999,0.999,\n0.99,0.98,...,0.2,0.1,...\n.05,.04,.03,.02,.01,.005)"),cex=0.5,bty="n")
+
+yspan=range(c(df_grampt_minus2$V2,df_grampt_minus1$V2,df_grampt$V2,df_grampt_plus1$V2,df_grampt_plus2$V2));
+plot(df_grampt_plus1$V1,df_grampt_plus1$V2,typ="b",ylim=yspan,cex=0.5,cex.main=0.5,
+     main="trajectory of non-trivial zero real component co-ordinate \n as dirichlet coefficients increase to unity \n for tapered finite dirichlet series \n 1 + alpha * ( 1/2^s + 1/3^s + 1/4^s + ... + tapered terms )",xlab="alpha",ylab="real(s)");grid()
+points(df_grampt$V1,df_grampt$V2,typ="b",pch=20,col=2,cex=0.5)
+points(df_grampt_plus2$V1,df_grampt_plus2$V2,typ="b",pch=2,col=3,cex=0.5)
+points(df_grampt_minus1$V1,df_grampt_minus1$V2,typ="b",pch=3,col=4,cex=0.5)
+points(df_grampt_minus2$V1,df_grampt_minus2$V2,typ="b",pch=4,col=6,cex=0.5)
+abline(h=0.5,lty=3,col="cyan",lwd=2)
+
+```
+***Figure 11. The trajectory of (five) non-trivial zero co-ordinates around the first Rosser rule gram point violation (gram point number 30783329, t=14190356.9683576921316489187484833623456) as the magnitude ($\alpha$) of the 2nd, 3rd, 4th, ... etc dirichlet coefficients of the tapered finite dirichlet series = 1 + $\alpha$ \* ( 1/$2^s$ + 1/$3^s$ + 1/$4^s$ + ... + tapered terms ) increases to unity. In principle, the graph illustrates that the non-trivial zero t=14190358.8694475... which has value real(s)=0.5 for the (high symmetry) Riemann Zeta function had a (low symmetry function behaviour) of a non-trivial zero lying off the critical line at real(s)~0.689 when $\alpha$~0.5. Furthermore, under this trajectory interpretation of the dirichlet coefficient magnitude, the above non-trivial zero has swapped its index position which may provide a useful heuristic for understanding Rosser rule violations.***
+
+
+
+```{r impactofdirichletcoefficientmagnitude_on3rdRosser_zeroposition, fig.show = "hold", fig.align = "center", fig.height=6.4}
+
+par(mfrow=c(1,2))
+df_grampt_minus2=read.csv("/home/john/pari/taperedzetaapprox_dirichletcoef_gram_pt30930926_gridsearch_zeroes_orgresp5.csv",header=FALSE,colClasses = "numeric")
+df_grampt_minus2=df_grampt_minus2[order(df_grampt_minus2$V1),]
+df_grampt_minus1=read.csv("/home/john/pari/taperedzetaapprox_dirichletcoef_gram_pt30930927_gridsearch_zeroes_orgresp5.csv",header=FALSE,colClasses = "numeric")
+df_grampt_minus1=df_grampt_minus1[order(df_grampt_minus1$V1),]
+df_grampt=read.csv("/home/john/pari/taperedzetaapprox_dirichletcoef_gram_pt30930928_gridsearch_zeroes_orgresp5.csv",header=FALSE,colClasses = "numeric")
+df_grampt=df_grampt[order(df_grampt$V1),]
+df_grampt_plus2=read.csv("/home/john/pari/taperedzetaapprox_dirichletcoef_gram_pt30930929_gridsearch_zeroes_orgresp5.csv",header=FALSE,colClasses = "numeric")
+df_grampt_plus2=df_grampt_plus2[order(df_grampt_plus2$V1),]
+df_grampt_plus3=read.csv("/home/john/pari/taperedzetaapprox_dirichletcoef_gram_pt30930930_gridsearch_zeroes_orgresp5.csv",header=FALSE,colClasses = "numeric")
+df_grampt_plus3=df_grampt_plus3[order(df_grampt_plus3$V1),]
+df_grampt_plus4=read.csv("/home/john/pari/taperedzetaapprox_dirichletcoef_gram_pt30930931_gridsearch_zeroes_orgresp5.csv",header=FALSE,colClasses = "numeric")
+df_grampt_plus4=df_grampt_plus4[order(df_grampt_plus4$V1),]
+df_grampt_plus5=read.csv("/home/john/pari/taperedzetaapprox_dirichletcoef_gram_pt30930932_gridsearch_zeroes_orgresp5.csv",header=FALSE,colClasses = "numeric")
+df_grampt_plus5=df_grampt_plus5[order(df_grampt_plus5$V1),]
+
+
+
+xspan=range(c(df_grampt_minus1$V3,df_grampt$V3,df_grampt_minus2$V3,df_grampt_plus2$V3,df_grampt_plus3$V3,df_grampt_plus4$V3,df_grampt_plus5$V3)-14253700);#,823.5
+yspan=range(c(df_grampt_minus1$V2,df_grampt$V2,df_grampt_minus2$V2,df_grampt_plus2$V2,df_grampt_plus3$V2,df_grampt_plus4$V2,df_grampt_plus5$V2));
+plot(df_grampt_plus2$V3-14253700,df_grampt_plus2$V2,typ="b",
+     ylim=yspan,xlim=xspan,cex=0.5,cex.main=0.5,
+     main="trajectory of non-trivial zero co-ordinates \n as dirichlet coefficients increase to unity \n for tapered finite dirichlet series \n 1 + alpha * ( 1/2^s + 1/3^s + 1/4^s + ... + tapered terms )",xlab="imag(s)-14253700",ylab="real(s)");grid()
+points(df_grampt$V3-14253700,df_grampt$V2,typ="b",pch=20,col=2)
+points(df_grampt_minus2$V3-14253700,df_grampt_minus2$V2,typ="b",pch=2,col=3,cex=0.5)
+points(df_grampt_minus1$V3-14253700,df_grampt_minus1$V2,typ="b",pch=3,col=4,cex=0.5)
+points(df_grampt_plus3$V3-14253700,df_grampt_plus3$V2,typ="b",pch=4,col=6,cex=0.5)
+points(df_grampt_plus4$V3-14253700,df_grampt_plus4$V2,typ="b",pch=5,col="brown",cex=0.5)
+points(df_grampt_plus5$V3-14253700,df_grampt_plus5$V2,typ="b",pch=6,col="darkgreen",cex=0.5)
+abline(h=0.5,lty=3,col="cyan",lwd=2)
+legend(x="bottomright",legend=c("starting point \ns=0.5+I*14253735.5498261...","starting point \ns=0.5+I*14253736.0289697...","starting point \ns=0.5+I*14253736.3735853...","starting point \ns=0.5+I*14253736.5251151...","starting point \ns=0.5+I*14253736.6001908...","starting point \ns=0.5+I*14253737.7532407...","starting point \ns=0.5+I*14253738.4429227..."),col=c(3,4,2,1,6,"brown","darkgreen"),pch=c(2,3,20,1,4,5,6),cex=0.4,bty="n",y.intersp=1.5)
+legend(x="topright",legend=c("alpha values = \n c(0.99999,0.9999,0.999,\n0.99,0.98,...,0.2,0.1,...\n.05,.04,.03,.02,.01,.005)"),cex=0.45,bty="n")
+
+yspan=range(c(df_grampt_minus1$V2,df_grampt$V2,df_grampt_minus2$V2,df_grampt_plus2$V2,df_grampt_plus3$V2,df_grampt_plus4$V2,df_grampt_plus5$V2));
+plot(df_grampt_plus2$V1,df_grampt_plus2$V2,typ="b",ylim=yspan,cex=0.5,cex.main=0.5,
+     main="trajectory of non-trivial zero real component co-ordinate \n as dirichlet coefficients increase to unity \n for tapered finite dirichlet series \n 1 + alpha * ( 1/2^s + 1/3^s + 1/4^s + ... + tapered terms )",xlab="alpha",ylab="real(s)");grid()
+points(df_grampt$V1,df_grampt$V2,typ="b",pch=20,col=2,cex=0.5)
+points(df_grampt_minus2$V1,df_grampt_minus2$V2,typ="b",pch=2,col=3,cex=0.5)
+points(df_grampt_minus1$V1,df_grampt_minus1$V2,typ="b",pch=3,col=4,cex=0.5)
+points(df_grampt_plus3$V1,df_grampt_plus3$V2,typ="b",pch=4,col=6,cex=0.5)
+points(df_grampt_plus4$V1,df_grampt_plus4$V2,typ="b",pch=5,col="brown",cex=0.5)
+points(df_grampt_plus5$V1,df_grampt_plus5$V2,typ="b",pch=6,col="darkgreen",cex=0.5)
+abline(h=0.5,lty=3,col="cyan",lwd=2)
+
+
+```
+***Figure 12. The trajectory of (seven) non-trivial zero co-ordinates around the third Rosser rule gram point violation (gram point number 30930927, t=14253736.0289697112460390687415633294472) as the magnitude ($\alpha$) of the 2nd, 3rd, 4th, ... etc dirichlet coefficients of the tapered finite dirichlet series = 1 + $\alpha$ \* ( 1/$2^s$ + 1/$3^s$ + 1/$4^s$ + ... + tapered terms ) increases to unity. In principle, the graph illustrates that the non-trivial zero t=14253736.5251151... which has value real(s)=0.5 for the (high symmetry) Riemann Zeta function had a (low symmetry function behaviour) of a non-trivial zero lying off the critical line at real(s)~0.68 when $\alpha$~0.45. Furthermore, under this trajectory interpretation of the dirichlet coefficient magnitude, the above non-trivial zero has swapped its index position which may provide a useful heuristic for understanding Rosser rule violations.***
+
+
+## References
+
+1. Martin, J.P.D. "A quiescent region about $\frac{t}{\pi}$ in the oscillating divergence of the Riemann Zeta Dirichlet Series inside the critical strip." (2021)
+http://dx.doi.org/10.6084/m9.figshare.14213516
+
+2. Martin, J.P.D. "Tapered end point weighting of finite Riemann Zeta Dirichlet Series using partial sums of binomial coefficients to produce higher order approximations of the Riemann Siegel Z function." (2021)
+http://dx.doi.org/10.6084/m9.figshare.14702760
+
+3. Martin, J.P.D. "Truncated Exponential Series based partial Euler Product calculations at quiescent regions of oscillatory divergence to produce approximations of the Riemann Siegel Z function." (2021)
+http://dx.doi.org/10.6084/m9.figshare.14842803
+
+4. Martin, J.P.D. "Examples of quiescent regions in the oscillatory divergence of several 1st degree L functions and their Davenport Heilbronn counterparts." (2021)
+https://dx.doi.org/10.6084/m9.figshare.14956053
+
+5. Riemann, Bernhard (1859). "$\ddot{U}$ber die Anzahl der Primzahlen unter einer gegebenen Gr$\ddot{o}$sse". Monatsberichte der Berliner Akademie.. In Gesammelte Werke, Teubner, Leipzig (1892), Reprinted by Dover, New York (1953).
+
+6. Edwards, H.M. (1974). Riemann's zeta function. Pure and Applied Mathematics 58. New York-London: Academic Press. ISBN 0-12-242750-0. Zbl 0315.10035.
+
+7. Titchmarsh, E.C. (1986) The Theory of the Riemann Zeta Function. 2nd Revised (Heath-Brown, D.R. ) Edition, Oxford University Press, Oxford.
+
+8. Katz, N. M., & Sarnak, P. (1999). Zeroes of Zeta functions and symmetry. Bulletin of the American Mathematical Society, 36(1), 1-26. https://doi.org/10.1090/s0273-0979-99-00766-1
+
+9.  The LMFDB Collaboration, The L-functions and Modular Forms Database, \url{http://www.lmfdb.org}, 2019, [Online; accessed January 2020].
+
+10. Spira, R. Mathematics of Computation, Volume 63, Number 208,
+October 1994, Pages 747-748
+
+11. Balanzario, E.P. and Sanchez-Ortiz, J. Mathematics of Computation,
+Volume 76, Number 260, October 2007, Pages 2045–2049
+
+12. E. Bombieri, A. Ghosh, “Around the Davenport–Heilbronn function”, Uspekhi Mat. Nauk, 66:2(398) (2011), 15–66; Russian Math. Surveys, 66:2 (2011), 221–270
+\url{https://doi.org/10.4213/rm9410} 
+IAS lecture \url{https://www.youtube.com/watch?v=-JUHypc2_9A}
+
+13. Vaughan R.C. "Zeros of Dirichlet series", Indagationes Mathematicae, Volume 26, Issue 5, December 2015, Pages 897-909
+\url{https://doi.org/10.1016/j.indag.2015.09.007}
+
+14. Martin, J.P.D. "Examples of quiescent regions in the oscillatory divergence of Box-Cox transformation series related to 1st degree L functions and their Dirichlet series" (2021) 
+https://dx.doi.org/10.6084/m9.figshare.17087651
+
+15. Martin, J.P.D. "Tapered end point weighting of Hurwitz Zeta finite Dirichlet Series when the shift parameter $0 < a < \frac{\Im(s)}{\pi} \in \mathbb{R}$." (2022)
+https://dx.doi.org/10.6084/m9.figshare.21351720
+
+16. Indices n of ("bad") Gram points g(n) for which (-1)^n Z(g(n)) < 0, where Z(t) is the Riemann-Siegel Z-function. 2022 https://oeis.org/A114856 
+ 
+17. Violations of Rosser's rule: numbers n such that the Gram block [ g(n), g(n+k) ) contains fewer than k points t such that Z(t) = 0, where Z(t) is the Riemann-Siegel Z-function. 2022 https://oeis.org/A216700/internal
+
+18. The PARI~Group, PARI/GP version 2.12.0, Univ. Bordeaux, 2018,
+\url{http://pari.math.u-bordeaux.fr/}.
+
+19. The On-Line Encyclopedia of Integer Sequences, published electronically at https://oeis.org, 2010, Sequence 
+
+20. R Core Team (2017). R: A language and environment for statistical computing.
+R Foundation for Statistical Computing, Vienna, Austria. \url{https://www.R-project.org/}.
+
+21. RStudio Team (2015). RStudio: Integrated Development for R. RStudio, Inc., Boston, MA \url{http://www.rstudio.com/}.
+
+22. Martin, J.P.D. "The location and categorisation of non-trivial zeroes in finite Euler Products and Dirichlet Series about the second quiescent region as a precusor for L function behaviour" (2024)
+https://dx.doi.org/10.6084/m9.figshare.25565814
+
+
