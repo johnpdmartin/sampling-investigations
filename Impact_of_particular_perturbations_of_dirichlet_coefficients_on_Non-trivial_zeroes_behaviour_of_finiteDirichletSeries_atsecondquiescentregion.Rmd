@@ -15,9 +15,9 @@ knitr::opts_chunk$set(echo = FALSE)
 
 
 
-##Executive Summary DRAFT
+##Executive Summary
 
-An investigation of the non-trivial zero behaviour for simple perturbations of the dirichlet coefficients of tapered finite Dirichlet Series provides a useful approximation to functions that exhibit lower symmetry (compared to the Riemann Zeta functions and the two 5-periodic Davenport Heilbronn functions) and distinctive non-trivial zero behaviour is illustrated near bad gram points and Rosser rule violations (associated with their high symmetry function counterpart).  
+An investigation of the non-trivial zero behaviour for simple perturbations of the dirichlet coefficients of tapered finite Dirichlet Series provides a useful approximation to functions that exhibit lower symmetry (compared to the Riemann Zeta functions and the $\tau-(s)$ 5-periodic Davenport Heilbronn functions) and distinctive non-trivial zero behaviour is illustrated near bad gram points and Rosser rule violations (associated with their high symmetry function counterpart).
 
 ##Introduction
 
@@ -42,7 +42,7 @@ Starting from the tapered finite Dirichlet Series about the second quiescent reg
 
 where 2p=128 (for 128 point tapering) which is used in this paper.
 
-The two simple perturbations investigated for the Riemann Zeta Dirichlet Series, in the region $0.005\le \alpha \le 1$ are 
+The two simple perturbations investigated for the tapered Riemann Zeta Dirichlet Series, in the region $0.005\le \alpha \le 1$ are 
 
 \begin{align}
 1 + \alpha \cdot \left [ \sum_{k=2}^{\left(\lfloor\frac{t}{\pi}\rfloor-p\right)}\left(\frac{1}{k^s}\right) +
@@ -59,7 +59,7 @@ where the constant perturbation $\alpha$ lowers the symmetry of the L series but
 
 
 
-## Results
+### Results - 
 
 All the calculations of non-trivial zero locations for the tapered finite dirichlet series were performed using the pari-gp language [18] as a solution to second order taylor series in real(s) and imag(s) that produces iterative fourth order polynomials for imag(t) and then real(s) respectively. For information on the index of bad gram points [16] and Rosser rule violations [17] for the Riemann Zeta function the On-Line Encyclopedia of Integer Sequences [19] was accessed and used in conjunction with the searchable zeta zeroes list in https://www.lmfdb.org [9] to identify starting values for pari-gp calculations. The R language [20] and R-studio IDE [21] were used to piece the pari-gp based results together and produce graphs.
 
@@ -586,6 +586,840 @@ abline(h=0.5,lty=3,col="cyan",lwd=2)
 
 ```
 ***Figure 12. The trajectory of (seven) non-trivial zero co-ordinates around the third Rosser rule gram point violation (gram point number 30930927, t=14253736.0289697112460390687415633294472) as the magnitude ($\alpha$) of the 2nd, 3rd, 4th, ... etc dirichlet coefficients of the tapered finite dirichlet series = 1 + $\alpha$ \* ( 1/$2^s$ + 1/$3^s$ + 1/$4^s$ + ... + tapered terms ) increases to unity. In principle, the graph illustrates that the non-trivial zero t=14253736.5251151... which has value real(s)=0.5 for the (high symmetry) Riemann Zeta function had a (low symmetry function behaviour) of a non-trivial zero lying off the critical line at real(s)~0.68 when $\alpha$~0.45. Furthermore, under this trajectory interpretation of the dirichlet coefficient magnitude, the above non-trivial zero has swapped its index position which may provide a useful heuristic for understanding Rosser rule violations.***
+
+\newpage
+
+## Two simple perturbations of the $\tau -$(s) 5-periodic Davenport Heilbronn function that maintain the location of the second quiescent region $N=\frac{t\cdot 5}{\pi}$
+
+Given the L-function form of $\tau_-$(s) ($f_1(s)$) 5-periodic Davenport Heilbronn function [10-13]
+
+\begin{align}
+\tau_-(s) &= \frac{1}{2cos(\theta_1)} \Big [ e^{i\theta_1}L(\chi_5(2,.),s) + e^{-i\theta_1}L(\chi_5(3,.),s) \Big ] \label{eq:func1_Lcomb} \\ 
+&= 1 + \frac{tan(\theta_1)}{2^s} - \frac{tan(\theta_1)}{3^s} - \frac{1}{4^s} + \frac{0}{5^s} + ... \label{eq:func1_series} \\ 
+&= 5^{-s}\Big ( \zeta(s,\frac{1}{5}) + tan(\theta_1)\cdot\zeta(s,\frac{2}{5}) - tan(\theta_1)\cdot\zeta(s,\frac{3}{5}) - \zeta(s,\frac{4}{5})\Big ) \label{eq:func1_hurwitz}
+\end{align}
+
+where 
+
+\begin{align}
+tan(\theta_1) &= \frac{(\sqrt{10-2\sqrt{5}}-2)}{(\sqrt{5}-1)} \label{eq:xi} \\
+&= 0.284079043840412296028291832393
+\end{align}
+
+and 
+
+\begin{align}
+\theta_1=0.276787179448522625754266365045 \qquad radians \label{eq:theta1}
+\end{align}
+
+
+The Davenport-Heilbronn $\tau_-$(s) function has the functional equation
+
+\begin{equation}
+\tau_-(s) = 5^{(\frac{1}{2}-s)}2(2\pi)^{(s-1)}cos(\frac{\pi s}{2})\Gamma(1-s)f_{1}(1-s) = \chi(f_{1}(s))\cdot f_{1}(1-s) \label{eq:eq_func1}
+\end{equation}
+
+Therefore the tapered finite $\tau_-$ Dirichlet Series about the second quiescent region $N=\frac{t*5}{\pi}$ which is a useful approximation of the $\tau_-$ 5-periodic Davenport Heilbronn function away from the real axis is given by
+
+\begin{align}
+\frac{1}{2cos(\theta_1)} &\Big [ e^{i\theta_1} \Big\{\sum_{k=1}^{\left(\lfloor\frac{t*5}{\pi}\rfloor-p\right)}\left(\frac{\chi_5(2,k)}{k^s}\right) +
+\sum_{i=\left(-p+1\right)}^{p}\frac{\frac{1}{2^{2p}} \left( 2^{2p}-\sum_{k=0}^{i+p-1}\binom{2p}{2p-k}\right)\chi_5(2,\lfloor\frac{t*5}{\pi}\rfloor+i)}{(\lfloor\frac{t*5}{\pi}\rfloor+i)^s} \Big \} \nonumber\\
+&+e^{-i\theta_1} \Big\{\sum_{k=1}^{\left(\lfloor\frac{t*5}{\pi}\rfloor-p\right)}\left(\frac{\chi_5(3,k)}{k^s}\right) +
+\sum_{i=\left(-p+1\right)}^{p}\frac{\frac{1}{2^{2p}} \left( 2^{2p}-\sum_{k=0}^{i+p-1}\binom{2p}{2p-k}\right)\chi_5(3,\lfloor\frac{t*5}{\pi}\rfloor+i)}{(\lfloor\frac{t*5}{\pi}\rfloor+i)^s} \Big \} \Big ] \label {eq:taperedtau-DirichletSeries} 
+\end{align}
+
+where 2p=128 (for 128 point tapering) which is used in this paper.
+
+Computationally equation (5) yields the simpler expression
+
+\begin{align}
+ \sum_{k=1}^{\left(\lfloor\frac{t*5}{\pi}\rfloor-p\right)}\left(\frac{\chi_{\tau-}(k \thinspace mod \thinspace 5)}{k^s}\right) + \sum_{i=\left(-p+1\right)}^{p}\frac{\frac{1}{2^{2p}} \left( 2^{2p}-\sum_{k=0}^{i+p-1}\binom{2p}{2p-k}\right)\chi_{\tau-}\left((\lfloor\frac{t*5}{\pi}\rfloor+i) \thinspace mod \thinspace 5\right)}{(\lfloor\frac{t*5}{\pi}\rfloor+i)^s} \label {eq:taperedtau-DirichletRealCoefSeries} 
+\end{align}
+
+where $\chi_{\tau-}(k \thinspace mod \thinspace 5) = \{1,0.2840790...,-0.2840790...,-1,0\} \text{ for } (k \thinspace mod \thinspace 5) = \{1,2,3,4,0\}$
+
+Therefore the two simple perturbations investigated for the tapered tau- Dirichlet Series, in the region $0.005\le \alpha \le 1$ are 
+
+\begin{align}
+ 1+\alpha \cdot \left[\sum_{k=2}^{\left(\lfloor\frac{t*5}{\pi}\rfloor-p\right)}\left(\frac{\chi_{\tau-}(k \thinspace mod \thinspace 5)}{k^s}\right) + \sum_{i=\left(-p+1\right)}^{p}\frac{\frac{1}{2^{2p}} \left( 2^{2p}-\sum_{k=0}^{i+p-1}\binom{2p}{2p-k}\right)\chi_{\tau-}\left((\lfloor\frac{t*5}{\pi}\rfloor+i) \thinspace mod \thinspace 5\right)}{(\lfloor\frac{t*5}{\pi}\rfloor+i)^s} \right]   \qquad \text{as } t \rightarrow \infty \label {eq:perturbationONEtaperedtau-DirichletRealCoefSeries} 
+\end{align}
+
+\begin{align}
+\alpha + \left [ \sum_{k=2}^{\left(\lfloor\frac{t*5}{\pi}\rfloor-p\right)}\left(\frac{\chi_{\tau-}(k \thinspace mod \thinspace 5)}{k^s}\right) + \sum_{i=\left(-p+1\right)}^{p}\frac{\frac{1}{2^{2p}} \left( 2^{2p}-\sum_{k=0}^{i+p-1}\binom{2p}{2p-k}\right)\chi_{\tau-}\left((\lfloor\frac{t*5}{\pi}\rfloor+i) \thinspace mod \thinspace 5\right)}{(\lfloor\frac{t*5}{\pi}\rfloor+i)^s} \right ]  \qquad \text{as } t \rightarrow \infty \label {eq:pertubationTWOtaperedtau-DiricihletrealCoefSeries} 
+\end{align}
+
+
+where the constant perturbation $\alpha$ lowers the symmetry of the 5-periodic Davenport Heilbronn function but does not change the location of the second quiescent region. 
+
+
+
+### Results  
+
+Figures 13-18, illustrate the behaviour of non-trivial zeroes lying inside the critical strip or nearby when the symmetry of the $\tau_-(s)$ dirichlet series is lowered due to the perturbation of the dirichlet coefficients described in equations (13) and (14). The magnitude of the perturbation (from the Riemann Zeta dirichlet series) decreases going from figure 13 to figure 18 as $\alpha=1$ results in the same dirichlet coefficients as the $\tau_-(s)$ dirichlet series. The interval displayed t=(45,1010) is at the lower boundary of the imaginary axis when 128 point tapering of the $\tau_-(s)$ dirichlet series becomes feasible.  
+
+Figure 13 displays the low-lying non-trivial zeroes when $\alpha=0.1$ for equations (13) and (14). For equation (14) (the top graph in blue) in the interval t=(45,1010) the non-trivial zeroes are spread out throughout the critical strip ($0<\sigma<1$) and above covering $0<\sigma < 2.5$. The pattern of dense zeroes within the critical strip and a sparser but psuedo-repetitive distribution above the critical strip is reminescent of $\tau +$ Davenport-Heilbronn non-trivial zeroes [11,12,22] off the critical line but lacking any non-trivial zeroes below the critical strip. For equation (13), (the bottom graph in black) the pattern of non-trivial zeroes exhibits curvature dependent on imag(s) and the values for t=(45,1010) cover $-0.05<\sigma<0.2$. The number of non-trivial zeroes under equation (13) in this interval is also reduced from the number observed for the $\tau_-(s)$ function.
+
+Figure 14 displays the low-lying non-trivial zeroes when $\alpha=0.3$ for equations (13) and (14). For equation (14) (the top graph in blue) in the interval t=(45,1010) the non-trivial zeroes are less spread out both throughout the critical strip ($0<\sigma<1$) and above covering $0.1<\sigma < 1.7$. For equation (13), (the bottom graph in black) the pattern of non-trivial zeroes exhibits pronounced curvature dependent on imag(s) but with a more uniform spread of non-trivial zeroes covering $0.1<\sigma<0.4$. The number of non-trivial zeroes under equation (14) under this perturbation value has grown compared to figure 13.
+
+Figure 15 displays the low-lying non-trivial zeroes when $\alpha=0.5$ for equations (13) and (14). For equation (14) (the top graph in blue) in the interval t=(45,1010) the non-trivial zeroes are less spread out covering $0.2<\sigma < 1.2$ with the densest region about $\sigma\approx0.6$. For equation (13), (the bottom graph in black) the pattern of non-trivial zeroes exhibits less curvature dependent on imag(s) with a relatively narrower uniform spread of 0.2 covering $0.3<\sigma<0.45$ with a few non-trivial zeroes exceeding real(s)>0.5. 
+
+Figure 16 displays the low-lying non-trivial zeroes when $\alpha=0.7$ for equations (13) and (14) (using a similar vertical scale as figure 15 for emphasis of the contraction of the spread of the non-trivial zeroes as the perturbation reduces in magnitude). For equation (14) (the top graph in blue) in the interval t=(45,1010) the non-trivial zeroes again are less spread out covering $0.2<\sigma < 1$ with the densest region about $\sigma\approx0.55$. For equation (13), (the bottom graph in black) the pattern of dense non-trivial zeroes exhibits slightly narrower uniform spread of 0.1 covering $0.4<\sigma<0.5$ (due to the curvature). The spread of non-trivial zeroes away from the dense region has increased $0.3<\sigma<0.7$.
+
+Figure 17 displays the low-lying non-trivial zeroes when $\alpha=0.9$ for equations (13) and (14). Both graphs in the figure are approaching much closer to the 5-periodic Davenport Heilbronn function pattern of non-trivial zeroes and for emphasis the known off-critical line non-trivial zeroes for $\tau_-(s)$ function have been shown in red dots. For equation (14) (the top graph in blue) in the interval t=(45,1010) most of the non-trivial zeroes are covering $0.5<\sigma < 0.55$ and the off-critical line pairs of non-trivial zeroes appears asymmetrically wider than for the high symmetry $\tau_-(s)$. There are additional pairs of off-critical line non-trivial zeroes present in this lower symmetry equation (14) perturbed function. For equation (13), (the bottom graph in black) most of the non-trivial zeroes are covering $0.45<\sigma < 0.55$ and the off-critical line pairs of non-trivial zeroes appears asymmetrically narrower than for the high symmetry $\tau_-(s)$. There are additional pairs of off-critical line non-trivial zeroes present in this lower symmetry equation (13) perturbed function.
+
+Figure 18 displays the low-lying non-trivial zeroes when $\alpha=0.95$ for equations (13) and (14). With an even weaker perturbation (than in figure 17) both graphs in the figure continue to approach ever closer to the 5-periodic Davenport Heilbronn function pattern of non-trivial zeroes. As an aid the known off-critical line non-trivial zeroes for $\tau_-(s)$ function are shown in red dots. For equation (14) (the top graph in blue) in the interval t=(45,1010) most of the non-trivial zeroes are covering $0.475<\sigma < 0.525$ and the off-critical line pairs of non-trivial zeroes are slightly asymmetrically wider than for the high symmetry $\tau_-(s)$ locations. There remain additional pairs of off-critical line non-trivial zeroes present in this lower symmetry equation (14) perturbed function but those pairs are closer together (heading towards the critical line). For equation (13), (the bottom graph in black) most of the non-trivial zeroes are covering $0.475<\sigma < 0.525$ and the off-critical line pairs of non-trivial zeroes appears slightly asymmetrically narrower than for the high symmetry $\tau_-(s)$ locations. There are additional pairs of off-critical line non-trivial zeroes present in this lower symmetry equation (13) perturbed function but they are only just discernable (on the scale of the graph) from the critical line.
+
+\newpage
+
+```{r DHf1impactofdirichletcoefficientmagnitude_p1, fig.show = "hold", fig.align = "center", fig.height=6.4}
+ 
+par(mfrow=c(2,1))
+df_p1=read.csv("/home/john/pari/taperedDHf1approx_dirichletcoef_1_p1_gridsearch_zeroes_orgresp5_start45end1010.csv",header=FALSE,colClasses = "numeric")
+#list.files("/home/john/pari")
+df_p1$round_t=round(df_p1$V3,4)
+df_p1$round_s=round(df_p1$V2,4)
+df_p1=df_p1[!duplicated(df_p1[,c("round_t","round_s")]),]
+df_p1=df_p1[df_p1$V3 > 64*pi/5+4,]
+
+df_p1_1=read.csv("/home/john/pari/taperedDHf1approx_dirichletcoef_p1_1p0_gridsearch_zeroes_orgresp5_start45end1010.csv",header=FALSE,colClasses = "numeric")
+#list.files("/home/john/pari")
+df_p1_1$round_t=round(df_p1_1$V3,4)
+df_p1_1$round_s=round(df_p1_1$V2,4)
+df_p1_1=df_p1_1[!duplicated(df_p1_1[,c("round_t","round_s")]),]
+df_p1_1=df_p1_1[df_p1_1$V3 > 64*pi/5+4,]
+
+plot(df_p1_1$V3,(df_p1_1$V2-.5*0)/1,xlim=c(-50,max(df_p1_1$V3,1000)),
+     #ylim=yspan,
+     col="darkblue",cex=0.5,
+     main="non-trivial zero positions as dirichlet coefficients approach tau- function \n using tapered finite tau- Dirichlet Series about floor(t/pi*5) ",xlab="imag(s)",ylab="real(s)",
+     cex.main=0.8);grid()
+abline(h=(0.5-.5*0)/1,lty=3,lwd=2,col="cyan")
+legend(x="topleft",legend=c(paste0("dirichlet series \n",expression(0.1+0.284/2^s-0.284/3^s-1/4^s+1/6^s...)),"non-trivial zeroes of series"),col=c(0,"darkblue"),lty=c(-1,-1),pch=c(-1,1),cex=0.5,bty="n")
+plot(df_p1$V3,(df_p1$V2-.5*0)/1,xlim=c(-50,max(df_p1$V3,1000)),
+     #ylim=yspan,
+     main="non-trivial zero positions as dirichlet coefficients approach tau- function \n using tapered finite tau- Dirichlet Series about floor(t/pi*5) ",xlab="imag(s)",ylab="real(s)",cex=0.5,cex.main=0.8);grid();
+abline(h=(0.5-.5*0)/1,lty=3,lwd=2,col="cyan")
+legend(x="topleft",legend=c(paste0("dirichlet series \n",expression(1+0.1*(0.284/2^s-0.284/3^s-1/4^s+1/6^s...))),"non-trivial zeroes of series"),col=c(0,1),lty=c(-1,-1),pch=c(-1,1),cex=0.5,bty="n")
+
+```
+***Figure 13. Comparison of the low-lying non-trivial zero co-ordinates in the interval t=(45,1010) under two perturbations  ($\alpha=0.1$) of the tapered finite tau- dirichlet series by (top blue) the leading term; 0.1 + ( 0.284.../$2^s$ -0.284.../$3^s$ - 1/$4^s$ + 1/$6^s$ + ... + tapered terms ) and (bottom black) the 2nd, 3rd, 4th, ... etc dirichlet coefficients terms;  1 + 0.1 \* ( 0.284.../$2^s$ -0.284.../$3^s$ - 1/$4^s$ + 1/$6^s$ ... + tapered terms ). ***
+
+\newpage
+
+```{r DHf1impactofdirichletcoefficientmagnitude_p3, fig.show = "hold", fig.align = "center", fig.height=6.4}
+ 
+par(mfrow=c(2,1))
+df_p3=read.csv("/home/john/pari/taperedDHf1approx_dirichletcoef_1_p3_gridsearch_zeroes_orgresp5_start45end1010.csv",header=FALSE,colClasses = "numeric")
+#list.files("/home/john/pari")
+df_p3$round_t=round(df_p3$V3,4)
+df_p3$round_s=round(df_p3$V2,4)
+df_p3=df_p3[!duplicated(df_p3[,c("round_t","round_s")]),]
+df_p3=df_p3[df_p3$V3 > 64*pi/5+4,]
+
+df_p3_1=read.csv("/home/john/pari/taperedDHf1approx_dirichletcoef_p3_1p0_gridsearch_zeroes_orgresp5_start45end1010.csv",header=FALSE,colClasses = "numeric")
+#list.files("/home/john/pari")
+df_p3_1$round_t=round(df_p3_1$V3,4)
+df_p3_1$round_s=round(df_p3_1$V2,4)
+df_p3_1=df_p3_1[!duplicated(df_p3_1[,c("round_t","round_s")]),]
+df_p3_1=df_p3_1[df_p3_1$V3 > 64*pi/5+4,]
+
+plot(df_p3_1$V3,(df_p3_1$V2-.5*0)/1,xlim=c(-50,max(df_p3_1$V3,1000)),
+     #ylim=yspan,
+     col="darkblue",cex=0.5,
+     main="non-trivial zero positions as dirichlet coefficients approach tau- function \n using tapered finite tau- Dirichlet Series about floor(t/pi*5) ",xlab="imag(s)",ylab="real(s)",
+     cex.main=0.8);grid()
+abline(h=(0.5-.5*0)/1,lty=3,lwd=2,col="cyan")
+legend(x="topleft",legend=c(paste0("dirichlet series \n",expression(0.3+0.284/2^s-0.284/3^s-1/4^s+1/6^s...)),"non-trivial zeroes of series"),col=c(0,"darkblue"),lty=c(-1,-1),pch=c(-1,1),cex=0.5,bty="n")
+plot(df_p3$V3,(df_p3$V2-.5*0)/1,xlim=c(-50,max(df_p3$V3,1000)),
+     #ylim=yspan,
+     main="non-trivial zero positions as dirichlet coefficients approach tau- function \n using tapered finite tau- Dirichlet Series about floor(t/pi*5) ",xlab="imag(s)",ylab="real(s)",cex=0.5,cex.main=0.8);grid();
+abline(h=(0.5-.5*0)/1,lty=3,lwd=2,col="cyan")
+legend(x="topleft",legend=c(paste0("dirichlet series \n",expression(1+0.3*(0.284/2^s-0.284/3^s-1/4^s+1/6^s...))),"non-trivial zeroes of series"),col=c(0,1),lty=c(-1,-1),pch=c(-1,1),cex=0.5,bty="n")
+
+
+
+```
+
+***Figure 14. Comparison of the low-lying non-trivial zero co-ordinates in the interval t=(45,1010) under two perturbations  ($\alpha=0.3$) of the tapered finite tau- dirichlet series by (top blue) the leading term; 0.3 + ( 0.284.../$2^s$ -0.284.../$3^s$ - 1/$4^s$ + 1/$6^s$ + ... + tapered terms ) and (bottom black) the 2nd, 3rd, 4th, ... etc dirichlet coefficients terms;  1 + 0.3 \* ( 0.284.../$2^s$ -0.284.../$3^s$ - 1/$4^s$ + 1/$6^s$ ... + tapered terms ). ***
+
+
+\newpage
+
+```{r DHf1impactofdirichletcoefficientmagnitude_p5, fig.show = "hold", fig.align = "center", fig.height=6.4}
+ 
+par(mfrow=c(2,1))
+df_p5=read.csv("/home/john/pari/taperedDHf1approx_dirichletcoef_1_p5_gridsearch_zeroes_orgresp5_start45end1010.csv",header=FALSE,colClasses = "numeric")
+#list.files("/home/john/pari")
+df_p5$round_t=round(df_p5$V3,4)
+df_p5$round_s=round(df_p5$V2,4)
+df_p5=df_p5[!duplicated(df_p5[,c("round_t","round_s")]),]
+df_p5=df_p5[df_p5$V3 > 64*pi/5+4,]
+
+df_p5_1=read.csv("/home/john/pari/taperedDHf1approx_dirichletcoef_p5_1p0_gridsearch_zeroes_orgresp5_start45end1010.csv",header=FALSE,colClasses = "numeric")
+#list.files("/home/john/pari")
+df_p5_1$round_t=round(df_p5_1$V3,4)
+df_p5_1$round_s=round(df_p5_1$V2,4)
+df_p5_1=df_p5_1[!duplicated(df_p5_1[,c("round_t","round_s")]),]
+df_p5_1=df_p5_1[df_p5_1$V3 > 64*pi/5+4,]
+
+plot(df_p5_1$V3,(df_p5_1$V2-.5*0)/1,xlim=c(-50,max(df_p5_1$V3,1000)),
+     ylim=range(c((df_p5_1$V2-.5*0)/1,0.3,1.5)),
+     col="darkblue",cex=0.5,
+     main="non-trivial zero positions as dirichlet coefficients approach tau- function \n using tapered finite tau- Dirichlet Series about floor(t/pi*5) ",xlab="imag(s)",ylab="real(s)",
+     cex.main=0.8);grid()
+abline(h=(0.5-.5*0)/1,lty=3,lwd=2,col="cyan")
+legend(x="topleft",legend=c(paste0("dirichlet series \n",expression(0.5+0.284/2^s-0.284/3^s-1/4^s+1/6^s...)),"non-trivial zeroes of series"),col=c(0,"darkblue"),lty=c(-1,-1),pch=c(-1,1),cex=0.5,bty="n")
+plot(df_p5$V3,(df_p5$V2-.5*0)/1,xlim=c(-50,max(df_p5$V3,1000)),
+     ylim=range(c((df_p5$V2-.5*0)/1,0.1,0.55)),
+     main="non-trivial zero positions as dirichlet coefficients approach tau- function \n using tapered finite tau- Dirichlet Series about floor(t/pi*5) ",xlab="imag(s)",ylab="real(s)",cex=0.5,cex.main=0.8);grid();
+abline(h=(0.5-.5*0)/1,lty=3,lwd=2,col="cyan")
+legend(x="topleft",legend=c(paste0("dirichlet series \n",expression(1+0.5*(0.284/2^s-0.284/3^s-1/4^s+1/6^s...))),"non-trivial zeroes of series"),col=c(0,1),lty=c(-1,-1),pch=c(-1,1),cex=0.5,bty="n")
+
+
+
+```
+
+***Figure 15. Comparison of the low-lying non-trivial zero co-ordinates in the interval t=(45,1010) under two perturbations  ($\alpha=0.5$) of the tapered finite tau- dirichlet series by (top blue) the leading term; 0.5 + ( 0.284.../$2^s$ -0.284.../$3^s$ - 1/$4^s$ + 1/$6^s$ + ... + tapered terms ) and (bottom black) the 2nd, 3rd, 4th, ... etc dirichlet coefficients terms;  1 + 0.5 \* ( 0.284.../$2^s$ -0.284.../$3^s$ - 1/$4^s$ + 1/$6^s$ ... + tapered terms ). ***
+
+
+\newpage
+
+```{r DHf1impactofdirichletcoefficientmagnitude_p7, fig.show = "hold", fig.align = "center", fig.height=6.4}
+ 
+par(mfrow=c(2,1))
+df_p7=read.csv("/home/john/pari/taperedDHf1approx_dirichletcoef_1_p7_gridsearch_zeroes_orgresp5_start45end1010.csv",header=FALSE,colClasses = "numeric")
+#list.files("/home/john/pari")
+df_p7$round_t=round(df_p7$V3,4)
+df_p7$round_s=round(df_p7$V2,4)
+df_p7=df_p7[!duplicated(df_p7[,c("round_t","round_s")]),]
+df_p7=df_p7[df_p7$V3 > 64*pi/5+4,]
+
+df_p7_1=read.csv("/home/john/pari/taperedDHf1approx_dirichletcoef_p7_1p0_gridsearch_zeroes_orgresp5_start45end1010.csv",header=FALSE,colClasses = "numeric")
+#list.files("/home/john/pari")
+df_p7_1$round_t=round(df_p7_1$V3,4)
+df_p7_1$round_s=round(df_p7_1$V2,4)
+df_p7_1=df_p7_1[!duplicated(df_p7_1[,c("round_t","round_s")]),]
+df_p7_1=df_p7_1[df_p7_1$V3 > 64*pi/5+4,]
+
+plot(df_p7_1$V3,(df_p7_1$V2-.5*0)/1,xlim=c(-50,max(df_p7_1$V3,1000)),
+     ylim=range(c((df_p7_1$V2-.5*0)/1,0.3,1.5)),
+     col="darkblue",cex=0.5,
+     main="non-trivial zero positions as dirichlet coefficients approach tau- function \n using tapered finite tau- Dirichlet Series about floor(t/pi*5) ",xlab="imag(s)",ylab="real(s)",
+     cex.main=0.8);grid()
+abline(h=(0.5-.5*0)/1,lty=3,lwd=2,col="cyan")
+legend(x="topleft",legend=c(paste0("dirichlet series \n",expression(0.7+0.284/2^s-0.284/3^s-1/4^s+1/6^s...)),"non-trivial zeroes of series"),col=c(0,"darkblue"),lty=c(-1,-1),pch=c(-1,1),cex=0.5,bty="n")
+plot(df_p7$V3,(df_p7$V2-.5*0)/1,xlim=c(-50,max(df_p7$V3,1000)),
+     ylim=range(c((df_p7$V2-.5*0)/1,0.1,0.55)),
+     main="non-trivial zero positions as dirichlet coefficients approach tau- function \n using tapered finite tau- Dirichlet Series about floor(t/pi*5) ",xlab="imag(s)",ylab="real(s)",cex=0.5,cex.main=0.8);grid();
+abline(h=(0.5-.5*0)/1,lty=3,lwd=2,col="cyan")
+legend(x="topleft",legend=c(paste0("dirichlet series \n",expression(1+0.7*(0.284/2^s-0.284/3^s-1/4^s+1/6^s...))),"non-trivial zeroes of series"),col=c(0,1),lty=c(-1,-1),pch=c(-1,1),cex=0.5,bty="n")
+
+
+
+```
+
+***Figure 16. Comparison of the low-lying non-trivial zero co-ordinates in the interval t=(45,1010) under two perturbations  ($\alpha=0.7$) of the tapered finite tau- dirichlet series by (top blue) the leading term; 0.7 + ( 0.284.../$2^s$ -0.284.../$3^s$ - 1/$4^s$ + 1/$6^s$ + ... + tapered terms ) and (bottom black) the 2nd, 3rd, 4th, ... etc dirichlet coefficients terms;  1 + 0.7 \* ( 0.284.../$2^s$ -0.284.../$3^s$ - 1/$4^s$ + 1/$6^s$ ... + tapered terms ). ***
+
+\newpage
+
+```{r DHf1impactofdirichletcoefficientmagnitude_p9, fig.show = "hold", fig.align = "center", fig.height=6.4}
+ 
+xf1=c(  0.808517+1i*85.699348,0.650830+1i*114.163343,0.574356+1i*166.479306,
+        0.724258+1i*176.702461,.86953 + 240.4046*1i,.81955 + 320.8764*1i,
+        .76822 + 331.0502*1i,.62850 + 366.6409*1i,.81587 + 411.7967*1i,
+        .70882 + 440.4845*1i,.51591 + 520.9438*1i,.84695 + 531.2797*1i,
+        .72953 + 548.9067*1i,.78655 + 566.5097*1i,.58285 + 595.0233*1i,
+        .62825 + 611.7750*1i,.61076 + 646.9868*1i,.76059 + 657.1083*1i,
+        .78870 + 692.8924*1i,.77736 + 737.7669*1i,.85300 + 783.6530*1i,
+        .66855 + 811.7657*1i,.56194 + 847.4657*1i,.85610 + 857.2958*1i,
+        .68089 + 864.1180*1i,
+        .68843 + 892.1490*1i,.75935 + 921.1726*1i,.76249 + 983.7521*1i)#,
+        # .69140 + 1012.019*1i,.69809 + 1018.795*1i,.58613 + 1029.004*1i,
+        # .61106 + 1078.490*1i,.85462 + 1092.454*1i,.60577 + 1109.548*1i)
+
+
+
+par(mfrow=c(2,1))
+df_p9=read.csv("/home/john/pari/taperedDHf1approx_dirichletcoef_1_p9_gridsearch_zeroes_orgresp5_start45end1010.csv",header=FALSE,colClasses = "numeric")
+#list.files("/home/john/pari")
+df_p9$round_t=round(df_p9$V3,4)
+df_p9$round_s=round(df_p9$V2,4)
+df_p9=df_p9[!duplicated(df_p9[,c("round_t","round_s")]),]
+df_p9=df_p9[df_p9$V3 > 64*pi/5+4,]
+
+df_p9_1=read.csv("/home/john/pari/taperedDHf1approx_dirichletcoef_p9_1p0_gridsearch_zeroes_orgresp5_start45end1010.csv",header=FALSE,colClasses = "numeric")
+#list.files("/home/john/pari")
+df_p9_1$round_t=round(df_p9_1$V3,4)
+df_p9_1$round_s=round(df_p9_1$V2,4)
+df_p9_1=df_p9_1[!duplicated(df_p9_1[,c("round_t","round_s")]),]
+df_p9_1=df_p9_1[df_p9_1$V3 > 64*pi/5+4,]
+
+plot(df_p9_1$V3,(df_p9_1$V2-.5*0)/1,xlim=c(-50,max(df_p9_1$V3,1000)),
+     ylim=range(c((df_p9_1$V2-.5*0)/1,0.3,0.9)),
+     col="darkblue",cex=0.5,
+     main="non-trivial zero positions as dirichlet coefficients approach tau- function \n using tapered finite tau- Dirichlet Series about floor(t/pi*5) ",xlab="imag(s)",ylab="real(s)",
+     cex.main=0.8);grid()
+abline(h=(0.5-.5*0)/1,lty=3,lwd=2,col="cyan")
+points(Im(xf1),Re(xf1),col=2,pch=20,cex=0.5)
+points(Im(xf1),1-Re(xf1),col=2,pch=20,cex=0.5)
+legend(x="topleft",legend=c(paste0("dirichlet series \n",expression(0.9+0.284/2^s-0.284/3^s-1/4^s+1/6^s...)),"non-trivial zeroes of series"),col=c(0,"darkblue"),lty=c(-1,-1),pch=c(-1,1),cex=0.5,bty="n")
+plot(df_p9$V3,(df_p9$V2-.5*0)/1,xlim=c(-50,max(df_p9$V3,1000)),
+     ylim=range(c((df_p9$V2-.5*0)/1,0.1,0.55)),
+     main="non-trivial zero positions as dirichlet coefficients approach tau- function \n using tapered finite tau- Dirichlet Series about floor(t/pi*5) ",xlab="imag(s)",ylab="real(s)",cex=0.5,cex.main=0.8);grid();
+points(Im(xf1),Re(xf1),col=2,pch=20,cex=0.5)
+points(Im(xf1),1-Re(xf1),col=2,pch=20,cex=0.5)
+abline(h=(0.5-.5*0)/1,lty=3,lwd=2,col="cyan")
+legend(x="topleft",legend=c(paste0("dirichlet series \n",expression(1+0.9*(0.284/2^s-0.284/3^s-1/4^s+1/6^s...))),"non-trivial zeroes of series"),col=c(0,1),lty=c(-1,-1),pch=c(-1,1),cex=0.5,bty="n")
+
+
+
+```
+
+***Figure 17. Comparison of the low-lying non-trivial zero co-ordinates in the interval t=(45,1010) under two perturbations  ($\alpha=0.9$) of the tapered finite tau- dirichlet series by (top blue) the leading term; 0.9 + ( 0.284.../$2^s$ -0.284.../$3^s$ - 1/$4^s$ + 1/$6^s$ + ... + tapered terms ) and (bottom black) the 2nd, 3rd, 4th, ... etc dirichlet coefficients terms;  1 + 0.9 \* ( 0.284.../$2^s$ -0.284.../$3^s$ - 1/$4^s$ + 1/$6^s$ ... + tapered terms ). The red points indicate the known locations of off-critical line non-trivial zeroes for the 5-periodic davenport heilbronn tau- function. For the (blue) perturbed series 0.9 + ( 0.284.../$2^s$ - 0.284.../$3^s$ - 1/$4^s$ + 1/$6^s$ + ... + tapered terms ) the perturbed off-critical line non-trivial have moved further away from the critical line and new pairs of off-critical non-trivial zeroes have appeared. For the (black) perturbed series 1 + 0.9 \* ( 0.284.../$2^s$ -0.284.../$3^s$ - 1/$4^s$ + 1/$6^s$ ... + tapered terms ) conversely the perturbed off-critical line non-trivial have moved closer to the critical line but new pairs of off-critical line non-trivial zeroes have also appeared. ***
+
+\newpage
+
+```{r DHf1impactofdirichletcoefficientmagnitude_p95, fig.show = "hold", fig.align = "center", fig.height=6.4}
+
+
+par(mfrow=c(2,1))
+df_p95=read.csv("/home/john/pari/taperedDHf1approx_dirichletcoef_1_p95_gridsearch_zeroes_orgresp5_start45end1010.csv",header=FALSE,colClasses = "numeric")
+#list.files("/home/john/pari")
+df_p95$round_t=round(df_p95$V3,4)
+df_p95$round_s=round(df_p95$V2,4)
+df_p95=df_p95[!duplicated(df_p95[,c("round_t","round_s")]),]
+df_p95=df_p95[df_p95$V3 > 64*pi/5+4,]
+
+df_p95_1=read.csv("/home/john/pari/taperedDHf1approx_dirichletcoef_p95_1p0_gridsearch_zeroes_orgresp5_start45end1010.csv",header=FALSE,colClasses = "numeric")
+#list.files("/home/john/pari")
+df_p95_1$round_t=round(df_p95_1$V3,4)
+df_p95_1$round_s=round(df_p95_1$V2,4)
+df_p95_1=df_p95_1[!duplicated(df_p95_1[,c("round_t","round_s")]),]
+df_p95_1=df_p95_1[df_p95_1$V3 > 64*pi/5+4,]
+
+plot(df_p95_1$V3,(df_p95_1$V2-.5*0)/1,xlim=c(-50,max(df_p95_1$V3,1000)),
+     ylim=range(c((df_p95_1$V2-.5*0)/1,0.3,0.9)),
+     col="darkblue",cex=0.5,
+     main="non-trivial zero positions as dirichlet coefficients approach tau- function \n using tapered finite tau- Dirichlet Series about floor(t/pi*5) ",xlab="imag(s)",ylab="real(s)",
+     cex.main=0.8);grid()
+abline(h=(0.5-.5*0)/1,lty=3,lwd=2,col="cyan")
+points(Im(xf1),Re(xf1),col=2,pch=20,cex=0.5)
+points(Im(xf1),1-Re(xf1),col=2,pch=20,cex=0.5)
+legend(x="topleft",legend=c(paste0("dirichlet series \n",expression(0.95+0.284/2^s-0.284/3^s-1/4^s+1/6^s...)),"non-trivial zeroes of series"),col=c(0,"darkblue"),lty=c(-1,-1),pch=c(-1,1),cex=0.5,bty="n")
+plot(df_p95$V3,(df_p95$V2-.5*0)/1,xlim=c(-50,max(df_p95$V3,1000)),
+     ylim=range(c((df_p95$V2-.5*0)/1,0.1,0.55)),
+     main="non-trivial zero positions as dirichlet coefficients approach tau- function \n using tapered finite tau- Dirichlet Series about floor(t/pi*5) ",xlab="imag(s)",ylab="real(s)",cex=0.5,cex.main=0.8);grid();
+points(Im(xf1),Re(xf1),col=2,pch=20,cex=0.5)
+points(Im(xf1),1-Re(xf1),col=2,pch=20,cex=0.5)
+abline(h=(0.5-.5*0)/1,lty=3,lwd=2,col="cyan")
+legend(x="topleft",legend=c(paste0("dirichlet series \n",expression(1+0.95*(0.284/2^s-0.284/3^s-1/4^s+1/6^s...))),"non-trivial zeroes of series"),col=c(0,1),lty=c(-1,-1),pch=c(-1,1),cex=0.5,bty="n")
+
+
+```
+
+***Figure 18. Comparison of the low-lying non-trivial zero co-ordinates in the interval t=(45,1010) under two perturbations  ($\alpha=0.95$) of the tapered finite tau- dirichlet series by (top blue) the leading term; 0.95 + ( 0.284.../$2^s$ -0.284.../$3^s$ - 1/$4^s$ + 1/$6^s$ + ... + tapered terms ) and (bottom black) the 2nd, 3rd, 4th, ... etc dirichlet coefficients terms;  1 + 0.95 \* ( 0.284.../$2^s$ -0.284.../$3^s$ - 1/$4^s$ + 1/$6^s$ ... + tapered terms ). The red points indicate the known locations of off-critical line non-trivial zeroes for the 5-periodic davenport heilbronn tau- function. For the (blue) perturbed series 0.95 + ( 0.284.../$2^s$ -0.284.../$3^s$ - 1/$4^s$ + 1/$6^s$ + ... + tapered terms ) the perturbed off-critical line non-trivial have moved further away from the critical line and new pairs of off-critical non-trivial zeroes have appeared. For the (black) perturbed series 1 + 0.95 \* ( 0.284.../$2^s$ -0.284.../$3^s$ - 1/$4^s$ + 1/$6^s$ ... + tapered terms ) conversely the perturbed off-critical line non-trivial have moved closer to the critical line but new pairs of off-critical line non-trivial zeroes have also appeared. ***
+
+\newpage
+
+### Examples of non-trivial zero behaviour under equations (13) and (14) perturbations near imag(s)=85.6993 for the $\tau_-(s)$ function
+
+Figures 19 and 20 display examples of the trajectory of the perturbed location (due to equations (13) and (14)) of non-trivial zeroes associated with the first off critical line zero location for the $\tau_-(s)$ function near imag(s)=85.6993.
+
+Figure 19 displays the behaviour of five low-lying non-trivial zeroes for $0.005 < \alpha < 1$ for equation (13) perturbation nearby the first off critical line non-trivial zero (t=83.6993...) of the $\tau_-(s)$ function. It can be observed that under perturbation equation (13), (i) the $\tau_-(s)$ non-trivial zeroes with origins around (83+,88-,89+) for low $\alpha$ have a roughly vertical increase in the real(s) value to real(s)=0.5 as $\alpha \rightarrow 1$. and (ii) the $\tau_-(s)$ non-trivial zeroes with origins around (85-,86+) for low $\alpha$ evolve into the off critical line non-trivial pair of zeroes ($0.808+I\cdot 85.699$, $0.191+I\cdot85.699$) as $\alpha \rightarrow 1$.
+
+Figure 20 displays the behaviour of the same five low-lying non-trivial zeroes for $0.005 < \alpha < 1$ but under equation (14) perturbation nearby the first off critical line non-trivial zero (t=83.6993...) of the $\tau_-(s)$ function. It can be observed that under perturbation equation (14), (i) the $\tau_-(s)$ non-trivial zeroes with origins around (82+,87+,90-) for low $\alpha$ have a curved decrease in the real(s) value to real(s)=0.5 as $\alpha \rightarrow 1$. and (ii) the $\tau_-(s)$ non-trivial zeroes with origins around (85+,86) for low $\alpha$ evolve into the off critical line non-trivial pair of zeroes ($0.191+I\cdot85.699$, $0.808+I\cdot 85.699$) as $\alpha \rightarrow 1$.
+
+Comparing figures 19 and 20, the approximately common starting value real(s)<-0.5 for $\alpha\sim0.005$ under equation(13) in figure 19 is an attractive property such that the origins of the eventual non-trivial zeroes are similar but cleanly spaced. So as $\alpha$ increases the influence of the complex function comprising terms k=2,3,4 etc then grows. Furthermore, it is logically the case that the origin non-trivial zeroes under equation (13) cease to exist when  $\alpha\rightarrow0$ (as the remainder of equation (13) simply equals unity).
+
+
+\newpage
+
+```{r DHf1impactofdirichletcoefficientmagnitude_eqn13_85p6993, fig.show = "hold", fig.align = "center", fig.height=6.4}
+
+###perturbation equation 13
+par(mfrow=c(1,2))
+df_grampt_minus1=read.csv("/home/john/pari/taperedDHf1approx_dirichletcoef_83p108_gridsearch_zeroes_orgresp5.csv",header=FALSE,colClasses = "numeric")
+df_grampt_minus1=df_grampt_minus1[order(df_grampt_minus1$V1),]
+df_grampt=read.csv("/home/john/pari/taperedDHf1approx_dirichletcoef_85p699_res_p19_gridsearch_zeroes_orgresp5.csv",header=FALSE,colClasses = "numeric")
+df_grampt=df_grampt[order(df_grampt$V1),]
+df_grampt_plus2=read.csv("/home/john/pari/taperedDHf1approx_dirichletcoef_87p647_gridsearch_zeroes_orgresp5.csv",header=FALSE,colClasses = "numeric")
+df_grampt_plus2=df_grampt_plus2[order(df_grampt_plus2$V1),]
+df_grampt_plus1=read.csv("/home/john/pari/taperedDHf1approx_dirichletcoef_85p699_gridsearch_zeroes_orgresp5.csv",header=FALSE,colClasses = "numeric")
+df_grampt_plus1=df_grampt_plus1[order(df_grampt_plus1$V1),]
+df_grampt_plus3=read.csv("/home/john/pari/taperedDHf1approx_dirichletcoef_89p439_gridsearch_zeroes_orgresp5.csv",header=FALSE,colClasses = "numeric")
+df_grampt_plus3=df_grampt_plus3[order(df_grampt_plus3$V1),]
+
+xspan=range(c(df_grampt$V3,df_grampt_plus1$V3,df_grampt_minus1$V3,df_grampt_plus2$V3,df_grampt_plus3$V3));#,823.5
+yspan=range(c(df_grampt$V2,df_grampt_plus1$V2,df_grampt_minus1$V2,df_grampt_plus2$V2,df_grampt_plus3$V2));
+plot(df_grampt_plus1$V3,df_grampt_plus1$V2,typ="b",
+     ylim=yspan,xlim=xspan,cex=0.5,cex.main=0.5,
+     main="trajectory of non-trivial zero co-ordinates as \n dirichlet coefficients approach tau- function \n tapered finite dirichlet series approximation \n 1 + alpha * ( 0.284/2^s - 0.284/3^s -1/4^s + 0/5^s \n + 1/6^s + ... + tapered terms )",xlab="imag(s)",ylab="real(s)");grid()
+points(df_grampt$V3,df_grampt$V2,typ="b",pch=20,col=2,cex=0.5)
+points(df_grampt_plus2$V3,df_grampt_plus2$V2,typ="b",pch=2,col=3,cex=0.5)
+points(df_grampt_minus1$V3,df_grampt_minus1$V2,typ="b",pch=3,col=4,cex=0.5)
+points(df_grampt_plus3$V3,df_grampt_plus3$V2,typ="b",pch=4,col=6,cex=0.5)
+abline(h=0.5,lty=3,col="cyan",lwd=2)
+
+
+yspan=range(c(df_grampt$V2,df_grampt_plus1$V2,df_grampt_minus1$V2,df_grampt_plus2$V2,df_grampt_plus3$V2));
+plot(df_grampt_plus1$V1,df_grampt_plus1$V2,typ="b",ylim=yspan,cex=0.5,cex.main=0.5,
+     main="trajectory of non-trivial zero co-ordinates as \n dirichlet coefficients approach tau- function \n tapered finite dirichlet series approximation \n 1 + alpha * ( 0.284/2^s - 0.284/3^s -1/4^s + 0/5^s \n + 1/6^s + ... + tapered terms )",xlab="alpha",ylab="real(s)");grid()
+points(df_grampt$V1,df_grampt$V2,typ="b",pch=20,col=2,cex=0.5)
+points(df_grampt_plus2$V1,df_grampt_plus2$V2,typ="b",pch=2,col=3,cex=0.5)
+points(df_grampt_minus1$V1,df_grampt_minus1$V2,typ="b",pch=3,col=4,cex=0.5)
+points(df_grampt_plus3$V1,df_grampt_plus3$V2,typ="b",pch=4,col=6,cex=0.5)
+abline(h=0.5,lty=3,col="cyan",lwd=2)
+legend(x="bottomright",legend=c("starting point \ns=0.5+I*83.1088292...","starting point \ns=0.8085171+I*85.6993484...","starting point \ns=0.1914829+I*85.6993484...","starting point \ns=0.5+I*87.647456...","starting point \ns=0.5+I*89.439166..."),col=c(4,1,2,3,6),pch=c(3,1,20,2,4),cex=0.5,bty="n",y.intersp=1.5)
+legend(x="topleft",legend=c("alpha values = \n c(0.99999,0.9999,0.999,\n0.99,0.98,...,0.2,0.1,...\n.05,.04,.03,.02,.01,.005)"),cex=0.5,bty="n")
+```
+***Figure 19. Comparison of the low-lying non-trivial zero co-ordinates in the interval t=(83,89.5) under perturbation (equation(13))  of the tapered finite tau- dirichlet series by 1 + $\alpha$ \* ( 0.284.../$2^s$ -0.284.../$3^s$ - 1/$4^s$ + 1/$6^s$ ... + tapered terms ) shown in the lefthand panel with respect to imag(s) and in the righthand panel with respect to $\alpha$ magnitude. ***
+
+
+```{r DHf1impactofdirichletcoefficientmagnitude_eqn14_85p6993, fig.show = "hold", fig.align = "center", fig.height=6.4}
+
+###perturbation equation 14
+par(mfrow=c(1,2))
+df_grampt_minus1=read.csv("/home/john/pari/taperedDHf1approx_perturbation1stcoef_83p108_gridsearch_zeroes_orgresp5.csv",header=FALSE,colClasses = "numeric")
+df_grampt_minus1=df_grampt_minus1[order(df_grampt_minus1$V1),]
+df_grampt=read.csv("/home/john/pari/taperedDHf1approx_perturbation1stcoef_res_p19_85p699_gridsearch_zeroes_orgresp5.csv",header=FALSE,colClasses = "numeric")
+df_grampt=df_grampt[order(df_grampt$V1),]
+df_grampt_plus2=read.csv("/home/john/pari/taperedDHf1approx_perturbation1stcoef_87p647_gridsearch_zeroes_orgresp5.csv",header=FALSE,colClasses = "numeric")
+df_grampt_plus2=df_grampt_plus2[order(df_grampt_plus2$V1),]
+df_grampt_plus1=read.csv("/home/john/pari/taperedDHf1approx_perturbation1stcoef_85p699_gridsearch_zeroes_orgresp5.csv",header=FALSE,colClasses = "numeric")
+df_grampt_plus1=df_grampt_plus1[order(df_grampt_plus1$V1),]
+df_grampt_plus3=read.csv("/home/john/pari/taperedDHf1approx_perturbation1stcoef_89p439_gridsearch_zeroes_orgresp5.csv",header=FALSE,colClasses = "numeric")
+df_grampt_plus3=df_grampt_plus3[order(df_grampt_plus3$V1),]
+
+xspan=range(c(df_grampt$V3,df_grampt_plus1$V3,df_grampt_minus1$V3,df_grampt_plus2$V3,df_grampt_plus3$V3));#,823.5
+yspan=range(c(df_grampt$V2,df_grampt_plus1$V2,df_grampt_minus1$V2,df_grampt_plus2$V2,df_grampt_plus3$V2));
+plot(df_grampt_plus1$V3,df_grampt_plus1$V2,typ="b",
+     ylim=yspan,xlim=xspan,cex=0.5,cex.main=0.5,
+     main="trajectory of non-trivial zero co-ordinates as \n dirichlet coefficients approach tau- function \n tapered finite dirichlet series approximation \n alpha + ( 0.284/2^s - 0.284/3^s -1/4^s + 0/5^s \n + 1/6^s + ... + tapered terms )",ylab="real(s)",xlab="imag(s)");grid()
+points(df_grampt$V3,df_grampt$V2,typ="b",pch=20,col=2,cex=0.5)
+points(df_grampt_plus2$V3,df_grampt_plus2$V2,typ="b",pch=2,col=3,cex=0.5)
+points(df_grampt_minus1$V3,df_grampt_minus1$V2,typ="b",pch=3,col=4,cex=0.5)
+points(df_grampt_plus3$V3,df_grampt_plus3$V2,typ="b",pch=4,col=6,cex=0.5)
+abline(h=0.5,lty=3,col="cyan",lwd=2)
+
+yspan=range(c(df_grampt$V2,df_grampt_plus1$V2,df_grampt_minus1$V2,df_grampt_plus2$V2,df_grampt_plus3$V2));
+plot(df_grampt_plus1$V1,df_grampt_plus1$V2,typ="b",ylim=yspan,cex=0.5,cex.main=0.5,
+     main="trajectory of non-trivial zero co-ordinates as \n dirichlet coefficients approach tau- function \n tapered finite dirichlet series approximation \n alpha + ( 0.284/2^s - 0.284/3^s -1/4^s + 0/5^s \n + 1/6^s + ... + tapered terms )",ylab="real(s)",xlab="alpha");grid()
+points(df_grampt$V1,df_grampt$V2,typ="b",pch=20,col=2,cex=0.5)
+points(df_grampt_plus2$V1,df_grampt_plus2$V2,typ="b",pch=2,col=3,cex=0.5)
+points(df_grampt_minus1$V1,df_grampt_minus1$V2,typ="b",pch=3,col=4,cex=0.5)
+points(df_grampt_plus3$V1,df_grampt_plus3$V2,typ="b",pch=4,col=6,cex=0.5)
+abline(h=0.5,lty=3,col="cyan",lwd=2)
+legend(x="topright",legend=c("starting point \ns=0.5+I*83.1088292...","starting point \ns=0.8085171+I*85.6993484...","starting point \ns=0.1914829+I*85.6993484...","starting point \ns=0.5+I*87.647456...","starting point \ns=0.5+I*89.439166..."),col=c(4,1,2,3,6),pch=c(3,1,20,2,4),cex=0.5,bty="n",y.intersp=1.5)
+legend(x="right",legend=c("alpha values = \n c(0.99999,0.9999,0.999,\n0.99,0.98,...,0.2,0.1,...\n.05,.04,.03,.02,.01,.005)"),cex=0.5,bty="n")
+
+```
+***Figure 20. Comparison of the low-lying non-trivial zero co-ordinates in the interval t=(83,89.5) under perturbation (equation(14)) of the tapered finite tau- dirichlet series by alpha + ( 0.284.../$2^s$ -0.284.../$3^s$ - 1/$4^s$ + 1/$6^s$ + ... + tapered terms ) shown in the lefthand panel with respect to imag(s) and in the righthand panel with respect to $\alpha$ magnitude. ***
+
+\newpage
+
+### Examples of non-trivial zero behaviour under equations (13) and (14) perturbations near imag(s)=114.163 for the $\tau_-(s)$ function
+
+Figures 21 and 22 display examples of the trajectory of the perturbed location (due to equations (13) and (14)) of non-trivial zeroes associated with the second off critical line zero location for the $\tau_-(s)$ function near imag(s)=114.163.
+
+Figure 21 displays the behaviour of five low-lying non-trivial zeroes for $0.005 < \alpha < 1$ for equation (13) perturbation nearby the first off critical line non-trivial zero (t=114.163...) of the $\tau_-(s)$ function. It can be observed that under perturbation equation (13), (i) the $\tau_-(s)$ non-trivial zeroes with origins around (112+,116+,118-) for low $\alpha$ have a roughly vertical increase in the real(s) value to real(s)=0.5 as $\alpha \rightarrow 1$. and (ii) the $\tau_-(s)$ non-trivial zeroes with origins around (113+,115-) for low $\alpha$ evolve into the off critical line non-trivial pair of zeroes ($0.6508+I\cdot 114.163$, $0.3492+I\cdot 114.163$) as $\alpha \rightarrow 1$.
+
+Figure 22 displays the behaviour of the same five low-lying non-trivial zeroes for $0.005 < \alpha < 1$ but under equation (14) perturbation nearby the first off critical line non-trivial zero (t=114.163...) of the $\tau_-(s)$ function. It can be observed that under perturbation equation (14), (i) the $\tau_-(s)$ non-trivial zeroes with origins around (113-,117+) for low $\alpha$ have a curved evolution in the real(s) value to real(s)=0.5 as $\alpha \rightarrow 1$, and (ii) the $\tau_-(s)$ non-trivial zeroes with origins around (113.5,114+,117.5) for low $\alpha$ evolve respectively into the off critical line non-trivial pair of zeroes ($0.808+I\cdot 85.699$, $0.191+I\cdot85.699$) and the critical line non-trivial zero $0.5+I\cdot 117.647$ as $\alpha \rightarrow 1$.
+
+Comparing figures 21 and 22, the approximately common starting value real(s)<-0.6 for $\alpha\sim0.005$ under equation(13) again in figure 21 has the attractive property such that the origins of the eventual non-trivial zeroes are similar but cleanly spaced. So as $\alpha$ increases the influence of the complex function comprising terms k=2,3,4 etc then grows. Furthermore, it is logically the case that the origin non-trivial zeroes under equation (13) cease to exist when  $\alpha\rightarrow0$ (as the remainder of equation (13) simply equals unity).
+
+\newpage
+
+```{r DHf1impactofdirichletcoefficientmagnitude_eqn13_114p, fig.show = "hold", fig.align = "center", fig.height=6.4}
+
+###perturbation equation 13
+par(mfrow=c(1,2))
+df_grampt_minus1=read.csv("/home/john/pari/taperedDHf1approx_dirichletcoef_112p376_gridsearch_zeroes_orgresp5.csv",header=FALSE,colClasses = "numeric")
+df_grampt_minus1=df_grampt_minus1[order(df_grampt_minus1$V1),]
+df_grampt=read.csv("/home/john/pari/taperedDHf1approx_dirichletcoef_114p163_gridsearch_zeroes_orgresp5.csv",header=FALSE,colClasses = "numeric")
+df_grampt=df_grampt[order(df_grampt$V1),]
+df_grampt_plus2=read.csv("/home/john/pari/taperedDHf1approx_dirichletcoef_114p163_res_p349_gridsearch_zeroes_orgresp5.csv",header=FALSE,colClasses = "numeric")
+df_grampt_plus2=df_grampt_plus2[order(df_grampt_plus2$V1),]
+df_grampt_plus1=read.csv("/home/john/pari/taperedDHf1approx_dirichletcoef_116p721_gridsearch_zeroes_orgresp5.csv",header=FALSE,colClasses = "numeric")
+df_grampt_plus1=df_grampt_plus1[order(df_grampt_plus1$V1),]
+df_grampt_plus3=read.csv("/home/john/pari/taperedDHf1approx_dirichletcoef_117p643_gridsearch_zeroes_orgresp5.csv",header=FALSE,colClasses = "numeric")
+df_grampt_plus3=df_grampt_plus3[order(df_grampt_plus3$V1),]
+
+xspan=range(c(df_grampt$V3,df_grampt_plus1$V3,df_grampt_minus1$V3,df_grampt_plus2$V3,df_grampt_plus3$V3));#,823.5
+yspan=range(c(df_grampt$V2,df_grampt_plus1$V2,df_grampt_minus1$V2,df_grampt_plus2$V2,df_grampt_plus3$V2));
+plot(df_grampt_plus1$V3,df_grampt_plus1$V2,typ="b",
+     ylim=yspan,xlim=xspan,cex=0.5,cex.main=0.5,
+     main="trajectory of non-trivial zero co-ordinates as \n dirichlet coefficients approach tau- function \n tapered finite dirichlet series approximation \n 1 + alpha * ( 0.284/2^s - 0.284/3^s -1/4^s + 0/5^s \n + 1/6^s + ... + tapered terms )",xlab="imag(s)",ylab="real(s)");grid()
+points(df_grampt$V3,df_grampt$V2,typ="b",pch=20,col=2,cex=0.5)
+points(df_grampt_plus2$V3,df_grampt_plus2$V2,typ="b",pch=2,col=3,cex=0.5)
+points(df_grampt_minus1$V3,df_grampt_minus1$V2,typ="b",pch=3,col=4,cex=0.5)
+points(df_grampt_plus3$V3,df_grampt_plus3$V2,typ="b",pch=4,col=6,cex=0.5)
+abline(h=0.5,lty=3,col="cyan",lwd=2)
+
+
+yspan=range(c(df_grampt$V2,df_grampt_plus1$V2,df_grampt_minus1$V2,df_grampt_plus2$V2,df_grampt_plus3$V2));
+plot(df_grampt_plus1$V1,df_grampt_plus1$V2,typ="b",ylim=yspan,cex=0.5,cex.main=0.5,
+     main="trajectory of non-trivial zero co-ordinates as \n dirichlet coefficients approach tau- function \n tapered finite dirichlet series approximation \n 1 + alpha * ( 0.284/2^s - 0.284/3^s -1/4^s + 0/5^s \n + 1/6^s + ... + tapered terms )",xlab="alpha",ylab="real(s)");grid()
+points(df_grampt$V1,df_grampt$V2,typ="b",pch=20,col=2,cex=0.5)
+points(df_grampt_plus2$V1,df_grampt_plus2$V2,typ="b",pch=2,col=3,cex=0.5)
+points(df_grampt_minus1$V1,df_grampt_minus1$V2,typ="b",pch=3,col=4,cex=0.5)
+points(df_grampt_plus3$V1,df_grampt_plus3$V2,typ="b",pch=4,col=6,cex=0.5)
+abline(h=0.5,lty=3,col="cyan",lwd=2)
+legend(x="bottomright",legend=c("starting point \ns=0.5+I*112.3764...","starting point \ns=0.3492+I*114.1633...","starting point \ns=0.6508+I*114.1633...","starting point \ns=0.5+I*116.7215...","starting point \ns=0.5+I*117.6439..."),col=c(4,3,2,1,6),pch=c(3,2,20,1,4),cex=0.5,bty="n",y.intersp=1.5)
+legend(x="topleft",legend=c("alpha values = \n c(0.99999,0.9999,0.999,\n0.99,0.98,...,0.2,0.1,...\n.05,.04,.03,.02,.01,.005)"),cex=0.5,bty="n")
+```
+***Figure 21. Comparison of the low-lying non-trivial zero co-ordinates in the interval t=(112,118) under perturbation (equation(13))  of the tapered finite tau- dirichlet series by 1 + $\alpha$ \* ( 0.284.../$2^s$ -0.284.../$3^s$ - 1/$4^s$ + 1/$6^s$ ... + tapered terms ) shown in the lefthand panel with respect to imag(s) and in the righthand panel with respect to $\alpha$ magnitude. ***
+
+
+```{r DHf1impactofdirichletcoefficientmagnitude_eqn14_114p, fig.show = "hold", fig.align = "center", fig.height=6.4}
+
+###perturbation equation 14
+par(mfrow=c(1,2))
+df_grampt_minus1=read.csv("/home/john/pari/taperedDHf1approx_perturbation1stcoef_112p376_gridsearch_zeroes_orgresp5.csv",header=FALSE,colClasses = "numeric")
+df_grampt_minus1=df_grampt_minus1[order(df_grampt_minus1$V1),]
+df_grampt=read.csv("/home/john/pari/taperedDHf1approx_perturbation1stcoef_114p163_gridsearch_zeroes_orgresp5.csv",header=FALSE,colClasses = "numeric")
+df_grampt=df_grampt[order(df_grampt$V1),]
+df_grampt_plus2=read.csv("/home/john/pari/taperedDHf1approx_perturbation1stcoef_114p163_res_p349_gridsearch_zeroes_orgresp5.csv",header=FALSE,colClasses = "numeric")
+df_grampt_plus2=df_grampt_plus2[order(df_grampt_plus2$V1),]
+df_grampt_plus1=read.csv("/home/john/pari/taperedDHf1approx_perturbation1stcoef_116p721_gridsearch_zeroes_orgresp5.csv",header=FALSE,colClasses = "numeric")
+df_grampt_plus1=df_grampt_plus1[order(df_grampt_plus1$V1),]
+df_grampt_plus3=read.csv("/home/john/pari/taperedDHf1approx_perturbation1stcoef_117p643_gridsearch_zeroes_orgresp5.csv",header=FALSE,colClasses = "numeric")
+df_grampt_plus3=df_grampt_plus3[order(df_grampt_plus3$V1),]
+
+xspan=range(c(df_grampt$V3,df_grampt_plus1$V3,df_grampt_minus1$V3,df_grampt_plus2$V3,df_grampt_plus3$V3));#,823.5
+yspan=range(c(df_grampt$V2,df_grampt_plus1$V2,df_grampt_minus1$V2,df_grampt_plus2$V2,df_grampt_plus3$V2));
+plot(df_grampt_plus1$V3,df_grampt_plus1$V2,typ="b",
+     ylim=yspan,xlim=xspan,cex=0.5,cex.main=0.5,
+     main="trajectory of non-trivial zero co-ordinates as \n dirichlet coefficients approach tau- function \n tapered finite dirichlet series approximation \n alpha + ( 0.284/2^s - 0.284/3^s -1/4^s + 0/5^s \n + 1/6^s + ... + tapered terms )",ylab="real(s)",xlab="imag(s)");grid()
+points(df_grampt$V3,df_grampt$V2,typ="b",pch=20,col=2,cex=0.5)
+points(df_grampt_plus2$V3,df_grampt_plus2$V2,typ="b",pch=2,col=3,cex=0.5)
+points(df_grampt_minus1$V3,df_grampt_minus1$V2,typ="b",pch=3,col=4,cex=0.5)
+points(df_grampt_plus3$V3,df_grampt_plus3$V2,typ="b",pch=4,col=6,cex=0.5)
+abline(h=0.5,lty=3,col="cyan",lwd=2)
+
+yspan=range(c(df_grampt$V2,df_grampt_plus1$V2,df_grampt_minus1$V2,df_grampt_plus2$V2,df_grampt_plus3$V2));
+plot(df_grampt_plus1$V1,df_grampt_plus1$V2,typ="b",ylim=yspan,cex=0.5,cex.main=0.5,
+     main="trajectory of non-trivial zero co-ordinates as \n dirichlet coefficients approach tau- function \n tapered finite dirichlet series approximation \n alpha + ( 0.284/2^s - 0.284/3^s -1/4^s + 0/5^s \n + 1/6^s + ... + tapered terms )",ylab="real(s)",xlab="alpha");grid()
+points(df_grampt$V1,df_grampt$V2,typ="b",pch=20,col=2,cex=0.5)
+points(df_grampt_plus2$V1,df_grampt_plus2$V2,typ="b",pch=2,col=3,cex=0.5)
+points(df_grampt_minus1$V1,df_grampt_minus1$V2,typ="b",pch=3,col=4,cex=0.5)
+points(df_grampt_plus3$V1,df_grampt_plus3$V2,typ="b",pch=4,col=6,cex=0.5)
+abline(h=0.5,lty=3,col="cyan",lwd=2)
+legend(x="topright",legend=c("starting point \ns=0.5+I*112.3764...","starting point \ns=0.3492+I*114.1633...","starting point \ns=0.6508+I*114.1633...","starting point \ns=0.5+I*116.7215...","starting point \ns=0.5+I*117.6439..."),col=c(4,3,2,1,6),pch=c(3,2,20,1,4),cex=0.5,bty="n",y.intersp=1.5)
+legend(x="right",legend=c("alpha values = \n c(0.99999,0.9999,0.999,\n0.99,0.98,...,0.2,0.1,...\n.05,.04,.03,.02,.01,.005)"),cex=0.5,bty="n")
+
+```
+***Figure 22. Comparison of the low-lying non-trivial zero co-ordinates in the interval t=(112,118) under perturbation (equation(14)) of the tapered finite tau- dirichlet series by alpha + ( 0.284.../$2^s$ -0.284.../$3^s$ - 1/$4^s$ + 1/$6^s$ + ... + tapered terms ) shown in the lefthand panel with respect to imag(s) and in the righthand panel with respect to $\alpha$ magnitude. ***
+
+\newpage
+
+### Example of non-trivial zero behaviour under equation (13) and equation (14) perturbation near a bad gram point for the $\tau_-(s)$ function
+
+Figures 23 and 24 display examples of the trajectory of the perturbed location of non-trivial zeroes associated near $\tau_-(s)$ function bad gram points.
+
+Figure 23 displays the behaviour of five low-lying non-trivial zeroes for $0.005 < \alpha < 1$ in the interval imag(s)=(284.5,289.5) for equation (13) perturbation near the likely second bad gram point of the $\tau_-(s)$ function. It can be observed that under perturbation equation (13), the Riemann Zeta non-trivial zero located at t=286.2934... overshoots the critical line to reach real(s)~0.50596 when $\alpha$~0.92 finally settling back to real(s)=0.5 when $\alpha=1$.
+
+Figure 24 displays the behaviour of same five low-lying non-trivial zeroes for $0.005 < \alpha < 1$ but under equation (14) perturbation. It can be observed that under perturbation equation (14), it is the $\tau_-(s)$ non-trivial zero located at t=285.0311... that overshoots the critical line before settling back to real(s)=0.5 when $\alpha=1$. It can also be observed that the $\tau_-(s)$ non-trivial zeroes with origins around (286-,286+) for low $\alpha$ evolve respectively into closely spaced critical line non-trivial zeroes ($0.5+I\cdot 285.9932$, $0.5+I\cdot286.2934$) as $\alpha \rightarrow 1$. That is, this is an example of two non-trivial zeroes who did not end up being paired zeroes (with different real(s) values) as $\alpha \rightarrow 1$.
+
+
+
+```{r DHf1impactofdirichletcoefficientmagnitude_eqn13_286p, fig.show = "hold", fig.align = "center", fig.height=6.4}
+
+###perturbation equation 13
+par(mfrow=c(1,2))
+df_grampt_minus1=read.csv("/home/john/pari/taperedDHf1approx_dirichletcoef_285p031_gridsearch_zeroes_orgresp5.csv",header=FALSE,colClasses = "numeric")
+df_grampt_minus1=df_grampt_minus1[order(df_grampt_minus1$V1),]
+df_grampt=read.csv("/home/john/pari/taperedDHf1approx_dirichletcoef_285p993_gridsearch_zeroes_orgresp5.csv",header=FALSE,colClasses = "numeric")
+df_grampt=df_grampt[order(df_grampt$V1),]
+df_grampt_plus2=read.csv("/home/john/pari/taperedDHf1approx_dirichletcoef_286p293_gridsearch_zeroes_orgresp5.csv",header=FALSE,colClasses = "numeric")
+df_grampt_plus2=df_grampt_plus2[order(df_grampt_plus2$V1),]
+df_grampt_plus1=read.csv("/home/john/pari/taperedDHf1approx_dirichletcoef_288p288_gridsearch_zeroes_orgresp5.csv",header=FALSE,colClasses = "numeric")
+df_grampt_plus1=df_grampt_plus1[order(df_grampt_plus1$V1),]
+df_grampt_plus3=read.csv("/home/john/pari/taperedDHf1approx_dirichletcoef_289p416_gridsearch_zeroes_orgresp5.csv",header=FALSE,colClasses = "numeric")
+df_grampt_plus3=df_grampt_plus3[order(df_grampt_plus3$V1),]
+
+xspan=range(c(df_grampt$V3,df_grampt_plus1$V3,df_grampt_minus1$V3,df_grampt_plus2$V3,df_grampt_plus3$V3));#,823.5
+yspan=range(c(df_grampt$V2,df_grampt_plus1$V2,df_grampt_minus1$V2,df_grampt_plus2$V2,df_grampt_plus3$V2));
+plot(df_grampt_plus1$V3,df_grampt_plus1$V2,typ="b",
+     ylim=yspan,xlim=xspan,cex=0.5,cex.main=0.5,
+     main="trajectory of non-trivial zero co-ordinates as \n dirichlet coefficients approach tau- function \n tapered finite dirichlet series approximation \n 1 + alpha * ( 0.284/2^s - 0.284/3^s -1/4^s + 0/5^s \n + 1/6^s + ... + tapered terms )",xlab="imag(s)",ylab="real(s)");grid()
+points(df_grampt$V3,df_grampt$V2,typ="b",pch=20,col=2,cex=0.5)
+points(df_grampt_plus2$V3,df_grampt_plus2$V2,typ="b",pch=2,col=3,cex=0.5)
+points(df_grampt_minus1$V3,df_grampt_minus1$V2,typ="b",pch=3,col=4,cex=0.5)
+points(df_grampt_plus3$V3,df_grampt_plus3$V2,typ="b",pch=4,col=6,cex=0.5)
+abline(h=0.5,lty=3,col="cyan",lwd=2)
+
+
+yspan=range(c(df_grampt$V2,df_grampt_plus1$V2,df_grampt_minus1$V2,df_grampt_plus2$V2,df_grampt_plus3$V2));
+plot(df_grampt_plus1$V1,df_grampt_plus1$V2,typ="b",ylim=yspan,cex=0.5,cex.main=0.5,
+     main="trajectory of non-trivial zero co-ordinates as \n dirichlet coefficients approach tau- function \n tapered finite dirichlet series approximation \n 1 + alpha * ( 0.284/2^s - 0.284/3^s -1/4^s + 0/5^s \n + 1/6^s + ... + tapered terms )",xlab="alpha",ylab="real(s)");grid()
+points(df_grampt$V1,df_grampt$V2,typ="b",pch=20,col=2,cex=0.5)
+points(df_grampt_plus2$V1,df_grampt_plus2$V2,typ="b",pch=2,col=3,cex=0.5)
+points(df_grampt_minus1$V1,df_grampt_minus1$V2,typ="b",pch=3,col=4,cex=0.5)
+points(df_grampt_plus3$V1,df_grampt_plus3$V2,typ="b",pch=4,col=6,cex=0.5)
+abline(h=0.5,lty=3,col="cyan",lwd=2)
+legend(x="bottomright",legend=c("starting point \ns=0.5+I*112.3764...","starting point \ns=0.3492+I*114.1633...","starting point \ns=0.6508+I*114.1633...","starting point \ns=0.5+I*116.7215...","starting point \ns=0.5+I*117.6439..."),col=c(4,3,2,1,6),pch=c(3,2,20,1,4),cex=0.5,bty="n",y.intersp=1.5)
+legend(x="right",legend=c("alpha values = \n c(0.99999,0.9999,0.999,\n0.99,0.98,...,0.2,0.1,...\n.05,.04,.03,.02,.01,.005)"),cex=0.5,bty="n")
+
+```
+***Figure 23. Comparison of the low-lying non-trivial zero co-ordinates in the interval t=(284.5,289.5) under perturbation (equation(13))  of the tapered finite tau- dirichlet series by 1 + $\alpha$ \* ( 0.284.../$2^s$ -0.284.../$3^s$ - 1/$4^s$ + 1/$6^s$ ... + tapered terms ) shown in the lefthand panel with respect to imag(s) and in the righthand panel with respect to $\alpha$ magnitude. ***
+
+
+```{r DHf1impactofdirichletcoefficientmagnitude_eqn14_286, fig.show = "hold", fig.align = "center", fig.height=6.4}
+
+###perturbation equation 14
+par(mfrow=c(1,2))
+df_grampt_minus1=read.csv("/home/john/pari/taperedDHf1approx_perturbation1stcoef_285p031_gridsearch_zeroes_orgresp5.csv",header=FALSE,colClasses = "numeric")
+df_grampt_minus1=df_grampt_minus1[order(df_grampt_minus1$V1),]
+df_grampt=read.csv("/home/john/pari/taperedDHf1approx_perturbation1stcoef_285p993_gridsearch_zeroes_orgresp5.csv",header=FALSE,colClasses = "numeric")
+df_grampt=df_grampt[order(df_grampt$V1),]
+df_grampt_plus2=read.csv("/home/john/pari/taperedDHf1approx_perturbation1stcoef_286p293_gridsearch_zeroes_orgresp5.csv",header=FALSE,colClasses = "numeric")
+df_grampt_plus2=df_grampt_plus2[order(df_grampt_plus2$V1),]
+df_grampt_plus1=read.csv("/home/john/pari/taperedDHf1approx_perturbation1stcoef_288p288_gridsearch_zeroes_orgresp5.csv",header=FALSE,colClasses = "numeric")
+df_grampt_plus1=df_grampt_plus1[order(df_grampt_plus1$V1),]
+df_grampt_plus3=read.csv("/home/john/pari/taperedDHf1approx_perturbation1stcoef_289p416_gridsearch_zeroes_orgresp5.csv",header=FALSE,colClasses = "numeric")
+df_grampt_plus3=df_grampt_plus3[order(df_grampt_plus3$V1),]
+
+xspan=range(c(df_grampt$V3,df_grampt_plus1$V3,df_grampt_minus1$V3,df_grampt_plus2$V3,df_grampt_plus3$V3));#,823.5
+yspan=range(c(df_grampt$V2,df_grampt_plus1$V2,df_grampt_minus1$V2,df_grampt_plus2$V2,df_grampt_plus3$V2));
+plot(df_grampt_plus1$V3,df_grampt_plus1$V2,typ="b",
+     ylim=yspan,xlim=xspan,cex=0.5,cex.main=0.5,
+     main="trajectory of non-trivial zero co-ordinates as \n dirichlet coefficients approach tau- function \n tapered finite dirichlet series approximation \n alpha + ( 0.284/2^s - 0.284/3^s -1/4^s + 0/5^s \n + 1/6^s + ... + tapered terms )",ylab="real(s)",xlab="imag(s)");grid()
+points(df_grampt$V3,df_grampt$V2,typ="b",pch=20,col=2,cex=0.5)
+points(df_grampt_plus2$V3,df_grampt_plus2$V2,typ="b",pch=2,col=3,cex=0.5)
+points(df_grampt_minus1$V3,df_grampt_minus1$V2,typ="b",pch=3,col=4,cex=0.5)
+points(df_grampt_plus3$V3,df_grampt_plus3$V2,typ="b",pch=4,col=6,cex=0.5)
+abline(h=0.5,lty=3,col="cyan",lwd=2)
+
+yspan=range(c(df_grampt$V2,df_grampt_plus1$V2,df_grampt_minus1$V2,df_grampt_plus2$V2,df_grampt_plus3$V2));
+plot(df_grampt_plus1$V1,df_grampt_plus1$V2,typ="b",ylim=yspan,cex=0.5,cex.main=0.5,
+     main="trajectory of non-trivial zero co-ordinates as \n dirichlet coefficients approach tau- function \n tapered finite dirichlet series approximation \n alpha + ( 0.284/2^s - 0.284/3^s -1/4^s + 0/5^s \n + 1/6^s + ... + tapered terms )",ylab="real(s)",xlab="alpha");grid()
+points(df_grampt$V1,df_grampt$V2,typ="b",pch=20,col=2,cex=0.5)
+points(df_grampt_plus2$V1,df_grampt_plus2$V2,typ="b",pch=2,col=3,cex=0.5)
+points(df_grampt_minus1$V1,df_grampt_minus1$V2,typ="b",pch=3,col=4,cex=0.5)
+points(df_grampt_plus3$V1,df_grampt_plus3$V2,typ="b",pch=4,col=6,cex=0.5)
+abline(h=0.5,lty=3,col="cyan",lwd=2)
+legend(x="topright",legend=c("starting point \ns=0.5+I*112.3764...","starting point \ns=0.3492+I*114.1633...","starting point \ns=0.6508+I*114.1633...","starting point \ns=0.5+I*116.7215...","starting point \ns=0.5+I*117.6439..."),col=c(4,3,2,1,6),pch=c(3,2,20,1,4),cex=0.5,bty="n",y.intersp=1.5)
+legend(x="right",legend=c("alpha values = \n c(0.99999,0.9999,0.999,\n0.99,0.98,...,0.2,0.1,...\n.05,.04,.03,.02,.01,.005)"),cex=0.5,bty="n")
+
+```
+***Figure 24. Comparison of the low-lying non-trivial zero co-ordinates in the interval t=(284.5,289.5) under perturbation (equation(14)) of the tapered finite tau- dirichlet series by alpha + ( 0.284.../$2^s$ -0.284.../$3^s$ - 1/$4^s$ + 1/$6^s$ + ... + tapered terms ) shown in the lefthand panel with respect to imag(s) and in the righthand panel with respect to $\alpha$ magnitude. ***
+
+
+
+\newpage
+
+### Examples of non-trivial zero behaviour under equation (13) perturbation near large peaks of the $\tau_-(s)$ function
+
+Figures 25-27 display examples of the trajectory under perturbation equation (13) of the location of non-trivial zeroes associated near large peaks of the $\tau_-(s)$ function in the interval t=(117930,1158676).
+
+Figure 25 displays the behaviour of seven low-lying non-trivial zeroes for $0.005 < \alpha < 1$ for equation (13) perturbation near a large peak (t=117934...) of the $\tau_-(s)$ function. This particular peak has no nearby non-trivial zeroes off the critical line. It can be observed that under perturbation equation (13), the $\tau_-(s)$ non-trivial zeroes originally located at t=(117934-(0-),117934+(0+),117935(1)) overshoot the critical line before finally settling back to real(s)=0.5 to t=(117933.4168505,117934.7813478,117935.2280818) as $\alpha \rightarrow 1$. The sequence of the non-trivial zeroes has not changed and all non-trivial zeroes are on the critical line when $\alpha=1$. The lefthand figure shows the complex plane \{imag(s),real(s)\} trajectory of the non-trivial zero under the perturbation while the righthand figure shows the \{$\alpha$, real(s)\} trajectory.
+
+Figure 26 displays the behaviour of seven low-lying non-trivial zeroes for $0.005 < \alpha < 1$ for equation (13) perturbation near a large peak (t=117934...) of the $\tau_-(s)$ function. This particular peak has one pair of non-trivial zeroes off the critical line. It can be observed that under perturbation equation (13), the $\tau_-(s)$ non-trivial zeroes originally located at t=(117934-(0-),117934+(0+),117935(1)) overshoot the critical line before finally settling back to real(s)=0.5 to t=(117933.4168505,117934.7813478,117935.2280818) as $\alpha \rightarrow 1$. The sequence of the non-trivial zeroes has not changed and all non-trivial zeroes are on the critical line when $\alpha=1$. The lefthand figure shows the complex plane \{imag(s),real(s)\} trajectory of the non-trivial zero under the perturbation while the righthand figure shows the \{$\alpha$, real(s)\} trajectory.
+
+Figure 27 displays the behaviour of seven low-lying non-trivial zeroes for $0.005 < \alpha < 1$ for equation (13) perturbation near a large peak (t=117934...) of the $\tau_-(s)$ function. This particular peak has three pairs of non-trivial zeroes off the critical line. It can be observed that under perturbation equation (13), the $\tau_-(s)$ non-trivial zeroes originally located at t=(117934-(0-),117934+(0+),117935(1)) overshoot the critical line before finally settling back to real(s)=0.5 to t=(117933.4168505,117934.7813478,117935.2280818) as $\alpha \rightarrow 1$. The sequence of the non-trivial zeroes has not changed and all non-trivial zeroes are on the critical line when $\alpha=1$. The lefthand figure shows the complex plane \{imag(s),real(s)\} trajectory of the non-trivial zero under the perturbation while the righthand figure shows the \{$\alpha$, real(s)\} trajectory.
+
+So for these particular three large $\tau_-(s)$ peaks the trajectories of the non-trivial zeroes do not cross each other under perturbation (13) in contrast to figures 10-12 for the Riemann Zeta function under perturbation (2). 
+
+\newpage
+
+```{r DHf1impactofdirichletcoefficientmagnitude_eqn13_117935, fig.show = "hold", fig.align = "center", fig.height=6.4}
+
+#equation 13
+par(mfrow=c(1,2))
+df_pt1=read.csv("/home/john/pari/taperedDHf1approx_dirichletcoef_117935p853_gridsearch_zeroes_orgresp5.csv",header=FALSE,colClasses = "numeric")
+df_pt1=df_pt1[order(df_pt1$V1),]
+df_pt2=read.csv("/home/john/pari/taperedDHf1approx_dirichletcoef_117935p479_gridsearch_zeroes_orgresp5.csv",header=FALSE,colClasses = "numeric")
+df_pt2=df_pt2[order(df_pt2$V1),]
+df_pt3=read.csv("/home/john/pari/taperedDHf1approx_dirichletcoef_117935p228_gridsearch_zeroes_orgresp5.csv",header=FALSE,colClasses = "numeric")
+df_pt3=df_pt3[order(df_pt3$V1),]
+df_pt4=read.csv("/home/john/pari/taperedDHf1approx_dirichletcoef_117934p781_gridsearch_zeroes_orgresp5.csv",header=FALSE,colClasses = "numeric")
+df_pt4=df_pt4[order(df_pt4$V1),]
+df_pt5=read.csv("/home/john/pari/taperedDHf1approx_dirichletcoef_117933p416_gridsearch_zeroes_orgresp5.csv",header=FALSE,colClasses = "numeric")
+df_pt5=df_pt5[order(df_pt5$V1),]
+df_pt6=read.csv("/home/john/pari/taperedDHf1approx_dirichletcoef_117933p152_gridsearch_zeroes_orgresp5.csv",header=FALSE,colClasses = "numeric")
+df_pt6=df_pt6[order(df_pt6$V1),]
+df_pt7=read.csv("/home/john/pari/taperedDHf1approx_dirichletcoef_117932p776_gridsearch_zeroes_orgresp5.csv",header=FALSE,colClasses = "numeric")
+df_pt7=df_pt7[order(df_pt7$V1),]
+
+
+xspan=range(c(117932,df_pt1$V3,df_pt2$V3,df_pt3$V3,df_pt4$V3,df_pt5$V3,
+              df_pt6$V3,df_pt7$V3)-117934)#,df_pt8$V3,df_pt9$V3,df_pt10$V3));#,823.5
+yspan=range(c(df_pt1$V2,df_pt2$V2,df_pt3$V2,df_pt4$V2,df_pt5$V2,
+              df_pt6$V2,df_pt7$V2))#,df_pt8$V2,df_pt9$V2,df_pt10$V2));
+plot(df_pt1$V3-117934,df_pt1$V2,typ="b",
+     ylim=yspan,
+     xlim=xspan,
+     cex=0.5,cex.main=0.5,
+     main="trajectory of non-trivial zero co-ordinates as \n dirichlet coefficients approach tau- function \n tapered finite dirichlet series approximation \n 1 + alpha * ( 0.284/2^s - 0.284/3^s -1/4^s + 0/5^s \n + 1/6^s + ... + tapered terms )",xlab="imag(s)-117934",ylab="real(s)");grid()
+points(df_pt2$V3-117934,df_pt2$V2,typ="b",pch=20,col=2,cex=0.5)
+points(df_pt3$V3-117934,df_pt3$V2,typ="b",pch=2,col=3,cex=0.5)
+points(df_pt4$V3-117934,df_pt4$V2,typ="b",pch=3,col=4,cex=0.5)
+points(df_pt5$V3-117934,df_pt5$V2,typ="b",pch=4,col=6,cex=0.5)
+points(df_pt6$V3-117934,df_pt6$V2,typ="b",pch=5,col=7,cex=0.5)
+points(df_pt7$V3-117934,df_pt7$V2,typ="b",pch=6,col=8,cex=0.5)
+abline(h=0.5,lty=3,col="cyan",lwd=2)
+
+yspan=range(c(df_pt1$V2,df_pt2$V2,df_pt3$V2,df_pt4$V2,df_pt5$V2,
+              df_pt6$V2,df_pt7$V2))
+plot(df_pt1$V1,df_pt1$V2,typ="b",ylim=yspan,cex=0.5,cex.main=0.5,
+     main="trajectory of non-trivial zero co-ordinates as \n dirichlet coefficients approach tau- function \n tapered finite dirichlet series approximation \n 1 + alpha * ( 0.284/2^s - 0.284/3^s -1/4^s + 0/5^s \n + 1/6^s + ... + tapered terms )",xlab="alpha",ylab="real(s)");grid()
+points(df_pt2$V1,df_pt2$V2,typ="b",pch=20,col=2,cex=0.5)
+points(df_pt3$V1,df_pt3$V2,typ="b",pch=2,col=3,cex=0.5)
+points(df_pt4$V1,df_pt4$V2,typ="b",pch=3,col=4,cex=0.5)
+points(df_pt5$V1,df_pt5$V2,typ="b",pch=4,col=6,cex=0.5)
+points(df_pt6$V1,df_pt6$V2,typ="b",pch=5,col=7,cex=0.5)
+points(df_pt7$V1,df_pt7$V2,typ="b",pch=6,col=8,cex=0.5)
+abline(h=0.5,lty=3,col="cyan",lwd=2)
+legend(x="bottomright",legend=c("starting point \ns=0.5+I*117935.8537425...","starting point \ns=0.5+I*117935.4798984...","starting point \ns=0.5+I*117935.2280848...","starting point \ns=0.5+I*117934.7813483...","starting point \ns=0.5+I*117933.4168497...","starting point \ns=0.5+I*117933.1526609...","starting point \ns=0.5+I*117932.7767918..."),col=c(1,2,3,4,6,7),pch=c(1,20,2,3,4,5,6),cex=0.5,bty="n",y.intersp=1.5)
+legend(x="right",legend=c("alpha values = \n c(0.99999,0.9999,0.999,\n0.99,0.98,...,0.2,0.1,...\n.05,.04,.03,.02,.01,.005)"),cex=0.5,bty="n")
+
+
+```
+***Figure 25. The trajectory of (seven) non-trivial zero co-ordinates around the $\tau_-(s)$ large peak (t=117934.3) as the magnitude ($\alpha$) of the 2nd, 3rd, 4th, ... etc dirichlet coefficients of the tapered finite dirichlet series = 1 + $\alpha$ \* ( 0.284/$2^s$ -0.284/$3^s$ - 1/$4^s$ + 0/$5^s$ + 1/$6^s$ +... + tapered terms ) increases to unity. In principle, the graph illustrates that as $\tau_-(s)$ peaks grow larger, the initial overshoot of nearby non-trivial zeroes (that lie on the critical line when $\alpha\rightarrow 1$) under perturbation (13) can also grow larger. The lefthand figure shows the complex plane \{imag(s),real(s)\} trajectory of the non-trivial zero under the perturbation while the righthand figure shows the \{$\alpha$, real(s)\} trajectory.***
+
+
+
+\newpage
+
+```{r DHf1impactofdirichletcoefficientmagnitude_eqn13_366298, fig.show = "hold", fig.align = "center", fig.height=6.4}
+
+par(mfrow=c(1,2))
+df_pt1=read.csv("/home/john/pari/taperedDHf1approx_dirichletcoef_369300p582_gridsearch_zeroes_orgresp5.csv",header=FALSE,colClasses = "numeric")
+df_pt1=df_pt1[order(df_pt1$V1),]
+df_pt2=read.csv("/home/john/pari/taperedDHf1approx_dirichletcoef_369299p930_gridsearch_zeroes_orgresp5.csv",header=FALSE,colClasses = "numeric")
+df_pt2=df_pt2[order(df_pt2$V1),]
+df_pt3=read.csv("/home/john/pari/taperedDHf1approx_dirichletcoef_369299p662_p356_gridsearch_zeroes_orgresp5.csv",header=FALSE,colClasses = "numeric")
+df_pt3=df_pt3[order(df_pt3$V1),]
+df_pt4=read.csv("/home/john/pari/taperedDHf1approx_dirichletcoef_369299p662_gridsearch_zeroes_orgresp5.csv",header=FALSE,colClasses = "numeric")
+df_pt4=df_pt4[order(df_pt4$V1),]
+df_pt5=read.csv("/home/john/pari/taperedDHf1approx_dirichletcoef_369298p105_gridsearch_zeroes_orgresp5.csv",header=FALSE,colClasses = "numeric")
+df_pt5=df_pt5[order(df_pt5$V1),]
+df_pt6=read.csv("/home/john/pari/taperedDHf1approx_dirichletcoef_369297p804_gridsearch_zeroes_orgresp5.csv",header=FALSE,colClasses = "numeric")
+df_pt6=df_pt6[order(df_pt6$V1),]
+df_pt7=read.csv("/home/john/pari/taperedDHf1approx_dirichletcoef_369297p722_gridsearch_zeroes_orgresp5.csv",header=FALSE,colClasses = "numeric")
+df_pt7=df_pt7[order(df_pt7$V1),]
+
+
+xspan=range(c(369297,df_pt1$V3,df_pt2$V3,df_pt3$V3,df_pt4$V3,df_pt5$V3,
+              df_pt6$V3,df_pt7$V3)-369299)
+yspan=range(c(df_pt1$V2,df_pt2$V2,df_pt3$V2,df_pt4$V2,df_pt5$V2,
+              df_pt6$V2,df_pt7$V2))
+plot(df_pt1$V3-369299,df_pt1$V2,typ="b",
+     ylim=yspan,
+     xlim=xspan,
+     cex=0.5,cex.main=0.5,
+     main="trajectory of non-trivial zero co-ordinates as \n dirichlet coefficients approach tau- function \n tapered finite dirichlet series approximation \n 1 + alpha * ( 0.284/2^s - 0.284/3^s -1/4^s + 0/5^s \n + 1/6^s + ... + tapered terms )",xlab="imag(s)-369299",ylab="real(s)");grid()
+points(df_pt2$V3[df_pt2$V1<=1]-369299,df_pt2$V2[df_pt2$V1<=1],typ="b",pch=20,col=2,cex=0.5)
+points(df_pt3$V3-369299,df_pt3$V2,typ="b",pch=2,col=3,cex=0.5)
+points(df_pt4$V3-369299,df_pt4$V2,typ="b",pch=3,col=4,cex=0.5)
+points(df_pt5$V3-369299,df_pt5$V2,typ="b",pch=4,col=6,cex=0.5)
+points(df_pt6$V3-369299,df_pt6$V2,typ="b",pch=5,col=7,cex=0.5)
+points(df_pt7$V3-369299,df_pt7$V2,typ="b",pch=6,col=8,cex=0.5)
+abline(h=0.5,lty=3,col="cyan",lwd=2)
+
+
+yspan=range(c(df_pt1$V2,df_pt2$V2,df_pt3$V2,df_pt4$V2,df_pt5$V2,
+            df_pt6$V2,df_pt7$V2))
+plot(df_pt1$V1,df_pt1$V2,typ="b",ylim=yspan,
+     cex=0.5,cex.main=0.5,
+     main="trajectory of non-trivial zero co-ordinates as \n dirichlet coefficients approach tau- function \n tapered finite dirichlet series approximation \n 1 + alpha * ( 0.284/2^s - 0.284/3^s -1/4^s + 0/5^s \n + 1/6^s + ... + tapered terms )",xlab="alpha",ylab="real(s)");grid()
+points(df_pt2$V1[df_pt2$V1<=1],df_pt2$V2[df_pt2$V1<=1],typ="b",pch=20,col=2)
+points(df_pt3$V1,df_pt3$V2,typ="b",pch=2,col=3,cex=0.8)
+points(df_pt4$V1,df_pt4$V2,typ="b",pch=3,col=4,cex=0.8)
+points(df_pt5$V1,df_pt5$V2,typ="b",pch=4,col=6,cex=0.8)
+points(df_pt6$V1,df_pt6$V2,typ="b",pch=5,col=7,cex=0.8)
+points(df_pt7$V1,df_pt7$V2,typ="b",pch=6,col=8,cex=0.8)
+abline(h=0.5,lty=3,col="cyan",lwd=2)
+legend(x="bottomright",legend=c("starting point \ns=0.5+I*369297.7221783...","starting point \ns=0.5+I*369297.8049110...","starting point \ns=0.5+I*369298.1058337...","starting point \ns=0.6438577...+I*369299.6624158...","starting point \ns=0.3561423...+I*369299.6624158...","starting point \ns=0.5+I*369299.9306886...","starting point \ns=0.5+I*369300.5824963..."),col=c(1,2,3,4,6,7),pch=c(1,20,2,3,4,5,6),cex=0.5,bty="n",y.intersp=1.5)
+legend(x="topleft",legend=c("alpha values = \n c(0.99999,0.9999,0.999,\n0.99,0.98,...,0.2,0.1,...\n.05,.04,.03,.02,.01,.005)"),cex=0.5,bty="n")
+
+
+```
+***Figure 26. The trajectory of (seven) non-trivial zero co-ordinates around the $\tau_-(s)$ large peak (t=369299.5) as the magnitude ($\alpha$) of the 2nd, 3rd, 4th, ... etc dirichlet coefficients of the tapered finite dirichlet series = 1 + $\alpha$ \* ( 0.284/$2^s$ -0.284/$3^s$ - 1/$4^s$ + 0/$5^s$ + 1/$6^s$ +... + tapered terms ) increases to unity. In principle, the graph illustrates that for the $\tau_-(s)$ non-trivial zeroes a common behaviour is that under perturbation (13) for $.005\le\alpha \le 1$ the trajectory of the non-trivial zeroes under the perturbation do not cross. The lefthand figure shows the complex plane \{imag(s),real(s)\} trajectory of the non-trivial zero under the perturbation while the righthand figure shows the \{$\alpha$, real(s)\} trajectory.***
+
+
+
+
+
+\newpage
+
+```{r DHf1impactofdirichletcoefficientmagnitude_eqn13_1158676, fig.show = "hold", fig.align = "center", fig.height=6.4}
+
+#equation 13
+par(mfrow=c(1,1))
+df_pt1=read.csv("/home/john/pari/taperedDHf1approx_dirichletcoef_1158679p484_gridsearch_zeroes_orgresp5.csv",header=FALSE,colClasses = "numeric")
+df_pt1=df_pt1[order(df_pt1$V1),]
+df_pt2=read.csv("/home/john/pari/taperedDHf1approx_dirichletcoef_1158678p973_gridsearch_zeroes_orgresp5.csv",header=FALSE,colClasses = "numeric")
+df_pt2=df_pt2[order(df_pt2$V1),]
+df_pt3=read.csv("/home/john/pari/taperedDHf1approx_dirichletcoef_1158678p340_gridsearch_zeroes_orgresp5.csv",header=FALSE,colClasses = "numeric")
+df_pt3=df_pt3[order(df_pt3$V1),]
+df_pt4=read.csv("/home/john/pari/taperedDHf1approx_dirichletcoef_1158678p340_res_p473_gridsearch_zeroes_orgresp5.csv",header=FALSE,colClasses = "numeric")
+df_pt4=df_pt4[order(df_pt4$V1),]
+df_pt5=read.csv("/home/john/pari/taperedDHf1approx_dirichletcoef_1158678p050_gridsearch_zeroes_orgresp5.csv",header=FALSE,colClasses = "numeric")
+df_pt5=df_pt5[order(df_pt5$V1),]
+df_pt6=read.csv("/home/john/pari/taperedDHf1approx_dirichletcoef_1158676p579_gridsearch_zeroes_orgresp5.csv",header=FALSE,colClasses = "numeric")
+df_pt6=df_pt6[order(df_pt6$V1),]
+df_pt7=read.csv("/home/john/pari/taperedDHf1approx_dirichletcoef_1158676p423_gridsearch_zeroes_orgresp5.csv",header=FALSE,colClasses = "numeric")
+df_pt7=df_pt7[order(df_pt7$V1),]
+df_pt8=read.csv("/home/john/pari/taperedDHf1approx_dirichletcoef_1158676p423_res_p387_gridsearch_zeroes_orgresp5.csv",header=FALSE,colClasses = "numeric")
+df_pt8=df_pt8[order(df_pt8$V1),]
+df_pt9=read.csv("/home/john/pari/taperedDHf1approx_dirichletcoef_1158675p638_gridsearch_zeroes_orgresp5.csv",header=FALSE,colClasses = "numeric")
+df_pt9=df_pt9[order(df_pt9$V1),]
+df_pt10=read.csv("/home/john/pari/taperedDHf1approx_dirichletcoef_1158675p638_res_p393_gridsearch_zeroes_orgresp5.csv",header=FALSE,colClasses = "numeric")
+df_pt10=df_pt10[order(df_pt10$V1),]
+df_pt11=read.csv("/home/john/pari/taperedDHf1approx_dirichletcoef_1158674p962_gridsearch_zeroes_orgresp5.csv",header=FALSE,colClasses = "numeric")
+df_pt11=df_pt11[order(df_pt11$V1),]
+df_pt12=read.csv("/home/john/pari/taperedDHf1approx_dirichletcoef_1158674p589_gridsearch_zeroes_orgresp5.csv",header=FALSE,colClasses = "numeric")
+df_pt12=df_pt12[order(df_pt12$V1),]
+
+
+xspan=range(c(df_pt1$V3,df_pt2$V3,df_pt4$V3,df_pt5$V3,df_pt6$V3,df_pt7$V3,df_pt8$V3,df_pt9$V3,df_pt10$V3,df_pt11$V3,df_pt11$V3)-1158677)#
+yspan=range(c(df_pt1$V2,df_pt2$V2,df_pt3$V2,df_pt4$V2,df_pt5$V2,df_pt6$V2,df_pt7$V2,df_pt8$V2,df_pt9$V2,df_pt10$V2,df_pt10$V2,df_pt11$V2));
+plot(df_pt1$V3-1158677,df_pt1$V2,typ="b",
+     ylim=yspan,xlim=xspan,
+     cex=0.4,cex.main=0.5,
+     main="trajectory of non-trivial zero co-ordinates as dirichlet coefficients approach tau- function \n tapered finite dirichlet series approximation 1 + alpha * ( 0.284/2^s - 0.284/3^s -1/4^s + 0/5^s + 1/6^s + ... + tapered terms )",xlab="imag(s)-1158677",ylab="real(s)");grid()
+points(df_pt2$V3-1158677,df_pt2$V2,typ="b",pch=20,col=2,cex=0.4)
+points(df_pt3$V3-1158677,df_pt3$V2,typ="b",pch=2,col=3,cex=0.4)
+points(df_pt4$V3-1158677,df_pt4$V2,typ="b",pch=3,col=4,cex=0.4)
+points(df_pt5$V3-1158677,df_pt5$V2,typ="b",pch=4,col=6,cex=0.4)
+points(df_pt6$V3-1158677,df_pt6$V2,typ="b",pch=5,col=7,cex=0.4)
+points(df_pt7$V3-1158677,df_pt7$V2,typ="b",pch=6,col=8,cex=0.4)
+points(df_pt8$V3-1158677,df_pt8$V2,typ="b",pch=7,col=9,cex=0.4)
+points(df_pt9$V3-1158677,df_pt9$V2,typ="b",pch=8,col=10,cex=0.4)
+points(df_pt10$V3-1158677,df_pt10$V2,typ="b",pch=9,col=11,cex=0.4)
+points(df_pt11$V3-1158677,df_pt11$V2,typ="b",pch=10,col=12,cex=0.4)
+points(df_pt12$V3-1158677,df_pt12$V2,typ="b",pch=12,col=14,cex=0.4)
+abline(h=0.5,lty=3,col="cyan",lwd=2)
+
+
+
+yspan=range(c(df_pt1$V2,df_pt2$V2,df_pt3$V2,df_pt4$V2,df_pt5$V2,df_pt6$V2,df_pt7$V2,df_pt8$V2,df_pt9$V2,df_pt10$V2,df_pt11$V2,df_pt12$V2));
+plot(df_pt1$V1,df_pt1$V2,typ="b",ylim=yspan,
+     cex=0.4,cex.main=0.5,
+     main="trajectory of non-trivial zero co-ordinates as dirichlet coefficients approach tau- function \n tapered finite dirichlet series approximation  1 + alpha * ( 0.284/2^s - 0.284/3^s -1/4^s + 0/5^s  + 1/6^s + ... + tapered terms )",xlab="alpha",ylab="real(s)");grid()
+points(df_pt2$V1,df_pt2$V2,typ="b",pch=20,col=2,cex=0.4)
+points(df_pt3$V1,df_pt3$V2,typ="b",pch=2,col=3,cex=0.4)
+points(df_pt4$V1,df_pt4$V2,typ="b",pch=3,col=4,cex=0.4)
+points(df_pt5$V1,df_pt5$V2,typ="b",pch=4,col=6,cex=0.4)
+points(df_pt6$V1,df_pt6$V2,typ="b",pch=5,col=7,cex=0.4)
+points(df_pt7$V1,df_pt7$V2,typ="b",pch=6,col=8,cex=0.4)
+points(df_pt8$V1,df_pt8$V2,typ="b",pch=7,col=9,cex=0.4)
+points(df_pt9$V1,df_pt9$V2,typ="b",pch=8,col=10,cex=0.4)
+points(df_pt10$V1,df_pt10$V2,typ="b",pch=9,col=11,cex=0.4)
+points(df_pt11$V1,df_pt11$V2,typ="b",pch=10,col=12,cex=0.4)
+points(df_pt12$V1,df_pt12$V2,typ="b",pch=12,col=14,cex=0.4)
+abline(h=0.5,lty=3,col="cyan",lwd=2)
+legend(x="bottomright",legend=c("starting point \ns=0.5+I*1158679.4845371...","starting point \ns=0.5+I*1158678.9734253...","starting point \ns=0.526241+I*1158678.3405452...","starting point \ns=0.473759...+I*1158678.3405452...","starting point \ns=0.5+I*1158678.0504078...","starting point \ns=0.5+I*1158676.5790884...","starting point \ns=0.612696...+I*1158676.4232152...","starting point \ns=0.387303...+I*1158676.4232152...","starting point \ns=0.606886+I*1158675.6382024...","starting point \ns=0.393114+I*1158675.6382024...","starting point \ns=0.5+I*1158674.9622485...","starting point \ns=0.5+I*1158674.5898490..."),col=c(1,2,3,4,6,7,8,9,10,11,12,14),pch=c(1,20,2,3,4,5,6,7,8,9,10,12),cex=0.4,bty="n",y.intersp=1.5)
+legend(x="topleft",legend=c("alpha values = \n c(0.99999,0.9999,0.999,\n0.99,0.98,...,0.2,0.1,...\n.05,.04,.03,.02,.01,.005)"),cex=0.4,bty="n")
+
+
+```
+***Figure 27. The trajectory of (eleven) non-trivial zero co-ordinates around the $\tau_-(s)$ large peak (t=1158677.5) as the magnitude ($\alpha$) of the 2nd, 3rd, 4th, ... etc dirichlet coefficients of the tapered finite dirichlet series = 1 + $\alpha$ \* ( 0.284/$2^s$ -0.284/$3^s$ - 1/$4^s$ + 0/$5^s$ + 1/$6^s$ +... + tapered terms ) increases to unity. The top panel shows the complex plane \{imag(s),real(s)\} trajectory of the non-trivial zero under the perturbation while the bottom panel shows the \{$\alpha$, real(s)\} trajectory. In principle, the graph illustrates that for the $\tau_-(s)$ non-trivial zeroes a common behaviour is that under perturbation (13) for $.005\le\alpha \le 1$ the trajectory of the non-trivial zeroes under the perturbation do not cross.***
+
+## Conclusions
+
+Perturbing the dirichlet coefficients of tapered Dirichlet Series about the second quescient region of Dirichlet Series can provide useful insights into the origin and or behaviour of non-trivial zeroes of L functions and Davenport Heilbronn functions. Contrasting particular perturbations of the Riemann Zeta function and $\tau_-(s)$ 5-periodic Davenport Heilbronn function, equation (2) and equation (13) respectively, there is some evidence that the sequence of non-trivial zeroes changes near Rosser Rule violations for the Riemann Zeta function but does appear not be happening for the $\tau_-(s)$ 5-periodic Davenport Heilbronn function in the imag(s) interval studied.
 
 
 ## References
