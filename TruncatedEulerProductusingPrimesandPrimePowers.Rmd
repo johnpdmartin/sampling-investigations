@@ -8,8 +8,14 @@ output:
     fig_crop: no
 ---
 
+PAPER to be revised 
 
-## Executive summary
+While the algorithm worked for the examples investigated N=1-10, 89
+
+Attempts at N=1041 indicate a deficiency in the approach.
+
+
+## Executive summary 
 
 A linear combination of products of finite geometric series of primes and power of primes exhibits excellent performance in reproducing the finite Riemann Zeta Dirichlet Series for known examples. From prime 5 upwards, the number of terms to be calculated for each prime follows Pascal's triangle pattern and for powers of a prime the same number of calculation terms are required as did the prime itself.
 
@@ -613,7 +619,7 @@ a_{27}(s,N) &=(\frac{1}{3^s})^3\cdot \Bigg[1 + \frac{1}{2^s}\cdot\frac{(1-(\frac
 \end{align}
 
 \begin{align}
-         &=(\frac{1}{7^s})^2\cdot \Bigg[1 + \frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{0})}{(1-\frac{1}{2^s})}    + \frac{1}{3^s}\cdot\frac{(1-(\frac{1}{3^s})^{0})}{(1-\frac{1}{3^s})}   + \frac{1}{5^s}\cdot\frac{(1-(\frac{1}{5^s})^{0})}{(1-\frac{1}{5^s})} \nonumber \\  &+ \frac{1}{2^s}\cdot\frac{1}{3^s}\cdot\frac{(1-(\frac{1}{2^s})^{0})}{(1-\frac{1}{2^s})}\cdot\frac{(1-(\frac{1}{3^s})^{0})}{(1-\frac{1}{3^s})}   + \frac{1}{2^s}\cdot\frac{1}{5^s}\cdot\frac{(1-(\frac{1}{2^s})^{0})}{(1-\frac{1}{2^s})}\cdot\frac{(1-(\frac{1}{5^s})^{0})}{(1-\frac{1}{5^s})} \nonumber \\  &+ \frac{1}{3^s}\cdot\frac{1}{5^s}\cdot\frac{(1-(\frac{1}{3^s})^{0})}{(1-\frac{1}{3^s})}\cdot\frac{(1-(\frac{1}{5^s})^{0})}{(1-\frac{1}{5^s})} \nonumber \\  &+ \frac{1}{2^s}\cdot\frac{1}{3^s}\cdot\frac{1}{5^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor0\rfloor})}{(1-\frac{1}{2^s})}\cdot\frac{(1-(\frac{1}{3^s})^{0})}{(1-\frac{1}{3^s})} \cdot\frac{(1-(\frac{1}{5^s})^{0})}{(1-\frac{1}{5^s})} \Bigg] \nonumber \\
+         &=(\frac{1}{7^s})^2\cdot \Bigg[1 + \frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{0})}{(1-\frac{1}{2^s})}    + \frac{1}{3^s}\cdot\frac{(1-(\frac{1}{3^s})^{0})}{(1-\frac{1}{3^s})}   + \frac{1}{5^s}\cdot\frac{(1-(\frac{1}{5^s})^{0})}{(1-\frac{1}{5^s})} \nonumber \\  &+ \frac{1}{2^s}\cdot\frac{1}{3^s}\cdot\frac{(1-(\frac{1}{2^s})^{0})}{(1-\frac{1}{2^s})}\cdot\frac{(1-(\frac{1}{3^s})^{0})}{(1-\frac{1}{3^s})}   + \frac{1}{2^s}\cdot\frac{1}{5^s}\cdot\frac{(1-(\frac{1}{2^s})^{0})}{(1-\frac{1}{2^s})}\cdot\frac{(1-(\frac{1}{5^s})^{0})}{(1-\frac{1}{5^s})} \nonumber \\  &+ \frac{1}{3^s}\cdot\frac{1}{5^s}\cdot\frac{(1-(\frac{1}{3^s})^{0})}{(1-\frac{1}{3^s})}\cdot\frac{(1-(\frac{1}{5^s})^{0})}{(1-\frac{1}{5^s})} \nonumber \\  &+ \frac{1}{2^s}\cdot\frac{1}{3^s}\cdot\frac{1}{5^s}\cdot\frac{(1-(\frac{1}{2^s})^{0})}{(1-\frac{1}{2^s})}\cdot\frac{(1-(\frac{1}{3^s})^{0})}{(1-\frac{1}{3^s})} \cdot\frac{(1-(\frac{1}{5^s})^{0})}{(1-\frac{1}{5^s})} \Bigg] \nonumber \\
         &= \frac{1}{49^s}
 \end{align}
 
@@ -636,11 +642,12 @@ likewise because $a_{47}(s,89)=\frac{1}{53^s}$ has only one non-zero term and $2
         a_{79}(s,89) &=\frac{1}{79^s}\cdot \Bigg[1+0\Bigg] = \frac{1}{79^s} \\
 \end{align}
 
-then explicitly working through a_81(s,N) because it has a concise formula
+then explicitly working through $a_{81}(s,89)$ because it has a concise formula
 
 \begin{align}
-a_81(s,N) &=(\frac{1}{3^s})^4\cdot \Bigg[1 + \frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor0.1358834\rfloor})}{(1-\frac{1}{2^s})}   \Bigg] \nonumber \\
-&=(\frac{1}{3^s})^4\cdot \Bigg[1 + \frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{0\rfloor})}{(1-\frac{1}{2^s})}   \Bigg] \nonumber \\
+a_{81}(s,89) &=(\frac{1}{3^s})^4\cdot \Bigg[1 + \frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{3^4}\}})}}{\log{(2)}}\rfloor})}{(1-\frac{1}{2^s})}   \Bigg] \nonumber \\
+&=(\frac{1}{3^s})^4\cdot \Bigg[1 + \frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor0.1358834\rfloor})}{(1-\frac{1}{2^s})}   \Bigg] \nonumber \\
+&=(\frac{1}{3^s})^4\cdot \Bigg[1 + \frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{0})}{(1-\frac{1}{2^s})}   \Bigg] \nonumber \\
 &= \frac{1}{81^s}
 \end{align}
 
