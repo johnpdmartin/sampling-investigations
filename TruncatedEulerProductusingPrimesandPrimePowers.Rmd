@@ -8,16 +8,16 @@ output:
     fig_crop: no
 ---
 
-PAPER to be revised 
 
-While the algorithm worked for the examples investigated N=1-10, 89
 
-Attempts at N=1041 indicate a deficiency in the approach.
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
 
+```
 
 ## Executive summary 
 
-A linear combination of products of finite geometric series of primes and power of primes exhibits excellent performance in reproducing the finite Riemann Zeta Dirichlet Series for known examples. From prime 5 upwards, the number of terms to be calculated for each prime follows Pascal's triangle pattern and for powers of a prime the same number of calculation terms are required as did the prime itself.
+A linear combination of products of finite geometric series of primes and power of primes exhibits excellent performance in reproducing the finite Riemann Zeta Dirichlet Series for known examples N=1-10, and N=89. From an algorithmic standpoint it is crucial to firstly identify all the prime powers present up to the required N. From prime 3 upwards, the number of (grouped) terms to be calculated for each prime has a similarity to Pascal's triangle pattern and for powers of a prime the same number of calculation terms are required as did the prime itself. 
 
 ## Introduction
 
@@ -69,42 +69,41 @@ where
         a_3(s,N) = \frac{1}{3^s}\cdot \Bigg[\delta(N\ge3) + \frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor\frac{\log{(\max{\{1,\frac{N}{3}\}})}}{\log{(2)}}\rfloor})}{(1-\frac{1}{2^s})} \Bigg] 
 \end{equation}
 
-\begin{align}
-a_5(s,N) =\frac{1}{5^s}\cdot \Bigg[\delta(N\ge5) + \frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor\frac{\log{(\max{\{1,\frac{N}{5}\}})}}{\log{(2)}}\rfloor})}{(1-\frac{1}{2^s})}  \nonumber \\  + \frac{1}{3^s}\cdot\frac{(1-(\frac{1}{3^s})^{\lfloor\frac{\log{(\max{\{1,\frac{N}{5}\}})}}{\log{(3)}}\rfloor})}{(1-\frac{1}{3^s})} \nonumber \\  + \frac{1}{2^s}\cdot\frac{1}{3^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor\frac{\log{(\max{\{1,\frac{N}{3\cdot 5}\}})}}{\log{(2)}}\rfloor})}{(1-\frac{1}{2^s})}\cdot\frac{(1-(\frac{1}{3^s})^{\lfloor\frac{\log{(\max{\{1,\frac{N}{2\cdot 5}\}})}}{\log{(3)}}\rfloor})}{(1-\frac{1}{3^s})} \Bigg] 
-\end{align}
-
-\begin{align}
-        a_7(s,N) =\frac{1}{7^s}\cdot \Bigg[\delta(N\ge7) + \frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor\frac{\log{(\max{\{1,\frac{N}{7}\}})}}{\log{(2)}}\rfloor})}{(1-\frac{1}{2^s})}  \nonumber \\  + \frac{1}{3^s}\cdot\frac{(1-(\frac{1}{3^s})^{\lfloor\frac{\log{(\max{\{1,\frac{N}{7}\}})}}{\log{(3)}}\rfloor})}{(1-\frac{1}{3^s})} \nonumber \\  + \frac{1}{5^s}\cdot\frac{(1-(\frac{1}{5^s})^{\lfloor\frac{\log{(\max{\{1,\frac{N}{7}\}})}}{\log{(5)}}\rfloor})}{(1-\frac{1}{5^s})} \nonumber \\  + \frac{1}{2^s}\cdot\frac{1}{3^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor\frac{\log{(\max{\{1,\frac{N}{3\cdot 7}\}})}}{\log{(2)}}\rfloor})}{(1-\frac{1}{2^s})}\cdot\frac{(1-(\frac{1}{3^s})^{\lfloor\frac{\log{(\max{\{1,\frac{N}{2\cdot 7}\}})}}{\log{(3)}}\rfloor})}{(1-\frac{1}{3^s})} \nonumber \\  + \frac{1}{2^s}\cdot\frac{1}{5^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor\frac{\log{(\max{\{1,\frac{N}{5\cdot 7}\}})}}{\log{(2)}}\rfloor})}{(1-\frac{1}{2^s})}\cdot\frac{(1-(\frac{1}{5^s})^{\lfloor\frac{\log{(\max{\{1,\frac{N}{2\cdot 7}\}})}}{\log{(5)}}\rfloor})}{(1-\frac{1}{5^s})} \nonumber \\  + \frac{1}{3^s}\cdot\frac{1}{5^s}\cdot\frac{(1-(\frac{1}{3^s})^{\lfloor\frac{\log{(\max{\{1,\frac{N}{5\cdot 7}\}})}}{\log{(3)}}\rfloor})}{(1-\frac{1}{3^s})}\cdot\frac{(1-(\frac{1}{5^s})^{\lfloor\frac{\log{(\max{\{1,\frac{N}{3\cdot 7}\}})}}{\log{(5)}}\rfloor})}{(1-\frac{1}{5^s})} \nonumber \\  + \frac{1}{2^s}\cdot\frac{1}{3^s}\cdot\frac{1}{5^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor\frac{\log{(\max{\{1,\frac{N}{3\cdot 5\cdot 7}\}})}}{\log{(2)}}\rfloor})}{(1-\frac{1}{2^s})}\cdot\frac{(1-(\frac{1}{3^s})^{\lfloor\frac{\log{(\max{\{1,\frac{N}{2\cdot  5\cdot 7}\}})}}{\log{(3)}}\rfloor})}{(1-\frac{1}{3^s})} \cdot\frac{(1-(\frac{1}{5^s})^{\lfloor\frac{\log{(\max{\{1,\frac{N}{2\cdot 3\cdot 7}\}})}}{\log{(5)}}\rfloor})}{(1-\frac{1}{5^s})} \Bigg]  
-\end{align}
+and more generally for prime powers of 3
 
 \begin{equation}
-        a_9(s,N) =\left(\frac{1}{3^s}\right)^2\cdot\Bigg[\delta(N\ge3^2) + \frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor\frac{\log{(\max{\{1,\frac{N}{3^2}\}})}}{\log{(2)}}\rfloor})}{(1-\frac{1}{2^s})} \Bigg] 
+        a_{3^m}(s,N) =\left(\frac{1}{3^s}\right)^m\cdot\Bigg[\delta(N\ge3^m) + \frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor\frac{\log{(\max{\{1,\frac{N}{3^m}\}})}}{\log{(2)}}\rfloor})}{(1-\frac{1}{2^s})} \Bigg] 
 \end{equation}
 
 \begin{align}
-        a_{11}(s,N) =\frac{1}{11^s}\cdot \Bigg[\delta(N\ge11) + \frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor\frac{\log{(\max{\{1,\frac{N}{11}\}})}}{\log{(2)}}\rfloor})}{(1-\frac{1}{2^s})}  \nonumber \\  + \frac{1}{3^s}\cdot\frac{(1-(\frac{1}{3^s})^{\lfloor\frac{\log{(\max{\{1,\frac{N}{11}\}})}}{\log{(3)}}\rfloor})}{(1-\frac{1}{3^s})} \nonumber \\  + \frac{1}{5^s}\cdot\frac{(1-(\frac{1}{5^s})^{\lfloor\frac{\log{(\max{\{1,\frac{N}{11}\}})}}{\log{(5)}}\rfloor})}{(1-\frac{1}{5^s})} \nonumber \\  + \frac{1}{7^s}\cdot\frac{(1-(\frac{1}{7^s})^{\lfloor\frac{\log{(\max{\{1,\frac{N}{11}\}})}}{\log{(7)}}\rfloor})}{(1-\frac{1}{7^s})} \nonumber \\  + \frac{1}{2^s}\cdot\frac{1}{3^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor\frac{\log{(\max{\{1,\frac{N}{3\cdot 11}\}})}}{\log{(2)}}\rfloor})}{(1-\frac{1}{2^s})}\cdot\frac{(1-(\frac{1}{3^s})^{\lfloor\frac{\log{(\max{\{1,\frac{N}{2\cdot 11}\}})}}{\log{(3)}}\rfloor})}{(1-\frac{1}{3^s})} \nonumber \\  + \frac{1}{2^s}\cdot\frac{1}{5^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor\frac{\log{(\max{\{1,\frac{N}{5\cdot 11}\}})}}{\log{(2)}}\rfloor})}{(1-\frac{1}{2^s})}\cdot\frac{(1-(\frac{1}{5^s})^{\lfloor\frac{\log{(\max{\{1,\frac{N}{2\cdot 11}\}})}}{\log{(5)}}\rfloor})}{(1-\frac{1}{5^s})} \nonumber \\  + \frac{1}{2^s}\cdot\frac{1}{7^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor\frac{\log{(\max{\{1,\frac{N}{7\cdot 11}\}})}}{\log{(2)}}\rfloor})}{(1-\frac{1}{2^s})}\cdot\frac{(1-(\frac{1}{7^s})^{\lfloor\frac{\log{(\max{\{1,\frac{N}{2\cdot 11}\}})}}{\log{(7)}}\rfloor})}{(1-\frac{1}{7^s})} \nonumber \\  + \frac{1}{3^s}\cdot\frac{1}{5^s}\cdot\frac{(1-(\frac{1}{3^s})^{\lfloor\frac{\log{(\max{\{1,\frac{N}{5\cdot 11}\}})}}{\log{(3)}}\rfloor})}{(1-\frac{1}{3^s})}\cdot\frac{(1-(\frac{1}{5^s})^{\lfloor\frac{\log{(\max{\{1,\frac{N}{3\cdot 11}\}})}}{\log{(5)}}\rfloor})}{(1-\frac{1}{5^s})} \nonumber \\  + \frac{1}{3^s}\cdot\frac{1}{7^s}\cdot\frac{(1-(\frac{1}{3^s})^{\lfloor\frac{\log{(\max{\{1,\frac{N}{7\cdot 11}\}})}}{\log{(3)}}\rfloor})}{(1-\frac{1}{3^s})}\cdot\frac{(1-(\frac{1}{7^s})^{\lfloor\frac{\log{(\max{\{1,\frac{N}{3\cdot 11}\}})}}{\log{(7)}}\rfloor})}{(1-\frac{1}{7^s})} \nonumber \\  + \frac{1}{5^s}\cdot\frac{1}{7^s}\cdot\frac{(1-(\frac{1}{5^s})^{\lfloor\frac{\log{(\max{\{1,\frac{N}{7\cdot 11}\}})}}{\log{(5)}}\rfloor})}{(1-\frac{1}{5^s})}\cdot\frac{(1-(\frac{1}{7^s})^{\lfloor\frac{\log{(\max{\{1,\frac{N}{5\cdot 11}\}})}}{\log{(7)}}\rfloor})}{(1-\frac{1}{7^s})} \nonumber \\  + \frac{1}{2^s}\cdot\frac{1}{3^s}\cdot\frac{1}{5^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor\frac{\log{(\max{\{1,\frac{N}{3\cdot 5\cdot 11}\}})}}{\log{(2)}}\rfloor})}{(1-\frac{1}{2^s})}\cdot\frac{(1-(\frac{1}{3^s})^{\lfloor\frac{\log{(\max{\{1,\frac{N}{2\cdot  5\cdot 11}\}})}}{\log{(3)}}\rfloor})}{(1-\frac{1}{3^s})} \cdot\frac{(1-(\frac{1}{5^s})^{\lfloor\frac{\log{(\max{\{1,\frac{N}{2\cdot 3\cdot 11}\}})}}{\log{(5)}}\rfloor})}{(1-\frac{1}{5^s})} \nonumber \\ + \frac{1}{2^s}\cdot\frac{1}{3^s}\cdot\frac{1}{7^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor\frac{\log{(\max{\{1,\frac{N}{3\cdot 7\cdot 11}\}})}}{\log{(2)}}\rfloor})}{(1-\frac{1}{2^s})}\cdot\frac{(1-(\frac{1}{3^s})^{\lfloor\frac{\log{(\max{\{1,\frac{N}{2\cdot  7\cdot 11}\}})}}{\log{(3)}}\rfloor})}{(1-\frac{1}{3^s})} \cdot\frac{(1-(\frac{1}{7^s})^{\lfloor\frac{\log{(\max{\{1,\frac{N}{2\cdot 3\cdot 11}\}})}}{\log{(7)}}\rfloor})}{(1-\frac{1}{7^s})} \nonumber \\ + \frac{1}{2^s}\cdot\frac{1}{5^s}\cdot\frac{1}{7^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor\frac{\log{(\max{\{1,\frac{N}{5\cdot 7\cdot 11}\}})}}{\log{(2)}}\rfloor})}{(1-\frac{1}{2^s})}\cdot\frac{(1-(\frac{1}{5^s})^{\lfloor\frac{\log{(\max{\{1,\frac{N}{2\cdot  7\cdot 11}\}})}}{\log{(5)}}\rfloor})}{(1-\frac{1}{5^s})} \cdot\frac{(1-(\frac{1}{7^s})^{\lfloor\frac{\log{(\max{\{1,\frac{N}{2\cdot 5\cdot 11}\}})}}{\log{(7)}}\rfloor})}{(1-\frac{1}{7^s})} \nonumber \\ + \frac{1}{3^s}\cdot\frac{1}{5^s}\cdot\frac{1}{7^s}\cdot\frac{(1-(\frac{1}{3^s})^{\lfloor\frac{\log{(\max{\{1,\frac{N}{5\cdot 7\cdot 11}\}})}}{\log{(3)}}\rfloor})}{(1-\frac{1}{3^s})}\cdot\frac{(1-(\frac{1}{5^s})^{\lfloor\frac{\log{(\max{\{1,\frac{N}{3\cdot  7\cdot 11}\}})}}{\log{(5)}}\rfloor})}{(1-\frac{1}{5^s})} \cdot\frac{(1-(\frac{1}{7^s})^{\lfloor\frac{\log{(\max{\{1,\frac{N}{3\cdot 5\cdot 11}\}})}}{\log{(7)}}\rfloor})}{(1-\frac{1}{7^s})} \nonumber \\ + \frac{1}{2^s}\cdot\frac{1}{3^s}\cdot\frac{1}{5^s}\cdot\frac{1}{7^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor\frac{\log{(\max{\{1,\frac{N}{3\cdot  5\cdot 7\cdot 11}\}})}}{\log{(2)}}\rfloor})}{(1-\frac{1}{2^s})}\cdot\frac{(1-(\frac{1}{3^s})^{\lfloor\frac{\log{(\max{\{1,\frac{N}{2\cdot  5\cdot 7\cdot 11}\}})}}{\log{(3)}}\rfloor})}{(1-\frac{1}{3^s})} \cdot\frac{(1-(\frac{1}{5^s})^{\lfloor\frac{\log{(\max{\{1,\frac{N}{2\cdot 3\cdot 7\cdot 11}\}})}}{\log{(5)}}\rfloor})}{(1-\frac{1}{5^s})} \nonumber \\ \cdot\frac{(1-(\frac{1}{7^s})^{\lfloor\frac{\log{(\max{\{1,\frac{N}{2\cdot 3\cdot 5\cdot 11}\}})}}{\log{(7)}}\rfloor})}{(1-\frac{1}{7^s})} \Bigg]  
+a_5(s,N) =\frac{1}{5^s}\cdot \Bigg[\delta(N\ge5) + \frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor\frac{\log{(\max{\{1,\frac{N}{5}\}})}}{\log{(2)}}\rfloor})}{(1-\frac{1}{2^s})}  \nonumber \\  + \frac{1}{3^s}\cdot\frac{(1-(\frac{1}{3^s})^{\lfloor\frac{\log{(\max{\{1,\frac{N}{5}\}})}}{\log{(3)}}\rfloor})}{(1-\frac{1}{3^s})} \nonumber \\  + \sum_{q=1} \left(\frac{1}{3^s}\right)^q\cdot\frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor\frac{\log{(\max{\{1,\frac{N}{3^q\cdot 5}\}})}}{\log{(2)}}\rfloor})}{(1-\frac{1}{2^s})} \Bigg] 
+\end{align}
+
+and more generally for prime powers of 5
+
+\begin{align}
+a_{5^m}(s,N) =\left(\frac{1}{5^s}\right)^m\cdot \Bigg[\delta(N\ge5^m) + \frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor\frac{\log{(\max{\{1,\frac{N}{5^m}\}})}}{\log{(2)}}\rfloor})}{(1-\frac{1}{2^s})}  \nonumber \\  + \frac{1}{3^s}\cdot\frac{(1-(\frac{1}{3^s})^{\lfloor\frac{\log{(\max{\{1,\frac{N}{5^m}\}})}}{\log{(3)}}\rfloor})}{(1-\frac{1}{3^s})} \nonumber \\  + \sum_{q=1} \left(\frac{1}{3^s}\right)^q\cdot\frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor\frac{\log{(\max{\{1,\frac{N}{3^q\cdot 5^m}\}})}}{\log{(2)}}\rfloor})}{(1-\frac{1}{2^s})} \Bigg] 
 \end{align}
 
 \begin{align}
-a_{25}(s,N) =\left(\frac{1}{5^s}\right)^2\cdot \Bigg[\delta(N\ge5^2) + \frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor\frac{\log{(\max{\{1,\frac{N}{5^2}\}})}}{\log{(2)}}\rfloor})}{(1-\frac{1}{2^s})}  \nonumber \\  + \frac{1}{3^s}\cdot\frac{(1-(\frac{1}{3^s})^{\lfloor\frac{\log{(\max{\{1,\frac{N}{5^2}\}})}}{\log{(3)}}\rfloor})}{(1-\frac{1}{3^s})} \nonumber \\  + \frac{1}{2^s}\cdot\frac{1}{3^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor\frac{\log{(\max{\{1,\frac{N}{3\cdot 5^2}\}})}}{\log{(2)}}\rfloor})}{(1-\frac{1}{2^s})}\cdot\frac{(1-(\frac{1}{3^s})^{\lfloor\frac{\log{(\max{\{1,\frac{N}{2\cdot 5^2}\}})}}{\log{(3)}}\rfloor})}{(1-\frac{1}{3^s})} \Bigg] 
+        a_7(s,N) =\frac{1}{7^s}\cdot \Bigg[\delta(N\ge7) + \frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor\frac{\log{(\max{\{1,\frac{N}{7}\}})}}{\log{(2)}}\rfloor})}{(1-\frac{1}{2^s})}    + \frac{1}{3^s}\cdot\frac{(1-(\frac{1}{3^s})^{\lfloor\frac{\log{(\max{\{1,\frac{N}{7}\}})}}{\log{(3)}}\rfloor})}{(1-\frac{1}{3^s})} \nonumber \\   + \frac{1}{5^s}\cdot\frac{(1-(\frac{1}{5^s})^{\lfloor\frac{\log{(\max{\{1,\frac{N}{7}\}})}}{\log{(5)}}\rfloor})}{(1-\frac{1}{5^s})} \nonumber \\  + \sum_{q=1} \left(\frac{1}{3^s}\right)^q\cdot\frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor\frac{\log{(\max{\{1,\frac{N}{3^q\cdot 7}\}})}}{\log{(2)}}\rfloor})}{(1-\frac{1}{2^s})}      + \sum_{p=1} \left(\frac{1}{5^s}\right)^p\cdot\frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor\frac{\log{(\max{\{1,\frac{N}{5^p\cdot 7}\}})}}{\log{(2)}}\rfloor})}{(1-\frac{1}{2^s})} \nonumber \\    + \sum_{p=1} \left(\frac{1}{5^s}\right)^p\cdot\frac{1}{3^s}\cdot\frac{(1-(\frac{1}{3^s})^{\lfloor\frac{\log{(\max{\{1,\frac{N}{5^p\cdot 7}\}})}}{\log{(3)}}\rfloor})}{(1-\frac{1}{3^s})} \nonumber \\    + \sum_{p=1} \sum_{q=1} \left(\frac{1}{5^s}\right)^p\cdot\left(\frac{1}{3^s}\right)^q\cdot\frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor\frac{\log{(\max{\{1,\frac{N}{3^q\cdot 5^p\cdot 7}\}})}}{\log{(2)}}\rfloor})}{(1-\frac{1}{2^s})} \Bigg]  
 \end{align}
 
-\begin{equation}
-        a_{27}(s,N) =\left(\frac{1}{3^s}\right)^3\cdot\Bigg[\delta(N\ge3^3) + \frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor\frac{\log{(\max{\{1,\frac{N}{3^3}\}})}}{\log{(2)}}\rfloor})}{(1-\frac{1}{2^s})} \Bigg] 
-\end{equation}
-
-\begin{equation}
-        a_{81}(s,N) =\left(\frac{1}{3^s}\right)^4\cdot\Bigg[\delta(N\ge3^4) + \frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor\frac{\log{(\max{\{1,\frac{N}{3^4}\}})}}{\log{(2)}}\rfloor})}{(1-\frac{1}{2^s})} \Bigg] 
-\end{equation}
-
-
+and more generally for prime powers of 7
 
 \begin{align}
-a_{125}(s,N) =\left(\frac{1}{5^s}\right)^3\cdot \Bigg[\delta(N\ge5^3) + \frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor\frac{\log{(\max{\{1,\frac{N}{5^3}\}})}}{\log{(2)}}\rfloor})}{(1-\frac{1}{2^s})}  \nonumber \\  + \frac{1}{3^s}\cdot\frac{(1-(\frac{1}{3^s})^{\lfloor\frac{\log{(\max{\{1,\frac{N}{5^3}\}})}}{\log{(3)}}\rfloor})}{(1-\frac{1}{3^s})} \nonumber \\  + \frac{1}{2^s}\cdot\frac{1}{3^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor\frac{\log{(\max{\{1,\frac{N}{3\cdot 5^3}\}})}}{\log{(2)}}\rfloor})}{(1-\frac{1}{2^s})}\cdot\frac{(1-(\frac{1}{3^s})^{\lfloor\frac{\log{(\max{\{1,\frac{N}{2\cdot 5^3}\}})}}{\log{(3)}}\rfloor})}{(1-\frac{1}{3^s})} \Bigg]  
+        a_{7^m}(s,N) =\left(\frac{1}{7^s}\right)^m\cdot \Bigg[\delta(N\ge7^m) + \frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor\frac{\log{(\max{\{1,\frac{N}{7^m}\}})}}{\log{(2)}}\rfloor})}{(1-\frac{1}{2^s})}    + \frac{1}{3^s}\cdot\frac{(1-(\frac{1}{3^s})^{\lfloor\frac{\log{(\max{\{1,\frac{N}{7^m}\}})}}{\log{(3)}}\rfloor})}{(1-\frac{1}{3^s})} \nonumber \\   + \frac{1}{5^s}\cdot\frac{(1-(\frac{1}{5^s})^{\lfloor\frac{\log{(\max{\{1,\frac{N}{7^m}\}})}}{\log{(5)}}\rfloor})}{(1-\frac{1}{5^s})} \nonumber \\  + \sum_{q=1} \left(\frac{1}{3^s}\right)^q\cdot\frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor\frac{\log{(\max{\{1,\frac{N}{3^q\cdot 7^m}\}})}}{\log{(2)}}\rfloor})}{(1-\frac{1}{2^s})}      + \sum_{p=1} \left(\frac{1}{5^s}\right)^p\cdot\frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor\frac{\log{(\max{\{1,\frac{N}{5^p\cdot 7^m}\}})}}{\log{(2)}}\rfloor})}{(1-\frac{1}{2^s})} \nonumber \\    + \sum_{p=1} \left(\frac{1}{5^s}\right)^p\cdot\frac{1}{3^s}\cdot\frac{(1-(\frac{1}{3^s})^{\lfloor\frac{\log{(\max{\{1,\frac{N}{5^p\cdot 7^m}\}})}}{\log{(3)}}\rfloor})}{(1-\frac{1}{3^s})} \nonumber \\    + \sum_{p=1} \sum_{q=1} \left(\frac{1}{5^s}\right)^p\cdot\left(\frac{1}{3^s}\right)^q\cdot\frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor\frac{\log{(\max{\{1,\frac{N}{3^q\cdot 5^p\cdot 7^m}\}})}}{\log{(2)}}\rfloor})}{(1-\frac{1}{2^s})} \Bigg]  
+\end{align}
+
+\newpage
+and generally for prime powers of 11 including m=1
+
+\begin{align}
+        a_{11^m}(s,N) =\left(\frac{1}{11^s}\right)^m\cdot \Bigg[\delta(N\ge11^m) + \frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor\frac{\log{(\max{\{1,\frac{N}{11^m}\}})}}{\log{(2)}}\rfloor})}{(1-\frac{1}{2^s})}    + \frac{1}{3^s}\cdot\frac{(1-(\frac{1}{3^s})^{\lfloor\frac{\log{(\max{\{1,\frac{N}{11^m}\}})}}{\log{(3)}}\rfloor})}{(1-\frac{1}{3^s})} \nonumber \\  + \frac{1}{5^s}\cdot\frac{(1-(\frac{1}{5^s})^{\lfloor\frac{\log{(\max{\{1,\frac{N}{11^m}\}})}}{\log{(5)}}\rfloor})}{(1-\frac{1}{5^s})}   + \frac{1}{7^s}\cdot\frac{(1-(\frac{1}{7^s})^{\lfloor\frac{\log{(\max{\{1,\frac{N}{11^m}\}})}}{\log{(7)}}\rfloor})}{(1-\frac{1}{7^s})} \nonumber \\ \nonumber \\ + \sum_{q=1} \left(\frac{1}{3^s}\right)^q\cdot\frac{1}{2^s}\frac{(1-(\frac{1}{2^s})^{\lfloor\frac{\log{(\max{\{1,\frac{N}{3^q\cdot 11^m}\}})}}{\log{(2)}}\rfloor})}{(1-\frac{1}{2^s})}   +  \sum_{q=1} \left(\frac{1}{5^s}\right)^q\cdot\frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor\frac{\log{(\max{\{1,\frac{N}{5^q\cdot 11^m}\}})}}{\log{(2)}}\rfloor})}{(1-\frac{1}{2^s})} \nonumber \\  +  \sum_{q=1} \left(\frac{1}{7^s}\right)^q\cdot\frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor\frac{\log{(\max{\{1,\frac{N}{7^q\cdot 11^m}\}})}}{\log{(2)}}\rfloor})}{(1-\frac{1}{2^s})} \nonumber \\  + \sum_{q=1} \left(\frac{1}{5^s}\right)^q\cdot\frac{1}{3^s}\cdot\frac{(1-(\frac{1}{3^s})^{\lfloor\frac{\log{(\max{\{1,\frac{N}{5^q\cdot 11^m}\}})}}{\log{(3)}}\rfloor})}{(1-\frac{1}{3^s})}  +  \sum_{q=1} \left(\frac{1}{7^s}\right)^q\cdot\frac{1}{3^s}\cdot\frac{(1-(\frac{1}{3^s})^{\lfloor\frac{\log{(\max{\{1,\frac{N}{7^q\cdot 11^m}\}})}}{\log{(3)}}\rfloor})}{(1-\frac{1}{3^s})} \nonumber \\  + \sum_{q=1} \left(\frac{1}{7^s}\right)^q\cdot\frac{1}{5^s}\cdot\frac{(1-(\frac{1}{5^s})^{\lfloor\frac{\log{(\max{\{1,\frac{N}{7^q\cdot 11^m}\}})}}{\log{(5)}}\rfloor})}{(1-\frac{1}{5^s})} \nonumber \\ \nonumber \\ + \sum_{p=1} \sum_{q=1} \left(\frac{1}{5^s}\right)^p\cdot\left(\frac{1}{3^s}\right)^q\cdot\frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor\frac{\log{(\max{\{1,\frac{N}{3^q\cdot 5^p\cdot 11^m}\}})}}{\log{(2)}}\rfloor})}{(1-\frac{1}{2^s})} \nonumber \\ + \sum_{p=1} \sum_{q=1} \left(\frac{1}{7^s}\right)^p\cdot\left(\frac{1}{3^s}\right)^q\cdot\frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor\frac{\log{(\max{\{1,\frac{N}{3^q\cdot 7^p\cdot 11^m}\}})}}{\log{(2)}}\rfloor})}{(1-\frac{1}{2^s})} \nonumber \\ + \sum_{p=1} \sum_{q=1} \left(\frac{1}{7^s}\right)^p\cdot\left(\frac{1}{5^s}\right)^q\cdot\frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor\frac{\log{(\max{\{1,\frac{N}{5^q\cdot 7^p\cdot 11^m}\}})}}{\log{(2)}}\rfloor})}{(1-\frac{1}{2^s})} \nonumber \\ + \sum_{p=1} \sum_{q=1} \left(\frac{1}{7^s}\right)^p\cdot\left(\frac{1}{5^s}\right)^q\cdot\frac{1}{3^s}\cdot\frac{(1-(\frac{1}{3^s})^{\lfloor\frac{\log{(\max{\{1,\frac{N}{5^q\cdot 7^p\cdot 11^m}\}})}}{\log{(3)}}\rfloor})}{(1-\frac{1}{3^s})} \nonumber \\ \nonumber \\ + \sum_{p=1} \sum_{q=1} \sum_{r=1} \left(\frac{1}{7^s}\right)^p\cdot\left(\frac{1}{5^s}\right)^q\cdot\left(\frac{1}{3^s}\right)^r\cdot\frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor\frac{\log{(\max{\{1,\frac{N}{3^r\cdot  5^q\cdot 7^p\cdot 11^m}\}})}}{\log{(2)}}\rfloor})}{(1-\frac{1}{2^s})} \Bigg]  
 \end{align}
 
 
-
+The above expansion has additional terms than the expansion presented in the original version of the paper (where only $N\le89$ was empirically investigated). The revised expansion was found to be necessary because the truncation check becomes more complex as ever higher number of terms (N) to be considered. Execution of the expansion is greatly aided by firstly identifying the non-zero prime powers that occur for a given truncation limit N which then limits the depth of the summations present im equations (8)-(13).  
 
 
 
@@ -113,69 +112,109 @@ a_{125}(s,N) =\left(\frac{1}{5^s}\right)^3\cdot \Bigg[\delta(N\ge5^3) + \frac{1}
 
 N=1
 
+$\mathbb{S}_{(p^q)} = \{\}$ (set of primes $> 2$ and their prime powers)
+
 \begin{align}
 a_2(s,1) &= 1 + \frac{1}{2^s} \cdot \frac{(1-(\frac{1}{2^s})^0)}{(1-\frac{1}{2^s})} = 1 \\
 a_3(s,1) &= \frac{1}{3^s} \cdot \left[ 0 + \frac{1}{2^s}\cdot \frac{(1-(\frac{1}{2^s})^0)}{(1-\frac{1}{2^s})}\right]= \frac{1}{3^s} \cdot \big[ 0 + 0 ] = 0\\
-a_5(s,1) &= \frac{1}{5^s} \cdot \left[ 0 + \frac{1}{2^s}\cdot  \frac{(1-(\frac{1}{2^s})^0)}{(1-\frac{1}{2^s})} + \frac{1}{3^s}\cdot  \frac{(1-(\frac{1}{3^s})^0)}{(1-\frac{1}{3^s})} + \frac{1}{2^s}\cdot \frac{1}{3^s} \cdot \frac{(1-(\frac{1}{2^s})^0)}{(1-\frac{1}{2^s})} \cdot \frac{(1-(\frac{1}{3^s})^0)}{(1-\frac{1}{3^s})} \right]=0 \\
+a_5(s,1) &= \frac{1}{5^s} \cdot \Big[ 0 + \frac{1}{2^s}\cdot  \frac{(1-(\frac{1}{2^s})^0)}{(1-\frac{1}{2^s})} + \frac{1}{3^s}\cdot  \frac{(1-(\frac{1}{3^s})^0)}{(1-\frac{1}{3^s})}  \nonumber \\ &+ 
+\sum_{q=1} \left(\left(\frac{1}{3^s}\right)^q \cdot \frac{1}{2^s}\cdot \underbrace{\frac{(1-(\frac{1}{2^s})^0)}{(1-\frac{1}{2^s})}}_{\equiv 0} \right)   \Big]=0 \\
 a_{(p>2)}(s,1)&=0 \\
 \nonumber \\
 \therefore \qquad & a_2(s,1)+..+a_{p\le 1}(s,1) = 1 = \sum_{n=1}^1 \frac{1}{n^s}
 \end{align}
 
+where the last term in $a_5(s,1)$ was superfluous since no prime powers of prime 3 ($3^q \in q \ge 2$) or higher are present when N=1 but the condition in the summation $(1-(\frac{1}{2^s})^{\left\lfloor\frac{\log(\max{(1,\frac{1}{5\cdot p^q}))}}{\log(2)}\right\rfloor})=(1-(\frac{1}{2^s})^0)=0 \text{ for } p \ge 3, q \ge 1, N=1$ produced the proper outcome even with calculation of the superfluous term.
 \newpage
-N=2
+
+###N=2
+
+$\mathbb{S}_{(p^q)} = \{\}$ (set of primes $> 2$ and their prime powers)
 
 \begin{align}
 a_2(s,2) &= 1 + \frac{1}{2^s} \cdot \frac{(1-(\frac{1}{2^s})^1)}{(1-\frac{1}{2^s})} = 1 + \frac{1}{2^s}\\
 a_3(s,2) &= \frac{1}{3^s} \cdot \left[ 0 + \frac{1}{2^s}\cdot \frac{(1-(\frac{1}{2^s})^0)}{(1-\frac{1}{2^s})}\right]= \frac{1}{3^s} \cdot \big[ 0 + 0 ] = 0\\
-a_5(s,2) &= \frac{1}{5^s} \cdot \left[ 0 + \frac{1}{2^s}\cdot  \frac{(1-(\frac{1}{2^s})^0)}{(1-\frac{1}{2^s})} + \frac{1}{3^s}\cdot  \frac{(1-(\frac{1}{3^s})^0)}{(1-\frac{1}{3^s})} + \frac{1}{2^s}\cdot \frac{1}{3^s} \cdot \frac{(1-(\frac{1}{2^s})^0)}{(1-\frac{1}{2^s})} \cdot \frac{(1-(\frac{1}{3^s})^0)}{(1-\frac{1}{3^s})} \right]=0 \\
+a_5(s,2) &= \frac{1}{5^s} \cdot \Big[ 0 + \frac{1}{2^s}\cdot  \frac{(1-(\frac{1}{2^s})^0)}{(1-\frac{1}{2^s})} + \frac{1}{3^s}\cdot  \frac{(1-(\frac{1}{3^s})^0)}{(1-\frac{1}{3^s})}  \nonumber \\ &+ 
+\sum_{q=1} \left(\left(\frac{1}{3^s}\right)^q \cdot \frac{1}{2^s}\cdot \underbrace{\frac{(1-(\frac{1}{2^s})^0)}{(1-\frac{1}{2^s})}}_{\equiv 0} \right) \Big]=0 \\
 a_{(p>2)}(s,2)&=0 \\
 \nonumber \\
 \therefore \qquad & a_2(s,2)+..+a_{p\le 2}(s,2) = 1 + \frac{1}{2^s} = \sum_{n=1}^2 \frac{1}{n^s}
 \end{align}
 
+where the last term in $a_5(s,2)$ was superfluous again since no prime powers of prime 3 ($3^q \in q \ge 2$) or higher are present when N=2 but the condition in the summation $(1-(\frac{1}{2^s})^{\left\lfloor\frac{\log(\max{(1,\frac{2}{5\cdot p^q}))}}{\log(2)}\right\rfloor})=(1-(\frac{1}{2^s})^0)=0 \text{ for } p \ge 3, q \ge 1, N=1$ produced the proper outcome even with calculation of the superfluous term.
 
-N=3
+
+### N=3
+
+$\mathbb{S}_{(p^q)} = \{3\}$ (set of primes $> 2$ and their prime powers)
 
 \begin{align}
 a_2(s,3) &= 1 + \frac{1}{2^s} \cdot \frac{(1-(\frac{1}{2^s})^1)}{(1-\frac{1}{2^s})} = 1 + \frac{1}{2^s}\\
 a_3(s,3) &= \frac{1}{3^s} \cdot \left[ 1 + \frac{1}{2^s}\cdot \frac{(1-(\frac{1}{2^s})^0)}{(1-\frac{1}{2^s})}\right]= \frac{1}{3^s} \cdot \big[ 1 + 0 ] = \frac{1}{3^s}\\
-a_5(s,3) &= \frac{1}{5^s} \cdot \left[ 0 + \frac{1}{2^s}\cdot  \frac{(1-(\frac{1}{2^s})^0)}{(1-\frac{1}{2^s})} + \frac{1}{3^s}\cdot  \frac{(1-(\frac{1}{3^s})^0)}{(1-\frac{1}{3^s})} + \frac{1}{2^s}\cdot \frac{1}{3^s} \cdot \frac{(1-(\frac{1}{2^s})^0)}{(1-\frac{1}{2^s})} \cdot \frac{(1-(\frac{1}{3^s})^0)}{(1-\frac{1}{3^s})} \right]=0 \\
+a_5(s,3) &= \frac{1}{5^s} \cdot \Big[ 0 + \frac{1}{2^s}\cdot  \frac{(1-(\frac{1}{2^s})^0)}{(1-\frac{1}{2^s})} + \frac{1}{3^s}\cdot  \frac{(1-(\frac{1}{3^s})^0)}{(1-\frac{1}{3^s})} \nonumber \\ &+ 
+\sum_{q=1}^1 \left(\left(\frac{1}{3^s}\right)^q \cdot \frac{1}{2^s}\cdot \underbrace{\frac{(1-(\frac{1}{2^s})^0)}{(1-\frac{1}{2^s})}}_{\equiv 0} \right) \Big]=0 \\
 a_{(p>3)}(s,3)&=0 \\
 \nonumber \\
 \therefore \qquad & a_2(s,3)+..+a_{p\le 3}(s,3) = 1 + \frac{1}{2^s} + \frac{1}{3^s}= \sum_{n=1}^3 \frac{1}{n^s}
 \end{align}
 
-N=4
+where the last summation term in $a_5(s,3)$ has a single term since the only prime powers present when N=2 is $\mathbb{S}_{(p^q)} = \{3\}$ but the condition for that one term is $(1-(\frac{1}{2^s})^{\left\lfloor\frac{\log(\max{(1,\frac{3}{5\cdot 3})})}{\log(2)}\right\rfloor})=(1-(\frac{1}{2^s})^0)=0$ producing the proper outcome for N=3.
+
+### N=4
+
+$\mathbb{S}_{(p^q)} = \{3\}$ (set of primes $> 2$ and their prime powers)
 
 \begin{align}
 a_2(s,4) &= 1 + \frac{1}{2^s} \cdot \frac{(1-(\frac{1}{2^s})^2)}{(1-\frac{1}{2^s})} = 1 + \frac{1}{2^s} + \frac{1}{4^s}\\
 a_3(s,4) &= \frac{1}{3^s} \cdot \left[ 1 + \frac{1}{2^s}\cdot \frac{(1-(\frac{1}{2^s})^0)}{(1-\frac{1}{2^s})}\right]= \frac{1}{3^s} \cdot \big[ 1 + 0 ] = \frac{1}{3^s}\\
-a_5(s,4) &= \frac{1}{5^s} \cdot \left[ 0 + \frac{1}{2^s}\cdot  \frac{(1-(\frac{1}{2^s})^0)}{(1-\frac{1}{2^s})} + \frac{1}{3^s}\cdot  \frac{(1-(\frac{1}{3^s})^0)}{(1-\frac{1}{3^s})} + \frac{1}{2^s}\cdot \frac{1}{3^s} \cdot \frac{(1-(\frac{1}{2^s})^0)}{(1-\frac{1}{2^s})} \cdot \frac{(1-(\frac{1}{3^s})^0)}{(1-\frac{1}{3^s})} \right]=0 \\
+a_5(s,4) &= \frac{1}{5^s} \cdot \Big[ 0 + \frac{1}{2^s}\cdot  \frac{(1-(\frac{1}{2^s})^0)}{(1-\frac{1}{2^s})} + \frac{1}{3^s}\cdot  \frac{(1-(\frac{1}{3^s})^0)}{(1-\frac{1}{3^s})} \nonumber \\ &+ 
+\sum_{q=1}^1 \left(\left(\frac{1}{3^s}\right)^q \cdot \frac{1}{2^s}\cdot \underbrace{\frac{(1-(\frac{1}{2^s})^0)}{(1-\frac{1}{2^s})}}_{\equiv 0} \right) \Big]=0 \\
 a_{(p>4)}(s,4)&=0 \\
 \nonumber \\
 \therefore \qquad & a_2(s,4)+..+a_{p\le 4}(s,4) = 1 + \frac{1}{2^s} + \frac{1}{3^s} + \frac{1}{4^s}= \sum_{n=1}^4 \frac{1}{n^s}
 \end{align}
 
+where the last summation term in $a_5(s,4)$ has a single term since the only prime powers present when N=2 is $\mathbb{S}_{(p^q)} = \{3\}$ but the condition for that one term is $(1-(\frac{1}{2^s})^{\left\lfloor\frac{\log(\max{(1,\frac{4}{5\cdot 3})})}{\log(2)}\right\rfloor})=(1-(\frac{1}{2^s})^0)=0$ producing the proper outcome for N=4.
+
 \newpage
 N=10
 
+$\mathbb{S}_{(p^q)} = \{3,5,7,3^2\}$ (set of primes $> 2$ and their prime powers)
+
 \begin{align}
-a_2(s,10) &= 1 + \frac{1}{2^s} \cdot \frac{(1-(\frac{1}{2^s})^3)}{(1-\frac{1}{2^s})} = 1 + \frac{1}{2^s} + \frac{1}{4^s} + \frac{1}{8^s}\\
-a_3(s,10) &= \frac{1}{3^s} \cdot \left[ 1 + \frac{1}{2^s}\cdot \frac{(1-(\frac{1}{2^s})^1)}{(1-\frac{1}{2^s})}\right]= \frac{1}{3^s} \cdot \big[ 1 + \frac{1}{2^s} ] = \frac{1}{3^s} + \frac{1}{6^s}\\
-a_5(s,10) &= \frac{1}{5^s} \cdot \left[ 1 + \frac{1}{2^s}\cdot  \frac{(1-(\frac{1}{2^s})^1)}{(1-\frac{1}{2^s})} + \frac{1}{3^s}\cdot  \frac{(1-(\frac{1}{3^s})^0)}{(1-\frac{1}{3^s})} + \frac{1}{2^s}\cdot \frac{1}{3^s} \cdot \frac{(1-(\frac{1}{2^s})^0)}{(1-\frac{1}{2^s})} \cdot \frac{(1-(\frac{1}{3^s})^0)}{(1-\frac{1}{3^s})} \right] \nonumber \\
-&= \frac{1}{5^s} \left[ 1 + \frac{1}{2^s} + 0 + 0 \right] = \frac{1}{5^s} + \frac{1}{10^s} \\
-a_7(s,10) &= \frac{1}{7^s} \cdot \big[ 1 + \frac{1}{2^s}\cdot  \frac{(1-(\frac{1}{2^s})^0)}{(1-\frac{1}{2^s})} + \frac{1}{3^s}\cdot  \frac{(1-(\frac{1}{3^s})^0)}{(1-\frac{1}{3^s})} + \frac{1}{5^s}\cdot  \frac{(1-(\frac{1}{5^s})^0)}{(1-\frac{1}{5^s})} \nonumber \\
-&+ \frac{1}{2^s}\cdot \frac{1}{3^s} \cdot \frac{(1-(\frac{1}{2^s})^0)}{(1-\frac{1}{2^s})} \cdot \frac{(1-(\frac{1}{3^s})^0)}{(1-\frac{1}{3^s})} + \frac{1}{2^s}\cdot \frac{1}{5^s} \cdot \frac{(1-(\frac{1}{2^s})^0)}{(1-\frac{1}{2^s})} \cdot \frac{(1-(\frac{1}{5^s})^0)}{(1-\frac{1}{5^s})} \nonumber \\
-&+ \frac{1}{3^s}\cdot \frac{1}{5^s} \cdot \frac{(1-(\frac{1}{3^s})^0)}{(1-\frac{1}{3^s})} \cdot \frac{(1-(\frac{1}{5^s})^0)}{(1-\frac{1}{5^s})} \nonumber \\
-&+ \frac{1}{2^s}\cdot \frac{1}{3^s}\cdot\frac{1}{5^s} \cdot \frac{(1-(\frac{1}{2^s})^0)}{(1-\frac{1}{2^s})} \cdot \frac{(1-(\frac{1}{3^s})^0)}{(1-\frac{1}{3^s})}\cdot  \frac{(1-(\frac{1}{5^s})^0)}{(1-\frac{1}{5^s})} \big] \nonumber \\
-&= \frac{1}{7^s} \left[ 1 + 0 + 0 + 0 + 0 + 0 + 0 + 0 \right] = \frac{1}{7^s} \\
+a_2(s,10) &= 1 + \frac{1}{2^s} \cdot \frac{(1-(\frac{1}{2^s})^3)}{(1-\frac{1}{2^s})} = 1 + \frac{1}{2^s} + \frac{1}{4^s} + \frac{1}{8^s}\\ \nonumber \\
+a_3(s,10) &= \frac{1}{3^s} \cdot \left[ 1 + \frac{1}{2^s}\cdot \frac{(1-(\frac{1}{2^s})^1)}{(1-\frac{1}{2^s})}\right]= \frac{1}{3^s} \cdot \big[ 1 + \frac{1}{2^s} ] = \frac{1}{3^s} + \frac{1}{6^s}\\ \nonumber \\
+a_5(s,10) &= \frac{1}{5^s} \cdot \Big[ 1 + \frac{1}{2^s}\cdot  \frac{(1-(\frac{1}{2^s})^1)}{(1-\frac{1}{2^s})} + \frac{1}{3^s}\cdot  \frac{(1-(\frac{1}{3^s})^0)}{(1-\frac{1}{3^s})} \nonumber \\ &+ 
+\sum_{q=1}^2 \left(\left(\frac{1}{3^s}\right)^q \cdot \frac{1}{2^s}\cdot \frac{(1-(\frac{1}{2^s})^{\left\lfloor\frac{\log(\max{(1,\frac{10}{5\cdot 3^q})})}{\log(2)}\right\rfloor})}{(1-\frac{1}{2^s})} \right) \Big] \nonumber \\
+&= \frac{1}{5^s} \left[ 1 + \frac{1}{2^s} + \left(\frac{1}{3^s}\cdot \frac{1}{2^s}\frac{(1-(\frac{1}{2^s})^0)}{(1-\frac{1}{2^s})}+\left(\frac{1}{3^s}\right)^2\cdot \frac{1}{2^s}\frac{(1-(\frac{1}{2^s})^0)}{(1-\frac{1}{2^s})}\right)  \right] \nonumber \\
+&= \frac{1}{5^s} + \frac{1}{10^s} + (0 + 0) \nonumber \\
+&= \frac{1}{5^s} + \frac{1}{10^s} 
+\end{align}
+
+\begin{align}
+a_7(s,10) &= \frac{1}{7^s} \cdot \Bigg[ 1 + \frac{1}{2^s}\cdot  \frac{(1-(\frac{1}{2^s})^0)}{(1-\frac{1}{2^s})} + \frac{1}{3^s}\cdot  \frac{(1-(\frac{1}{3^s})^0)}{(1-\frac{1}{3^s})} + \frac{1}{5^s}\cdot  \frac{(1-(\frac{1}{5^s})^0)}{(1-\frac{1}{5^s})} \nonumber \\
+&+ \sum_{q=1}^2 \left(\left(\frac{1}{3^s}\right)^q \cdot \frac{1}{2^s}\cdot \frac{(1-(\frac{1}{2^s})^{\left\lfloor\frac{\log(\max{(1,\frac{10}{7\cdot 3^q})})}{\log(2)}\right\rfloor})}{(1-\frac{1}{2^s})} \right) \nonumber \\
+&+ \sum_{q=1}^1 \left(\left(\frac{1}{5^s}\right)^q \cdot \frac{1}{2^s}\cdot \frac{(1-(\frac{1}{2^s})^{\left\lfloor\frac{\log(\max{(1,\frac{10}{7\cdot 5^q})})}{\log(2)}\right\rfloor})}{(1-\frac{1}{2^s})} \right) \nonumber \\
+&+ \sum_{q=1}^1 \left(\left(\frac{1}{5^s}\right)^q \cdot \frac{1}{3^s}\cdot \frac{(1-(\frac{1}{3^s})^{\left\lfloor\frac{\log(\max{(1,\frac{10}{7\cdot 5^q})})}{\log(3)}\right\rfloor})}{(1-\frac{1}{3^s})} \right) \nonumber \\
+&+ \sum_{p=1}^1 \sum_{q=1}^2 \left(\left(\frac{1}{5^s}\right)^p \cdot \left(\frac{1}{3^s}\right)^q \cdot \frac{1}{2^s}\cdot \frac{(1-(\frac{1}{2^s})^{\left\lfloor\frac{\log(\max{(1,\frac{10}{7\cdot 5^p\cdot 3^q})})}{\log(2)}\right\rfloor})}{(1-\frac{1}{2^s})} \right) \Bigg]
+\end{align}
+
+\begin{align}
+&= \frac{1}{7^s} \cdot \Bigg[ 1 + \frac{1}{2^s}\cdot  \frac{(1-(\frac{1}{2^s})^0)}{(1-\frac{1}{2^s})} + \frac{1}{3^s}\cdot  \frac{(1-(\frac{1}{3^s})^0)}{(1-\frac{1}{3^s})} + \frac{1}{5^s}\cdot  \frac{(1-(\frac{1}{5^s})^0)}{(1-\frac{1}{5^s})} \nonumber \\
+&+ \left(\left(\frac{1}{3^s}\right)^1 \cdot \frac{1}{2^s}\cdot \frac{(1-(\frac{1}{2^s})^{0})}{(1-\frac{1}{2^s})} + \left(\frac{1}{3^s}\right)^2 \cdot \frac{1}{2^s}\cdot \frac{(1-(\frac{1}{2^s})^{0})}{(1-\frac{1}{2^s})} \right) \nonumber \\
+&+ \left(\left(\frac{1}{5^s}\right)^1 \cdot \frac{1}{2^s}\cdot \frac{(1-(\frac{1}{2^s})^{0})}{(1-\frac{1}{2^s})} \right) 
++ \left(\left(\frac{1}{5^s}\right)^1 \cdot \frac{1}{3^s}\cdot \frac{(1-(\frac{1}{3^s})^{0})}{(1-\frac{1}{3^s})} \right) \nonumber \\
+&+ \left(\left(\frac{1}{5^s}\right)^1\cdot\left(\frac{1}{3^s}\right)^1 \cdot \frac{1}{2^s}\cdot \frac{(1-(\frac{1}{2^s})^{0})}{(1-\frac{1}{2^s})} + \left(\frac{1}{5^s}\right)^1\cdot\left(\frac{1}{3^s}\right)^2 \cdot \frac{1}{2^s}\cdot \frac{(1-(\frac{1}{2^s})^{0})}{(1-\frac{1}{2^s})} \right) \Bigg] \nonumber \\
+&= \frac{1}{7^s} \left[ 1 + 0 + 0 + 0 + (0 + 0) + 0 +0+ (0+0) \right] \nonumber \\
+&= \frac{1}{7^s} \\ \nonumber \\
 a_9(s,10) &= (\frac{1}{3^s})^2 \cdot \left[ 1 + \frac{1}{2^s}\cdot \frac{(1-(\frac{1}{2^s})^0)}{(1-\frac{1}{2^s})}\right]= \frac{1}{9^s} \cdot \big[ 1 + 0 ] = \frac{1}{9^s} \\
 a_{(p>10)}(s,10)&=0 \\
 \nonumber \\
 \therefore \qquad & a_2(s,10)+..+a_{p\le 10}(s,10) = 1 + \frac{1}{2^s} + \frac{1}{3^s} + \frac{1}{4^s} + \frac{1}{5^s} \nonumber \\
 &+ \frac{1}{6^s} + \frac{1}{7^s} + \frac{1}{8^s} + \frac{1}{9^s} + \frac{1}{10^s}= \sum_{n=1}^{10} \frac{1}{n^s}
 \end{align}
+
+\newpage
 
 ## Serious examples
 
@@ -207,10 +246,12 @@ Firstly for the Riemann Siegel formula approach
 
 N=6
 
+$\mathbb{S}_{(p^q)} = \{3,5\}$ (set of primes $> 2$ and their prime powers)
+
 \begin{align}
 a_2(s,6) &= 1 + \frac{1}{2^s} \cdot \frac{(1-(\frac{1}{2^s})^2)}{(1-\frac{1}{2^s})} = 1 + \frac{1}{2^s} + \frac{1}{4^s}\\
 a_3(s,6) &= \frac{1}{3^s} \cdot \left[ 1 + \frac{1}{2^s}\cdot \frac{(1-(\frac{1}{2^s})^1)}{(1-\frac{1}{2^s})}\right]= \frac{1}{3^s} \cdot \big[ 1 + \frac{1}{2^s} ] = \frac{1}{3^s} + \frac{1}{6^s}\\
-a_5(s,6) &= \frac{1}{5^s} \cdot \left[ 1 + \frac{1}{2^s}\cdot  \frac{(1-(\frac{1}{2^s})^0)}{(1-\frac{1}{2^s})} + \frac{1}{3^s}\cdot  \frac{(1-(\frac{1}{3^s})^0)}{(1-\frac{1}{3^s})} + \frac{1}{2^s}\cdot \frac{1}{3^s} \cdot \frac{(1-(\frac{1}{2^s})^0)}{(1-\frac{1}{2^s})} \cdot \frac{(1-(\frac{1}{3^s})^0)}{(1-\frac{1}{3^s})} \right]= \frac{1}{5^s} \\
+a_5(s,6) &= \frac{1}{5^s} \cdot \left[ 1 + \frac{1}{2^s}\cdot  \frac{(1-(\frac{1}{2^s})^0)}{(1-\frac{1}{2^s})} + \frac{1}{3^s}\cdot  \frac{(1-(\frac{1}{3^s})^0)}{(1-\frac{1}{3^s})} + \frac{1}{3^s} \cdot \frac{1}{2^s} \cdot \frac{(1-(\frac{1}{2^s})^0)}{(1-\frac{1}{2^s})}  \right]= \frac{1}{5^s} \\
 a_{(p>6)}(s,6)&=0 \\
 \nonumber \\
 \therefore \qquad & a_2(s,6)+..+a_{p\le 6}(s,6) = 1 + \frac{1}{2^s} + \frac{1}{3^s} + \frac{1}{4^s} + \frac{1}{5^s} + \frac{1}{6^s}= \sum_{n=1}^6 \frac{1}{n^s}
@@ -225,8 +266,9 @@ The full calculation which is lengthy is shown in the appendix. An alternative a
 
 Step 1. the primes and powers of primes are identified for $p\le89$. (Powers of prime 2 do not need to be explicitly listed.)
 
+Set of primes $> 2$ and their prime powers.
 \begin{equation}
-p\le89 = \{2, 3, 5, 7, 9, 11, 13, 17, 19, 23, 25, 27, 29, 31, 37, 41, 43, 47, 49, 53, 59, 61, 67, 71, 73, 79, 81, 83, 89\}
+\mathbb{S}_{(p^q, \le89)} = \{3, 5, 7, 9, 11, 13, 17, 19, 23, 25, 27, 29, 31, 37, 41, 43, 47, 49, 53, 59, 61, 67, 71, 73, 79, 81, 83, 89\} 
 \end{equation}
 
 step 2. the divisors of $\frac{89}{p}$ are obtained and the set of primes and powers of primes are grouped by greatest common divisor
@@ -288,7 +330,8 @@ step 3. the required contributions to the dirichet series can be generated as fo
 
 \begin{align}
 \sum a_{p \in gcd=17}(s,89) &= a_5(s,89) \nonumber \\
-&= \frac{1}{5^s} \cdot \left[ 1 + \frac{1}{2^s}\cdot  \frac{(1-(\frac{1}{2^s})^4)}{(1-\frac{1}{2^s})} + \frac{1}{3^s}\cdot  \frac{(1-(\frac{1}{3^s})^2)}{(1-\frac{1}{3^s})} + \frac{1}{2^s}\cdot \frac{1}{3^s} \cdot \frac{(1-(\frac{1}{2^s})^2)}{(1-\frac{1}{2^s})} \cdot \frac{(1-(\frac{1}{3^s})^1)}{(1-\frac{1}{3^s})} \right]
+&= \frac{1}{5^s} \cdot \Bigg[ 1 + \frac{1}{2^s}\cdot  \frac{(1-(\frac{1}{2^s})^4)}{(1-\frac{1}{2^s})} + \frac{1}{3^s}\cdot  \frac{(1-(\frac{1}{3^s})^2)}{(1-\frac{1}{3^s})} +  \frac{1}{3^s} \cdot\frac{1}{2^s}\cdot \frac{(1-(\frac{1}{2^s})^2)}{(1-\frac{1}{2^s})} \nonumber \\ &+  \left(\frac{1}{3^s}\right)^2 \cdot\frac{1}{2^s}\cdot \frac{(1-(\frac{1}{2^s})^0)}{(1-\frac{1}{2^s})} +  \left(\frac{1}{3^s}\right)^3 \cdot\frac{1}{2^s}\cdot \frac{(1-(\frac{1}{2^s})^0)}{(1-\frac{1}{2^s})} +  \left(\frac{1}{3^s}\right)^4 \cdot\frac{1}{2^s}\cdot \frac{(1-(\frac{1}{2^s})^0)}{(1-\frac{1}{2^s})} \Bigg] \nonumber \\
+&= \frac{1}{5^s} \cdot \Bigg[ 1 + \frac{1}{2^s}\cdot  \frac{(1-(\frac{1}{2^s})^4)}{(1-\frac{1}{2^s})} + \frac{1}{3^s}\cdot  \frac{(1-(\frac{1}{3^s})^2)}{(1-\frac{1}{3^s})} +  \frac{1}{3^s} \cdot\frac{1}{2^s}\cdot \frac{(1-(\frac{1}{2^s})^2)}{(1-\frac{1}{2^s})} \Bigg]
 \end{align}
 
 \begin{align}
@@ -311,31 +354,34 @@ step 3. the required contributions to the dirichet series can be generated as fo
 
 \begin{align}
 \sum a_{\text{powers} (p=5,N=89)} &= a_{25}(s,89) \nonumber \\
-&= (\frac{1}{5^s})^2 \cdot \left[ 1 + \frac{1}{2^s}\cdot  \frac{(1-(\frac{1}{2^s})^1)}{(1-\frac{1}{2^s})} + \frac{1}{3^s}\cdot  \frac{(1-(\frac{1}{3^s})^1)}{(1-\frac{1}{3^s})} + \frac{1}{2^s}\cdot \frac{1}{3^s} \cdot \frac{(1-(\frac{1}{2^s})^0)}{(1-\frac{1}{2^s})} \cdot \frac{(1-(\frac{1}{3^s})^0)}{(1-\frac{1}{3^s})} \right] \nonumber \\
+&= (\frac{1}{5^s})^2 \cdot \Bigg[ 1 + \frac{1}{2^s}\cdot  \frac{(1-(\frac{1}{2^s})^1)}{(1-\frac{1}{2^s})} + \frac{1}{3^s}\cdot  \frac{(1-(\frac{1}{3^s})^1)}{(1-\frac{1}{3^s})} +  \frac{1}{3^s} \cdot\frac{1}{2^s}\cdot \frac{(1-(\frac{1}{2^s})^0)}{(1-\frac{1}{2^s})} \nonumber \\ &+  \left(\frac{1}{3^s}\right)^2 \cdot\frac{1}{2^s}\cdot \frac{(1-(\frac{1}{2^s})^0)}{(1-\frac{1}{2^s})} +  \left(\frac{1}{3^s}\right)^3 \cdot\frac{1}{2^s}\cdot \frac{(1-(\frac{1}{2^s})^0)}{(1-\frac{1}{2^s})} +  \left(\frac{1}{3^s}\right)^4 \cdot\frac{1}{2^s}\cdot \frac{(1-(\frac{1}{2^s})^0)}{(1-\frac{1}{2^s})} \Bigg] \nonumber \\
 &= \frac{1}{25^s} + \frac{1}{50^s} + \frac{1}{75^s}
 \end{align}
 
 
 \begin{align}
-\sum a_{\text{powers} (p=7,N=89)} &= a_{49}(s,89) \nonumber \\
-&= \frac{1}{7^s} \cdot \big[ 1 + \frac{1}{2^s}\cdot  \frac{(1-(\frac{1}{2^s})^0)}{(1-\frac{1}{2^s})} + \frac{1}{3^s}\cdot  \frac{(1-(\frac{1}{3^s})^0)}{(1-\frac{1}{3^s})} + \frac{1}{5^s}\cdot  \frac{(1-(\frac{1}{5^s})^0)}{(1-\frac{1}{5^s})} \nonumber \\
-&+ \frac{1}{2^s}\cdot \frac{1}{3^s} \cdot \frac{(1-(\frac{1}{2^s})^0)}{(1-\frac{1}{2^s})} \cdot \frac{(1-(\frac{1}{3^s})^0)}{(1-\frac{1}{3^s})} + \frac{1}{2^s}\cdot \frac{1}{5^s} \cdot \frac{(1-(\frac{1}{2^s})^0)}{(1-\frac{1}{2^s})} \cdot \frac{(1-(\frac{1}{5^s})^0)}{(1-\frac{1}{5^s})} \nonumber \\
-&+ \frac{1}{3^s}\cdot \frac{1}{5^s} \cdot \frac{(1-(\frac{1}{3^s})^0)}{(1-\frac{1}{3^s})} \cdot \frac{(1-(\frac{1}{5^s})^0)}{(1-\frac{1}{5^s})} \nonumber \\
-&+ \frac{1}{2^s}\cdot \frac{1}{3^s}\cdot\frac{1}{5^s} \cdot \frac{(1-(\frac{1}{2^s})^0)}{(1-\frac{1}{2^s})} \cdot \frac{(1-(\frac{1}{3^s})^0)}{(1-\frac{1}{3^s})}\cdot  \frac{(1-(\frac{1}{5^s})^0)}{(1-\frac{1}{5^s})} \big] = \frac{1}{49^s}
+&\sum a_{\text{powers} (p=7,N=89)} = a_{49}(s,89) \nonumber \\
+&= \left(\frac{1}{7^s}\right)^2 \cdot \Bigg[ 1 + \frac{1}{2^s}\cdot  \frac{(1-(\frac{1}{2^s})^0)}{(1-\frac{1}{2^s})} + \frac{1}{3^s}\cdot  \frac{(1-(\frac{1}{3^s})^0)}{(1-\frac{1}{3^s})} + \frac{1}{5^s}\cdot  \frac{(1-(\frac{1}{5^s})^0)}{(1-\frac{1}{5^s})} \nonumber \\
+&+  \frac{1}{3^s} \cdot\frac{1}{2^s}\cdot \frac{(1-(\frac{1}{2^s})^0)}{(1-\frac{1}{2^s})} +  \left(\frac{1}{3^s}\right)^2 \cdot\frac{1}{2^s}\cdot \frac{(1-(\frac{1}{2^s})^0)}{(1-\frac{1}{2^s})} +  \left(\frac{1}{3^s}\right)^3 \cdot\frac{1}{2^s}\cdot \frac{(1-(\frac{1}{2^s})^0)}{(1-\frac{1}{2^s})} +  \left(\frac{1}{3^s}\right)^4 \cdot\frac{1}{2^s}\cdot \frac{(1-(\frac{1}{2^s})^0)}{(1-\frac{1}{2^s})} \nonumber \\
+&+  \frac{1}{5^s} \cdot\frac{1}{2^s}\cdot \frac{(1-(\frac{1}{2^s})^0)}{(1-\frac{1}{2^s})} +  \left(\frac{1}{5^s}\right)^2 \cdot\frac{1}{2^s}\cdot \frac{(1-(\frac{1}{2^s})^0)}{(1-\frac{1}{2^s})} \nonumber \\
+&+  \frac{1}{5^s} \cdot\frac{1}{3^s}\cdot \frac{(1-(\frac{1}{3^s})^0)}{(1-\frac{1}{3^s})} +  \left(\frac{1}{5^s}\right)^2 \cdot\frac{1}{3^s}\cdot \frac{(1-(\frac{1}{3^s})^0)}{(1-\frac{1}{3^s})} \nonumber \\
+&+  \left(\frac{1}{5^s}\right) \cdot \frac{1}{3^s} \cdot\frac{1}{2^s}\cdot \frac{(1-(\frac{1}{2^s})^0)}{(1-\frac{1}{2^s})} +  \left(\frac{1}{5^s}\right) \cdot \left(\frac{1}{3^s}\right)^2 \cdot\frac{1}{2^s}\cdot \frac{(1-(\frac{1}{2^s})^0)}{(1-\frac{1}{2^s})} \nonumber \\ 
+&+  \left(\frac{1}{5^s}\right) \cdot \left(\frac{1}{3^s}\right)^3 \cdot\frac{1}{2^s}\cdot \frac{(1-(\frac{1}{2^s})^0)}{(1-\frac{1}{2^s})} +  \left(\frac{1}{5^s}\right) \cdot \left(\frac{1}{3^s}\right)^4 \cdot\frac{1}{2^s}\cdot \frac{(1-(\frac{1}{2^s})^0)}{(1-\frac{1}{2^s})}  \nonumber \\
+&+  \left(\frac{1}{5^s}\right)^2 \cdot \frac{1}{3^s} \cdot\frac{1}{2^s}\cdot \frac{(1-(\frac{1}{2^s})^0)}{(1-\frac{1}{2^s})} +  \left(\frac{1}{5^s}\right)^2 \cdot \left(\frac{1}{3^s}\right)^2 \cdot\frac{1}{2^s}\cdot \frac{(1-(\frac{1}{2^s})^0)}{(1-\frac{1}{2^s})} \nonumber \\ 
+&+  \left(\frac{1}{5^s}\right)^2 \cdot \left(\frac{1}{3^s}\right)^3 \cdot\frac{1}{2^s}\cdot \frac{(1-(\frac{1}{2^s})^0)}{(1-\frac{1}{2^s})} +  \left(\frac{1}{5^s}\right)^2 \cdot \left(\frac{1}{3^s}\right)^4 \cdot\frac{1}{2^s}\cdot \frac{(1-(\frac{1}{2^s})^0)}{(1-\frac{1}{2^s})} \Bigg] \nonumber \\
+&= \frac{1}{49^s}
 \end{align}
 
-such that step 3 contains the equivalent of all the finite dirichlet series terms in $\sum_{n=1}^{89} \frac{1}{n^s}$.
+or more simply $a_{49}(s,89) = \frac{1}{49^s}$ can be recognized by $2\cdot 49 > N=89$ as in equations (51) and (65) for other primes (and prime powers) which applies when $N/2 < p^q \le N$. 
+
+Following the above approach, for N=89, step 3 contains the equivalent of all the finite dirichlet series terms in $\sum_{n=1}^{89} \frac{1}{n^s}$.
 
 ## Conclusions 
 
 
 The above procedure using products of finite geometric series of primes (and their powers) seems dense but in principle, only the prime and powers of primes are being used for the calculations and each term only contains primes smaller in magnitude whereas equation (3) in comparison (which is known to be slow to calculate) requires examination of all triple, quadruple, etc combinations of primes.
 
-
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = FALSE)
-
-```
+\newpage
 
 ## References
 
@@ -352,286 +398,203 @@ knitr::opts_chunk$set(echo = FALSE)
 6. Martin, J.P.D. "Truncated Exponential Series based partial Euler Product calculations at quiescent regions of oscillatory divergence to produce approximations of the Riemann Siegel Z function." (2021)
 http://dx.doi.org/10.6084/m9.figshare.14842803
 
+\newpage
+
 ## Appendix - N=89 calculation of equation (5)
 
 N = 89
 
+Set of primes $> 2$ and their prime powers.
+\begin{equation}
+\mathbb{S}_{(p^q, \le89)} = \{3, 5, 7, 9, 11, 13, 17, 19, 23, 25, 27, 29, 31, 37, 41, 43, 47, 49, 53, 59, 61, 67, 71, 73, 79, 81, 83, 89\} 
+\end{equation}
+
 \begin{align}
-        a_2(s,N) &=1+\frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor\frac{\log{(\max{\{1,89}\})}}{\log{(2)}}\rfloor})}{(1-\frac{1}{2^s})} \nonumber \\
+        a_2(s,89) &=1+\frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor\frac{\log{(\max{\{1,89}\})}}{\log{(2)}}\rfloor})}{(1-\frac{1}{2^s})} \nonumber \\
         &=1+\frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor6.475733\rfloor})}{(1-\frac{1}{2^s})} =1+\frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{6})}{(1-\frac{1}{2^s})} \nonumber \\
        &= 1 + \frac{1}{2^s} + \frac{1}{4^s} + \frac{1}{8^s} + \frac{1}{16^s} + \frac{1}{32^s} + \frac{1}{64^s}
 \end{align}
 
 
 \begin{align}
-a_3(s,N) &=\frac{1}{3^s}\cdot \Bigg[1 + \frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{3}\}})}}{\log{(2)}}\rfloor})}{(1-\frac{1}{2^s})}   \Bigg] \nonumber \\
+a_3(s,89) &=\frac{1}{3^s}\cdot \Bigg[1 + \frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{3}\}})}}{\log{(2)}}\rfloor})}{(1-\frac{1}{2^s})}   \Bigg] \nonumber \\
 &=\frac{1}{3^s}\cdot \Bigg[1 + \frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor4.890771\rfloor})}{(1-\frac{1}{2^s})}   \Bigg] \nonumber \\
 &=\frac{1}{3^s}\cdot \Bigg[1 + \frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{4})}{(1-\frac{1}{2^s})}   \Bigg] \nonumber \\
 &= \frac{1}{3^s} + \frac{1}{6^s} + \frac{1}{12^s} + \frac{1}{24^s} + \frac{1}{48^s}\end{align}
 
 \begin{align}
-a_5(s,N) &=\frac{1}{5^s}\cdot \Bigg[1 + \frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{5}\}})}}{\log{(2)}}\rfloor})}{(1-\frac{1}{2^s})}  \nonumber \\  &+ \frac{1}{3^s}\cdot\frac{(1-(\frac{1}{3^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{5}\}})}}{\log{(3)}}\rfloor})}{(1-\frac{1}{3^s})} \nonumber \\  &+ \frac{1}{2^s}\cdot\frac{1}{3^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{3\cdot 5}\}})}}{\log{(2)}}\rfloor})}{(1-\frac{1}{2^s})}\cdot\frac{(1-(\frac{1}{3^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{2\cdot 5}\}})}}{\log{(3)}}\rfloor})}{(1-\frac{1}{3^s})} \Bigg] \nonumber \\
-&=\frac{1}{5^s}\cdot \Bigg[1 + \frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor4.153805\rfloor})}{(1-\frac{1}{2^s})}  \nonumber \\  &+ \frac{1}{3^s}\cdot\frac{(1-(\frac{1}{3^s})^{\lfloor2.620759\rfloor})}{(1-\frac{1}{3^s})} \nonumber \\  &+ \frac{1}{2^s}\cdot\frac{1}{3^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor2.568843\rfloor})}{(1-\frac{1}{2^s})}\cdot\frac{(1-(\frac{1}{3^s})^{\lfloor1.98983\rfloor})}{(1-\frac{1}{3^s})} \Bigg] \nonumber \\
-&=\frac{1}{5^s}\cdot \Bigg[1 + \frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{4})}{(1-\frac{1}{2^s})}  + \frac{1}{3^s}\cdot\frac{(1-(\frac{1}{3^s})^{2})}{(1-\frac{1}{3^s})} \nonumber \\  &+ \frac{1}{2^s}\cdot\frac{1}{3^s}\cdot\frac{(1-(\frac{1}{2^s})^{2})}{(1-\frac{1}{2^s})}\cdot\frac{(1-(\frac{1}{3^s})^{1})}{(1-\frac{1}{3^s})} \Bigg]  \nonumber \\
-       &= \frac{1}{5^s} + \frac{1}{10^s} + \frac{1}{20^s} + \frac{1}{40^s} + \frac{1}{80^s} + \frac{1}{15^s} + \frac{1}{45^s} + \frac{1}{30^s} + \frac{1}{60^s}
+a_5(s,89) &=\frac{1}{5^s}\cdot \Bigg[1 + \frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{5}\}})}}{\log{(2)}}\rfloor})}{(1-\frac{1}{2^s})}  + \frac{1}{3^s}\cdot\frac{(1-(\frac{1}{3^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{5}\}})}}{\log{(3)}}\rfloor})}{(1-\frac{1}{3^s})} \nonumber \\  &+ \sum_{q=1}^4 \left(\frac{1}{3^s}\right)^q\cdot\frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{3^q\cdot 5}\}})}}{\log{(2)}}\rfloor})}{(1-\frac{1}{2^s})} \Bigg] \nonumber \\
+&=\frac{1}{5^s}\cdot \Bigg[1 + \frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor4.153805\rfloor})}{(1-\frac{1}{2^s})}  + \frac{1}{3^s}\cdot\frac{(1-(\frac{1}{3^s})^{\lfloor2.620759\rfloor})}{(1-\frac{1}{3^s})} \nonumber \\  &+ \left(\frac{1}{3^s}\right)\cdot\frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor2.568843\rfloor})}{(1-\frac{1}{2^s})}+\left(\frac{1}{3^s}\right)^2\cdot\frac{1}{2^s}\frac{(1-(\frac{1}{2^s})^{\lfloor0.98388\rfloor})}{(1-\frac{1}{2^s})} \nonumber \\ &+\left(\frac{1}{3^s}\right)^3\cdot\frac{1}{2^s}\frac{(1-(\frac{1}{2^s})^{\lfloor0\rfloor})}{(1-\frac{1}{2^s})}+\left(\frac{1}{3^s}\right)^4\cdot\frac{1}{2^s}\frac{(1-(\frac{1}{2^s})^{\lfloor0\rfloor})}{(1-\frac{1}{2^s})} \Bigg] \nonumber \\
+&=\frac{1}{5^s}\cdot \Bigg[1 + \frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{4})}{(1-\frac{1}{2^s})}  + \frac{1}{3^s}\cdot\frac{(1-(\frac{1}{3^s})^{2})}{(1-\frac{1}{3^s})} \nonumber \\  &+ \left(\frac{1}{3^s}\right)\cdot\frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{2})}{(1-\frac{1}{2^s})}+\left(\frac{1}{3^s}\right)^2\cdot\frac{1}{2^s}\frac{(1-(\frac{1}{2^s})^{0})}{(1-\frac{1}{2^s})} \nonumber \\ &=\frac{1}{5^s}\cdot \Bigg[1 + \frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{4})}{(1-\frac{1}{2^s})}  + \frac{1}{3^s}\cdot\frac{(1-(\frac{1}{3^s})^{2})}{(1-\frac{1}{3^s})} + \left(\frac{1}{3^s}\right)\cdot\frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{2})}{(1-\frac{1}{2^s})} \Bigg]  \nonumber \\
+&= \frac{1}{5^s} + \frac{1}{10^s} + \frac{1}{20^s} + \frac{1}{40^s} + \frac{1}{80^s} + \frac{1}{15^s} + \frac{1}{45^s} + \frac{1}{30^s} + \frac{1}{60^s}
 \end{align}
 
 
 \begin{align}
-        a_7(s,N) &=\frac{1}{7^s}\cdot \Bigg[1 +   \frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{7}\}})}}{\log{(2)}}\rfloor})}{(1-\frac{1}{2^s})}  + \frac{1}{3^s}\cdot\frac{(1-(\frac{1}{3^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{7}\}})}}{\log{(3)}}\rfloor})}{(1-\frac{1}{3^s})} \nonumber \\  &+ \frac{1}{5^s}\cdot\frac{(1-(\frac{1}{5^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{7}\}})}}{\log{(5)}}\rfloor})}{(1-\frac{1}{5^s})} \nonumber \\  &+ \frac{1}{2^s}\cdot\frac{1}{3^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{3\cdot 7}\}})}}{\log{(2)}}\rfloor})}{(1-\frac{1}{2^s})}\cdot\frac{(1-(\frac{1}{3^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{2\cdot 7}\}})}}{\log{(3)}}\rfloor})}{(1-\frac{1}{3^s})} \nonumber \\  &+ \frac{1}{2^s}\cdot\frac{1}{5^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{5\cdot 7}\}})}}{\log{(2)}}\rfloor})}{(1-\frac{1}{2^s})}\cdot\frac{(1-(\frac{1}{5^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{2\cdot 7}\}})}}{\log{(5)}}\rfloor})}{(1-\frac{1}{5^s})} \nonumber \\  &+ \frac{1}{3^s}\cdot\frac{1}{5^s}\cdot\frac{(1-(\frac{1}{3^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{5\cdot 7}\}})}}{\log{(3)}}\rfloor})}{(1-\frac{1}{3^s})}\cdot\frac{(1-(\frac{1}{5^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{3\cdot 7}\}})}}{\log{(5)}}\rfloor})}{(1-\frac{1}{5^s})} \nonumber \\  &+ \frac{1}{2^s}\cdot\frac{1}{3^s}\cdot\frac{1}{5^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{3\cdot 5\cdot 7}\}})}}{\log{(2)}}\rfloor})}{(1-\frac{1}{2^s})}\cdot\frac{(1-(\frac{1}{3^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{2\cdot  5\cdot 7}\}})}}{\log{(3)}}\rfloor})}{(1-\frac{1}{3^s})} \cdot\frac{(1-(\frac{1}{5^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{2\cdot 3\cdot 7}\}})}}{\log{(5)}}\rfloor})}{(1-\frac{1}{5^s})} \Bigg] \nonumber \\
-&= \frac{1}{7^s}\cdot \Bigg[1 + \frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor3.668379\rfloor})}{(1-\frac{1}{2^s})}  + \frac{1}{3^s}\cdot\frac{(1-(\frac{1}{3^s})^{\lfloor2.314489\rfloor})}{(1-\frac{1}{3^s})} + \frac{1}{5^s}\cdot\frac{(1-(\frac{1}{5^s})^{\lfloor1.579885\rfloor})}{(1-\frac{1}{5^s})} \nonumber \\  &+ \frac{1}{2^s}\cdot\frac{1}{3^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor2.083416\rfloor})}{(1-\frac{1}{2^s})}\cdot\frac{(1-(\frac{1}{3^s})^{\lfloor1.683559\rfloor})}{(1-\frac{1}{3^s})} + \frac{1}{2^s}\cdot\frac{1}{5^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor1.34645\rfloor})}{(1-\frac{1}{2^s})}\cdot\frac{(1-(\frac{1}{5^s})^{\lfloor1.149208\rfloor})}{(1-\frac{1}{5^s})} \nonumber \\  &+ \frac{1}{3^s}\cdot\frac{1}{5^s}\cdot\frac{(1-(\frac{1}{3^s})^{\lfloor0.8495156\rfloor})}{(1-\frac{1}{3^s})}\cdot\frac{(1-(\frac{1}{5^s})^{\lfloor0.8972784\rfloor})}{(1-\frac{1}{5^s})} \nonumber \\  &+ \frac{1}{2^s}\cdot\frac{1}{3^s}\cdot\frac{1}{5^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor0\rfloor})}{(1-\frac{1}{2^s})}\cdot\frac{(1-(\frac{1}{3^s})^{\lfloor0.2185859\rfloor})}{(1-\frac{1}{3^s})} \cdot\frac{(1-(\frac{1}{5^s})^{\lfloor0.4666019\rfloor})}{(1-\frac{1}{5^s})} \Bigg] \nonumber \\  
-&= \frac{1}{7^s}\cdot \Bigg[1 + \frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{3})}{(1-\frac{1}{2^s})}  + \frac{1}{3^s}\cdot\frac{(1-(\frac{1}{3^s})^{2})}{(1-\frac{1}{3^s})} + \frac{1}{5^s}\cdot\frac{(1-(\frac{1}{5^s})^{1})}{(1-\frac{1}{5^s})} \nonumber \\  &+ \frac{1}{2^s}\cdot\frac{1}{3^s}\cdot\frac{(1-(\frac{1}{2^s})^{2})}{(1-\frac{1}{2^s})}\cdot\frac{(1-(\frac{1}{3^s})^{1})}{(1-\frac{1}{3^s})} + \frac{1}{2^s}\cdot\frac{1}{5^s}\cdot\frac{(1-(\frac{1}{2^s})^{1})}{(1-\frac{1}{2^s})}\cdot\frac{(1-(\frac{1}{5^s})^{1})}{(1-\frac{1}{5^s})} \nonumber \\  &+ \frac{1}{3^s}\cdot\frac{1}{5^s}\cdot\frac{(1-(\frac{1}{3^s})^{0})}{(1-\frac{1}{3^s})}\cdot\frac{(1-(\frac{1}{5^s})^{0})}{(1-\frac{1}{5^s})} \nonumber \\  &+ \frac{1}{2^s}\cdot\frac{1}{3^s}\cdot\frac{1}{5^s}\cdot\frac{(1-(\frac{1}{2^s})^{0})}{(1-\frac{1}{2^s})}\cdot\frac{(1-(\frac{1}{3^s})^{0})}{(1-\frac{1}{3^s})} \cdot\frac{(1-(\frac{1}{5^s})^{0})}{(1-\frac{1}{5^s})} \Bigg] \nonumber \\
+        a_7(s,89) &=\frac{1}{7^s}\cdot \Bigg[1 +   \frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{7}\}})}}{\log{(2)}}\rfloor})}{(1-\frac{1}{2^s})}  + \frac{1}{3^s}\cdot\frac{(1-(\frac{1}{3^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{7}\}})}}{\log{(3)}}\rfloor})}{(1-\frac{1}{3^s})} + \frac{1}{5^s}\cdot\frac{(1-(\frac{1}{5^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{7}\}})}}{\log{(5)}}\rfloor})}{(1-\frac{1}{5^s})} \nonumber \\ + &\sum_{q=1}^4 \left(\frac{1}{3^s}\right)^q\cdot\frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{3^q\cdot 7}\}})}}{\log{(2)}}\rfloor})}{(1-\frac{1}{2^s})}      + \sum_{p=1}^2 \left(\frac{1}{5^s}\right)^p\cdot\frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{5^p\cdot 7}\}})}}{\log{(2)}}\rfloor})}{(1-\frac{1}{2^s})} \nonumber \\    + &\sum_{p=1}^2 \left(\frac{1}{5^s}\right)^p\cdot\frac{1}{3^s}\cdot\frac{(1-(\frac{1}{3^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{5^p\cdot 7}\}})}}{\log{(3)}}\rfloor})}{(1-\frac{1}{3^s})}  + \sum_{p=1}^2 \sum_{q=1}^4 \left(\frac{1}{5^s}\right)^p\cdot\left(\frac{1}{3^s}\right)^q\cdot\frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{3^q\cdot 5^p\cdot 7}\}})}}{\log{(2)}}\rfloor})}{(1-\frac{1}{2^s})} \Bigg] \nonumber \\
+&= \frac{1}{7^s}\cdot \Bigg[1 + \frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor3.668379\rfloor})}{(1-\frac{1}{2^s})}  + \frac{1}{3^s}\cdot\frac{(1-(\frac{1}{3^s})^{\lfloor2.314489\rfloor})}{(1-\frac{1}{3^s})} + \frac{1}{5^s}\cdot\frac{(1-(\frac{1}{5^s})^{\lfloor1.579885\rfloor})}{(1-\frac{1}{5^s})} \nonumber \\  + &\left(\frac{1}{3^s}\right)\cdot\frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor2.083416\rfloor})}{(1-\frac{1}{2^s})}  + \left(\frac{1}{3^s}\right)^2\cdot\frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor0\rfloor})}{(1-\frac{1}{2^s})}  \nonumber \\ + &\left(\frac{1}{3^s}\right)^3\cdot\frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor0\rfloor})}{(1-\frac{1}{2^s})}  + \left(\frac{1}{3^s}\right)^4\cdot\frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor0\rfloor})}{(1-\frac{1}{2^s})} \nonumber \\      +  &\left(\frac{1}{5^s}\right)\cdot\frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor1.34645\rfloor})}{(1-\frac{1}{2^s})} +  \left(\frac{1}{5^s}\right)^2\cdot\frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor0\rfloor})}{(1-\frac{1}{2^s})}  \nonumber \\  + &\left(\frac{1}{5^s}\right)\cdot\frac{1}{3^s}\cdot\frac{(1-(\frac{1}{3^s})^{\lfloor0\rfloor})}{(1-\frac{1}{3^s})} + \left(\frac{1}{5^s}\right)^2\cdot\frac{1}{3^s}\cdot\frac{(1-(\frac{1}{3^s})^{\lfloor0\rfloor})}{(1-\frac{1}{3^s})} \nonumber \\  + &\left(\frac{1}{5^s}\right)\cdot\left(\frac{1}{3^s}\right)\cdot\frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor0\rfloor})}{(1-\frac{1}{2^s})} + \left(\frac{1}{5^s}\right)\cdot\left(\frac{1}{3^s}\right)^2\cdot\frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor0\rfloor})}{(1-\frac{1}{2^s})}+ \nonumber \\ + &\left(\frac{1}{5^s}\right)\cdot\left(\frac{1}{3^s}\right)^3\cdot\frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor0\rfloor})}{(1-\frac{1}{2^s})}+ \left(\frac{1}{5^s}\right)\cdot\left(\frac{1}{3^s}\right)^4\cdot\frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor0\rfloor})}{(1-\frac{1}{2^s})} \nonumber \\ + &\left(\frac{1}{5^s}\right)^2\cdot\left(\frac{1}{3^s}\right)\cdot\frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor0\rfloor})}{(1-\frac{1}{2^s})}+ \left(\frac{1}{5^s}\right)^2\cdot\left(\frac{1}{3^s}\right)^2\cdot\frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor0\rfloor})}{(1-\frac{1}{2^s})}+ \nonumber \\ + &\left(\frac{1}{5^s}\right)^2\cdot\left(\frac{1}{3^s}\right)^3\cdot\frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor0\rfloor})}{(1-\frac{1}{2^s})}+ \left(\frac{1}{5^s}\right)^2\cdot\left(\frac{1}{3^s}\right)^4\cdot\frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor0\rfloor})}{(1-\frac{1}{2^s})}  \Bigg] \nonumber \\  
+&= \frac{1}{7^s}\cdot \Bigg[1 + \frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{3})}{(1-\frac{1}{2^s})}  + \frac{1}{3^s}\cdot\frac{(1-(\frac{1}{3^s})^{2})}{(1-\frac{1}{3^s})} + \frac{1}{5^s}\cdot\frac{(1-(\frac{1}{5^s})^{1})}{(1-\frac{1}{5^s})} \nonumber \\  &+\frac{1}{3^s}\cdot\frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{2})}{(1-\frac{1}{2^s})} +  \frac{1}{5^s}\cdot\frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{1})}{(1-\frac{1}{2^s})} \Bigg] \nonumber \\
 &=  \frac{1}{7^s} + \frac{1}{14^s} + \frac{1}{28^s} + \frac{1}{56^s} + \frac{1}{21^s} + \frac{1}{63^s} + \frac{1}{35^s} + \frac{1}{42^s} + \frac{1}{84^s} + \frac{1}{70^s}
 \end{align}
 
 \begin{align}
-a_9(s,N) &=(\frac{1}{3^s})^2\cdot \Bigg[1 + \frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{3^2}\}})}}{\log{(2)}}\rfloor})}{(1-\frac{1}{2^s})}   \Bigg] \nonumber \\
+a_9(s,89) &=(\frac{1}{3^s})^2\cdot \Bigg[1 + \frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{3^2}\}})}}{\log{(2)}}\rfloor})}{(1-\frac{1}{2^s})}   \Bigg] \nonumber \\
 &=(\frac{1}{3^s})^2\cdot \Bigg[1 + \frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor3.305808\rfloor})}{(1-\frac{1}{2^s})}   \Bigg] \nonumber \\
 &=(\frac{1}{3^s})^2\cdot \Bigg[1 + \frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{3})}{(1-\frac{1}{2^s})}   \Bigg] \nonumber \\
 &= \frac{1}{9^s} + \frac{1}{18^s} + \frac{1}{36^s} + \frac{1}{72^s}
 \end{align}
 
 \begin{align}
-        a_{11}(s,89) =\frac{1}{11^s}\cdot \Bigg[1 + \frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{11}\}})}}{\log{(2)}}\rfloor})}{(1-\frac{1}{2^s})}  \nonumber \\  + \frac{1}{3^s}\cdot\frac{(1-(\frac{1}{3^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{11}\}})}}{\log{(3)}}\rfloor})}{(1-\frac{1}{3^s})} \nonumber \\  + \frac{1}{5^s}\cdot\frac{(1-(\frac{1}{5^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{11}\}})}}{\log{(5)}}\rfloor})}{(1-\frac{1}{5^s})} \nonumber \\  + \frac{1}{7^s}\cdot\frac{(1-(\frac{1}{7^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{11}\}})}}{\log{(7)}}\rfloor})}{(1-\frac{1}{7^s})} \nonumber \\  + \frac{1}{2^s}\cdot\frac{1}{3^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{3\cdot 11}\}})}}{\log{(2)}}\rfloor})}{(1-\frac{1}{2^s})}\cdot\frac{(1-(\frac{1}{3^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{2\cdot 11}\}})}}{\log{(3)}}\rfloor})}{(1-\frac{1}{3^s})} \nonumber \\  + \frac{1}{2^s}\cdot\frac{1}{5^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{5\cdot 11}\}})}}{\log{(2)}}\rfloor})}{(1-\frac{1}{2^s})}\cdot\frac{(1-(\frac{1}{5^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{2\cdot 11}\}})}}{\log{(5)}}\rfloor})}{(1-\frac{1}{5^s})} \nonumber \\  + \frac{1}{2^s}\cdot\frac{1}{7^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{7\cdot 11}\}})}}{\log{(2)}}\rfloor})}{(1-\frac{1}{2^s})}\cdot\frac{(1-(\frac{1}{7^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{2\cdot 11}\}})}}{\log{(7)}}\rfloor})}{(1-\frac{1}{7^s})} \nonumber \\  + \frac{1}{3^s}\cdot\frac{1}{5^s}\cdot\frac{(1-(\frac{1}{3^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{5\cdot 11}\}})}}{\log{(3)}}\rfloor})}{(1-\frac{1}{3^s})}\cdot\frac{(1-(\frac{1}{5^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{3\cdot 11}\}})}}{\log{(5)}}\rfloor})}{(1-\frac{1}{5^s})} \nonumber \\  + \frac{1}{3^s}\cdot\frac{1}{7^s}\cdot\frac{(1-(\frac{1}{3^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{7\cdot 11}\}})}}{\log{(3)}}\rfloor})}{(1-\frac{1}{3^s})}\cdot\frac{(1-(\frac{1}{7^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{3\cdot 11}\}})}}{\log{(7)}}\rfloor})}{(1-\frac{1}{7^s})} \nonumber \\  + \frac{1}{5^s}\cdot\frac{1}{7^s}\cdot\frac{(1-(\frac{1}{5^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{7\cdot 11}\}})}}{\log{(5)}}\rfloor})}{(1-\frac{1}{5^s})}\cdot\frac{(1-(\frac{1}{7^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{5\cdot 11}\}})}}{\log{(7)}}\rfloor})}{(1-\frac{1}{7^s})} \nonumber \\  + \frac{1}{2^s}\cdot\frac{1}{3^s}\cdot\frac{1}{5^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{3\cdot 5\cdot 11}\}})}}{\log{(2)}}\rfloor})}{(1-\frac{1}{2^s})}\cdot\frac{(1-(\frac{1}{3^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{2\cdot  5\cdot 11}\}})}}{\log{(3)}}\rfloor})}{(1-\frac{1}{3^s})} \cdot\frac{(1-(\frac{1}{5^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{2\cdot 3\cdot 11}\}})}}{\log{(5)}}\rfloor})}{(1-\frac{1}{5^s})} \nonumber \\ + \frac{1}{2^s}\cdot\frac{1}{3^s}\cdot\frac{1}{7^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{3\cdot 7\cdot 11}\}})}}{\log{(2)}}\rfloor})}{(1-\frac{1}{2^s})}\cdot\frac{(1-(\frac{1}{3^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{2\cdot  7\cdot 11}\}})}}{\log{(3)}}\rfloor})}{(1-\frac{1}{3^s})} \cdot\frac{(1-(\frac{1}{7^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{2\cdot 3\cdot 11}\}})}}{\log{(7)}}\rfloor})}{(1-\frac{1}{7^s})} \nonumber \\ + \frac{1}{2^s}\cdot\frac{1}{5^s}\cdot\frac{1}{7^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{5\cdot 7\cdot 11}\}})}}{\log{(2)}}\rfloor})}{(1-\frac{1}{2^s})}\cdot\frac{(1-(\frac{1}{5^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{2\cdot  7\cdot 11}\}})}}{\log{(5)}}\rfloor})}{(1-\frac{1}{5^s})} \cdot\frac{(1-(\frac{1}{7^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{2\cdot 5\cdot 11}\}})}}{\log{(7)}}\rfloor})}{(1-\frac{1}{7^s})} \nonumber \\ + \frac{1}{3^s}\cdot\frac{1}{5^s}\cdot\frac{1}{7^s}\cdot\frac{(1-(\frac{1}{3^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{5\cdot 7\cdot 11}\}})}}{\log{(3)}}\rfloor})}{(1-\frac{1}{3^s})}\cdot\frac{(1-(\frac{1}{5^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{3\cdot  7\cdot 11}\}})}}{\log{(5)}}\rfloor})}{(1-\frac{1}{5^s})} \cdot\frac{(1-(\frac{1}{7^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{3\cdot 5\cdot 11}\}})}}{\log{(7)}}\rfloor})}{(1-\frac{1}{7^s})} \nonumber \\ + \frac{1}{2^s}\cdot\frac{1}{3^s}\cdot\frac{1}{5^s}\cdot\frac{1}{7^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{3\cdot  5\cdot 7\cdot 11}\}})}}{\log{(2)}}\rfloor})}{(1-\frac{1}{2^s})}\cdot\frac{(1-(\frac{1}{3^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{2\cdot  5\cdot 7\cdot 11}\}})}}{\log{(3)}}\rfloor})}{(1-\frac{1}{3^s})} \cdot\frac{(1-(\frac{1}{5^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{2\cdot 3\cdot 7\cdot 11}\}})}}{\log{(5)}}\rfloor})}{(1-\frac{1}{5^s})} \nonumber \\ \cdot\frac{(1-(\frac{1}{7^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{2\cdot 3\cdot 5\cdot 11}\}})}}{\log{(7)}}\rfloor})}{(1-\frac{1}{7^s})} \Bigg] \nonumber 
+        a_{11}(s,89) =\frac{1}{11^s}\cdot \Bigg[1 + \frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{11}\}})}}{\log{(2)}}\rfloor})}{(1-\frac{1}{2^s})}  \nonumber \\  + \frac{1}{3^s}\cdot\frac{(1-(\frac{1}{3^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{11}\}})}}{\log{(3)}}\rfloor})}{(1-\frac{1}{3^s})} \nonumber \\  + \frac{1}{5^s}\cdot\frac{(1-(\frac{1}{5^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{11}\}})}}{\log{(5)}}\rfloor})}{(1-\frac{1}{5^s})} \nonumber \\  + \frac{1}{7^s}\cdot\frac{(1-(\frac{1}{7^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{11}\}})}}{\log{(7)}}\rfloor})}{(1-\frac{1}{7^s})} \nonumber \\  \nonumber \\ + \sum_{q=1}^4 \left(\frac{1}{3^s}\right)^q\cdot\frac{1}{2^s}\frac{(1-(\frac{1}{2^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{3^q\cdot 11^m}\}})}}{\log{(2)}}\rfloor})}{(1-\frac{1}{2^s})}   +  \sum_{q=1}^2 \left(\frac{1}{5^s}\right)^q\cdot\frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{5^q\cdot 11^m}\}})}}{\log{(2)}}\rfloor})}{(1-\frac{1}{2^s})} \nonumber \\  +  \sum_{q=1}^2 \left(\frac{1}{7^s}\right)^q\cdot\frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{7^q\cdot 11^m}\}})}}{\log{(2)}}\rfloor})}{(1-\frac{1}{2^s})} \nonumber \\  + \sum_{q=1}^2 \left(\frac{1}{5^s}\right)^q\cdot\frac{1}{3^s}\cdot\frac{(1-(\frac{1}{3^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{5^q\cdot 11^m}\}})}}{\log{(3)}}\rfloor})}{(1-\frac{1}{3^s})}  +  \sum_{q=1}^2 \left(\frac{1}{7^s}\right)^q\cdot\frac{1}{3^s}\cdot\frac{(1-(\frac{1}{3^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{7^q\cdot 11^m}\}})}}{\log{(3)}}\rfloor})}{(1-\frac{1}{3^s})} \nonumber \\  + \sum_{q=1}^2 \left(\frac{1}{7^s}\right)^q\cdot\frac{1}{5^s}\cdot\frac{(1-(\frac{1}{5^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{7^q\cdot 11^m}\}})}}{\log{(5)}}\rfloor})}{(1-\frac{1}{5^s})} \nonumber \\ \nonumber \\ + \sum_{p=1}^2 \sum_{q=1}^4 \left(\frac{1}{5^s}\right)^p\cdot\left(\frac{1}{3^s}\right)^q\cdot\frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{3^q\cdot 5^p\cdot 11^m}\}})}}{\log{(2)}}\rfloor})}{(1-\frac{1}{2^s})} \nonumber \\ + \sum_{p=1}^2 \sum_{q=1}^4 \left(\frac{1}{7^s}\right)^p\cdot\left(\frac{1}{3^s}\right)^q\cdot\frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{3^q\cdot 7^p\cdot 11^m}\}})}}{\log{(2)}}\rfloor})}{(1-\frac{1}{2^s})} \nonumber \\ + \sum_{p=1}^2 \sum_{q=1}^2 \left(\frac{1}{7^s}\right)^p\cdot\left(\frac{1}{5^s}\right)^q\cdot\frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{5^q\cdot 7^p\cdot 11^m}\}})}}{\log{(2)}}\rfloor})}{(1-\frac{1}{2^s})} \nonumber \\ + \sum_{p=1}^2 \sum_{q=1}^2 \left(\frac{1}{7^s}\right)^p\cdot\left(\frac{1}{5^s}\right)^q\cdot\frac{1}{3^s}\cdot\frac{(1-(\frac{1}{3^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{5^q\cdot 7^p\cdot 11^m}\}})}}{\log{(3)}}\rfloor})}{(1-\frac{1}{3^s})} \nonumber \\ \nonumber \\ + \sum_{p=1}^2 \sum_{q=1}^2 \sum_{r=1}^4 \left(\frac{1}{7^s}\right)^p\cdot\left(\frac{1}{5^s}\right)^q\cdot\left(\frac{1}{3^s}\right)^r\cdot\frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{3^r\cdot  5^q\cdot 7^p\cdot 11^m}\}})}}{\log{(2)}}\rfloor})}{(1-\frac{1}{2^s})} \Bigg] \nonumber 
         \end{align}
         \begin{align}
-         =\frac{1}{11^s}\cdot \Bigg[1 + \frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor3.016302\rfloor})}{(1-\frac{1}{2^s})}    + \frac{1}{3^s}\cdot\frac{(1-(\frac{1}{3^s})^{\lfloor1.903075\rfloor})}{(1-\frac{1}{3^s})}   + \frac{1}{5^s}\cdot\frac{(1-(\frac{1}{5^s})^{\lfloor1.29905\rfloor})}{(1-\frac{1}{5^s})}   + \frac{1}{7^s}\cdot\frac{(1-(\frac{1}{7^s})^{\lfloor1.074428\rfloor})}{(1-\frac{1}{7^s})} \nonumber \\  + \frac{1}{2^s}\cdot\frac{1}{3^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor1.431339\rfloor})}{(1-\frac{1}{2^s})}\cdot\frac{(1-(\frac{1}{3^s})^{\lfloor1.272145\rfloor})}{(1-\frac{1}{3^s})}  + \frac{1}{2^s}\cdot\frac{1}{5^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor0.6943737\rfloor})}{(1-\frac{1}{2^s})}\cdot\frac{(1-(\frac{1}{5^s})^{\lfloor0.8683739\rfloor})}{(1-\frac{1}{5^s})} \nonumber \\  + \frac{1}{2^s}\cdot\frac{1}{7^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor0.2089469\rfloor})}{(1-\frac{1}{2^s})}\cdot\frac{(1-(\frac{1}{7^s})^{\lfloor0.7182212\rfloor})}{(1-\frac{1}{7^s})}  + \frac{1}{3^s}\cdot\frac{1}{5^s}\cdot\frac{(1-(\frac{1}{3^s})^{\lfloor0.438101\rfloor})}{(1-\frac{1}{3^s})}\cdot\frac{(1-(\frac{1}{5^s})^{\lfloor0.6164443\rfloor})}{(1-\frac{1}{5^s})} \nonumber \\  + \frac{1}{3^s}\cdot\frac{1}{7^s}\cdot\frac{(1-(\frac{1}{3^s})^{\lfloor0.1318308\rfloor})}{(1-\frac{1}{3^s})}\cdot\frac{(1-(\frac{1}{7^s})^{\lfloor0.5098533\rfloor})}{(1-\frac{1}{7^s})}   + \frac{1}{5^s}\cdot\frac{1}{7^s}\cdot\frac{(1-(\frac{1}{5^s})^{\lfloor0.08998853\rfloor})}{(1-\frac{1}{5^s})}\cdot\frac{(1-(\frac{1}{7^s})^{\lfloor0.2473409\rfloor})}{(1-\frac{1}{7^s})} \nonumber \\  + \frac{1}{2^s}\cdot\frac{1}{3^s}\cdot\frac{1}{5^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor0\rfloor})}{(1-\frac{1}{2^s})}\cdot\frac{(1-(\frac{1}{3^s})^{\lfloor0\rfloor})}{(1-\frac{1}{3^s})} \cdot\frac{(1-(\frac{1}{5^s})^{\lfloor0.1857677\rfloor})}{(1-\frac{1}{5^s})} \nonumber \\ + \frac{1}{2^s}\cdot\frac{1}{3^s}\cdot\frac{1}{7^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor0\rfloor})}{(1-\frac{1}{2^s})}\cdot\frac{(1-(\frac{1}{3^s})^{\lfloor0\rfloor})}{(1-\frac{1}{3^s})} \cdot\frac{(1-(\frac{1}{7^s})^{\lfloor0.1536462\rfloor})}{(1-\frac{1}{7^s})} \nonumber \\ + \frac{1}{2^s}\cdot\frac{1}{5^s}\cdot\frac{1}{7^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor0\rfloor})}{(1-\frac{1}{2^s})}\cdot\frac{(1-(\frac{1}{5^s})^{\lfloor0\rfloor})}{(1-\frac{1}{5^s})} \cdot\frac{(1-(\frac{1}{7^s})^{\lfloor0\rfloor})}{(1-\frac{1}{7^s})} \nonumber \\ + \frac{1}{3^s}\cdot\frac{1}{5^s}\cdot\frac{1}{7^s}\cdot\frac{(1-(\frac{1}{3^s})^{\lfloor0\rfloor})}{(1-\frac{1}{3^s})}\cdot\frac{(1-(\frac{1}{5^s})^{\lfloor0\rfloor})}{(1-\frac{1}{5^s})} \cdot\frac{(1-(\frac{1}{7^s})^{\lfloor0\rfloor})}{(1-\frac{1}{7^s})} \nonumber \\ + \frac{1}{2^s}\cdot\frac{1}{3^s}\cdot\frac{1}{5^s}\cdot\frac{1}{7^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor0\rfloor})}{(1-\frac{1}{2^s})}\cdot\frac{(1-(\frac{1}{3^s})^{\lfloor0\rfloor})}{(1-\frac{1}{3^s})} \cdot\frac{(1-(\frac{1}{5^s})^{\lfloor0\rfloor})}{(1-\frac{1}{5^s})}  \cdot\frac{(1-(\frac{1}{7^s})^{\lfloor0\rfloor})}{(1-\frac{1}{7^s})} \Bigg] \nonumber 
+         =\frac{1}{11^s}\cdot \Bigg[1 + \frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor3.016302\rfloor})}{(1-\frac{1}{2^s})}    + \frac{1}{3^s}\cdot\frac{(1-(\frac{1}{3^s})^{\lfloor1.903075\rfloor})}{(1-\frac{1}{3^s})}   + \frac{1}{5^s}\cdot\frac{(1-(\frac{1}{5^s})^{\lfloor1.29905\rfloor})}{(1-\frac{1}{5^s})}   + \frac{1}{7^s}\cdot\frac{(1-(\frac{1}{7^s})^{\lfloor1.074428\rfloor})}{(1-\frac{1}{7^s})} \nonumber \\ + \left(\frac{1}{3^s}\right)\cdot\frac{1}{2^s}\frac{(1-(\frac{1}{2^s})^{\lfloor1.431339\rfloor})}{(1-\frac{1}{2^s})}   +  0 \text{ (for the other terms)} \Bigg] \nonumber 
 \end{align}
 
 \begin{align}
-         =\frac{1}{11^s}\cdot \Bigg[1 + \frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{3})}{(1-\frac{1}{2^s})}    + \frac{1}{3^s}\cdot\frac{(1-(\frac{1}{3^s})^{1})}{(1-\frac{1}{3^s})}   + \frac{1}{5^s}\cdot\frac{(1-(\frac{1}{5^s})^{1})}{(1-\frac{1}{5^s})}   + \frac{1}{7^s}\cdot\frac{(1-(\frac{1}{7^s})^{1})}{(1-\frac{1}{7^s})} \nonumber \\  + \frac{1}{2^s}\cdot\frac{1}{3^s}\cdot\frac{(1-(\frac{1}{2^s})^{1})}{(1-\frac{1}{2^s})}\cdot\frac{(1-(\frac{1}{3^s})^{1})}{(1-\frac{1}{3^s})}  + \frac{1}{2^s}\cdot\frac{1}{5^s}\cdot\frac{(1-(\frac{1}{2^s})^{1})}{(1-\frac{1}{2^s})}\cdot\frac{(1-(\frac{1}{5^s})^{0})}{(1-\frac{1}{5^s})} \nonumber \\  + \frac{1}{2^s}\cdot\frac{1}{7^s}\cdot\frac{(1-(\frac{1}{2^s})^{0})}{(1-\frac{1}{2^s})}\cdot\frac{(1-(\frac{1}{7^s})^{0})}{(1-\frac{1}{7^s})}  + \frac{1}{3^s}\cdot\frac{1}{5^s}\cdot\frac{(1-(\frac{1}{3^s})^{0})}{(1-\frac{1}{3^s})}\cdot\frac{(1-(\frac{1}{5^s})^{0})}{(1-\frac{1}{5^s})} \nonumber \\  + \frac{1}{3^s}\cdot\frac{1}{7^s}\cdot\frac{(1-(\frac{1}{3^s})^{0})}{(1-\frac{1}{3^s})}\cdot\frac{(1-(\frac{1}{7^s})^{0})}{(1-\frac{1}{7^s})}   + \frac{1}{5^s}\cdot\frac{1}{7^s}\cdot\frac{(1-(\frac{1}{5^s})^{0})}{(1-\frac{1}{5^s})}\cdot\frac{(1-(\frac{1}{7^s})^{0})}{(1-\frac{1}{7^s})} \nonumber \\  + \frac{1}{2^s}\cdot\frac{1}{3^s}\cdot\frac{1}{5^s}\cdot\frac{(1-(\frac{1}{2^s})^{0})}{(1-\frac{1}{2^s})}\cdot\frac{(1-(\frac{1}{3^s})^{0})}{(1-\frac{1}{3^s})} \cdot\frac{(1-(\frac{1}{5^s})^{0})}{(1-\frac{1}{5^s})} \nonumber \\ + \frac{1}{2^s}\cdot\frac{1}{3^s}\cdot\frac{1}{7^s}\cdot\frac{(1-(\frac{1}{2^s})^{0})}{(1-\frac{1}{2^s})}\cdot\frac{(1-(\frac{1}{3^s})^{0})}{(1-\frac{1}{3^s})} \cdot\frac{(1-(\frac{1}{7^s})^{0})}{(1-\frac{1}{7^s})} \nonumber \\ + \frac{1}{2^s}\cdot\frac{1}{5^s}\cdot\frac{1}{7^s}\cdot\frac{(1-(\frac{1}{2^s})^{0})}{(1-\frac{1}{2^s})}\cdot\frac{(1-(\frac{1}{5^s})^{0})}{(1-\frac{1}{5^s})} \cdot\frac{(1-(\frac{1}{7^s})^{0})}{(1-\frac{1}{7^s})} \nonumber \\ + \frac{1}{3^s}\cdot\frac{1}{5^s}\cdot\frac{1}{7^s}\cdot\frac{(1-(\frac{1}{3^s})^{0})}{(1-\frac{1}{3^s})}\cdot\frac{(1-(\frac{1}{5^s})^{0})}{(1-\frac{1}{5^s})} \cdot\frac{(1-(\frac{1}{7^s})^{0})}{(1-\frac{1}{7^s})} \nonumber \\ + \frac{1}{2^s}\cdot\frac{1}{3^s}\cdot\frac{1}{5^s}\cdot\frac{1}{7^s}\cdot\frac{(1-(\frac{1}{2^s})^{0})}{(1-\frac{1}{2^s})}\cdot\frac{(1-(\frac{1}{3^s})^{0})}{(1-\frac{1}{3^s})} \cdot\frac{(1-(\frac{1}{5^s})^{0})}{(1-\frac{1}{5^s})}  \cdot\frac{(1-(\frac{1}{7^s})^{0})}{(1-\frac{1}{7^s})} \Bigg] \nonumber \\
+         =\frac{1}{11^s}\cdot \Bigg[1 + \frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{3})}{(1-\frac{1}{2^s})}    + \frac{1}{3^s}\cdot\frac{(1-(\frac{1}{3^s})^{1})}{(1-\frac{1}{3^s})}   + \frac{1}{5^s}\cdot\frac{(1-(\frac{1}{5^s})^{1})}{(1-\frac{1}{5^s})}   + \frac{1}{7^s}\cdot\frac{(1-(\frac{1}{7^s})^{1})}{(1-\frac{1}{7^s})} \nonumber \\  + \frac{1}{3^s}\cdot\frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{1})}{(1-\frac{1}{2^s})} \Bigg] \nonumber \\
   = \frac{1}{11^s} + \frac{1}{22^s} + \frac{1}{44^s} + \frac{1}{88^s} + \frac{1}{33^s} + \frac{1}{55^s} + \frac{1}{77^s} + \frac{1}{66^s} 
 \end{align}
 
 \begin{align}
-        a_{13}(s,89) =\frac{1}{13^s}\cdot \Bigg[1 + \frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{13}\}})}}{\log{(2)}}\rfloor})}{(1-\frac{1}{2^s})}    + \frac{1}{3^s}\cdot\frac{(1-(\frac{1}{3^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{13}\}})}}{\log{(3)}}\rfloor})}{(1-\frac{1}{3^s})}   + \frac{1}{5^s}\cdot\frac{(1-(\frac{1}{5^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{13}\}})}}{\log{(5)}}\rfloor})}{(1-\frac{1}{5^s})} \nonumber \\  + \frac{1}{7^s}\cdot\frac{(1-(\frac{1}{7^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{13}\}})}}{\log{(7)}}\rfloor})}{(1-\frac{1}{7^s})}  + \frac{1}{11^s}\cdot\frac{(1-(\frac{1}{11^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{13}\}})}}{\log{(11)}}\rfloor})}{(1-\frac{1}{11^s})} \nonumber \\ + \frac{1}{2^s}\cdot\frac{1}{3^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{3\cdot 13}\}})}}{\log{(2)}}\rfloor})}{(1-\frac{1}{2^s})}\cdot\frac{(1-(\frac{1}{3^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{2\cdot 13}\}})}}{\log{(3)}}\rfloor})}{(1-\frac{1}{3^s})} \nonumber \\  + \frac{1}{2^s}\cdot\frac{1}{5^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{5\cdot 13}\}})}}{\log{(2)}}\rfloor})}{(1-\frac{1}{2^s})}\cdot\frac{(1-(\frac{1}{5^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{2\cdot 13}\}})}}{\log{(5)}}\rfloor})}{(1-\frac{1}{5^s})} \nonumber \\  + \frac{1}{2^s}\cdot\frac{1}{7^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{7\cdot 13}\}})}}{\log{(2)}}\rfloor})}{(1-\frac{1}{2^s})}\cdot\frac{(1-(\frac{1}{7^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{2\cdot 13}\}})}}{\log{(7)}}\rfloor})}{(1-\frac{1}{7^s})} \nonumber \\ + \frac{1}{2^s}\cdot\frac{1}{11^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{11\cdot 13}\}})}}{\log{(2)}}\rfloor})}{(1-\frac{1}{2^s})}\cdot\frac{(1-(\frac{1}{11^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{2\cdot 13}\}})}}{\log{(11)}}\rfloor})}{(1-\frac{1}{11^s})} \nonumber \\ + \frac{1}{3^s}\cdot\frac{1}{5^s}\cdot\frac{(1-(\frac{1}{3^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{5\cdot 13}\}})}}{\log{(3)}}\rfloor})}{(1-\frac{1}{3^s})}\cdot\frac{(1-(\frac{1}{5^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{3\cdot 13}\}})}}{\log{(5)}}\rfloor})}{(1-\frac{1}{5^s})} \nonumber \\  + \frac{1}{3^s}\cdot\frac{1}{7^s}\cdot\frac{(1-(\frac{1}{3^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{7\cdot 13}\}})}}{\log{(3)}}\rfloor})}{(1-\frac{1}{3^s})}\cdot\frac{(1-(\frac{1}{7^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{3\cdot 13}\}})}}{\log{(7)}}\rfloor})}{(1-\frac{1}{7^s})} \nonumber \\ + \frac{1}{3^s}\cdot\frac{1}{11^s}\cdot\frac{(1-(\frac{1}{3^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{11\cdot 13}\}})}}{\log{(3)}}\rfloor})}{(1-\frac{1}{3^s})}\cdot\frac{(1-(\frac{1}{11^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{3\cdot 13}\}})}}{\log{(11)}}\rfloor})}{(1-\frac{1}{11^s})} \nonumber \\  + \frac{1}{5^s}\cdot\frac{1}{7^s}\cdot\frac{(1-(\frac{1}{5^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{7\cdot 13}\}})}}{\log{(5)}}\rfloor})}{(1-\frac{1}{5^s})}\cdot\frac{(1-(\frac{1}{7^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{5\cdot 13}\}})}}{\log{(7)}}\rfloor})}{(1-\frac{1}{7^s})} \nonumber \\ + \frac{1}{5^s}\cdot\frac{1}{11^s}\cdot\frac{(1-(\frac{1}{5^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{11\cdot 13}\}})}}{\log{(5)}}\rfloor})}{(1-\frac{1}{5^s})}\cdot\frac{(1-(\frac{1}{11^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{5\cdot 13}\}})}}{\log{(11)}}\rfloor})}{(1-\frac{1}{11^s})} \nonumber \\ + \frac{1}{7^s}\cdot\frac{1}{11^s}\cdot\frac{(1-(\frac{1}{7^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{11\cdot 13}\}})}}{\log{(7)}}\rfloor})}{(1-\frac{1}{7^s})}\cdot\frac{(1-(\frac{1}{11^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{7\cdot 13}\}})}}{\log{(11)}}\rfloor})}{(1-\frac{1}{11^s})} \nonumber \\ +
-        \text{ triple, quadruple, quintuple product terms of the lowest 5 primes all with value zero } \nonumber \\ \text{ because all triple product terms with the lowest primes are already value zero for } a_{11}(s,89) \Bigg] \nonumber 
+        a_{13}(s,89) =\frac{1}{13^s}\cdot \Bigg[1 + \frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{13}\}})}}{\log{(2)}}\rfloor})}{(1-\frac{1}{2^s})}    + \frac{1}{3^s}\cdot\frac{(1-(\frac{1}{3^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{13}\}})}}{\log{(3)}}\rfloor})}{(1-\frac{1}{3^s})}   + \frac{1}{5^s}\cdot\frac{(1-(\frac{1}{5^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{13}\}})}}{\log{(5)}}\rfloor})}{(1-\frac{1}{5^s})} \nonumber \\  + \frac{1}{7^s}\cdot\frac{(1-(\frac{1}{7^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{13}\}})}}{\log{(7)}}\rfloor})}{(1-\frac{1}{7^s})}  + \frac{1}{11^s}\cdot\frac{(1-(\frac{1}{11^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{13}\}})}}{\log{(11)}}\rfloor})}{(1-\frac{1}{11^s})} \nonumber \\ \nonumber \\ + \sum_{q=1}^4 \left(\frac{1}{3^s}\right)^q\cdot\frac{1}{2^s}\frac{(1-(\frac{1}{2^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{3^q\cdot 13^m}\}})}}{\log{(2)}}\rfloor})}{(1-\frac{1}{2^s})}   +  \sum_{q=1}^2 \left(\frac{1}{5^s}\right)^q\cdot\frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{5^q\cdot 13^m}\}})}}{\log{(2)}}\rfloor})}{(1-\frac{1}{2^s})} \nonumber \\  +  \sum_{q=1}^2 \left(\frac{1}{7^s}\right)^q\cdot\frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{7^q\cdot 13^m}\}})}}{\log{(2)}}\rfloor})}{(1-\frac{1}{2^s})} +  \sum_{q=1}^1 \left(\frac{1}{11^s}\right)^q\cdot\frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{11\cdot 13^m}\}})}}{\log{(2)}}\rfloor})}{(1-\frac{1}{2^s})} \nonumber \\  + \sum_{q=1}^2 \left(\frac{1}{5^s}\right)^q\cdot\frac{1}{3^s}\cdot\frac{(1-(\frac{1}{3^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{5^q\cdot 13^m}\}})}}{\log{(3)}}\rfloor})}{(1-\frac{1}{3^s})}  +  \sum_{q=1}^2 \left(\frac{1}{7^s}\right)^q\cdot\frac{1}{3^s}\cdot\frac{(1-(\frac{1}{3^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{7^q\cdot 13^m}\}})}}{\log{(3)}}\rfloor})}{(1-\frac{1}{3^s})}  \nonumber \\ + \sum_{q=1}^1 \left(\frac{1}{11^s}\right)^q\cdot\frac{1}{3^s}\cdot\frac{(1-(\frac{1}{3^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{11^q\cdot 13^m}\}})}}{\log{(3)}}\rfloor})}{(1-\frac{1}{3^s})}   + \sum_{q=1}^2 \left(\frac{1}{7^s}\right)^q\cdot\frac{1}{5^s}\cdot\frac{(1-(\frac{1}{5^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{7^q\cdot 13^m}\}})}}{\log{(5)}}\rfloor})}{(1-\frac{1}{5^s})}  \nonumber \\ + \sum_{q=1}^1 \left(\frac{1}{11^s}\right)^q\cdot\frac{1}{5^s}\cdot\frac{(1-(\frac{1}{5^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{11^q\cdot 13^m}\}})}}{\log{(5)}}\rfloor})}{(1-\frac{1}{5^s})} + \sum_{q=1}^1 \left(\frac{1}{11^s}\right)^q\cdot\frac{1}{7^s}\cdot\frac{(1-(\frac{1}{7^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{11^q\cdot 13^m}\}})}}{\log{(7)}}\rfloor})}{(1-\frac{1}{7^s})} \nonumber \\ \nonumber \\ + \sum_{p=1}^2 \sum_{q=1}^4 \left(\frac{1}{5^s}\right)^p\cdot\left(\frac{1}{3^s}\right)^q\cdot\frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{3^q\cdot 5^p\cdot 13^m}\}})}}{\log{(2)}}\rfloor})}{(1-\frac{1}{2^s})} \nonumber \\ + \sum_{p=1}^2 \sum_{q=1}^4 \left(\frac{1}{7^s}\right)^p\cdot\left(\frac{1}{3^s}\right)^q\cdot\frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{3^q\cdot 7^p\cdot 13^m}\}})}}{\log{(2)}}\rfloor})}{(1-\frac{1}{2^s})} \nonumber \\ + \sum_{p=1}^1 \sum_{q=1}^4 \left(\frac{1}{11^s}\right)^p\cdot\left(\frac{1}{3^s}\right)^q\cdot\frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{3^q\cdot 11^p\cdot 13^m}\}})}}{\log{(2)}}\rfloor})}{(1-\frac{1}{2^s})}  \nonumber \\ + \sum_{p=1}^2 \sum_{q=1}^2 \left(\frac{1}{7^s}\right)^p\cdot\left(\frac{1}{5^s}\right)^q\cdot\frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{5^q\cdot 7^p\cdot 13^m}\}})}}{\log{(2)}}\rfloor})}{(1-\frac{1}{2^s})} \nonumber \\ + \sum_{p=1}^1 \sum_{q=1}^2 \left(\frac{1}{11^s}\right)^p\cdot\left(\frac{1}{5^s}\right)^q\cdot\frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{5^q\cdot 11^p\cdot 13^m}\}})}}{\log{(2)}}\rfloor})}{(1-\frac{1}{2^s})}  \nonumber \\ + \sum_{p=1}^1 \sum_{q=1}^2 \left(\frac{1}{11^s}\right)^p\cdot\left(\frac{1}{7^s}\right)^q\cdot\frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{7^q\cdot 11^p\cdot 13^m}\}})}}{\log{(2)}}\rfloor})}{(1-\frac{1}{2^s})}  \nonumber \\ + \sum_{p=1}^2 \sum_{q=1}^2 \left(\frac{1}{7^s}\right)^p\cdot\left(\frac{1}{5^s}\right)^q\cdot\frac{1}{3^s}\cdot\frac{(1-(\frac{1}{3^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{5^q\cdot 7^p\cdot 13^m}\}})}}{\log{(3)}}\rfloor})}{(1-\frac{1}{3^s})}   \nonumber \\ + \sum_{p=1}^1 \sum_{q=1}^2 \left(\frac{1}{11^s}\right)^p\cdot\left(\frac{1}{5^s}\right)^q\cdot\frac{1}{3^s}\cdot\frac{(1-(\frac{1}{3^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{5^q\cdot 11^p\cdot 13^m}\}})}}{\log{(3)}}\rfloor})}{(1-\frac{1}{3^s})} \nonumber
+\end{align}
+
+\begin{align}
++ \sum_{p=1}^1 \sum_{q=1}^2 \left(\frac{1}{11^s}\right)^p\cdot\left(\frac{1}{7^s}\right)^q\cdot\frac{1}{3^s}\cdot\frac{(1-(\frac{1}{3^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{7^q\cdot 11^p\cdot 13^m}\}})}}{\log{(3)}}\rfloor})}{(1-\frac{1}{3^s})}  \nonumber \\ + \sum_{p=1}^1 \sum_{q=1}^2 \left(\frac{1}{11^s}\right)^p\cdot\left(\frac{1}{7^s}\right)^q\cdot\frac{1}{5^s}\cdot\frac{(1-(\frac{1}{5^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{7^q\cdot 11^p\cdot 13^m}\}})}}{\log{(5)}}\rfloor})}{(1-\frac{1}{5^s})} \nonumber \\ \nonumber \\ + \sum_{p=1}^2 \sum_{q=1}^2 \sum_{r=1}^4 \left(\frac{1}{7^s}\right)^p\cdot\left(\frac{1}{5^s}\right)^q\cdot\left(\frac{1}{3^s}\right)^r\cdot\frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{3^r\cdot  5^q\cdot 7^p\cdot 13^m}\}})}}{\log{(2)}}\rfloor})}{(1-\frac{1}{2^s})} \nonumber \\ + \sum_{p=1}^1 \sum_{q=1}^2 \sum_{r=1}^4 \left(\frac{1}{11^s}\right)^p\cdot\left(\frac{1}{5^s}\right)^q\cdot\left(\frac{1}{3^s}\right)^r\cdot\frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{3^r\cdot  5^q\cdot 11^p\cdot 13^m}\}})}}{\log{(2)}}\rfloor})}{(1-\frac{1}{2^s})}\nonumber \\ + \sum_{p=1}^1 \sum_{q=1}^2 \sum_{r=1}^4 \left(\frac{1}{11^s}\right)^p\cdot\left(\frac{1}{7^s}\right)^q\cdot\left(\frac{1}{3^s}\right)^r\cdot\frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{3^r\cdot  7^q\cdot 11^p\cdot 13^m}\}})}}{\log{(2)}}\rfloor})}{(1-\frac{1}{2^s})}\nonumber \\ + \sum_{p=1}^1 \sum_{q=1}^2 \sum_{r=1}^2 \left(\frac{1}{11^s}\right)^p\cdot\left(\frac{1}{7^s}\right)^q\cdot\left(\frac{1}{5^s}\right)^r\cdot\frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{5^r\cdot  7^q\cdot 11^p\cdot 13^m}\}})}}{\log{(2)}}\rfloor})}{(1-\frac{1}{2^s})}\nonumber \\ + \sum_{p=1}^1 \sum_{q=1}^2 \sum_{r=1}^2 \left(\frac{1}{11^s}\right)^p\cdot\left(\frac{1}{7^s}\right)^q\cdot\left(\frac{1}{5^s}\right)^r\cdot\frac{1}{3^s}\cdot\frac{(1-(\frac{1}{3^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{5^r\cdot  7^q\cdot 11^p\cdot 13^m}\}})}}{\log{(3)}}\rfloor})}{(1-\frac{1}{3^s})}\nonumber \\ + \sum_{h=1}^1\sum_{p=1}^2 \sum_{q=1}^2 \sum_{r=1}^4 \left(\frac{1}{11^s}\right)^h\left(\frac{1}{7^s}\right)^p\cdot\left(\frac{1}{5^s}\right)^q\cdot\left(\frac{1}{3^s}\right)^r\cdot\frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{3^r\cdot  5^q\cdot 7^p\cdot 11^h\cdot 13^m}\}})}}{\log{(2)}}\rfloor})}{(1-\frac{1}{2^s})} \Bigg] \nonumber 
         \end{align}
 
 \begin{align}
-         =\frac{1}{13^s}\cdot \Bigg[1 + \frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor2.775294\rfloor})}{(1-\frac{1}{2^s})}    + \frac{1}{3^s}\cdot\frac{(1-(\frac{1}{3^s})^{\lfloor1.751015\rfloor})}{(1-\frac{1}{3^s})}   + \frac{1}{5^s}\cdot\frac{(1-(\frac{1}{5^s})^{\lfloor1.195254\rfloor})}{(1-\frac{1}{5^s})} \nonumber \\  + \frac{1}{7^s}\cdot\frac{(1-(\frac{1}{7^s})^{\lfloor0.9885796\rfloor})}{(1-\frac{1}{7^s})}  + \frac{1}{11^s}\cdot\frac{(1-(\frac{1}{11^s})^{\lfloor0.8022398\rfloor})}{(1-\frac{1}{11^s})} \nonumber \\ + \frac{1}{2^s}\cdot\frac{1}{3^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor1.190331\rfloor})}{(1-\frac{1}{2^s})}\cdot\frac{(1-(\frac{1}{3^s})^{\lfloor1.120086\rfloor})}{(1-\frac{1}{3^s})} \nonumber \\  + \frac{1}{2^s}\cdot\frac{1}{5^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor0.4533656\rfloor})}{(1-\frac{1}{2^s})}\cdot\frac{(1-(\frac{1}{5^s})^{\lfloor0.7645774\rfloor})}{(1-\frac{1}{5^s})} \nonumber \\  + \frac{1}{2^s}\cdot\frac{1}{7^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor0\rfloor})}{(1-\frac{1}{2^s})}\cdot\frac{(1-(\frac{1}{7^s})^{\lfloor0.6323724\rfloor})}{(1-\frac{1}{7^s})} \nonumber \\ + \frac{1}{2^s}\cdot\frac{1}{11^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor0\rfloor})}{(1-\frac{1}{2^s})}\cdot\frac{(1-(\frac{1}{11^s})^{\lfloor0.513175\rfloor})}{(1-\frac{1}{11^s})} \nonumber \\ + \frac{1}{3^s}\cdot\frac{1}{5^s}\cdot\frac{(1-(\frac{1}{3^s})^{\lfloor0.2860419\rfloor})}{(1-\frac{1}{3^s})}\cdot\frac{(1-(\frac{1}{5^s})^{\lfloor0.5126477\rfloor})}{(1-\frac{1}{5^s})} \nonumber \\  + \frac{1}{3^s}\cdot\frac{1}{7^s}\cdot\frac{(1-(\frac{1}{3^s})^{\lfloor0\rfloor})}{(1-\frac{1}{3^s})}\cdot\frac{(1-(\frac{1}{7^s})^{\lfloor0.4240045\rfloor})}{(1-\frac{1}{7^s})} \nonumber \\ + \frac{1}{3^s}\cdot\frac{1}{11^s}\cdot\frac{(1-(\frac{1}{3^s})^{\lfloor0\rfloor})}{(1-\frac{1}{3^s})}\cdot\frac{(1-(\frac{1}{11^s})^{\lfloor0.3440829\rfloor})}{(1-\frac{1}{11^s})} \nonumber \\  + \frac{1}{5^s}\cdot\frac{1}{7^s}\cdot\frac{(1-(\frac{1}{5^s})^{\lfloor0\rfloor})}{(1-\frac{1}{5^s})}\cdot\frac{(1-(\frac{1}{7^s})^{\lfloor0.1614921\rfloor})}{(1-\frac{1}{7^s})} \nonumber \\ + \frac{1}{5^s}\cdot\frac{1}{11^s}\cdot\frac{(1-(\frac{1}{5^s})^{\lfloor0\rfloor})}{(1-\frac{1}{5^s})}\cdot\frac{(1-(\frac{1}{11^s})^{\lfloor0.1310521\rfloor})}{(1-\frac{1}{11^s})} \nonumber \\ + \frac{1}{7^s}\cdot\frac{1}{11^s}\cdot\frac{(1-(\frac{1}{7^s})^{\lfloor0\rfloor})}{(1-\frac{1}{7^s})}\cdot\frac{(1-(\frac{1}{11^s})^{\lfloor0\rfloor})}{(1-\frac{1}{11^s})} \nonumber \\ +
-        \text{ triple, quadruple, quintuple product terms of the lowest 5 primes all with value zero } \nonumber \\ \text{ because all triple product terms with the lowest primes are already value zero for } a_{11}(s,89) \Bigg] \nonumber 
+         =\frac{1}{13^s}\cdot \Bigg[1 + \frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor2.775294\rfloor})}{(1-\frac{1}{2^s})}    + \frac{1}{3^s}\cdot\frac{(1-(\frac{1}{3^s})^{\lfloor1.751015\rfloor})}{(1-\frac{1}{3^s})}   + \frac{1}{5^s}\cdot\frac{(1-(\frac{1}{5^s})^{\lfloor1.195254\rfloor})}{(1-\frac{1}{5^s})} \nonumber \\  + \frac{1}{7^s}\cdot\frac{(1-(\frac{1}{7^s})^{\lfloor0.9885796\rfloor})}{(1-\frac{1}{7^s})}  + \frac{1}{11^s}\cdot\frac{(1-(\frac{1}{11^s})^{\lfloor0.8022398\rfloor})}{(1-\frac{1}{11^s})} \nonumber \\ + \frac{1}{3^s}\cdot\frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor1.190331\rfloor})}{(1-\frac{1}{2^s})} + \frac{1}{5^s}\cdot\frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor0\rfloor})}{(1-\frac{1}{2^s})}  +  0 \text{ (for the other terms)} \nonumber \\ 
+        \text{ since for N=89  all triple product terms with the lowest primes } \nonumber \\ \text{ are already value zero for } a_{11}(s,89) \nonumber \\ 
+        \text{ and the above two (lowest) double product term values (for $2\cdot3$ and $2\cdot 5$) } \nonumber \\ \text{ indicate that the remaining double products have value zero }\Bigg] \nonumber 
         \end{align}
 
 \begin{align}
-         =\frac{1}{13^s}\cdot \Bigg[1 + \frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{2})}{(1-\frac{1}{2^s})}    + \frac{1}{3^s}\cdot\frac{(1-(\frac{1}{3^s})^{1})}{(1-\frac{1}{3^s})}   + \frac{1}{5^s}\cdot\frac{(1-(\frac{1}{5^s})^{1})}{(1-\frac{1}{5^s})}   + \frac{1}{7^s}\cdot\frac{(1-(\frac{1}{7^s})^{0})}{(1-\frac{1}{7^s})}  + \frac{1}{11^s}\cdot\frac{(1-(\frac{1}{11^s})^{0})}{(1-\frac{1}{11^s})} \nonumber \\ + \frac{1}{2^s}\cdot\frac{1}{3^s}\cdot\frac{(1-(\frac{1}{2^s})^{1})}{(1-\frac{1}{2^s})}\cdot\frac{(1-(\frac{1}{3^s})^{1})}{(1-\frac{1}{3^s})}   + \frac{1}{2^s}\cdot\frac{1}{5^s}\cdot\frac{(1-(\frac{1}{2^s})^{0})}{(1-\frac{1}{2^s})}\cdot\frac{(1-(\frac{1}{5^s})^{0})}{(1-\frac{1}{5^s})} \nonumber \\  + \frac{1}{2^s}\cdot\frac{1}{7^s}\cdot\frac{(1-(\frac{1}{2^s})^{0})}{(1-\frac{1}{2^s})}\cdot\frac{(1-(\frac{1}{7^s})^{0})}{(1-\frac{1}{7^s})}  + \frac{1}{2^s}\cdot\frac{1}{11^s}\cdot\frac{(1-(\frac{1}{2^s})^{0})}{(1-\frac{1}{2^s})}\cdot\frac{(1-(\frac{1}{11^s})^{0})}{(1-\frac{1}{11^s})} \nonumber \\ + \frac{1}{3^s}\cdot\frac{1}{5^s}\cdot\frac{(1-(\frac{1}{3^s})^{0})}{(1-\frac{1}{3^s})}\cdot\frac{(1-(\frac{1}{5^s})^{0})}{(1-\frac{1}{5^s})}   + \frac{1}{3^s}\cdot\frac{1}{7^s}\cdot\frac{(1-(\frac{1}{3^s})^{0})}{(1-\frac{1}{3^s})}\cdot\frac{(1-(\frac{1}{7^s})^{0})}{(1-\frac{1}{7^s})} \nonumber \\ + \frac{1}{3^s}\cdot\frac{1}{11^s}\cdot\frac{(1-(\frac{1}{3^s})^{0})}{(1-\frac{1}{3^s})}\cdot\frac{(1-(\frac{1}{11^s})^{0})}{(1-\frac{1}{11^s})}   + \frac{1}{5^s}\cdot\frac{1}{7^s}\cdot\frac{(1-(\frac{1}{5^s})^{0})}{(1-\frac{1}{5^s})}\cdot\frac{(1-(\frac{1}{7^s})^{0})}{(1-\frac{1}{7^s})} \nonumber \\ + \frac{1}{5^s}\cdot\frac{1}{11^s}\cdot\frac{(1-(\frac{1}{5^s})^{0})}{(1-\frac{1}{5^s})}\cdot\frac{(1-(\frac{1}{11^s})^{0})}{(1-\frac{1}{11^s})}  + \frac{1}{7^s}\cdot\frac{1}{11^s}\cdot\frac{(1-(\frac{1}{7^s})^{0})}{(1-\frac{1}{7^s})}\cdot\frac{(1-(\frac{1}{11^s})^{0})}{(1-\frac{1}{11^s})} \nonumber \\ +
-        \text{ triple, quadruple, quintuple product terms of the lowest 5 primes all with value zero } \nonumber \\ \text{ because all triple product terms with the lowest primes are already value zero for } a_{11}(s,89) \Bigg] \nonumber \\
-        = \frac{1}{13^s} + \frac{1}{26^s} + \frac{1}{52^s} + \frac{1}{39^s} + \frac{1}{65^s} + \frac{1}{78^s} 
-        \end{align}
+                  &=\frac{1}{13^s}\cdot \Bigg[1 + \frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{2})}{(1-\frac{1}{2^s})}    + \frac{1}{3^s}\cdot\frac{(1-(\frac{1}{3^s})^{1})}{(1-\frac{1}{3^s})}   + \frac{1}{5^s}\cdot\frac{(1-(\frac{1}{5^s})^{1})}{(1-\frac{1}{5^s})}    + \frac{1}{3^s}\cdot\frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{1})}{(1-\frac{1}{2^s})} \Bigg] \nonumber \\
+      &= \frac{1}{13^s} + \frac{1}{26^s} + \frac{1}{52^s} + \frac{1}{39^s} + \frac{1}{65^s} + \frac{1}{78^s} 
+  \end{align}
+
+Using the above results for lower terms of the expansion to vet non-zero terms (for N=89) of higher terms of the expansion
 
 \begin{align}
-        a_{17}(s,89) =\frac{1}{17^s}\cdot \Bigg[1 + \frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{17}\}})}}{\log{(2)}}\rfloor})}{(1-\frac{1}{2^s})}    + \frac{1}{3^s}\cdot\frac{(1-(\frac{1}{3^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{17}\}})}}{\log{(3)}}\rfloor})}{(1-\frac{1}{3^s})}   + \frac{1}{5^s}\cdot\frac{(1-(\frac{1}{5^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{17}\}})}}{\log{(5)}}\rfloor})}{(1-\frac{1}{5^s})} \nonumber \\  + \frac{1}{7^s}\cdot\frac{(1-(\frac{1}{7^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{17}\}})}}{\log{(7)}}\rfloor})}{(1-\frac{1}{7^s})}  + \frac{1}{11^s}\cdot\frac{(1-(\frac{1}{11^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{17}\}})}}{\log{(11)}}\rfloor})}{(1-\frac{1}{11^s})} \nonumber \\ + \frac{1}{13^s}\cdot\frac{(1-(\frac{1}{13^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{17}\}})}}{\log{(13)}}\rfloor})}{(1-\frac{1}{13^s})} \nonumber \\ + \frac{1}{2^s}\cdot\frac{1}{3^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{3\cdot 17}\}})}}{\log{(2)}}\rfloor})}{(1-\frac{1}{2^s})}\cdot\frac{(1-(\frac{1}{3^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{2\cdot 17}\}})}}{\log{(3)}}\rfloor})}{(1-\frac{1}{3^s})} \nonumber \\  + \frac{1}{2^s}\cdot\frac{1}{5^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{5\cdot 17}\}})}}{\log{(2)}}\rfloor})}{(1-\frac{1}{2^s})}\cdot\frac{(1-(\frac{1}{5^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{2\cdot 17}\}})}}{\log{(5)}}\rfloor})}{(1-\frac{1}{5^s})} \nonumber \\  + \frac{1}{2^s}\cdot\frac{1}{7^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{7\cdot 17}\}})}}{\log{(2)}}\rfloor})}{(1-\frac{1}{2^s})}\cdot\frac{(1-(\frac{1}{7^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{2\cdot 17}\}})}}{\log{(7)}}\rfloor})}{(1-\frac{1}{7^s})} \nonumber \\ + \frac{1}{2^s}\cdot\frac{1}{11^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{11\cdot 17}\}})}}{\log{(2)}}\rfloor})}{(1-\frac{1}{2^s})}\cdot\frac{(1-(\frac{1}{11^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{2\cdot 17}\}})}}{\log{(11)}}\rfloor})}{(1-\frac{1}{11^s})} \nonumber \\ + \frac{1}{2^s}\cdot\frac{1}{13^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{13\cdot 17}\}})}}{\log{(2)}}\rfloor})}{(1-\frac{1}{2^s})}\cdot\frac{(1-(\frac{1}{13^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{2\cdot 17}\}})}}{\log{(13)}}\rfloor})}{(1-\frac{1}{13^s})}  \nonumber \\ +
-        \text{ triple, quadruple, quintuple, sextuple product terms of the lowest 6 primes all with value zero }  \nonumber \\ 
-        \text{ because all triple product terms with the lowest primes are already value zero for } a_{11}(s,89)  \nonumber \\
-      +  \text{ only double product terms of prime 2 with prime 3,5,7,11 are shown } \nonumber \\ \text{ because only double product terms with prime 2 were non zero for } a_{13}(s,89) \Bigg] \nonumber 
+        a_{17}(s,89) =\frac{1}{17^s}\cdot \Bigg[1 + \frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{17}\}})}}{\log{(2)}}\rfloor})}{(1-\frac{1}{2^s})}    + \frac{1}{3^s}\cdot\frac{(1-(\frac{1}{3^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{17}\}})}}{\log{(3)}}\rfloor})}{(1-\frac{1}{3^s})}   + \frac{1}{5^s}\cdot\frac{(1-(\frac{1}{5^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{17}\}})}}{\log{(5)}}\rfloor})}{(1-\frac{1}{5^s})} \nonumber \\  + \frac{1}{7^s}\cdot\frac{(1-(\frac{1}{7^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{17}\}})}}{\log{(7)}}\rfloor})}{(1-\frac{1}{7^s})}  + \frac{1}{11^s}\cdot\frac{(1-(\frac{1}{11^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{17}\}})}}{\log{(11)}}\rfloor})}{(1-\frac{1}{11^s})} \nonumber \\ + \frac{1}{13^s}\cdot\frac{(1-(\frac{1}{13^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{17}\}})}}{\log{(13)}}\rfloor})}{(1-\frac{1}{13^s})} \nonumber \\ + \sum_{q=1}^4 \left(\frac{1}{3^s}\right)^q\cdot\frac{1}{2^s}\frac{(1-(\frac{1}{2^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{3^q\cdot 17^m}\}})}}{\log{(2)}}\rfloor})}{(1-\frac{1}{2^s})}   +  \sum_{q=1}^2 \left(\frac{1}{5^s}\right)^q\cdot\frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{5^q\cdot 17^m}\}})}}{\log{(2)}}\rfloor})}{(1-\frac{1}{2^s})} + 0 \nonumber \\ 
+        \text{ for other products in $a_{17}(s,89)$ because of known behaviour in lower terms of expansion for N=89 }  \Bigg] \nonumber 
 \end{align}
 
 \begin{align}
-        a_{17}(s,89) =\frac{1}{17^s}\cdot \Bigg[1 + \frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor2.388271\rfloor})}{(1-\frac{1}{2^s})}    + \frac{1}{3^s}\cdot\frac{(1-(\frac{1}{3^s})^{\lfloor1.506831\rfloor})}{(1-\frac{1}{3^s})}   + \frac{1}{5^s}\cdot\frac{(1-(\frac{1}{5^s})^{\lfloor1.028572\rfloor})}{(1-\frac{1}{5^s})} \nonumber \\  + \frac{1}{7^s}\cdot\frac{(1-(\frac{1}{7^s})^{\lfloor0.8507191\rfloor})}{(1-\frac{1}{7^s})}  + \frac{1}{11^s}\cdot\frac{(1-(\frac{1}{11^s})^{\lfloor0.690365\rfloor})}{(1-\frac{1}{11^s})}  + \frac{1}{13^s}\cdot\frac{(1-(\frac{1}{13^s})^{\lfloor0.654018\rfloor})}{(1-\frac{1}{13^s})} \nonumber \\ + \frac{1}{2^s}\cdot\frac{1}{3^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor0.8033081\rfloor})}{(1-\frac{1}{2^s})}\cdot\frac{(1-(\frac{1}{3^s})^{\lfloor0.8759012\rfloor})}{(1-\frac{1}{3^s})} \nonumber \\  + \frac{1}{2^s}\cdot\frac{1}{5^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor0.06634249\rfloor})}{(1-\frac{1}{2^s})}\cdot\frac{(1-(\frac{1}{5^s})^{\lfloor0.5978956\rfloor})}{(1-\frac{1}{5^s})} \nonumber \\  + \frac{1}{2^s}\cdot\frac{1}{7^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor0\rfloor})}{(1-\frac{1}{2^s})}\cdot\frac{(1-(\frac{1}{7^s})^{\lfloor0.494512\rfloor})}{(1-\frac{1}{7^s})} \nonumber \\ + \frac{1}{2^s}\cdot\frac{1}{11^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor0\rfloor})}{(1-\frac{1}{2^s})}\cdot\frac{(1-(\frac{1}{11^s})^{\lfloor0.4013002\rfloor})}{(1-\frac{1}{11^s})} \nonumber \\ + \frac{1}{2^s}\cdot\frac{1}{13^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor0\rfloor})}{(1-\frac{1}{2^s})}\cdot\frac{(1-(\frac{1}{13^s})^{\lfloor0.3751637\rfloor})}{(1-\frac{1}{13^s})}  \nonumber \\ +
-        \text{ triple, quadruple, quintuple, sextuple product terms of the lowest 6 primes all with value zero }  \nonumber \\ 
-        \text{ because all triple product terms with the lowest primes are already value zero for } a_{11}(s,89)  \nonumber \\
-      +  \text{ only double product terms of prime 2 with prime 3,5,7,11 are shown } \nonumber \\ \text{ because only double product terms with prime 2 were non zero for } a_{13}(s,89) \Bigg] \nonumber 
+        a_{17}(s,89) =\frac{1}{17^s}\cdot \Bigg[1 + \frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor2.388271\rfloor})}{(1-\frac{1}{2^s})}    + \frac{1}{3^s}\cdot\frac{(1-(\frac{1}{3^s})^{\lfloor1.506831\rfloor})}{(1-\frac{1}{3^s})}   + \frac{1}{5^s}\cdot\frac{(1-(\frac{1}{5^s})^{\lfloor1.028572\rfloor})}{(1-\frac{1}{5^s})} \nonumber \\  + \frac{1}{7^s}\cdot\frac{(1-(\frac{1}{7^s})^{\lfloor0.8507191\rfloor})}{(1-\frac{1}{7^s})}  + \frac{1}{11^s}\cdot\frac{(1-(\frac{1}{11^s})^{\lfloor0.690365\rfloor})}{(1-\frac{1}{11^s})}  + \frac{1}{13^s}\cdot\frac{(1-(\frac{1}{13^s})^{\lfloor0.654018\rfloor})}{(1-\frac{1}{13^s})} \nonumber \\ + \frac{1}{3^s}\cdot\frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor0.8033081\rfloor})}{(1-\frac{1}{2^s})} + \frac{1}{5^s}\cdot\frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor0.06634249\rfloor})}{(1-\frac{1}{2^s})} +  0 \text{ (for the other terms)} \Bigg] \nonumber 
 \end{align}
 
 \begin{align}
-        a_{17}(s,89) =\frac{1}{17^s}\cdot \Bigg[1 + \frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{2})}{(1-\frac{1}{2^s})}    + \frac{1}{3^s}\cdot\frac{(1-(\frac{1}{3^s})^{1})}{(1-\frac{1}{3^s})}   + \frac{1}{5^s}\cdot\frac{(1-(\frac{1}{5^s})^{1})}{(1-\frac{1}{5^s})} \nonumber \\  + \frac{1}{7^s}\cdot\frac{(1-(\frac{1}{7^s})^{0})}{(1-\frac{1}{7^s})}  + \frac{1}{11^s}\cdot\frac{(1-(\frac{1}{11^s})^{0})}{(1-\frac{1}{11^s})}  + \frac{1}{13^s}\cdot\frac{(1-(\frac{1}{13^s})^{0})}{(1-\frac{1}{13^s})} \nonumber \\ + \frac{1}{2^s}\cdot\frac{1}{3^s}\cdot\frac{(1-(\frac{1}{2^s})^{0})}{(1-\frac{1}{2^s})}\cdot\frac{(1-(\frac{1}{3^s})^{0})}{(1-\frac{1}{3^s})} \nonumber \\  + \frac{1}{2^s}\cdot\frac{1}{5^s}\cdot\frac{(1-(\frac{1}{2^s})^{0})}{(1-\frac{1}{2^s})}\cdot\frac{(1-(\frac{1}{5^s})^{0})}{(1-\frac{1}{5^s})} \nonumber \\  + \frac{1}{2^s}\cdot\frac{1}{7^s}\cdot\frac{(1-(\frac{1}{2^s})^{0})}{(1-\frac{1}{2^s})}\cdot\frac{(1-(\frac{1}{7^s})^{0})}{(1-\frac{1}{7^s})} \nonumber \\ + \frac{1}{2^s}\cdot\frac{1}{11^s}\cdot\frac{(1-(\frac{1}{2^s})^{0})}{(1-\frac{1}{2^s})}\cdot\frac{(1-(\frac{1}{11^s})^{0})}{(1-\frac{1}{11^s})} \nonumber \\ + \frac{1}{2^s}\cdot\frac{1}{13^s}\cdot\frac{(1-(\frac{1}{2^s})^{0})}{(1-\frac{1}{2^s})}\cdot\frac{(1-(\frac{1}{13^s})^{0})}{(1-\frac{1}{13^s})}  \nonumber \\ +
-        \text{ triple, quadruple, quintuple, sextuple product terms of the lowest 6 primes all with value zero }  \nonumber \\ 
-        \text{ because all triple product terms with the lowest primes are already value zero for } a_{11}(s,89)  \nonumber \\
-      +  \text{ only double product terms of prime 2 with prime 3,5,7,11 are shown } \nonumber \\ \text{ because only double product terms with prime 2 were non zero for } a_{13}(s,89) \Bigg] \nonumber \\
-     = \frac{1}{17^s} + \frac{1}{34^s} + \frac{1}{68^s} + \frac{1}{51^s} + \frac{1}{85^s}
+        a_{17}(s,89) &=\frac{1}{17^s}\cdot \Bigg[1 + \frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{2})}{(1-\frac{1}{2^s})}    + \frac{1}{3^s}\cdot\frac{(1-(\frac{1}{3^s})^{1})}{(1-\frac{1}{3^s})}   + \frac{1}{5^s}\cdot\frac{(1-(\frac{1}{5^s})^{1})}{(1-\frac{1}{5^s})} \nonumber \\  &+ \frac{1}{7^s}\cdot\frac{(1-(\frac{1}{7^s})^{0})}{(1-\frac{1}{7^s})}  + \frac{1}{11^s}\cdot\frac{(1-(\frac{1}{11^s})^{0})}{(1-\frac{1}{11^s})}  + \frac{1}{13^s}\cdot\frac{(1-(\frac{1}{13^s})^{0})}{(1-\frac{1}{13^s})} \nonumber \\ &+ \frac{1}{3^s}\cdot\frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{0})}{(1-\frac{1}{2^s})}  + \frac{1}{5^s}\cdot\frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{0})}{(1-\frac{1}{2^s})}  \Bigg] \nonumber \\
+        &=\frac{1}{17^s}\cdot \Bigg[1 + \frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{2})}{(1-\frac{1}{2^s})}    + \frac{1}{3^s}\cdot\frac{(1-(\frac{1}{3^s})^{1})}{(1-\frac{1}{3^s})}   + \frac{1}{5^s}\cdot\frac{(1-(\frac{1}{5^s})^{1})}{(1-\frac{1}{5^s})}  \Bigg] \nonumber \\
+     &= \frac{1}{17^s} + \frac{1}{34^s} + \frac{1}{68^s} + \frac{1}{51^s} + \frac{1}{85^s}
 \end{align}
 
 \begin{align}
-        a_{19}(s,89) =\frac{1}{19^s}\cdot \Bigg[1 + \frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{19}\}})}}{\log{(2)}}\rfloor})}{(1-\frac{1}{2^s})}    + \frac{1}{3^s}\cdot\frac{(1-(\frac{1}{3^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{19}\}})}}{\log{(3)}}\rfloor})}{(1-\frac{1}{3^s})}   + \frac{1}{5^s}\cdot\frac{(1-(\frac{1}{5^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{19}\}})}}{\log{(5)}}\rfloor})}{(1-\frac{1}{5^s})} \nonumber \\  + \frac{1}{7^s}\cdot\frac{(1-(\frac{1}{7^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{19}\}})}}{\log{(7)}}\rfloor})}{(1-\frac{1}{7^s})}  + \frac{1}{11^s}\cdot\frac{(1-(\frac{1}{11^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{19}\}})}}{\log{(11)}}\rfloor})}{(1-\frac{1}{11^s})} \nonumber \\ + \frac{1}{13^s}\cdot\frac{(1-(\frac{1}{13^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{19}\}})}}{\log{(13)}}\rfloor})}{(1-\frac{1}{13^s})}   + \frac{1}{17^s}\cdot\frac{(1-(\frac{1}{17^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{19}\}})}}{\log{(17)}}\rfloor})}{(1-\frac{1}{17^s})}   \nonumber \\ +
-        \text{ double, triple, quadruple, quintuple, sextuple, septuple product terms of the lowest 7 primes all with value zero }  \nonumber \\ 
-        \text{ because all double product terms with the lowest primes are already value zero for } a_{17}(s,89) \Bigg] \nonumber 
+        a_{19}(s,89) =\frac{1}{19^s}\cdot \Bigg[1 + \frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{19}\}})}}{\log{(2)}}\rfloor})}{(1-\frac{1}{2^s})}    + \frac{1}{3^s}\cdot\frac{(1-(\frac{1}{3^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{19}\}})}}{\log{(3)}}\rfloor})}{(1-\frac{1}{3^s})}   + \frac{1}{5^s}\cdot\frac{(1-(\frac{1}{5^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{19}\}})}}{\log{(5)}}\rfloor})}{(1-\frac{1}{5^s})} \nonumber \\  + \frac{1}{7^s}\cdot\frac{(1-(\frac{1}{7^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{19}\}})}}{\log{(7)}}\rfloor})}{(1-\frac{1}{7^s})}  + \frac{1}{11^s}\cdot\frac{(1-(\frac{1}{11^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{19}\}})}}{\log{(11)}}\rfloor})}{(1-\frac{1}{11^s})} \nonumber \\ + \frac{1}{13^s}\cdot\frac{(1-(\frac{1}{13^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{19}\}})}}{\log{(13)}}\rfloor})}{(1-\frac{1}{13^s})}   + \frac{1}{17^s}\cdot\frac{(1-(\frac{1}{17^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{19}\}})}}{\log{(17)}}\rfloor})}{(1-\frac{1}{17^s})}   + 0 \nonumber \\ 
+        \text{ for other products in $a_{19}(s,89)$ because of known behaviour in lower terms of expansion for N=89 }  \Bigg] \nonumber 
 \end{align}
 
 \begin{align}
-        =\frac{1}{19^s}\cdot \Bigg[1 + \frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor2.227806\rfloor})}{(1-\frac{1}{2^s})}    + \frac{1}{3^s}\cdot\frac{(1-(\frac{1}{3^s})^{\lfloor1.405589\rfloor})}{(1-\frac{1}{3^s})}   + \frac{1}{5^s}\cdot\frac{(1-(\frac{1}{5^s})^{\lfloor0.9594638\rfloor})}{(1-\frac{1}{5^s})}  + \frac{1}{7^s}\cdot\frac{(1-(\frac{1}{7^s})^{\lfloor0.7935605\rfloor})}{(1-\frac{1}{7^s})} \nonumber \\  + \frac{1}{11^s}\cdot\frac{(1-(\frac{1}{11^s})^{\lfloor0.6439803\rfloor})}{(1-\frac{1}{11^s})}  + \frac{1}{13^s}\cdot\frac{(1-(\frac{1}{13^s})^{\lfloor0.6020382\rfloor})}{(1-\frac{1}{13^s})}    + \frac{1}{17^s}\cdot\frac{(1-(\frac{1}{17^s})^{\lfloor0.5450339\rfloor})}{(1-\frac{1}{17^s})}   \nonumber \\ +
-        \text{ double, triple, quadruple, quintuple, sextuple, septuple product terms of the lowest 7 primes all with value zero }  \nonumber \\ 
-        \text{ because all double product terms with the lowest primes are already value zero for } a_{17}(s,89) \Bigg] \nonumber 
+        &=\frac{1}{19^s}\cdot \Bigg[1 + \frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor2.227806\rfloor})}{(1-\frac{1}{2^s})}    + \frac{1}{3^s}\cdot\frac{(1-(\frac{1}{3^s})^{\lfloor1.405589\rfloor})}{(1-\frac{1}{3^s})}   + \frac{1}{5^s}\cdot\frac{(1-(\frac{1}{5^s})^{\lfloor0.9594638\rfloor})}{(1-\frac{1}{5^s})}  + \frac{1}{7^s}\cdot\frac{(1-(\frac{1}{7^s})^{\lfloor0.7935605\rfloor})}{(1-\frac{1}{7^s})} \nonumber \\  &+ \frac{1}{11^s}\cdot\frac{(1-(\frac{1}{11^s})^{\lfloor0.6439803\rfloor})}{(1-\frac{1}{11^s})}  + \frac{1}{13^s}\cdot\frac{(1-(\frac{1}{13^s})^{\lfloor0.6020382\rfloor})}{(1-\frac{1}{13^s})}    + \frac{1}{17^s}\cdot\frac{(1-(\frac{1}{17^s})^{\lfloor0.5450339\rfloor})}{(1-\frac{1}{17^s})}  \Bigg] \nonumber \\
+        &=\frac{1}{19^s}\cdot \Bigg[1 + \frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{2})}{(1-\frac{1}{2^s})}    + \frac{1}{3^s}\cdot\frac{(1-(\frac{1}{3^s})^{1})}{(1-\frac{1}{3^s})}   + \frac{1}{5^s}\cdot\frac{(1-(\frac{1}{5^s})^{0})}{(1-\frac{1}{5^s})}   + \frac{1}{7^s}\cdot\frac{(1-(\frac{1}{7^s})^{0})}{(1-\frac{1}{7^s})}  + \frac{1}{11^s}\cdot\frac{(1-(\frac{1}{11^s})^{0})}{(1-\frac{1}{11^s})} \nonumber \\ &+ \frac{1}{13^s}\cdot\frac{(1-(\frac{1}{13^s})^{0})}{(1-\frac{1}{13^s})}    + \frac{1}{17^s}\cdot\frac{(1-(\frac{1}{17^s})^{0})}{(1-\frac{1}{17^s})}  \Bigg] \nonumber \\
+&=\frac{1}{19^s}\cdot \Bigg[1 + \frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{2})}{(1-\frac{1}{2^s})}    + \frac{1}{3^s}\cdot\frac{(1-(\frac{1}{3^s})^{1})}{(1-\frac{1}{3^s})} \Bigg] \nonumber \\
+&= \frac{1}{19^s} + \frac{1}{38^s} + \frac{1}{76^s} + \frac{1}{57^s}
 \end{align}
 
 \begin{align}
-        =\frac{1}{19^s}\cdot \Bigg[1 + \frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{2})}{(1-\frac{1}{2^s})}    + \frac{1}{3^s}\cdot\frac{(1-(\frac{1}{3^s})^{1})}{(1-\frac{1}{3^s})}   + \frac{1}{5^s}\cdot\frac{(1-(\frac{1}{5^s})^{0})}{(1-\frac{1}{5^s})}   + \frac{1}{7^s}\cdot\frac{(1-(\frac{1}{7^s})^{0})}{(1-\frac{1}{7^s})}  + \frac{1}{11^s}\cdot\frac{(1-(\frac{1}{11^s})^{0})}{(1-\frac{1}{11^s})} \nonumber \\ + \frac{1}{13^s}\cdot\frac{(1-(\frac{1}{13^s})^{0})}{(1-\frac{1}{13^s})}    + \frac{1}{17^s}\cdot\frac{(1-(\frac{1}{17^s})^{0})}{(1-\frac{1}{17^s})}   \nonumber \\ +
-        \text{ double, triple, quadruple, quintuple, sextuple, septuple product terms of the lowest 7 primes all with value zero }  \nonumber \\ 
-        \text{ because all double product terms with the lowest primes are already value zero for } a_{17}(s,89) \Bigg] \nonumber \\
-     = \frac{1}{19^s} + \frac{1}{38^s} + \frac{1}{76^s} + \frac{1}{57^s}
-\end{align}
-
-\begin{align}
-        a_{23}(s,89) =\frac{1}{23^s}\cdot \Bigg[1 + \frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{23}\}})}}{\log{(2)}}\rfloor})}{(1-\frac{1}{2^s})}    + \frac{1}{3^s}\cdot\frac{(1-(\frac{1}{3^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{23}\}})}}{\log{(3)}}\rfloor})}{(1-\frac{1}{3^s})}    \nonumber \\ +
-        \text{ double and higher order terms of the lowest 7 primes are already value zero for } a_{17}(s,89) \nonumber \\ 
-        \text{ and single prime terms for prime 5 and higher are already value zero for } a_{19}(s,89) \Bigg] \nonumber 
-\end{align}
-
-\begin{align}
-        a_{23}(s,89) =\frac{1}{23^s}\cdot \Bigg[1 + \frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor1.952171\rfloor})}{(1-\frac{1}{2^s})}    + \frac{1}{3^s}\cdot\frac{(1-(\frac{1}{3^s})^{\lfloor1.231683\rfloor})}{(1-\frac{1}{3^s})}    \nonumber \\ +
-        \text{ double and higher order terms of the lowest 7 primes are already value zero for } a_{17}(s,89) \nonumber \\ 
-        \text{ and single prime terms for prime 5 and higher are already value zero for } a_{19}(s,89) \Bigg] \nonumber 
-\end{align}
-
-\begin{align}
-         =\frac{1}{23^s}\cdot \Bigg[1 + \frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{1})}{(1-\frac{1}{2^s})}    + \frac{1}{3^s}\cdot\frac{(1-(\frac{1}{3^s})^{1})}{(1-\frac{1}{3^s})}    \nonumber \\ +
-        \text{ double and higher order terms of the lowest 7 primes are already value zero for } a_{17}(s,89) \nonumber \\ 
-        \text{ and single prime terms for prime 5 and higher are already value zero for } a_{19}(s,89) \Bigg] \nonumber \\
-        = \frac{1}{23^s} + \frac{1}{46^s} + \frac{1}{69^s}
+        a_{23}(s,89) &=\frac{1}{23^s}\cdot \Bigg[1 + \frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{23}\}})}}{\log{(2)}}\rfloor})}{(1-\frac{1}{2^s})}    + \frac{1}{3^s}\cdot\frac{(1-(\frac{1}{3^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{23}\}})}}{\log{(3)}}\rfloor})}{(1-\frac{1}{3^s})}     + 0 \nonumber \\ 
+        &\text{ for other products in $a_{23}(s,89)$ because of known behaviour in lower terms of expansion for N=89 } \Bigg] \nonumber \\
+        &=\frac{1}{23^s}\cdot \Bigg[1 + \frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor1.952171\rfloor})}{(1-\frac{1}{2^s})}    + \frac{1}{3^s}\cdot\frac{(1-(\frac{1}{3^s})^{\lfloor1.231683\rfloor})}{(1-\frac{1}{3^s})}   \Bigg] \nonumber \\ 
+         &=\frac{1}{23^s}\cdot \Bigg[1 + \frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{1})}{(1-\frac{1}{2^s})}    + \frac{1}{3^s}\cdot\frac{(1-(\frac{1}{3^s})^{1})}{(1-\frac{1}{3^s})}     \Bigg] \nonumber \\
+        &= \frac{1}{23^s} + \frac{1}{46^s} + \frac{1}{69^s}
 \end{align}
 
 
 
 \begin{align}
-a_{25}(s,N) =\left(\frac{1}{5^s}\right)^2\cdot \Bigg[1 + \frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{5^2}\}})}}{\log{(2)}}\rfloor})}{(1-\frac{1}{2^s})}   + \frac{1}{3^s}\cdot\frac{(1-(\frac{1}{3^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{5^2}\}})}}{\log{(3)}}\rfloor})}{(1-\frac{1}{3^s})} \nonumber \\  + \frac{1}{2^s}\cdot\frac{1}{3^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{3\cdot 5^2}\}})}}{\log{(2)}}\rfloor})}{(1-\frac{1}{2^s})}\cdot\frac{(1-(\frac{1}{3^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{2\cdot 5^2}\}})}}{\log{(3)}}\rfloor})}{(1-\frac{1}{3^s})} \Bigg] \nonumber \\
-=\left(\frac{1}{5^s}\right)^2\cdot \Bigg[1 + \frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor1.831877\rfloor})}{(1-\frac{1}{2^s})}    + \frac{1}{3^s}\cdot\frac{(1-(\frac{1}{3^s})^{\lfloor1.155786\rfloor})}{(1-\frac{1}{3^s})} \nonumber \\  + \frac{1}{2^s}\cdot\frac{1}{3^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor0.2469147\rfloor})}{(1-\frac{1}{2^s})}\cdot\frac{(1-(\frac{1}{3^s})^{\lfloor0.5248561\rfloor})}{(1-\frac{1}{3^s})} \Bigg] \nonumber \\
-=\left(\frac{1}{5^s}\right)^2\cdot \Bigg[1 + \frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{1})}{(1-\frac{1}{2^s})}    + \frac{1}{3^s}\cdot\frac{(1-(\frac{1}{3^s})^{1})}{(1-\frac{1}{3^s})}   + \frac{1}{2^s}\cdot\frac{1}{3^s}\cdot\frac{(1-(\frac{1}{2^s})^{0})}{(1-\frac{1}{2^s})}\cdot\frac{(1-(\frac{1}{3^s})^{0})}{(1-\frac{1}{3^s})} \Bigg] \nonumber \\
-= \frac{1}{25^s} + \frac{1}{50^s} + \frac{1}{75^s}
+a_{25}(s,89) &=\left(\frac{1}{5^s}\right)^2\cdot \Bigg[1 + \frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{5^2}\}})}}{\log{(2)}}\rfloor})}{(1-\frac{1}{2^s})}   + \frac{1}{3^s}\cdot\frac{(1-(\frac{1}{3^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{5^2}\}})}}{\log{(3)}}\rfloor})}{(1-\frac{1}{3^s})} \nonumber \\  &+ \sum_{q=1}^4 \left(\frac{1}{3^s}\right)^q\cdot\frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{3^q\cdot 5^2}\}})}}{\log{(2)}}\rfloor})}{(1-\frac{1}{2^s})} \Bigg] \nonumber \\
+&=\left(\frac{1}{5^s}\right)^2\cdot \Bigg[1 + \frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor1.831877\rfloor})}{(1-\frac{1}{2^s})}    + \frac{1}{3^s}\cdot\frac{(1-(\frac{1}{3^s})^{\lfloor1.155786\rfloor})}{(1-\frac{1}{3^s})} \nonumber \\  &+ \frac{1}{3^s}\cdot\frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor0.2469147\rfloor})}{(1-\frac{1}{2^s})} + 0  \nonumber \\ 
+        &\text{ for other products in $a_{23}(s,89)$ because of known behaviour in lower terms of expansion for N=89 } \Bigg] \nonumber \\
+&=\left(\frac{1}{5^s}\right)^2\cdot \Bigg[1 + \frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{1})}{(1-\frac{1}{2^s})}    + \frac{1}{3^s}\cdot\frac{(1-(\frac{1}{3^s})^{1})}{(1-\frac{1}{3^s})}   + \frac{1}{3^s}\cdot\frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{0})}{(1-\frac{1}{2^s})} \Bigg] \nonumber \\
+&= \frac{1}{25^s} + \frac{1}{50^s} + \frac{1}{75^s}
 \end{align}
 
 
 \begin{align}
-a_{27}(s,N) &=(\frac{1}{3^s})^3\cdot \Bigg[1 + \frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{3^3}\}})}}{\log{(2)}}\rfloor})}{(1-\frac{1}{2^s})}   \Bigg] \nonumber \\
+a_{27}(s,89) &=(\frac{1}{3^s})^3\cdot \Bigg[1 + \frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{3^3}\}})}}{\log{(2)}}\rfloor})}{(1-\frac{1}{2^s})}   \Bigg] \nonumber \\
 &=(\frac{1}{3^s})^3\cdot \Bigg[1 + \frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor1.720846\rfloor})}{(1-\frac{1}{2^s})}   \Bigg] \nonumber \\&=(\frac{1}{3^s})^3\cdot \Bigg[1 + \frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{1})}{(1-\frac{1}{2^s})}   \Bigg] \nonumber \\
 &= \frac{1}{27^s} + \frac{1}{54^s} \end{align}
 
 \begin{align}
-        a_{29}(s,89) =\frac{1}{29^s}\cdot \Bigg[1 + \frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{29}\}})}}{\log{(2)}}\rfloor})}{(1-\frac{1}{2^s})}    + \frac{1}{3^s}\cdot\frac{(1-(\frac{1}{3^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{29}\}})}}{\log{(3)}}\rfloor})}{(1-\frac{1}{3^s})}    \nonumber \\ +
-        \text{ double and higher order terms of the lowest 7 primes are already value zero for } a_{17}(s,89) \nonumber \\ 
-        \text{ and single prime terms for prime 5 and higher are already value zero for } a_{19}(s,89) \Bigg] \nonumber 
+        a_{29}(s,89) &=\frac{1}{29^s}\cdot \Bigg[1 + \frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{29}\}})}}{\log{(2)}}\rfloor})}{(1-\frac{1}{2^s})}    + \frac{1}{3^s}\cdot\frac{(1-(\frac{1}{3^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{29}\}})}}{\log{(3)}}\rfloor})}{(1-\frac{1}{3^s})}     + 0 \nonumber \\ 
+        &\text{ for other products in $a_{29}(s,89)$ because of known behaviour in lower terms of expansion for N=89 } \Bigg] \nonumber \\
+        &=\frac{1}{29^s}\cdot \Bigg[1 + \frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor1.617752\rfloor})}{(1-\frac{1}{2^s})}    + \frac{1}{3^s}\cdot\frac{(1-(\frac{1}{3^s})^{\lfloor1.020688\rfloor})}{(1-\frac{1}{3^s})}   \Bigg] \nonumber \\
+         &=\frac{1}{29^s}\cdot \Bigg[1 + \frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{1})}{(1-\frac{1}{2^s})}    + \frac{1}{3^s}\cdot\frac{(1-(\frac{1}{3^s})^{1})}{(1-\frac{1}{3^s})}  \Bigg] \nonumber \\
+        &= \frac{1}{29^s} + \frac{1}{58^s} + \frac{1}{87^s}
 \end{align}
 
 \begin{align}
-        a_{29}(s,89) =\frac{1}{29^s}\cdot \Bigg[1 + \frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor1.617752\rfloor})}{(1-\frac{1}{2^s})}    + \frac{1}{3^s}\cdot\frac{(1-(\frac{1}{3^s})^{\lfloor1.020688\rfloor})}{(1-\frac{1}{3^s})}    \nonumber \\ +
-        \text{ double and higher order terms of the lowest 7 primes are already value zero for } a_{17}(s,89) \nonumber \\ 
-        \text{ and single prime terms for prime 5 and higher are already value zero for } a_{19}(s,89) \Bigg] \nonumber 
+        a_{31}(s,89) &=\frac{1}{31^s}\cdot \Bigg[1 + \frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{31}\}})}}{\log{(2)}}\rfloor})}{(1-\frac{1}{2^s})}    + \frac{1}{3^s}\cdot\frac{(1-(\frac{1}{3^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{31}\}})}}{\log{(3)}}\rfloor})}{(1-\frac{1}{3^s})}     + 0 \nonumber \\ 
+        &\text{ for other products in $a_{31}(s,89)$ because of known behaviour in lower terms of expansion for N=89 } \Bigg] \nonumber \\ 
+&=\frac{1}{31^s}\cdot \Bigg[1 + \frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor1.521537\rfloor})}{(1-\frac{1}{2^s})}    + \frac{1}{3^s}\cdot\frac{(1-(\frac{1}{3^s})^{\lfloor0.959983\rfloor})}{(1-\frac{1}{3^s})}   \Bigg] \nonumber \\
+&=\frac{1}{31^s}\cdot \Bigg[1 + \frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{1})}{(1-\frac{1}{2^s})}    + \frac{1}{3^s}\cdot\frac{(1-(\frac{1}{3^s})^{0})}{(1-\frac{1}{3^s})}  \Bigg] \nonumber \\
+        &= \frac{1}{31^s} + \frac{1}{62^s} 
 \end{align}
 
 \begin{align}
-         =\frac{1}{29^s}\cdot \Bigg[1 + \frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{1})}{(1-\frac{1}{2^s})}    + \frac{1}{3^s}\cdot\frac{(1-(\frac{1}{3^s})^{1})}{(1-\frac{1}{3^s})}    \nonumber \\ +
-        \text{ double and higher order terms of the lowest 7 primes are already value zero for } a_{17}(s,89) \nonumber \\ 
-        \text{ and single prime terms for prime 5 and higher are already value zero for } a_{19}(s,89) \Bigg] \nonumber \\
-        = \frac{1}{29^s} + \frac{1}{58^s} + \frac{1}{87^s}
-\end{align}
-
-\begin{align}
-        a_{31}(s,89) =\frac{1}{31^s}\cdot \Bigg[1 + \frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{31}\}})}}{\log{(2)}}\rfloor})}{(1-\frac{1}{2^s})}    + \frac{1}{3^s}\cdot\frac{(1-(\frac{1}{3^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{31}\}})}}{\log{(3)}}\rfloor})}{(1-\frac{1}{3^s})}    \nonumber \\ +
-        \text{ double and higher order terms of the lowest 7 primes are already value zero for } a_{17}(s,89) \nonumber \\ 
-        \text{ and single prime terms for prime 5 and higher are already value zero for } a_{19}(s,89) \Bigg] \nonumber 
-\end{align}
-
-\begin{align}
-        a_{31}(s,89) =\frac{1}{31^s}\cdot \Bigg[1 + \frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor1.521537\rfloor})}{(1-\frac{1}{2^s})}    + \frac{1}{3^s}\cdot\frac{(1-(\frac{1}{3^s})^{\lfloor0.959983\rfloor})}{(1-\frac{1}{3^s})}    \nonumber \\ +
-        \text{ double and higher order terms of the lowest 7 primes are already value zero for } a_{17}(s,89) \nonumber \\ 
-        \text{ and single prime terms for prime 5 and higher are already value zero for } a_{19}(s,89) \Bigg] \nonumber 
-\end{align}
-
-\begin{align}
-         =\frac{1}{31^s}\cdot \Bigg[1 + \frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{1})}{(1-\frac{1}{2^s})}    + \frac{1}{3^s}\cdot\frac{(1-(\frac{1}{3^s})^{0})}{(1-\frac{1}{3^s})}    \nonumber \\ +
-        \text{ double and higher order terms of the lowest 7 primes are already value zero for } a_{17}(s,89) \nonumber \\ 
-        \text{ and single prime terms for prime 5 and higher are already value zero for } a_{19}(s,89) \Bigg] \nonumber \\
-        = \frac{1}{31^s} + \frac{1}{62^s} 
-\end{align}
-
-\begin{align}
-        a_{37}(s,89) =\frac{1}{37^s}\cdot \Bigg[1 + \frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{37}\}})}}{\log{(2)}}\rfloor})}{(1-\frac{1}{2^s})}   \nonumber \\ +
-        \text{ double and higher order terms of the lowest 7 primes are already value zero for } a_{17}(s,89) \nonumber \\ 
-        \text{ and single prime terms for prime 3 and higher are already value zero for } a_{31}(s,89) \Bigg] \nonumber 
-\end{align}
-
-\begin{align}
-        a_{37}(s,89) =\frac{1}{37^s}\cdot \Bigg[1 + \frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor1.26628\rfloor})}{(1-\frac{1}{2^s})}    \nonumber \\ +
-        \text{ double and higher order terms of the lowest 7 primes are already value zero for } a_{17}(s,89) \nonumber \\ 
-        \text{ and single prime terms for prime 3 and higher are already value zero for } a_{31}(s,89) \Bigg] \nonumber 
-\end{align}
-
-\begin{align}
-         =\frac{1}{37^s}\cdot \Bigg[1 + \frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{1})}{(1-\frac{1}{2^s})}    \nonumber \\ +
-        \text{ double and higher order terms of the lowest 7 primes are already value zero for } a_{17}(s,89) \nonumber \\ 
-        \text{ and single prime terms for prime 3 and higher are already value zero for } a_{31}(s,89) \Bigg] \nonumber \\
-        = \frac{1}{37^s} + \frac{1}{74^s} 
+        a_{37}(s,89) &=\frac{1}{37^s}\cdot \Bigg[1 + \frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{37}\}})}}{\log{(2)}}\rfloor})}{(1-\frac{1}{2^s})}    + 0 \nonumber \\ 
+        &\text{ for other products in $a_{37}(s,89)$ because of known behaviour in lower terms of expansion for N=89 } \Bigg] \nonumber \\
+&=\frac{1}{37^s}\cdot \Bigg[1 + \frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor1.26628\rfloor})}{(1-\frac{1}{2^s})}  \Bigg] \nonumber \\ 
+&=\frac{1}{37^s}\cdot \Bigg[1 + \frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{1})}{(1-\frac{1}{2^s})}    \Bigg] \nonumber \\
+        &= \frac{1}{37^s} + \frac{1}{74^s} 
 \end{align}
 
 
 \begin{align}
-        a_{41}(s,89) =\frac{1}{41^s}\cdot \Bigg[1 + \frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{41}\}})}}{\log{(2)}}\rfloor})}{(1-\frac{1}{2^s})}   \nonumber \\ +
-        \text{ double and higher order terms of the lowest 7 primes are already value zero for } a_{17}(s,89) \nonumber \\ 
-        \text{ and single prime terms for prime 3 and higher are already value zero for } a_{31}(s,89) \Bigg] \nonumber 
-\end{align}
-
-\begin{align}
-        a_{41}(s,89) =\frac{1}{41^s}\cdot \Bigg[1 + \frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor1.118181\rfloor})}{(1-\frac{1}{2^s})}    \nonumber \\ +
-        \text{ double and higher order terms of the lowest 7 primes are already value zero for } a_{17}(s,89) \nonumber \\ 
-        \text{ and single prime terms for prime 3 and higher are already value zero for } a_{31}(s,89) \Bigg] \nonumber 
-\end{align}
-
-\begin{align}
-         =\frac{1}{41^s}\cdot \Bigg[1 + \frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{1})}{(1-\frac{1}{2^s})}    \nonumber \\ +
-        \text{ double and higher order terms of the lowest 7 primes are already value zero for } a_{17}(s,89) \nonumber \\ 
-        \text{ and single prime terms for prime 3 and higher are already value zero for } a_{31}(s,89) \Bigg] \nonumber \\
-        = \frac{1}{41^s} + \frac{1}{82^s} 
+        a_{41}(s,89) &=\frac{1}{41^s}\cdot \Bigg[1 + \frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{41}\}})}}{\log{(2)}}\rfloor})}{(1-\frac{1}{2^s})}    + 0 \nonumber \\ 
+        &\text{ for other products in $a_{41}(s,89)$ because of known behaviour in lower terms of expansion for N=89 } \Bigg] \nonumber \\ 
+        &=\frac{1}{41^s}\cdot \Bigg[1 + \frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor1.118181\rfloor})}{(1-\frac{1}{2^s})} \Bigg] \nonumber \\ 
+&=\frac{1}{41^s}\cdot \Bigg[1 + \frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{1})}{(1-\frac{1}{2^s})}    \Bigg] \nonumber \\
+        &= \frac{1}{41^s} + \frac{1}{82^s} 
 \end{align}
 
 
 \begin{align}
-        a_{43}(s,89) =\frac{1}{43^s}\cdot \Bigg[1 + \frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{43}\}})}}{\log{(2)}}\rfloor})}{(1-\frac{1}{2^s})}   \nonumber \\ +
-        \text{ double and higher order terms of the lowest 7 primes are already value zero for } a_{17}(s,89) \nonumber \\ 
-        \text{ and single prime terms for prime 3 and higher are already value zero for } a_{31}(s,89) \Bigg] \nonumber 
+        a_{43}(s,89) &=\frac{1}{43^s}\cdot \Bigg[1 + \frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{43}\}})}}{\log{(2)}}\rfloor})}{(1-\frac{1}{2^s})}    + 0 \nonumber \\ 
+        &\text{ for other products in $a_{43}(s,89)$ because of known behaviour in lower terms of expansion for N=89 } \Bigg] \nonumber \\ 
+&=\frac{1}{43^s}\cdot \Bigg[1 + \frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor1.049469\rfloor})}{(1-\frac{1}{2^s})} \Bigg] \nonumber \\ 
+&=\frac{1}{43^s}\cdot \Bigg[1 + \frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{1})}{(1-\frac{1}{2^s})}  \Bigg] \nonumber \\
+        &= \frac{1}{43^s} + \frac{1}{86^s} 
 \end{align}
 
 \begin{align}
-        a_{43}(s,89) =\frac{1}{43^s}\cdot \Bigg[1 + \frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor1.049469\rfloor})}{(1-\frac{1}{2^s})}    \nonumber \\ +
-        \text{ double and higher order terms of the lowest 7 primes are already value zero for } a_{17}(s,89) \nonumber \\ 
-        \text{ and single prime terms for prime 3 and higher are already value zero for } a_{31}(s,89) \Bigg] \nonumber 
+        a_{47}(s,89) &=\frac{1}{47^s}\cdot \Bigg[1 + \frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{47}\}})}}{\log{(2)}}\rfloor})}{(1-\frac{1}{2^s})} + 0 \nonumber \\ 
+        &\text{ for other products in $a_{47}(s,89)$ because of known behaviour in lower terms of expansion for N=89 } \Bigg] \nonumber \\
+&=\frac{1}{47^s}\cdot \Bigg[1 + \frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor0.9211446\rfloor})}{(1-\frac{1}{2^s})}  \Bigg] \nonumber \\
+&=\frac{1}{47^s}\cdot \Bigg[1 + \frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{0})}{(1-\frac{1}{2^s})}     \Bigg] \nonumber \\
+        &= \frac{1}{47^s} 
 \end{align}
 
 \begin{align}
-         =\frac{1}{43^s}\cdot \Bigg[1 + \frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{1})}{(1-\frac{1}{2^s})}    \nonumber \\ +
-        \text{ double and higher order terms of the lowest 7 primes are already value zero for } a_{17}(s,89) \nonumber \\ 
-        \text{ and single prime terms for prime 3 and higher are already value zero for } a_{31}(s,89) \Bigg] \nonumber \\
-        = \frac{1}{43^s} + \frac{1}{86^s} 
-\end{align}
-
-\begin{align}
-        a_{47}(s,89) =\frac{1}{47^s}\cdot \Bigg[1 + \frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{47}\}})}}{\log{(2)}}\rfloor})}{(1-\frac{1}{2^s})}   \nonumber \\ +
-        \text{ double and higher order terms of the lowest 7 primes are already value zero for } a_{17}(s,89) \nonumber \\ 
-        \text{ and single prime terms for prime 3 and higher are already value zero for } a_{31}(s,89) \Bigg] \nonumber 
-\end{align}
-
-\begin{align}
-        a_{47}(s,89) =\frac{1}{47^s}\cdot \Bigg[1 + \frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor0.9211446\rfloor})}{(1-\frac{1}{2^s})}    \nonumber \\ +
-        \text{ double and higher order terms of the lowest 7 primes are already value zero for } a_{17}(s,89) \nonumber \\ 
-        \text{ and single prime terms for prime 3 and higher are already value zero for } a_{31}(s,89) \Bigg] \nonumber 
-\end{align}
-
-\begin{align}
-         =\frac{1}{47^s}\cdot \Bigg[1 + \frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{0})}{(1-\frac{1}{2^s})}    \nonumber \\ +
-        \text{ double and higher order terms of the lowest 7 primes are already value zero for } a_{17}(s,89) \nonumber \\ 
-        \text{ and single prime terms for prime 3 and higher are already value zero for } a_{31}(s,89) \Bigg] \nonumber \\
-        = \frac{1}{47^s} 
-\end{align}
-
-\begin{align}
-        a_{49}(s,89) =(\frac{1}{7^s})^2\cdot \Bigg[1 + \frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{7^2}\}})}}{\log{(2)}}\rfloor})}{(1-\frac{1}{2^s})}  \nonumber \\  + \frac{1}{3^s}\cdot\frac{(1-(\frac{1}{3^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{7^2}\}})}}{\log{(3)}}\rfloor})}{(1-\frac{1}{3^s})} \nonumber \\  + \frac{1}{5^s}\cdot\frac{(1-(\frac{1}{5^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{7^2}\}})}}{\log{(5)}}\rfloor})}{(1-\frac{1}{5^s})} \nonumber \\  + \frac{1}{2^s}\cdot\frac{1}{3^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{3\cdot 7^2}\}})}}{\log{(2)}}\rfloor})}{(1-\frac{1}{2^s})}\cdot\frac{(1-(\frac{1}{3^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{2\cdot 7^2}\}})}}{\log{(3)}}\rfloor})}{(1-\frac{1}{3^s})} \nonumber \\  + \frac{1}{2^s}\cdot\frac{1}{5^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{5\cdot 7^2}\}})}}{\log{(2)}}\rfloor})}{(1-\frac{1}{2^s})}\cdot\frac{(1-(\frac{1}{5^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{2\cdot 7^2}\}})}}{\log{(5)}}\rfloor})}{(1-\frac{1}{5^s})} \nonumber \\  + \frac{1}{3^s}\cdot\frac{1}{5^s}\cdot\frac{(1-(\frac{1}{3^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{5\cdot 7^2}\}})}}{\log{(3)}}\rfloor})}{(1-\frac{1}{3^s})}\cdot\frac{(1-(\frac{1}{5^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{3\cdot 7^2}\}})}}{\log{(5)}}\rfloor})}{(1-\frac{1}{5^s})} \nonumber \\  + \frac{1}{2^s}\cdot\frac{1}{3^s}\cdot\frac{1}{5^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{3\cdot 5\cdot 7^2}\}})}}{\log{(2)}}\rfloor})}{(1-\frac{1}{2^s})}\cdot\frac{(1-(\frac{1}{3^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{2\cdot  5\cdot 7^2}\}})}}{\log{(3)}}\rfloor})}{(1-\frac{1}{3^s})} \cdot\frac{(1-(\frac{1}{5^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{2\cdot 3\cdot 7^2}\}})}}{\log{(5)}}\rfloor})}{(1-\frac{1}{5^s})} \Bigg] \nonumber \\
-\end{align}
-
-\begin{align}
-         =(\frac{1}{7^s})^2\cdot \Bigg[1 + \frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor0.8610236\rfloor})}{(1-\frac{1}{2^s})}    + \frac{1}{3^s}\cdot\frac{(1-(\frac{1}{3^s})^{\lfloor0.5432454\rfloor})}{(1-\frac{1}{3^s})}   + \frac{1}{5^s}\cdot\frac{(1-(\frac{1}{5^s})^{\lfloor0.3708227\rfloor})}{(1-\frac{1}{5^s})} \nonumber \\  + \frac{1}{2^s}\cdot\frac{1}{3^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor0\rfloor})}{(1-\frac{1}{2^s})}\cdot\frac{(1-(\frac{1}{3^s})^{\lfloor0\rfloor})}{(1-\frac{1}{3^s})}   + \frac{1}{2^s}\cdot\frac{1}{5^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor0\rfloor})}{(1-\frac{1}{2^s})}\cdot\frac{(1-(\frac{1}{5^s})^{\lfloor0\rfloor})}{(1-\frac{1}{5^s})} \nonumber \\  + \frac{1}{3^s}\cdot\frac{1}{5^s}\cdot\frac{(1-(\frac{1}{3^s})^{\lfloor0\rfloor})}{(1-\frac{1}{3^s})}\cdot\frac{(1-(\frac{1}{5^s})^{\lfloor0\rfloor})}{(1-\frac{1}{5^s})} \nonumber \\  + \frac{1}{2^s}\cdot\frac{1}{3^s}\cdot\frac{1}{5^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor0\rfloor})}{(1-\frac{1}{2^s})}\cdot\frac{(1-(\frac{1}{3^s})^{\lfloor0\rfloor})}{(1-\frac{1}{3^s})} \cdot\frac{(1-(\frac{1}{5^s})^{\lfloor0\rfloor})}{(1-\frac{1}{5^s})} \Bigg] \nonumber \\
-\end{align}
-
-\begin{align}
-         &=(\frac{1}{7^s})^2\cdot \Bigg[1 + \frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{0})}{(1-\frac{1}{2^s})}    + \frac{1}{3^s}\cdot\frac{(1-(\frac{1}{3^s})^{0})}{(1-\frac{1}{3^s})}   + \frac{1}{5^s}\cdot\frac{(1-(\frac{1}{5^s})^{0})}{(1-\frac{1}{5^s})} \nonumber \\  &+ \frac{1}{2^s}\cdot\frac{1}{3^s}\cdot\frac{(1-(\frac{1}{2^s})^{0})}{(1-\frac{1}{2^s})}\cdot\frac{(1-(\frac{1}{3^s})^{0})}{(1-\frac{1}{3^s})}   + \frac{1}{2^s}\cdot\frac{1}{5^s}\cdot\frac{(1-(\frac{1}{2^s})^{0})}{(1-\frac{1}{2^s})}\cdot\frac{(1-(\frac{1}{5^s})^{0})}{(1-\frac{1}{5^s})} \nonumber \\  &+ \frac{1}{3^s}\cdot\frac{1}{5^s}\cdot\frac{(1-(\frac{1}{3^s})^{0})}{(1-\frac{1}{3^s})}\cdot\frac{(1-(\frac{1}{5^s})^{0})}{(1-\frac{1}{5^s})} \nonumber \\  &+ \frac{1}{2^s}\cdot\frac{1}{3^s}\cdot\frac{1}{5^s}\cdot\frac{(1-(\frac{1}{2^s})^{0})}{(1-\frac{1}{2^s})}\cdot\frac{(1-(\frac{1}{3^s})^{0})}{(1-\frac{1}{3^s})} \cdot\frac{(1-(\frac{1}{5^s})^{0})}{(1-\frac{1}{5^s})} \Bigg] \nonumber \\
+        a_{49}(s,89) &=\left(\frac{1}{7^s}\right)^2\cdot \Bigg[1 +   \frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{7^2}\}})}}{\log{(2)}}\rfloor})}{(1-\frac{1}{2^s})}  + \frac{1}{3^s}\cdot\frac{(1-(\frac{1}{3^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{7^2}\}})}}{\log{(3)}}\rfloor})}{(1-\frac{1}{3^s})} + \frac{1}{5^s}\cdot\frac{(1-(\frac{1}{5^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{7^2}\}})}}{\log{(5)}}\rfloor})}{(1-\frac{1}{5^s})} \nonumber \\ + &\sum_{q=1}^4 \left(\frac{1}{3^s}\right)^q\cdot\frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{3^q\cdot 7^2}\}})}}{\log{(2)}}\rfloor})}{(1-\frac{1}{2^s})}      + \sum_{p=1}^2 \left(\frac{1}{5^s}\right)^p\cdot\frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{5^p\cdot 7^2}\}})}}{\log{(2)}}\rfloor})}{(1-\frac{1}{2^s})} \nonumber \\    + &\sum_{p=1}^2 \left(\frac{1}{5^s}\right)^p\cdot\frac{1}{3^s}\cdot\frac{(1-(\frac{1}{3^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{5^p\cdot 7^2}\}})}}{\log{(3)}}\rfloor})}{(1-\frac{1}{3^s})}  + \sum_{p=1}^2 \sum_{q=1}^4 \left(\frac{1}{5^s}\right)^p\cdot\left(\frac{1}{3^s}\right)^q\cdot\frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor\frac{\log{(\max{\{1,\frac{89}{3^q\cdot 5^p\cdot 7^2}\}})}}{\log{(2)}}\rfloor})}{(1-\frac{1}{2^s})} \Bigg] \nonumber \\
+         &=(\frac{1}{7^s})^2\cdot \Bigg[1 + \frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor0.8610236\rfloor})}{(1-\frac{1}{2^s})} + 0 \nonumber \\ 
+        &\text{ for other products in $a_{49}(s,89)$ because of known behaviour in lower terms of expansion for N=89 }  \Bigg] \nonumber \\
+         &=(\frac{1}{7^s})^2\cdot \Bigg[1 + \frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{0})}{(1-\frac{1}{2^s})}   \Bigg] \nonumber \\
         &= \frac{1}{49^s}
 \end{align}
 
 \begin{align}
-        a_{53}(s,89) &=\frac{1}{53^s}\cdot \Bigg[1 + 0  \nonumber \\
-       & \text{as all single and higher product prime terms for prime 2 upwards are already value zero for } a_{47}(s,89) \nonumber \\
+        a_{53}(s,89) &=\frac{1}{53^s}\cdot \Bigg[1 + 0  \text{ for other products in $a_{53}(s,89)$ as all single } \nonumber \\
+       & \text{ and higher product prime terms for prime 2 upwards are already value zero for } a_{47}(s,89) \nonumber \\
        & \text{ stated more plainly since } 2\cdot47^+ \ge 94 > N=89 \Bigg] \nonumber \\
         &=\frac{1}{53^s}
 \end{align}
 
 
-likewise because $a_{47}(s,89)=\frac{1}{53^s}$ has only one non-zero term and $2\cdot47^+ \ge 94 > N=89$ the following prime terms have only one term.
+likewise also because $a_{47}(s,89)=\frac{1}{47^s}$ has only one non-zero term and $2\cdot47^+ \ge 94 > N=89$ the following expansion terms of equation (5) have only one term.
 
 \begin{align}
         a_{59}(s,89) &=\frac{1}{59^s}\cdot \Bigg[1+0\Bigg] = \frac{1}{59^s} \\
@@ -651,7 +614,7 @@ a_{81}(s,89) &=(\frac{1}{3^s})^4\cdot \Bigg[1 + \frac{1}{2^s}\cdot\frac{(1-(\fra
 &= \frac{1}{81^s}
 \end{align}
 
-likewise again because $a_{47}(s,89)=\frac{1}{53^s}$ has only one non-zero term and $2\cdot47^+ \ge 94 > N=89$ the following prime terms have only one term.
+likewise also because $a_{47}(s,89)=\frac{1}{47^s}$ has only one non-zero term and $2\cdot47^+ \ge 94 > N=89$ the following expansion terms of equation (5) have only one term.
 
 \begin{align}
         a_{83}(s,89) &=\frac{1}{83^s}\cdot \Bigg[1+0\Bigg] = \frac{1}{83^s} \\
