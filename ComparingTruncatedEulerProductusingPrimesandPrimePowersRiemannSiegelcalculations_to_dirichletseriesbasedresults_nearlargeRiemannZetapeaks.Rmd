@@ -1,5 +1,5 @@
 ---
-title: "Examining the convergence behaviour of the finite Dirichlet Series and zeroth order Riemann Siegel formula calculated via the sum of products of finite geometric series of primes and powers of primes near the first Rosser point violation"
+title: "Examining the convergence behaviour of the finite Dirichlet Series and zeroth order Riemann Siegel formula calculated via the sum of products of finite geometric series of primes and powers of primes near the first Rosser rule violation"
 author: "John Martin"
 date: \today
 header-includes:  \usepackage{xcolor}
@@ -17,7 +17,7 @@ knitr::opts_chunk$set(echo = FALSE)
 
 ## DRAFT Executive summary 
 
-A linear combination of products of finite geometric series of primes and power of primes exhibits excellent performance in reproducing the finite Riemann Zeta Dirichlet Series and zeroth order Riemann Siegel formula results for N=1041 corresponding to the interval containing the first Rosser point violation. It can be observed that the first sqrt(N) of the primes (and their cross products and powers) contribute the majority of the Riemann Zeta large peak at s=0.5+I*6820051. However, all primes up to the first quiescent region $N=\sqrt{\frac{t}{2\pi}}$ are required to obtain accurate zeroth order approximations of the zero locations for closely spaced zeroes. 
+A linear combination of products of finite geometric series of primes and power of primes exhibits excellent performance in reproducing the finite Riemann Zeta Dirichlet Series and zeroth order Riemann Siegel formula results for N=1041 corresponding to the interval containing the first Rosser rule violation. It can be observed that the first sqrt(N) of the primes (and their cross products and powers) contribute the majority of the Riemann Zeta large peak at s=0.5+I*6820051. However, all primes up to the first quiescent region $N=\sqrt{\frac{t}{2\pi}}$ are required to obtain accurate zeroth order approximations of the zero locations for closely spaced zeroes. 
 
 ## Introduction
 
@@ -107,8 +107,8 @@ so the same alternate prime based expansion for N=1041 can be reused over a size
 An approximation of Riemann Zeta function behaviour can be obtained by the finite dirichlet series based zeroth order Riemann Siegel formula [1,2] at the first quiescent region $N_1=\sqrt{\frac{t}{2\pi}}$ of the oscillatory divergence of the dirichlet series
 
 \begin{align}
-\zeta_{RS\text{ zeroth order }}(s) = &\sum_{n=1}^{\lfloor\sqrt{\frac{N}{2\pi}}\rfloor} \frac{1}{n^{s}} + \chi(s) \cdot \sum_{n=1}^{\lfloor\sqrt{\frac{N}{2\pi}}\rfloor} \frac{1}{n^{(1-s)}} \\
-Z_{RS\text{ zeroth order }}(s) = & \exp{(I\cdot \theta(t))} \cdot \left(\sum_{n=1}^{\lfloor\sqrt{\frac{N}{2\pi}}\rfloor} \frac{1}{n^{s}} + \chi(s) \cdot \sum_{n=1}^{\lfloor\sqrt{\frac{N}{2\pi}}\rfloor} \frac{1}{n^{(1-s)}} \right)
+\zeta_{RS\text{ zeroth order }}(s) = &\sum_{n=1}^{\lfloor\sqrt{\frac{t}{2\pi}}\rfloor} \frac{1}{n^{s}} + \chi(s) \cdot \sum_{n=1}^{\lfloor\sqrt{\frac{t}{2\pi}}\rfloor} \frac{1}{n^{(1-s)}} \\
+Z_{RS\text{ zeroth order }}(s) = & \exp{(I\cdot \theta(t))} \cdot \left(\sum_{n=1}^{\lfloor\sqrt{\frac{t}{2\pi}}\rfloor} \frac{1}{n^{s}} + \chi(s) \cdot \sum_{n=1}^{\lfloor\sqrt{\frac{t}{2\pi}}\rfloor} \frac{1}{n^{(1-s)}} \right)
 \end{align}
 
 where (i) $\chi(s)$ is the multiplicative factor of the Riemann Zeta functional equation $\zeta(s)=\chi(s)\zeta(1-s)$, (ii) $\theta(t)$ the Riemann Siegel Theta function is a continuous function and (iii) equation (23) is the zeroth order Riemann Siegel Z function [1-3].
@@ -116,14 +116,13 @@ where (i) $\chi(s)$ is the multiplicative factor of the Riemann Zeta functional 
 Since the alternate finite geometric series based linear combination is equivalent to the finite dirichlet series the following Riemann Siegel prime based formulae can be written 
 
 \begin{align}
-\zeta_{\text{primeRS zeroth order }}(s) = &\sum_{p=2}^{P \le \lfloor\sqrt{\frac{N}{2\pi}}\rfloor} a_p(s,N) + \chi(s) \cdot \sum_{p=2}^{P \le \lfloor\sqrt{\frac{N}{2\pi}}\rfloor} a_p((1-s),N) \\
-Z_{\text{primeRS zeroth order }}(s) = & \exp{(I\cdot \theta(t))} \cdot \left(\sum_{p=2}^{P \le \lfloor\sqrt{\frac{N}{2\pi}}\rfloor} a_p(s,N) + \chi(s) \cdot \sum_{p=1}^{P \le \lfloor\sqrt{\frac{N}{2\pi}}\rfloor} a_p((1-s),N) \right)
+\zeta_{\text{primeRS zeroth order }}(s) = &\sum_{p=2}^{P \le \lfloor\sqrt{\frac{t}{2\pi}}\rfloor} a_p(s,\lfloor\sqrt{\frac{t}{2\pi}}\rfloor) + \chi(s) \cdot \sum_{p=2}^{P \le \lfloor\sqrt{\frac{t}{2\pi}}\rfloor} a_p((1-s),\lfloor\sqrt{\frac{t}{2\pi}}\rfloor) \\
+Z_{\text{primeRS zeroth order }}(s) = & \exp{(I\cdot \theta(t))} \cdot \left(\sum_{p=2}^{P \le \lfloor\sqrt{\frac{t}{2\pi}}\rfloor} a_p(s,\lfloor\sqrt{\frac{t}{2\pi}}\rfloor) + \chi(s) \cdot \sum_{p=1}^{P \le \lfloor\sqrt{\frac{t}{2\pi}}\rfloor} a_p((1-s),\lfloor\sqrt{\frac{t}{2\pi}}\rfloor) \right)
 \end{align}
 
 where $p \in$ primes and powers of primes $\le \lfloor\sqrt{\frac{N}{2\pi}}\rfloor$ and $p \ne {4,8,16,..}$ since the prime powers of 2 are already included the finite geometric series term for prime 2.
 
-Using equations (23) and (25), the impact of number of summed primes (up to N=1041) for the zeroth order Riemann Siegel Z function in the interval t=(6820047,6820053) can be viwed in figures 2-6.
-
+Using equations (23) and (25), the impact of number of summed primes (up to N=1041) for the zeroth order Riemann Siegel Z function in the interval t=(6820048,6820054) can be viewed in figures 2-6.
 
 
 
@@ -132,7 +131,7 @@ Using equations (23) and (25), the impact of number of summed primes (up to N=10
 knitr::include_graphics("/home/john/pari/primebasedtruncatedEPformula/imagSintervalbehaviour_onlyprimes2andpowers_RiemannSiegelZfn_usingfinitegeometricserieslinearcombination_0.5_6820051_pm3.pdf")
 
 ```
-***Figure 2. A comparison of the zeroth order Riemann Siegel Z function on the critical line in the interval t=(6820047,  6820053) to a prime based zeroth order Riemann Siegel Z function using only prime 2 and prime 2 powers. ***
+***Figure 2. A comparison of the zeroth order Riemann Siegel Z function on the critical line in the interval t=(6820048,  6820054) to a prime based zeroth order Riemann Siegel Z function using only prime 2 and prime 2 powers. ***
 
 
 ```{r primeRS_Z_prime2_3_contribution_6820051, fig.show = "hold",  out.width = c("85%"), fig.align = "center", fig.height=2.5}
@@ -140,29 +139,69 @@ knitr::include_graphics("/home/john/pari/primebasedtruncatedEPformula/imagSinter
 knitr::include_graphics("/home/john/pari/primebasedtruncatedEPformula/imagSintervalbehaviour_onlyprimes2and3andtheirpowers_RiemannSiegelZfn_usingfinitegeometricserieslinearcombination_0.5_6820051_pm3.pdf")
 
 ```
-***Figure 3. A comparison of the zeroth order Riemann Siegel Z function on the critical line in the interval t=(6820047,  6820053) to a prime based zeroth order Riemann Siegel Z function using only prime 2, prime 3 and prime 2 powers. ***
+***Figure 3. A comparison of the zeroth order Riemann Siegel Z function on the critical line in the interval t=(6820048,  6820054) to a prime based zeroth order Riemann Siegel Z function using only prime 2, prime 3 and prime 2 powers. ***
 
 ```{r primeRS_upto_p31_contribution_6820051, fig.show = "hold",  out.width = c("85%"), fig.align = "center", fig.height=3.5}
 
 knitr::include_graphics("/home/john/pari/primebasedtruncatedEPformula/imagSintervalbehaviour_onlyfirstsqrtbyNofprimes_RiemannSiegelZfn_usingfinitegeometricserieslinearcombination_0.5_6820051_pm3.pdf")
 
 ```
-***Figure 4. A comparison of the zeroth order Riemann Siegel Z function on the critical line in the interval t=(6820047,  6820053) to a prime based zeroth order Riemann Siegel Z function using terms upto prime=31. ***
+***Figure 4. A comparison of the zeroth order Riemann Siegel Z function on the critical line in the interval t=(6820048,  6820054) to a prime based zeroth order Riemann Siegel Z function using terms upto prime=31. ***
 
 ```{r primeRS_upt0_p509_contribution_6820051, fig.show = "hold",  out.width = c("85%"), fig.align = "center", fig.height=3.5}
 
 knitr::include_graphics("/home/john/pari/primebasedtruncatedEPformula/imagSintervalbehaviour_onlyfirsthalfofprimes_RiemannSiegelZfn_usingfinitegeometricserieslinearcombination_0.5_6820051_pm3.pdf")
 
 ```
-***Figure 3. A comparison of the zeroth order Riemann Siegel Z function on the critical line in the interval t=(6820047,  6820053) to a prime based zeroth order Riemann Siegel Z function using terms upto prime 509. ***
+***Figure 5. A comparison of the zeroth order Riemann Siegel Z function on the critical line in the interval t=(6820048,  6820054) to a prime based zeroth order Riemann Siegel Z function using terms upto prime 509. ***
 
 ```{r primeRS_Z_6820051, fig.show = "hold",  out.width = c("85%"), fig.align = "center", fig.height=3.5}
 
 knitr::include_graphics("/home/john/pari/primebasedtruncatedEPformula/imagSintervalbehaviour_allprimes_RiemannSiegelZfn_usingfinitegeometricserieslinearcombination_0.5_6820051_pm3.pdf")
 
 ```
-***Figure 3. A comparison of the zeroth order Riemann Siegel Z function on the critical line in the interval t=(6820047,  6820053) to a prime based zeroth order Riemann Siegel Z function using all primes up to p=1039. Technically 185 terms (primes and powers of primes 3 upwards containing products and finite geometric series) compared to 1041 terms in dirichlet series.***
+***Figure 6. A comparison of the zeroth order Riemann Siegel Z function on the critical line in the interval t=(6820048,  6820054) to a prime based zeroth order Riemann Siegel Z function using all primes up to p=1039. Technically 192 terms (primes and powers of primes 3 upwards containing products and finite geometric series) compared to 1041 terms in dirichlet series.***
 
+\newpage
+
+## Proposed improvements to the algorithm for the alternate prime based expansion [7]
+
+Examining the first principles algorithm of the alternate prime based expansion for N=1041 produces 192 series terms (down from 1041 terms for the finite Dirichlet series) which was laborious and subject to human error. Further reduction in the complexity, length  and or speed of the algorithm can be achieved by noting (from the results in appendix B)
+
+1. prime powers series expansion terms do not have a confirmed simplification but there are many fewer terms of this type in the series expansion.
+
+For N=1041, there are 15 terms out of 192 that are prime powers where $p \ge 3$. (The prime powers of 2 do not need to be explicitly examined as they are naturally included in $a_2(s,N)$).
+
+
+2. many prime terms in the expansion however do share the same multiplicative factor. For example, for primes greater than $\sqrt{N}$
+
+\begin{align}
+a_{p>\sqrt{N}}(s,N)&=\frac{1}{p^s}\cdot \left(\sum_{i=1}^{\left\lfloor\frac{N}{p}\right\rfloor} \frac{1}{i^s}\right)  \text{ where } \sqrt{N} < p \le N 
+\end{align}
+
+where for N large many primes share the same $\left\lfloor\frac{N}{p}\right\rfloor$ value. The multiplicative factor $\sum_{i=1}^{\left\lfloor\frac{N}{p}\right\rfloor} \frac{1}{i^s}$ can itself also be expressed solely in terms of primes and prime powers using the alternate prime based expansion for $N^\prime=\left\lfloor\frac{N}{p}\right\rfloor$. (Note the critical threshold $p>\sqrt{N}$ since below that threshold value any attempt at deriving a finite summation term like on the RHS of equation (26) would be missing terms like 1/p^s).
+
+The above improvements should reduce the number of repeated calculations and length of the code. For example, in practice for N=1041, out of 192 series terms, 78 terms for primes shared the multiplicative factor 1, 28 terms for primes shared the multiplicative factor $(1+1/2^s)$, 14 terms for primes shared the multiplicative factor $(1+1/2^s+1/3^s)$ and these three simplifications were used in calculations in this paper.
+
+As a second example, consider N=164755715 which using a Riemann Siegel formula (based on the $\sqrt{\frac{t}{2\pi}}$ first quiescent region) could be used for approximating the Riemann Zeta function in the interval 
+
+$t=[N^2\cdot2\cdot\pi,(N+1)^2\cdot2\cdot\pi)=[170553581923548213.7840,170553583993929595.5909)$
+
+Given N=164755715, a finite dirichlet series based Riemann Siegel formula would have N=164755715 terms for $\sum_{n=1}^N \frac{1}{n^s}$ and $\sum_{n=1}^N \frac{1}{n^{(1-s)}}$.
+
+The finite geometric series prime and prime powers linear combination based series expansion would have 
+for N=164755715
+
+9226067 primes and 
+1700 prime powers for prime 3 upwards
+
+Adopting the proposed improvements to the finite geometric series prime and prime powers linear combination based series expansion algorithm described in this section means
+
+a critical threshold of $\sqrt{164755715}=12835.72$ for primes with simple multiplicative factors as in equation (26)  
+
+therefore 9224537 prime terms $\frac{1}{p^s}$ would be collected into 6266 respective grouped terms with different $\lfloor\frac{N}{p}\rfloor$ values and hence different common multiplicative factors (as in equation (26)).
+
+That leaves the ~1710 (lowest) primes and 1700 prime powers (spread throughout 1-N) for which the first principles finite geometric series prime and prime powers linear combination based series expansion terms needs to be derived. 
 
 
 ## Conclusions 
@@ -190,7 +229,10 @@ The cost of the prime based exercise is generating the formula for a given N but
 6. Martin, J.P.D. "Truncated Exponential Series based partial Euler Product calculations at quiescent regions of oscillatory divergence to produce approximations of the Riemann Siegel Z function." (2021)
 http://dx.doi.org/10.6084/m9.figshare.14842803
 
-## Appendix: Alternate expansion of finite Dirichlet Series based on finite geometric series of primes and powers of primes
+7.Martin, J.P.D. "The finite Dirichlet Series expressed as the sum of products of finite geometric series of primes and powers of primes." (2024) 
+http://dx.doi.org/10.6084/m9.figshare.26264198
+
+## Appendix A: Alternate expansion of finite Dirichlet Series based on finite geometric series of primes and powers of primes
 
 The identified alternate expansion in terms of finite geometric series of primes is as follows
 
@@ -241,3 +283,430 @@ and generally for prime powers of 11 including m=1
         a_{11^m}(s,N) =\left(\frac{1}{11^s}\right)^m\cdot \Bigg[\delta(N\ge11^m) + \frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor\frac{\log{(\max{\{1,\frac{N}{11^m}\}})}}{\log{(2)}}\rfloor})}{(1-\frac{1}{2^s})}    + \frac{1}{3^s}\cdot\frac{(1-(\frac{1}{3^s})^{\lfloor\frac{\log{(\max{\{1,\frac{N}{11^m}\}})}}{\log{(3)}}\rfloor})}{(1-\frac{1}{3^s})} \nonumber \\  + \frac{1}{5^s}\cdot\frac{(1-(\frac{1}{5^s})^{\lfloor\frac{\log{(\max{\{1,\frac{N}{11^m}\}})}}{\log{(5)}}\rfloor})}{(1-\frac{1}{5^s})}   + \frac{1}{7^s}\cdot\frac{(1-(\frac{1}{7^s})^{\lfloor\frac{\log{(\max{\{1,\frac{N}{11^m}\}})}}{\log{(7)}}\rfloor})}{(1-\frac{1}{7^s})} \nonumber \\ \nonumber \\ + \sum_{q=1} \left(\frac{1}{3^s}\right)^q\cdot\frac{1}{2^s}\frac{(1-(\frac{1}{2^s})^{\lfloor\frac{\log{(\max{\{1,\frac{N}{3^q\cdot 11^m}\}})}}{\log{(2)}}\rfloor})}{(1-\frac{1}{2^s})}   +  \sum_{q=1} \left(\frac{1}{5^s}\right)^q\cdot\frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor\frac{\log{(\max{\{1,\frac{N}{5^q\cdot 11^m}\}})}}{\log{(2)}}\rfloor})}{(1-\frac{1}{2^s})} \nonumber \\  +  \sum_{q=1} \left(\frac{1}{7^s}\right)^q\cdot\frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor\frac{\log{(\max{\{1,\frac{N}{7^q\cdot 11^m}\}})}}{\log{(2)}}\rfloor})}{(1-\frac{1}{2^s})} \nonumber \\  + \sum_{q=1} \left(\frac{1}{5^s}\right)^q\cdot\frac{1}{3^s}\cdot\frac{(1-(\frac{1}{3^s})^{\lfloor\frac{\log{(\max{\{1,\frac{N}{5^q\cdot 11^m}\}})}}{\log{(3)}}\rfloor})}{(1-\frac{1}{3^s})}  +  \sum_{q=1} \left(\frac{1}{7^s}\right)^q\cdot\frac{1}{3^s}\cdot\frac{(1-(\frac{1}{3^s})^{\lfloor\frac{\log{(\max{\{1,\frac{N}{7^q\cdot 11^m}\}})}}{\log{(3)}}\rfloor})}{(1-\frac{1}{3^s})} \nonumber \\  + \sum_{q=1} \left(\frac{1}{7^s}\right)^q\cdot\frac{1}{5^s}\cdot\frac{(1-(\frac{1}{5^s})^{\lfloor\frac{\log{(\max{\{1,\frac{N}{7^q\cdot 11^m}\}})}}{\log{(5)}}\rfloor})}{(1-\frac{1}{5^s})} \nonumber \\ \nonumber \\ + \sum_{p=1} \sum_{q=1} \left(\frac{1}{5^s}\right)^p\cdot\left(\frac{1}{3^s}\right)^q\cdot\frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor\frac{\log{(\max{\{1,\frac{N}{3^q\cdot 5^p\cdot 11^m}\}})}}{\log{(2)}}\rfloor})}{(1-\frac{1}{2^s})} \nonumber \\ + \sum_{p=1} \sum_{q=1} \left(\frac{1}{7^s}\right)^p\cdot\left(\frac{1}{3^s}\right)^q\cdot\frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor\frac{\log{(\max{\{1,\frac{N}{3^q\cdot 7^p\cdot 11^m}\}})}}{\log{(2)}}\rfloor})}{(1-\frac{1}{2^s})} \nonumber \\ + \sum_{p=1} \sum_{q=1} \left(\frac{1}{7^s}\right)^p\cdot\left(\frac{1}{5^s}\right)^q\cdot\frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor\frac{\log{(\max{\{1,\frac{N}{5^q\cdot 7^p\cdot 11^m}\}})}}{\log{(2)}}\rfloor})}{(1-\frac{1}{2^s})} \nonumber \\ + \sum_{p=1} \sum_{q=1} \left(\frac{1}{7^s}\right)^p\cdot\left(\frac{1}{5^s}\right)^q\cdot\frac{1}{3^s}\cdot\frac{(1-(\frac{1}{3^s})^{\lfloor\frac{\log{(\max{\{1,\frac{N}{5^q\cdot 7^p\cdot 11^m}\}})}}{\log{(3)}}\rfloor})}{(1-\frac{1}{3^s})} \nonumber \\ \nonumber \\ + \sum_{p=1} \sum_{q=1} \sum_{r=1} \left(\frac{1}{7^s}\right)^p\cdot\left(\frac{1}{5^s}\right)^q\cdot\left(\frac{1}{3^s}\right)^r\cdot\frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor\frac{\log{(\max{\{1,\frac{N}{3^r\cdot  5^q\cdot 7^p\cdot 11^m}\}})}}{\log{(2)}}\rfloor})}{(1-\frac{1}{2^s})} \Bigg]  
 \end{align}
 
+\newpage
+
+## Appendix B: N=1041 example of alternate expansion of finite Dirichlet Series based on finite geometric series of primes and powers of primes
+
+An verbose version of pari-gp code snippet with the functions defining the finitie geometric based series expansion terms for N=1041. For larger primes there were opportunities for code efficiency by grouping together terms by the same multiplicative factor. Powers of primes had their own functions as occasionally some higher cross products are not present in the power of primes function having already being generated in a lower series expansion term. Some code bugs occurred and were fixed during the code writing but the final quality assurance did produce exact agreement between the first principles finite dirichlet series calculation and the finite geometric series linear combination based calculation.
+
+As the same prime calculations repeatedly occurs in many series terms a further speedup in code performance is expected from pre-calculating (for a given $s=\sigma+I\cdot t$) these repeated components. 
+
+The printed code below contains line breaks and tabs to achieve prettier formatting. Such line breaks and tabs would need to be removed before using the code below in further calculations.
+
+\scriptsize{
+\begin{verbatim}
+func2(t,res)=1+1/2^(res+I*t)/(1-1/2^(res+I*t))*(1-(1/2^(res+I*t))^(10))
+func3(t,res)=1/3^(res+I*t)*(1+1/2^(res+I*t)/(1-1/2^(res+I*t))*(1-(1/2^(res+I*t))^(8)))
+func5(t,res)=1/5^(res+I*t)*(1+1/2^(res+I*t)/(1-1/2^(res+I*t))*(1-(1/2^(res+I*t))^(7))
+  +1/3^(res+I*t)/(1-1/3^(res+I*t))*(1-(1/3^(res+I*t))^(4))
+  +1/3^(res+I*t)/2^(res+I*t)/(1-1/2^(res+I*t))*(1-(1/2^(res+I*t))^(6))
+  +(1/3^(res+I*t))^2/2^(res+I*t)/(1-1/2^(res+I*t))*(1-(1/2^(res+I*t))^(4))
+  +(1/3^(res+I*t))^3/2^(res+I*t)/(1-1/2^(res+I*t))*(1-(1/2^(res+I*t))^(2))
+  +(1/3^(res+I*t))^4/2^(res+I*t))
+func7(t,res)=1/7^(res+I*t)*(1+1/2^(res+I*t)/(1-1/2^(res+I*t))*(1-(1/2^(res+I*t))^(7))
+  +1/3^(res+I*t)/(1-1/3^(res+I*t))*(1-(1/3^(res+I*t))^(4))
+  +1/5^(res+I*t)/(1-1/5^(res+I*t))*(1-(1/5^(res+I*t))^(3))
+  +1/3^(res+I*t)/2^(res+I*t)/(1-1/2^(res+I*t))*(1-(1/2^(res+I*t))^(5))
+  +(1/3^(res+I*t))^2/2^(res+I*t)/(1-1/2^(res+I*t))*(1-(1/2^(res+I*t))^(4))
+  +(1/3^(res+I*t))^3/2^(res+I*t)/(1-1/2^(res+I*t))*(1-(1/2^(res+I*t))^(2))
+  +1/5^(res+I*t)/2^(res+I*t)/(1-1/2^(res+I*t))*(1-(1/2^(res+I*t))^(4))
+  +(1/5^(res+I*t))^2/2^(res+I*t)/(1-1/2^(res+I*t))*(1-(1/2^(res+I*t))^(2))
+  +1/5^(res+I*t)/3^(res+I*t)/(1-1/3^(res+I*t))*(1-(1/3^(res+I*t))^(3))
+  +(1/5^(res+I*t))^2/3^(res+I*t)
+  +1/5^(res+I*t)/3^(res+I*t)/2^(res+I*t)/(1-1/2^(res+I*t))*(1-(1/2^(res+I*t))^(3))
+  +1/5^(res+I*t)/(3^(res+I*t))^2/2^(res+I*t))
+func9(t,res)=+(1/3^(res+I*t))^2*(1+1/2^(res+I*t)/(1-1/2^(res+I*t))*(1-(1/2^(res+I*t))^(6)))
+func11(t,res)=+1/11^(res+I*t)*(1+1/2^(res+I*t)/(1-1/2^(res+I*t))*(1-(1/2^(res+I*t))^(6))
+  +1/3^(res+I*t)/(1-1/3^(res+I*t))*(1-(1/3^(res+I*t))^(4))
+  +1/5^(res+I*t)/(1-1/5^(res+I*t))*(1-(1/5^(res+I*t))^(2))
+  +1/7^(res+I*t)/(1-1/7^(res+I*t))*(1-(1/7^(res+I*t))^(2))
+  +1/3^(res+I*t)/2^(res+I*t)/(1-1/2^(res+I*t))*(1-(1/2^(res+I*t))^(4))
+  +(1/3^(res+I*t))^2/2^(res+I*t)/(1-1/2^(res+I*t))*(1-(1/2^(res+I*t))^(3))
+  +(1/3^(res+I*t))^3/2^(res+I*t)
+  +1/5^(res+I*t)/2^(res+I*t)/(1-1/2^(res+I*t))*(1-(1/2^(res+I*t))^(4))
+  +(1/5^(res+I*t))^2/2^(res+I*t)
+  +1/7^(res+I*t)/2^(res+I*t)/(1-1/2^(res+I*t))*(1-(1/2^(res+I*t))^(3))
+  +1/5^(res+I*t)/3^(res+I*t)/(1-1/3^(res+I*t))*(1-(1/3^(res+I*t))^(2))
+  +(1/5^(res+I*t))^2/3^(res+I*t)
+  +1/7^(res+I*t)/3^(res+I*t)/(1-1/3^(res+I*t))*(1-(1/3^(res+I*t))^(2))
+  +1/7^(res+I*t)/5^(res+I*t)
+  +1/5^(res+I*t)/3^(res+I*t)/2^(res+I*t)/(1-1/2^(res+I*t))*(1-(1/2^(res+I*t))^(2))
+  +1/5^(res+I*t)/(3^(res+I*t))^2/2^(res+I*t)
+  +1/7^(res+I*t)/3^(res+I*t)/2^(res+I*t)/(1-1/2^(res+I*t))*(1-(1/2^(res+I*t))^(2))
+  +1/7^(res+I*t)/5^(res+I*t)/2^(res+I*t))
+func13(t,res)=+1/13^(res+I*t)*(1+1/2^(res+I*t)/(1-1/2^(res+I*t))*(1-(1/2^(res+I*t))^(6))
+  +1/3^(res+I*t)/(1-1/3^(res+I*t))*(1-(1/3^(res+I*t))^(3))
+  +1/5^(res+I*t)/(1-1/5^(res+I*t))*(1-(1/5^(res+I*t))^(2))
+  +1/7^(res+I*t)/(1-1/7^(res+I*t))*(1-(1/7^(res+I*t))^(2))
+  +1/11^(res+I*t)
+  +1/3^(res+I*t)/2^(res+I*t)/(1-1/2^(res+I*t))*(1-(1/2^(res+I*t))^(4))
+  +(1/3^(res+I*t))^2/2^(res+I*t)/(1-1/2^(res+I*t))*(1-(1/2^(res+I*t))^(3))
+  +(1/3^(res+I*t))^3/2^(res+I*t)
+  +1/5^(res+I*t)/2^(res+I*t)/(1-1/2^(res+I*t))*(1-(1/2^(res+I*t))^(4))
+  +(1/5^(res+I*t))^2/2^(res+I*t)
+  +1/7^(res+I*t)/2^(res+I*t)/(1-1/2^(res+I*t))*(1-(1/2^(res+I*t))^(3))
+  +1/11^(res+I*t)/2^(res+I*t)/(1-1/2^(res+I*t))*(1-(1/2^(res+I*t))^(2))
+  +1/5^(res+I*t)/3^(res+I*t)/(1-1/3^(res+I*t))*(1-(1/3^(res+I*t))^(2))
+  +(1/5^(res+I*t))^2/3^(res+I*t)
+  +1/7^(res+I*t)/3^(res+I*t)/(1-1/3^(res+I*t))*(1-(1/3^(res+I*t))^(2))
+  +1/11^(res+I*t)/3^(res+I*t)
+  +1/7^(res+I*t)/5^(res+I*t)
+  +1/11^(res+I*t)/5^(res+I*t)
+  +1/11^(res+I*t)/7^(res+I*t)
+  +1/5^(res+I*t)/3^(res+I*t)/2^(res+I*t)/(1-1/2^(res+I*t))*(1-(1/2^(res+I*t))^(2))
+  +1/7^(res+I*t)/3^(res+I*t)/2^(res+I*t)
+  +1/11^(res+I*t)/3^(res+I*t)/2^(res+I*t)
+  +1/7^(res+I*t)/5^(res+I*t)/2^(res+I*t))
+func17(t,res)=+1/17^(res+I*t)*(1+1/2^(res+I*t)/(1-1/2^(res+I*t))*(1-(1/2^(res+I*t))^(5))
+  +1/3^(res+I*t)/(1-1/3^(res+I*t))*(1-(1/3^(res+I*t))^(3))
+  +1/5^(res+I*t)/(1-1/5^(res+I*t))*(1-(1/5^(res+I*t))^(2))
+  +1/7^(res+I*t)/(1-1/7^(res+I*t))*(1-(1/7^(res+I*t))^(2))
+  +1/11^(res+I*t)
+  +1/13^(res+I*t)
+  +1/3^(res+I*t)/2^(res+I*t)/(1-1/2^(res+I*t))*(1-(1/2^(res+I*t))^(4))
+  +(1/3^(res+I*t))^2/2^(res+I*t)/(1-1/2^(res+I*t))*(1-(1/2^(res+I*t))^(2))
+  +(1/3^(res+I*t))^3/2^(res+I*t)
+  +1/5^(res+I*t)/2^(res+I*t)/(1-1/2^(res+I*t))*(1-(1/2^(res+I*t))^(3))
+  +(1/5^(res+I*t))^2/2^(res+I*t)
+  +1/7^(res+I*t)/2^(res+I*t)/(1-1/2^(res+I*t))*(1-(1/2^(res+I*t))^(3))
+  +1/11^(res+I*t)/2^(res+I*t)/(1-1/2^(res+I*t))*(1-(1/2^(res+I*t))^(2))
+  +1/13^(res+I*t)/2^(res+I*t)/(1-1/2^(res+I*t))*(1-(1/2^(res+I*t))^(2))
+  +1/5^(res+I*t)/3^(res+I*t)/(1-1/3^(res+I*t))*(1-(1/3^(res+I*t))^(2))
+  +1/7^(res+I*t)/3^(res+I*t)
+  +1/11^(res+I*t)/3^(res+I*t)
+  +1/13^(res+I*t)/3^(res+I*t)
+  +1/7^(res+I*t)/5^(res+I*t)
+  +1/11^(res+I*t)/5^(res+I*t)
+  +1/5^(res+I*t)/3^(res+I*t)/2^(res+I*t)/(1-1/2^(res+I*t))*(1-(1/2^(res+I*t))^(2))
+  +1/7^(res+I*t)/3^(res+I*t)/2^(res+I*t))
+func19(t,res)=+1/19^(res+I*t)*(1+1/2^(res+I*t)/(1-1/2^(res+I*t))*(1-(1/2^(res+I*t))^(5))
+  +1/3^(res+I*t)/(1-1/3^(res+I*t))*(1-(1/3^(res+I*t))^(3))
+  +1/5^(res+I*t)/(1-1/5^(res+I*t))*(1-(1/5^(res+I*t))^(2))
+  +1/7^(res+I*t)/(1-1/7^(res+I*t))*(1-(1/7^(res+I*t))^(2))
+  +1/11^(res+I*t)
+  +1/13^(res+I*t)
+  +1/17^(res+I*t)
+  +1/3^(res+I*t)/2^(res+I*t)/(1-1/2^(res+I*t))*(1-(1/2^(res+I*t))^(4))
+  +(1/3^(res+I*t))^2/2^(res+I*t)/(1-1/2^(res+I*t))*(1-(1/2^(res+I*t))^(2))
+  +(1/3^(res+I*t))^3/2^(res+I*t)
+  +1/5^(res+I*t)/2^(res+I*t)/(1-1/2^(res+I*t))*(1-(1/2^(res+I*t))^(3))
+  +(1/5^(res+I*t))^2/2^(res+I*t)
+  +1/7^(res+I*t)/2^(res+I*t)/(1-1/2^(res+I*t))*(1-(1/2^(res+I*t))^(2))
+  +1/11^(res+I*t)/2^(res+I*t)/(1-1/2^(res+I*t))*(1-(1/2^(res+I*t))^(2))
+  +1/13^(res+I*t)/2^(res+I*t)/(1-1/2^(res+I*t))*(1-(1/2^(res+I*t))^(2))
+  +1/17^(res+I*t)/2^(res+I*t)
+  +1/5^(res+I*t)/3^(res+I*t)/(1-1/3^(res+I*t))*(1-(1/3^(res+I*t))^(2))
+  +1/7^(res+I*t)/3^(res+I*t)
+  +1/11^(res+I*t)/3^(res+I*t)
+  +1/13^(res+I*t)/3^(res+I*t)
+  +1/17^(res+I*t)/3^(res+I*t)
+  +1/7^(res+I*t)/5^(res+I*t)
+  +1/5^(res+I*t)/3^(res+I*t)/2^(res+I*t)
+  +1/7^(res+I*t)/3^(res+I*t)/2^(res+I*t))
+func23(t,res)=+1/23^(res+I*t)*(1+1/2^(res+I*t)/(1-1/2^(res+I*t))*(1-(1/2^(res+I*t))^(5))
+  +1/3^(res+I*t)/(1-1/3^(res+I*t))*(1-(1/3^(res+I*t))^(3))
+  +1/5^(res+I*t)/(1-1/5^(res+I*t))*(1-(1/5^(res+I*t))^(2))
+  +1/7^(res+I*t)+1/11^(res+I*t)
+  +1/13^(res+I*t)
+  +1/17^(res+I*t)
+  +1/19^(res+I*t)
+  +1/3^(res+I*t)/2^(res+I*t)/(1-1/2^(res+I*t))*(1-(1/2^(res+I*t))^(3))
+  +(1/3^(res+I*t))^2/2^(res+I*t)/(1-1/2^(res+I*t))*(1-(1/2^(res+I*t))^(2))
+  +1/5^(res+I*t)/2^(res+I*t)/(1-1/2^(res+I*t))*(1-(1/2^(res+I*t))^(3))
+  +1/7^(res+I*t)/2^(res+I*t)/(1-1/2^(res+I*t))*(1-(1/2^(res+I*t))^(2))
+  +1/11^(res+I*t)/2^(res+I*t)/(1-1/2^(res+I*t))*(1-(1/2^(res+I*t))^(2))
+  +1/13^(res+I*t)/2^(res+I*t)
+  +1/17^(res+I*t)/2^(res+I*t)
+  +1/19^(res+I*t)/2^(res+I*t)
+  +1/5^(res+I*t)/3^(res+I*t)/(1-1/3^(res+I*t))*(1-(1/3^(res+I*t))^(2))
+  +1/7^(res+I*t)/3^(res+I*t)
+  +1/11^(res+I*t)/3^(res+I*t)
+  +1/13^(res+I*t)/3^(res+I*t)
+  +1/7^(res+I*t)/5^(res+I*t)
+  +1/5^(res+I*t)/3^(res+I*t)/2^(res+I*t)
+  +1/7^(res+I*t)/3^(res+I*t)/2^(res+I*t))
+func25(t,res)=+(1/5^(res+I*t))^2*(1+1/2^(res+I*t)/(1-1/2^(res+I*t))*(1-(1/2^(res+I*t))^(5))
+  +1/3^(res+I*t)/(1-1/3^(res+I*t))*(1-(1/3^(res+I*t))^(3))
+  +1/3^(res+I*t)/2^(res+I*t)/(1-1/2^(res+I*t))*(1-(1/2^(res+I*t))^(3))
+  +(1/3^(res+I*t))^2/2^(res+I*t)/(1-1/2^(res+I*t))*(1-(1/2^(res+I*t))^(2)))
+func27(t,res)=(1/3^(res+I*t))^3*(1+1/2^(res+I*t)/(1-1/2^(res+I*t))*(1-(1/2^(res+I*t))^(5)))
+func29(t,res)=+1/29^(res+I*t)*(1+1/2^(res+I*t)/(1-1/2^(res+I*t))*(1-(1/2^(res+I*t))^(5))
+  +1/3^(res+I*t)/(1-1/3^(res+I*t))*(1-(1/3^(res+I*t))^(3))
+  +1/5^(res+I*t)/(1-1/5^(res+I*t))*(1-(1/5^(res+I*t))^(2))
+  +1/7^(res+I*t)+1/11^(res+I*t)
+  +1/13^(res+I*t)
+  +1/17^(res+I*t)
+  +1/19^(res+I*t)
+  +1/23^(res+I*t)
+  +1/3^(res+I*t)/2^(res+I*t)/(1-1/2^(res+I*t))*(1-(1/2^(res+I*t))^(3))
+  +(1/3^(res+I*t))^2/2^(res+I*t)
+  +1/5^(res+I*t)/2^(res+I*t)/(1-1/2^(res+I*t))*(1-(1/2^(res+I*t))^(2))
+  +1/7^(res+I*t)/2^(res+I*t)/(1-1/2^(res+I*t))*(1-(1/2^(res+I*t))^(2))
+  +1/11^(res+I*t)/2^(res+I*t)
+  +1/13^(res+I*t)/2^(res+I*t)
+  +1/17^(res+I*t)/2^(res+I*t)
+  +1/5^(res+I*t)/3^(res+I*t)
+  +1/7^(res+I*t)/3^(res+I*t)
+  +1/11^(res+I*t)/3^(res+I*t)
+  +1/7^(res+I*t)/5^(res+I*t)
+  +1/5^(res+I*t)/3^(res+I*t)/2^(res+I*t))
+func31(t,res)=+1/31^(res+I*t)*(1+1/2^(res+I*t)/(1-1/2^(res+I*t))*(1-(1/2^(res+I*t))^(5))
+  +1/3^(res+I*t)/(1-1/3^(res+I*t))*(1-(1/3^(res+I*t))^(3))
+  +1/5^(res+I*t)/(1-1/5^(res+I*t))*(1-(1/5^(res+I*t))^(2))
+  +1/7^(res+I*t)
+  +1/11^(res+I*t)
+  +1/13^(res+I*t)
+  +1/17^(res+I*t)
+  +1/19^(res+I*t)
+  +1/23^(res+I*t)
+  +1/29^(res+I*t)
+  +1/3^(res+I*t)/2^(res+I*t)/(1-1/2^(res+I*t))*(1-(1/2^(res+I*t))^(3))
+  +(1/3^(res+I*t))^2/2^(res+I*t)
+  +1/5^(res+I*t)/2^(res+I*t)/(1-1/2^(res+I*t))*(1-(1/2^(res+I*t))^(2))
+  +1/7^(res+I*t)/2^(res+I*t)/(1-1/2^(res+I*t))*(1-(1/2^(res+I*t))^(2))
+  +1/11^(res+I*t)/2^(res+I*t)
+  +1/13^(res+I*t)/2^(res+I*t)
+  +1/5^(res+I*t)/3^(res+I*t)
+  +1/7^(res+I*t)/3^(res+I*t)
+  +1/11^(res+I*t)/3^(res+I*t)
+  +1/5^(res+I*t)/3^(res+I*t)/2^(res+I*t))
+func37(t,res)=+1/37^(res+I*t)*(1+1/2^(res+I*t)/(1-1/2^(res+I*t))*(1-(1/2^(res+I*t))^(4))
+  +1/3^(res+I*t)/(1-1/3^(res+I*t))*(1-(1/3^(res+I*t))^(3))
+  +1/5^(res+I*t)/(1-1/5^(res+I*t))*(1-(1/5^(res+I*t))^(2))
+  +1/7^(res+I*t)
+  +1/11^(res+I*t)
+  +1/13^(res+I*t)
+  +1/17^(res+I*t)
+  +1/19^(res+I*t)
+  +1/23^(res+I*t)
+  +1/3^(res+I*t)/2^(res+I*t)/(1-1/2^(res+I*t))*(1-(1/2^(res+I*t))^(3))
+  +(1/3^(res+I*t))^2/2^(res+I*t)
+  +1/5^(res+I*t)/2^(res+I*t)/(1-1/2^(res+I*t))*(1-(1/2^(res+I*t))^(2))
+  +1/7^(res+I*t)/2^(res+I*t)/(1-1/2^(res+I*t))*(1-(1/2^(res+I*t))^(2))
+  +1/11^(res+I*t)/2^(res+I*t)
+  +1/13^(res+I*t)/2^(res+I*t)
+  +1/5^(res+I*t)/3^(res+I*t)
+  +1/7^(res+I*t)/3^(res+I*t))
+func41(t,res)=+1/41^(res+I*t)*(1+1/2^(res+I*t)/(1-1/2^(res+I*t))*(1-(1/2^(res+I*t))^(4))
+  +1/3^(res+I*t)/(1-1/3^(res+I*t))*(1-(1/3^(res+I*t))^(2))
+  +1/5^(res+I*t)/(1-1/5^(res+I*t))*(1-(1/5^(res+I*t))^(2))
+  +1/7^(res+I*t)
+  +1/11^(res+I*t)
+  +1/13^(res+I*t)
+  +1/17^(res+I*t)
+  +1/19^(res+I*t)
+  +1/23^(res+I*t)
+  +1/3^(res+I*t)/2^(res+I*t)/(1-1/2^(res+I*t))*(1-(1/2^(res+I*t))^(3))
+  +(1/3^(res+I*t))^2/2^(res+I*t)
+  +1/5^(res+I*t)/2^(res+I*t)/(1-1/2^(res+I*t))*(1-(1/2^(res+I*t))^(2))
+  +1/7^(res+I*t)/2^(res+I*t)
+  +1/11^(res+I*t)/2^(res+I*t)
+  +1/5^(res+I*t)/3^(res+I*t)
+  +1/7^(res+I*t)/3^(res+I*t))
+func43(t,res)=+1/43^(res+I*t)*(1+1/2^(res+I*t)/(1-1/2^(res+I*t))*(1-(1/2^(res+I*t))^(4))
+  +1/3^(res+I*t)/(1-1/3^(res+I*t))*(1-(1/3^(res+I*t))^(2))
+  +1/5^(res+I*t)
+  +1/7^(res+I*t)
+  +1/11^(res+I*t)
+  +1/13^(res+I*t)
+  +1/17^(res+I*t)
+  +1/19^(res+I*t)
+  +1/23^(res+I*t)
+  +1/3^(res+I*t)/2^(res+I*t)/(1-1/2^(res+I*t))*(1-(1/2^(res+I*t))^(3))
+  +(1/3^(res+I*t))^2/2^(res+I*t)
+  +1/5^(res+I*t)/2^(res+I*t)/(1-1/2^(res+I*t))*(1-(1/2^(res+I*t))^(2))
+  +1/7^(res+I*t)/2^(res+I*t)
+  +1/11^(res+I*t)/2^(res+I*t)
+  +1/5^(res+I*t)/3^(res+I*t)
+  +1/7^(res+I*t)/3^(res+I*t))
+func47(t,res)=+1/47^(res+I*t)*(1+1/2^(res+I*t)/(1-1/2^(res+I*t))*(1-(1/2^(res+I*t))^(4))
+  +1/3^(res+I*t)/(1-1/3^(res+I*t))*(1-(1/3^(res+I*t))^(2))
+  +1/5^(res+I*t)
+  +1/7^(res+I*t)
+  +1/11^(res+I*t)
+  +1/13^(res+I*t)
+  +1/17^(res+I*t)
+  +1/19^(res+I*t)
+  +1/3^(res+I*t)/2^(res+I*t)/(1-1/2^(res+I*t))*(1-(1/2^(res+I*t))^(2))
+  +(1/3^(res+I*t))^2/2^(res+I*t)
+  +1/5^(res+I*t)/2^(res+I*t)/(1-1/2^(res+I*t))*(1-(1/2^(res+I*t))^(2))
+  +1/7^(res+I*t)/2^(res+I*t)
+  +1/11^(res+I*t)/2^(res+I*t)
+  +1/5^(res+I*t)/3^(res+I*t)
+  +1/7^(res+I*t)/3^(res+I*t))
+func49(t,res)=+(1/7^(res+I*t))^2*(1+1/2^(res+I*t)/(1-1/2^(res+I*t))*(1-(1/2^(res+I*t))^(4))
+  +1/3^(res+I*t)/(1-1/3^(res+I*t))*(1-(1/3^(res+I*t))^(2))
+  +1/5^(res+I*t)
+  +1/3^(res+I*t)/2^(res+I*t)/(1-1/2^(res+I*t))*(1-(1/2^(res+I*t))^(2))
+  +(1/3^(res+I*t))^2/2^(res+I*t)
+  +1/5^(res+I*t)/2^(res+I*t)/(1-1/2^(res+I*t))*(1-(1/2^(res+I*t))^(2))
+  +1/5^(res+I*t)/3^(res+I*t))
+func53(t,res)=+1/53^(res+I*t)*(1+1/2^(res+I*t)/(1-1/2^(res+I*t))*(1-(1/2^(res+I*t))^(4))
+  +1/3^(res+I*t)/(1-1/3^(res+I*t))*(1-(1/3^(res+I*t))^(2))
+  +1/5^(res+I*t)+1/7^(res+I*t)
+  +1/11^(res+I*t)
+  +1/13^(res+I*t)
+  +1/17^(res+I*t)
+  +1/19^(res+I*t)
+  +1/3^(res+I*t)/2^(res+I*t)/(1-1/2^(res+I*t))*(1-(1/2^(res+I*t))^(2))
+  +(1/3^(res+I*t))^2/2^(res+I*t)+1/5^(res+I*t)/2^(res+I*t)
+  +1/7^(res+I*t)/2^(res+I*t)
+  +1/5^(res+I*t)/3^(res+I*t))
+func59(t,res)=+1/59^(res+I*t)*(1+1/2^(res+I*t)/(1-1/2^(res+I*t))*(1-(1/2^(res+I*t))^(4))
+  +1/3^(res+I*t)/(1-1/3^(res+I*t))*(1-(1/3^(res+I*t))^(2))
+  +1/5^(res+I*t)
+  +1/7^(res+I*t)
+  +1/11^(res+I*t)
+  +1/13^(res+I*t)
+  +1/17^(res+I*t)
+  +1/3^(res+I*t)/2^(res+I*t)/(1-1/2^(res+I*t))*(1-(1/2^(res+I*t))^(2))
+  +1/5^(res+I*t)/2^(res+I*t)
+  +1/7^(res+I*t)/2^(res+I*t)
+  +1/5^(res+I*t)/3^(res+I*t))
+func61(t,res)=+1/61^(res+I*t)*(1+1/2^(res+I*t)/(1-1/2^(res+I*t))*(1-(1/2^(res+I*t))^(4))
+  +1/3^(res+I*t)/(1-1/3^(res+I*t))*(1-(1/3^(res+I*t))^(2))
+  +1/5^(res+I*t)
+  +1/7^(res+I*t)
+  +1/11^(res+I*t)
+  +1/13^(res+I*t)
+  +1/17^(res+I*t)
+  +1/3^(res+I*t)/2^(res+I*t)/(1-1/2^(res+I*t))*(1-(1/2^(res+I*t))^(2))
+  +1/5^(res+I*t)/2^(res+I*t)
+  +1/7^(res+I*t)/2^(res+I*t)
+  +1/5^(res+I*t)/3^(res+I*t))
+func67(t,res)=+1/67^(res+I*t)*(1+1/2^(res+I*t)/(1-1/2^(res+I*t))*(1-(1/2^(res+I*t))^(3))
+  +1/3^(res+I*t)/(1-1/3^(res+I*t))*(1-(1/3^(res+I*t))^(2))
+  +1/5^(res+I*t)
+  +1/7^(res+I*t)
+  +1/11^(res+I*t)
+  +1/13^(res+I*t)
+  +1/3^(res+I*t)/2^(res+I*t)/(1-1/2^(res+I*t))*(1-(1/2^(res+I*t))^(2))
+  +1/5^(res+I*t)/2^(res+I*t)
+  +1/7^(res+I*t)/2^(res+I*t)
+  +1/5^(res+I*t)/3^(res+I*t))
+func71(t,res)=+1/71^(res+I*t)*(1+1/2^(res+I*t)/(1-1/2^(res+I*t))*(1-(1/2^(res+I*t))^(3))
+  +1/3^(res+I*t)/(1-1/3^(res+I*t))*(1-(1/3^(res+I*t))^(2))
+  +1/5^(res+I*t)
+  +1/7^(res+I*t)
+  +1/11^(res+I*t)
+  +1/13^(res+I*t)
+  +1/3^(res+I*t)/2^(res+I*t)/(1-1/2^(res+I*t))*(1-(1/2^(res+I*t))^(2))
+  +1/5^(res+I*t)/2^(res+I*t)
+  +1/7^(res+I*t)/2^(res+I*t))
+func73(t,res)=+1/73^(res+I*t)*(1+1/2^(res+I*t)/(1-1/2^(res+I*t))*(1-(1/2^(res+I*t))^(3))
+  +1/3^(res+I*t)/(1-1/3^(res+I*t))*(1-(1/3^(res+I*t))^(2))
+  +1/5^(res+I*t)
+  +1/7^(res+I*t)
+  +1/11^(res+I*t)
+  +1/13^(res+I*t)
+  +1/3^(res+I*t)/2^(res+I*t)/(1-1/2^(res+I*t))*(1-(1/2^(res+I*t))^(2))
+  +1/5^(res+I*t)/2^(res+I*t)
+  +1/7^(res+I*t)/2^(res+I*t))
+func79(t,res)=+1/79^(res+I*t)*(1+1/2^(res+I*t)/(1-1/2^(res+I*t))*(1-(1/2^(res+I*t))^(3))
+  +1/3^(res+I*t)/(1-1/3^(res+I*t))*(1-(1/3^(res+I*t))^(2))
+  +1/5^(res+I*t)
+  +1/7^(res+I*t)
+  +1/11^(res+I*t)
+  +1/13^(res+I*t)
+  +1/3^(res+I*t)/2^(res+I*t)/(1-1/2^(res+I*t))*(1-(1/2^(res+I*t))^(2))
+  +1/5^(res+I*t)/2^(res+I*t))
+func81(t,res)=(1/3^(res+I*t))^4*(1+1/2^(res+I*t)/(1-1/2^(res+I*t))*(1-(1/2^(res+I*t))^(3)))
+func83(t,res)=+1/83^(res+I*t)*(1+1/2^(res+I*t)/(1-1/2^(res+I*t))*(1-(1/2^(res+I*t))^(3))
+  +1/3^(res+I*t)/(1-1/3^(res+I*t))*(1-(1/3^(res+I*t))^(2))
+  +1/5^(res+I*t)
+  +1/7^(res+I*t)
+  +1/11^(res+I*t)
+  +1/3^(res+I*t)/2^(res+I*t)/(1-1/2^(res+I*t))*(1-(1/2^(res+I*t))^(2))
+  +1/5^(res+I*t)/2^(res+I*t))
+func89(t,res)=+1/89^(res+I*t)*(1+1/2^(res+I*t)/(1-1/2^(res+I*t))*(1-(1/2^(res+I*t))^(3))
+  +1/3^(res+I*t)/(1-1/3^(res+I*t))*(1-(1/3^(res+I*t))^(2))
+  +1/5^(res+I*t)
+  +1/7^(res+I*t)
+  +1/11^(res+I*t)
+  +1/3^(res+I*t)/2^(res+I*t)
+  +1/5^(res+I*t)/2^(res+I*t))
+func97(t,res)=+1/97^(res+I*t)*(1+1/2^(res+I*t)/(1-1/2^(res+I*t))*(1-(1/2^(res+I*t))^(3))
+  +1/3^(res+I*t)/(1-1/3^(res+I*t))*(1-(1/3^(res+I*t))^(2))
+  +1/5^(res+I*t)
+  +1/7^(res+I*t)
+  +1/3^(res+I*t)/2^(res+I*t)
+  +1/5^(res+I*t)/2^(res+I*t))
+func101(t,res)=+1/101^(res+I*t)*(1+1/2^(res+I*t)/(1-1/2^(res+I*t))*(1-(1/2^(res+I*t))^(3))
+  +1/3^(res+I*t)/(1-1/3^(res+I*t))*(1-(1/3^(res+I*t))^(2))
+  +1/5^(res+I*t)
+  +1/7^(res+I*t)
+  +1/3^(res+I*t)/2^(res+I*t)
+  +1/5^(res+I*t)/2^(res+I*t))
+func103(t,res)=+1/103^(res+I*t)*(1+1/2^(res+I*t)/(1-1/2^(res+I*t))*(1-(1/2^(res+I*t))^(3))
+  +1/3^(res+I*t)/(1-1/3^(res+I*t))*(1-(1/3^(res+I*t))^(2))
+  +1/5^(res+I*t)
+  +1/7^(res+I*t)
+  +1/3^(res+I*t)/2^(res+I*t)
+  +1/5^(res+I*t)/2^(res+I*t))
+func107to113(t,res)=(+1/113^(res+I*t)+1/109^(res+I*t)+1/107^(res+I*t))*
+  (1+1/2^(res+I*t)/(1-1/2^(res+I*t))*(1-(1/2^(res+I*t))^(3))
+  +1/3^(res+I*t)/(1-1/3^(res+I*t))*(1-(1/3^(res+I*t))^(2))
+  +1/5^(res+I*t)
+  +1/7^(res+I*t)
+  +1/3^(res+I*t)/2^(res+I*t))
+func121(t,res)=+(1/11^(res+I*t))^2*(1+1/2^(res+I*t)/(1-1/2^(res+I*t))*(1-(1/2^(res+I*t))^(3))
+  +1/3^(res+I*t)
+  +1/5^(res+I*t)
+  +1/7^(res+I*t)
+  +1/3^(res+I*t)/2^(res+I*t))
+func125(t,res)=+(1/5^(res+I*t))^3*(1+1/2^(res+I*t)/(1-1/2^(res+I*t))*(1-(1/2^(res+I*t))^(3))
+  +1/3^(res+I*t)+1/3^(res+I*t)/2^(res+I*t))
+func127(t,res)=+1/127^(res+I*t)*(1+1/2^(res+I*t)/(1-1/2^(res+I*t))*(1-(1/2^(res+I*t))^(3))
+  +1/3^(res+I*t)
+  +1/5^(res+I*t)
+  +1/7^(res+I*t)
+  +1/3^(res+I*t)/2^(res+I*t))
+func131to139(t,res)=+(1/139^(res+I*t)+1/137^(res+I*t)+1/131^(res+I*t))
+  *(1+1/2^(res+I*t)/(1-1/2^(res+I*t))*(1-(1/2^(res+I*t))^(2))
+  +1/3^(res+I*t)
+  +1/5^(res+I*t)
+  +1/7^(res+I*t)
+  +1/3^(res+I*t)/2^(res+I*t))
+func149to173(t,res)=+(1/173^(res+I*t)+1/167^(res+I*t)+1/163^(res+I*t)
+  +1/157^(res+I*t)+1/151^(res+I*t)+1/149^(res+I*t))*
+  (1+1/2^(res+I*t)/(1-1/2^(res+I*t))*(1-(1/2^(res+I*t))^(2))
+  +1/3^(res+I*t)
+  +1/5^(res+I*t)
+  +1/3^(res+I*t)/2^(res+I*t))
+func169(t,res)=+(1/13^(res+I*t))^2*(1+1/2^(res+I*t)/(1-1/2^(res+I*t))*(1-(1/2^(res+I*t))^(2))
+  +1/3^(res+I*t)
+  +1/5^(res+I*t)
+  +1/3^(res+I*t)/2^(res+I*t))
+func179to199(t,res)=+(1/199^(res+I*t)+1/197^(res+I*t)+1/193^(res+I*t)
+  +1/191^(res+I*t)+1/181^(res+I*t)+1/179^(res+I*t))
+  *(1+1/2^(res+I*t)/(1-1/2^(res+I*t))*(1-(1/2^(res+I*t))^(2))
+  +1/3^(res+I*t)
+  +1/5^(res+I*t))
+func211to257(t,res)=(1/211^(res+I*t)+1/223^(res+I*t)+1/227^(res+I*t)
+  +1/229^(res+I*t)+1/233^(res+I*t)+1/239^(res+I*t)+1/241^(res+I*t)+1/251^(res+I*t)+1/257^(res+I*t))
+  *(1+1/2^(res+I*t)/(1-1/2^(res+I*t))*(1-(1/2^(res+I*t))^(2))
+  +1/3^(res+I*t))
+func243(t,res)=(1/3^(res+I*t))^5*(1+1/2^(res+I*t)/(1-1/2^(res+I*t))*(1-(1/2^(res+I*t))^(2)))
+func263to347(t,res)=(1/263^(res+I*t)+1/269^(res+I*t)+1/271^(res+I*t)+1/277^(res+I*t)+1/281^(res+I*t)
+  +1/283^(res+I*t)+1/293^(res+I*t)+1/307^(res+I*t)+1/311^(res+I*t)+1/313^(res+I*t)+1/317^(res+I*t)
+  +1/331^(res+I*t)+1/337^(res+I*t)+1/347^(res+I*t))
+  *(1+1/2^(res+I*t)+1/3^(res+I*t))
+func289(t,res)=1/289^(res+I*t)*(1+1/2^(res+I*t)
+  +1/3^(res+I*t))
+func343(t,res)=1/343^(res+I*t)*(1+1/2^(res+I*t)
+  +1/3^(res+I*t))
+func349to509(t,res)=(1/349^(res+I*t)+1/353^(res+I*t)+1/359^(res+I*t)+1/367^(res+I*t)+1/373^(res+I*t)
+  +1/379^(res+I*t)+1/383^(res+I*t)+1/389^(res+I*t)+1/397^(res+I*t)+1/401^(res+I*t)+1/409^(res+I*t)
+  +1/419^(res+I*t)+1/421^(res+I*t)+1/431^(res+I*t)+1/433^(res+I*t)+1/439^(res+I*t)+1/443^(res+I*t)
+  +1/449^(res+I*t)+1/457^(res+I*t)+1/461^(res+I*t)+1/463^(res+I*t)+1/467^(res+I*t)+1/479^(res+I*t)
+  +1/487^(res+I*t)+1/491^(res+I*t)+1/499^(res+I*t)+1/503^(res+I*t)+1/509^(res+I*t))
+  *(1+1/2^(res+I*t))
+func361(t,res)=+1/361^(res+I*t)*(1+1/2^(res+I*t))
+func521to1039(t,res)=sum(i=98,175,1/prime(i)^(res+I*t))
+func529(t,res)=1/529^(res+I*t)
+func625(t,res)=1/625^(res+I*t)
+func729(t,res)=1/729^(res+I*t)
+func841(t,res)=1/841^(res+I*t)
+func961(t,res)=1/961^(res+I*t)
+\end{verbatim}
+}
