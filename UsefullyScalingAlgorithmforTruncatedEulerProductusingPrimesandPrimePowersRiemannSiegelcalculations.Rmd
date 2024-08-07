@@ -327,12 +327,16 @@ For s and (1-s) in the standard Riemann Siegel calculation (with tapering) there
 
 For the prime based Riemann Siegel calculation, pre-processing derived vectors which are independent of s 
 $\text{multi factors}(s) = \{mf(s)_1,mf(s)_2,...\}$ 12829 elements (sqrt(sqrt(N)))
+
 $\mathbb{P}_{high}$ (9226067-1530) elements the number of primes between sqrt(N) and N
+
 $\mathbb{P}_{low}$ (1530) elements the number of primes less than or equal to sqrt(N)
+
 $\text{geom1}$, $\text{geom2}$, $\text{geom3}$ a 3-tuple, each 11428133 elements
+
 $\text{composite}$ (20675954) elements the number of large products of primes not condensed in finite geometric series
 
-So the prime based Riemann Siegel calculation uses 41330154 elements (=9226067+11428133+20675954) which is $\frac{41330154}{164755715}=0.25085$ of the terms used for the standard zeroth order Riemann Siegel calculation. To store the pro-processed vectors to allow reuse for new s values took 6.6GB of RAM (with no garbage cleanup of RAM attempted) on a basic CoCalc single CPU setup. 
+So the prime based Riemann Siegel calculation uses 41330154 elements (=9226067+11428133+20675954) which is $\frac{41330154}{164755715}=0.25085$ of the terms used for the standard zeroth order Riemann Siegel calculation. To store the pre-processed vectors to allow reuse for new s values took 6.6GB of RAM (with no garbage cleanup of RAM attempted) on a basic CoCalc single CPU setup. 
 
 The relative execution difference at N=164755715 on a basic CoCalc single CPU setup was $\frac{19.66}{35.25}=0.5577$ so the prime based algorithm was faster but the extra multiplications involved in the finite geometric series calculations (using $\text{geom1}$, $\text{geom2}$, $\text{geom3}$) does cost time.
 
@@ -354,16 +358,20 @@ time = 30min, 10,516 ms.
 ? %80 = 1284.9843472296269481412432035067645085 - 5.3678329073545552728715699418064076478 E-9*I
 \end{verbatim}
 
-For s and (1-s) in the standard Riemann Siegel calculation (with tapering) there are 238055607 natural numbers $(sqrt(t0/2/\pi))$ (plus tapering which adjusts the last 1024 terms and adds 1024 terms beyond 164755715). The calculation is a sum with only a small 2048 element vector stored in RAM for use with the tapering.
+For s and (1-s) in the standard Riemann Siegel calculation (with tapering) there are 238055607 natural numbers $(sqrt(t0/2/\pi))$ (plus tapering which adjusts the last 1024 terms and adds 1024 terms beyond 238055607). The calculation is a sum with only a small 2048 element vector stored in RAM for use with the tapering.
 
 For the prime based Riemann Siegel calculation, pre-processing derived vectors which are independent of s 
 $\text{multi factors}(s) = \{mf(s)_1,mf(s)_2,...\}$ 15427 elements (sqrt(sqrt(N)))
+
 $\mathbb{P}_{high}$ (13060806-1802) elements the number of primes between sqrt(N) and N
+
 $\mathbb{P}_{low}$ (1802) elements the number of primes less than or equal to sqrt(N)
+
 $\text{geom1}$, $\text{geom2}$, $\text{geom3}$ a 3-tuple, each 16451177 elements
+
 $\text{composite}$ (29992583) elements the number of large products of primes not condensed in finite geometric series
 
-So the prime based Riemann Siegel calculation uses 59504566 elements (=13060806+16451177+29992583) which is $\frac{59504566}{238055607}=0.24996$ of the terms used for the standard zeroth order Riemann Siegel calculation. To store the pro-processed vectors to allow reuse for new s values took 9GB of RAM (with no garbage cleanup of RAM attempted) on a local PC. 
+So the prime based Riemann Siegel calculation uses 59504566 elements (=13060806+16451177+29992583) which is $\frac{59504566}{238055607}=0.24996$ of the terms used for the standard zeroth order Riemann Siegel calculation. To store the pre-processed vectors to allow reuse for new s values took 9GB of RAM (with no garbage cleanup of RAM attempted) on a local PC. 
 
 The relative execution difference at N=164755715 on a basic CoCalc single CPU setup was $\frac{30.166}{50.066}=0.6025$ so the prime based algorithm was faster but the extra multiplications involved in the finite geometric series calculations (using $\text{geom1}$, $\text{geom2}$, $\text{geom3}$) does cost time.
 
