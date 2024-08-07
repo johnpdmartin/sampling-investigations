@@ -1,0 +1,885 @@
+---
+title: "A fast, scalable algorithm for zeroth order Riemann Siegel formula calculations via the sum of products of finite geometric series of primes and powers of primes"
+author: "John Martin"
+date: \today
+header-includes:  \usepackage{xcolor}
+output:
+  pdf_document:
+    fig_crop: no
+---
+
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+
+```
+
+## Executive summary 
+
+Calculating the zeroth order Riemann Siegel formula (and tapered finite Dirichlet series version) via the single, double, triple etc prime product terms of linear combinations of products of finite geometric series of primes and power of primes results in less terms and a faster calculation than the $\mathbb{N}^+$ based dirichlet series approach as the imaginary axis co-ordinate grows larger. The cost is a few dozen lines of code, a modest initialization period to build the formula and enough RAM to hold the formula. For example, at $s=0.5+I\cdot 356071078353654562.21236362133$ the standard zeroth order Riemann Siegel formula requires 2x238,055,607 terms to be summed while the linear combination of products of finite geometric series approach uses 2x(59,504,566) terms to be summed (where 2x(16,451,177) of the terms require product calculations). The relative execution time on the same computer is ~30/50=0.60 however the faster method requires an initial 30-45 mins (for $s=\sigma+I\cdot3.57e17$) to build and save its formula but can then be readily reused across the 2-dimensional region $s=[\sigma+I\cdot (N)^2\cdot2\cdot \pi,\sigma^\prime+I\cdot (N+1)^2\cdot2\cdot \pi)$ where $N=\left\lfloor\sqrt{\frac{t}{2\pi}}\right\rfloor$.
+
+## Introduction
+
+For $\Re(s) > 1$, the infinite Euler Product of the primes absolutely converges to the infinite Riemann Zeta Dirichlet Series sum [1,2]
+
+\begin{equation}
+\zeta(s) = {\Large\sum_{k=1}^\infty} \frac{1}{k^s} = {\Large\prod_{\rho=2}^\infty} \frac{1}{(1-1/\rho^{s})} \qquad \text{for } \Re(s) > 1
+\end{equation}
+
+Importantly, using the log(1-x) expansion of $\log(\zeta(s))$ [3-5] the Euler product also has the form
+
+\begin{equation}
+{\Large\prod_{\rho=2}^\infty} \frac{1}{(1-1/\rho^{s})} = {\Large\text{exp}}{\left(\sum_{\rho=2}^\infty \sum_{n=1}^{\infty} \frac{1}{n\cdot\rho^{ns}}\right)}
+\end{equation}
+
+
+For $\Re(s) \le 1$, the partial Euler Product diverges, however, using the above equations for finite sums (products) of integers (primes) the following relationship holds
+
+\begin{align} \label{eq:truncEP}
+{\Large\sum_{k=1}^N} \frac{1}{k^s} &= 1+\left(\sum_{\rho=2}^\infty \sum_{n=1}^{\infty} \frac{1}{n\cdot\rho^{ns}}\cdot \delta(\rho^n \le N)\right) \nonumber\\
+&+\frac{1}{2!}\left(\sum_{\rho_1=2}^\infty \sum_{n=1}^{\infty} \sum_{\rho_2=2}^\infty \sum_{m=1}^{\infty} \frac{1}{n\cdot\rho_1^{ns}}\cdot \frac{1}{m\cdot\rho_2^{ms}} \cdot \delta(\rho_1^n\cdot\rho_2^m \le N) \right)\nonumber\\
+&+\frac{1}{3!}\left(\sum_{\rho_1=2}^\infty \sum_{n=1}^{\infty} \sum_{\rho_2=2}^\infty \sum_{m=1}^{\infty} \sum_{\rho_3=2}^\infty \sum_{o=1}^{\infty} \frac{1}{n\cdot\rho_1^{ns}}\cdot \frac{1}{m\cdot\rho_2^{ms}}\cdot  \frac{1}{o\cdot\rho_3^{os}} \cdot \delta(\rho_1^n\cdot\rho_2^{m}\cdot\rho_3^{o} \le N) \right) \nonumber \\
+&+ \qquad \ldots
+\end{align}
+
+where the delta functions play a crucial role in appropriately truncating the Euler Product terms. Hence the above expression can be used with the $N \sim \lfloor\frac{t}{\pi}\rfloor$ and ($N \sim \lfloor\sqrt{\frac{t}{2\pi}}\rfloor$) quiescent regions of the oscillatory divergence of the Riemann Zeta function to obtain useful partial Euler Product based approximations of the Riemann Zeta function in the critical strip (and below) [6]. 
+
+In [6] empirical calculations showed that the truncated exponential series version of the finite Euler product is a slower running algorithm at the complex plane points presented compared to the simple Dirichlet Series. This is due to the extra multiplication operations and truncation checks that are required at each higher order term of the power series calculation. 
+
+In [7,8], an alternative series expansion for the truncated euler product was given in terms of finite geometric series of primes and powers of primes in the hope of identifying a faster way to calculate a finite Dirichlet Series using only primes. The early terms of the alternative series expansion are shown in equation form (and in pari-gp language code in appendix B).
+
+In this paper the alternate prime based expansion [7,8], is rewritten as a series expansion reflecting n-way products of primes. This allows for easier upscaling of an algorithm to deal with complex plane points much further away from the real axis. 
+
+The revised algorithm is used to calculate the tapered finite Dirichlet Series and tapered zeroth order Riemann Siegel formula for the first quiescent region $N=\sqrt{\frac{t}{2\pi}}$ using only a linear combination of finite geometric series of primes and powers of primes near closely spaced zeroes at $s=0.5+I\cdot1.7055e17$ and a large Riemann Zeta peak at $s=0.5+I\cdot3.56e17$ on the critical line. A comparison of the standard zeroth order Riemann Siegel calculation and the finite geometric series based approach is made as the small number of  tapering terms (2x2048) adds negligible time to the whole calculation given the much larger number of terms in the zeroth order component.
+
+## Using the alternate prime based expansion [7,8] for generating Riemann Siegel type calculations
+
+An approximation of Riemann Zeta function behaviour can be obtained by the finite dirichlet series based zeroth order Riemann Siegel formula [1,2] at the first quiescent region $N_1=\sqrt{\frac{t}{2\pi}}$ of the oscillatory divergence of the dirichlet series
+
+\begin{align}
+\zeta_{RS\text{ zeroth order }}(s) = &\sum_{n=1}^{\lfloor\sqrt{\frac{t}{2\pi}}\rfloor} \frac{1}{n^{s}} + \chi(s) \cdot \sum_{n=1}^{\lfloor\sqrt{\frac{t}{2\pi}}\rfloor} \frac{1}{n^{(1-s)}} \\
+Z_{RS\text{ zeroth order }}(s) = & \exp{(I\cdot \theta(t))} \cdot \left(\sum_{n=1}^{\lfloor\sqrt{\frac{t}{2\pi}}\rfloor} \frac{1}{n^{s}} + \chi(s) \cdot \sum_{n=1}^{\lfloor\sqrt{\frac{t}{2\pi}}\rfloor} \frac{1}{n^{(1-s)}} \right)
+\end{align}
+
+where (i) $\chi(s)$ is the multiplicative factor of the Riemann Zeta functional equation $\zeta(s)=\chi(s)\zeta(1-s)$, (ii) $\theta(t)$ the Riemann Siegel Theta function is a continuous function and (iii) equation (5) is the zeroth order Riemann Siegel Z function [1-3].
+
+Since the alternate finite geometric series based linear combination is equivalent to the finite dirichlet series [7,8] the following Riemann Siegel prime based formulae can be written 
+
+\begin{align}
+\zeta_{\text{primeRS zeroth order }}(s) = &\sum_{p=2}^{P \le \lfloor\sqrt{\frac{t}{2\pi}}\rfloor} a_p(s,\lfloor\sqrt{\frac{t}{2\pi}}\rfloor) + \chi(s) \cdot \sum_{p=2}^{P \le \lfloor\sqrt{\frac{t}{2\pi}}\rfloor} a_p((1-s),\lfloor\sqrt{\frac{t}{2\pi}}\rfloor) \\
+Z_{\text{primeRS zeroth order }}(s) = & \exp{(I\cdot \theta(t))} \cdot \left(\sum_{p=2}^{P \le \lfloor\sqrt{\frac{t}{2\pi}}\rfloor} a_p(s,\lfloor\sqrt{\frac{t}{2\pi}}\rfloor) + \chi(s) \cdot \sum_{p=1}^{P \le \lfloor\sqrt{\frac{t}{2\pi}}\rfloor} a_p((1-s),\lfloor\sqrt{\frac{t}{2\pi}}\rfloor) \right)
+\end{align}
+
+where $p \in$ primes and powers of primes $\le \lfloor\sqrt{\frac{N}{2\pi}}\rfloor$ and $p \ne {4,8,16,..}$ since the prime powers of 2 are already included the finite geometric series term for prime 2.
+
+Highly accurate calculations of the Riemann Zeta functions are accessible through application of the Euler-Maclaurin series approach to using the finite Dirichlet Series with truncation at the first quiescent region as the zeroth order term. With a moderate drop in precision the higher order Riemann Siegel formula series on top of the zeroth order term provides a much faster calculation. 
+
+For the purpose of simply demonstrating the equivalence of equations (4) and (6) and judging their relative computation speeds with direct comparison to known Riemann Zeta peak and/or zero positions tapering of the Dirichlet series in the Riemann Siegel formula about the first quiescent point [9] provides sufficient accuracy. Adding tapering about the first quiescent region to the two zeroth order Riemann Siegel Formula 
+
+
+\begin{align}
+\zeta_{RS\text{ tapered }}(s) = &\sum_{n=1}^{(\lfloor\sqrt{\frac{t}{2\pi}}\rfloor-q)} \frac{1}{n^{s}} +\sum_{i=\left(-q+1\right)}^{q}\frac{\frac{1}{2^{2q}} \left( 2^{2q}-\sum_{k=0}^{i+q-1}\binom{2q}{2q-k}\right)}{(\lfloor\sqrt{\frac{t}{2\pi}}\rfloor+i)^s} \nonumber \\ + &\chi(s) \cdot \left(\sum_{n=1}^{(\lfloor\sqrt{\frac{t}{2\pi}}\rfloor-q)} \frac{1}{n^{(1-s)}} +\sum_{i=\left(-q+1\right)}^{q}\frac{\frac{1}{2^{2q}} \left( 2^{2q}-\sum_{k=0}^{i+q-1}\binom{2q}{2q-k}\right)}{(\lfloor\sqrt{\frac{t}{2\pi}}\rfloor+i)^{(1-s)}} \right)  \qquad \text{as } t \rightarrow \infty
+\end{align}
+
+
+\begin{align}
+\zeta_{\text{primeRS tapered }}(s) = &\sum_{p=2}^{P \le \lfloor\sqrt{\frac{t}{2\pi}}\rfloor} a_p(s,\lfloor\sqrt{\frac{t}{2\pi}}\rfloor) + \left[- \sum_{n=(\lfloor\sqrt{\frac{t}{2\pi}}\rfloor-q)}^{(\lfloor\sqrt{\frac{t}{2\pi}}\rfloor)} \frac{1}{n^{s}} +\sum_{i=\left(-q+1\right)}^{q}\frac{\frac{1}{2^{2q}} \left( 2^{2q}-\sum_{k=0}^{i+q-1}\binom{2q}{2q-k}\right)}{(\lfloor\sqrt{\frac{t}{2\pi}}\rfloor+i)^s} \right] \nonumber \\ +  \chi(s) \cdot &\left( \sum_{p=2}^{P \le \lfloor\sqrt{\frac{t}{2\pi}}\rfloor} a_p((1-s),\lfloor\sqrt{\frac{t}{2\pi}}\rfloor) + \left[- \sum_{n=(\lfloor\sqrt{\frac{t}{2\pi}}\rfloor-q)}^{(\lfloor\sqrt{\frac{t}{2\pi}}\rfloor)} \frac{1}{n^{(1-s)}} +\sum_{i=\left(-q+1\right)}^{q}\frac{\frac{1}{2^{2q}} \left( 2^{2q}-\sum_{k=0}^{i+q-1}\binom{2q}{2q-k}\right)}{(\lfloor\sqrt{\frac{t}{2\pi}}\rfloor+i)^{(1-s)}}  \right] \right) \nonumber \\
+& \qquad \text{as } t \rightarrow \infty
+\end{align}
+
+where (i) 2q=2048 tapering terms are used in this paper because there are two closely spaced zeroes at $s=0.5+I\cdot 170553583901045191.668995$ and $s=0.5+I\cdot 170553583901045191.669182$ in one of the examples of interest that need to be accurately calculated and (ii) a subtraction term is used in equation (9) $- \sum_{n=(\lfloor\sqrt{\frac{t}{2\pi}}\rfloor-q)}^{(\lfloor\sqrt{\frac{t}{2\pi}}\rfloor)} \frac{1}{n^{s}}$ rather than adjust the number of primes $P \le \lfloor\sqrt{\frac{t}{2\pi}}\rfloor$ in the zeroth order terms of the equation.
+\newpage
+
+## Improvements to the algorithm for scaling up calculations based on the alternate prime based expansion [7,8]
+
+The examples of interest in this paper are a large Riemann Zeta peak located at $s=0.5+I\cdot 356071078353654562.21236362133$ [13] and two closely space zeroes [12] located at $s=0.5+I\cdot 170553583901045191.668995$ and $s=0.5+I\cdot 170553583901045191.669182$. Using the first quiescent region, the zeroth order Riemann Siegel formula equation (4) would require 238055607 (164755715) terms respectively (for the different t values) to be calculated each for two summands $1/n^s$ and $1/n^{(1-s)}$. In principle, the alternate prime based expansion [7,8] would require a series expression for each of 13060806 (9226067) primes (for the different t values)  to be calculated for the two summands in equation (6) where within each series expression there are multiple additive terms. Therefore to make the prime based formula approach scalable for high t the series expansion in detail in Appendix A needs to be rejigged.
+
+That is instead of $\sum_{p=2}^{P \le \lfloor\sqrt{\frac{t}{2\pi}}\rfloor} a_p(s,\lfloor\sqrt{\frac{t}{2\pi}}\rfloor)$, the series expansion is re-expressed via common terms across the $a_p(s,\lfloor\sqrt{\frac{t}{2\pi}}\rfloor)$ co-efficients.
+
+### Basic prime based series expression expressed as successively higher order products of primes
+
+\begin{align}
+{\Large\sum_{k=1}^{N=\left\lfloor\sqrt{\frac{t}{2\pi}}\right\rfloor}} \frac{1}{k^s} &= 1+\left(\sum_{\rho_1=2}^{ P \le N}  \frac{1}{\rho_1^{s}}\cdot\frac{(1-(\frac{1}{\rho_1^{s}})^{\left\lfloor\frac{\log{\left(\max{\left(1,N\right)}\right)}}{\log{(\rho_1)}}\right\rfloor})}{(1-\frac{1}{\rho_1^{s}})}\right) \nonumber\\
+&+\left(\sum_{\rho_2=3}^{ P \le N} \sum_{q_2=1}^{\left\lfloor\frac{\log{(\max{(1,N)})}}{\log{(\rho_2)}}\right\rfloor}\sum_{\rho_1=2}^{\rho_2-1}  \left(\frac{1}{\rho_2^{s}}\right)^{q_2}\cdot\frac{1}{\rho_1^{s}}\cdot\frac{(1-(\frac{1}{\rho_1^{s}})^{\left\lfloor\frac{\log{\left(\max{\left(1,\left(\frac{N}{(\rho_2^{q_2})}\right)\right)}\right)}}{\log{(\rho_1)}}\right\rfloor})}{(1-\frac{1}{\rho_1^{s}})}\right) \nonumber \\
+&+\Bigg(\sum_{\rho_3=5}^{ P \le N} \sum_{q_3=1}^{\left\lfloor\frac{\log{(\max{(1,N)})}}{\log{(\rho_3)}}\right\rfloor}\sum_{\rho_2=2}^{\rho_3-1} \sum_{q_2=1}^{\left\lfloor\frac{\log{(\max{(1,\frac{N}{\rho_3})})}}{\log{(\rho_2)}}\right\rfloor}\sum_{\rho_1=2}^{\rho_2-1} \nonumber \\ & \qquad \qquad \qquad  \left(\frac{1}{\rho_3^{s}}\right)^{q_3}\left(\frac{1}{\rho_2^{s}}\right)^{q_2}\cdot\frac{1}{\rho_1^{s}}\cdot\frac{(1-(\frac{1}{\rho_1^{s}})^{\left\lfloor\frac{\log{\left(\max{\left(1,\left(\frac{N}{(\rho_3^{q_3}\rho_2^{q_2})}\right)\right)}\right)}}{\log{(\rho_1)}}\right\rfloor})}{(1-\frac{1}{\rho_1^{s}})}\Bigg) \nonumber \\
+&+\Bigg(\sum_{\rho_4=7}^{ P \le N} \sum_{q_4=1}^{\left\lfloor\frac{\log{(\max{(1,N)})}}{\log{(\rho_4)}}\right\rfloor}\sum_{\rho_3=5}^{\rho_4-1} \sum_{q_3=1}^{\left\lfloor\frac{\log{(\max{(1,\frac{N}{\rho_4})})}}{\log{(\rho_3)}}\right\rfloor}\sum_{\rho_2=2}^{\rho_3-1} \sum_{q_2=1}^{\left\lfloor\frac{\log{(\max{(1,\frac{N}{\rho_4\rho_3})})}}{\log{(\rho_2)}}\right\rfloor}\sum_{\rho_1=2}^{\rho_2-1} \nonumber \\ & \qquad \qquad \qquad  \left(\frac{1}{\rho_4^{s}}\right)^{q_4}\left(\frac{1}{\rho_3^{s}}\right)^{q_3}\left(\frac{1}{\rho_2^{s}}\right)^{q_2}\cdot\frac{1}{\rho_1^{s}}\cdot\frac{(1-(\frac{1}{\rho_1^{s}})^{\left\lfloor\frac{\log{\left(\max{\left(1,\left(\frac{N}{(\rho_4^{q_4}\rho_3^{q_3}\rho_2^{q_2})}\right)\right)}\right)}}{\log{(\rho_1)}}\right\rfloor})}{(1-\frac{1}{\rho_1^{s}})}\Bigg) \nonumber
+\end{align}
+\begin{align}
+&+\Bigg(\sum_{\rho_5=11}^{ P \le N} \sum_{q_5=1}^{\left\lfloor\frac{\log{(\max{(1,N)})}}{\log{(\rho_5)}}\right\rfloor}\sum_{\rho_4=7}^{\rho_5-1} \sum_{q_4=1}^{\left\lfloor\frac{\log{(\max{(1,\frac{N}{\rho_5})})}}{\log{(\rho_4)}}\right\rfloor}\sum_{\rho_3=5}^{\rho_4-1} \sum_{q_3=1}^{\left\lfloor\frac{\log{(\max{(1,\frac{N}{\rho_5\rho_4})})}}{\log{(\rho_3)}}\right\rfloor}\sum_{\rho_2=2}^{\rho_3-1} \sum_{q_2=1}^{\left\lfloor\frac{\log{(\max{(1,\frac{N}{\rho_5\rho_4\rho_3})})}}{\log{(\rho_2)}}\right\rfloor}\sum_{\rho_1=2}^{\rho_2-1} \nonumber \\ & \qquad \qquad \qquad  \left(\frac{1}{\rho_5^{s}}\right)^{q_5}\left(\frac{1}{\rho_4^{s}}\right)^{q_4}\left(\frac{1}{\rho_3^{s}}\right)^{q_3}\left(\frac{1}{\rho_2^{s}}\right)^{q_2}\cdot\frac{1}{\rho_1^{s}}\cdot\frac{(1-(\frac{1}{\rho_1^{s}})^{\left\lfloor\frac{\log{\left(\max{\left(1,\left(\frac{N}{(\rho_5^{q_5}\rho_4^{q_4}\rho_3^{q_3}\rho_2^{q_2})}\right)\right)}\right)}}{\log{(\rho_1)}}\right\rfloor})}{(1-\frac{1}{\rho_1^{s}})}\Bigg) \nonumber \\
+&+ \qquad \ldots
+\end{align}
+
+where (i) the upper limits of the prime power summands and the finite geometric series of $\rho_1$ play a similar but much more efficient role than the delta function in equation (3) because equation (10) is an ordered set of primes, (ii) that is, the primes of the successive summands are disjoint and monotonic $\rho_5 > \rho_4 > \rho_3 > \rho_2 > \rho_1$.
+
+### Splitting the prime based series expression into separate summations for primes above and below $\sqrt{N}$
+
+As identified in [8] and occurring for the higher t values investigated in this paper, for primes greater than $\sqrt{N}$
+
+\begin{align}
+a_{\rho>\sqrt{N}}(s,N)&=\frac{1}{\rho^s}\cdot \left(\sum_{i=1}^{\left\lfloor\frac{N}{\rho}\right\rfloor} \frac{1}{i^s}\right)  \text{ where } \sqrt{N} < \rho \le N 
+\end{align}
+
+This behaviour arises from the fundamental theorem of arithmetic and the constraint $\sqrt{N} < \rho \le N$ excluding prime powers for this subset of primes. It is found many primes in the interval $\sqrt{N} < \rho \le N$ share the same $\left\lfloor\frac{N}{p}\right\rfloor$ value. 
+
+Furthermore, an empirical finding is that 
+
+\begin{align}
+\frac{\sum_{\rho_{high}>\sqrt{N}}^{P \le N} \left( \sum_{i=1}^{\left\lfloor\frac{N}{\rho_{high}}\right\rfloor} 1 \right) }{ (N-\lfloor\sqrt{N}\rfloor)} \sim \frac{2}{3}
+\end{align}
+
+That is, the density of natural numbers in the interval $\sqrt{N} < n \le N$ containing a prime factor of magnitude $\sqrt{N} < \rho \le N$ appears to be ~2/3 in the interval regions investigated by this author in this paper and in [8]. This behaviour explicitly implies a useful savings in terms required for a prime based Riemann Siegel calculation rather than the standard approach.
+
+The multiplicative factor $\sum_{i=1}^{\left\lfloor\frac{N}{\rho_{high}}\right\rfloor} \frac{1}{i^s}$ can itself also be expressed solely in terms of primes and prime powers using the alternate prime based expansion for $N^\prime=\left\lfloor\frac{N}{\rho}\right\rfloor$. For $s=0.5+I\cdot 356071078353654562.21236362133$ , $s=0.5+I\cdot 170553583901045191.668995$ and $s=0.5+I\cdot 170553583901045191.669182$ the simple dirichlet series of the multiplicative factor is contributing minimal time to the whole calculation. 
+
+Therefore, computation time is saved by the revised formula shown below where the product of primes terms concentrates only on the primes ($\rho \le \sqrt{N}$) which are a much smaller number of primes.
+
+\begin{align}
+{\Large\sum_{k=1}^{N=\left\lfloor\sqrt{\frac{t}{2\pi}}\right\rfloor}} \frac{1}{k^s} &= \sum_{\rho_{high}>\sqrt{N}}^{P \le N} \frac{1}{\rho_{high}^s}\cdot \left(\sum_{i=1}^{\left\lfloor\frac{N}{\rho_{high}}\right\rfloor} \frac{1}{i^s}\right) \nonumber \\ &+ 1+\left(\sum_{\rho_1=2}^{ P \le \sqrt{N}}  \frac{1}{\rho_1^{s}}\cdot\frac{(1-(\frac{1}{\rho_1^{s}})^{\left\lfloor\frac{\log{\left(\max{\left(1,N\right)}\right)}}{\log{(\rho_1)}}\right\rfloor})}{(1-\frac{1}{\rho_1^{s}})}\right) \nonumber\\
+&+\left(\sum_{\rho_2=3}^{ P \le \sqrt{N}} \sum_{q_2=1}^{\left\lfloor\frac{\log{(\max{(1,N)})}}{\log{(\rho_2)}}\right\rfloor}\sum_{\rho_1=2}^{\rho_2-1}  \left(\frac{1}{\rho_2^{s}}\right)^{q_2}\cdot\frac{1}{\rho_1^{s}}\cdot\frac{(1-(\frac{1}{\rho_1^{s}})^{\left\lfloor\frac{\log{\left(\max{\left(1,\left(\frac{N}{(\rho_2^{q_2})}\right)\right)}\right)}}{\log{(\rho_1)}}\right\rfloor})}{(1-\frac{1}{\rho_1^{s}})}\right) \nonumber \\
+&+\Bigg(\sum_{\rho_3=5}^{ P \le \sqrt{N}} \sum_{q_3=1}^{\left\lfloor\frac{\log{(\max{(1,N)})}}{\log{(\rho_3)}}\right\rfloor}\sum_{\rho_2=2}^{\rho_3-1} \sum_{q_2=1}^{\left\lfloor\frac{\log{(\max{(1,\frac{N}{\rho_3})})}}{\log{(\rho_2)}}\right\rfloor}\sum_{\rho_1=2}^{\rho_2-1} \nonumber \\ & \qquad \qquad \qquad  \left(\frac{1}{\rho_3^{s}}\right)^{q_3}\left(\frac{1}{\rho_2^{s}}\right)^{q_2}\cdot\frac{1}{\rho_1^{s}}\cdot\frac{(1-(\frac{1}{\rho_1^{s}})^{\left\lfloor\frac{\log{\left(\max{\left(1,\left(\frac{N}{(\rho_3^{q_3}\rho_2^{q_2})}\right)\right)}\right)}}{\log{(\rho_1)}}\right\rfloor})}{(1-\frac{1}{\rho_1^{s}})}\Bigg) \nonumber \\
+&+\Bigg(\sum_{\rho_4=7}^{ P \le \sqrt{N}} \sum_{q_4=1}^{\left\lfloor\frac{\log{(\max{(1,N)})}}{\log{(\rho_4)}}\right\rfloor}\sum_{\rho_3=5}^{\rho_4-1} \sum_{q_3=1}^{\left\lfloor\frac{\log{(\max{(1,\frac{N}{\rho_4})})}}{\log{(\rho_3)}}\right\rfloor}\sum_{\rho_2=2}^{\rho_3-1} \sum_{q_2=1}^{\left\lfloor\frac{\log{(\max{(1,\frac{N}{\rho_4\rho_3})})}}{\log{(\rho_2)}}\right\rfloor}\sum_{\rho_1=2}^{\rho_2-1} \nonumber \\ & \qquad \qquad \qquad  \left(\frac{1}{\rho_4^{s}}\right)^{q_4}\left(\frac{1}{\rho_3^{s}}\right)^{q_3}\left(\frac{1}{\rho_2^{s}}\right)^{q_2}\cdot\frac{1}{\rho_1^{s}}\cdot\frac{(1-(\frac{1}{\rho_1^{s}})^{\left\lfloor\frac{\log{\left(\max{\left(1,\left(\frac{N}{(\rho_4^{q_4}\rho_3^{q_3}\rho_2^{q_2})}\right)\right)}\right)}}{\log{(\rho_1)}}\right\rfloor})}{(1-\frac{1}{\rho_1^{s}})}\Bigg) \nonumber
+\end{align}
+\begin{align}
+&+\Bigg(\sum_{\rho_5=11}^{ P \le \sqrt{N}} \sum_{q_5=1}^{\left\lfloor\frac{\log{(\max{(1,N)})}}{\log{(\rho_5)}}\right\rfloor}\sum_{\rho_4=7}^{\rho_5-1} \sum_{q_4=1}^{\left\lfloor\frac{\log{(\max{(1,\frac{N}{\rho_5})})}}{\log{(\rho_4)}}\right\rfloor}\sum_{\rho_3=5}^{\rho_4-1} \sum_{q_3=1}^{\left\lfloor\frac{\log{(\max{(1,\frac{N}{\rho_5\rho_4})})}}{\log{(\rho_3)}}\right\rfloor}\sum_{\rho_2=2}^{\rho_3-1} \sum_{q_2=1}^{\left\lfloor\frac{\log{(\max{(1,\frac{N}{\rho_5\rho_4\rho_3})})}}{\log{(\rho_2)}}\right\rfloor}\sum_{\rho_1=2}^{\rho_2-1} \nonumber \\ & \qquad \qquad \qquad  \left(\frac{1}{\rho_5^{s}}\right)^{q_5}\left(\frac{1}{\rho_4^{s}}\right)^{q_4}\left(\frac{1}{\rho_3^{s}}\right)^{q_3}\left(\frac{1}{\rho_2^{s}}\right)^{q_2}\cdot\frac{1}{\rho_1^{s}}\cdot\frac{(1-(\frac{1}{\rho_1^{s}})^{\left\lfloor\frac{\log{\left(\max{\left(1,\left(\frac{N}{(\rho_5^{q_5}\rho_4^{q_4}\rho_3^{q_3}\rho_2^{q_2})}\right)\right)}\right)}}{\log{(\rho_1)}}\right\rfloor})}{(1-\frac{1}{\rho_1^{s}})}\Bigg) \nonumber \\
+&+ \qquad \ldots
+\end{align}
+
+### Tightening the upper bounds for the prime powers and the number of summation terms to be calculated in the prime based series expression
+
+Again from the fundamental theorem of arithmetic, (i) the maximum number of n-way products of primes required to calculate all the natural numbers $[2,...,N]$ can be determined given N and (ii) the upper bounds for the nested prime summands can be tightened.
+
+For example, given $s=0.5+I\cdot 170553583901045191.668995$, N=164755715 for the first quiescent region (of the dirichlet series sum). Using the lowest primes it is quickly determined
+
+\begin{align}
+2\cdot3\cdot5\cdot7\cdot11\cdot13\cdot17\cdot19 <  \quad &N \quad < 2\cdot3\cdot5\cdot7\cdot11\cdot13\cdot17\cdot19\cdot23 \nonumber \\
+\therefore 9699690 <\quad &N \quad < 223092870
+\end{align}
+
+so only summands describing single, pair, triple, quadruple, ..., up to 8-way products of disjoint primes are required for equation (11) when N=164755715.
+
+In equations (10) and (13), the upper bound of required primes is too generous and can be improved by using an logical condition acknowledging the prime powers of the higher primes present in the summand. This adjustment to the upper bounds pre-empts the calculation of many zero terms.
+
+For example, the upper bound for the lowest prime $\rho_1$ in a summand maxes out at $N^{(1/2)}, N^{(1/3)}, N^{(1/4)}, ...$ for pair, triple, quadrupole product of primes otherwise such n-way products $\approx N^{(1/2)}\cdot(N+1)^{(1/2)}$, $N^{(1/3)}\cdot(N+1)^{(1/3)}\cdot(N+2)^{(1/3)}$, $N^{(1/4)}\cdot(N+1)^{(1/4)}\cdot(N+2)^{(1/4)}\cdot(N+3)^{(1/4)}$, $...$ would all exceed N (but no required number exceeds N). 
+
+Likewise, if in a 5-way product of primes, you have $p_5^{q_5}\cdot5\cdot 3\cdot 2$ as the minimum of first, second, third and fifth prime terms then the prime power of the fourth prime to join the 5-way product has a upper bound constraint $\frac{N}{p_5^{q_5}\cdot5\cdot 3\cdot 2}$ which may be lower than $\rho_5-1$. Hence the logical condition for the upper bound in the summation $\sum_{\rho_4=7}^{\min(\rho_5-1,\rho_{\text{nearest}}\le\frac{N}{p_5^{q_5}\cdot 5\cdot 3\cdot 2})}$  appearing in the 5-way product at the end of equation (15).
+
+
+
+\begin{align}
+{\Large\sum_{k=1}^{N=\left\lfloor\sqrt{\frac{t}{2\pi}}\right\rfloor}} \frac{1}{k^s} &= \sum_{\rho_{high}>\sqrt{N}}^{P \le N} \frac{1}{\rho_{high}^s}\cdot \left(\sum_{i=1}^{\left\lfloor\frac{N}{\rho_{high}}\right\rfloor} \frac{1}{i^s}\right) \nonumber \\ &+ 1+\left(\sum_{\rho_1=2}^{ P \le \sqrt{N}}  \frac{1}{\rho_1^{s}}\cdot\frac{(1-(\frac{1}{\rho_1^{s}})^{\left\lfloor\frac{\log{\left(\max{\left(1,N\right)}\right)}}{\log{(\rho_1)}}\right\rfloor})}{(1-\frac{1}{\rho_1^{s}})}\right) \nonumber\\
+&+\left(\sum_{\rho_2=3}^{ P \le \sqrt{N}} \sum_{q_2=1}^{\left\lfloor\frac{\log{(\max{(1,N)})}}{\log{(\rho_2)}}\right\rfloor}\sum_{\rho_1=2}^{\min(\rho_2-1,\rho_{\text{nearest}}\le N^{1/2})}  \left(\frac{1}{\rho_2^{s}}\right)^{q_2}\cdot\frac{1}{\rho_1^{s}}\cdot\frac{(1-(\frac{1}{\rho_1^{s}})^{\left\lfloor\frac{\log{\left(\max{\left(1,\left(\frac{N}{(\rho_2^{q_2})}\right)\right)}\right)}}{\log{(\rho_1)}}\right\rfloor})}{(1-\frac{1}{\rho_1^{s}})}\right) \nonumber \\
+&+\Bigg(\sum_{\rho_3=5}^{ P \le \sqrt{N}} \sum_{q_3=1}^{\left\lfloor\frac{\log{(\max{(1,N)})}}{\log{(\rho_3)}}\right\rfloor}\sum_{\rho_2=3}^{\min(\rho_3-1,\rho_{\text{nearest}}\le\frac{N}{p_3^{q_3}\cdot 2})} \sum_{q_2=1}^{\left\lfloor\frac{\log{(\max{(1,\frac{N}{\rho_3})})}}{\log{(\rho_2)}}\right\rfloor}\sum_{\rho_1=2}^{\min(\rho_2-1,\rho_{\text{nearest}}\le N^{1/3})} \nonumber \\ & \qquad \qquad \qquad  \left(\frac{1}{\rho_3^{s}}\right)^{q_3}\left(\frac{1}{\rho_2^{s}}\right)^{q_2}\cdot\frac{1}{\rho_1^{s}}\cdot\frac{(1-(\frac{1}{\rho_1^{s}})^{\left\lfloor\frac{\log{\left(\max{\left(1,\left(\frac{N}{(\rho_3^{q_3}\rho_2^{q_2})}\right)\right)}\right)}}{\log{(\rho_1)}}\right\rfloor})}{(1-\frac{1}{\rho_1^{s}})}\Bigg) \nonumber \\
+&+\Bigg(\sum_{\rho_4=7}^{ P \le \sqrt{N}} \sum_{q_4=1}^{\left\lfloor\frac{\log{(\max{(1,N)})}}{\log{(\rho_4)}}\right\rfloor}\sum_{\rho_3=5}^{\min(\rho_4-1,\rho_{\text{nearest}}\le\frac{N}{p_4^{q_4}\cdot 3\cdot 2})} \sum_{q_3=1}^{\left\lfloor\frac{\log{(\max{(1,\frac{N}{\rho_4})})}}{\log{(\rho_3)}}\right\rfloor}\sum_{\rho_2=3}^{\min(\rho_3-1,\rho_{\text{nearest}}\le\frac{N}{p_4^{q_4}\cdot p_3^{q_3}\cdot 2})} \nonumber \\ &\sum_{q_2=1}^{\left\lfloor\frac{\log{(\max{(1,\frac{N}{\rho_4\rho_3})})}}{\log{(\rho_2)}}\right\rfloor}\sum_{\rho_1=2}^{\min(\rho_2-1,\rho_{\text{nearest}}\le N^{1/4})} \nonumber \\ & \qquad \qquad \qquad  \left(\frac{1}{\rho_4^{s}}\right)^{q_4}\left(\frac{1}{\rho_3^{s}}\right)^{q_3}\left(\frac{1}{\rho_2^{s}}\right)^{q_2}\cdot\frac{1}{\rho_1^{s}}\cdot\frac{(1-(\frac{1}{\rho_1^{s}})^{\left\lfloor\frac{\log{\left(\max{\left(1,\left(\frac{N}{(\rho_4^{q_4}\rho_3^{q_3}\rho_2^{q_2})}\right)\right)}\right)}}{\log{(\rho_1)}}\right\rfloor})}{(1-\frac{1}{\rho_1^{s}})}\Bigg) \nonumber
+\end{align}
+\begin{align}
+&+\Bigg(\sum_{\rho_5=11}^{ P \le \sqrt{N}} \sum_{q_5=1}^{\left\lfloor\frac{\log{(\max{(1,N)})}}{\log{(\rho_5)}}\right\rfloor}\sum_{\rho_4=7}^{\min(\rho_5-1,\rho_{\text{nearest}}\le\frac{N}{p_5^{q_5}\cdot 5\cdot 3\cdot 2})} \sum_{q_4=1}^{\left\lfloor\frac{\log{(\max{(1,\frac{N}{\rho_5})})}}{\log{(\rho_4)}}\right\rfloor}\sum_{\rho_3=5}^{\min(\rho_4-1,\rho_{\text{nearest}}\le\frac{N}{p_5^{q_5}\cdot p_4^{q_4}\cdot 3\cdot 2})} \sum_{q_3=1}^{\left\lfloor\frac{\log{(\max{(1,\frac{N}{\rho_5\rho_4})})}}{\log{(\rho_3)}}\right\rfloor} \nonumber \\
+&\sum_{\rho_2=3}^{\min(\rho_4-1,\rho_{\text{nearest}}\le\frac{N}{p_5^{q_5}\cdot p_4^{q_4}\cdot p_3^{q_3}\cdot 2})} \sum_{q_2=1}^{\left\lfloor\frac{\log{(\max{(1,\frac{N}{\rho_5\rho_4\rho_3})})}}{\log{(\rho_2)}}\right\rfloor}\sum_{\rho_1=2}^{\min(\rho_2-1,\rho_{\text{nearest}}\le N^{1/5})} \nonumber \\ & \qquad \qquad \qquad  \left(\frac{1}{\rho_5^{s}}\right)^{q_5}\left(\frac{1}{\rho_4^{s}}\right)^{q_4}\left(\frac{1}{\rho_3^{s}}\right)^{q_3}\left(\frac{1}{\rho_2^{s}}\right)^{q_2}\cdot\frac{1}{\rho_1^{s}}\cdot\frac{(1-(\frac{1}{\rho_1^{s}})^{\left\lfloor\frac{\log{\left(\max{\left(1,\left(\frac{N}{(\rho_5^{q_5}\rho_4^{q_4}\rho_3^{q_3}\rho_2^{q_2})}\right)\right)}\right)}}{\log{(\rho_1)}}\right\rfloor})}{(1-\frac{1}{\rho_1^{s}})}\Bigg) \nonumber \\
+&+ \qquad \ldots
+\end{align}
+
+### Preprocessing parts of equation (15) without using the s value explicitly (allowing convenient reuse of the derived formula)
+
+As described in [7,8] and earlier in this paper, the same functional terms are present in the prime based series expansion for the interval $s=[\sigma+I\cdot (N)^2\cdot2\cdot \pi,\sigma^\prime+I\cdot (N+1)^2\cdot2\cdot \pi)$ where $N=\left\lfloor\sqrt{\frac{t}{2\pi}}\right\rfloor$. Hence there is computational value in calculating terms (or decomposed elements of terms) that don't explicitly contain the complex plane co-ordinate s. Then calculations based on this vectorised formula for specific s values executes more efficiently (if sufficient RAM exists to hold the formula).
+
+In this manner, the following intermediate result vectors are preprocessed
+
+
+\begin{enumerate}
+\item the set of primes with highest prime power $\ge 2$
+\begin{align}
+\mathbb{P}_{low} = \{\rho_1, \rho_2,...\} \in \rho_i \le \sqrt{N}
+\end{align}
+\item the set of primes with prime power = 1 (given the finite threshold N)
+\begin{align}
+\mathbb{P}_{high} = \{\rho_1, \rho_2,...\} \in \sqrt{N} < \rho_i < N
+\end{align}
+\item the 3-tuple set of the intermediate results terms containing finite geometric series where the lowest prime component $\rho_1$ has higher prime powers
+\begin{align}
+\text{geom1} &= \{(\rho_n^{q_n}\cdot\rho_{n-1}^{q_{n-1}}\cdot ...\rho_1)_1, (\rho_n^{q_n}\cdot\rho_{n-1}^{q_{n-1}}\cdot ...\rho_1)_2,...\} \in \rho < \sqrt{N}, geom3_i \ge 2 \\ \text{geom2} &= \{(\rho_1)_1, (\rho_1)_2, ...\} \in \mathbb{P}_{low} , geom3_i \ge 2\\
+\text{geom3} &= \{\left(\frac{\log{\left(\max{\left(1,\left(\frac{N}{(\rho_5^{q_5}\rho_4^{q_4}\rho_3^{q_3}\rho_2^{q_2})}\right)\right)}\right)}}{\log{(\rho_1)}}\right)_1, \left(\frac{\log{\left(\max{\left(1,\left(\frac{N}{(\rho_5^{q_5}\rho_4^{q_4}\rho_3^{q_3}\rho_2^{q_2})}\right)\right)}\right)}}{\log{(\rho_1)}}\right)_2,...\} \nonumber \\
+& \qquad \qquad \in \mathbb{P}_{low}, geom3_i \ge 2
+\end{align}
+\item the set of composite numbers $(\rho_n^{q_n}\cdot\rho_{n-1}^{q_{n-1}}\cdot ...\rho_1)_i$ where the product $(\rho_n^{q_n}\cdot\rho_{n-1}^{q_{n-1}}\cdot ...\rho_1)_i\cdot \rho_{1i} > N$ and hence a geometric series form simplification does not exist (given the finite threshold N)
+\begin{align}
+\text{composite} &= \{(\rho_n^{q_n}\cdot\rho_{n-1}^{q_{n-1}}\cdot ...\rho_1)_1, (\rho_n^{q_n}\cdot\rho_{n-1}^{q_{n-1}}\cdot ...\rho_1)_2,...\} \in \rho < \sqrt{N}, \left\lfloor\frac{\log{\left(\max{\left(1,\left(\frac{N}{(\rho_5^{q_5}\rho_4^{q_4}\rho_3^{q_3}\rho_2^{q_2})}\right)\right)}\right)}}{\log{(\rho_1)}}\right\rfloor = 1 \\ \end{align}
+
+\end{enumerate}
+
+An optional result than can also be preprocessed
+
+\begin{enumerate}
+\item the maximum multiplicative factor for primes with prime power = 1 (given the finite threshold N)
+\begin{align}
+\text{multi} = \{\left\lfloor\frac{N}{(\mathbb{P}_{high})_1}\right\rfloor, \left\lfloor\frac{N}{(\mathbb{P}_{high})_2}\right\rfloor,...\} \text{ where } 1 \le \text{multi}_i < \sqrt{N} 
+\end{align}
+\end{enumerate}
+
+
+### The algorithm calculations (after pre-processing) for a new s value 
+
+Using the pre-processing results, the finite dirichlet series may be calculated for a new s value via
+
+1. deriving the set of multiplicative factors including the s value, $\sum_{m=1}^{multi} 1/m^s$ for each prime in set $\mathbb{P}_{high}$ given the maximum multiplicative factors in set $multi$
+
+\begin{align}
+\text{multi factors}(s) = \{mf(s)_1,mf(s)_2,...\}
+\end{align}
+
+2. calculating the primed based contribution to the finite dirichlet series from the primes in prime in $\mathbb{P}_{high}$
+
+\begin{align}
+\sum_{i \in \mathbb{P}_{high}} \frac{1}{\rho_{high_i}^s}\cdot mf(s)_i
+\end{align}
+
+3. calculating the prime based contribution to the finite dirichlet series from the primes in the 3-tuple set geom
+
+\begin{align}
+\sum_{i \in \text{geom}}  \frac{1}{\text{geom1}_i^s}\cdot\frac{(1-(\frac{1}{\text{geom2}_i^s})^{\text{geom3}_i})}{(1-\frac{1}{\text{geom2}_i^s})}
+\end{align}
+
+4. calculating the prime based contribution to the finite dirichlet series from the prime products in set composite
+
+\begin{align}
+\sum_{i \in \text{composite}} \frac{1}{\text{composite}_i^s}
+\end{align}
+
+5. totalling all the results (and add 1) 
+
+\begin{align}
+{\Large\sum_{k=1}^{N=\left\lfloor\sqrt{\frac{t}{2\pi}}\right\rfloor}} \frac{1}{k^s} &= 1 + \sum_{i \in \mathbb{P}_{high}} \frac{1}{\rho_{high_i}^s}\cdot mf(s)_i + \sum_{i \in \text{geom}}  \frac{1}{\text{geom1}_i^s}\cdot\frac{(1-(\frac{1}{\text{geom2}_i^s})^{\text{geom3}_i})}{(1-\frac{1}{\text{geom2}_i^s})} + \sum_{i \in \text{composite}} \frac{1}{\text{composite}_i^s}
+\end{align}
+
+6. for the prime based Riemann Siegel formula repeat steps 1-5 for $s^\prime=(1-s)$ and use the zeroth order equation (6) to combine the results for s and (1-s)
+
+\begin{align}
+&{\Large\sum_{k=1}^{N=\left\lfloor\sqrt{\frac{t}{2\pi}}\right\rfloor}} \frac{1}{k^s} +\chi(s)\cdot{\Large\sum_{k=1}^{N=\left\lfloor\sqrt{\frac{t}{2\pi}}\right\rfloor}} \frac{1}{k^{(1-s)}} \nonumber \\
+&= 1 + \sum_{i \in \mathbb{P}_{high}} \frac{1}{\rho_{high_i}^s}\cdot mf(s)_i + \sum_{i \in \text{geom}}  \frac{1}{\text{geom1}_i^s}\cdot\frac{(1-(\frac{1}{\text{geom2}_i^s})^{\text{geom3}_i})}{(1-\frac{1}{\text{geom2}_i^s})} + \sum_{i \in \text{composite}} \frac{1}{\text{composite}_i^s} \nonumber \\
++ &\chi(s) \cdot \left(1 + \sum_{i \in \mathbb{P}_{high}} \frac{1}{\rho_{high_i}^{(1-s)}}\cdot mf({(1-s)})_i + \sum_{i \in \text{geom}}  \frac{1}{\text{geom1}_i^{(1-s)}}\cdot\frac{(1-(\frac{1}{\text{geom2}_i^{(1-s)}})^{\text{geom3}_i})}{(1-\frac{1}{\text{geom2}_i^{(1-s)}})} + \sum_{i \in \text{composite}} \frac{1}{\text{composite}_i^{(1-s)}} \right)
+\end{align}
+
+7. for an improved approximation of the Riemann Zeta function (based on the prime based Riemann Siegel formula) use tapering of the dirichlet series about the first quiescent region as in equation (9) (or either of the higher order Riemann Siegel, Euler-Maclaurin series approaches)
+
+
+## Results
+
+All the calculations for building the prime based series formula and the finite zeroth order Riemann Siegel function at the first quiescent region were performed using the pari-gp language [10] on both a single PC and the CoCalc platform [11]. 
+
+### Background on the Riemann Zeta function values for the s values under examination
+
+The s values examined in this paper are discussed 
+
+(i) in [12] as two closely spaced zeroes nearby gram point n=10^18+12376780 ($\theta(t)\sim\theta(n\cdot\pi) \rightarrow t\sim170553583901045191$) 
+
+and (ii) in [13] as a large Riemann Zeta peak Z(s)=1287.14 located at t~356071078353654562.22.
+
+In this paper using (2q=2048 point) tapered Riemann Siegel formula calculations, 
+
+(i) the known closely spaced zeroes nearby gram point n=10^18+12376780 [12] are calculated to be located at $s=0.5+I\cdot 170553583901045191.668995$ and $s=0.5+I\cdot 170553583901045191.669182$ which estimates a normalized spacing between the zeroes of $\delta_n=(\gamma_{n=1}-\gamma_n)\cdot\log{(\gamma_n/(2\pi))}/(2\pi)=0.001126$ which is in good agreement with the known value $\delta_n=0.001124$ [12] 
+
+and (ii) the calculated peak height for the second s value of interest, exactly at $s=0.5+I\cdot 356071078353654562.22$ has $|\zeta(s)| \approx 1287.141, \zeta(s)= 1273.205222... - I\cdot 188.899147...$ via the tapered dirichlet series based calculation which is in good agreement with the known value [13]. In this paper, the nearby point $s=0.5+I\cdot 356071078353654562.21236362133$ is also presented which has $|\zeta(s)| \approx 1284.984, \zeta(s)=1284.984347... - 5.367832E-9*I$ because it has a vanishingly small imaginary component for the estimated $\zeta(s)$ value.
+
+### Example pari-gp code for standard tapered zeroth order Riemann Siegel formula
+
+As an example of how concise the standard zeroth order Riemann Siegel formula with tapering is to code, below is a pari-gp language implementation of the standard zeroth order Riemann Siegel Formula including tapering about the first quiescent region which usefully improves its approximation of the Riemann Zeta function as shown in the previous sections examples, with 2q=2048 tapering terms this code is suitable for calculations when t>7e6.
+
+\begin{verbatim}
+fun_chi(res,t)=2^(res+I*t)*Pi^((res+I*t)-1)*sin(Pi/2*(res+I*t))*gamma(1-(res+I*t));
+
+x1024o=2^2048;
+x1024coef=listcreate(2048);
+forstep(i=0,2048,1,[x1024o=x1024o-binomial(2048,i),listput(x1024coef,x1024o)]);
+x1024coef=Vec(x1024coef);
+x1024coef=x1024coef/2^2048.;
+x1024coef[2048]
+
+dirichRS_sum2048_FP(res,t)={
+num=floor(sqrt(abs(t)/Pi/2));
+summ_s=0;summ_1ms=0;
+forstep(i=1,num-1024,1,[est=i^(res+I*t),summ_s=summ_s+1/est,summ_1ms=summ_1ms+est/i]);
+forstep(i=num-1023,num+1024,1,[est=i^(res+I*t),
+summ_s=summ_s+x1024coef[i-(num-1024)]/est,summ_1ms=summ_1ms+x1024coef[i-(num-1024)]*est/i]);
+summ=summ_s+fun_chi(res,t)*summ_1ms;
+\end{verbatim}
+
+In comparison, the example prime based zeroth order Riemann Siegel formula code in Appendix B uses ~5 times the lines of code (and currently has some hard coded parameters based on a given t and N). It is a verbose version as each single, double, triple, quadruple product of primes ($\rho \le \sqrt{N}$ are built seperately to learn more about the formula works.
+
+### Comparing execution of standard zeroth order Riemann Siegel formula (8) and primed based Riemann Siegel formula equations (10), (15) and (29) (with tapering)
+
+1. Log output for a co-ordinate close to the two closely spaced zeroes nearby gram point n=10^18+12376780  [12]
+
+\begin{verbatim}
+? t0=170553583901045191.669;
+? res=0.5
+%57 = 0.50000000000000000000000000000000000000
+? num=164755715;
+?
+? est(res,t0) \\prime based Riemann Siegel calculation (with tapering) after pre-processing
+cpu time = 19min, 39,048 ms, real time = 20min, 7,954 ms.
+%59 = -5.665786894011072550 E-9 - 4.699758030599218098 E-8*I
+? dirichRS_unevensum2048_FP(res,t0,1,1) \\standard Riemann Siegel calculation (with tapering)
+cpu time = 35min, 16,150 ms, real time = 36min, 6,132 ms.
+%60 = -5.665786846197756743 E-9 - 4.699757990417330333 E-8*I
+\end{verbatim}
+
+
+For s and (1-s) in the standard Riemann Siegel calculation (with tapering) there are 164755715 natural numbers $(sqrt(t0/2/\pi))$ (plus tapering which adjusts the last 1024 terms and adds 1024 terms beyond 164755715). The calculation is a sum with only a small 2048 element vector stored in RAM for use with the tapering.
+
+For the prime based Riemann Siegel calculation, pre-processing derived vectors which are independent of s 
+$\text{multi factors}(s) = \{mf(s)_1,mf(s)_2,...\}$ 12829 elements (sqrt(sqrt(N)))
+$\mathbb{P}_{high}$ (9226067-1530) elements the number of primes between sqrt(N) and N
+$\mathbb{P}_{low}$ (1530) elements the number of primes less than or equal to sqrt(N)
+$\text{geom1}$, $\text{geom2}$, $\text{geom3}$ a 3-tuple, each 11428133 elements
+$\text{composite}$ (20675954) elements the number of large products of primes not condensed in finite geometric series
+
+So the prime based Riemann Siegel calculation uses 41330154 elements (=9226067+11428133+20675954) which is $\frac{41330154}{164755715}=0.25085$ of the terms used for the standard zeroth order Riemann Siegel calculation. To store the pro-processed vectors to allow reuse for new s values took 6.6GB of RAM (with no garbage cleanup of RAM attempted) on a basic CoCalc single CPU setup. 
+
+The relative execution difference at N=164755715 on a basic CoCalc single CPU setup was $\frac{19.66}{35.25}=0.5577$ so the prime based algorithm was faster but the extra multiplications involved in the finite geometric series calculations (using $\text{geom1}$, $\text{geom2}$, $\text{geom3}$) does cost time.
+
+
+2. Log output for a co-ordinate close  Large Riemann Zeta peak on critical line at t=356071078353654562.22 [13]
+
+\begin{verbatim}
+? t0=356071078353654562.21236362133;
+? res=0.5
+%77 = 0.50000000000000000000000000000000000000
+? num=238055607;
+? 
+? est(res,t0) \\prime based Riemann Siegel calculation (with tapering) after pre-processing
+time = 30min, 10,516 ms.
+%79 = 1284.9843472296269481421451050579656872 - 5.3678329073545552728753374920429965108 E-9*I
+? 
+? dirichRS_unevensum2048_FP(res,t0,1,1) \\standard Riemann Siegel calculation (with tapering)
+? time = 50min, 4,617 ms.
+? %80 = 1284.9843472296269481412432035067645085 - 5.3678329073545552728715699418064076478 E-9*I
+\end{verbatim}
+
+For s and (1-s) in the standard Riemann Siegel calculation (with tapering) there are 238055607 natural numbers $(sqrt(t0/2/\pi))$ (plus tapering which adjusts the last 1024 terms and adds 1024 terms beyond 164755715). The calculation is a sum with only a small 2048 element vector stored in RAM for use with the tapering.
+
+For the prime based Riemann Siegel calculation, pre-processing derived vectors which are independent of s 
+$\text{multi factors}(s) = \{mf(s)_1,mf(s)_2,...\}$ 15427 elements (sqrt(sqrt(N)))
+$\mathbb{P}_{high}$ (13060806-1802) elements the number of primes between sqrt(N) and N
+$\mathbb{P}_{low}$ (1802) elements the number of primes less than or equal to sqrt(N)
+$\text{geom1}$, $\text{geom2}$, $\text{geom3}$ a 3-tuple, each 16451177 elements
+$\text{composite}$ (29992583) elements the number of large products of primes not condensed in finite geometric series
+
+So the prime based Riemann Siegel calculation uses 59504566 elements (=13060806+16451177+29992583) which is $\frac{59504566}{238055607}=0.24996$ of the terms used for the standard zeroth order Riemann Siegel calculation. To store the pro-processed vectors to allow reuse for new s values took 9GB of RAM (with no garbage cleanup of RAM attempted) on a local PC. 
+
+The relative execution difference at N=164755715 on a basic CoCalc single CPU setup was $\frac{30.166}{50.066}=0.6025$ so the prime based algorithm was faster but the extra multiplications involved in the finite geometric series calculations (using $\text{geom1}$, $\text{geom2}$, $\text{geom3}$) does cost time.
+
+
+## Conclusions 
+
+
+The above procedure using products of finite geometric series of primes (and their powers) accurately calculates the zeroth order Riemann Siegel estimate (with tapering) for N=164755715, (t~1.7055e17) and N=238055607 (t~3.5607e17) faster than the standard dirichlet series Riemann Siegel formula method. The basic reason is that prime based Riemann Siegel formula has less terms involved in the computations (and the extra multiplications that occur are not sufficient to stop the prime based method from being faster). The cost is using several GB of RAM for pre-processing vector storage but the proposed algorithm which improves on the formula described in [8] appears to be a scable solution. 
+
+
+
+\newpage
+
+## References
+
+1. Riemann, Bernhard (1859). "$\ddot{U}$ber die Anzahl der Primzahlen unter einer gegebenen Gr$\ddot{o}$sse". Monatsberichte der Berliner Akademie.. In Gesammelte Werke, Teubner, Leipzig (1892), Reprinted by Dover, New York (1953).
+
+2. Titchmarsh, E.C. (1986) The Theory of the Riemann Zeta Function. 2nd Revised (Heath-Brown, D.R. ) Edition, Oxford University Press, Oxford.
+
+3. Edwards, H.M. (1974). Riemann's zeta function. Pure and Applied Mathematics 58. New York-London: Academic Press. ISBN 0-12-242750-0. Zbl 0315.10035.
+
+4. S. M. Gonek, C. P. Hughes, and J. P. Keating, A hybrid Euler-Hadamard product for the Riemann zeta function, Duke Math. J. 136 (2007), no. 3, 507–549. MR 2309173 
+
+5. S. M. Gonek, Finite Euler products and the Riemann hypothesis, Trans. Amer. Math. Soc. 364 (2012), no. 4, 2157–2191. MR 2869202, https://doi.org/10.1090/S0002-9947-2011-05546-7
+
+6. Martin, J.P.D. "Truncated Exponential Series based partial Euler Product calculations at quiescent regions of oscillatory divergence to produce approximations of the Riemann Siegel Z function." (2021)
+http://dx.doi.org/10.6084/m9.figshare.14842803
+
+7. Martin, J.P.D. "The finite Dirichlet Series expressed as the sum of products of finite geometric series of primes and powers of primes." (2024) 
+http://dx.doi.org/10.6084/m9.figshare.26264198
+
+8. Martin, J.P.D. "Examining the convergence behaviour of the finite Dirichlet Series and zeroth order Riemann Siegel formula calculated via the sum of products of finite geometric series of primes and powers of primes near the first Rosser point violation" (2024)
+http://dx.doi.org/10.6084/m9.figshare.26352466
+
+9. Martin, J.P.D. "The behaviour of non-trivial zeroes in tapered zeroth order Riemann Siegel formula finite Dirichlet Series about the first quiescent region with lower symmetry dirichlet coefficients near high Riemann Zeta function peaks" (2024)
+http://dx.doi.org/10.6084/m9.figshare.26093875
+
+10. The PARI~Group, PARI/GP version 2.12.0, Univ. Bordeaux, 2018,
+\url{http://pari.math.u-bordeaux.fr/}.
+
+11. CoCalc – Collaborative Calculation and Data Science, Sagemath, Inc., (2024) 
+\url{https://cocalc.com}}
+
+12. Odlyzko A.M. "The 10^20-th zero of the Riemann zeta function and 175 million of its neighbors" (1992 revision of 1989 manuscript unpublished).
+https://www-users.cse.umn.edu/~odlyzko/unpublished/zeta.10to20.1992.pdf
+
+13. Kovacs A. and Tihanyi N., "IMPROVEMENTS ON FINDING LARGE VALUES OF THE RIEMANN ZETA FUNCTION ON THE CRITICAL LINE" (2018) Annales Univ. Sci. Budapest., Sect. Comp. 48, pp53–64
+
+
+
+
+
+\newpage
+
+## Appendix A: Alternate expansion of finite Dirichlet Series based on finite geometric series of primes and powers of primes
+
+The identified alternate expansion in terms of finite geometric series of primes is as follows
+
+  \begin{align}
+    \sum_{n=1}^N \frac{1}{n^s} &= 1+\frac{1}{2^s}+\frac{1}{3^s}+...+\frac{1}{N^s}\\
+    &= a_2(s,N)+a_3(s,N)+a_5(s,N)+a_7(s,N)+a_9(s,N)+..+a_{p\le N}(s,N) 
+   \end{align}
+
+where 
+
+\begin{equation}
+        a_2(s,N) =1+\frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{\big(\big\lfloor\frac{\log{(\max{\{1,N}\})}}{\log{(2)}}\big\rfloor\big)})}{(1-\frac{1}{2^s})}
+   \end{equation}
+\begin{equation}
+        a_3(s,N) = \frac{1}{3^s}\cdot \Bigg[\delta(N\ge3) + \frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor\frac{\log{(\max{\{1,\frac{N}{3}\}})}}{\log{(2)}}\rfloor})}{(1-\frac{1}{2^s})} \Bigg] 
+\end{equation}
+
+and more generally for prime powers of 3
+
+\begin{equation}
+        a_{3^m}(s,N) =\left(\frac{1}{3^s}\right)^m\cdot\Bigg[\delta(N\ge3^m) + \frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor\frac{\log{(\max{\{1,\frac{N}{3^m}\}})}}{\log{(2)}}\rfloor})}{(1-\frac{1}{2^s})} \Bigg] 
+\end{equation}
+
+\begin{align}
+a_5(s,N) =\frac{1}{5^s}\cdot \Bigg[\delta(N\ge5) + \frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor\frac{\log{(\max{\{1,\frac{N}{5}\}})}}{\log{(2)}}\rfloor})}{(1-\frac{1}{2^s})}  \nonumber \\  + \frac{1}{3^s}\cdot\frac{(1-(\frac{1}{3^s})^{\lfloor\frac{\log{(\max{\{1,\frac{N}{5}\}})}}{\log{(3)}}\rfloor})}{(1-\frac{1}{3^s})} \nonumber \\  + \sum_{q=1} \left(\frac{1}{3^s}\right)^q\cdot\frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor\frac{\log{(\max{\{1,\frac{N}{3^q\cdot 5}\}})}}{\log{(2)}}\rfloor})}{(1-\frac{1}{2^s})} \Bigg] 
+\end{align}
+
+and more generally for prime powers of 5
+
+\begin{align}
+a_{5^m}(s,N) =\left(\frac{1}{5^s}\right)^m\cdot \Bigg[\delta(N\ge5^m) + \frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor\frac{\log{(\max{\{1,\frac{N}{5^m}\}})}}{\log{(2)}}\rfloor})}{(1-\frac{1}{2^s})}  \nonumber \\  + \frac{1}{3^s}\cdot\frac{(1-(\frac{1}{3^s})^{\lfloor\frac{\log{(\max{\{1,\frac{N}{5^m}\}})}}{\log{(3)}}\rfloor})}{(1-\frac{1}{3^s})} \nonumber \\  + \sum_{q=1} \left(\frac{1}{3^s}\right)^q\cdot\frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor\frac{\log{(\max{\{1,\frac{N}{3^q\cdot 5^m}\}})}}{\log{(2)}}\rfloor})}{(1-\frac{1}{2^s})} \Bigg] 
+\end{align}
+
+\begin{align}
+        a_7(s,N) =\frac{1}{7^s}\cdot \Bigg[\delta(N\ge7) + \frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor\frac{\log{(\max{\{1,\frac{N}{7}\}})}}{\log{(2)}}\rfloor})}{(1-\frac{1}{2^s})}    + \frac{1}{3^s}\cdot\frac{(1-(\frac{1}{3^s})^{\lfloor\frac{\log{(\max{\{1,\frac{N}{7}\}})}}{\log{(3)}}\rfloor})}{(1-\frac{1}{3^s})} \nonumber \\   + \frac{1}{5^s}\cdot\frac{(1-(\frac{1}{5^s})^{\lfloor\frac{\log{(\max{\{1,\frac{N}{7}\}})}}{\log{(5)}}\rfloor})}{(1-\frac{1}{5^s})} \nonumber \\  + \sum_{q=1} \left(\frac{1}{3^s}\right)^q\cdot\frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor\frac{\log{(\max{\{1,\frac{N}{3^q\cdot 7}\}})}}{\log{(2)}}\rfloor})}{(1-\frac{1}{2^s})}      + \sum_{p=1} \left(\frac{1}{5^s}\right)^p\cdot\frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor\frac{\log{(\max{\{1,\frac{N}{5^p\cdot 7}\}})}}{\log{(2)}}\rfloor})}{(1-\frac{1}{2^s})} \nonumber \\    + \sum_{p=1} \left(\frac{1}{5^s}\right)^p\cdot\frac{1}{3^s}\cdot\frac{(1-(\frac{1}{3^s})^{\lfloor\frac{\log{(\max{\{1,\frac{N}{5^p\cdot 7}\}})}}{\log{(3)}}\rfloor})}{(1-\frac{1}{3^s})} \nonumber \\    + \sum_{p=1} \sum_{q=1} \left(\frac{1}{5^s}\right)^p\cdot\left(\frac{1}{3^s}\right)^q\cdot\frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor\frac{\log{(\max{\{1,\frac{N}{3^q\cdot 5^p\cdot 7}\}})}}{\log{(2)}}\rfloor})}{(1-\frac{1}{2^s})} \Bigg]  
+\end{align}
+
+and more generally for prime powers of 7
+
+\begin{align}
+        a_{7^m}(s,N) =\left(\frac{1}{7^s}\right)^m\cdot \Bigg[\delta(N\ge7^m) + \frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor\frac{\log{(\max{\{1,\frac{N}{7^m}\}})}}{\log{(2)}}\rfloor})}{(1-\frac{1}{2^s})}    + \frac{1}{3^s}\cdot\frac{(1-(\frac{1}{3^s})^{\lfloor\frac{\log{(\max{\{1,\frac{N}{7^m}\}})}}{\log{(3)}}\rfloor})}{(1-\frac{1}{3^s})} \nonumber \\   + \frac{1}{5^s}\cdot\frac{(1-(\frac{1}{5^s})^{\lfloor\frac{\log{(\max{\{1,\frac{N}{7^m}\}})}}{\log{(5)}}\rfloor})}{(1-\frac{1}{5^s})} \nonumber \\  + \sum_{q=1} \left(\frac{1}{3^s}\right)^q\cdot\frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor\frac{\log{(\max{\{1,\frac{N}{3^q\cdot 7^m}\}})}}{\log{(2)}}\rfloor})}{(1-\frac{1}{2^s})}      + \sum_{p=1} \left(\frac{1}{5^s}\right)^p\cdot\frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor\frac{\log{(\max{\{1,\frac{N}{5^p\cdot 7^m}\}})}}{\log{(2)}}\rfloor})}{(1-\frac{1}{2^s})} \nonumber \\    + \sum_{p=1} \left(\frac{1}{5^s}\right)^p\cdot\frac{1}{3^s}\cdot\frac{(1-(\frac{1}{3^s})^{\lfloor\frac{\log{(\max{\{1,\frac{N}{5^p\cdot 7^m}\}})}}{\log{(3)}}\rfloor})}{(1-\frac{1}{3^s})} \nonumber \\    + \sum_{p=1} \sum_{q=1} \left(\frac{1}{5^s}\right)^p\cdot\left(\frac{1}{3^s}\right)^q\cdot\frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor\frac{\log{(\max{\{1,\frac{N}{3^q\cdot 5^p\cdot 7^m}\}})}}{\log{(2)}}\rfloor})}{(1-\frac{1}{2^s})} \Bigg]  
+\end{align}
+
+\newpage
+and generally for prime powers of 11 including m=1
+
+\begin{align}
+        a_{11^m}(s,N) =\left(\frac{1}{11^s}\right)^m\cdot \Bigg[\delta(N\ge11^m) + \frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor\frac{\log{(\max{\{1,\frac{N}{11^m}\}})}}{\log{(2)}}\rfloor})}{(1-\frac{1}{2^s})}    + \frac{1}{3^s}\cdot\frac{(1-(\frac{1}{3^s})^{\lfloor\frac{\log{(\max{\{1,\frac{N}{11^m}\}})}}{\log{(3)}}\rfloor})}{(1-\frac{1}{3^s})} \nonumber \\  + \frac{1}{5^s}\cdot\frac{(1-(\frac{1}{5^s})^{\lfloor\frac{\log{(\max{\{1,\frac{N}{11^m}\}})}}{\log{(5)}}\rfloor})}{(1-\frac{1}{5^s})}   + \frac{1}{7^s}\cdot\frac{(1-(\frac{1}{7^s})^{\lfloor\frac{\log{(\max{\{1,\frac{N}{11^m}\}})}}{\log{(7)}}\rfloor})}{(1-\frac{1}{7^s})} \nonumber \\ \nonumber \\ + \sum_{q=1} \left(\frac{1}{3^s}\right)^q\cdot\frac{1}{2^s}\frac{(1-(\frac{1}{2^s})^{\lfloor\frac{\log{(\max{\{1,\frac{N}{3^q\cdot 11^m}\}})}}{\log{(2)}}\rfloor})}{(1-\frac{1}{2^s})}   +  \sum_{q=1} \left(\frac{1}{5^s}\right)^q\cdot\frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor\frac{\log{(\max{\{1,\frac{N}{5^q\cdot 11^m}\}})}}{\log{(2)}}\rfloor})}{(1-\frac{1}{2^s})} \nonumber \\  +  \sum_{q=1} \left(\frac{1}{7^s}\right)^q\cdot\frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor\frac{\log{(\max{\{1,\frac{N}{7^q\cdot 11^m}\}})}}{\log{(2)}}\rfloor})}{(1-\frac{1}{2^s})} \nonumber \\  + \sum_{q=1} \left(\frac{1}{5^s}\right)^q\cdot\frac{1}{3^s}\cdot\frac{(1-(\frac{1}{3^s})^{\lfloor\frac{\log{(\max{\{1,\frac{N}{5^q\cdot 11^m}\}})}}{\log{(3)}}\rfloor})}{(1-\frac{1}{3^s})}  +  \sum_{q=1} \left(\frac{1}{7^s}\right)^q\cdot\frac{1}{3^s}\cdot\frac{(1-(\frac{1}{3^s})^{\lfloor\frac{\log{(\max{\{1,\frac{N}{7^q\cdot 11^m}\}})}}{\log{(3)}}\rfloor})}{(1-\frac{1}{3^s})} \nonumber \\  + \sum_{q=1} \left(\frac{1}{7^s}\right)^q\cdot\frac{1}{5^s}\cdot\frac{(1-(\frac{1}{5^s})^{\lfloor\frac{\log{(\max{\{1,\frac{N}{7^q\cdot 11^m}\}})}}{\log{(5)}}\rfloor})}{(1-\frac{1}{5^s})} \nonumber \\ \nonumber \\ + \sum_{p=1} \sum_{q=1} \left(\frac{1}{5^s}\right)^p\cdot\left(\frac{1}{3^s}\right)^q\cdot\frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor\frac{\log{(\max{\{1,\frac{N}{3^q\cdot 5^p\cdot 11^m}\}})}}{\log{(2)}}\rfloor})}{(1-\frac{1}{2^s})} \nonumber \\ + \sum_{p=1} \sum_{q=1} \left(\frac{1}{7^s}\right)^p\cdot\left(\frac{1}{3^s}\right)^q\cdot\frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor\frac{\log{(\max{\{1,\frac{N}{3^q\cdot 7^p\cdot 11^m}\}})}}{\log{(2)}}\rfloor})}{(1-\frac{1}{2^s})} \nonumber \\ + \sum_{p=1} \sum_{q=1} \left(\frac{1}{7^s}\right)^p\cdot\left(\frac{1}{5^s}\right)^q\cdot\frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor\frac{\log{(\max{\{1,\frac{N}{5^q\cdot 7^p\cdot 11^m}\}})}}{\log{(2)}}\rfloor})}{(1-\frac{1}{2^s})} \nonumber \\ + \sum_{p=1} \sum_{q=1} \left(\frac{1}{7^s}\right)^p\cdot\left(\frac{1}{5^s}\right)^q\cdot\frac{1}{3^s}\cdot\frac{(1-(\frac{1}{3^s})^{\lfloor\frac{\log{(\max{\{1,\frac{N}{5^q\cdot 7^p\cdot 11^m}\}})}}{\log{(3)}}\rfloor})}{(1-\frac{1}{3^s})} \nonumber \\ \nonumber \\ + \sum_{p=1} \sum_{q=1} \sum_{r=1} \left(\frac{1}{7^s}\right)^p\cdot\left(\frac{1}{5^s}\right)^q\cdot\left(\frac{1}{3^s}\right)^r\cdot\frac{1}{2^s}\cdot\frac{(1-(\frac{1}{2^s})^{\lfloor\frac{\log{(\max{\{1,\frac{N}{3^r\cdot  5^q\cdot 7^p\cdot 11^m}\}})}}{\log{(2)}}\rfloor})}{(1-\frac{1}{2^s})} \Bigg]  
+\end{align}
+
+\newpage
+
+
+\newpage
+
+## Appendix B: N=238055607 example of alternate expansion of finite Dirichlet Series based on finite geometric series of primes and powers of primes
+
+An example pari-gp code log with the functions defining the finite geometric based series expansion terms for N=238055607. 
+The printed code log below contains line breaks and tabs to achieve prettier formatting. Such line breaks, tabs as well as the prompts would need to be removed before using the code below in further calculations.
+
+In principle, the algorithm below was tailored for a particular interval 
+
+Given $s=0.5+I\cdot 356071078353654562.21236362133$,
+
+$N=\left\lfloor\frac{t}{2\pi}\right\rfloor= 238055607$
+
+which means the derived formula applies to the rectangular region 
+
+$s=[\sigma+I\cdot (N)^2\cdot2\cdot \pi,\sigma^\prime+I\cdot (N+1)^2\cdot2\cdot \pi)$
+
+$s=[\sigma+I\cdot 356071077172998502.507...,\sigma^\prime+I\cdot 356071080164493493.178...)$
+
+which is a span of 356071080164493493.178... along the imaginary co-ordinate and under the tapered Dirichlet series approach which is present in the final Riemann Siegel calculations the real co-ordinate is arbitrary based on using the first quiescent region well away from the real axis to approximate the Riemann Zeta function value.
+
+To decide how many terms (products of primes to include) the following simple heuristic. Use as many summations as required by the product of the lowest primes since each prime in the n-way product must be distinct
+
+given N=238055607
+
+the lower bounds of the nine-way and ten-way products of the primes gives
+
+$2\cdot3\cdot5\cdot7\cdot11\cdot13\cdot17\cdot19\cdot23 < N < 2\cdot3\cdot5\cdot7\cdot11\cdot13\cdot17\cdot19\cdot23\cdot29$
+
+$223092870 < N < 6469693230$
+
+so only products of up to nine primes are needed to cover N=238055607. Indeed in this example below, only one nine-way product exists between 223092870 and 238055607 and was put into list comp_plist based on the expansion used. That only one extra element of the list was added using function "fnonalist" (the nine-way product of primes with a finite geometric series present for the lowest prime of the nine-way product) 
+
+\scriptsize{
+\begin{verbatim}
+foctalist()...
+.
+.
+.
+? len_p
+%49 = 13060806
+? length(quad1_list)
+%50 = 16451177
+? length(comp_plist)
+%51 = 29992582
+? 
+.
+.
+.
+.
+fnonalist()...
+.
+.
+? 
+? len_p
+%54 = 13060806
+? length(quad1_list)
+%55 = 16451177
+? length(comp_plist)
+%56 = 29992583
+? 
+\end{verbatim}
+}
+
+
+\normalsize{Which means that the other composite number integers (between 223092870 and 238055607) got  included earlier via lower level products into the (quad1 list, quad2 list, quad3 list) lists which contain the information on the finite geometric series terms of the expansion.}
+
+
+
+\scriptsize{
+\begin{verbatim}
+Reading GPRC: /etc/gprc ...Done.
+
+         GP/PARI CALCULATOR Version 2.12.0 (development 23101-6931b05)
+          amd64 running linux (x86-64/GMP-6.1.0 kernel) 64-bit version
+compiled: Oct  1 2018, gcc version 5.4.0 20160609 (Ubuntu 5.4.0-6ubuntu1~16.04.10)
+                           threading engine: pthread
+                 (readline v6.3 enabled, extended help enabled)
+
+                     Copyright (C) 2000-2018 The PARI Group
+
+PARI/GP is free software, covered by the GNU General Public License, and comes 
+WITHOUT ANY WARRANTY WHATSOEVER.
+
+Type ? for help, \q to quit.
+Type ?17 for how to get moral (and possibly technical) support.
+
+parisize = 8000000, primelimit = 500000, nbthreads = 8
+? #
+   timer = 1 (on)
+? plist=listcreate(10);forstep(i=1,238055607,1,if(isprime(i),listput(plist,i)));\\15427
+time = 1min, 4,136 ms.
+? len_p=length(plist);len_p
+%2 = 13060806
+? \\mlist=listcreate(10);forstep(i=1,len_p,1,listput(mlist,floor(238055607/plist[i])));
+? t0=356071078353654562.21236362133;
+? multlist=listcreate(10);x=0;forstep(i=1,floor(sqrt(238055607))+1,1,[x=x+1/i^(0.5+I*t0),listput(multlist,x)]);
+time = 180 ms.
+? 
+1? r=0.5+t0*I;p_estlist=listcreate(10);forstep(i=1,1802,1,[listput(p_estlist,1/pist[i]^r)])
+time = 20 ms.
+? p1_prodlist=listcreate(10);forstep(i=1,1802,1,[pr=1/plist[i]^r,listput(p1_prodlist,pr/(1-pr))])
+time = 20 ms.
+? 
+s? comp_plist=listcreate(10);plistlow=listcreate(10);
+? quad1_list=listcreate(10);quad2_list=listcreate(10);quad3_list=listcreate(10)
+%8 = List([])
+? 
+? 
+n? fp(psN1)={xp=1;for(i=1,1802,if(plist[i]==psN1,[xp=i,break]));xp;}
+? 
+? fsinglelist(psN1,N)={x2=0;x1=0;cap_total=0;fp(psN1);for(p1=1,fp(psN1),[p1p=plist[p1],cap=floor(log(max(1,N))/log(p1p)),
+if(cap<1.,[break],[x2=x2+1,if(cap>1,[listput(quad1_list,p1p),listput(quad2_list,p1p),listput(quad3_list,cap)],
+listput(comp_plist,p1p)),cap_total=cap_total+cap])]);return(x1)};
+? fsinglelist(15427,238055607);y1=x1
+time = 12 ms.
+%11 = 0
+? 
+? t0=356071078353654562.21236362133;
+? r=0.5+I*t0
+%13 = 0.50000000000000000000000000000000000000 + 356071078353654562.21236362133000000000*I
+? \\x3=0;for(j=1,length(quad3_list),if(quad3_list[j]==1,[x3=x3+1/(quad1_list[j])^r],
+[a1=1/quad1_list[j]^r,a2=1/quad2_list[j]^r,x3=x3+a1/(1-a2)*(1-a2^quad3_list[j])]));x3
+? 
+? 
+o? len_p
+%14 = 13060806
+? length(quad1_list)
+%15 = 1802
+? length(comp_plist)
+%16 = 0
+? 
+? 
+? 
+? fpairlist(psN2,N)={x2=0;x1=0;cap_total=0;fp(psN2);
+for(p2=2,fp(psN2),for(q2=1,floor(log(N)/log(plist[p2])),[p2p=(plist[p2])^q2,
+for(p1=1,fp(min(plist[p2-1],precprime(N^(1/2)))),[cap=floor(log(max(1,N/p2p))/log(plist[p1])),
+if(cap<1.,[break],[x2=x2+1,if(cap>1,[listput(quad1_list,p2p*plist[p1]),listput(quad2_list,plist[p1]),listput(quad3_list,cap)],
+listput(comp_plist,p2p*plist[p1])),cap_total=cap_total+cap])])]));return(x1)};
+? fpairlist(15427,238055607);y2=x1
+time = 13,080 ms.
+%18 = 0
+? 
+u? \\x3=0;for(j=1,length(quad3_list),if(quad3_list[j]==1,[x3=x3+1/(quad1_list[j]^r],
+[a1=1/quad1_list[j]^r,a2=1/quad2_list[j]^r,x3=x3+a1/(1-a2)*(1-a2^quad3_list[j])]));x3+sum(i=1,length(comp_plist),1/comp_plist[i]^r)
+? 
+? len_p
+%19 = 13060806
+? length(quad1_list)
+%20 = 91221
+? length(comp_plist)
+%21 = 1553386
+? 
+? ftriplelist(psN3,N)={x2=0;x1=0;cap_total=0;fp(psN3);
+for(p3=3,fp(psN3),[0,for(q3=1,floor(log(N)/log(plist[p3])),[p3p=(plist[p3])^q3,
+for(p2=2,fp(precprime(min(plist[p3-1],N/plist[p3]/2))),[0,for(q2=1,floor(log(N/plist[p3]^q3)/log(plist[p2])),[p2p=p3p*(plist[p2])^q2,
+for(p1=1,fp(precprime(min(plist[p2-1],precprime(N^(1/3))))),[cap=floor(log(max(1,N/p2p))/log(plist[p1])),if(cap<1.,[break],[x2=x2+1,
+if(cap>1,[listput(quad1_list,p2p*plist[p1]),listput(quad2_list,plist[p1]),listput(quad3_list,cap)],
+listput(comp_plist,p2p*plist[p1])),cap_total=cap_total+cap])])])])])]);return(x1)};
+? ftriplelist(15427,238055607);y3=x1
+time = 2min, 32,120 ms.
+%23 = 0
+? 
+r? \\x3=0;for(j=1,length(quad3_list),if(quad3_list[j]==1,[x3=x3+1/(quad1_list[j]^r],
+[a1=1/quad1_list[j]^r,a2=1/quad2_list[j]^r,x3=x3+a1/(1-a2)*(1-a2^quad3_list[j])]));x3+sum(i=1,length(comp_plist),1/comp_plist[i]^r)
+? 
+? len_p
+%24 = 13060806
+? length(quad1_list)
+%25 = 3087201
+? length(comp_plist)
+%26 = 10633074
+? 
+,? fquadlist(psN4,N)={x2=0;x1=0;cap_total=0;fp(psN4);
+for(p4=4,fp(psN4),for(q4=1,loor(log(N)/log(plist[p4])),[p4p=(plist[p4])^q4,
+for(p3=3,fp(precprime(min(plist[p4-1],N/plist[p4]/2/3))),for(q3=1,floor(log(N/p4p)/log(plist[p3])),[p3p=p4p*(plist[p3])^q3,
+for(p2=2,fp(precprime(min(plist[p3-1],N/plist[p4]/plist[p3]/2))),for(q2=1,floor(log(N/p3p)/log(plist[p2])),[p2p=p3p*(plist[p2])^q2,
+for(p1=1,fp(precprime(min(plist[p2-1],precprime(N^(1/4))))),[cap=floor(log(max(1,N/p2p))/log(plist[p1])),if(cap<1.,[break],[x2=x2+1,
+if(cap>1,[listput(quad1_list,p2p*plist[p1]),listput(quad2_list,plist[p1]),listput(quad3_list,cap)],
+listput(comp_plist,p2p*plist[p1])),cap_total=cap_total+cap])])]))]))]));return(x1)};
+? fquadlist(15427,238055607);y4=x1
+time = 5min, 44,917 ms.
+%28 = 0
+? 
+? \\x3=0;for(j=1,length(quad3_list),if(quad3_list[j]==1,[x3=x3+1/(quad1_list[j])^r],
+[a1=1/quad1_list[j]^r,a2=1/quad2_list[j]^r,x3=x3+a1/(1-a2)*(1-a2^quad3_list[j])]));x3+sum(i=1,length(comp_plist),1/comp_plist[i]^r)
+? 
+r? len_p
+%29 = 13060806
+? length(quad1_list)
+%30 = 10521036
+? length(comp_plist)
+%31 = 22046061
+? 
+1? fquintlist(psN5,N)={x2=0;x1=0;cap_total=0;fp(psN5);
+for(p5=5,fp(psN5),for(q5=1floor(log(N)/log(plist[p5])),[p5p=(plist[p5])^q5,
+for(p4=4,fp(precprime(min(plist[p5-1],N/plist[p5]/2/3/5))),for(q4=1,floor(log(N/p5p)/log(plist[p4])),[p4p=p5p*(plist[p4])^q4,
+for(p3=3,fp(precprime(min(plist[p4-1],N/plist[p5]/plist[p4]/2/3))),for(q3=1,floor(log(N/p4p)/log(plist[p3])),[p3p=p4p*(plist[p3])^q3,
+for(p2=2,fp(precprime(min(plist[p3-1],N/plist[p5]/plist[p4]/plist[p3]/2))),for(q2=1,floor(log(N/p3p)/log(plist[p2])),[p2p=p3p*(plist[p2])^q2,
+for(p1=1,fp(precprime(min(plist[p2-1],precprime(N^(1/5))))),[cap=floor(log(max(1,N/p2p))/log(plist[p1])),if(cap<1.,[break],[x2=x2+1,
+if(cap>1,[listput(quad1_list,p2p*plist[p1]),listput(quad2_list,plist[p1]),listput(quad3_list,cap)],
+listput(comp_plist,p2p*plist[p1])),cap_total=cap_total+cap])])]))]))]))]));return(x1)};
+? fquintlist(15427,238055607);y5=x1
+time = 5min, 14,401 ms.
+%33 = 0
+? 
+i? \\x3=0;for(j=1,length(quad3_list),if(quad3_list[j]==1,[x3=x3+1/(quad1_list[j]^r],
+[a1=1/quad1_list[j]^r,a2=1/quad2_list[j]^r,x3=x3+a1/(1-a2)*(1-a2^quad3_list[j])]));x3+sum(i=1,length(comp_plist),1/comp_plist[i]^r)
+? 
+_? len_p
+%34 = 13060806
+? length(quad1_list)
+%35 = 15355540
+? length(comp_plist)
+%36 = 28403637
+? 
+? fhexalist(psN6,N)={x2=0;x1=0;cap_total=0;fp(psN6);
+for(p6=6,fp(psN6),for(q6=1,floor(log(N)/log(plist[p6])),[p6p=(plist[p6])^q6,
+for(p5=5,fp(precprime(min(plist[p6-1],N/plist[p6]/2/3/5/7))),for(q5=1,floor(log(N/p6p)/log(plist[p5])),[p5p=p6p*(plist[p5])^q5,
+for(p4=4,fp(precprime(min(plist[p5-1],N/plist[p6]/plist[p5]/2/3/5))),for(q4=1,floor(log(N/p5p)/log(plist[p4])),[p4p=p5p*(plist[p4])^q4,
+for(p3=3,fp(precprime(min(plist[p4-1],N/plist[p6]/plist[p5]/plist[p4]/2/3))),for(q3=1,floor(log(N/p4p)/log(plist[p3])),[p3p=p4p*(plist[p3])^q3,
+for(p2=2,fp(precprime(min(plist[p3-1],N/plist[p6]/plist[p5]/plist[p4]/plist[p3]/2))),
+for(q2=1,floor(log(N/p3p)/log(plist[p2])),[p2p=p3p*(plist[p2])^q2,
+for(p1=1,fp(precprime(min(plist[p2-1],precprime(N^(1/6))))),[cap=floor(log(max(1,N/p2p))/log(plist[p1])),if(cap<1.,[break],[x2=x2+1,
+if(cap>1,[listput(quad1_list,p2p*plist[p1]),listput(quad2_list,plist[p1]),listput(quad3_list,cap)],
+listput(comp_plist,p2p*plist[p1])),cap_total=cap_total+cap])])]))]))]))]))]));return(x1)};
+? fhexalist(15427,238055607);y6=x1
+time = 1min, 59,364 ms.
+%38 = 0
+? 
+? \\x3=0;for(j=1,length(quad3_list),if(quad3_list[j]==1,[x3=x3+1/(quad1_list[j])^r],
+[a1=1/quad1_list[j]^r,a2=1/quad2_list[j]^r,x3=x3+a1/(1-a2)*(1-a2^quad3_list[j])]));x3+sum(i=1,length(comp_plist),1/comp_plist[i]^r)
+? 
+? len_p
+%39 = 13060806
+? length(quad1_list)
+%40 = 16383085
+? length(comp_plist)
+%41 = 29871289
+? 
+? fseptlist(psN7,N)={x2=0;x1=0;cap_total=0;fp(psN7);
+for(p7=7,fp(psN7),for(q7=1,floor(log(N)/log(plist[p7])),[p7p=(plist[p7])^q7,
+for(p6=6,fp(precprime(min(plist[p7-1],N/plist[p7]/2/3/5/7/11))),for(q6=1,floor(log(N/p7p)/log(plist[p6])),[p6p=p7p*(plist[p6])^q6,
+for(p5=5,fp(precprime(min(plist[p6-1],N/plist[p7]/plist[p6]/2/3/5/7))),for(q5=1,floor(log(N/p6p)/log(plist[p5])),[p5p=p6p*(plist[p5])^q5,
+for(p4=4,fp(precprime(min(plist[p5-1],N/plist[p7]/plist[p6]/plist[p5]/2/3/5))),for(q4=1,floor(log(N/p5p)/log(plist[p4])),
+[p4p=p5p*(plist[p4])^q4,
+for(p3=3,fp(precprime(min(plist[p4-1],N/plist[p7]/plist[p6]/plist[p5]/plist[p4]/2/3))),for(q3=1,floor(log(N/p4p)/log(plist[p3])),
+[p3p=p4p*(plist[p3])^q3,
+for(p2=2,fp(precprime(min(plist[p3-1],N/plist[p7]/plist[p6]/plist[p5]/plist[p4]/plist[p3]/2))),
+for(q2=1,floor(log(N/p3p)/log(plist[p2])),[p2p=p3p*(plist[p2])^q2,
+for(p1=1,fp(precprime(min(plist[p2-1],precprime(N^(1/7))))),[cap=floor(log(max(1,N/p2p))/log(plist[p1])),if(cap<1.,[break],[x2=x2+1,
+if(cap>1,[listput(quad1_list,p2p*plist[p1]),listput(quad2_list,plist[p1]),listput(quad3_list,cap)],
+listput(comp_plist,p2p*plist[p1])),cap_total=cap_total+cap])])]))]))]))]))]))]));return(x1)};
+time = 4 ms.
+? fseptlist(15427,238055607);y7=x1
+time = 17,157 ms.
+%43 = 0
+? 
+? \\x3=0;for(j=1,length(quad3_list),if(quad3_list[j]==1,[x3=x3+1/(quad1_list[j])^r],
+[a1=1/quad1_list[j]^r,a2=1/quad2_list[j]^r,x3=x3+a1/(1-a2)*(1-a2^quad3_list[j])]));x3+sum(i=1,length(comp_plist),1/comp_plist[i]^r)
+? 
+? len_p
+%44 = 13060806
+? length(quad1_list)
+%45 = 16450357
+? length(comp_plist)
+%46 = 29990239
+? 
+? 
+o? foctalist(psN8,N)={x2=0;x1=0;cap_total=0;fp(psN8);
+for(p8=8,fp(psN8),for(q8=1,loor(log(N)/log(plist[p8])),[p8p=(plist[p8])^q8,
+for(p7=7,fp(precprime(min(plist[p8-1],N/plist[p8]/2/3/5/7/11/13))),for(q7=1,floor(log(N/p8p)/log(plist[p7])),[p7p=p8p*(plist[p7])^q7,
+for(p6=6,fp(precprime(min(plist[p7-1],N/plist[p8]/plist[p7]/2/3/5/7/11))),for(q6=1,floor(log(N/p7p)/log(plist[p6])),[p6p=p7p*(plist[p6])^q6,
+for(p5=5,fp(precprime(min(plist[p6-1],N/plist[p8]/plist[p7]/plist[p6]/2/3/5/7))),for(q5=1,floor(log(N/p6p)/log(plist[p5])),
+[p5p=p6p*(plist[p5])^q5,
+for(p4=4,fp(precprime(min(plist[p5-1],N/plist[p8]/plist[p7]/plist[p6]/plist[p5]/2/3/5))),for(q4=1,floor(log(N/p5p)/log(plist[p4])),
+[p4p=p5p*(plist[p4])^q4,
+for(p3=3,fp(precprime(min(plist[p4-1],N/plist[p8]/plist[p7]/plist[p6]/plist[p5]/plist[p4]/2/3))),for(q3=1,floor(log(N/p4p)/log(plist[p3])),
+[p3p=p4p*(plist[p3])^q3,
+for(p2=2,fp(precprime(min(plist[p3-1],N/plist[p8]/plist[p7]/plist[p6]/plist[p5]/plist[p4]/plist[p3]/2))),
+for(q2=1,floor(log(N/p3p)/log(plist[p2])),[p2p=p3p*(plist[p2])^q2,
+for(p1=1,fp(precprime(min(plist[p2-1],precprime(N^(1/8))))),[cap=floor(log(max(1,N/p2p))/log(plist[p1])),if(cap<1.,[break],[x2=x2+1,
+if(cap>1,[listput(quad1_list,p2p*plist[p1]),listput(quad2_list,plist[p1]),listput(quad3_list,cap)],
+listput(comp_plist,p2p*plist[p1])),cap_total=cap_total+cap])])]))]))]))]))]))]))]));return(x1)};
+? foctalist(15427,238055607);y8=x1
+time = 1,228 ms.
+%48 = 0
+? 
+? \\x3=0;for(j=1,length(quad3_list),if(quad3_list[j]==1,[x3=x3+1/(quad1_list[j])^r],
+[a1=1/quad1_list[j]^r,a2=1/quad2_list[j]^r,x3=x3+a1/(1-a2)*(1-a2^quad3_list[j])]));x3+sum(i=1,length(comp_plist),1/comp_plist[i]^r)
+? 
+? len_p
+%49 = 13060806
+? length(quad1_list)
+%50 = 16451177
+? length(comp_plist)
+%51 = 29992582
+? 
+? fnonalist(psN9,N)={x2=0;x1=0;cap_total=0;fp(psN9);
+for(p9=9,fp(psN9),for(q9=1,floor(log(N)/log(plist[p9])),[p9p=(plist[p9])^q9,
+for(p8=8,fp(precprime(min(plist[p9-1],N/plist[p9]/2/3/5/7/11/13/17))),for(q8=1,floor(log(N/p9p)/log(plist[p8])),[p8p=p9p*(plist[p8])^q8,
+for(p7=7,fp(precprime(min(plist[p8-1],N/plist[p9]/plist[p8]/2/3/5/7/11/13))),for(q7=1,floor(log(N/p8p)/log(plist[p7])),[p7p=p8p*(plist[p7])^q7,
+for(p6=6,fp(precprime(min(plist[p7-1],N/plist[p9]/plist[p8]/plist[p7]/2/3/5/7/11))),for(q6=1,floor(log(N/p7p)/log(plist[p6])),
+[p6p=p7p*(plist[p6])^q6,
+for(p5=5,fp(precprime(min(plist[p6-1],N/plist[p9]/plist[p8]/plist[p7]/plist[p6]/2/3/5/7))),for(q5=1,floor(log(N/p6p)/log(plist[p5])),
+[p5p=p6p*(plist[p5])^q5,
+for(p4=4,fp(precprime(min(plist[p5-1],N/plist[p9]/plist[p8]/plist[p7]/plist[p6]/plist[p5]/2/3/5))),for(q4=1,floor(log(N/p5p)/log(plist[p4])),
+[p4p=p5p*(plist[p4])^q4,
+for(p3=3,fp(precprime(min(plist[p4-1],N/plist[p9]/plist[p8]/plist[p7]/plist[p6]/plist[p5]/plist[p4]/2/3))),
+for(q3=1,floor(log(N/p4p)/log(plist[p3])),[p3p=p4p*(plist[p3])^q3,
+for(p2=2,fp(precprime(min(plist[p3-1],N/plist[p9]/plist[p8]/plist[p7]/plist[p6]/plist[p5]/plist[p4]/plist[p3]/2))),
+for(q2=1,floor(log(N/p3p)/log(plist[p2])),[p2p=p3p*(plist[p2])^q2,
+for(p1=1,fp(precprime(min(plist[p2-1],precprime(N^(1/8))))),[cap=floor(log(max(1,N/p2p))/log(plist[p1])),if(cap<1.,[break],[x2=x2+1,
+if(cap>1,[listput(quad1_list,p2p*plist[p1]),listput(quad2_list,plist[p1]),listput(quad3_list,cap)],
+listput(comp_plist,p2p*plist[p1])),cap_total=cap_total+cap])])]))]))]))]))]))]))]))]));return(x1)};
+? fnonalist(15427,238055607);y9=x1
+time = 588 ms.
+%53 = 0
+? 
+? \\x3=0;for(j=1,length(quad3_list),if(quad3_list[j]==1,[x3=x3+1/(quad1_list[j])^r],
+[a1=1/quad1_list[j]^r,a2=1/quad2_list[j]^r,x3=x3+a1/(1-a2)*(1-a2^quad3_list[j])]));x3+sum(i=1,length(comp_plist),1/comp_plist[i]^r)
+? 
+? len_p
+%54 = 13060806
+? length(quad1_list)
+%55 = 16451177
+? length(comp_plist)
+%56 = 29992583
+? 
+? 
+? fun_chi(res,t)=2^(res+I*t)*Pi^((res+I*t)-1)*sin(Pi/2*(res+I*t))*gamma(1-(res+I*t));
+? vtheta(t)={t/2*log(t/(2*Pi))-t/2-Pi/8+1/(48*t)+7/(5760*t^3)+31/(80640*t^4)};
+? 
+? fun_T_chi(t,res)=2^(res+I*t)*Pi^((res+I*t)-1)*sin(Pi/2*(res+I*t))*gamma(1-(res+I*t));
+? 
+? 
+? x1024o=2^2048;
+? x1024coef=listcreate(2048);
+? forstep(i=0,2048,1,[x1024o=x1024o-binomial(2048,i),listput(x1024coef,x1024o)]);
+time = 36 ms.
+? x1024coef=Vec(x1024coef);
+? x1024coef=x1024coef/2^2048.;
+? x1024coef[2048]
+%65 = 3.0943460473825782754801833699711978586 E-617
+? 
+? x64o=2^128;
+? x64coef=listcreate(128);
+? forstep(i=0,128,1,[x64o=x64o-binomial(128,i),listput(x64coef,x64o)]);
+? x64coef=Vec(x64coef);
+? x64coef=x64coef/2^128.;
+? x64coef[128]
+%71 = 2.9387358770557187699218413430556141948 E-39
+? 
+? 
+? 
+? dirichRS_unevensum(res,t,N,p)={
+num=floor(sqrt(abs(t)/Pi/2*N));
+summ_s=0;summ_1ms=0;
+forstep(i=1,num,1,[est=i^(res+I*t),summ_s=summ_s+1/est,summ_1ms=summ_1ms+est/i]);
+summ=(1-p)+p*(summ_s+fun_chi(res,t)*summ_1ms);
+};
+? 
+? dirichRS_unevensum128_FP(res,t,N,p)={
+num=floor(sqrt(abs(t)/Pi/2*N));
+summ_s=0;summ_1ms=0;
+forstep(i=1,num-64,1,[est=i^(res+I*t),summ_s=summ_s+1/est,summ_1ms=summ_1ms+est/i]);
+forstep(i=num-63,num+64,1,[est=i^(res+I*t),summ_s=summ_s+x64coef[i-(num-64)]/est,summ_1ms=summ_1ms+x64coef[i-(num-64)]*est/i]);
+summ=(1-p)+p*(summ_s+fun_chi(res,t)*summ_1ms);
+};
+? 
+? 
+? dirichRS_unevensum2048_FP(res,t,N,p)={
+num=floor(sqrt(abs(t)/Pi/2*N));
+summ_s=0;summ_1ms=0;
+forstep(i=1,num-1024,1,[est=i^(res+I*t),summ_s=summ_s+1/est,summ_1ms=summ_1ms+est/i]);
+forstep(i=num-1023,num+1024,1,[est=i^(res+I*t),summ_s=summ_s+x1024coef[i-(num-1024)]/est,summ_1ms=summ_1ms+x1024coef[i-(num-1024)]*est/i]);
+summ=(1-p)+p*(summ_s+fun_chi(res,t)*summ_1ms);
+};
+? 
+? est(res,t0)={r=res+I*t0;num=238055607;
+multlist=listcreate(10);x=0;forstep(i=1,floor(sqrt(238055607))+1,1,[x=x+1/i^r,listput(multlist,x)]);
+z3=0;for(j=1,length(quad3_list),if(quad3_list[j]==1,
+[z3=z3+1/(quad1_list[j])^r],[a1=1/quad1_list[j]^r,a2=1/quad2_list[j]^r,z3=z3+a1/(1-a2)*(1-a2^quad3_list[j])]));
+z3=z3+1+sum(i=1,length(comp_plist),1/comp_plist[i]^r)+sum(i=1803,len_p,1/plist[i]^r*multlist[floor(238055607/plist[i])])+
+sum(k=num-1023,num+1024,if(k<=num,(-1+x1024coef[k-(num-1024)])/k^r,x1024coef[k-(num-1024)]/k^r));
+r2=1-r;
+multlist=listcreate(10);x=0;forstep(i=1,floor(sqrt(238055607))+1,1,[x=x+1/i^r2,listput(multlist,x)]);
+zz3=0;for(j=1,length(quad3_list),if(quad3_list[j]==1,
+[zz3=zz3+1/(quad1_list[j])^r2],[a1=1/quad1_list[j]^r2,a2=1/quad2_list[j]^r2,zz3=zz3+a1/(1-a2)*(1-a2^quad3_list[j])]));
+zz3=zz3+1+sum(i=1,length(comp_plist),1/comp_plist[i]^r2)+sum(i=1803,len_p,1/plist[i]^r2*multlist[floor(238055607/plist[i])])+
+sum(k=num-1023,num+1024,if(k<=num,(-1+x1024coef[k-(num-1024)])/k^r2,x1024coef[k-(num-1024)]/k^r2));z3+fun_chi(res,t0)*zz3;};
+time = 4 ms.
+? 
+? 
+? 
+? 
+? 
+? t0=356071078353654562.21236362133;
+? res=0.5
+%77 = 0.50000000000000000000000000000000000000
+? num=238055607;
+? 
+? est(res,t0)
+time = 30min, 10,516 ms.
+%79 = 1284.9843472296269481421451050579656872 - 5.3678329073545552728753374920429965108 E-9*I
+? 
+? dirichRS_unevensum2048_FP(res,t0,1,1)
+? time = 50min, 4,617 ms.
+? %80 = 1284.9843472296269481412432035067645085 - 5.3678329073545552728715699418064076478 E-9*I
+\end{verbatim}
+}
