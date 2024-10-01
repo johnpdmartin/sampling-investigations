@@ -17,7 +17,7 @@ knitr::opts_chunk$set(echo = FALSE)
 
 ##DRAFT Executive Summary
 
-An investigation of the non-trivial zero behaviour about large 5-periodic Davenport-Heilbronn function peaks at t={4545032985.7, ...} for a simple perturbation of the dirichlet coefficients of tapered zeroth order Riemann Siegel formula for the 5-periodic Davenport-Heilbronn function dirichlet series is reported. The behaviour is compared to the behaviour of the tapered finite $L(\chi_5(2,.),s)$, $L(\chi_5(3,.),s)$ function Dirichlet Series of the zeroth order Riemann Siegel formula truncated at the first quiescent region which are the L function basis set of the 5-periodic Davenport-Heilbronn functions. An interesting correspondence between the location of the S value discontinuties associated with the non-trivial zeroes off the critical line of the $f_{1,2}(s)$ function approximations and when the perturbed non-trivial zeroes  intersect with the critical line is observed.   
+An investigation of the non-trivial zero behaviour about large 5-periodic Davenport-Heilbronn function peaks at t={4545032985.7, 327949557.7, ...} for a simple perturbation of the dirichlet coefficients of tapered zeroth order Riemann Siegel formula for the 5-periodic Davenport-Heilbronn function dirichlet series is reported. The behaviour is compared to the behaviour of the tapered finite $L(\chi_5(2,.),s)$, $L(\chi_5(3,.),s)$ function Dirichlet Series of the zeroth order Riemann Siegel formula truncated at the first quiescent region which are the L function basis set of the 5-periodic Davenport-Heilbronn functions. An interesting correspondence between the location of the S value discontinuties associated with the non-trivial zeroes off the critical line of the $f_{1,2}(s)$ function approximations and when the perturbed non-trivial zeroes  intersect with the critical line is observed.   
 
 ##Introduction
 
@@ -189,7 +189,7 @@ An advantage of using the tapered zeroth order expression for the Riemann Siegel
 
 \newpage
 
-```{r riemannsiegelZfunctionforL52L53f1f2nearbyL52f2f24545032985peak, fig.show = "hold", fig.align = "center", fig.height=8}
+```{r riemannsiegelZfunctionforL52L53f1f2nearbyL52f2f24545032985peak, fig.show = "hold", fig.align = "center", fig.height=7.8}
 
 par(mfrow=c(2,2))
 
@@ -211,6 +211,7 @@ abline(h=0,col="cyan",lty=3)
 
 
 ```
+***Figure 1. Riemann Siegel Z function behaviour based on tapered zeroth order Riemann Siegel formula calculations about the first quiescent region for the four functions $f_{2}$(s), $f_{1}$(s), $L(\chi_5(2,.),s)$ and $L(\chi_5(3,.),s)$, along the critical line s=0.5+I*t in the interval t=(4545032981.5,  4545032988.5).***
 
 
 ## Results - Examples of non-trivial zero behaviour under perturbation of tapered zeroth order Riemann Siegel formula, approximating 5-periodic Davenport-Heilbronn function and $L(\chi_5(2,.),s)$ and $L(\chi_5(3,.),s)$ function behaviour, away from the real axis.
@@ -221,7 +222,7 @@ Figures 2, 4, 6, 8 display examples of the trajectory of the perturbed location 
 
 Figures 2, 4, 6, 8 have two panels, 
 \begin{itemize}
-\item The upper panel displays the real(s) versus imag(s) co-ordinate trajectory of nearby non-trivial zeroes as the perturbation varies from $1e-20 < \alpha < 1$ for $f_2(s)$ and $1e-10 < \alpha < 1$ for $f_1(s)$, $L(\chi_5(2,.),s)$ and $L(\chi_5(3,.),s)$ where $\alpha=1$ represent zero perturbation of the original function. As a guide on the upper panel are vertical lines indicating the expected imaginary co-ordinate of the zeroes if the Gram's law equivalent for theses functions were perfectly obeyed. Under high perturbation $\alpha \rightarrow 0$ when the Riemann Zeta function contribution is a heavily reduced the imaginary component of the non-trivial zeroes generally head towards these vertical line co-ordinates. For the $f_2(s)$ function with a zero at s=-1.145206...+i*4545032983.776683... $\alpha < 1e-15$ before the perturbed non-trivial zero is asymptotically heading to its Gram's law equivalent.
+\item The upper panel displays the real(s) versus imag(s) co-ordinate trajectory of nearby non-trivial zeroes as the perturbation varies from $1e-20 < \alpha < 1$ for $f_2(s)$ and $1e-10 < \alpha < 1$ for $f_1(s)$, $L(\chi_5(2,.),s)$ and $L(\chi_5(3,.),s)$ where $\alpha=1$ represent zero perturbation of the original function. As a guide on the upper panel are red dotted vertical lines indicating the expected imaginary co-ordinate of the zeroes if the Gram's law equivalent for theses functions were perfectly obeyed (based on scaled versions of imag(log(-$\chi(f_1(s))$)), imag(log($\chi(f_1(s))$)), imag(log($\epsilon\cdot\chi(f_1(s))$)), and imag(log($\bar{\epsilon}\cdot\chi(f_1(s))$)) for $f_2(s)$, $f_1(s)$, $L(\chi_5(2,.),s)$ and $L(\chi_5(3,.),s)$ respectively). Under high perturbation $\alpha \rightarrow 0$ when the Riemann Zeta function contribution is a heavily reduced the imaginary component of the non-trivial zeroes generally head towards these vertical line co-ordinates. For the $f_2(s)$ function with a zero at s=-1.145206...+i*4545032983.776683... $\alpha < 1e-15$ before the perturbed non-trivial zero is asymptotically heading to its Gram's law equivalent.
   
 \item The lower panel displays the real(s) versus $\alpha$ co-ordinate trajectory of nearby non-trivial zeroes as the perturbation varies from $1e-20 < \alpha < 1$ for $f_2(s)$ and $1e-10 < \alpha < 1$ for $f_1(s)$, $L(\chi_5(2,.),s)$. 
 \end{itemize}
@@ -232,7 +233,7 @@ Figures 3, 5, 7, 9 display the S(1/2+it) values of the 2048 point tapered finite
 
 \newpage
 
-```{r f2impactofdirichletcoefficientmagnitude_onzeropositions_nearby363991205p17884peak, fig.show = "hold", fig.align = "center", fig.height=8}
+```{r f2impactofdirichletcoefficientmagnitude_onzeropositions_nearby45450322985p7peak, fig.show = "hold", fig.align = "center", fig.height=7.8}
 
 par(mfrow=c(2,1))
 df_pt1=read.csv("/home/john/pari/RSzeroes_DHf2_4545032982p0907.csv",header=FALSE,colClasses = c("numeric","numeric","character","character"));df_pt1=df_pt1[order(df_pt1$V1),];
@@ -288,7 +289,7 @@ plot(df_pt1$V4,df_pt1$V3,typ="b",
      ylim=yspan,
      xlim=xspan,
      cex=0.3,cex.main=0.5,
-     main="trajectory of non-trivial zero co-ordinates as dirichlet coefficients increase to unity \n of the tapered finite dirichlet series \n 1 + alpha * ( -1/0.284../2^s + 1/0.284../3^s - 1/4^s + 0/5^s + 1/6^s - 1/0.284../7^s + 1/0.284../8^s - 1/9^s + 0/10^s + 1/11^s ... + tapered terms )",xlab="imag(s) - 4,545,032,900",ylab="real(s)");grid();
+     main="trajectory of non-trivial zero co-ordinates as dirichlet coefficients increase to unity \n of the tapered finite dirichlet series used in Riemann Siegel formula \n1 + alpha * ( -1/0.284../2^s + 1/0.284../3^s - 1/4^s + 0/5^s + 1/6^s - 1/0.284../7^s + 1/0.284../8^s - 1/9^s + 0/10^s + 1/11^s ... + tapered terms )",xlab="imag(s) - 4,545,032,900",ylab="real(s)");grid();
 points(df_pt2$V4,df_pt2$V3,typ="b",pch=20,col=2,cex=0.3)
 points(df_pt3$V4,df_pt3$V3,typ="b",pch=2,col=3,cex=0.3)
 points(df_pt4$V4,df_pt4$V3,typ="b",pch=3,col=4,cex=0.3)
@@ -311,7 +312,7 @@ points(df_pt19$V4,df_pt19$V3,typ="b",pch=19,col=21,cex=0.3)
 points(df_pt20$V4,df_pt20$V3,typ="b",pch=20,col=22,cex=0.3)
 points(df_pt21$V4,df_pt21$V3,typ="b",pch=21,col=23,cex=0.3)
 points(df_pt22$V4,df_pt22$V3,typ="b",pch=22,col=24,cex=0.3)
-lines(df_imag_log_chi_minus$V1,df_imag_log_chi_minus$V2/pi*1.1-0.6,col="green3",lty=3)
+lines(df_imag_log_chi_minus$V1,df_imag_log_chi_minus$V2/pi*1.1-0.6,col="red",lty=3)
 abline(h=0.5,lty=3,col="cyan",lwd=2)
 
 yspan=range(c(df_pt1$V3,df_pt2$V3,df_pt3$V3,df_pt4$V3,df_pt5$V3,df_pt6$V3,df_pt7$V3,df_pt8$V3,df_pt9$V3,df_pt10$V3,df_pt11$V3,df_pt12$V3,df_pt13$V3,df_pt14$V3,df_pt15$V3,df_pt16$V3,df_pt17$V3,df_pt18$V3,df_pt19$V3,df_pt20$V3,df_pt21$V3,df_pt22$V3));
@@ -344,13 +345,13 @@ abline(h=0.5,lty=3,col="cyan",lwd=2)
 
 
 ```
-***Figure 2. The trajectory of (twenty two) non-trivial zero co-ordinates around the f2(s) function critical line high peak (t=4545032985.7...) as the magnitude ($\alpha$) of the 2nd, 3rd, 4th, ... etc dirichlet coefficients of the tapered finite dirichlet series = 1 + $\alpha$ \* ( -1/0.284../$2^s$ + 1/0.284../$3^s$ - 1/$4^s$ + 0/5^s + 1/6^s - 1/0.284../$7^s$ + 1/0.284../$8^s$ - 1/$9^s$ + 0/10^s + 1/11^s ... + tapered terms ) increases to unity.***
+***Figure 2. The trajectory of (twenty two) non-trivial zero co-ordinates around the f2(s) function critical line high peak (t=4545032985.7...) as the magnitude ($\alpha$) of the 2nd, 3rd, 4th, ... etc dirichlet coefficients of the tapered finite dirichlet series = 1 + $\alpha$ \* ( -1/0.284../$2^s$ + 1/0.284../$3^s$ - 1/$4^s$ + 0/5^s + 1/6^s - 1/0.284../$7^s$ + 1/0.284../$8^s$ - 1/$9^s$ + 0/10^s + 1/11^s ... + tapered terms ) increases to unity as used in Riemann Siegel formula. Red dotted line in upper panel indicates Gram's law behaviour via scaled version of imag(log(-$\chi(f_1(s))$)).***
 
 \newpage
 
 
 
-```{r f2compareArgumentcriticallineandperturbationbehaviour_nearby363991205p17884peak, echo=FALSE, fig.show = "hold", fig.align = "center", fig.height=8, warning=FALSE}
+```{r f2compareArgumentcriticallineandperturbationbehaviour_nearby45450322985p7peak, echo=FALSE, fig.show = "hold", fig.align = "center", fig.height=7.8, warning=FALSE}
 
 df_pt_S=read.csv("/home/john/pari/DHf2_estimates_about_4545032985p7.csv",header=FALSE,colClasses = "numeric");
 
@@ -368,8 +369,8 @@ df_pt_S$adj_S=df_pt_S$V4+
   ifelse(as.numeric(df_pt_S$V1)>=83.249,2*pi,0)+  
   ifelse(as.numeric(df_pt_S$V1)>=83.284,-2*pi,0)+ 
   ifelse(as.numeric(df_pt_S$V1)>=83.388,2*pi,0)+  
-  # ifelse(as.numeric(df_pt_S$V1)>=83.569,-2*pi,0)+   #because it is off critical line
-  # ifelse(as.numeric(df_pt_S$V1)>=84.426,-2*pi,0)+  #because it is off critical line
+  # ifelse(as.numeric(df_pt_S$V1)>=83.569,-2*pi,0)+   ##off critical line zero pair
+  # ifelse(as.numeric(df_pt_S$V1)>=84.426,-2*pi,0)+  ##off critical line zero pair
   ifelse(as.numeric(df_pt_S$V1)>=84.624,2*pi,0)+   
   ifelse(as.numeric(df_pt_S$V1)>=84.711,-2*pi,0)+  
   ifelse(as.numeric(df_pt_S$V1)>=84.865,2*pi,0)+   
@@ -382,10 +383,10 @@ df_pt_S$adj_S=df_pt_S$V4+
 
 xspan=range(df_pt_S$V1)
 plot(df_pt_S$V1,df_pt_S$adj_S/pi,typ="l",ylim=c(-2*pi,2*pi),xlim=xspan,
-     main="Argument function value of tapered RS function on critical line \n with overlay of signed trajectory of \n low lying non-trivial zeroes under simple perturbation",ylab="S value",xlab="imaginary co-ordinate - 4,545,032,980.",cex.main=0.9);grid()  
+     main="Argument function value of tapered RS function on critical line \n with overlay of signed trajectory of \n low lying non-trivial zeroes under simple perturbation",ylab="S value",xlab="imaginary co-ordinate - 4,545,032,900.",cex.main=0.9);grid()  
 abline(h=c(-2,2),lty=3,lwd=2)
 abline(h=c(-1.7,1.7),lty=6,col="purple")
-lines(df_imag_log_chi_minus$V1,df_imag_log_chi_minus$V2/2/pi,col="green3",lty=3)
+lines(df_imag_log_chi_minus$V1,df_imag_log_chi_minus$V2/2/pi,col="red",lty=3)
 
 axis(side=2, at = c(-1.7,1.7),cex.axis=0.5,las=2,hadj=0.2,tck=-0.02)
 
@@ -426,13 +427,13 @@ lines(df_pt22$V4,df_pt22$V3,col=2)
 abline(h=c(-0.5,0.5),col=2,lty=3)
 
 ```
-***Figure 3. Comparing signed trajectory of 2048 tapered zeroth order Riemann Siegel function for $f_2(s)$ under simple perturbation (red lines for critical line non-trivial zeroes, blue line for non-trivial zeroes off the critical line), 2048 tapered zeroth order Riemann Siegel function argument function (S values) when s=0.5+i*t and $f_2(s)$ Gram's law behaviour (green line). Overshooting signed trajectories occur when $S \gtrsim 1.7$.***
+***Figure 3. Comparing signed trajectory of 2048 tapered zeroth order Riemann Siegel function for $f_2(s)$ under simple perturbation (red lines for critical line non-trivial zeroes, blue line for non-trivial zeroes off the critical line), 2048 tapered zeroth order Riemann Siegel function argument function (S values) when s=0.5+i*t and $f_2(s)$ Gram's law behaviour (red dotted line). Overshooting signed trajectories occur when $|S| \gtrsim 1.7$.***
 
 
 
 \newpage
 
-```{r f1impactofdirichletcoefficientmagnitude_onzeropositions_nearby363991205p17884peak, fig.show = "hold", fig.align = "center", fig.height=8}
+```{r f1impactofdirichletcoefficientmagnitude_onzeropositions_nearby45450322985p7peak, fig.show = "hold", fig.align = "center", fig.height=7.8}
 
 par(mfrow=c(2,1))
 df_pt1=read.csv("/home/john/pari/RSzeroes_DHf1_4545032982p1559.csv",header=FALSE,colClasses = c("numeric","numeric","character","character"));df_pt1=df_pt1[order(df_pt1$V1),];
@@ -488,7 +489,7 @@ plot(df_pt1$V4,df_pt1$V3,typ="b",
      ylim=yspan,
      xlim=xspan,
      cex=0.3,cex.main=0.5,
-     main="trajectory of non-trivial zero co-ordinates as dirichlet coefficients increase to unity \n of the tapered finite dirichlet series \n 1 + alpha * ( 0.284../2^s - 0.284../3^s - 1/4^s + 0/5^s + 1/6^s + 0.284../7^s - 0.284../8^s - 1/9^s + 0/10^s + 1/11^s ... + tapered terms )",xlab="imag(s) - 4,545,032,900",ylab="real(s)");grid();
+     main="trajectory of non-trivial zero co-ordinates as dirichlet coefficients increase to unity \n of the tapered finite dirichlet series used in Riemann Siegel formula \n1 + alpha * ( 0.284../2^s - 0.284../3^s - 1/4^s + 0/5^s + 1/6^s + 0.284../7^s - 0.284../8^s - 1/9^s + 0/10^s + 1/11^s ... + tapered terms )",xlab="imag(s) - 4,545,032,900",ylab="real(s)");grid();
 points(df_pt2$V4,df_pt2$V3,typ="b",pch=20,col=2)
 points(df_pt3$V4,df_pt3$V3,typ="b",pch=2,col=3,cex=0.3)
 points(df_pt4$V4,df_pt4$V3,typ="b",pch=3,col=4,cex=0.3)
@@ -542,13 +543,13 @@ abline(h=0.5,lty=3,col="cyan",lwd=2)
 
 
 ```
-***Figure 4. The trajectory of (twenty one) non-trivial zero co-ordinates around the f1(s) function critical line high peak (t=4545032985.7...) as the magnitude ($\alpha$) of the 2nd, 3rd, 4th, ... etc dirichlet coefficients of the tapered finite dirichlet series = 1 + $\alpha$ \* ( 0.284../$2^s$ - 0.284../$3^s$ - 1/$4^s$ + 0/5^s + 1/6^s + 0.284../$7^s$ - 0.284../$8^s$ - 1/$9^s$ + 0/10^s + 1/11^s ... + tapered terms ) increases to unity.***
+***Figure 4. The trajectory of (twenty one) non-trivial zero co-ordinates around the f1(s) function critical line high peak (t=4545032985.7...) as the magnitude ($\alpha$) of the 2nd, 3rd, 4th, ... etc dirichlet coefficients of the tapered finite dirichlet series = 1 + $\alpha$ \* ( 0.284../$2^s$ - 0.284../$3^s$ - 1/$4^s$ + 0/5^s + 1/6^s + 0.284../$7^s$ - 0.284../$8^s$ - 1/$9^s$ + 0/10^s + 1/11^s ... + tapered terms ) increases to unity as used in Riemann Siegel formula. Red dotted line in upper panel indicates Gram's law behaviour via scaled version of imag(log($\chi(f_1(s))$))***
 
 \newpage
 
 
 
-```{r f1compareArgumentcriticallineandperturbationbehaviour_nearby363991205p17884peak, echo=FALSE, fig.show = "hold", fig.align = "center", fig.height=8, warning=FALSE}
+```{r f1compareArgumentcriticallineandperturbationbehaviour_nearby45450322985p7peak, echo=FALSE, fig.show = "hold", fig.align = "center", fig.height=7.8, warning=FALSE}
 
 df_pt_S=read.csv("/home/john/pari/DHf1_estimates_about_4545032985p7.csv",header=FALSE,colClasses = "numeric");
 
@@ -560,28 +561,28 @@ df_pt_S$diff=c(0,diffS)
 #df_pt_S[df_pt_S$diff > pi | df_pt_S$diff < -1-.1,]
 df_pt_S$adj_S=df_pt_S$V4+
   
-  ifelse(as.numeric(df_pt_S$V1)>=84.568,-2*pi,0)+   #2*pi
-  ifelse(as.numeric(df_pt_S$V1)>=84.577,2*pi,0)+  #-pi
-  ifelse(as.numeric(df_pt_S$V1)>=85.085,2*pi,0)+  #-pi
-  ifelse(as.numeric(df_pt_S$V1)>=85.139,-2*pi,0)+   #2*pi
-  ifelse(as.numeric(df_pt_S$V1)>=85.267,2*pi,0)+  #-pi
-  ifelse(as.numeric(df_pt_S$V1)>=85.425,-2*pi,0)+  #-pi
-  ifelse(as.numeric(df_pt_S$V1)>=85.996,-2*pi,0)+   #2*pi
-  ifelse(as.numeric(df_pt_S$V1)>=86.234,2*pi,0)+  #-pi
-  ifelse(as.numeric(df_pt_S$V1)>=86.281,-2*pi,0)+   #2*pi
-  ifelse(as.numeric(df_pt_S$V1)>=86.465,2*pi,0)+  #-pi
-  # ifelse(as.numeric(df_pt_S$V1)>=86.567,-2*pi,0)+   #2*pi because it is off critical line
-  # ifelse(as.numeric(df_pt_S$V1)>=87.709,-2*pi,0)+  #-pi because it is off critical line
-  ifelse(as.numeric(df_pt_S$V1)>=87.898,2*pi,0)+   #2*pi
-  ifelse(as.numeric(df_pt_S$V1)>=87.994,-2*pi,0)+  #-pi
+  ifelse(as.numeric(df_pt_S$V1)>=84.568,-2*pi,0)+   
+  ifelse(as.numeric(df_pt_S$V1)>=84.577,2*pi,0)+  
+  ifelse(as.numeric(df_pt_S$V1)>=85.085,2*pi,0)+  
+  ifelse(as.numeric(df_pt_S$V1)>=85.139,-2*pi,0)+   
+  ifelse(as.numeric(df_pt_S$V1)>=85.267,2*pi,0)+  
+  ifelse(as.numeric(df_pt_S$V1)>=85.425,-2*pi,0)+  
+  ifelse(as.numeric(df_pt_S$V1)>=85.996,-2*pi,0)+   
+  ifelse(as.numeric(df_pt_S$V1)>=86.234,2*pi,0)+  
+  ifelse(as.numeric(df_pt_S$V1)>=86.281,-2*pi,0)+   
+  ifelse(as.numeric(df_pt_S$V1)>=86.465,2*pi,0)+  
+  # ifelse(as.numeric(df_pt_S$V1)>=86.567,-2*pi,0)+   #off critical line zero pair
+  # ifelse(as.numeric(df_pt_S$V1)>=87.709,-2*pi,0)+   #off critical line zero pair
+  ifelse(as.numeric(df_pt_S$V1)>=87.898,2*pi,0)+   
+  ifelse(as.numeric(df_pt_S$V1)>=87.994,-2*pi,0)+  
   0
 
 xspan=range(df_pt_S$V1)
 plot(df_pt_S$V1,df_pt_S$adj_S/pi,typ="l",ylim=c(-1*pi,1*pi),xlim=xspan,
-     main="Argument function value of tapered RS function on critical line \n with overlay of signed trajectory of \n low lying non-trivial zeroes under simple perturbation",ylab="S value",xlab="imaginary co-ordinate - 4,545,032,980.",cex.main=0.9);grid()  
+     main="Argument function value of tapered RS function on critical line \n with overlay of signed trajectory of \n low lying non-trivial zeroes under simple perturbation",ylab="S value",xlab="imaginary co-ordinate - 4,545,032,900.",cex.main=0.9);grid()  
 abline(h=c(-2,2),lty=3,lwd=2)
 abline(h=c(-1.7,1.7),lty=6,col="purple")
-lines(df_imag_log_chi_minus$V1,df_imag_log_chi_minus$V2/2/pi,col="green3",lty=3)
+lines(df_imag_log_chi$V1,df_imag_log_chi$V2/2/pi,col="red",lty=3)
 
 axis(side=2, at = c(-1.7,1.7),cex.axis=0.5,las=2,hadj=0.2,tck=-0.02)
 
@@ -622,11 +623,11 @@ lines(df_pt21$V4,df_pt21$V3,col="darkblue")
 abline(h=c(-0.5,0.5),col=2,lty=3)
 
 ```
-***Figure 5. Comparing signed trajectory of 2048 tapered zeroth order Riemann Siegel function for $f_1(s)$ under simple perturbation (red lines for critical line non-trivial zeroes, blue line for non-trivial zeroes off the critical line), 2048 tapered zeroth order Riemann Siegel function argument function (S values) when s=0.5+i*t and $f_1(s)$ Gram's law behaviour (green line). Overshooting signed trajectories occur when $S \gtrsim 1.7$. ***
+***Figure 5. Comparing signed trajectory of 2048 tapered zeroth order Riemann Siegel function for $f_1(s)$ under simple perturbation (red lines for critical line non-trivial zeroes, blue line for non-trivial zeroes off the critical line), 2048 tapered zeroth order Riemann Siegel function argument function (S values) when s=0.5+i*t and $f_1(s)$ Gram's law behaviour (red dotted line). Overshooting signed trajectories occur when $|S| \gtrsim 1.7$. ***
 
 \newpage
 
-```{r L52impactofdirichletcoefficientmagnitude_onzeropositions_nearby363991205p17884peak, fig.show = "hold", fig.align = "center", fig.height=8}
+```{r L52impactofdirichletcoefficientmagnitude_onzeropositions_nearby45450322985p7peak, fig.show = "hold", fig.align = "center", fig.height=7.8}
 
 par(mfrow=c(2,1))
 df_pt1=read.csv("/home/john/pari/RSzeroes_L52_4545032981p8563.csv",header=FALSE,colClasses = c("numeric","numeric","character","character"));df_pt1=df_pt1[order(df_pt1$V1),];
@@ -687,7 +688,7 @@ plot(df_pt1$V4,df_pt1$V3,typ="b",
      ylim=yspan,
      xlim=xspan,
      cex=0.3,cex.main=0.5,
-     main="trajectory of non-trivial zero co-ordinates as dirichlet coefficients increase to unity \n of the tapered finite dirichlet series \n 1 + alpha * ( I/2^s - I/3^s - 1/4^s + 0/5^s + 1/6^s + I/7^s - I/8^s - 1/9^s + 0/10^s + 1/11^s ... + tapered terms )",xlab="imag(s) - 4,545,032,900",ylab="real(s)");grid();
+     main="trajectory of non-trivial zero co-ordinates as dirichlet coefficients increase to unity \n of the tapered finite dirichlet series used in Riemann Siegel formula \n1 + alpha * ( I/2^s - I/3^s - 1/4^s + 0/5^s + 1/6^s + I/7^s - I/8^s - 1/9^s + 0/10^s + 1/11^s ... + tapered terms )",xlab="imag(s) - 4,545,032,900",ylab="real(s)");grid();
 points(df_pt2$V4,df_pt2$V3,typ="b",pch=20,col=2,cex=0.3)
 points(df_pt3$V4,df_pt3$V3,typ="b",pch=2,col=3,cex=0.3)
 points(df_pt4$V4,df_pt4$V3,typ="b",pch=3,col=4,cex=0.3)
@@ -711,7 +712,7 @@ points(df_pt20$V4,df_pt20$V3,typ="b",pch=20,col=22,cex=0.3)
 points(df_pt21$V4,df_pt21$V3,typ="b",pch=21,col=23,cex=0.3)
 points(df_pt22$V4,df_pt22$V3,typ="b",pch=22,col=24,cex=0.3)
 points(df_pt23$V4,df_pt23$V3,typ="b",pch=23,col=25,cex=0.3)
-lines(df_imag_log_chi$V1,df_imag_log_chi$V2/pi*1.1-0.6,col="green3",lty=3)
+lines(df_imag_log_chi$V1,df_imag_log_chi$V2/pi*1.1-0.6,col="red",lty=3)
 abline(h=0.5,lty=3,col="cyan",lwd=2)
 
 yspan=range(c(df_pt1$V3,df_pt2$V3,df_pt3$V3,df_pt4$V3,df_pt5$V3,df_pt6$V3,df_pt7$V3,df_pt8$V3,df_pt9$V3,df_pt10$V3,df_pt11$V3,df_pt12$V3,df_pt13$V3,df_pt14$V3,df_pt15$V3,df_pt16$V3,df_pt17$V3,df_pt18$V3,df_pt19$V3,df_pt20$V3,df_pt21$V3,df_pt22$V3,df_pt23$V3));
@@ -745,13 +746,13 @@ abline(h=0.5,lty=3,col="cyan",lwd=2)
 
 
 ```
-***Figure 6. The trajectory of (twenty three) non-trivial zero co-ordinates around the f2(s) function critical line high peak (t=4545032985.7...) as the magnitude ($\alpha$) of the 2nd, 3rd, 4th, ... etc dirichlet coefficients of the tapered finite dirichlet series = 1 + $\alpha$ \* ( I/$2^s$ - I/$3^s$ - 1/$4^s$ + 0/5^s + 1/6^s + I/$7^s$ - I/$8^s$ - 1/$9^s$ + 0/10^s + 1/11^s ... + tapered terms ) increases to unity.***
+***Figure 6. The trajectory of (twenty three) non-trivial zero co-ordinates around the L52 function critical line high peak (t=4545032985.7...) as the magnitude ($\alpha$) of the 2nd, 3rd, 4th, ... etc dirichlet coefficients of the tapered finite dirichlet series = 1 + $\alpha$ \* ( I/$2^s$ - I/$3^s$ - 1/$4^s$ + 0/5^s + 1/6^s + I/$7^s$ - I/$8^s$ - 1/$9^s$ + 0/10^s + 1/11^s ... + tapered terms ) increases to unity as used in Riemann Siegel formula. Red dotted line in upper panel indicates Gram's law behaviour via scaled version of imag(log($\epsilon \cdot \chi(f_1(s))$))***
 
 \newpage
 
 
 
-```{r L52compareArgumentcriticallineandperturbationbehaviour_nearby363991205p17884peak, echo=FALSE, fig.show = "hold", fig.align = "center", fig.height=8, warning=FALSE}
+```{r L52compareArgumentcriticallineandperturbationbehaviour_nearby45450322985p7peak, echo=FALSE, fig.show = "hold", fig.align = "center", fig.height=7.8, warning=FALSE}
 
 df_pt_S=read.csv("/home/john/pari/L52_estimates_about_4545032985p7.csv",header=FALSE,colClasses = "numeric");
 
@@ -763,30 +764,30 @@ df_pt_S$diff=c(0,diffS)
 #df_pt_S[df_pt_S$diff > pi | df_pt_S$diff < -1-.1,]
 df_pt_S$adj_S=df_pt_S$V4+
   
-  ifelse(as.numeric(df_pt_S$V1)>=82.79,2*pi,0)+  #-pi
- ifelse(as.numeric(df_pt_S$V1)>=82.88,-2*pi,0)+   #2*pi
-  ifelse(as.numeric(df_pt_S$V1)>=84.864,2*pi,0)+  #-pi
-  ifelse(as.numeric(df_pt_S$V1)>=84.879,-2*pi,0)+   #2*pi
-  ifelse(as.numeric(df_pt_S$V1)>=85.085,2*pi,0)+  #-pi
-  ifelse(as.numeric(df_pt_S$V1)>=85.164,-2*pi,0)+   #2*pi
-  ifelse(as.numeric(df_pt_S$V1)>=85.256,2*pi,0)+  #-pi
-  ifelse(as.numeric(df_pt_S$V1)>=85.450,-2*pi,0)+   #2*pi
-  ifelse(as.numeric(df_pt_S$V1)>=86.021,-2*pi,0)+   #2*pi
-  ifelse(as.numeric(df_pt_S$V1)>=86.2277,2*pi,0)+  #-pi
-  ifelse(as.numeric(df_pt_S$V1)>=86.306,-2*pi,0)+   #2*pi
-  ifelse(as.numeric(df_pt_S$V1)>=86.436,2*pi,0)+  #-pi
-  ifelse(as.numeric(df_pt_S$V1)>=86.592,-2*pi,0)+   #2*pi
-  ifelse(as.numeric(df_pt_S$V1)>=86.617,2*pi,0)+  #-pi
-  ifelse(as.numeric(df_pt_S$V1)>=87.734,-2*pi,0)+   #2*pi
-  ifelse(as.numeric(df_pt_S$V1)>=87.750,2*pi,0)+  #-pi
+  ifelse(as.numeric(df_pt_S$V1)>=82.79,2*pi,0)+  
+ ifelse(as.numeric(df_pt_S$V1)>=82.88,-2*pi,0)+  
+  ifelse(as.numeric(df_pt_S$V1)>=84.864,2*pi,0)+ 
+  ifelse(as.numeric(df_pt_S$V1)>=84.879,-2*pi,0)+   
+  ifelse(as.numeric(df_pt_S$V1)>=85.085,2*pi,0)+  
+  ifelse(as.numeric(df_pt_S$V1)>=85.164,-2*pi,0)+   
+  ifelse(as.numeric(df_pt_S$V1)>=85.256,2*pi,0)+  
+  ifelse(as.numeric(df_pt_S$V1)>=85.450,-2*pi,0)+   
+  ifelse(as.numeric(df_pt_S$V1)>=86.021,-2*pi,0)+   
+  ifelse(as.numeric(df_pt_S$V1)>=86.2277,2*pi,0)+  
+  ifelse(as.numeric(df_pt_S$V1)>=86.306,-2*pi,0)+   
+  ifelse(as.numeric(df_pt_S$V1)>=86.436,2*pi,0)+  
+  ifelse(as.numeric(df_pt_S$V1)>=86.592,-2*pi,0)+   
+  ifelse(as.numeric(df_pt_S$V1)>=86.617,2*pi,0)+  
+  ifelse(as.numeric(df_pt_S$V1)>=87.734,-2*pi,0)+   
+  ifelse(as.numeric(df_pt_S$V1)>=87.750,2*pi,0)+  
   0
 
 xspan=range(df_pt_S$V1)
 plot(df_pt_S$V1,df_pt_S$adj_S/pi,typ="l",ylim=c(-1*pi,1*pi),xlim=xspan,
-     main="Argument function value of tapered RS function on critical line \n with overlay of signed trajectory of \n low lying non-trivial zeroes under simple perturbation",ylab="S value",xlab="imaginary co-ordinate - 4,545,032,980.",cex.main=0.9);grid()  
+     main="Argument function value of tapered RS function on critical line \n with overlay of signed trajectory of \n low lying non-trivial zeroes under simple perturbation",ylab="S value",xlab="imaginary co-ordinate - 4,545,032,900.",cex.main=0.9);grid()  
 abline(h=c(-2,2),lty=3,lwd=2)
 abline(h=c(-1.7,1.7),lty=6,col="purple")
-lines(df_imag_log_chi$V1,df_imag_log_chi$V2/2/pi,col="green3",lty=3)
+lines(df_imag_log_chi$V1,df_imag_log_chi$V2/2/pi,col="red",lty=3)
 
 axis(side=2, at = c(-1.7,1.7),cex.axis=0.5,las=2,hadj=0.2,tck=-0.02)
 
@@ -827,11 +828,11 @@ lines(df_pt23$V4,df_pt23$V3,col=2)
 abline(h=c(-0.5,0.5),col=2,lty=3)
 
 ```
-***Figure 7. Comparing signed trajectory of 2048 tapered zeroth order Riemann Siegel function for $f_2(s)$ under simple perturbation (red lines for critical line non-trivial zeroes, blue line for non-trivial zeroes off the critical line), 2048 tapered zeroth order Riemann Siegel function argument function (S values) when s=0.5+i*t and $L(\chi_5(2,.),s)$  Gram's law behaviour (green line). Overshooting signed trajectories did NOT occur when  $S \gtrsim 1.7$.***
+***Figure 7. Comparing signed trajectory of 2048 tapered zeroth order Riemann Siegel function for L52 function under simple perturbation (red lines for critical line non-trivial zeroes, blue line for non-trivial zeroes off the critical line), 2048 tapered zeroth order Riemann Siegel function argument function (S values) when s=0.5+i*t and $L(\chi_5(2,.),s)$  Gram's law behaviour (red dotted line). Overshooting signed trajectories did NOT occur when  $|S| \gtrsim 1.7$.***
 
 \newpage
 
-```{r L53impactofdirichletcoefficientmagnitude_onzeropositions_nearby363991205p17884peak, fig.show = "hold", fig.align = "center", fig.height=8}
+```{r L53impactofdirichletcoefficientmagnitude_onzeropositions_nearby45450322985p7peak, fig.show = "hold", fig.align = "center", fig.height=7.8}
 
 par(mfrow=c(2,1))
 df_pt1=read.csv("/home/john/pari/RSzeroes_L53_4545032982p1340.csv",header=FALSE,colClasses = c("numeric","numeric","character","character"));df_pt1=df_pt1[order(df_pt1$V1),];
@@ -890,7 +891,7 @@ plot(df_pt1$V4,df_pt1$V3,typ="b",
      ylim=yspan,
      xlim=xspan,
      cex=0.3,cex.main=0.5,
-     main="trajectory of non-trivial zero co-ordinates as dirichlet coefficients increase to unity \n of the tapered finite dirichlet series \n 1 + alpha * ( -I/2^s + I/3^s - 1/4^s + 0/5^s + 1/6^s - I/7^s + I/8^s - 1/9^s + 0/10^s + 1/11^s ... + tapered terms )",xlab="imag(s)",ylab="real(s)");grid();
+     main="trajectory of non-trivial zero co-ordinates as dirichlet coefficients increase to unity \n of the tapered finite dirichlet series used in Riemann Siegel formula \n1 + alpha * ( -I/2^s + I/3^s - 1/4^s + 0/5^s + 1/6^s - I/7^s + I/8^s - 1/9^s + 0/10^s + 1/11^s ... + tapered terms )",xlab="imag(s)",ylab="real(s)");grid();
 points(df_pt2$V4,df_pt2$V3,typ="b",pch=20,col=2,cex=0.3)
 points(df_pt3$V4,df_pt3$V3,typ="b",pch=2,col=3,cex=0.3)
 points(df_pt4$V4,df_pt4$V3,typ="b",pch=3,col=4,cex=0.3)
@@ -913,7 +914,7 @@ points(df_pt19$V4,df_pt19$V3,typ="b",pch=19,col=21,cex=0.3)
 points(df_pt20$V4,df_pt20$V3,typ="b",pch=20,col=22,cex=0.3)
 points(df_pt21$V4,df_pt21$V3,typ="b",pch=21,col=23,cex=0.3)
 points(df_pt22$V4,df_pt22$V3,typ="b",pch=22,col=24,cex=0.3)
-lines(df_imag_log_chi$V1,df_imag_log_chi$V2/pi*1.1-0.6,col="green3",lty=3)
+lines(df_imag_log_chi$V1,df_imag_log_chi$V2/pi*1.1-0.6,col="red",lty=3)
 abline(h=0.5,lty=3,col="cyan",lwd=2)
 
 yspan=range(c(df_pt1$V3,df_pt2$V3,df_pt3$V3,df_pt4$V3,df_pt5$V3,df_pt6$V3,df_pt7$V3,df_pt8$V3,df_pt9$V3,df_pt10$V3,df_pt11$V3,df_pt12$V3,df_pt13$V3,df_pt14$V3,df_pt15$V3,df_pt16$V3,df_pt17$V3,df_pt18$V3,df_pt19$V3,df_pt20$V3,df_pt21$V3,df_pt22$V3));
@@ -946,13 +947,13 @@ abline(h=0.5,lty=3,col="cyan",lwd=2)
 
 
 ```
-***Figure 8. The trajectory of (twenty two) non-trivial zero co-ordinates around the f2(s) function critical line high peak (t=4545032985.7...) as the magnitude ($\alpha$) of the 2nd, 3rd, 4th, ... etc dirichlet coefficients of the tapered finite dirichlet series = 1 + $\alpha$ \* ( -I/$2^s$ + I/$3^s$ - 1/$4^s$ + 0/5^s + 1/6^s - I/$7^s$ + I/$8^s$ - 1/$9^s$ + 0/10^s + 1/11^s ... + tapered terms ) increases to unity.***
+***Figure 8. The trajectory of (twenty two) non-trivial zero co-ordinates around the L53 function near the L52 critical line high peak (t=4545032985.7...) as the magnitude ($\alpha$) of the 2nd, 3rd, 4th, ... etc dirichlet coefficients of the tapered finite dirichlet series = 1 + $\alpha$ \* ( -I/$2^s$ + I/$3^s$ - 1/$4^s$ + 0/5^s + 1/6^s - I/$7^s$ + I/$8^s$ - 1/$9^s$ + 0/10^s + 1/11^s ... + tapered terms ) increases to unity as used in Riemann Siegel formula. Red dotted line in upper panel indicates Gram's law behaviour via scaled version of imag(log($\bar{\epsilon}\cdot\chi(f_1(s))$))***
 
 \newpage
 
 
 
-```{r L53compareArgumentcriticallineandperturbationbehaviour_nearby363991205p17884peak, echo=FALSE, fig.show = "hold", fig.align = "center", fig.height=8, warning=FALSE}
+```{r L53compareArgumentcriticallineandperturbationbehaviour_nearby45450322985p7peak, echo=FALSE, fig.show = "hold", fig.align = "center", fig.height=7.8, warning=FALSE}
 
 df_pt_S=read.csv("/home/john/pari/L53_estimates_about_4545032985p7.csv",header=FALSE,colClasses = "numeric");
 
@@ -964,24 +965,24 @@ df_pt_S$diff=c(0,diffS)
 #df_pt_S[df_pt_S$diff > pi | df_pt_S$diff < -1-.1,]
 df_pt_S$adj_S=df_pt_S$V4+
   
-  ifelse(as.numeric(df_pt_S$V1)>=83.116,-2*pi,0)+   #2*pi
-  ifelse(as.numeric(df_pt_S$V1)>=83.134,2*pi,0)+  #-pi
-  ifelse(as.numeric(df_pt_S$V1)>=84.543,-2*pi,0)+   #2*pi
-  ifelse(as.numeric(df_pt_S$V1)>=84.616,2*pi,0)+  #-pi
-  ifelse(as.numeric(df_pt_S$V1)>=84.829,-2*pi,0)+   #2*pi
-  ifelse(as.numeric(df_pt_S$V1)>=84.867,2*pi,0)+  #-pi
-  ifelse(as.numeric(df_pt_S$V1)>=86.538,2*pi,0)+  #-pi
-  ifelse(as.numeric(df_pt_S$V1)>=86.541,-2*pi,0)+   #2*pi
-  ifelse(as.numeric(df_pt_S$V1)>=87.896,2*pi,0)+  #-pi
-  ifelse(as.numeric(df_pt_S$V1)>=87.969,-2*pi,0)+   #2*pi
+  ifelse(as.numeric(df_pt_S$V1)>=83.116,-2*pi,0)+   
+  ifelse(as.numeric(df_pt_S$V1)>=83.134,2*pi,0)+  
+  ifelse(as.numeric(df_pt_S$V1)>=84.543,-2*pi,0)+   
+  ifelse(as.numeric(df_pt_S$V1)>=84.616,2*pi,0)+  
+  ifelse(as.numeric(df_pt_S$V1)>=84.829,-2*pi,0)+   
+  ifelse(as.numeric(df_pt_S$V1)>=84.867,2*pi,0)+  
+  ifelse(as.numeric(df_pt_S$V1)>=86.538,2*pi,0)+  
+  ifelse(as.numeric(df_pt_S$V1)>=86.541,-2*pi,0)+   
+  ifelse(as.numeric(df_pt_S$V1)>=87.896,2*pi,0)+  
+  ifelse(as.numeric(df_pt_S$V1)>=87.969,-2*pi,0)+   
   0
 
 xspan=range(df_pt_S$V1)
 plot(df_pt_S$V1,df_pt_S$adj_S/pi,typ="l",ylim=c(-1*pi,1*pi),xlim=xspan,
-     main="Argument function value of tapered RS function on critical line \n with overlay of signed trajectory of \n low lying non-trivial zeroes under simple perturbation",ylab="S value",xlab="imaginary co-ordinate - 4,545,032,980.",cex.main=0.9);grid()  
+     main="Argument function value of tapered RS function on critical line \n with overlay of signed trajectory of \n low lying non-trivial zeroes under simple perturbation",ylab="S value",xlab="imaginary co-ordinate - 4,545,032,900.",cex.main=0.9);grid()  
 abline(h=c(-2,2),lty=3,lwd=2)
 abline(h=c(-1.7,1.7),lty=6,col="purple")
-lines(df_imag_log_chi$V1,df_imag_log_chi$V2/2/pi,col="green3",lty=3)
+lines(df_imag_log_chi$V1,df_imag_log_chi$V2/2/pi,col="red",lty=3)
 
 axis(side=2, at = c(-1.7,1.7),cex.axis=0.5,las=2,hadj=0.2,tck=-0.02)
 
@@ -1021,14 +1022,853 @@ lines(df_pt22$V4,df_pt22$V3,col=2)
 abline(h=c(-0.5,0.5),col=2,lty=3)
 
 ```
-***Figure 9. Comparing signed trajectory of 2048 tapered zeroth order Riemann Siegel function for $f_2(s)$ under simple perturbation (red lines for critical line non-trivial zeroes, blue line for non-trivial zeroes off the critical line), 2048 tapered zeroth order Riemann Siegel function argument function (S values) when s=0.5+i*t and $L(\chi_5(3,.),s)$ Gram's law behaviour (green line).***
+***Figure 9. Comparing signed trajectory of 2048 tapered zeroth order Riemann Siegel function for L53 function under simple perturbation (red lines for critical line non-trivial zeroes, blue line for non-trivial zeroes off the critical line), 2048 tapered zeroth order Riemann Siegel function argument function (S values) when s=0.5+i*t and $L(\chi_5(3,.),s)$ Gram's law behaviour (red dotted line).***
+
+
+
+### $L(\chi_5(3,.),s)$ related high peak t=327949557.7 
+
+Figure 10 shows the Riemann Siegel Z function behaviour based on tapered zeroth order Riemann Siegel formula calculations about the first quiescent region for the four functions $f_{2}$(s), $f_{1}$(s), $L(\chi_5(2,.),s)$ and $L(\chi_5(3,.),s)$, along the critical line s=0.5+I*t in the interval t=(327949535.5,  327949561.5). In this interval, $L(\chi_5(3,.),s)$ has a large peak of height ~-100 at t=327949557.7 which transforms into a large peak for $f_{2}$(s) of height ~180 and $f_{1}$(s) of height ~-52 after accounting for the $L(\chi_5(3,.),s)$ weighted contribution to $f_{2}$(s) and $f_{1}$(s). 
+
+Figures 11, 13, 15, 17 display examples of the trajectory of the perturbed location of non-trivial zeroes for $f_2(s)$, $f_1(s)$, $L(\chi_5(2,.),s)$ and $L(\chi_5(3,.),s)$ respectively, near the $L(\chi_5(3,.),s)$ function peaks at t={327949557.7} which has peak height Z={-100}. 
+
+Figures 11, 13, 15, 17 have two panels, 
+\begin{itemize}
+\item The upper panel displays the real(s) versus imag(s) co-ordinate trajectory of nearby non-trivial zeroes as the perturbation varies from $1e-20 < \alpha < 1$ for $f_2(s)$ and $1e-10 < \alpha < 1$ for $f_1(s)$, $L(\chi_5(2,.),s)$ and $L(\chi_5(3,.),s)$ where $\alpha=1$ represent zero perturbation of the original function. As a guide on the upper panel are red dotted vertical lines indicating the expected imaginary co-ordinate of the zeroes if the Gram's law equivalent for theses functions were perfectly obeyed (based on scaled versions of imag(log(-$\chi(f_1(s))$)), imag(log($\chi(f_1(s))$)), imag(log($\epsilon\cdot\chi(f_1(s))$)), and imag(log($\bar{\epsilon}\cdot\chi(f_1(s))$)) for $f_2(s)$, $f_1(s)$, $L(\chi_5(2,.),s)$ and $L(\chi_5(3,.),s)$ respectively). Under high perturbation $\alpha \rightarrow 0$ when the Riemann Zeta function contribution is a heavily reduced the imaginary component of the non-trivial zeroes generally head towards these vertical line co-ordinates. For the $f_2(s)$ function with a zero at s=-1.189783...+i*327949559.773250... $\alpha < 1e-15$ before the perturbed non-trivial zero is asymptotically heading to its Gram's law equivalent.
+  
+\item The lower panel displays the real(s) versus $\alpha$ co-ordinate trajectory of nearby non-trivial zeroes as the perturbation varies from $1e-20 < \alpha < 1$ for $f_2(s)$ and $1e-10 < \alpha < 1$ for $f_1(s)$, $L(\chi_5(2,.),s)$. 
+\end{itemize}
+
+Figures 12, 14, 16, 18 display the S(1/2+it) values of the 2048 point tapered finite Riemann Siegel formula for $f_2(s)$, $f_1(s)$, $L(\chi_5(2,.),s)$ and $L(\chi_5(3,.),s)$ respectively, near the $L(\chi_5(3,.),s)$ function peak at t={327949557.7}. Overlayed on these figures is the signed trajectory of the perturbed location of non-trivial zeroes (for $1e-20 < \alpha < 1$ for $f_2(s)$ and $1e-10 < \alpha < 1$ for $f_1(s)$, $L(\chi_5(2,.),s)$ and $L(\chi_5(3,.),s)$) in order to see if graphically there is any consistent behaviour between the S(1/2+it) values and the non-trivial zero perturbation trajectories. A signed trajectory just means that if a S(1/2+it) discontinuity has positive (negative) value then the associated non-trivial zero trajectory has a positive (negative) sign assigned (using a $\pm1$ multiplicative factor). Figure 12 shows evidence of overshooting when |S(1/2+it)| > 2 for $f_2(s)$ and figure 18 shows evidence of NO overshooting for $L(\chi_5(3,.),s)$ when |S(1/2+it)| > 1.7.
+
+
+
+\newpage
+
+```{r riemannsiegelZfunctionforL52L53f1f2nearbyL53_327949557p7peak, fig.show = "hold", fig.align = "center", fig.height=7.8}
+
+par(mfrow=c(2,2))
+
+df_pt_S=read.csv("/home/john/pari/DHf2_estimates_about_327949557p7.csv",header=FALSE,colClasses = "numeric");
+plot(df_pt_S$V1,df_pt_S$V5,typ="l",main="f2(s) Riemann Siegel Z function \n using 2048 pt tapered zeroth order Riemann Siegel formula \n  along critical line s=0.5+I*t in the interval t=(327949535.5,  327949561.5)",xlab="t - 327949500",ylab="f2(s) Z function value",cex.main=0.5);grid()
+abline(h=0,col="cyan",lty=3)
+
+df_pt_S=read.csv("/home/john/pari/DHf1_estimates_about_327949557p7.csv",header=FALSE,colClasses = "numeric");
+plot(df_pt_S$V1,df_pt_S$V5,typ="l",main="f1(s) Riemann Siegel Z function \n using 2048 pt tapered zeroth order Riemann Siegel formula \n  along critical line s=0.5+I*t in the interval t=(327949535.5,  327949561.5)",xlab="t - 327949500",ylab="f1(s) Z function value",cex.main=0.5);grid()
+abline(h=0,col="cyan",lty=3)
+
+df_pt_S=read.csv("/home/john/pari/L52_estimates_about_327949557p7.csv",header=FALSE,colClasses = "numeric");
+plot(df_pt_S$V1,df_pt_S$V5,typ="l",main="L52 Riemann Siegel Z function \n using 2048 pt tapered zeroth order Riemann Siegel formula \n  along critical line s=0.5+I*t in the interval t=(327949535.5,  327949561.5)",xlab="t - 327949500",ylab="L52 Z function value",cex.main=0.5);grid()
+abline(h=0,col="cyan",lty=3)
+
+df_pt_S=read.csv("/home/john/pari/L53_estimates_about_327949557p7.csv",header=FALSE,colClasses = "numeric");
+plot(df_pt_S$V1,df_pt_S$V5,typ="l",main="L53 Riemann Siegel Z function \n using 2048 pt tapered zeroth order Riemann Siegel formula \n  along critical line s=0.5+I*t in the interval t=(327949535.5,  327949561.5)",xlab="t - 327949500",ylab="L53 Z function value",cex.main=0.5);grid()
+abline(h=0,col="cyan",lty=3)
+
+
+```
+***Figure 10. Riemann Siegel Z function behaviour based on tapered zeroth order Riemann Siegel formula calculations about the first quiescent region for the four functions $f_{2}$(s), $f_{1}$(s), $L(\chi_5(2,.),s)$ and $L(\chi_5(3,.),s)$, along the critical line s=0.5+I*t in the interval t=(327949535.5,  327949561.5).***
+
+
+
+
+
+\newpage
+
+```{r f2impactofdirichletcoefficientmagnitude_onzeropositions_nearby327949557p7peak, fig.show = "hold", fig.align = "center", fig.height=7.8}
+
+par(mfrow=c(2,1))
+df_pt1=read.csv("/home/john/pari/RSzeroes_DHf2_327949554p4261_res_p5991.csv",header=FALSE,colClasses = c("numeric","numeric","character","character"));df_pt1=df_pt1[order(df_pt1$V1),];
+df_pt1$V1=as.numeric(df_pt1$V1);df_pt1$V3=as.numeric(df_pt1$V3);df_pt1$V4=as.numeric(substring(df_pt1$V4,8));
+df_pt2=read.csv("/home/john/pari/RSzeroes_DHf2_327949554p4261_res_p4008.csv",header=FALSE,colClasses = c("numeric","numeric","character","character"));df_pt2=df_pt2[order(df_pt2$V1),]
+df_pt2$V1=as.numeric(df_pt2$V1);df_pt2$V3=as.numeric(df_pt2$V3);df_pt2$V4=as.numeric(substring(df_pt2$V4,8));
+df_pt3=read.csv("/home/john/pari/RSzeroes_DHf2_327949554p5800.csv",header=FALSE,colClasses = c("numeric","numeric","character","character"));df_pt3=df_pt3[order(df_pt3$V1),]
+df_pt3$V1=as.numeric(df_pt3$V1);df_pt3$V3=as.numeric(df_pt3$V3);df_pt3$V4=as.numeric(substring(df_pt3$V4,8));
+df_pt4=read.csv("/home/john/pari/RSzeroes_DHf2_327949555p1885.csv",header=FALSE,colClasses = c("numeric","numeric","character","character"));df_pt4=df_pt4[order(df_pt4$V1),]
+df_pt4$V1=as.numeric(df_pt4$V1);df_pt4$V3=as.numeric(df_pt4$V3);df_pt4$V4=as.numeric(substring(df_pt4$V4,8));
+df_pt5=read.csv("/home/john/pari/RSzeroes_DHf2_327949555p3971.csv",header=FALSE,colClasses = c("numeric","numeric","character","character"));df_pt5=df_pt5[order(df_pt5$V1),]
+df_pt5$V1=as.numeric(df_pt5$V1);df_pt5$V3=as.numeric(df_pt5$V3);df_pt5$V4=as.numeric(substring(df_pt5$V4,8));
+df_pt6=read.csv("/home/john/pari/RSzeroes_DHf2_327949556p0114.csv",header=FALSE,colClasses = c("numeric","numeric","character","character"));df_pt6=df_pt6[order(df_pt6$V1),]
+df_pt6$V1=as.numeric(df_pt6$V1);df_pt6$V3=as.numeric(df_pt6$V3);df_pt6$V4=as.numeric(substring(df_pt6$V4,8));
+
+
+df_pt7=read.csv("/home/john/pari/RSzeroes_DHf2_327949556p2046.csv",header=FALSE,colClasses = c("numeric","numeric","character","character"));df_pt7=df_pt7[order(df_pt7$V1),]
+df_pt7$V1=as.numeric(df_pt7$V1);df_pt7$V3=as.numeric(df_pt7$V3);df_pt7$V4=as.numeric(substring(df_pt7$V4,8));
+df_pt8=read.csv("/home/john/pari/RSzeroes_DHf2_327949556p5621.csv",header=FALSE,colClasses = c("numeric","numeric","character","character"));df_pt8=df_pt8[order(df_pt8$V1),]
+df_pt8$V1=as.numeric(df_pt8$V1);df_pt8$V3=as.numeric(df_pt8$V3);df_pt8$V4=as.numeric(substring(df_pt8$V4,8));
+df_pt9=read.csv("/home/john/pari/RSzeroes_DHf2_327949556p7723.csv",header=FALSE,colClasses = c("numeric","numeric","character","character"));df_pt9=df_pt9[order(df_pt9$V1),]
+df_pt9$V1=as.numeric(df_pt9$V1);df_pt9$V3=as.numeric(df_pt9$V3);df_pt9$V4=as.numeric(substring(df_pt9$V4,8));
+df_pt10=read.csv("/home/john/pari/RSzeroes_DHf2_327949557p0429.csv",header=FALSE,colClasses = c("numeric","numeric","character","character"));df_pt10=df_pt10[order(df_pt10$V1),]
+df_pt10$V1=as.numeric(df_pt10$V1);df_pt10$V3=as.numeric(df_pt10$V3);df_pt10$V4=as.numeric(substring(df_pt10$V4,8));
+df_pt11=read.csv("/home/john/pari/RSzeroes_DHf2_327949557p2233.csv",header=FALSE,colClasses = c("numeric","numeric","character","character"));df_pt11=df_pt11[order(df_pt11$V1),]
+df_pt11$V1=as.numeric(df_pt11$V1);df_pt11$V3=as.numeric(df_pt11$V3);df_pt11$V4=as.numeric(substring(df_pt11$V4,8));
+df_pt12=read.csv("/home/john/pari/RSzeroes_DHf2_327949558p3193.csv",header=FALSE,colClasses = c("numeric","numeric","character","character"));df_pt12=df_pt12[order(df_pt12$V1),]
+df_pt12$V1=as.numeric(df_pt12$V1);df_pt12$V3=as.numeric(df_pt12$V3);df_pt12$V4=as.numeric(substring(df_pt12$V4,8));
+df_pt13=read.csv("/home/john/pari/RSzeroes_DHf2_327949558p4947.csv",header=FALSE,colClasses = c("numeric","numeric","character","character"));df_pt13=df_pt13[order(df_pt13$V1),]
+df_pt13$V1=as.numeric(df_pt13$V1);df_pt13$V3=as.numeric(df_pt13$V3);df_pt13$V4=as.numeric(substring(df_pt13$V4,8));
+df_pt14=read.csv("/home/john/pari/RSzeroes_DHf2_327949558p7546.csv",header=FALSE,colClasses = c("numeric","numeric","character","character"));df_pt14=df_pt14[order(df_pt14$V1),]
+df_pt14$V1=as.numeric(df_pt14$V1);df_pt14$V3=as.numeric(df_pt14$V3);df_pt14$V4=as.numeric(substring(df_pt14$V4,8));
+df_pt15=read.csv("/home/john/pari/RSzeroes_DHf2_327949559p2690_res_p5837.csv",header=FALSE,colClasses = c("numeric","numeric","character","character"));df_pt15=df_pt15[order(df_pt15$V1),]
+df_pt15$V1=as.numeric(df_pt15$V1);df_pt15$V3=as.numeric(df_pt15$V3);df_pt15$V4=as.numeric(substring(df_pt15$V4,8));
+df_pt16=read.csv("/home/john/pari/RSzeroes_DHf2_327949559p2690_res_p4162.csv",header=FALSE,colClasses = c("numeric","numeric","character","character"));df_pt16=df_pt16[order(df_pt16$V1),]
+df_pt16$V1=as.numeric(df_pt16$V1);df_pt16$V3=as.numeric(df_pt16$V3);df_pt16$V4=as.numeric(substring(df_pt16$V4,8));
+df_pt17=read.csv("/home/john/pari/RSzeroes_DHf2_327949559p7732_res_2p1897.csv",header=FALSE,colClasses = c("numeric","numeric","character","character"));df_pt17=df_pt17[order(df_pt17$V1),]
+df_pt17$V1=as.numeric(df_pt17$V1);df_pt17$V3=as.numeric(df_pt17$V3);df_pt17$V4=as.numeric(substring(df_pt17$V4,8));
+df_pt18=read.csv("/home/john/pari/RSzeroes_DHf2_327949559p7732_res_m1p1897.csv",header=FALSE,colClasses = c("numeric","numeric","character","character"));df_pt18=df_pt18[order(df_pt18$V1),]
+df_pt18$V1=as.numeric(df_pt18$V1);df_pt18$V3=as.numeric(df_pt18$V3);df_pt18$V4=as.numeric(substring(df_pt18$V4,8));
+df_pt19=read.csv("/home/john/pari/RSzeroes_DHf2_327949559p7700.csv",header=FALSE,colClasses = c("numeric","numeric","character","character"));df_pt19=df_pt19[order(df_pt19$V1),]
+df_pt19$V1=as.numeric(df_pt19$V1);df_pt19$V3=as.numeric(df_pt19$V3);df_pt19$V4=as.numeric(substring(df_pt19$V4,8));
+df_pt20=read.csv("/home/john/pari/RSzeroes_DHf2_327949560p0552.csv",header=FALSE,colClasses = c("numeric","numeric","character","character"));df_pt20=df_pt20[order(df_pt20$V1),]
+df_pt20$V1=as.numeric(df_pt20$V1);df_pt20$V3=as.numeric(df_pt20$V3);df_pt20$V4=as.numeric(substring(df_pt20$V4,8));
+df_pt21=read.csv("/home/john/pari/RSzeroes_DHf2_327949560p4783.csv",header=FALSE,colClasses = c("numeric","numeric","character","character"));df_pt21=df_pt21[order(df_pt21$V1),]
+df_pt21$V1=as.numeric(df_pt21$V1);df_pt21$V3=as.numeric(df_pt21$V3);df_pt21$V4=as.numeric(substring(df_pt21$V4,8));
+df_pt22=read.csv("/home/john/pari/RSzeroes_DHf2_327949560p6702.csv",header=FALSE,colClasses = c("numeric","numeric","character","character"));df_pt22=df_pt22[order(df_pt22$V1),]
+df_pt22$V1=as.numeric(df_pt22$V1);df_pt22$V3=as.numeric(df_pt22$V3);df_pt22$V4=as.numeric(substring(df_pt22$V4,8));
+df_pt23=read.csv("/home/john/pari/RSzeroes_DHf2_327949561p1094.csv",header=FALSE,colClasses = c("numeric","numeric","character","character"));df_pt23=df_pt23[order(df_pt23$V1),]
+df_pt23$V1=as.numeric(df_pt23$V1);df_pt23$V3=as.numeric(df_pt23$V3);df_pt23$V4=as.numeric(substring(df_pt23$V4,8));
+
+df_imag_log_chi_minus=read.csv("/home/john/pari/imag_log_minus_fun_chi_about_327949557p7.csv",header=FALSE);
+
+xspan=range(c(df_pt1$V4,df_pt2$V4,df_pt3$V4,df_pt4$V4,df_pt5$V4,df_pt6$V4,df_pt7$V4,df_pt8$V4,df_pt9$V4,df_pt10$V4,df_pt11$V4,df_pt12$V4,df_pt13$V4,df_pt14$V4,df_pt15$V4,df_pt16$V4,df_pt17$V4,df_pt18$V4,df_pt19$V4,df_pt20$V4,df_pt21$V4,df_pt22$V4,df_pt23$V4))#
+yspan=range(c(.2,df_pt1$V3,df_pt2$V3,df_pt3$V3,df_pt4$V3,df_pt5$V3,df_pt6$V3,df_pt7$V3,df_pt8$V3,df_pt9$V3,df_pt10$V3,df_pt11$V3,df_pt12$V3,df_pt13$V3,df_pt14$V3,df_pt15$V3,df_pt16$V3,df_pt17$V3,df_pt18$V3,df_pt19$V3,df_pt20$V3,df_pt21$V3,df_pt22$V3,df_pt23$V3));
+plot(df_pt1$V4,df_pt1$V3,typ="b",
+     ylim=yspan,
+     xlim=xspan,
+     cex=0.3,cex.main=0.5,
+     main="trajectory of non-trivial zero co-ordinates as dirichlet coefficients increase to unity \n of the tapered finite dirichlet series used in Riemann Siegel formula \n1 + alpha * ( -1/0.284../2^s + 1/0.284../3^s - 1/4^s + 0/5^s + 1/6^s - 1/0.284../7^s + 1/0.284../8^s - 1/9^s + 0/10^s + 1/11^s ... + tapered terms )",xlab="imag(s) - 327,949,500",ylab="real(s)");grid();
+points(df_pt2$V4,df_pt2$V3,typ="b",pch=20,col=2,cex=0.3)
+points(df_pt3$V4,df_pt3$V3,typ="b",pch=2,col=3,cex=0.3)
+points(df_pt4$V4,df_pt4$V3,typ="b",pch=3,col=4,cex=0.3)
+points(df_pt5$V4,df_pt5$V3,typ="b",pch=4,col=6,cex=0.3)
+points(df_pt6$V4,df_pt6$V3,typ="b",pch=5,col=7,cex=0.3)
+points(df_pt7$V4,df_pt7$V3,typ="b",pch=6,col=8,cex=0.3)
+points(df_pt8$V4,df_pt8$V3,typ="b",pch=7,col=9,cex=0.3)
+points(df_pt9$V4,df_pt9$V3,typ="b",pch=8,col=10,cex=0.3)
+
+points(df_pt10$V4,df_pt10$V3,typ="b",pch=9,col=11,cex=0.3)
+points(df_pt11$V4,df_pt11$V3,typ="b",pch=10,col=12,cex=0.3)
+points(df_pt12$V4,df_pt12$V3,typ="b",pch=12,col=14,cex=0.3)
+points(df_pt13$V4,df_pt13$V3,typ="b",pch=13,col=15,cex=0.3)
+points(df_pt14$V4,df_pt14$V3,typ="b",pch=14,col=16,cex=0.3)
+points(df_pt15$V4,df_pt15$V3,typ="b",pch=15,col=17,cex=0.3)
+points(df_pt16$V4,df_pt16$V3,typ="b",pch=16,col=18,cex=0.3)
+points(df_pt17$V4,df_pt17$V3,typ="b",pch=17,col=19,cex=0.3)
+points(df_pt18$V4,df_pt18$V3,typ="b",pch=18,col=20,cex=0.3)
+points(df_pt19$V4,df_pt19$V3,typ="b",pch=19,col=21,cex=0.3)
+points(df_pt20$V4,df_pt20$V3,typ="b",pch=20,col=22,cex=0.3)
+points(df_pt21$V4,df_pt21$V3,typ="b",pch=21,col=23,cex=0.3)
+points(df_pt22$V4,df_pt22$V3,typ="b",pch=22,col=24,cex=0.3)
+points(df_pt23$V4,df_pt23$V3,typ="b",pch=23,col=25,cex=0.3)
+lines(df_imag_log_chi_minus$V1,df_imag_log_chi_minus$V2/pi*1.1-0.6,col="red",lty=3)
+abline(h=0.5,lty=3,col="cyan",lwd=2)
+
+yspan=range(c(df_pt1$V3,df_pt2$V3,df_pt3$V3,df_pt4$V3,df_pt5$V3,df_pt6$V3,df_pt7$V3,df_pt8$V3,df_pt9$V3,df_pt10$V3,df_pt11$V3,df_pt12$V3,df_pt13$V3,df_pt14$V3,df_pt15$V3,df_pt16$V3,df_pt17$V3,df_pt18$V3,df_pt19$V3,df_pt20$V3,df_pt21$V3,df_pt22$V3,df_pt23$V3));
+plot(df_pt1$V1,df_pt1$V3,typ="b",ylim=yspan,cex=0.3,log="x",
+     xlab="alpha",ylab="real(s)");grid()
+points(df_pt2$V1,df_pt2$V3,typ="b",pch=20,col=2,cex=0.3)
+points(df_pt3$V1,df_pt3$V3,typ="b",pch=2,col=3,cex=0.3)
+points(df_pt4$V1,df_pt4$V3,typ="b",pch=3,col=4,cex=0.3)
+points(df_pt5$V1,df_pt5$V3,typ="b",pch=4,col=6,cex=0.3)
+points(df_pt6$V1,df_pt6$V3,typ="b",pch=5,col=7,cex=0.3)
+points(df_pt7$V1,df_pt7$V3,typ="b",pch=6,col=8,cex=0.3)
+points(df_pt8$V1,df_pt8$V3,typ="b",pch=7,col=9,cex=0.3)
+points(df_pt9$V1,df_pt9$V3,typ="b",pch=8,col=10,cex=0.3)
+
+points(df_pt10$V1,df_pt10$V3,typ="b",pch=9,col=11,cex=0.3)
+points(df_pt11$V1,df_pt11$V3,typ="b",pch=10,col=12,cex=0.3)
+points(df_pt12$V1,df_pt12$V3,typ="b",pch=12,col=14,cex=0.3)
+points(df_pt13$V1,df_pt13$V3,typ="b",pch=13,col=15,cex=0.3)
+points(df_pt14$V1,df_pt14$V3,typ="b",pch=14,col=16,cex=0.3)
+points(df_pt15$V1,df_pt15$V3,typ="b",pch=15,col=17,cex=0.3)
+points(df_pt16$V1,df_pt16$V3,typ="b",pch=16,col=18,cex=0.3)
+points(df_pt17$V1,df_pt17$V3,typ="b",pch=17,col=19,cex=0.3)
+points(df_pt18$V1,df_pt18$V3,typ="b",pch=18,col=20,cex=0.3)
+points(df_pt19$V1,df_pt19$V3,typ="b",pch=19,col=21,cex=0.3)
+points(df_pt20$V1,df_pt20$V3,typ="b",pch=20,col=22,cex=0.3)
+points(df_pt21$V1,df_pt21$V3,typ="b",pch=21,col=23,cex=0.3)
+points(df_pt22$V1,df_pt22$V3,typ="b",pch=22,col=24,cex=0.3)
+points(df_pt23$V1,df_pt23$V3,typ="b",pch=23,col=25,cex=0.3)
+abline(h=0.5,lty=3,col="cyan",lwd=2)
+
+
+
+```
+***Figure 11. The trajectory of (twenty two) non-trivial zero co-ordinates around the f2(s) function critical line high peak (t=327949557.7...) as the magnitude ($\alpha$) of the 2nd, 3rd, 4th, ... etc dirichlet coefficients of the tapered finite dirichlet series = 1 + $\alpha$ \* ( -1/0.284../$2^s$ + 1/0.284../$3^s$ - 1/$4^s$ + 0/5^s + 1/6^s - 1/0.284../$7^s$ + 1/0.284../$8^s$ - 1/$9^s$ + 0/10^s + 1/11^s ... + tapered terms ) increases to unity as used in Riemann Siegel formula. Red dotted line in upper panel indicates Gram's law behaviour via scaled version of imag(log(-$\chi(f_1(s))$))***
+
+\newpage
+
+
+
+```{r f2compareArgumentcriticallineandperturbationbehaviour_nearby327949557p7peak, echo=FALSE, fig.show = "hold", fig.align = "center", fig.height=7.8, warning=FALSE}
+
+df_pt_S=read.csv("/home/john/pari/DHf2_estimates_about_327949557p7.csv",header=FALSE,colClasses = "numeric");
+
+
+diffS=diff(df_pt_S$V4)  
+df_pt_S$diff=c(0,diffS)
+
+# removing nuisance discontinuities because of principal log branch pari-gp based S calculation
+#df_pt_S[df_pt_S$diff > pi | df_pt_S$diff < -1-.1,]
+df_pt_S$adj_S=df_pt_S$V4+
+  
+   # ifelse(as.numeric(df_pt_S$V1)>=54.398,-2*pi,0)+ #off critical line zero pair
+  ifelse(as.numeric(df_pt_S$V1)>=54.581,2*pi,0)+
+  ifelse(as.numeric(df_pt_S$V1)>=54.722,-2*pi,0)+  
+  ifelse(as.numeric(df_pt_S$V1)>=57.224,2*pi,0)+   
+  ifelse(as.numeric(df_pt_S$V1)>=57.316,-2*pi,0)+  
+  ifelse(as.numeric(df_pt_S$V1)>=57.964,-2*pi,0)+  
+  ifelse(as.numeric(df_pt_S$V1)>=58.495,2*pi,0)+   
+  ifelse(as.numeric(df_pt_S$V1)>=58.612,-2*pi,0)+
+  ifelse(as.numeric(df_pt_S$V1)>=58.755,2*pi,0)+
+  # ifelse(as.numeric(df_pt_S$V1)>=58.937,-2*pi,0)+ #off critical line zero pair
+  # ifelse(as.numeric(df_pt_S$V1)>=59.585,-2*pi,0)+ #off critical line zero pair
+  ifelse(as.numeric(df_pt_S$V1)>=59.771,2*pi,0)+
+  ifelse(as.numeric(df_pt_S$V1)>=59.909,-2*pi,0)+
+  ifelse(as.numeric(df_pt_S$V1)>=60.056,2*pi,0)+  
+  ifelse(as.numeric(df_pt_S$V1)>=60.234,-2*pi,0)+  
+  ifelse(as.numeric(df_pt_S$V1)>=60.479,2*pi,0)+  
+  ifelse(as.numeric(df_pt_S$V1)>=60.558,-2*pi,0)+  
+  ifelse(as.numeric(df_pt_S$V1)>=60.671,2*pi,0)+  
+  ifelse(as.numeric(df_pt_S$V1)>=60.882,-2*pi,0)+  
+  ifelse(as.numeric(df_pt_S$V1)>=61.110,2*pi,0)+  
+  ifelse(as.numeric(df_pt_S$V1)>=61.206,-2*pi,0)+  
+  ifelse(as.numeric(df_pt_S$V1)>=61.465,2*pi,0)+  
+  ifelse(as.numeric(df_pt_S$V1)>=61.530,-2*pi,0)+  
+ 0
+
+xspan=range(df_pt_S$V1)
+plot(df_pt_S$V1,df_pt_S$adj_S/pi,typ="l",ylim=c(-2*pi*1.2,2*pi*1.4),xlim=xspan,
+     main="Argument function value of tapered RS function on critical line \n with overlay of signed trajectory of \n low lying non-trivial zeroes under simple perturbation",ylab="S value",xlab="imaginary co-ordinate - 327,949,500.",cex.main=0.9);grid()  
+abline(h=c(-2,2),lty=3,lwd=2)
+abline(h=c(-1.7,1.7),lty=6,col="purple")
+lines(df_imag_log_chi_minus$V1,df_imag_log_chi_minus$V2/2/pi,col="red",lty=3)
+
+axis(side=2, at = c(-1.7,1.7),cex.axis=0.5,las=2,hadj=0.2,tck=-0.02)
+
+par(new = TRUE)
+
+
+plot(df_pt1$V4,df_pt1$V3,typ="l",
+     ylim=c(-pi/2*1.2,pi/2*1.4),
+     xlim=xspan,axes = FALSE, bty = "n", xlab = "", ylab = "",
+     cex=0.8,col="darkblue");
+axis(side=4, at = pretty(c(-1,1)),col.axis=2,col=2,cex.axis=0.5,padj=-1)
+mtext("signed zero trajectory under simple perturbation", side=4, line=0.25,cex=0.7,col=2)
+
+#abline(v=c(-1.7987,-1.47165,-1.14462,-0.8176,-0.49055,-0.16352,0.16352,0.49055,0.8176,1.14462,1.47165,1.7987),col="gray",lty=6)
+lines(df_pt2$V4,df_pt2$V3,col="darkblue")
+lines(df_pt3$V4,df_pt3$V3,col=2)
+lines(df_pt4$V4,df_pt4$V3,col=2)
+lines(df_pt5$V4,df_pt5$V3,col=2)
+lines(df_pt6$V4,-df_pt6$V3,col=2)
+lines(df_pt7$V4,df_pt7$V3,col=2)
+
+lines(df_pt8$V4,-df_pt8$V3,col=2)
+lines(df_pt9$V4,df_pt9$V3,col=2)
+
+lines(df_pt10$V4,df_pt10$V3,col=2)
+lines(df_pt11$V4,df_pt11$V3,col=2)
+lines(df_pt12$V4,-df_pt12$V3,col=2)
+lines(df_pt13$V4,-df_pt13$V3,col=2)
+lines(df_pt14$V4,-df_pt14$V3,col=2)
+lines(df_pt15$V4,df_pt15$V3,col="darkblue")
+lines(df_pt16$V4,df_pt16$V3,col="darkblue")
+lines(df_pt17$V4,df_pt17$V3,col="darkblue")
+lines(df_pt18$V4,df_pt18$V3,col="darkblue")
+lines(df_pt19$V4,df_pt19$V3,col=2)
+lines(df_pt20$V4,df_pt20$V3,col=2)
+lines(df_pt21$V4,df_pt21$V3,col=2)
+lines(df_pt22$V4,df_pt22$V3,col=2)
+lines(df_pt23$V4,df_pt23$V3,col=2)
+abline(h=c(-0.5,0.5),col=2,lty=3)
+
+```
+***Figure 12. Comparing signed trajectory of 2048 tapered zeroth order Riemann Siegel function for $f_2(s)$ under simple perturbation (red lines for critical line non-trivial zeroes, blue line for non-trivial zeroes off the critical line), 2048 tapered zeroth order Riemann Siegel function argument function (S values) when s=0.5+i*t and $f_2(s)$ Gram's law behaviour (red dotted line). Overshooting signed trajectories occur when $|S| \gtrsim 1.7$.***
+
+
+
+\newpage
+
+```{r f1impactofdirichletcoefficientmagnitude_onzeropositions_nearby327949557p7peak, fig.show = "hold", fig.align = "center", fig.height=7.8}
+
+par(mfrow=c(2,1))
+df_pt1=read.csv("/home/john/pari/RSzeroes_DHf1_327949554p6420.csv",header=FALSE,colClasses = c("numeric","numeric","character","character"));df_pt1=df_pt1[order(df_pt1$V1),];
+df_pt1$V1=as.numeric(df_pt1$V1);df_pt1$V3=as.numeric(df_pt1$V3);df_pt1$V4=as.numeric(substring(df_pt1$V4,8));
+df_pt2=read.csv("/home/john/pari/RSzeroes_DHf1_327949555p1644.csv",header=FALSE,colClasses = c("numeric","numeric","character","character"));df_pt2=df_pt2[order(df_pt2$V1),]
+df_pt2$V1=as.numeric(df_pt2$V1);df_pt2$V3=as.numeric(df_pt2$V3);df_pt2$V4=as.numeric(substring(df_pt2$V4,8));
+df_pt3=read.csv("/home/john/pari/RSzeroes_DHf1_327949555p3809.csv",header=FALSE,colClasses = c("numeric","numeric","character","character"));df_pt3=df_pt3[order(df_pt3$V1),]
+df_pt3$V1=as.numeric(df_pt3$V1);df_pt3$V3=as.numeric(df_pt3$V3);df_pt3$V4=as.numeric(substring(df_pt3$V4,8));
+df_pt4=read.csv("/home/john/pari/RSzeroes_DHf1_327949555p8265.csv",header=FALSE,colClasses = c("numeric","numeric","character","character"));df_pt4=df_pt4[order(df_pt4$V1),]
+df_pt4$V1=as.numeric(df_pt4$V1);df_pt4$V3=as.numeric(df_pt4$V3);df_pt4$V4=as.numeric(substring(df_pt4$V4,8));
+df_pt5=read.csv("/home/john/pari/RSzeroes_DHf1_327949556p0788.csv",header=FALSE,colClasses = c("numeric","numeric","character","character"));df_pt5=df_pt5[order(df_pt5$V1),]
+df_pt5$V1=as.numeric(df_pt5$V1);df_pt5$V3=as.numeric(df_pt5$V3);df_pt5$V4=as.numeric(substring(df_pt5$V4,8));
+df_pt6=read.csv("/home/john/pari/RSzeroes_DHf1_327949556p3072.csv",header=FALSE,colClasses = c("numeric","numeric","character","character"));df_pt6=df_pt6[order(df_pt6$V1),]
+df_pt6$V1=as.numeric(df_pt6$V1);df_pt6$V3=as.numeric(df_pt6$V3);df_pt6$V4=as.numeric(substring(df_pt6$V4,8));
+
+
+df_pt7=read.csv("/home/john/pari/RSzeroes_DHf1_327949556p7378.csv",header=FALSE,colClasses = c("numeric","numeric","character","character"));df_pt7=df_pt7[order(df_pt7$V1),]
+df_pt7$V1=as.numeric(df_pt7$V1);df_pt7$V3=as.numeric(df_pt7$V3);df_pt7$V4=as.numeric(substring(df_pt7$V4,8));
+df_pt8=read.csv("/home/john/pari/RSzeroes_DHf1_327949556p9439_res_p6759.csv",header=FALSE,colClasses = c("numeric","numeric","character","character"));df_pt8=df_pt8[order(df_pt8$V1),]
+df_pt8$V1=as.numeric(df_pt8$V1);df_pt8$V3=as.numeric(df_pt8$V3);df_pt8$V4=as.numeric(substring(df_pt8$V4,8));
+df_pt9=read.csv("/home/john/pari/RSzeroes_DHf1_327949556p9439_res_p3240.csv",header=FALSE,colClasses = c("numeric","numeric","character","character"));df_pt9=df_pt9[order(df_pt9$V1),]
+df_pt9$V1=as.numeric(df_pt9$V1);df_pt9$V3=as.numeric(df_pt9$V3);df_pt9$V4=as.numeric(substring(df_pt9$V4,8));
+df_pt10=read.csv("/home/john/pari/RSzeroes_DHf1_327949557p1946.csv",header=FALSE,colClasses = c("numeric","numeric","character","character"));df_pt10=df_pt10[order(df_pt10$V1),]
+df_pt10$V1=as.numeric(df_pt10$V1);df_pt10$V3=as.numeric(df_pt10$V3);df_pt10$V4=as.numeric(substring(df_pt10$V4,8));
+df_pt11=read.csv("/home/john/pari/RSzeroes_DHf1_327949558p3873_res_p5481.csv",header=FALSE,colClasses = c("numeric","numeric","character","character"));df_pt11=df_pt11[order(df_pt11$V1),]
+df_pt11$V1=as.numeric(df_pt11$V1);df_pt11$V3=as.numeric(df_pt11$V3);df_pt11$V4=as.numeric(substring(df_pt11$V4,8));
+df_pt12=read.csv("/home/john/pari/RSzeroes_DHf1_327949558p3873_res_p4518.csv",header=FALSE,colClasses = c("numeric","numeric","character","character"));df_pt12=df_pt12[order(df_pt12$V1),]
+df_pt12$V1=as.numeric(df_pt12$V1);df_pt12$V3=as.numeric(df_pt12$V3);df_pt12$V4=as.numeric(substring(df_pt12$V4,8));
+df_pt13=read.csv("/home/john/pari/RSzeroes_DHf1_327949558p6067.csv",header=FALSE,colClasses = c("numeric","numeric","character","character"));df_pt13=df_pt13[order(df_pt13$V1),]
+df_pt13$V1=as.numeric(df_pt13$V1);df_pt13$V3=as.numeric(df_pt13$V3);df_pt13$V4=as.numeric(substring(df_pt13$V4,8));
+df_pt14=read.csv("/home/john/pari/RSzeroes_DHf1_327949558p9434.csv",header=FALSE,colClasses = c("numeric","numeric","character","character"));df_pt14=df_pt14[order(df_pt14$V1),]
+df_pt14$V1=as.numeric(df_pt14$V1);df_pt14$V3=as.numeric(df_pt14$V3);df_pt14$V4=as.numeric(substring(df_pt14$V4,8));
+df_pt15=read.csv("/home/john/pari/RSzeroes_DHf1_327949559p2624.csv",header=FALSE,colClasses = c("numeric","numeric","character","character"));df_pt15=df_pt15[order(df_pt15$V1),]
+df_pt15$V1=as.numeric(df_pt15$V1);df_pt15$V3=as.numeric(df_pt15$V3);df_pt15$V4=as.numeric(substring(df_pt15$V4,8));
+df_pt16=read.csv("/home/john/pari/RSzeroes_DHf1_327949559p5590.csv",header=FALSE,colClasses = c("numeric","numeric","character","character"));df_pt16=df_pt16[order(df_pt16$V1),]
+df_pt16$V1=as.numeric(df_pt16$V1);df_pt16$V3=as.numeric(df_pt16$V3);df_pt16$V4=as.numeric(substring(df_pt16$V4,8));
+df_pt17=read.csv("/home/john/pari/RSzeroes_DHf1_327949559p9551.csv",header=FALSE,colClasses = c("numeric","numeric","character","character"));df_pt17=df_pt17[order(df_pt17$V1),]
+df_pt17$V1=as.numeric(df_pt17$V1);df_pt17$V3=as.numeric(df_pt17$V3);df_pt17$V4=as.numeric(substring(df_pt17$V4,8));
+df_pt18=read.csv("/home/john/pari/RSzeroes_DHf1_327949560p1904.csv",header=FALSE,colClasses = c("numeric","numeric","character","character"));df_pt18=df_pt18[order(df_pt18$V1),]
+df_pt18$V1=as.numeric(df_pt18$V1);df_pt18$V3=as.numeric(df_pt18$V3);df_pt18$V4=as.numeric(substring(df_pt18$V4,8));
+df_pt19=read.csv("/home/john/pari/RSzeroes_DHf1_327949560p5263.csv",header=FALSE,colClasses = c("numeric","numeric","character","character"));df_pt19=df_pt19[order(df_pt19$V1),]
+df_pt19$V1=as.numeric(df_pt19$V1);df_pt19$V3=as.numeric(df_pt19$V3);df_pt19$V4=as.numeric(substring(df_pt19$V4,8));
+df_pt20=read.csv("/home/john/pari/RSzeroes_DHf1_327949560p7839.csv",header=FALSE,colClasses = c("numeric","numeric","character","character"));df_pt20=df_pt20[order(df_pt20$V1),]
+df_pt20$V1=as.numeric(df_pt20$V1);df_pt20$V3=as.numeric(df_pt20$V3);df_pt20$V4=as.numeric(substring(df_pt20$V4,8));
+df_pt21=read.csv("/home/john/pari/RSzeroes_DHf1_327949554p6420.csv",header=FALSE,colClasses = c("numeric","numeric","character","character"));df_pt21=df_pt21[order(df_pt21$V1),]
+df_pt21$V1=as.numeric(df_pt21$V1);df_pt21$V3=as.numeric(df_pt21$V3);df_pt21$V4=as.numeric(substring(df_pt21$V4,8));
+
+df_imag_log_chi=read.csv("/home/john/pari/imag_log_fun_chi_about_327949557p7.csv",header=FALSE);
+
+xspan=range(c(df_pt1$V4,df_pt2$V4,df_pt3$V4,df_pt4$V4,df_pt5$V4,df_pt6$V4,df_pt7$V4,df_pt8$V4,df_pt9$V4,df_pt10$V4,df_pt11$V4,df_pt12$V4,df_pt13$V4,df_pt14$V4,df_pt15$V4,df_pt16$V4,df_pt17$V4,df_pt18$V4,df_pt19$V4,df_pt20$V4,df_pt21$V4));#
+yspan=range(c(.2,df_pt1$V3,df_pt2$V3,df_pt3$V3,df_pt4$V3,df_pt5$V3,df_pt6$V3,df_pt7$V3,df_pt8$V3,df_pt9$V3,df_pt10$V3,df_pt11$V3,df_pt12$V3,df_pt13$V3,df_pt14$V3,df_pt15$V3,df_pt16$V3,df_pt17$V3,df_pt18$V3,df_pt19$V3,df_pt20$V3,df_pt21$V3));#
+plot(df_pt1$V4,df_pt1$V3,typ="b",
+     ylim=yspan,
+     xlim=xspan,
+     cex=0.3,cex.main=0.5,
+     main="trajectory of non-trivial zero co-ordinates as dirichlet coefficients increase to unity \n of the tapered finite dirichlet series used in Riemann Siegel formula \n1 + alpha * ( 0.284../2^s - 0.284../3^s - 1/4^s + 0/5^s + 1/6^s + 0.284../7^s - 0.284../8^s - 1/9^s + 0/10^s + 1/11^s ... + tapered terms )",xlab="imag(s) - 327,949,500",ylab="real(s)");grid();
+points(df_pt2$V4,df_pt2$V3,typ="b",pch=20,col=2)
+points(df_pt3$V4,df_pt3$V3,typ="b",pch=2,col=3,cex=0.3)
+points(df_pt4$V4,df_pt4$V3,typ="b",pch=3,col=4,cex=0.3)
+points(df_pt5$V4,df_pt5$V3,typ="b",pch=4,col=6,cex=0.3)
+points(df_pt6$V4,df_pt6$V3,typ="b",pch=5,col=7,cex=0.3)
+points(df_pt7$V4,df_pt7$V3,typ="b",pch=6,col=8,cex=0.3)
+points(df_pt8$V4,df_pt8$V3,typ="b",pch=7,col=9,cex=0.3)
+points(df_pt9$V4,df_pt9$V3,typ="b",pch=8,col=10,cex=0.3)
+
+points(df_pt10$V4,df_pt10$V3,typ="b",pch=9,col=11,cex=0.3)
+points(df_pt11$V4,df_pt11$V3,typ="b",pch=10,col=12,cex=0.3)
+points(df_pt12$V4,df_pt12$V3,typ="b",pch=12,col=14,cex=0.3)
+points(df_pt13$V4,df_pt13$V3,typ="b",pch=13,col=15,cex=0.3)
+points(df_pt14$V4,df_pt14$V3,typ="b",pch=14,col=16,cex=0.3)
+points(df_pt15$V4,df_pt15$V3,typ="b",pch=15,col=17,cex=0.3)
+points(df_pt16$V4,df_pt16$V3,typ="b",pch=16,col=18,cex=0.3)
+points(df_pt17$V4,df_pt17$V3,typ="b",pch=17,col=19,cex=0.3)
+points(df_pt18$V4,df_pt18$V3,typ="b",pch=18,col=20,cex=0.3)
+points(df_pt19$V4,df_pt19$V3,typ="b",pch=19,col=21,cex=0.3)
+points(df_pt20$V4,df_pt20$V3,typ="b",pch=20,col=22,cex=0.3)
+points(df_pt21$V4,df_pt21$V3,typ="b",pch=21,col=23,cex=0.3)
+lines(df_imag_log_chi$V1,df_imag_log_chi$V2/pi*.5+0.,col="brown",lty=3)
+abline(h=0.5,lty=3,col="cyan",lwd=2)
+
+yspan=range(c(df_pt1$V3,df_pt2$V3,df_pt3$V3,df_pt4$V3,df_pt5$V3,df_pt6$V3,df_pt7$V3,df_pt8$V3,df_pt9$V3,df_pt10$V3,df_pt11$V3,df_pt12$V3,df_pt13$V3,df_pt14$V3,df_pt15$V3,df_pt16$V3,df_pt17$V3,df_pt18$V3,df_pt19$V3,df_pt20$V3,df_pt21$V3));
+plot(df_pt1$V1,df_pt1$V3,typ="b",ylim=yspan,cex=0.3,log="x",
+     xlab="alpha",ylab="real(s)");grid()
+points(df_pt2$V1,df_pt2$V3,typ="b",pch=20,col=2,cex=0.3)
+points(df_pt3$V1,df_pt3$V3,typ="b",pch=2,col=3,cex=0.3)
+points(df_pt4$V1,df_pt4$V3,typ="b",pch=3,col=4,cex=0.3)
+points(df_pt5$V1,df_pt5$V3,typ="b",pch=4,col=6,cex=0.3)
+points(df_pt6$V1,df_pt6$V3,typ="b",pch=5,col=7,cex=0.3)
+points(df_pt7$V1,df_pt7$V3,typ="b",pch=6,col=8,cex=0.3)
+points(df_pt8$V1,df_pt8$V3,typ="b",pch=7,col=9,cex=0.3)
+points(df_pt9$V1,df_pt9$V3,typ="b",pch=8,col=10,cex=0.3)
+
+points(df_pt10$V1,df_pt10$V3,typ="b",pch=9,col=11,cex=0.3)
+points(df_pt11$V1,df_pt11$V3,typ="b",pch=10,col=12,cex=0.3)
+points(df_pt12$V1,df_pt12$V3,typ="b",pch=12,col=14,cex=0.3)
+points(df_pt13$V1,df_pt13$V3,typ="b",pch=13,col=15,cex=0.3)
+points(df_pt14$V1,df_pt14$V3,typ="b",pch=14,col=16,cex=0.3)
+points(df_pt15$V1,df_pt15$V3,typ="b",pch=15,col=17,cex=0.3)
+points(df_pt16$V1,df_pt16$V3,typ="b",pch=16,col=18,cex=0.3)
+points(df_pt17$V1,df_pt17$V3,typ="b",pch=17,col=19,cex=0.3)
+points(df_pt18$V1,df_pt18$V3,typ="b",pch=18,col=20,cex=0.3)
+points(df_pt19$V1,df_pt19$V3,typ="b",pch=19,col=21,cex=0.3)
+points(df_pt20$V1,df_pt20$V3,typ="b",pch=20,col=22,cex=0.3)
+points(df_pt21$V1,df_pt21$V3,typ="b",pch=21,col=23,cex=0.3)
+abline(h=0.5,lty=3,col="cyan",lwd=2)
+
+
+
+```
+***Figure 13. The trajectory of (twenty one) non-trivial zero co-ordinates around the f1(s) function critical line high peak (t=327949557.7...) as the magnitude ($\alpha$) of the 2nd, 3rd, 4th, ... etc dirichlet coefficients of the tapered finite dirichlet series = 1 + $\alpha$ \* ( 0.284../$2^s$ - 0.284../$3^s$ - 1/$4^s$ + 0/5^s + 1/6^s + 0.284../$7^s$ - 0.284../$8^s$ - 1/$9^s$ + 0/10^s + 1/11^s ... + tapered terms ) increases to unity as used in Riemann Siegel formula. Red dotted line in upper panel indicates Gram's law behaviour via scaled version of imag(log($\chi(f_1(s))$))***
+
+\newpage
+
+
+
+```{r f1compareArgumentcriticallineandperturbationbehaviour_nearby327949557p7peak, echo=FALSE, fig.show = "hold", fig.align = "center", fig.height=7.8, warning=FALSE}
+
+df_pt_S=read.csv("/home/john/pari/DHf1_estimates_about_327949557p7.csv",header=FALSE,colClasses = "numeric");
+
+
+diffS=diff(df_pt_S$V4)  
+df_pt_S$diff=c(0,diffS)
+
+# removing nuisance discontinuities because of principal log branch pari-gp based S calculation
+#df_pt_S[df_pt_S$diff > pi | df_pt_S$diff < -1-.1,]
+df_pt_S$adj_S=df_pt_S$V4+
+  
+  ifelse(as.numeric(df_pt_S$V1)>=57.154,-2*pi,0)+   
+  ifelse(as.numeric(df_pt_S$V1)>=57.195,2*pi,0)+  
+  # ifelse(as.numeric(df_pt_S$V1)>=57.478,2*pi,0)+  #off critical line zero pair
+  # ifelse(as.numeric(df_pt_S$V1)>=58.126,-2*pi,0)+   #off critical line zero pair
+  0
+
+xspan=range(df_pt_S$V1)
+plot(df_pt_S$V1,df_pt_S$adj_S/pi,typ="l",ylim=c(-1*pi,1*pi),xlim=xspan,
+     main="Argument function value of tapered RS function on critical line \n with overlay of signed trajectory of \n low lying non-trivial zeroes under simple perturbation",ylab="S value",xlab="imaginary co-ordinate - 327,949,500.",cex.main=0.9);grid()  
+abline(h=c(-2,2),lty=3,lwd=2)
+abline(h=c(-1.7,1.7),lty=6,col="purple")
+lines(df_imag_log_chi$V1,df_imag_log_chi$V2/2/pi,col="red",lty=3)
+
+axis(side=2, at = c(-1.7,1.7),cex.axis=0.5,las=2,hadj=0.2,tck=-0.02)
+
+
+par(new = TRUE)
+
+
+
+plot(df_pt1$V4,df_pt1$V3,typ="l",
+     ylim=c(-pi/4,pi/4),
+     xlim=xspan,axes = FALSE, bty = "n", xlab = "", ylab = "",
+     cex=0.8,col=2);
+axis(side=4, at = pretty(c(-1,1)),col.axis=2,col=2,cex.axis=0.5,padj=-1)
+mtext("signed zero trajectory under simple perturbation", side=4, line=0.25,cex=0.7,col=2)
+
+lines(df_pt2$V4,-df_pt2$V3,col=2)
+lines(df_pt3$V4,df_pt3$V3,col=2)
+lines(df_pt4$V4,-df_pt4$V3,col=2)
+lines(df_pt5$V4,-df_pt5$V3,col=2)
+lines(df_pt6$V4,df_pt6$V3,col=2)
+lines(df_pt7$V4,-df_pt7$V3,col=2)
+
+lines(df_pt8$V4,df_pt8$V3,col="darkblue")
+lines(df_pt9$V4,df_pt9$V3,col="darkblue")
+
+lines(df_pt10$V4,-df_pt10$V3,col=2)
+lines(df_pt11$V4,df_pt11$V3,col="darkblue")
+lines(df_pt12$V4,df_pt12$V3,col="darkblue")
+lines(df_pt13$V4,df_pt13$V3,col=2)
+lines(df_pt14$V4,df_pt14$V3,col=2)
+lines(df_pt15$V4,df_pt15$V3,col=2)
+lines(df_pt16$V4,df_pt16$V3,col=2)
+lines(df_pt17$V4,-df_pt17$V3,col=2)
+lines(df_pt18$V4,df_pt18$V3,col=2)
+lines(df_pt19$V4,df_pt19$V3,col=2)
+lines(df_pt20$V4,df_pt20$V3,col=2)
+lines(df_pt21$V4,df_pt21$V3,col=2)
+abline(h=c(-0.5,0.5),col=2,lty=3)
+
+```
+***Figure 14. Comparing signed trajectory of 2048 tapered zeroth order Riemann Siegel function for $f_1(s)$ under simple perturbation (red lines for critical line non-trivial zeroes, blue line for non-trivial zeroes off the critical line), 2048 tapered zeroth order Riemann Siegel function argument function (S values) when s=0.5+i*t and $f_1(s)$ Gram's law behaviour (red dotted line).  ***
+
+\newpage
+
+```{r L52impactofdirichletcoefficientmagnitude_onzeropositions_nearby327949557p7peak, fig.show = "hold", fig.align = "center", fig.height=7.8}
+
+par(mfrow=c(2,1))
+df_pt1=read.csv("/home/john/pari/RSzeroes_L52_327949554p2663.csv",header=FALSE,colClasses = c("numeric","numeric","character","character"));df_pt1=df_pt1[order(df_pt1$V1),];
+df_pt1$V1=as.numeric(df_pt1$V1);df_pt1$V3=as.numeric(df_pt1$V3);df_pt1$V4=as.numeric(substring(df_pt1$V4,8));
+df_pt2=read.csv("/home/john/pari/RSzeroes_L52_327949554p4235.csv",header=FALSE,colClasses = c("numeric","numeric","character","character"));df_pt2=df_pt2[order(df_pt2$V1),]
+df_pt2$V1=as.numeric(df_pt2$V1);df_pt2$V3=as.numeric(df_pt2$V3);df_pt2$V4=as.numeric(substring(df_pt2$V4,8));
+df_pt3=read.csv("/home/john/pari/RSzeroes_L52_327949554p6225.csv",header=FALSE,colClasses = c("numeric","numeric","character","character"));df_pt3=df_pt3[order(df_pt3$V1),]
+df_pt3$V1=as.numeric(df_pt3$V1);df_pt3$V3=as.numeric(df_pt3$V3);df_pt3$V4=as.numeric(substring(df_pt3$V4,8));
+df_pt4=read.csv("/home/john/pari/RSzeroes_L52_327949555p1774.csv",header=FALSE,colClasses = c("numeric","numeric","character","character"));df_pt4=df_pt4[order(df_pt4$V1),]
+df_pt4$V1=as.numeric(df_pt4$V1);df_pt4$V3=as.numeric(df_pt4$V3);df_pt4$V4=as.numeric(substring(df_pt4$V4,8));
+df_pt5=read.csv("/home/john/pari/RSzeroes_L52_327949555p3903.csv",header=FALSE,colClasses = c("numeric","numeric","character","character"));df_pt5=df_pt5[order(df_pt5$V1),]
+df_pt5$V1=as.numeric(df_pt5$V1);df_pt5$V3=as.numeric(df_pt5$V3);df_pt5$V4=as.numeric(substring(df_pt5$V4,8));
+df_pt6=read.csv("/home/john/pari/RSzeroes_L52_327949555p9802.csv",header=FALSE,colClasses = c("numeric","numeric","character","character"));df_pt6=df_pt6[order(df_pt6$V1),]
+df_pt6$V1=as.numeric(df_pt6$V1);df_pt6$V3=as.numeric(df_pt6$V3);df_pt6$V4=as.numeric(substring(df_pt6$V4,8));
+
+
+df_pt7=read.csv("/home/john/pari/RSzeroes_L52_327949556p1620.csv",header=FALSE,colClasses = c("numeric","numeric","character","character"));df_pt7=df_pt7[order(df_pt7$V1),]
+df_pt7$V1=as.numeric(df_pt7$V1);df_pt7$V3=as.numeric(df_pt7$V3);df_pt7$V4=as.numeric(substring(df_pt7$V4,8));
+df_pt8=read.csv("/home/john/pari/RSzeroes_L52_327949556p4511.csv",header=FALSE,colClasses = c("numeric","numeric","character","character"));df_pt8=df_pt8[order(df_pt8$V1),]
+df_pt8$V1=as.numeric(df_pt8$V1);df_pt8$V3=as.numeric(df_pt8$V3);df_pt8$V4=as.numeric(substring(df_pt8$V4,8));
+df_pt9=read.csv("/home/john/pari/RSzeroes_L52_327949556p7586.csv",header=FALSE,colClasses = c("numeric","numeric","character","character"));df_pt9=df_pt9[order(df_pt9$V1),]
+df_pt9$V1=as.numeric(df_pt9$V1);df_pt9$V3=as.numeric(df_pt9$V3);df_pt9$V4=as.numeric(substring(df_pt9$V4,8));
+df_pt10=read.csv("/home/john/pari/RSzeroes_L52_327949557p1198.csv",header=FALSE,colClasses = c("numeric","numeric","character","character"));df_pt10=df_pt10[order(df_pt10$V1),]
+df_pt10$V1=as.numeric(df_pt10$V1);df_pt10$V3=as.numeric(df_pt10$V3);df_pt10$V4=as.numeric(substring(df_pt10$V4,8));
+df_pt11=read.csv("/home/john/pari/RSzeroes_L52_327949557p4270.csv",header=FALSE,colClasses = c("numeric","numeric","character","character"));df_pt11=df_pt11[order(df_pt11$V1),]
+df_pt11$V1=as.numeric(df_pt11$V1);df_pt11$V3=as.numeric(df_pt11$V3);df_pt11$V4=as.numeric(substring(df_pt11$V4,8));
+df_pt12=read.csv("/home/john/pari/RSzeroes_L52_327949557p6457.csv",header=FALSE,colClasses = c("numeric","numeric","character","character"));df_pt12=df_pt12[order(df_pt12$V1),]
+df_pt12$V1=as.numeric(df_pt12$V1);df_pt12$V3=as.numeric(df_pt12$V3);df_pt12$V4=as.numeric(substring(df_pt12$V4,8));
+df_pt13=read.csv("/home/john/pari/RSzeroes_L52_327949558p0201.csv",header=FALSE,colClasses = c("numeric","numeric","character","character"));df_pt13=df_pt13[order(df_pt13$V1),]
+df_pt13$V1=as.numeric(df_pt13$V1);df_pt13$V3=as.numeric(df_pt13$V3);df_pt13$V4=as.numeric(substring(df_pt13$V4,8));
+df_pt14=read.csv("/home/john/pari/RSzeroes_L52_327949558p1937.csv",header=FALSE,colClasses = c("numeric","numeric","character","character"));df_pt14=df_pt14[order(df_pt14$V1),]
+df_pt14$V1=as.numeric(df_pt14$V1);df_pt14$V3=as.numeric(df_pt14$V3);df_pt14$V4=as.numeric(substring(df_pt14$V4,8));
+df_pt15=read.csv("/home/john/pari/RSzeroes_L52_327949558p5339.csv",header=FALSE,colClasses = c("numeric","numeric","character","character"));df_pt15=df_pt15[order(df_pt15$V1),]
+df_pt15$V1=as.numeric(df_pt15$V1);df_pt15$V3=as.numeric(df_pt15$V3);df_pt15$V4=as.numeric(substring(df_pt15$V4,8));
+df_pt16=read.csv("/home/john/pari/RSzeroes_L52_327949558p8582.csv",header=FALSE,colClasses = c("numeric","numeric","character","character"));df_pt16=df_pt16[order(df_pt16$V1),]
+df_pt16$V1=as.numeric(df_pt16$V1);df_pt16$V3=as.numeric(df_pt16$V3);df_pt16$V4=as.numeric(substring(df_pt16$V4,8));
+df_pt17=read.csv("/home/john/pari/RSzeroes_L52_327949559p2760.csv",header=FALSE,colClasses = c("numeric","numeric","character","character"));df_pt17=df_pt17[order(df_pt17$V1),]
+df_pt17$V1=as.numeric(df_pt17$V1);df_pt17$V3=as.numeric(df_pt17$V3);df_pt17$V4=as.numeric(substring(df_pt17$V4,8));
+df_pt18=read.csv("/home/john/pari/RSzeroes_L52_327949559p4964.csv",header=FALSE,colClasses = c("numeric","numeric","character","character"));df_pt18=df_pt18[order(df_pt18$V1),]
+df_pt18$V1=as.numeric(df_pt18$V1);df_pt18$V3=as.numeric(df_pt18$V3);df_pt18$V4=as.numeric(substring(df_pt18$V4,8));
+df_pt19=read.csv("/home/john/pari/RSzeroes_L52_327949559p9169.csv",header=FALSE,colClasses = c("numeric","numeric","character","character"));df_pt19=df_pt19[order(df_pt19$V1),]
+df_pt19$V1=as.numeric(df_pt19$V1);df_pt19$V3=as.numeric(df_pt19$V3);df_pt19$V4=as.numeric(substring(df_pt19$V4,8));
+df_pt20=read.csv("/home/john/pari/RSzeroes_L52_327949560p1361.csv",header=FALSE,colClasses = c("numeric","numeric","character","character"));df_pt20=df_pt20[order(df_pt20$V1),]
+df_pt20$V1=as.numeric(df_pt20$V1);df_pt20$V3=as.numeric(df_pt20$V3);df_pt20$V4=as.numeric(substring(df_pt20$V4,8));
+df_pt21=read.csv("/home/john/pari/RSzeroes_L52_327949560p5129.csv",header=FALSE,colClasses = c("numeric","numeric","character","character"));df_pt21=df_pt21[order(df_pt21$V1),]
+df_pt21$V1=as.numeric(df_pt21$V1);df_pt21$V3=as.numeric(df_pt21$V3);df_pt21$V4=as.numeric(substring(df_pt21$V4,8));
+df_pt22=read.csv("/home/john/pari/RSzeroes_L52_327949560p7410.csv",header=FALSE,colClasses = c("numeric","numeric","character","character"));df_pt22=df_pt22[order(df_pt22$V1),]
+df_pt22$V1=as.numeric(df_pt22$V1);df_pt22$V3=as.numeric(df_pt22$V3);df_pt22$V4=as.numeric(substring(df_pt22$V4,8));
+df_pt23=read.csv("/home/john/pari/RSzeroes_L52_327949554p2663.csv",header=FALSE,colClasses = c("numeric","numeric","character","character"));df_pt23=df_pt23[order(df_pt23$V1),]
+df_pt23$V1=as.numeric(df_pt23$V1);df_pt23$V3=as.numeric(df_pt23$V3);df_pt23$V4=as.numeric(substring(df_pt23$V4,8));
+
+df_imag_log_chi=read.csv("/home/john/pari/imag_log_extra_x_fun_chi_about_327949557p7.csv",header=FALSE);
+
+xspan=range(c(df_pt1$V4,df_pt2$V4,df_pt3$V4,df_pt4$V4,df_pt5$V4,df_pt6$V4,df_pt7$V4,df_pt8$V4,df_pt9$V4,df_pt10$V4,df_pt11$V4,df_pt12$V4,df_pt13$V4,df_pt14$V4,df_pt15$V4,df_pt16$V4,df_pt17$V4,df_pt18$V4,df_pt19$V4,df_pt20$V4,df_pt21$V4,df_pt22$V4,df_pt23$V4))#
+yspan=range(c(df_pt1$V3,df_pt2$V3,df_pt3$V3,df_pt4$V3,df_pt5$V3,df_pt6$V3,df_pt7$V3,df_pt8$V3,df_pt9$V3,df_pt10$V3,df_pt11$V3,df_pt12$V3,df_pt13$V3,df_pt14$V3,df_pt15$V3,df_pt16$V3,df_pt17$V3,df_pt18$V3,df_pt19$V3,df_pt20$V3,df_pt21$V3,df_pt22$V3,df_pt23$V3));
+plot(df_pt1$V4,df_pt1$V3,typ="b",
+     ylim=yspan,
+     xlim=xspan,
+     cex=0.3,cex.main=0.5,
+     main="trajectory of non-trivial zero co-ordinates as dirichlet coefficients increase to unity \n of the tapered finite dirichlet series used in Riemann Siegel formula \n1 + alpha * ( I/2^s - I/3^s - 1/4^s + 0/5^s + 1/6^s + I/7^s - I/8^s - 1/9^s + 0/10^s + 1/11^s ... + tapered terms )",xlab="imag(s) - 327,949,500",ylab="real(s)");grid();
+points(df_pt2$V4,df_pt2$V3,typ="b",pch=20,col=2,cex=0.3)
+points(df_pt3$V4,df_pt3$V3,typ="b",pch=2,col=3,cex=0.3)
+points(df_pt4$V4,df_pt4$V3,typ="b",pch=3,col=4,cex=0.3)
+points(df_pt5$V4,df_pt5$V3,typ="b",pch=4,col=6,cex=0.3)
+points(df_pt6$V4,df_pt6$V3,typ="b",pch=5,col=7,cex=0.3)
+points(df_pt7$V4,df_pt7$V3,typ="b",pch=6,col=8,cex=0.3)
+points(df_pt8$V4,df_pt8$V3,typ="b",pch=7,col=9,cex=0.3)
+points(df_pt9$V4,df_pt9$V3,typ="b",pch=8,col=10,cex=0.3)
+
+points(df_pt10$V4,df_pt10$V3,typ="b",pch=9,col=11,cex=0.3)
+points(df_pt11$V4,df_pt11$V3,typ="b",pch=10,col=12,cex=0.3)
+points(df_pt12$V4,df_pt12$V3,typ="b",pch=12,col=14,cex=0.3)
+points(df_pt13$V4,df_pt13$V3,typ="b",pch=13,col=15,cex=0.3)
+points(df_pt14$V4,df_pt14$V3,typ="b",pch=14,col=16,cex=0.3)
+points(df_pt15$V4,df_pt15$V3,typ="b",pch=15,col=17,cex=0.3)
+points(df_pt16$V4,df_pt16$V3,typ="b",pch=16,col=18,cex=0.3)
+points(df_pt17$V4,df_pt17$V3,typ="b",pch=17,col=19,cex=0.3)
+points(df_pt18$V4,df_pt18$V3,typ="b",pch=18,col=20,cex=0.3)
+points(df_pt19$V4,df_pt19$V3,typ="b",pch=19,col=21,cex=0.3)
+points(df_pt20$V4,df_pt20$V3,typ="b",pch=20,col=22,cex=0.3)
+points(df_pt21$V4,df_pt21$V3,typ="b",pch=21,col=23,cex=0.3)
+points(df_pt22$V4,df_pt22$V3,typ="b",pch=22,col=24,cex=0.3)
+points(df_pt23$V4,df_pt23$V3,typ="b",pch=23,col=25,cex=0.3)
+lines(df_imag_log_chi$V1,df_imag_log_chi$V2/pi*0.6-0.1,col="red",lty=3)
+abline(h=0.5,lty=3,col="cyan",lwd=2)
+
+yspan=range(c(df_pt1$V3,df_pt2$V3,df_pt3$V3,df_pt4$V3,df_pt5$V3,df_pt6$V3,df_pt7$V3,df_pt8$V3,df_pt9$V3,df_pt10$V3,df_pt11$V3,df_pt12$V3,df_pt13$V3,df_pt14$V3,df_pt15$V3,df_pt16$V3,df_pt17$V3,df_pt18$V3,df_pt19$V3,df_pt20$V3,df_pt21$V3,df_pt22$V3,df_pt23$V3));
+plot(df_pt1$V1,df_pt1$V3,typ="b",ylim=yspan,cex=0.3,log="x",
+     xlab="alpha",ylab="real(s)");grid()
+points(df_pt2$V1,df_pt2$V3,typ="b",pch=20,col=2,cex=0.3)
+points(df_pt3$V1,df_pt3$V3,typ="b",pch=2,col=3,cex=0.3)
+points(df_pt4$V1,df_pt4$V3,typ="b",pch=3,col=4,cex=0.3)
+points(df_pt5$V1,df_pt5$V3,typ="b",pch=4,col=6,cex=0.3)
+points(df_pt6$V1,df_pt6$V3,typ="b",pch=5,col=7,cex=0.3)
+points(df_pt7$V1,df_pt7$V3,typ="b",pch=6,col=8,cex=0.3)
+points(df_pt8$V1,df_pt8$V3,typ="b",pch=7,col=9,cex=0.3)
+points(df_pt9$V1,df_pt9$V3,typ="b",pch=8,col=10,cex=0.3)
+
+points(df_pt10$V1,df_pt10$V3,typ="b",pch=9,col=11,cex=0.3)
+points(df_pt11$V1,df_pt11$V3,typ="b",pch=10,col=12,cex=0.3)
+points(df_pt12$V1,df_pt12$V3,typ="b",pch=12,col=14,cex=0.3)
+points(df_pt13$V1,df_pt13$V3,typ="b",pch=13,col=15,cex=0.3)
+points(df_pt14$V1,df_pt14$V3,typ="b",pch=14,col=16,cex=0.3)
+points(df_pt15$V1,df_pt15$V3,typ="b",pch=15,col=17,cex=0.3)
+points(df_pt16$V1,df_pt16$V3,typ="b",pch=16,col=18,cex=0.3)
+points(df_pt17$V1,df_pt17$V3,typ="b",pch=17,col=19,cex=0.3)
+points(df_pt18$V1,df_pt18$V3,typ="b",pch=18,col=20,cex=0.3)
+points(df_pt19$V1,df_pt19$V3,typ="b",pch=19,col=21,cex=0.3)
+points(df_pt20$V1,df_pt20$V3,typ="b",pch=20,col=22,cex=0.3)
+points(df_pt21$V1,df_pt21$V3,typ="b",pch=21,col=23,cex=0.3)
+points(df_pt22$V1,df_pt22$V3,typ="b",pch=22,col=24,cex=0.3)
+points(df_pt23$V1,df_pt23$V3,typ="b",pch=23,col=25,cex=0.3)
+abline(h=0.5,lty=3,col="cyan",lwd=2)
+
+
+
+```
+***Figure 15. The trajectory of (twenty three) non-trivial zero co-ordinates around the L52 function nearby the L53 critical line high peak (t=327949557.7...) as the magnitude ($\alpha$) of the 2nd, 3rd, 4th, ... etc dirichlet coefficients of the tapered finite dirichlet series = 1 + $\alpha$ \* ( I/$2^s$ - I/$3^s$ - 1/$4^s$ + 0/5^s + 1/6^s + I/$7^s$ - I/$8^s$ - 1/$9^s$ + 0/10^s + 1/11^s ... + tapered terms ) increases to unity as used in Riemann Siegel formula. Red dotted line in upper panel indicates Gram's law behaviour via scaled version of imag(log($\epsilon \cdot \chi(f_1(s))$))***
+
+\newpage
+
+
+
+```{r L52compareArgumentcriticallineandperturbationbehaviour_nearby327949557p7peak, echo=FALSE, fig.show = "hold", fig.align = "center", fig.height=7.8, warning=FALSE}
+
+df_pt_S=read.csv("/home/john/pari/L52_estimates_about_327949557p7.csv",header=FALSE,colClasses = "numeric");
+
+
+diffS=diff(df_pt_S$V4)  
+df_pt_S$diff=c(0,diffS)
+
+# removing nuisance discontinuities because of principal log branch pari-gp based S calculation
+#df_pt_S[df_pt_S$diff > pi | df_pt_S$diff < -1-.1,]
+df_pt_S$adj_S=df_pt_S$V4+
+  
+  ifelse(as.numeric(df_pt_S$V1)>=54.264,-2*pi,0)+
+  ifelse(as.numeric(df_pt_S$V1)>=54.267,2*pi,0)+
+  ifelse(as.numeric(df_pt_S$V1)>=55.885,-2*pi,0)+  
+  ifelse(as.numeric(df_pt_S$V1)>=55.981,2*pi,0)+  
+  ifelse(as.numeric(df_pt_S$V1)>=60.742,2*pi,0)+  
+  ifelse(as.numeric(df_pt_S$V1)>=60.748,-2*pi,0)+  
+  0
+
+xspan=range(df_pt_S$V1)
+plot(df_pt_S$V1,df_pt_S$adj_S/pi,typ="l",ylim=c(-1*pi,1*pi),xlim=xspan,
+     main="Argument function value of tapered RS function on critical line \n with overlay of signed trajectory of \n low lying non-trivial zeroes under simple perturbation",ylab="S value",xlab="imaginary co-ordinate - 327,949,500.",cex.main=0.9);grid()  
+abline(h=c(-2,2),lty=3,lwd=2)
+abline(h=c(-1.7,1.7),lty=6,col="purple")
+lines(df_imag_log_chi$V1,df_imag_log_chi$V2/2/pi,col="red",lty=3)
+
+axis(side=2, at = c(-1.7,1.7),cex.axis=0.5,las=2,hadj=0.2,tck=-0.02)
+
+par(new = TRUE)
+
+
+plot(df_pt1$V4,df_pt1$V3,typ="l",
+     ylim=c(-pi/4,pi/4),
+     xlim=xspan,axes = FALSE, bty = "n", xlab = "", ylab = "",
+     cex=0.8,col=2);
+axis(side=4, at = pretty(c(-1,1)),col.axis=2,col=2,cex.axis=0.5,padj=-1)
+mtext("signed zero trajectory under simple perturbation", side=4, line=0.25,cex=0.7,col=2)
+
+lines(df_pt2$V4,-df_pt2$V3,col=2)
+lines(df_pt3$V4,-df_pt3$V3,col=2)
+lines(df_pt4$V4,df_pt4$V3,col=2)
+lines(df_pt5$V4,df_pt5$V3,col=2)
+lines(df_pt6$V4,df_pt6$V3,col=2)
+lines(df_pt7$V4,df_pt7$V3,col=2)
+
+lines(df_pt8$V4,df_pt8$V3,col=2)
+lines(df_pt9$V4,-df_pt9$V3,col=2)
+
+lines(df_pt10$V4,df_pt10$V3,col=2)
+lines(df_pt11$V4,df_pt11$V3,col=2)
+lines(df_pt12$V4,df_pt12$V3,col=2)
+lines(df_pt13$V4,df_pt13$V3,col=2)
+lines(df_pt14$V4,df_pt14$V3,col=2)
+lines(df_pt15$V4,-df_pt15$V3,col=2)
+lines(df_pt16$V4,-df_pt16$V3,col=2)
+lines(df_pt17$V4,-df_pt17$V3,col=2)
+lines(df_pt18$V4,-df_pt18$V3,col=2)
+lines(df_pt19$V4,df_pt19$V3,col=2)
+lines(df_pt20$V4,df_pt20$V3,col=2)
+lines(df_pt21$V4,-df_pt21$V3,col=2)
+lines(df_pt22$V4,-df_pt22$V3,col=2)
+lines(df_pt23$V4,df_pt23$V3,col=2)
+abline(h=c(-0.5,0.5),col=2,lty=3)
+
+```
+***Figure 16. Comparing signed trajectory of 2048 tapered zeroth order Riemann Siegel function for L52 function under simple perturbation (red lines for critical line non-trivial zeroes, blue line for non-trivial zeroes off the critical line), 2048 tapered zeroth order Riemann Siegel function argument function (S values) when s=0.5+i*t and $L(\chi_5(2,.),s)$  Gram's law behaviour (red dotted line).***
+
+\newpage
+
+```{r L53impactofdirichletcoefficientmagnitude_onzeropositions_nearby327949557p7peak, fig.show = "hold", fig.align = "center", fig.height=7.8}
+
+par(mfrow=c(2,1))
+df_pt1=read.csv("/home/john/pari/RSzeroes_L53_327949554p4585.csv",header=FALSE,colClasses = c("numeric","numeric","character","character"));df_pt1=df_pt1[order(df_pt1$V1),];
+df_pt1$V1=as.numeric(df_pt1$V1);df_pt1$V3=as.numeric(df_pt1$V3);df_pt1$V4=as.numeric(substring(df_pt1$V4,8));
+df_pt2=read.csv("/home/john/pari/RSzeroes_L53_327949554p7094.csv",header=FALSE,colClasses = c("numeric","numeric","character","character"));df_pt2=df_pt2[order(df_pt2$V1),]
+df_pt2$V1=as.numeric(df_pt2$V1);df_pt2$V3=as.numeric(df_pt2$V3);df_pt2$V4=as.numeric(substring(df_pt2$V4,8));
+df_pt3=read.csv("/home/john/pari/RSzeroes_L53_327949554p9784.csv",header=FALSE,colClasses = c("numeric","numeric","character","character"));df_pt3=df_pt3[order(df_pt3$V1),]
+df_pt3$V1=as.numeric(df_pt3$V1);df_pt3$V3=as.numeric(df_pt3$V3);df_pt3$V4=as.numeric(substring(df_pt3$V4,8));
+df_pt4=read.csv("/home/john/pari/RSzeroes_L53_327949555p2551.csv",header=FALSE,colClasses = c("numeric","numeric","character","character"));df_pt4=df_pt4[order(df_pt4$V1),]
+df_pt4$V1=as.numeric(df_pt4$V1);df_pt4$V3=as.numeric(df_pt4$V3);df_pt4$V4=as.numeric(substring(df_pt4$V4,8));
+df_pt5=read.csv("/home/john/pari/RSzeroes_L53_327949555p4292.csv",header=FALSE,colClasses = c("numeric","numeric","character","character"));df_pt5=df_pt5[order(df_pt5$V1),]
+df_pt5$V1=as.numeric(df_pt5$V1);df_pt5$V3=as.numeric(df_pt5$V3);df_pt5$V4=as.numeric(substring(df_pt5$V4,8));
+df_pt6=read.csv("/home/john/pari/RSzeroes_L53_327949556p0333.csv",header=FALSE,colClasses = c("numeric","numeric","character","character"));df_pt6=df_pt6[order(df_pt6$V1),]
+df_pt6$V1=as.numeric(df_pt6$V1);df_pt6$V3=as.numeric(df_pt6$V3);df_pt6$V4=as.numeric(substring(df_pt6$V4,8));
+
+
+df_pt7=read.csv("/home/john/pari/RSzeroes_L53_327949556p2388.csv",header=FALSE,colClasses = c("numeric","numeric","character","character"));df_pt7=df_pt7[order(df_pt7$V1),]
+df_pt7$V1=as.numeric(df_pt7$V1);df_pt7$V3=as.numeric(df_pt7$V3);df_pt7$V4=as.numeric(substring(df_pt7$V4,8));
+df_pt8=read.csv("/home/john/pari/RSzeroes_L53_327949556p6595.csv",header=FALSE,colClasses = c("numeric","numeric","character","character"));df_pt8=df_pt8[order(df_pt8$V1),]
+df_pt8$V1=as.numeric(df_pt8$V1);df_pt8$V3=as.numeric(df_pt8$V3);df_pt8$V4=as.numeric(substring(df_pt8$V4,8));
+df_pt9=read.csv("/home/john/pari/RSzeroes_L53_327949556p8080.csv",header=FALSE,colClasses = c("numeric","numeric","character","character"));df_pt9=df_pt9[order(df_pt9$V1),]
+df_pt9$V1=as.numeric(df_pt9$V1);df_pt9$V3=as.numeric(df_pt9$V3);df_pt9$V4=as.numeric(substring(df_pt9$V4,8));
+df_pt10=read.csv("/home/john/pari/RSzeroes_L53_327949556p9815.csv",header=FALSE,colClasses = c("numeric","numeric","character","character"));df_pt10=df_pt10[order(df_pt10$V1),]
+df_pt10$V1=as.numeric(df_pt10$V1);df_pt10$V3=as.numeric(df_pt10$V3);df_pt10$V4=as.numeric(substring(df_pt10$V4,8));
+df_pt11=read.csv("/home/john/pari/RSzeroes_L53_327949557p2094.csv",header=FALSE,colClasses = c("numeric","numeric","character","character"));df_pt11=df_pt11[order(df_pt11$V1),]
+df_pt11$V1=as.numeric(df_pt11$V1);df_pt11$V3=as.numeric(df_pt11$V3);df_pt11$V4=as.numeric(substring(df_pt11$V4,8));
+df_pt12=read.csv("/home/john/pari/RSzeroes_L53_327949558p3420.csv",header=FALSE,colClasses = c("numeric","numeric","character","character"));df_pt12=df_pt12[order(df_pt12$V1),]
+df_pt12$V1=as.numeric(df_pt12$V1);df_pt12$V3=as.numeric(df_pt12$V3);df_pt12$V4=as.numeric(substring(df_pt12$V4,8));
+df_pt13=read.csv("/home/john/pari/RSzeroes_L53_327949558p4631.csv",header=FALSE,colClasses = c("numeric","numeric","character","character"));df_pt13=df_pt13[order(df_pt13$V1),]
+df_pt13$V1=as.numeric(df_pt13$V1);df_pt13$V3=as.numeric(df_pt13$V3);df_pt13$V4=as.numeric(substring(df_pt13$V4,8));
+df_pt14=read.csv("/home/john/pari/RSzeroes_L53_327949558p6764.csv",header=FALSE,colClasses = c("numeric","numeric","character","character"));df_pt14=df_pt14[order(df_pt14$V1),]
+df_pt14$V1=as.numeric(df_pt14$V1);df_pt14$V3=as.numeric(df_pt14$V3);df_pt14$V4=as.numeric(substring(df_pt14$V4,8));
+df_pt15=read.csv("/home/john/pari/RSzeroes_L53_327949559p0423.csv",header=FALSE,colClasses = c("numeric","numeric","character","character"));df_pt15=df_pt15[order(df_pt15$V1),]
+df_pt15$V1=as.numeric(df_pt15$V1);df_pt15$V3=as.numeric(df_pt15$V3);df_pt15$V4=as.numeric(substring(df_pt15$V4,8));
+df_pt16=read.csv("/home/john/pari/RSzeroes_L53_327949559p2479.csv",header=FALSE,colClasses = c("numeric","numeric","character","character"));df_pt16=df_pt16[order(df_pt16$V1),]
+df_pt16$V1=as.numeric(df_pt16$V1);df_pt16$V3=as.numeric(df_pt16$V3);df_pt16$V4=as.numeric(substring(df_pt16$V4,8));
+df_pt17=read.csv("/home/john/pari/RSzeroes_L53_327949559p6123.csv",header=FALSE,colClasses = c("numeric","numeric","character","character"));df_pt17=df_pt17[order(df_pt17$V1),]
+df_pt17$V1=as.numeric(df_pt17$V1);df_pt17$V3=as.numeric(df_pt17$V3);df_pt17$V4=as.numeric(substring(df_pt17$V4,8));
+df_pt18=read.csv("/home/john/pari/RSzeroes_L53_327949559p9871.csv",header=FALSE,colClasses = c("numeric","numeric","character","character"));df_pt18=df_pt18[order(df_pt18$V1),]
+df_pt18$V1=as.numeric(df_pt18$V1);df_pt18$V3=as.numeric(df_pt18$V3);df_pt18$V4=as.numeric(substring(df_pt18$V4,8));
+df_pt19=read.csv("/home/john/pari/RSzeroes_L53_327949560p2788.csv",header=FALSE,colClasses = c("numeric","numeric","character","character"));df_pt19=df_pt19[order(df_pt19$V1),]
+df_pt19$V1=as.numeric(df_pt19$V1);df_pt19$V3=as.numeric(df_pt19$V3);df_pt19$V4=as.numeric(substring(df_pt19$V4,8));
+df_pt20=read.csv("/home/john/pari/RSzeroes_L53_327949560p5490.csv",header=FALSE,colClasses = c("numeric","numeric","character","character"));df_pt20=df_pt20[order(df_pt20$V1),]
+df_pt20$V1=as.numeric(df_pt20$V1);df_pt20$V3=as.numeric(df_pt20$V3);df_pt20$V4=as.numeric(substring(df_pt20$V4,8));
+df_pt21=read.csv("/home/john/pari/RSzeroes_L53_327949560p8882.csv",header=FALSE,colClasses = c("numeric","numeric","character","character"));df_pt21=df_pt21[order(df_pt21$V1),]
+df_pt21$V1=as.numeric(df_pt21$V1);df_pt21$V3=as.numeric(df_pt21$V3);df_pt21$V4=as.numeric(substring(df_pt21$V4,8));
+df_pt22=read.csv("/home/john/pari/RSzeroes_L53_327949561p3173.csv",header=FALSE,colClasses = c("numeric","numeric","character","character"));df_pt22=df_pt22[order(df_pt22$V1),]
+df_pt22$V1=as.numeric(df_pt22$V1);df_pt22$V3=as.numeric(df_pt22$V3);df_pt22$V4=as.numeric(substring(df_pt22$V4,8));
+df_pt23=read.csv("/home/john/pari/RSzeroes_L53_327949554p4585.csv",header=FALSE,colClasses = c("numeric","numeric","character","character"));df_pt23=df_pt23[order(df_pt23$V1),]
+df_pt23$V1=as.numeric(df_pt23$V1);df_pt23$V3=as.numeric(df_pt23$V3);df_pt23$V4=as.numeric(substring(df_pt23$V4,8));
+
+df_imag_log_chi=read.csv("/home/john/pari/imag_log_conj_extra_x_fun_chi_about_327949557p7.csv",header=FALSE,colClasses = "numeric");
+
+xspan=range(c(df_pt1$V4,df_pt2$V4,df_pt3$V4,df_pt4$V4,df_pt5$V4,df_pt6$V4,df_pt7$V4,df_pt8$V4,df_pt9$V4,df_pt10$V4,df_pt11$V4,df_pt12$V4,df_pt13$V4,df_pt14$V4,df_pt15$V4,df_pt16$V4,df_pt17$V4,df_pt18$V4,df_pt19$V4,df_pt20$V4,df_pt21$V4,df_pt22$V4,df_pt23$V4))#
+yspan=range(c(.2,df_pt1$V3,df_pt2$V3,df_pt3$V3,df_pt4$V3,df_pt5$V3,df_pt6$V3,df_pt7$V3,df_pt8$V3,df_pt9$V3,df_pt10$V3,df_pt11$V3,df_pt12$V3,df_pt13$V3,df_pt14$V3,df_pt15$V3,df_pt16$V3,df_pt17$V3,df_pt18$V3,df_pt19$V3,df_pt20$V3,df_pt21$V3,df_pt22$V3,df_pt23$V3));
+plot(df_pt1$V4,df_pt1$V3,typ="b",
+     ylim=yspan,
+     xlim=xspan,
+     cex=0.3,cex.main=0.5,
+     main="trajectory of non-trivial zero co-ordinates as dirichlet coefficients increase to unity \n of the tapered finite dirichlet series used in Riemann Siegel formula \n1 + alpha * ( -I/2^s + I/3^s - 1/4^s + 0/5^s + 1/6^s - I/7^s + I/8^s - 1/9^s + 0/10^s + 1/11^s ... + tapered terms )",xlab="imag(s)",ylab="real(s)");grid();
+points(df_pt2$V4,df_pt2$V3,typ="b",pch=20,col=2,cex=0.3)
+points(df_pt3$V4,df_pt3$V3,typ="b",pch=2,col=3,cex=0.3)
+points(df_pt4$V4,df_pt4$V3,typ="b",pch=3,col=4,cex=0.3)
+points(df_pt5$V4,df_pt5$V3,typ="b",pch=4,col=6,cex=0.3)
+points(df_pt6$V4,df_pt6$V3,typ="b",pch=5,col=7,cex=0.3)
+points(df_pt7$V4,df_pt7$V3,typ="b",pch=6,col=8,cex=0.3)
+points(df_pt8$V4,df_pt8$V3,typ="b",pch=7,col=9,cex=0.3)
+points(df_pt9$V4,df_pt9$V3,typ="b",pch=8,col=10,cex=0.3)
+
+points(df_pt10$V4,df_pt10$V3,typ="b",pch=9,col=11,cex=0.3)
+points(df_pt11$V4,df_pt11$V3,typ="b",pch=10,col=12,cex=0.3)
+points(df_pt12$V4,df_pt12$V3,typ="b",pch=12,col=14,cex=0.3)
+points(df_pt13$V4,df_pt13$V3,typ="b",pch=13,col=15,cex=0.3)
+points(df_pt14$V4,df_pt14$V3,typ="b",pch=14,col=16,cex=0.3)
+points(df_pt15$V4,df_pt15$V3,typ="b",pch=15,col=17,cex=0.3)
+points(df_pt16$V4,df_pt16$V3,typ="b",pch=16,col=18,cex=0.3)
+points(df_pt17$V4,df_pt17$V3,typ="b",pch=17,col=19,cex=0.3)
+points(df_pt18$V4,df_pt18$V3,typ="b",pch=18,col=20,cex=0.3)
+points(df_pt19$V4,df_pt19$V3,typ="b",pch=19,col=21,cex=0.3)
+points(df_pt20$V4,df_pt20$V3,typ="b",pch=20,col=22,cex=0.3)
+points(df_pt21$V4,df_pt21$V3,typ="b",pch=21,col=23,cex=0.3)
+points(df_pt22$V4,df_pt22$V3,typ="b",pch=22,col=24,cex=0.3)
+points(df_pt23$V4,df_pt23$V3,typ="b",pch=23,col=25,cex=0.3)
+lines(df_imag_log_chi$V1,df_imag_log_chi$V2/pi*1.1-0.6,col="red",lty=3)
+abline(h=0.5,lty=3,col="cyan",lwd=2)
+
+yspan=range(c(df_pt1$V3,df_pt2$V3,df_pt3$V3,df_pt4$V3,df_pt5$V3,df_pt6$V3,df_pt7$V3,df_pt8$V3,df_pt9$V3,df_pt10$V3,df_pt11$V3,df_pt12$V3,df_pt13$V3,df_pt14$V3,df_pt15$V3,df_pt16$V3,df_pt17$V3,df_pt18$V3,df_pt19$V3,df_pt20$V3,df_pt21$V3,df_pt22$V3,df_pt23$V3));
+plot(df_pt1$V1,df_pt1$V3,typ="b",ylim=yspan,cex=0.3,log="x",
+     xlab="alpha",ylab="real(s)");grid()
+points(df_pt2$V1,df_pt2$V3,typ="b",pch=20,col=2,cex=0.3)
+points(df_pt3$V1,df_pt3$V3,typ="b",pch=2,col=3,cex=0.3)
+points(df_pt4$V1,df_pt4$V3,typ="b",pch=3,col=4,cex=0.3)
+points(df_pt5$V1,df_pt5$V3,typ="b",pch=4,col=6,cex=0.3)
+points(df_pt6$V1,df_pt6$V3,typ="b",pch=5,col=7,cex=0.3)
+points(df_pt7$V1,df_pt7$V3,typ="b",pch=6,col=8,cex=0.3)
+points(df_pt8$V1,df_pt8$V3,typ="b",pch=7,col=9,cex=0.3)
+points(df_pt9$V1,df_pt9$V3,typ="b",pch=8,col=10,cex=0.3)
+
+points(df_pt10$V1,df_pt10$V3,typ="b",pch=9,col=11,cex=0.3)
+points(df_pt11$V1,df_pt11$V3,typ="b",pch=10,col=12,cex=0.3)
+points(df_pt12$V1,df_pt12$V3,typ="b",pch=12,col=14,cex=0.3)
+points(df_pt13$V1,df_pt13$V3,typ="b",pch=13,col=15,cex=0.3)
+points(df_pt14$V1,df_pt14$V3,typ="b",pch=14,col=16,cex=0.3)
+points(df_pt15$V1,df_pt15$V3,typ="b",pch=15,col=17,cex=0.3)
+points(df_pt16$V1,df_pt16$V3,typ="b",pch=16,col=18,cex=0.3)
+points(df_pt17$V1,df_pt17$V3,typ="b",pch=17,col=19,cex=0.3)
+points(df_pt18$V1,df_pt18$V3,typ="b",pch=18,col=20,cex=0.3)
+points(df_pt19$V1,df_pt19$V3,typ="b",pch=19,col=21,cex=0.3)
+points(df_pt20$V1,df_pt20$V3,typ="b",pch=20,col=22,cex=0.3)
+points(df_pt21$V1,df_pt21$V3,typ="b",pch=21,col=23,cex=0.3)
+points(df_pt22$V1,df_pt22$V3,typ="b",pch=22,col=24,cex=0.3)
+points(df_pt23$V1,df_pt23$V3,typ="b",pch=23,col=25,cex=0.3)
+abline(h=0.5,lty=3,col="cyan",lwd=2)
+
+
+
+```
+***Figure 17. The trajectory of (twenty two) non-trivial zero co-ordinates around the L53 function critical line high peak (t=327949557.7...) as the magnitude ($\alpha$) of the 2nd, 3rd, 4th, ... etc dirichlet coefficients of the tapered finite dirichlet series = 1 + $\alpha$ \* ( -I/$2^s$ + I/$3^s$ - 1/$4^s$ + 0/5^s + 1/6^s - I/$7^s$ + I/$8^s$ - 1/$9^s$ + 0/10^s + 1/11^s ... + tapered terms ) increases to unity as used in Riemann Siegel formula. Red dotted line in upper panel indicates Gram's law behaviour via scaled version of imag(log($\bar{\epsilon}\cdot\chi(f_1(s))$))***
+
+\newpage
+
+
+
+```{r L53compareArgumentcriticallineandperturbationbehaviour_nearby327949557p7peak, echo=FALSE, fig.show = "hold", fig.align = "center", fig.height=7.8, warning=FALSE}
+
+df_pt_S=read.csv("/home/john/pari/L53_estimates_about_327949557p7.csv",header=FALSE,colClasses = "numeric");
+
+
+diffS=diff(df_pt_S$V4)  
+df_pt_S$diff=c(0,diffS)
+
+# removing nuisance discontinuities because of principal log branch pari-gp based S calculation
+#df_pt_S[df_pt_S$diff > pi | df_pt_S$diff < -1-.1,]
+df_pt_S$adj_S=df_pt_S$V4+
+  
+  ifelse(as.numeric(df_pt_S$V1)>=55.430,2*pi,0)+
+  ifelse(as.numeric(df_pt_S$V1)>=55.504,-2*pi,0)+
+  ifelse(as.numeric(df_pt_S$V1)>=56.982,2*pi,0)+
+  ifelse(as.numeric(df_pt_S$V1)>=57.125,-2*pi,0)+
+  ifelse(as.numeric(df_pt_S$V1)>=57.210,2*pi,0)+
+  ifelse(as.numeric(df_pt_S$V1)>=57.449,-2*pi,0)+
+  ifelse(as.numeric(df_pt_S$V1)>=58.098,-2*pi,0)+
+  ifelse(as.numeric(df_pt_S$V1)>=58.343,2*pi,0)+
+  ifelse(as.numeric(df_pt_S$V1)>=58.422,-2*pi,0)+
+  ifelse(as.numeric(df_pt_S$V1)>=58.464,2*pi,0)+
+  0
+
+xspan=range(df_pt_S$V1)
+plot(df_pt_S$V1,df_pt_S$adj_S/pi,typ="l",ylim=c(-1*pi,1*pi),xlim=xspan,
+     main="Argument function value of tapered RS function on critical line \n with overlay of signed trajectory of \n low lying non-trivial zeroes under simple perturbation",ylab="S value",xlab="imaginary co-ordinate - 327,949,500.",cex.main=0.9);grid()  
+abline(h=c(-2,2),lty=3,lwd=2)
+abline(h=c(-1.7,1.7),lty=6,col="purple")
+lines(df_imag_log_chi$V1,df_imag_log_chi$V2/2/pi,col="red",lty=3)
+
+axis(side=2, at = c(-1.7,1.7),cex.axis=0.5,las=2,hadj=0.2,tck=-0.02)
+
+par(new = TRUE)
+
+
+plot(df_pt1$V4,df_pt1$V3,typ="l",
+     ylim=c(-pi/4,pi/4),
+     xlim=xspan,axes = FALSE, bty = "n", xlab = "", ylab = "",
+     cex=0.8,col=2);
+axis(side=4, at = pretty(c(-1,1)),col.axis=2,col=2,cex.axis=0.5,padj=-1)
+mtext("signed zero trajectory under simple perturbation", side=4, line=0.25,cex=0.7,col=2)
+
+lines(df_pt2$V4,df_pt2$V3,col=2)
+lines(df_pt3$V4,df_pt3$V3,col=2)
+lines(df_pt4$V4,df_pt4$V3,col=2)
+lines(df_pt5$V4,df_pt5$V3,col=2)
+lines(df_pt6$V4,df_pt6$V3,col=2)
+lines(df_pt7$V4,df_pt7$V3,col=2)
+
+lines(df_pt8$V4,df_pt8$V3,col=2)
+lines(df_pt9$V4,df_pt9$V3,col=2)
+
+lines(df_pt10$V4,df_pt10$V3,col=2)
+lines(df_pt11$V4,df_pt11$V3,col=2)
+lines(df_pt12$V4,df_pt12$V3,col=2)
+lines(df_pt13$V4,df_pt13$V3,col=2)
+lines(df_pt14$V4,df_pt14$V3,col=2)
+lines(df_pt15$V4,df_pt15$V3,col=2)
+lines(df_pt16$V4,df_pt16$V3,col=2)
+lines(df_pt17$V4,df_pt17$V3,col=2)
+lines(df_pt18$V4,df_pt18$V3,col=2)
+lines(df_pt19$V4,df_pt19$V3,col=2)
+lines(df_pt20$V4,df_pt20$V3,col=2)
+lines(df_pt21$V4,df_pt21$V3,col=2)
+lines(df_pt22$V4,df_pt22$V3,col=2)
+lines(df_pt23$V4,df_pt23$V3,col=2)
+abline(h=c(-0.5,0.5),col=2,lty=3)
+
+```
+***Figure 18. Comparing signed trajectory of 2048 tapered zeroth order Riemann Siegel function for L53 function under simple perturbation (red lines for critical line non-trivial zeroes, blue line for non-trivial zeroes off the critical line), 2048 tapered zeroth order Riemann Siegel function argument function (S values) when s=0.5+i*t and $L(\chi_5(3,.),s)$ Gram's law behaviour (red dotted line).***
 
 
 
 
 ## Conclusions
 
-Perturbing the dirichlet coefficients of the 2048 tapered zeroth order Riemann Siegel function about the first quiescient region of the 5-periodic Davenport-Heibronn functions and its L function components provides useful insights into the origin and behaviour of the non-trivial zeroes. There discontinuities of magnitude 2 in the S value (along the critical line) appear to be associated with perturbed off critical line non-trivial zeroes when such perturbed non-trivial zeroes intersect the critical line.
+Perturbing the dirichlet coefficients of the 2048 tapered zeroth order Riemann Siegel function about the first quiescient region of the 5-periodic Davenport-Heibronn functions and its L function components provides useful insights into the origin and behaviour of the non-trivial zeroes. The discontinuities of magnitude 2 in the S value (along the critical line) appear to be associated with perturbed off critical line non-trivial zeroes when the trajectories of such perturbed non-trivial zeroes intersect the critical line.
 
 
 ## References
