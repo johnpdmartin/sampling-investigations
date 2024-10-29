@@ -1,0 +1,400 @@
+---
+title: "The asymptotic behaviour of the logarithmic derivative of the functional equation of L functions identifies (i) a simple crosscheck on the numbering of the known Riemann Zeta function non-trivial zeroes and (ii) an improved first quiescent region formula for higher degree L functions."
+author: "John Martin"
+date: \today
+header-includes:  \usepackage{xcolor}
+output:
+  pdf_document:
+    fig_crop: no
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+
+```
+
+
+
+##DRAFT Executive Summary
+
+The first quiescent region of the dirichlet series sum of 1st degree L functions is located at $N_1(d=1,N_c) = \sqrt{(\frac{t}{2\pi}\cdot N_c)}$ where $N_c$ is the L function conductor value. Combining the leading terms of the logarithmic derivative of the functional equation of L functions (on the critical line) proposes an improved first quiescent region formula for higher degree L functions $N_1(d,N_c) = (\frac{t}{2\pi})^{\frac{d}{2}}\cdot \sqrt{N_c}$ where d is the degree of the L function. This first quiescent region is investigated for higher degree L functions. Integrating the logarithmic derivative expression for the Riemann Zeta functional equation on the critical line gives a simple crosscheck expression for the numbering of the known non-trivial zeroes when analysing S function results.  
+
+##Introduction
+
+In this paper, the asymptotic behaviour of the logarithmic derivative of the functional equation of L function is expressed as a function of the first quiescent region of the dirichlet series of the L function. The first quiescent region of the dirichlet series sum generally contains a useful saddle point for Riemann Siegel formula based approximations of the L function.
+
+Integrating the asymptotic logarithmic derivative on the critical line for the Riemann Zeta function and quantitatively comparing the results for the Rieman Zeta S function the integration constant is derived. This simple $imag(\log(\zeta(1/2+I\cdot t))-\log(\zeta(1-(1/2+I\cdot t)))$ expression provides a fast crosscheck method of reproducing the S function given the validity of the numbering of the known non-trivial zeroes.
+
+
+
+
+## The logarithmic derivative of the functional equation of L functions
+
+### Functional equation of the Riemann Zeta function
+
+The Riemann Zeta function has the functional equation
+
+\begin{equation}
+\pi^{-\frac{s}{2}}\cdot\Gamma(\frac{s}{2}) \cdot \zeta(s)= \pi^{-\frac{(1-s)}{2}}\cdot\Gamma(\frac{(1-s)}{2}) \cdot \zeta(1-s) \label{eq:eq_func_zeta}
+\end{equation}
+
+where $s=\sigma+I\cdot t$ and $s \in \mathbb{C}$. Rearranging the terms 
+
+\begin{align}
+\zeta(s)&= \frac{\pi^{-\frac{(1-s)}{2}}\cdot\Gamma(\frac{(1-s)}{2})}{\pi^{-\frac{s}{2}}\cdot\Gamma(\frac{s}{2})} \cdot \zeta(1-s) \\
+\zeta(s)&= \pi^{(s-\frac{1}{2})}\cdot\frac{\Gamma(\frac{1-s}{2})}{\Gamma(\frac{s}{2})} \cdot \zeta(1-s)
+\end{align}
+
+and taking logarithms of both sides
+
+\begin{align}
+\log{\zeta(s)}&=\log(\pi^{(s-\frac{1}{2})}\cdot\frac{\Gamma(\frac{(1-s)}{2})}{\Gamma(\frac{s}{2})} \cdot \zeta(1-s)) \\
+&= (s-\frac{1}{2})\cdot\log(\pi)+\log(\Gamma(\frac{(1-s)}{2}))-\log(\Gamma(\frac{s}{2}))+\log(\zeta(1-s))
+\end{align}
+
+after further rearranging terms
+
+\begin{align}
+\log{\zeta(s)}-\log(\zeta(1-s))&= (s-\frac{1}{2})\cdot\log(\pi)+\log(\Gamma(\frac{(1-s)}{2}))-\log(\Gamma(\frac{s}{2}))
+\end{align}
+
+and expanding the RHS using Stirling series for $t \rightarrow \infty$
+
+\begin{align}
+\log{\zeta(s)}-\log(\zeta(1-s))&\approx (s-\frac{1}{2})\cdot\log(\pi) \nonumber \\ &+\left[\frac{(1-s)}{2}\cdot \log(\frac{(1-s)}{2}) -\frac{(1-s)}{2}-\frac{1}{2}\cdot\log(\frac{(1-s)}{2}) + \frac{1}{2}\cdot\log(2\pi) + \frac{1}{12\cdot(\frac{(1-s)}{2})}+ ...\right] \nonumber \\ &-\left[\frac{s}{2}\cdot \log(\frac{s}{2}) -\frac{s}{2}-\frac{1}{2}\cdot\log(\frac{s}{2}) + \frac{1}{2}\cdot\log(2\pi) + \frac{1}{12\cdot(\frac{s}{2})}+ ...\right] \qquad \text{ as } t \rightarrow \infty \\
+&\approx (s-\frac{1}{2})\cdot\log(\pi) \nonumber \\ &+\left[\frac{(1-s)}{2}\cdot \log(\frac{(1-s)}{2}) -\frac{(1-s)}{2}-\frac{1}{2}\cdot\log(\frac{(1-s)}{2}) + \frac{1}{12\cdot(\frac{(1-s)}{2})}+ ...\right] \nonumber \\ &-\left[\frac{s}{2}\cdot \log(\frac{s}{2}) -\frac{s}{2}-\frac{1}{2}\cdot\log(\frac{s}{2}) + \frac{1}{12\cdot(\frac{s}{2})}+ ...\right] \qquad \text{ as } t \rightarrow \infty\end{align}
+
+taking the derivative $\frac{d}{ds}$
+
+\begin{align}
+\frac{d}{ds}\left(\log{\zeta(s)}\right)-\frac{d}{ds}\left(\log(\zeta(1-s))\right)
+&\approx \frac{d}{ds}\Big((s-\frac{1}{2})\cdot\log(\pi) \nonumber \\ &+\left[\frac{(1-s)}{2}\cdot \log(\frac{(1-s)}{2}) -\frac{(1-s)}{2}-\frac{1}{2}\cdot\log(\frac{(1-s)}{2}) + \frac{1}{12\cdot(\frac{(1-s)}{2})}+ ...\right] \nonumber \\ &-\left[\frac{s}{2}\cdot \log(\frac{s}{2}) -\frac{s}{2}-\frac{1}{2}\cdot\log(\frac{s}{2}) + \frac{1}{12\cdot(\frac{s}{2})}+ ...\right]\Big) \qquad \text{ as } t \rightarrow \infty
+\end{align}
+
+
+\begin{align}
+\frac{\zeta'(s)}{\zeta(s)}+\frac{\zeta'(1-s)}{\zeta(1-s)}
+&\approx \log(\pi) \nonumber \\ &+\left[\frac{-1}{2}\cdot \log(\frac{(1-s)}{2})+\frac{(1-s)}{2}\cdot \frac{-\frac{1}{2}}{\frac{(1-s)}{2}} +\frac{1}{2}-\frac{1}{2}\cdot\frac{-\frac{1}{2}}{\frac{(1-s)}{2}} + \frac{-1\cdot-1}{12\cdot(\frac{(1-s)^2}{2})}+ ...\right] \nonumber \\ &-\left[\frac{1}{2}\cdot \log(\frac{s}{2})+\frac{s}{2}\cdot \frac{\frac{1}{2}}{\frac{s}{2}} -\frac{1}{2}-\frac{1}{2}\cdot\frac{\frac{1}{2}}{\frac{s}{2}} + \frac{-1}{12\cdot(\frac{s^2}{2})}+ ...\right] \qquad \text{ as } t \rightarrow \infty \\
+&\approx \log(\pi) \nonumber \\ &+\left[\frac{-1}{2}\cdot \log(\frac{(1-s)}{2})+\frac{1}{2(1-s)} + \frac{1}{6(1-s)^2}+ ...\right] \nonumber \\ &-\left[\frac{1}{2}\cdot \log(\frac{s}{2})-\frac{1}{2s} - \frac{1}{6s^2}+ ...\right] \qquad \text{ as } t \rightarrow \infty
+\end{align}
+
+using the logarithmic derivative identities
+
+\begin{align}
+\frac{d}{ds}\left(\log{\zeta(s)}\right)&=\frac{\zeta'(s)}{\zeta(s)} \\
+\frac{d}{ds}\left(\log(\zeta(1-s))\right)&=-\frac{\zeta'(1-s)}{\zeta(1-s)}
+\end{align}
+
+collecting the leading terms together as a single logarithm
+
+\begin{align}
+\frac{\zeta'(s)}{\zeta(s)}+\frac{\zeta'(1-s)}{\zeta(1-s)}
+&\approx \log\left(\frac{1}{\frac{\sqrt{(1-s)\cdot s}}{2\pi}}\right) +\left[\frac{1}{2(1-s)} + \frac{1}{6(1-s)^2} +\frac{1}{2s} + \frac{1}{6s^2}+ ...\right] \qquad \text{ as } t \rightarrow \infty
+\end{align}
+
+and finally rewriting the leading term using the identity $\log(z)=2\log(\sqrt{z})$ and combining the minor terms gives the asymptotic behaviour of the logarithmic derivative of the functional equation that explicitly acknowledges the s:(1-s) symmetry of the Riemann Zeta function.
+
+\begin{align}
+\frac{\zeta'(s)}{\zeta(s)}+\frac{\zeta'(1-s)}{\zeta(1-s)}
+&\approx 2\cdot \log\left(\frac{1}{\sqrt{\frac{\sqrt{(1-s)\cdot s}}{2\pi}}}\right) +\left[\frac{1}{2\cdot(1-s)\cdot s} + \frac{(1-2\cdot s+ 2\cdot s^2)}{6\cdot(1-s)^2\cdot s^2} + ...\right] \qquad \text{ as } t \rightarrow \infty
+\end{align}
+
+The following three results for the logarithmic derivative of the Riemann Zeta functional equation when s={$(0.5+i\cdot t), (1+i\cdot t), (0+i\cdot t)$} are obtained from equation (15). The details of the series derivation are given in Appendix A.
+
+\begin{align}
+\frac{\zeta'(0.5+i\cdot t)}{\zeta(0.5+i\cdot t)}+\frac{\zeta'(0.5-i\cdot t)}{\zeta(0.5-i\cdot t)}
+&\sim 2\cdot \log\left(\frac{1}{\sqrt{\frac{t}{2\pi}}}\right) +\frac{1}{24\cdot t^2} + ... \qquad \text{ as } t \rightarrow \infty 
+\\
+&\sim 2\cdot \log\left(\frac{1}{\left(\sqrt{\frac{t}{(2\pi)}}\right)^1 \cdot \sqrt{1}}\right) +\frac{1}{24\cdot t^2} + ... \qquad \text{ as } t \rightarrow \infty \label{eq:zeta_fn_eqn}
+\end{align}
+
+noting in equation \eqref{eq:zeta_fn_eqn} that $\zeta(s)$ has degree=1 and $N_C=1$. In practice the above formula works excellently for t > 2.
+
+\newpage 
+Away from the critical line, the logarithmic derivative of the functional equation also has imaginary component.
+
+\begin{align}
+\frac{\zeta'(1+i\cdot t)}{\zeta(1+i\cdot t)}+\frac{\zeta'(0-i\cdot t)}{\zeta(0-i\cdot t)}
+&\sim 2\cdot \log\left(\frac{1}{\sqrt{\frac{t}{2\pi}}}\right) + \frac{i}{2\cdot t}-\frac{1}{12\cdot t^2} + ... \qquad \text{ as } t \rightarrow \infty 
+\end{align}
+
+\begin{align}
+\frac{\zeta'(0+i\cdot t)}{\zeta(0+i\cdot t)}+\frac{\zeta'(1-i\cdot t)}{\zeta(1-i\cdot t)}
+&\sim 2\cdot \log\left(\frac{1}{\sqrt{\frac{t}{2\pi}}}\right) - \frac{i}{2\cdot t}-\frac{1}{12\cdot t^2} + ... \qquad \text{ as } t \rightarrow \infty 
+\end{align}
+
+
+
+### A simple crosscheck on the numbering of the known non-trivial zeroes in the S function of the Riemann Zeta function
+
+Noting Cauchy-Riemann behaviour for complex functions and that t is the $\Im(s)$, the partial integral of equation \eqref{eq:zeta_fn_eqn} with respect to t can be expressed as
+
+\begin{align}
+I \cdot \int \left[ 2\cdot \log\left(\frac{1}{\left(\sqrt{\frac{t}{(2\pi)}}\right)^1 \cdot \sqrt{1}}\right) +\frac{1}{24\cdot t^2}\right] dt &= I \cdot \int \left[ -\log(t)-\log(2\pi) +\frac{1}{24\cdot t^2} \right] dt \\ 
+&= I \cdot \left[ -(t\cdot \log(t)-t) -t\cdot \log(2\pi) -\frac{1}{24\cdot t} + C \right] \\
+&= I \cdot \left[ -t\cdot \log(\frac{t}{2\pi})+t -\frac{1}{24\cdot t} + C \right] 
+\end{align}
+
+where C is the integration constant.
+
+On inspection in the interval 1 < t < 30002, the continuous curve $-3\log(2\pi)+0.0158844-t\cdot \log(\frac{t}{2\pi})+t -\frac{1}{24\cdot t}$ is an excellent match for the slope of the discontinuous function $\log(\zeta(1/2+i\cdot t))-\log(\zeta(1-(1/2+i\cdot t)))=2\cdot\text{imag}\left(\log(\zeta(1/2+i\cdot t))\right)$. 
+
+Figure 1, illustrates that the addition of $2*\pi$ for every known Riemann Zeta non-trivial zero ($\gamma \le t$) to the continuous curve $-3\log(2\pi)+0.0158844-t\cdot \log(\frac{t}{2\pi})+t -\frac{1}{24\cdot t}$ brings excellent agreement with the discontinuous curve $2\cdot\text{imag}\left(\log(\zeta(1/2+i\cdot t))\right)$
+
+```{r zeta_1_30, echo=FALSE, fig.cap="Imaginary component (black) of ($\\log(\\zeta(1/2+i\\cdot t))-\\log(\\zeta(1-(1/2+i\\cdot t)))$) = 2 *Pi*S($\\zeta(1/2+i\\cdot t)$) function 1<Im(s)<30 plus shifted versions (+0 red,+$2\\pi$ green,+$4\\pi$ blue,+$6\\pi$ violet-red) of the partial integral (wrt t) of the asymptotic logarithmic derivative of the functional equation", out.width = '100%',   warning=FALSE}
+knitr::include_graphics("/home/john/pari/critical_line_logzetafunction_start1_end30_zetaversion_continuouscurve_and_plus2Piplus4Piplus6Picurves.pdf")
+```
+
+
+
+\begin{align}
+\therefore C &= \text{imag}\left[\log(\zeta(1/2+i\cdot t))-\log(\zeta(1-(1/2+i\cdot t)))\right] \nonumber \\
+&\qquad + \Big[ t\cdot \log(\frac{t}{2\pi})-t +\frac{1}{24\cdot t} + ...  + \sum_{\gamma_1=14.1347...}^ {\gamma_n \le t} 2\pi \cdot \delta(\gamma_i \le t)\Big] \\
+&\approx -5.497746799 \\
+&\approx -3\log(2\pi)+0.0158844
+\end{align}
+
+Figure 2, illustrates that equations (22-25) with n=13999521 for $\gamma_n=6820048.3979145...$ (green line) can be used to very quickly crosscheck the S function calculation (red line) in the interval t=(6820048.91,6820053) thus validating n=13999521 for $\gamma_n=6820048.3979145...$ 
+
+```{r zeta_firstRosserviolation, echo=FALSE, fig.cap="Imaginary component (red line) of imag($\\log(\\zeta(1/2+i\\cdot t))-\\log(\\zeta(1-(1/2+i\\cdot t)))$)/2/$\\pi$ = S($\\zeta(1/2+i\\cdot t)$) function calculated using tapered Dirichlet series zeroth order Riemann Siegel formula in the interval 6820048.91<Im(s)<6820053 crosschecked by (equations (22-25) , n=13999521 for $\\gamma_n=6820048.3979145...$ and $2\\cdot \\pi$ for each of the following non-trivial zeroes) all scaled by $1/2/\\pi$.", out.width = '100%',   warning=FALSE}
+knitr::include_graphics("/home/john/pari/critical_line_Sfunction_start6820048p91_end6820053_taperedRSversion_and_quickzerocountcheckversion.pdf")
+```
+
+
+
+
+
+
+### Functional equation of the Elliptic curve with LMFDB label 27.a4
+
+Minimal Weierstrass equation
+
+\begin{equation}
+y^2+y=x^3
+\end{equation}
+
+L-function 2-3e3-1.1-c1-0-0 
+
+Degree 2 
+
+Conductor $27=3^3$ 
+
+Selberg data (2, 27, (:1/2),1) 
+
+L(27.a4,s) has the functional equation
+
+\begin{equation}
+27^{\frac{s}{2}}\cdot 2 \cdot(2\pi)^{-s}\cdot\Gamma(s) \cdot L(27.a4,s)= 27^{\frac{(2-s)}{2}}\cdot 2 \cdot(2\pi)^{-(2-s)}\cdot\Gamma(2-s) \cdot L(27.a4,2-s) \label{eq:eq_func_27.a4}
+\end{equation}
+
+where $s=\sigma+I\cdot t$ and $s \in \mathbb{C}$. Rearranging the terms 
+
+\begin{align}
+L(27.a4,s)&= \frac{27^{\frac{(2-s)}{2}}\cdot 2 \cdot(2\pi)^{-(2-s)}\cdot\Gamma(2-s)}{27^{\frac{s}{2}}\cdot 2 \cdot(2\pi)^{-s}\cdot\Gamma(s)} \cdot L(27.a4,2-s) \\
+L(27.a4,s)&= 27^{(1-s)}\cdot (2\pi)^{2\cdot (s-1)}\cdot\frac{\Gamma(2-s)}{\Gamma(s)} \cdot L(27.a4,2-s)
+\end{align}
+
+and taking logarithms of both sides
+
+\begin{align}
+\log{L(27.a4,s)}&=\log\left(27^{(1-s)}\cdot (2\pi)^{2\cdot (s-1)}\cdot\frac{\Gamma(2-s)}{\Gamma(s)} \cdot L(27.a4,2-s)\right) \\
+&= (1-s)\cdot \log(27) +2\cdot (s-1)\cdot\log(2\pi)+\log(\Gamma(2-s))-\log(\Gamma(s))+\log(L(27.a4,2-s))
+\end{align}
+
+after further rearranging terms
+
+\begin{align}
+\log{L(27.a4,s)}-\log(L(27.a4,2-s))&= (1-s)\cdot \log(27) +2\cdot (s-1)\cdot\log(2\pi)+\log(\Gamma(2-s))-\log(\Gamma(s))
+\end{align}
+
+and expanding the RHS using Stirling series for $t \rightarrow \infty$
+
+\begin{align}
+\log{L(27.a4,s)}-\log(L(27.a4,2-s))&\approx (1-s)\cdot \log(27) +2\cdot (s-1)\cdot\log(2\pi) \nonumber \\ &+\left[(2-s)\cdot \log(2-s) -(2-s)-\frac{1}{2}\cdot\log(2-s) + \frac{1}{2}\cdot\log(2\pi) + \frac{1}{12\cdot(2-s)}+ ...\right] \nonumber \\ &-\left[s\cdot \log(s) -s-\frac{1}{2}\cdot\log(s) + \frac{1}{2}\cdot\log(2\pi) + \frac{1}{12\cdot(s)}+ ...\right] \qquad \text{ as } t \rightarrow \infty \\
+&\approx (1-s)\cdot \log(27) +2\cdot (s-1)\cdot\log(2\pi) \nonumber \\ &+\left[(2-s)\cdot \log(2-s) -(2-s)-\frac{1}{2}\cdot\log(2-s)  + \frac{1}{12\cdot(2-s)}+ ...\right] \nonumber \\ &-\left[s\cdot \log(s) -s-\frac{1}{2}\cdot\log(s)  + \frac{1}{12\cdot(s)}+ ...\right] \qquad \text{ as } t \rightarrow \infty\end{align}
+
+taking the derivative $\frac{d}{ds}$
+
+\begin{align}
+\frac{d}{ds}\left(\log{L(27.a4,s)}\right)-\frac{d}{ds}\left(\log(L(27.a4,2-s))\right)
+&\approx \frac{d}{ds}\Big((1-s)\cdot \log(27) +2\cdot (s-1)\cdot\log(2\pi) \nonumber \\ &+\left[(2-s)\cdot \log(2-s) -(2-s)-\frac{1}{2}\cdot\log(2-s)  + \frac{1}{12\cdot(2-s)}+ ...\right] \nonumber \\ &-\left[s\cdot \log(s) -s-\frac{1}{2}\cdot\log(s)  + \frac{1}{12\cdot(s)}+ ...\right]\Big) \qquad \text{ as } t \rightarrow \infty
+\end{align}
+
+
+\begin{align}
+\frac{L'(27.a4,s)}{L(27.a4,s)}+\frac{L(27.a4,2-s)}{L(27.a4,2-s)}
+&\approx -\log(27) + 2\cdot \log(2\pi)  \nonumber \\ &+\left[ -\log(2-s)+(2-s)\cdot \frac{-1}{(2-s)} +1-\frac{1}{2}\cdot\frac{-1}{(2-s)} + \frac{-1\cdot -1}{12\cdot (2-s)^2}+ ...\right] \nonumber \\ &-\left[ \log(s)+s\cdot \frac{1}{s} -1-\frac{1}{2}\cdot\frac{1}{s} + \frac{-1}{12\cdot s^2}+ ...\right] \qquad \text{ as } t \rightarrow \infty \\
+&\approx -\log(27) + 2\cdot \log(2\pi)  \nonumber \\ &+\left[ -\log(2-s)+\frac{1}{2\cdot (2-s)} + \frac{1}{12\cdot (2-s)^2}+ ...\right] \nonumber \\ &-\left[ \log(s)-\frac{1}{2\cdot s} - \frac{1}{12\cdot s^2}+ ...\right] \qquad \text{ as } t \rightarrow \infty
+\end{align}
+
+using the logarithmic derivative identities
+
+\begin{align}
+\frac{d}{ds}\left(\log{L(27.a4,s)}\right)&=\frac{L'(27.a4,s)}{L(27.a4,s)} \\
+\frac{d}{ds}\left(\log(L(27.a4,2-s))\right)&=-\frac{L'(27.a4,2-s)}{L(27.a4,2-s)}
+\end{align}
+
+collecting the leading terms together as a single logarithm
+
+\begin{align}
+\frac{L'(27.a4,s)}{L(27.a4,s)}+\frac{L(27.a4,2-s)}{L(27.a4,2-s)}
+&\approx \log\left(\frac{1}{\frac{27\cdot(2-s)\cdot s}{(2\pi)^2}}\right) +\left[\frac{1}{2(2-s)}  +\frac{1}{2s}+ \frac{1}{12(2-s)^2} + \frac{1}{12s^2}+ ...\right] \qquad \text{ as } t \rightarrow \infty
+\end{align}
+
+and finally rewriting the leading term using the identity $\log(z)=2\log(\sqrt{z})$ and combining the minor terms gives the asymptotic behaviour of the logarithmic derivative of the functional equation that explicitly acknowledges the s:(1-s) symmetry of the Riemann Zeta function.
+
+\begin{align}
+\frac{L'(27.a4,s)}{L(27.a4,s)}+\frac{L(27.a4,2-s)}{L(27.a4,2-s)}
+&\approx 2\cdot \log\left(\frac{1}{\sqrt{\frac{27\cdot(2-s)\cdot s}{(2\pi)^2}}}\right) +\left[\frac{1}{(2-s)\cdot s} + \frac{(1-2\cdot s+ s^2)}{6\cdot(2-s)^2\cdot s^2} + ...\right] \qquad \text{ as } t \rightarrow \infty
+\end{align}
+
+on the critical line for L(27.a4,s) $s=1+i\cdot t$
+
+\begin{align}
+\frac{L'(27.a4,1+i\cdot t)}{L(27.a4,1+i\cdot t)}+\frac{L(27.a4,1-i\cdot t)}{L(27.a4,1-i\cdot t)}
+&\approx 2\cdot \log\left(\frac{1}{\sqrt{\frac{27\cdot(1+t^2)}{(2\pi)^2}}}\right) +\left[\frac{1}{(1+t^2 )} + \frac{-t^2}{6\cdot(1+t^2)^2} + ...\right] \qquad \text{ as } t \rightarrow \infty
+\\
+&\approx 2\cdot \log\left(\frac{1}{\sqrt{\frac{27\cdot t^2}{(2\pi)^2}}\cdot(1+\frac{1}{t^2})^{\frac{1}{2}}}\right) +\left[\frac{1}{(1+t^2 )} + \frac{-t^2}{6\cdot(1+t^2)^2} + ...\right] \qquad \text{ as } t \rightarrow \infty
+\\
+&\approx 2\cdot \log\left(\frac{1}{\frac{t\cdot\sqrt{27}}{(2\pi)}}\right)-\log(1+\frac{1}{t^2}) +\left[\frac{1}{(1+t^2 )} + \frac{-t^2}{6\cdot(1+t^2)^2} + ...\right] \qquad \text{ as } t \rightarrow \infty
+\\
+&\sim 2\cdot \log\left(\frac{1}{\frac{t\cdot\sqrt{27}}{(2\pi)}}\right)-\frac{1}{t^2} +\left[\frac{1}{t^2} - \frac{1}{6\cdot t^2} + ...\right] \qquad \text{ as } t \rightarrow \infty
+\\
+&\sim 2\cdot \log\left(\frac{1}{\frac{t\cdot\sqrt{27}}{(2\pi)}}\right)- \frac{1}{6\cdot t^2} + ... \qquad \text{ as } t \rightarrow \infty
+\\
+&\sim 2\cdot \log\left(\frac{1}{\left(\sqrt{\frac{t}{(2\pi)}}\right)^2\cdot\sqrt{27}}\right)- \frac{1}{6\cdot t^2} + ... \qquad \text{ as } t \rightarrow \infty \label{eq:L27_fn_eqn}
+\end{align}
+
+noting in equation \eqref{eq:L27_fn_eqn} that L(27.a4,s) has degree=2 and $N_C=27$. In practice the above formula works excellently for t > 2.
+
+### Functional equation of the number field 14.0.9095120158391.1
+
+Normalized defining polynomial
+
+\begin{equation}
+x^{14} - 7x^{13} + 25x^{12} - 59x^{11} + 103x^{10} - 141x^9 + 159x^8 - 153x^7 + 129x^6 - 95x^5 + 58x^4 - 27x^3 + 10x^2 - 3x + 1
+\end{equation}
+
+L-function number field 14.0.9095120158391.1
+
+Degree 14 
+
+Discriminant $-71^7=-9095120158391$
+
+
+Following the previous results it is expected on the critical line for L(14.0.9095120158391.1,s) $s=0.5+i\cdot t$
+
+\begin{align}
+\frac{L'(14.0.9095120158391.1,0.5+i\cdot t)}{L(14.0.9095120158391.1,0.5+i\cdot t)}+\frac{L'(14.0.9095120158391.1,0.5-i\cdot t)}{L(14.0.9095120158391.1,0.5-i\cdot t)}
+&\sim 2\cdot \log\left(\frac{1}{\left(\sqrt{\frac{t}{(2\pi)}}\right)^{14}\cdot\sqrt{9095120158391}}\right)+ ... \nonumber \\
+&\qquad \qquad \text{ as } t \rightarrow \infty \label{eq:L14.0.9095120158391.1_fn_eqn}
+\end{align}
+
+noting in equation \eqref{eq:L14.0.9095120158391.1_fn_eqn} that L(14.0.9095120158391.1,s) has degree=14 and $|\text{discriminant}|=9095120158391$. 
+
+In practice the above formula works excellently for t > 2 as shown in figure 3
+
+Code snippets
+
+\begin{verbatim}
+from https://www.lmfdb.org/NumberField/14.0.9095120158391.1
+\\ Pari/GP code for working with number field 14.0.9095120158391.1
+
+\\ Some of these functions may take a long time to execute (this depends on the field).
+
+\\ Define the number field: 
+K = bnfinit(y^14 - 7*y^13 + 25*y^12 - 59*y^11 + 103*y^10 - 141*y^9 + 159*y^8 
+- 153*y^7 + 129*y^6 - 95*y^5 + 58*y^4 - 27*y^3 + 10*y^2 - 3*y + 1, 1)
+\end{verbatim}
+
+Straightforward pari gp code for producing a graph of the logarithmic derivative of the functional equation and comparison to series approximation
+
+\begin{verbatim}
+ploth(t=1,30,[real(lfun(K,0.5+I*t,1)/lfun(K,0.5+I*t)+lfun(K,1-(0.5+I*t),1)/lfun(K,1-(0.5+I*t))),
+2*log(1/(sqrt(t/2/Pi))^14/sqrt(9095120158391))])
+\end{verbatim}
+
+```{r degree14function, echo=FALSE, fig.cap="Logarithmic derivative of the functional equation (red line) of the L function 14.0.9095120158391.1 in the interval t=(1,30) using pari gp functions for L function and their first derivative. Green line is RHS equation (49).", out.width = '100%',   warning=FALSE}
+knitr::include_graphics("/home/john/pari/critical_line_logarithmicderivativeoffunctionalequation_start1_end30_L14.0.9095120158391.1.pdf")
+```
+
+
+
+
+## Conclusions
+
+The leading term of the logarithmic derivative of the functional equation on the critical line has a dependence on $\left(\sqrt{\frac{t}{2\pi}}\right)^{d/2}\sqrt{N_C}$ which can also be identified as the first quiescent region of the Dirichlet series of L function. Integrating the critical line behaviour of the logarithmic derivative of the functional equation with respect to $\Im(s)$ can produce a simple expression for the Riemman Zeta function that can be used in conjunction with S function calculations to check the numbering of non-trivial zeroes.  
+
+
+## References
+
+1. The LMFDB Collaboration, The L-functions and Modular Forms Database, \url{http://www.lmfdb.org}, 2019, [Online; accessed January 2020].
+
+2. The PARI~Group, PARI/GP version 2.12.0, Univ. Bordeaux, 2018,
+\url{http://pari.math.u-bordeaux.fr/}.
+ 
+3. Titchmarsh E.C. , Heath-Brown D.R. "The Theory of the Riemann Zeta-function" Clarendon Press 1986
+
+4. Montgomery H.L. , Vaughan R.C. "Multiplicative Number Theory I", Cambridge University Press 2010
+ 
+5. Martin, J.P.D. "Examples of quiescent regions in the oscillatory divergence of several 1st degree L functions and their Davenport Heilbronn counterparts." (2021)
+https://dx.doi.org/10.6084/m9.figshare.14956053
+ 
+
+
+
+## Appendix A: Asymptotic behaviour of logarithimic derivative of Riemann Zeta functional equation as $t \rightarrow \infty$
+
+Using series expansions for sqrt and log factors and retaining the leading terms as $t \rightarrow \infty$.
+
+\newpage 
+
+Inspecting the asymptotic behaviour on the critical line $s=0.5+i\cdot t$
+
+\begin{align}
+\frac{\zeta'(0.5+i\cdot t)}{\zeta(0.5+i\cdot t)}+\frac{\zeta'(0.5-i\cdot t)}{\zeta(0.5-i\cdot t)}
+&\approx 2\cdot \log\left(\frac{1}{\sqrt{\frac{\sqrt{(0.5-i\cdot t)\cdot (0.5+i\cdot t)}}{2\pi}}}\right) \nonumber \\ &+\left[\frac{1}{2\cdot(0.5-i\cdot t)\cdot (0.5+i\cdot t)} + \frac{(1-2\cdot (0.5+i\cdot t)+ 2\cdot (0.5+i\cdot t)^2)}{6\cdot(0.5-i\cdot t)^2\cdot (0.5+i\cdot t)^2} + ...\right] \qquad \text{ as } t \rightarrow \infty \\
+&\approx 2\cdot \log\left(\frac{1}{\sqrt{\frac{\sqrt{(0.25+t^2)}}{2\pi}}}\right) +\left[\frac{1}{2\cdot(0.25+t^2)} + \frac{(0.5 -2\cdot t^2)}{6\cdot(0.25+t^2)^2} + ...\right] \qquad \text{ as } t \rightarrow \infty \\
+&\sim 2\cdot \log\left(\frac{1}{\sqrt{\frac{t}{2\pi}}\cdot(1+\frac{1}{4\cdot t^2})^{\frac{1}{4}}}\right) +\left[\frac{1}{2\cdot t^2} - \frac{1}{3\cdot t^2} + ...\right] \qquad \text{ as } t \rightarrow \infty \\ 
+&\sim 2\cdot \log\left(\frac{1}{\sqrt{\frac{t}{2\pi}}}\right) - \frac{1}{2} \cdot\log (1+\frac{1}{4 t^2}) + \frac{1}{6\cdot t^2} + ... \qquad \text{ as } t \rightarrow \infty 
+\\ 
+&\sim 2\cdot \log\left(\frac{1}{\sqrt{\frac{t}{2\pi}}}\right) - \frac{1}{8 \cdot t^2} +\frac{1}{6\cdot t^2} + ... \qquad \text{ as } t \rightarrow \infty 
+\\ 
+&\sim 2\cdot \log\left(\frac{1}{\sqrt{\frac{t}{2\pi}}}\right) +\frac{1}{24\cdot t^2} + ... \qquad \text{ as } t \rightarrow \infty 
+\end{align}
+
+\newpage
+
+Inspecting the asymptotic behaviour for $s=1+i\cdot t$
+
+\begin{align}
+\frac{\zeta'(1+i\cdot t)}{\zeta(1+i\cdot t)}+\frac{\zeta'(0-i\cdot t)}{\zeta(0-i\cdot t)}
+&\approx 2\cdot \log\left(\frac{1}{\sqrt{\frac{\sqrt{(0-i\cdot t)\cdot (1+i\cdot t)}}{2\pi}}}\right) \nonumber \\ &+\left[\frac{1}{2\cdot(0-i\cdot t)\cdot (1+i\cdot t)} + \frac{(1-2\cdot (1+i\cdot t)+ 2\cdot (1+i\cdot t)^2)}{6\cdot(0-i\cdot t)^2\cdot (1+i\cdot t)^2} + ...\right] \qquad \text{ as } t \rightarrow \infty \\
+&\approx 2\cdot \log\left(\frac{1}{\sqrt{\frac{\sqrt{(-i\cdot t+t^2)}}{2\pi}}}\right) +\left[\frac{1}{2\cdot(-i\cdot t+t^2)} + \frac{(i\cdot 2\cdot t-2\cdot t^2)}{6\cdot(-i\cdot t+t^2)^2} + ...\right] \qquad \text{ as } t \rightarrow \infty \\
+&\sim 2\cdot \log\left(\frac{1}{\sqrt{\frac{t\cdot\sqrt{(1-\frac{i}{t})}}{2\pi}}}\right) +\left[\frac{1}{2\cdot t^2} - \frac{1}{3\cdot t^2} + ...\right] \qquad \text{ as } t \rightarrow \infty \\ 
+&\sim 2\cdot \log\left(\frac{1}{\sqrt{\frac{t}{2\pi}}\cdot (1-\frac{i}{t})^{\frac{1}{4}}}\right) + \frac{1}{6\cdot t^2} + ... \qquad \text{ as } t \rightarrow \infty 
+\\ 
+&\sim 2\cdot \log\left(\frac{1}{\sqrt{\frac{t}{2\pi}}}\right) - \frac{1}{2}\cdot \log{(1-\frac{i}{t})} + \frac{1}{6\cdot t^2} + ... \qquad \text{ as } t \rightarrow \infty 
+\\ 
+&\sim 2\cdot \log\left(\frac{1}{\sqrt{\frac{t}{2\pi}}}\right) + \frac{i}{2\cdot t}-\frac{1}{4\cdot t^2}+\frac{1}{6\cdot t^2} + ... \qquad \text{ as } t \rightarrow \infty 
+\\ 
+&\sim 2\cdot \log\left(\frac{1}{\sqrt{\frac{t}{2\pi}}}\right) + \frac{i}{2\cdot t}-\frac{1}{12\cdot t^2} + ... \qquad \text{ as } t \rightarrow \infty 
+\end{align}
+
+\newpage
+
+Inspecting the asymptotic behaviour for $s=0+i\cdot t$
+
+\begin{align}
+\frac{\zeta'(0+i\cdot t)}{\zeta(0+i\cdot t)}+\frac{\zeta'(1-i\cdot t)}{\zeta(1-i\cdot t)}
+&\approx 2\cdot \log\left(\frac{1}{\sqrt{\frac{\sqrt{(1-i\cdot t)\cdot (0+i\cdot t)}}{2\pi}}}\right) \nonumber \\ &+\left[\frac{1}{2\cdot(1-i\cdot t)\cdot (0+i\cdot t)} + \frac{(1-2\cdot (0+i\cdot t)+ 2\cdot (0+i\cdot t)^2)}{6\cdot(1-i\cdot t)^2\cdot (0+i\cdot t)^2} + ...\right] \qquad \text{ as } t \rightarrow \infty \\
+&\approx 2\cdot \log\left(\frac{1}{\sqrt{\frac{\sqrt{(i\cdot t+t^2)}}{2\pi}}}\right) +\left[\frac{1}{2\cdot(i\cdot t+t^2)} + \frac{(-i\cdot 2\cdot t-2\cdot t^2)}{6\cdot(i\cdot t+t^2)^2} + ...\right] \qquad \text{ as } t \rightarrow \infty \\
+&\sim 2\cdot \log\left(\frac{1}{\sqrt{\frac{t\cdot\sqrt{(1+\frac{i}{t})}}{2\pi}}}\right) +\left[\frac{1}{2\cdot t^2} - \frac{1}{3\cdot t^2} + ...\right] \qquad \text{ as } t \rightarrow \infty \\ 
+&\sim 2\cdot \log\left(\frac{1}{\sqrt{\frac{t}{2\pi}}\cdot (1+\frac{i}{t})^{\frac{1}{4}}}\right) + \frac{1}{6\cdot t^2} + ... \qquad \text{ as } t \rightarrow \infty 
+\\ 
+&\sim 2\cdot \log\left(\frac{1}{\sqrt{\frac{t}{2\pi}}}\right) - \frac{1}{2}\cdot \log{(1+\frac{i}{t})} + \frac{1}{6\cdot t^2} + ... \qquad \text{ as } t \rightarrow \infty 
+\\ 
+&\sim 2\cdot \log\left(\frac{1}{\sqrt{\frac{t}{2\pi}}}\right) - \frac{i}{2\cdot t}-\frac{1}{4\cdot t^2}+\frac{1}{6\cdot t^2} + ... \qquad \text{ as } t \rightarrow \infty 
+\\ 
+&\sim 2\cdot \log\left(\frac{1}{\sqrt{\frac{t}{2\pi}}}\right) - \frac{i}{2\cdot t}-\frac{1}{12\cdot t^2} + ... \qquad \text{ as } t \rightarrow \infty 
+\end{align}
