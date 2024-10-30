@@ -1,5 +1,5 @@
 ---
-title: "The asymptotic behaviour of the logarithmic derivative of the functional equation of L functions identifies (i) a simple crosscheck on the numbering of the known Riemann Zeta function non-trivial zeroes and (ii) an improved first quiescent region formula for higher degree L functions."
+title: "The asymptotic behaviour of the logarithmic derivative of the functional equation of L functions identifies an improved first quiescent region formula for higher degree L functions."
 author: "John Martin"
 date: \today
 header-includes:  \usepackage{xcolor}
@@ -17,14 +17,13 @@ knitr::opts_chunk$set(echo = FALSE)
 
 ##DRAFT Executive Summary
 
-The first quiescent region of the dirichlet series sum of 1st degree L functions is located at $N_1(d=1,N_c) = \sqrt{(\frac{t}{2\pi}\cdot N_c)}$ where $N_c$ is the L function conductor value. Combining the leading terms of the logarithmic derivative of the functional equation of L functions (on the critical line) proposes an improved first quiescent region formula for higher degree L functions $N_1(d,N_c) = (\frac{t}{2\pi})^{\frac{d}{2}}\cdot \sqrt{N_c}$ where d is the degree of the L function. This first quiescent region is investigated for higher degree L functions. Integrating the logarithmic derivative expression for the Riemann Zeta functional equation on the critical line gives a simple crosscheck expression for the numbering of the known non-trivial zeroes when analysing S function results.  
+The first quiescent region of the dirichlet series sum of 1st degree L functions is located at $N_1(d=1,N_c) = \sqrt{(\frac{t}{2\pi}\cdot N_c)}$ where $N_c$ is the L function conductor value. Combining the leading terms of the logarithmic derivative of the functional equation of L functions (on the critical line) proposes an improved first quiescent region formula for higher degree L functions $N_1(d,N_c) = (\frac{t}{2\pi})^{\frac{d}{2}}\cdot \sqrt{N_c}$ where d is the degree of the L function. This first quiescent region is investigated for higher degree L functions. 
 
 ##Introduction
 
 In this paper, the asymptotic behaviour of the logarithmic derivative of the functional equation of L function is expressed as a function of the first quiescent region of the dirichlet series of the L function. The first quiescent region of the dirichlet series sum generally contains a useful saddle point for Riemann Siegel formula based approximations of the L function.
 
-Integrating the asymptotic logarithmic derivative on the critical line for the Riemann Zeta function and quantitatively comparing the results for the Rieman Zeta S function the integration constant is derived. This simple $imag(\log(\zeta(1/2+I\cdot t))-\log(\zeta(1-(1/2+I\cdot t)))$ expression provides a fast crosscheck method of reproducing the S function given the validity of the numbering of the known non-trivial zeroes.
-
+Integrating the asymptotic logarithmic derivative on the critical line for the Riemann Zeta function and quantitatively comparing the results for the Rieman Zeta S function, the integration constant is also derived. 
 
 
 
@@ -35,7 +34,7 @@ Integrating the asymptotic logarithmic derivative on the critical line for the R
 The Riemann Zeta function has the functional equation
 
 \begin{equation}
-\pi^{-\frac{s}{2}}\cdot\Gamma(\frac{s}{2}) \cdot \zeta(s)= \pi^{-\frac{(1-s)}{2}}\cdot\Gamma(\frac{(1-s)}{2}) \cdot \zeta(1-s) \label{eq:eq_func_zeta}
+\pi^{-\frac{s}{2}}\cdot\Gamma(\frac{s}{2}) \cdot \zeta(s)= \pi^{-\frac{(1-s)}{2}}\cdot\Gamma(\frac{(1-s)}{2}) \cdot \zeta(1-s) \label{eq:eq_func_zeta} 
 \end{equation}
 
 where $s=\sigma+I\cdot t$ and $s \in \mathbb{C}$. Rearranging the terms 
@@ -160,6 +159,38 @@ Figure 2, illustrates that equations (22-25) with n=13999521 for $\gamma_n=68200
 knitr::include_graphics("/home/john/pari/critical_line_Sfunction_start6820048p91_end6820053_taperedRSversion_and_quickzerocountcheckversion.pdf")
 ```
 
+
+### The straightforward way to calculate $\frac{\zeta'(0.5+i\cdot t)}{\zeta(0.5+i\cdot t)}+\frac{\zeta'(0.5-i\cdot t)}{\zeta(0.5-i\cdot t))}$
+
+The straightforward way to calculate the logarithmic derivative of the functional equation on the critical line, is not to split up the functional equation multiplier into parts
+
+\begin{align}
+\zeta(0.5+i\cdot t)&= \pi^{((0.5+i\cdot t)-\frac{1}{2})}\cdot\frac{\Gamma(\frac{1-(0.5+i\cdot t)}{2})}{\Gamma(\frac{(0.5+i\cdot t)}{2})} \cdot \zeta(1-(0.5+i\cdot t)) \\
+&= \chi(0.5+i\cdot t) \cdot \zeta(1-(0.5+i\cdot t))
+\end{align}
+
+Thereby
+
+\begin{align}
+\log(\zeta(0.5+i\cdot t)) &= \log(\chi(0.5+i\cdot t)) + \log(\zeta(1-(0.5+i\cdot t))) \\
+\log(\zeta(0.5+i\cdot t))-\log(\zeta(1-(0.5+i\cdot t))) &= \log(\chi(0.5+i\cdot t))
+\end{align}
+
+given the Riemann Siegel Theta function identity $\theta(t) = -1/2\cdot \text{imag} \left(\log(\chi(0.5+i\cdot t))\right)$ 
+
+Therefore on the critical line
+
+\begin{align}
+\log(\zeta(0.5+i\cdot t))-\log(\zeta(1-(0.5+i\cdot t))) &= -2\cdot \theta(t)
+\end{align}
+
+and 
+
+\begin{align}
+\frac{d}{ds}\left[\log(\zeta(s))-\log(\zeta(1-s))\right] &= -2\cdot \theta'(t) \\
+\therefore \frac{\zeta'(0.5+i\cdot t)}{\zeta(0.5+i\cdot t)}+\frac{\zeta'(0.5-i\cdot t)}{\zeta(0.5-i\cdot t))} &= -2\cdot \theta'(t)\end{align}
+
+So equations (22-25) are nothing new just a result of forcing an expression with leading term $2\cdot \log\left(\frac{1}{\left(\sqrt{\frac{t}{(2\pi)}}\right)^1 \cdot \sqrt{1}}\right)$ to also be equivalent with $-2\theta'(t)$.
 
 
 
@@ -323,7 +354,7 @@ knitr::include_graphics("/home/john/pari/critical_line_logarithmicderivativeoffu
 
 ## Conclusions
 
-The leading term of the logarithmic derivative of the functional equation on the critical line has a dependence on $\left(\sqrt{\frac{t}{2\pi}}\right)^{d/2}\sqrt{N_C}$ which can also be identified as the first quiescent region of the Dirichlet series of L function. Integrating the critical line behaviour of the logarithmic derivative of the functional equation with respect to $\Im(s)$ can produce a simple expression for the Riemman Zeta function that can be used in conjunction with S function calculations to check the numbering of non-trivial zeroes.  
+The leading term of the logarithmic derivative of the functional equation on the critical line has a dependence on $\left(\sqrt{\frac{t}{2\pi}}\right)^{d}\sqrt{N_C}$ which can also be identified as the first quiescent region of the Dirichlet series of L function. 
 
 
 ## References
