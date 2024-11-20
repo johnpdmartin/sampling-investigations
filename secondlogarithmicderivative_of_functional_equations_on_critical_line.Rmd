@@ -1,0 +1,591 @@
+---
+title: "Additional quantitative properties on the critical line of L-functions and Davenport-Heilbronn functions arising from their functional equations."
+author: "John Martin"
+date: \today
+header-includes:  \usepackage{xcolor}
+output:
+  pdf_document:
+    fig_crop: no
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+
+```
+
+
+
+##DRAFT Executive Summary
+
+On the critical line of the Riemann Zeta function, the known non-trivial zeroes $\gamma$ exhibit the property that the real part of the second order logarithmic derivative  $\Re{\left(\frac{\zeta''(\frac{1}{2}+I\cdot \gamma)}{\zeta'(\frac{1}{2}+I\cdot \gamma)}\right)}=-2\cdot\theta'(\gamma)\xrightarrow [\gamma \rightarrow \infty]{}-log{(\frac{\gamma}{2\cdot\pi})}$ behaviour. More generally, the (rapidly) asymptotic relationship $\Re{\left(\frac{(\zeta''(\frac{1}{2}+I\cdot t)+2*\theta'(t)\cdot\zeta'(\frac{1}{2}+I\cdot t)+2*\theta''(t)\cdot\zeta(\frac{1}{2}+I\cdot t))}{(\zeta'(\frac{1}{2}+I\cdot t)+2*\theta'(t)\cdot\zeta(\frac{1}{2}+I\cdot t))}\right)}\rightarrow\Re{\left(-\frac{(\zeta''(\frac{1}{2}+I\cdot t)+2*\theta'(t)\cdot\zeta'(\frac{1}{2}+I\cdot t))}{(\zeta'(\frac{1}{2}+I\cdot t))}\right)}$ as $t \rightarrow \infty$ is observed along the critical line. The relationships were derived by re-examination of the properties of the starting identity of Levinson's method and analogous behaviour occurs for the 5-periodic Davenport Heilbronn functions implying these additional critical line behaviours are a feature of the functional equation constraint. 
+
+##Introduction
+
+A separable function arising from a reformulation of the Riemann Zeta functional equation was considered in Levinson's method [1-3] as the starting point for estimating the proportion of Riemann Zeta function non-trivial zeroes on the critical line. As stated by Conrey [2], the Levinson method G function was of form
+
+\begin{equation}
+G(s) = \zeta(s)+a(s)\zeta'(s)
+\end{equation}
+
+where $a(s)\sim \left(\log{(\frac{s}{2\cdot\pi})}\right)^{-1}$. Conrey and later authors [2,1] have extended the method and combined additional results to improve the estimate of the proportion of Riemann Zeta function non-trivial zeroes on the critical line.
+
+However for the purposes of this current paper, in Levinson [3] equation (1.8), the precursor to the above G(s) expression was
+
+\begin{equation}
+\zeta'(s)+(f'(s)+f'(1-s))\zeta(s)
+\end{equation}
+
+where $f'(s)+f'(1-s)=\log{(\frac{t}{2\cdot\pi})}+O(1/t)$ for $|\Re(s)|<10$ and large t. It can be seen that the difference between equations (1) and (2) is a simple rescaling. 
+
+In this paper, some properties of the generalised form of equation (2) on the critical line are investigated.
+
+\begin{itemize}
+\item Firstly, the relationship of the generalisation of equation (2) as an interpolation function with respect to the Riemann Zeta S stairwise function on the critical line is presented 
+\item Secondly, the real part of derivative of the generalisation of equation (2) is obtained and examined graphically with respect to the standard Riemann Zeta S function staircase lineshape. 
+\item Thirdly, two useful relationships between $\zeta(1/2+I\cdot t), \zeta'(1/2+I\cdot t), \zeta''(1/2+I\cdot t)$ on the critical line are obtained by examining the derivative of the generalisation of equation (2).
+\item The approach is extended to the 5-perodic Davenport Heilbronn functions to show analgous results occur implying the behaviour is arising from the presence of a functional equation.
+\end{itemize}
+
+
+
+
+
+
+
+## Generalisation of the starting point of the Levinson method 
+
+### Functional equation of the Riemann Zeta function
+
+The functional equation of the Riemann Zeta function written in symmetric form is
+
+\begin{equation}
+\pi^{-\frac{s}{2}}\cdot\Gamma(\frac{s}{2}) \cdot \zeta(s)= \pi^{-\frac{(1-s)}{2}}\cdot\Gamma(\frac{(1-s)}{2}) \cdot \zeta(1-s) \label{eq:eq_func_zeta} 
+\end{equation}
+
+where $s=\sigma+I\cdot t$ and $s \in \mathbb{C}$. Rearranging the terms 
+
+\begin{align}
+\zeta(s)&= \frac{\pi^{-\frac{(1-s)}{2}}\cdot\Gamma(\frac{(1-s)}{2})}{\pi^{-\frac{s}{2}}\cdot\Gamma(\frac{s}{2})} \cdot \zeta(1-s) \\
+\zeta(s)&= \pi^{(s-\frac{1}{2})}\cdot\frac{\Gamma(\frac{1-s}{2})}{\Gamma(\frac{s}{2})} \cdot \zeta(1-s) \\
+\zeta(s)&= \chi(s) \cdot \zeta(1-s)
+\end{align}
+
+where equation (6) is the functional equation written in asymmetric form.
+
+In Levinson [3], the nomenclature used for the Riemann Zeta functional equation was 
+
+\begin{equation}
+h(s) \cdot \zeta(s)= h(1-s) \cdot \zeta(1-s)  
+\end{equation}
+
+where 
+
+\begin{align}
+h(s) &= e^{f(s)} \\
+h'(s) &= f'(s)\cdot h(s)
+\end{align}
+
+On taking derivatives $\frac{d}{ds}$ of both sides of the functional equation (7) and substituting/rearranging terms Levinson [3]  obtained the condition
+
+\begin{align}
+ h(s) \cdot (f'(s)+f'(1-s)) \cdot \zeta(s)  &=   -h(s) \cdot \zeta'(s) - h(1-s) \cdot \zeta'(1-s)
+\end{align}
+
+where Levinson [3] noted that 
+
+\begin{itemize}
+\item that $\text{LHS}_{\text{eqn 10}} = 0$ for large t, when $s=1/2+I\cdot t$ only when $\zeta(1/2+I\cdot t)=0$ since $h(1/2+I\cdot t) \ne 0$ and $(f'(s)+f'(1-s)) \ne 0 \quad \text{ for } t > 6.29$. 
+\item the $\text{RHS}_{\text{eqn 10}} \in \mathbb{R}$ when $s=1/2+I\cdot t$ since the two RHS terms would then form a complex conjugate pair. Thus a zero of the $\text{RHS}_{\text{eqn 10}}$ on the critical line occurs when both $h(1/2+I\cdot t) \cdot \zeta'(1/2+I\cdot t)$ (and $h(1/2-I\cdot t) \cdot \zeta'(1/2-I\cdot t)$) are pure imaginary which can be written mathematically in several ways.
+\end{itemize}
+
+
+\begin{align}
+-h(1/2+I\cdot t) \cdot \zeta'(1/2+I\cdot t) - h(1/2-I\cdot t) \cdot \zeta'(1/2-I\cdot t) &= 0 \qquad \text{when} \\
+\arg{\left(h(1/2+I\cdot t) \cdot \zeta'(1/2+I\cdot t)\right)} &= \frac{\pi}{2} \mod{\pi} \qquad \text{or equivalently}\\
+\arg{\left(h(1/2-I\cdot t) \cdot \zeta'(1/2-I\cdot t)\right)} &= \frac{\pi}{2} \mod{\pi}  \qquad \text{or equivalently}\\
+\arg{\left(h(1/2-I\cdot t) \left[(f'(1/2+I\cdot t)+f'(1/2-I\cdot t)) \cdot \zeta(1/2-I\cdot t)  + \zeta'(1/2-I\cdot t) \right]\right)} &= \frac{\pi}{2} \mod{\pi} \qquad \text{or equivalently}\\
+\arg{\left(h(1/2+I\cdot t) \cdot \left[(f'(1/2+I\cdot t)+f'(1/2-I\cdot t)) \cdot \zeta(1/2+I\cdot t)  + \zeta'(1/2+I\cdot t) \right]\right)} &= \frac{\pi}{2} \mod{\pi}
+\end{align}
+
+with the aim of providing more amenable functions for calculations in later steps of Levinson's method (and related approaches [1-3]) to calculating the proportion of zeroes on the critical line. In Appendix A the derivation of the above functions is discussed in more detail
+
+The generalised version of $(f'(1/2+I\cdot t)+f'(1/2-I\cdot t))$ is simply related using the whole Riemann Siegel Theta function (in continuous form) rather than its Stirling series approximation  
+
+Given the Riemann Siegel Theta function identity on the critical line
+
+\begin{equation}
+\theta(t) = -1/2\cdot \text{imag} \left(\log(\chi(0.5+i\cdot t))\right)
+\end{equation}
+
+\begin{equation}
+\therefore \zeta(\frac{1}{2}+I\cdot t) = e^{-I\cdot 2\cdot \theta(t)}\cdot \zeta(1-(1/2+I\cdot t)) \qquad \text{on the critical line}
+\end{equation}
+
+the following more generalised conditions (analogous to equations (14) and (15)) on when Riemann Zeta non-trivial zeroes on the critical line occur.
+
+\begin{align}
+\arg{\left(h(1/2-I\cdot t) \left[2\cdot \theta'(t) \cdot \zeta(1/2-I\cdot t)  + \zeta'(1/2-I\cdot t) \right]\right)} &= \frac{\pi}{2} \mod{\pi} \qquad \text{or equivalently}\\
+\arg{\left(h(1/2+I\cdot t) \cdot \left[2\cdot \theta'(t) \cdot \zeta(1/2+I\cdot t)  + \zeta'(1/2+I\cdot t) \right]\right)} &= \frac{\pi}{2} \mod{\pi}
+\end{align}
+
+### The $\arg(G)$ behaviour on the critical line as a smoothed version of $arg(\zeta(1/2+I\cdot t))$
+
+The initial interest of this investigation was to identify the best mapping of the function
+
+\begin{equation}
+G_{\text{generalised}}(1/2+I\cdot t)=\zeta'(1/2+I\cdot t) + 2\cdot \theta'(t) \cdot \zeta(1/2+I\cdot t) 
+\end{equation}
+
+to the Riemann Zeta function.
+
+Figure 1, illustrates that 
+
+\begin{align}
+\arg{(G_{\text{generalised}}(1/2+I\cdot t))}+\theta(t) &= \arg{(\zeta'(1/2+I\cdot t) + 2\cdot \theta'(t) \cdot \zeta(1/2+I\cdot t))}+\theta(t)\\
+&= \text{imag}{(\log{(\zeta'(1/2+I\cdot t) + 2\cdot \theta'(t) \cdot \zeta(1/2+I\cdot t))})}+\theta(t)
+\end{align}
+
+shown in red, is a smoothed version of the staircase Riemann Zeta S function
+
+\begin{align}
+\arg{(\zeta(1/2+I\cdot t))}+\theta(t) &= \text{imag}{(\log{(\zeta(1/2+I\cdot t))})}+\theta(t)
+\end{align}
+
+shown in blue, coping with small t values, closely spaced zeroes and large S values across the four displayed intervals t=(1,30), (270,290), (17141.5,17146), (17143.5,17144) and (6820049,6820054). The $\theta(t)$ function is shown in green. All the calculations and graphs were produced using the pari-gp language [4] and the Riemann Zeta non-trivial zero co-ordinates checked via the LMFDB Collaboration [5].
+
+On careful examination, the $\arg{(G_{\text{generalised}}(1/2+I\cdot t))}+\theta(t)$ (red) curve accurately bisects each of the vertical jumps in $\arg{(\zeta(1/2+I\cdot t))}+\theta(t)$ (blue) staircase function investigated and appears to be a very low degree function between known consecutive Riemann Zeta zeroes. 
+
+Therefore there is indeed a clear mapping between $\zeta'(1/2+I\cdot t) + 2\cdot \theta'(t) \cdot \zeta(1/2+I\cdot t)$ and $\arg(\zeta(1/2+I\cdot t))$ which provides the connection to counting the number of non-trivial zeroes on the critical line and since $\arg{(G_{\text{generalised}}(1/2+I\cdot t))}$ is a continuous function there is good potential for better properties under integration (which occurs in the subsequent steps of Levinson's method and related approaches [1-3]).  
+
+
+
+
+```{r arg(zeta)_plustheta, echo=FALSE, fig.cap="Staircase Riemann Zeta S function (blue)  ($\\text{imag}(\\log(\\zeta(1/2+i\\cdot t)))+\\theta(t)$), $\\arg(G_{\\text{generalised}}(1/2+i\\cdot t)) +\\theta(t)$ (red) and $\\theta(t)$ (green) functions for five intervals t=(1,30), (270,290), (17141.5,17146), (17143.5,17144) and (6820049,6820054) on the critical line.", out.width = c("49%","49%"), fig.show = "hold",  warning=FALSE}
+
+
+ knitr::include_graphics("/home/john/pari/critical_line_argS_stepfunction_alsowithGfunction_start1_end30.pdf")
+
+
+knitr::include_graphics("/home/john/pari/critical_line_argS_stepfunction_alsowithGfunction_start270_end290.pdf")
+
+knitr::include_graphics("/home/john/pari/critical_line_argS_stepfunction_alsowithGfunction_start17141p5_end17146.pdf")
+
+knitr::include_graphics( "/home/john/pari/critical_line_argS_stepfunction_alsowithGfunction_start17143p5_end17144.pdf")
+
+knitr::include_graphics( "/home/john/pari/critical_line_argS_stepfunction_alsowithGfunction_start6820049_end6820054.pdf")
+
+```
+
+\newpage
+
+### Examining the behaviour of the derivative of $G_{\text{generalised}}(1/2+I\cdot t)$
+
+In practical terms it is important to recognise that many argument function (and imag(log) function) evaluations are carried out using principal branch calculations which introduces nuisance discontinuities. In figure 1, the nuisance discontinuities have been omitted. In Appendix B, the figure 1 is reproduced with its nuisance discontinuities.
+
+As a solution to the presence of nuisance discontinuities in $\arg{(G_{\text{generalised}}(1/2+I\cdot t))}$ it is worthwhile (and consequential) to derive the first derivative of the generalised G function
+
+\begin{align}
+G_{\text{generalised}}'(s) &= \frac{d}{ds}\left((\zeta'(s) + 2\cdot \theta_{ext}'(s) \cdot \zeta(s))\right) \\
+&= \zeta''(s) + 2\cdot \theta_{ext}'(s) \cdot \zeta'(s) + 2\cdot \theta_{ext}''(s) \cdot \zeta(s)
+\end{align}
+
+where $\theta_{ext}(s)=-1/2\cdot\log{(\chi(s))}$. 
+
+
+For example using equation (25), 
+
+\begin{align}
+\frac{d}{ds} \big[\log({G_{\text{generalised}}(s)})+\theta_{ext}(s)\big] 
+&= \frac{1}{G_{\text{generalised}}(s)}\cdot G_{\text{generalised}}'(s)+\theta_{ext}'(s) \\
+&= \frac{G_{\text{generalised}}'(s)}{G_{\text{generalised}}(s)} +\theta_{ext}'(s) \\
+&= \frac{(\zeta''(s) + 2\cdot \theta_{ext}'(s) \cdot \zeta'(s) + 2\cdot \theta_{ext}''(s) \cdot \zeta(s))}{(\zeta'(s) + 2\cdot \theta_{ext}'(s) \cdot \zeta(s))} +\theta_{ext}'(s) \\
+\end{align}
+
+The calculation gain immediately obtained is that the nuisance discontinuities in $\arg{(G_{\text{generalised}}(1/2+I\cdot t))}$ on the critical line are removed in the principal branch calculations of $\frac{(\zeta''(s) + 2\cdot \theta_{ext}'(s) \cdot \zeta'(s) + 2\cdot \theta_{ext}''(s) \cdot \zeta(s))}{(\zeta'(s) + 2\cdot \theta_{ext}'(s) \cdot \zeta(s))}$.
+
+Following the Cauchy Riemann equations for complex differentiable functions, since the original function involves the imaginary part of the $\log{(G_{\text{generalised}})}+\theta_{ext}(s)$ (see equation (23))  the component of the first derivative that is of interest is
+
+\begin{align}
+G_{\text{generalised}}'(s) +\text{real}(\theta_{ext}'(s)) &= \text{real}\left[\frac{(\zeta''(s) + 2\cdot \theta_{ext}'(s) \cdot \zeta'(s) + 2\cdot \theta_{ext}
+''(s) \cdot \zeta(s))}{(\zeta'(s) + 2\cdot \theta_{ext}'(s) \cdot \zeta(s))} +\theta_{ext}'(s)\right]
+\end{align}
+
+Therefore, on the critical line the function of interest
+
+\begin{align}
+G_{\text{generalised}}'(1/2+I\cdot t) +\theta'(t) &= \text{real}\left[\frac{(\zeta''(1/2+I\cdot t) + 2\cdot \theta'(t) \cdot \zeta'(1/2+I\cdot t) + 2\cdot \theta
+''(t) \cdot \zeta(1/2+I\cdot t))}{(\zeta'(1/2+I\cdot t) + 2\cdot \theta'(t) \cdot \zeta(1/2+I\cdot t))} +\theta'(t)\right]
+\end{align}
+
+where $\theta(t)=-1/2\cdot\text{imag}(\log{(\chi(1/2+I\cdot t))})$
+
+
+Figure 2, displays a comparison of equation (31) (red), $\arg{(\zeta(1/2+I\cdot t))}+\theta'(t)$ (blue) and $\theta'(t)$ (green) across the five intervals t=(1,30), (270,290), (17141.5,17146), (17143.5,17144) and (6820049,6820054). The values displayed for t=(17141.5,17146), (17143.5,17144) were capped to <15 (where the maximum value occurring was 131.8 for equation (31)), likewise for t=(6820049,6820054) (where the maximum value occurring was 148 for equation (31)) . There are nuisance discontinuities of $2*\pi$ present in $\arg{(\zeta(1/2+I\cdot t))}+\theta'(t)$ (blue) curve.
+
+The intersection of all three lines always appears indicates critical line non-trivial zero positions. Therefore it is reasonable to conjecture for the known Riemann Zeta non-trivial zeros that
+
+\begin{align}
+G_{\text{generalised}}'(1/2+I\cdot \gamma) +\theta'(\gamma) &= \theta'(\gamma)
+\end{align}
+
+where $\gamma$ are the imaginary co-ordinate of Riemann Zeta non-trivial zeroes on the critical line.
+
+The consequence is that 
+
+\begin{align}
+\text{real}\left[\frac{(\zeta''(1/2+I\cdot \gamma) + 2\cdot \theta'(\gamma) \cdot \zeta'(1/2+I\cdot \gamma) + 2\cdot \theta
+''(\gamma) \cdot \zeta(1/2+I\cdot \gamma))}{(\zeta'(1/2+I\cdot \gamma) + 2\cdot \theta'(\gamma) \cdot \zeta(1/2+I\cdot \gamma))} +\theta'(\gamma)\right] &=  \theta'(\gamma)
+\end{align}
+
+but 
+
+\begin{align}
+\zeta((1/2+I\cdot \gamma))&=0
+\end{align}
+
+thus
+
+\begin{align}
+\text{real}\left[\frac{(\zeta''(1/2+I\cdot \gamma) + 2\cdot \theta'(\gamma) \cdot \zeta'(1/2+I\cdot \gamma)))}{(\zeta'(1/2+I\cdot \gamma))} +\theta'(\gamma)\right] &=  \theta'(\gamma)
+\end{align}
+
+and therefore
+
+\begin{align}
+\text{real}\left[\frac{(\zeta''(1/2+I\cdot \gamma) + 2\cdot \theta'(\gamma) \cdot \zeta'(1/2+I\cdot \gamma)))}{(\zeta'(1/2+I\cdot \gamma))}\right]  &=  0
+\end{align}
+
+removing common factors on the LHS and expanding the additive components within the real part
+
+\begin{align}
+\text{real}\left[(\frac{\zeta''(1/2+I\cdot \gamma)}{(\zeta'(1/2+I\cdot \gamma))} + 2\cdot \theta'(\gamma) \right]  &=  0 \\
+\text{real}\left[(\frac{\zeta''(1/2+I\cdot \gamma)}{(\zeta'(1/2+I\cdot \gamma))}\right] + 2\cdot \theta'(\gamma)   &=  0
+\end{align}
+
+derives the critical line Riemann Zeta non-trivial zero identity
+
+\begin{align}
+\text{real}\left[\frac{\zeta''(1/2+I\cdot \gamma)}{\zeta'(1/2+I\cdot \gamma)}\right] &= - 2\cdot \theta'(\gamma) 
+\end{align}
+
+which has been simply crosschecked numerically for other known non-trivial zeroes [5] by calculation. 
+
+This identity behaviour 
+
+(i) supports the change in sign with higher orders of the Shank's conjecture [6] and
+
+(ii) lowers the possibility of $\zeta'(1/2+I\cdot \gamma)=\zeta(1/2+I\cdot \gamma)=0$ as the above identity would require both $\zeta''(1/2+I\cdot \gamma)=\zeta'(1/2+I\cdot \gamma)=\zeta(1/2+I\cdot \gamma)=0$ AND $\text{real}\left[\frac{\zeta''(1/2+I\cdot \gamma)}{\zeta'(1/2+I\cdot \gamma)}\right] = - 2\cdot \theta'(\gamma)$ occurring.
+
+(iii) this identity is a necessary condition but NOT the sole condition for non-trivial zeroes to occur as there are clearly other crossings of $\theta'(t)$ of equation (31) that do not coincide with non-trivial zeroes.
+
+```{r arg(zeta)_plusthetaderivative, echo=FALSE, fig.cap="Riemann Zeta S function + $\\theta'(t)$ (blue)  ($\\text{imag}(\\log(\\zeta(1/2+i\\cdot t)))+\\theta'(t)$), $\\arg(G_{\\text{generalised}}'(1/2+i\\cdot t)) +\\theta(t)$ (red) and $\\theta'(t)$ (green) functions for five intervals t=(1,30), (270,290), (17141.5,17146), (17143.5,17144) and (6820049,6820054) on the critical line.", out.width = c("49%","49%"), fig.show = "hold",  warning=FALSE}
+
+
+ knitr::include_graphics("/home/john/pari/critical_line_argS_alsowithGfunctionderivative_start1_end30.pdf")
+
+
+knitr::include_graphics("/home/john/pari/critical_line_argS_alsowithGfunctionderivative_start270_end290.pdf")
+
+knitr::include_graphics("/home/john/pari/critical_line_argS_alsowithGfunctionderivative_start17141p5_end17146.pdf")
+
+knitr::include_graphics( "/home/john/pari/critical_line_argS_alsowithGfunctionderivative_start17143p5_end17144.pdf")
+
+knitr::include_graphics( "/home/john/pari/critical_line_argS_alsowithGfunctionderivative_start6820049_end6820054.pdf")
+
+```
+
+### An asymptotic relationship on the critical line for large t
+
+Figure 3, is a repeat of figure 2 with the additional two curves
+
+\begin{align}
+G_{\text{generalised,reduced}}'(1/2+I\cdot t) +\theta'(t) &= \text{real}\left[\frac{(\zeta''(1/2+I\cdot t) + 2\cdot \theta'(t) \cdot \zeta'(1/2+I\cdot t))}{\zeta'(1/2+I\cdot t)}\right] +\theta'(t) \\
+-G_{\text{generalised,reduced}}'(1/2+I\cdot t) +\theta'(t) &= -\text{real}\left[\frac{(\zeta''(1/2+I\cdot t) + 2\cdot \theta'(t) \cdot \zeta'(1/2+I\cdot t))}{\zeta'(1/2+I\cdot t)}\right] +\theta'(t)
+\end{align}
+
+These extra curves naturally arose during research as once the co-incidence to the non-trivial zeroes was observed (on $\theta'(\gamma)$ it was easy to recalculate equation (33) with $\zeta(1/2+I\cdot t)$ and confirm graphically the equivalence to the full equation (33) when $\zeta(1/2+I\cdot t)=0$ but then these two curves ended up exhibiting a general commonality with respect to equation (33) for arbitrary t.
+
+Figure 3, displays a comparison of equation (31) (red), $\arg{(\zeta(1/2+I\cdot t))}+\theta'(t)$ (blue) and $\theta'(t)$ (green), equation (40) (violet-red) and equation (41) (black) across the five intervals t=(1,30), (270,290), (17141.5,17146), (17143.5,17144) and (6820049,6820054). Again the values were capped for t=(17141.5,17146), (17143.5,17144) and t=(6820049,6820054). There are nuisance discontinuities of $2*\pi$ present in $\arg{(\zeta(1/2+I\cdot t))}+\theta'(t)$ (blue) curve.
+
+The asymptotic commonality of equations (40) (violet-red) and (41) (black) to equation (31) (red) in figure 3 is striking as the black line closely overlaps with the red line for arbitrary t as t > 30. Therefore it is reasonable to conjecture for the Riemann Zeta function on the critical line that
+
+\begin{align}
+\text{real}\left[\frac{(\zeta''(1/2+I\cdot t) + 2\cdot \theta'(t) \cdot \zeta'(1/2+I\cdot t) + 2\cdot \theta
+''(t) \cdot \zeta(1/2+I\cdot t))}{(\zeta'(1/2+I\cdot t) + 2\cdot \theta'(t) \cdot \zeta(1/2+I\cdot t))} \right] \nonumber \\ \sim  -\text{real}\left[\frac{(\zeta''(1/2+I\cdot t) + 2\cdot \theta'(t) \cdot \zeta'(1/2+I\cdot t) )}{(\zeta'(1/2+I\cdot t) )} \right] \text{ as } t \rightarrow \infty
+\end{align}
+
+which on rearranging terms gives the alternate expression
+
+\begin{align}
+\text{real}\Big[&\frac{(\zeta''(1/2+I\cdot t) + 2\cdot \theta'(t) \cdot \zeta'(1/2+I\cdot t) + 2\cdot \theta
+''(t) \cdot \zeta(1/2+I\cdot t))}{(\zeta'(1/2+I\cdot t) + 2\cdot \theta'(t) \cdot \zeta(1/2+I\cdot t))} \nonumber \\ &+ \frac{(\zeta''(1/2+I\cdot t) + 2\cdot \theta'(t) \cdot \zeta'(1/2+I\cdot t) )}{(\zeta'(1/2+I\cdot t) )} \Big]  \sim 0 \text{ as } t \rightarrow \infty
+\end{align}
+
+
+This behaviour 
+
+(i) suggests a strong asymptotic relationship between $\zeta''(1/2+I\cdot t)$, $\zeta'(1/2+I\cdot t)$ and $\zeta(1/2+I\cdot t)$ for arbitrary t arising from the functional equation.
+
+(ii) the intersection of the horizontal black line in panel 1 (t=(1,30)) (which presumes $\zeta(1/2+I\cdot t)=0$) with the $\theta'(t)$ curve indicates a relatively simple condition for the first Riemann Zeta zero to occur. If such behaviour repeats for other L functions would be an interesting method of approximately finding the first non-trivial zero.
+
+
+```{r arg(zeta)_plusthetaderivativeandasymptotic, echo=FALSE, fig.cap="The strong commonality of equations (40) (violet-red) and (41) (black) to equation (31) (red) is shown in comparison to the Riemann Zeta S function + $\\theta'(t)$ (blue)  ($\\text{imag}(\\log(\\zeta(1/2+i\\cdot t)))+\\theta'(t)$), $\\arg(G_{\\text{generalised}}'(1/2+i\\cdot t)) +\\theta(t)$ (red) and $\\theta'(t)$ (green) functions for five intervals t=(1,30), (270,290), (17141.5,17146), (17143.5,17144) and (6820049,6820054) on the critical line. The red line is covered by the black lines in 4 of the panels but the red line can be checked by comparison to figure 3.", out.width = c("49%","49%"), fig.show = "hold",  warning=FALSE}
+
+
+ knitr::include_graphics("/home/john/pari/critical_line_argS_alsowithGfunctionderivative_and asymptotic_start1_end30.pdf")
+
+
+knitr::include_graphics("/home/john/pari/critical_line_argS_alsowithGfunctionderivative_and asymptotic_start270_end290.pdf")
+
+knitr::include_graphics("/home/john/pari/critical_line_argS_alsowithGfunctionderivative_and asymptotic_start17141p5_end17146.pdf")
+
+knitr::include_graphics( "/home/john/pari/critical_line_argS_alsowithGfunctionderivative_and asymptoticstart17143p5_end17144.pdf")
+
+knitr::include_graphics( "/home/john/pari/critical_line_argS_alsowithGfunctionderivative_and asymptoticstart6820049_end6820054.pdf")
+
+```
+
+\newpage
+
+### 5-periodic Davenport Heilbronn function behaviour
+
+It is very straightforward to attempt to test analogous equations for the f1 5 periodic Davenport Heilbronn function. On the critical line the function of interest
+
+\begin{align}
+G_{\text{f1,generalised}}'(1/2+I\cdot t) +\theta_{f1}'(t) &= \text{real}\left[\frac{(f1''(1/2+I\cdot t) + 2\cdot \theta_{f1}'(t) \cdot f1'(1/2+I\cdot t) + 2\cdot \theta
+_{f1}''(t) \cdot f1(1/2+I\cdot t))}{(f1'(1/2+I\cdot t) + 2\cdot \theta_{f1}'(t) \cdot f1(1/2+I\cdot t))} +\theta_{f1}'(t)\right]
+\end{align}
+
+and the reduced equation omitting $f1(1/2+I\cdot t)=0$ term from the numerator and denominator of equation (44)
+
+\begin{align}
+G_{\text{f1,generalised,reduced}}'(1/2+I\cdot t) +\theta_{f1}'(t) &= \text{real}\left[\frac{(f1''(1/2+I\cdot t) + 2\cdot \theta_{f1}'(t) \cdot f1'(1/2+I\cdot t))}{(f1'(1/2+I\cdot t))}\right] +\theta_{f1}'(t) \\
+-G_{\text{f1,generalised,reduced}}'(1/2+I\cdot t) +\theta_{f1}'(t) &= -\text{real}\left[\frac{(f1''(1/2+I\cdot t) + 2\cdot \theta_{f1}'(t) \cdot f1'(1/2+I\cdot t))}{(f1'(1/2+I\cdot t))}\right] +\theta_{f1}'(t)
+\end{align}
+
+Figure 4, displays a comparison of equation (44) (red), $\arg{(f1(1/2+I\cdot t))}+\theta_{f1}'(t)$ (blue) and $\theta_{f1}'(t)$ (green), equation (45) (violet-red) and equation (46) (black) across the two intervals t=(1,10), (70,130). There are nuisance discontinuities of $2*\pi$ present in $\arg{(f1(1/2+I\cdot t))}+\theta_{f1}'(t)$ (blue) curve.
+
+The asymptotic commonality of equations (45) (violet-red) and (46) (black) to equation (44) (red) for $f1(1/2+I\cdot t)$ is as striking as for $\zeta(1/2+\cdot t)$ in figure 4. In addition, the only time equations (44) (red) and (46) (black) go below zero is in the immediately vicinity of the two known critical strip zeroes [7,8] for t=(70,130).  
+
+Therefore it is reasonable to conjecture that
+
+(i) the two properties equations (39) and (43) for the Riemann Zeta function are generically arising from the functional equation dependence and should extend analogously to other L functions and Davenport Heilbronn functions according to their functional equations
+
+Preliminary investigations with the f2 5 periodic function indicate the presence of critical strip non-trivial zeroes is readily observed (and has negative values of equation (45) equivalent) but non-trivial zeroes outside the critical strip are not always readily detected based on critical line calculations (in equivalent of equation (45)).
+
+
+```{r arg(f1)_plusthetaderivativeandasymptotic, echo=FALSE, fig.cap="The strong commonality of equations (45) (violet-red) and (46) (black) to equation (44) (red) is shown in comparison to the f1 S function + $\\theta_{f1}'(t)$ (blue)  ($\\text{imag}(\\log(f1(1/2+i\\cdot t)))+\\theta_{f1}'(t)$), $\\arg(G_{\\text{f1,generalised}}'(1/2+i\\cdot t)) +\\theta_{f1}(t)$ (red) and $\\theta_{f1}'(t)$ (green) functions for two intervals t=(1,10), (70,130) on the critical line. The red line is covered by the black lines in the second panel.", out.width = c("100%"), fig.show = "hold",  warning=FALSE}
+
+
+ knitr::include_graphics("/home/john/pari/critical_line_argS_f1_DavenportHeilbronn_alsowithGfunctionderivative_and asymptotic_start1_end10.pdf")
+
+knitr::include_graphics("/home/john/pari/critical_line_argS_f1_DavenportHeilbronn_alsowithGfunctionderivative_and asymptotic_start70_end130.pdf")
+
+```
+
+
+
+
+
+
+
+\newpage
+
+
+## Conclusions
+
+Two quantitative properties of the critical line Riemann Zeta function behaviour have been identified by examining the derivative of the starting function of Levinson's method [3]. By comparing to analogous f1 5-periodic Davenport Heilbronn function calculations which have similar (and different) behaviour the two properties likely arise from the presence of the functional equation.
+
+
+## References
+
+1. Montgomery HL, Vaughan RC. Multiplicative Number Theory I: Classical Theory. Cambridge University Press; 2006.
+2. Conrey, J. B. (1989). More than two fifths of the zeros of the Riemann zeta function are
+on the critical line, J. Reine Angew. Math. 399, 1–26.
+3. Levinson, N. (1974). More than one third of zeros of Riemann’s zeta-function are on
+$\sigma = 1/2$, Adv. Math. 13, 383–436.
+
+4. The PARI~Group, PARI/GP version 2.12.0, Univ. Bordeaux, 2018,
+\url{http://pari.math.u-bordeaux.fr/}.
+
+5. The LMFDB Collaboration, The L-functions and Modular Forms Database, \url{http://www.lmfdb.org}, 2019, [Online; accessed January 2020].
+
+6. Hughes C., Pearce-Crump A., (2022) A discrete mean-value theorem for the higher derivatives of the Riemann zeta function, Journal of Number Theory, Volume 241, Pages 142-164,
+https://doi.org/10.1016/j.jnt.2022.03.004.
+
+7. Spira, R. Mathematics of Computation, Volume 63, Number 208,
+October 1994, Pages 747-748
+
+8. Balanzario, E.P. and Sanchez-Ortiz, J. Mathematics of Computation,
+Volume 76, Number 260, October 2007, Pages 2045–2049
+
+
+
+\newpage 
+
+## Appendix A: Generalisation of the starting point of the Levinson method [3]
+
+
+The Riemann Zeta function has the functional equation written in symmetric form
+
+\begin{equation}
+\pi^{-\frac{s}{2}}\cdot\Gamma(\frac{s}{2}) \cdot \zeta(s)= \pi^{-\frac{(1-s)}{2}}\cdot\Gamma(\frac{(1-s)}{2}) \cdot \zeta(1-s) \label{eq:eq_func_zeta} 
+\end{equation}
+
+where $s=\sigma+I\cdot t$ and $s \in \mathbb{C}$. Rearranging the terms 
+
+\begin{align}
+\zeta(s)&= \frac{\pi^{-\frac{(1-s)}{2}}\cdot\Gamma(\frac{(1-s)}{2})}{\pi^{-\frac{s}{2}}\cdot\Gamma(\frac{s}{2})} \cdot \zeta(1-s) \\
+\zeta(s)&= \pi^{(s-\frac{1}{2})}\cdot\frac{\Gamma(\frac{1-s}{2})}{\Gamma(\frac{s}{2})} \cdot \zeta(1-s) \\
+\zeta(s)&= \chi(s) \cdot \zeta(1-s)
+\end{align}
+
+where equation (6) is the functional equation written in asymmetric form.
+
+
+Noting the Riemann Siegel Theta function identity on the critical line
+
+\begin{equation}
+\theta(t) = -1/2\cdot \text{imag} \left(\log(\chi(0.5+i\cdot t))\right)
+\end{equation}
+
+\begin{equation}
+\therefore \zeta(\frac{1}{2}+I\cdot t) = e^{-I\cdot 2\cdot \theta(t)}\cdot \zeta(1-(1/2+I\cdot t)) \qquad \text{on the critical line}
+\end{equation}
+
+and the less familiar extended Riemann Siegel Theta function identity 
+
+\begin{equation}
+\theta_{ext}(s) = -1/2\cdot \log(\chi(s)) 
+\end{equation}
+
+\begin{equation}
+\therefore \zeta(s) = e^{-2\cdot \theta_{ext}(s)}\cdot \zeta(1-s) \qquad \text{across the complex plane}
+\end{equation}
+
+In Levinson [3], the nomenclature of the Riemann Zeta functional equation was 
+
+\begin{equation}
+h(s) \cdot \zeta(s)= h(1-s) \cdot \zeta(1-s)  
+\end{equation}
+
+where 
+
+\begin{align}
+h(s) &= e^{f(s)} \\
+h'(s) &= f'(s)\cdot h(s)
+\end{align}
+
+On taking derivative $\frac{d}{ds}$ of both sides 
+
+\begin{align}
+h'(s) \cdot \zeta(s) + h(s) \cdot \zeta'(s) = - h'(1-s) \cdot \zeta(1-s) - h(1-s) \cdot \zeta'(1-s) 
+\end{align}
+
+substituting $\frac{h(s)}{h(1-s)} \zeta(s)= \zeta(1-s)$
+
+\begin{align}
+f'(s) \cdot h(s) \cdot \zeta(s) +  h(s) \cdot \zeta'(s) &= -f'(1-s) \cdot h(1-s) \cdot \frac{h(s)}{h(1-s)}\cdot \zeta(s)  - h(1-s) \cdot \zeta'(1-s) \\
+f'(s) \cdot h(s) \cdot \zeta(s) +  h(s) \cdot \zeta'(s) &= -f'(1-s) \cdot h(s) \cdot \zeta(s)  - h(1-s) \cdot \zeta'(1-s)
+\end{align}
+
+moving terms to either side of the equation
+
+\begin{align}
+f'(s) \cdot h(s) \cdot \zeta(s) + f'(1-s) \cdot h(s) \cdot \zeta(s)   &=   -h(s) \cdot \zeta'(s) - h(1-s) \cdot \zeta'(1-s)
+\end{align}
+
+and collecting terms
+
+\begin{align}
+ h(s) \cdot (f'(s)+f'(1-s)) \cdot \zeta(s)  &=   -h(s) \cdot \zeta'(s) - h(1-s) \cdot \zeta'(1-s)
+\end{align}
+
+Levinson [3] noted that $\text{RHS}_{\text{eqn 18}} \in \mathbb{R}$ when $s=1/2+I\cdot t$ since the two RHS terms would then form a complex conjugate pair. Thus a zero of the RHS on the critical line occurs when both $h(1/2+I\cdot t) \cdot \zeta'(1/2+I\cdot t)$ (and $h(1/2-I\cdot t) \cdot \zeta'(1/2-I\cdot t)$) are pure imaginary which can be written mathematically
+
+\begin{align}
+-h(1/2+I\cdot t) \cdot \zeta'(1/2+I\cdot t) - h(1/2-I\cdot t) \cdot \zeta'(1/2-I\cdot t) &= 0 \qquad \text{when} \\
+\arg{\left(h(1/2+I\cdot t) \cdot \zeta'(1/2+I\cdot t)\right)} &= \frac{\pi}{2} \mod{\pi} \qquad \text{or equivalently}\\
+\arg{\left(h(1/2-I\cdot t) \cdot \zeta'(1/2-I\cdot t)\right)} &= \frac{\pi}{2} \mod{\pi}
+\end{align}
+
+Levinson [3] also noted that the $\text{LHS}_{\text{eqn 18}} = 0$ for large t, when $s=1/2+I\cdot t$ only when $\zeta(1/2+I\cdot t)=0$ since $h(1/2+I\cdot t) \ne 0$ and $(f'(s)+f'(1-s)) \ne 0 \quad t > 6.29$
+
+Therefore he concluded equations (20) and (21) co-incide with the Riemann Zeta function critical line non-trivial zeroes.
+
+Levinson [3] finally rewrites equation (18) twice more
+
+\begin{align}
+h(s) \cdot \zeta'(s) &= - h(s) \cdot (f'(s)+f'(1-s)) \cdot \zeta(s)  - h(1-s) \cdot \zeta'(1-s) \\
+&= - h(s) \cdot (f'(s)+f'(1-s)) \cdot \frac{h(1-s)}{h(s)}\zeta(1-s)  - h(1-s) \cdot \zeta'(1-s) \\
+&= - h(1-s) \left[(f'(s)+f'(1-s)) \cdot \zeta(1-s)  + \zeta'(1-s) \right]\\
+\therefore h(s) \cdot \zeta'(s) &= - h(1-s) \left[(f'(s)+f'(1-s)) \cdot \zeta(1-s)  + \zeta'(1-s) \right]
+\end{align}
+
+and 
+\begin{align}
+h(1-s) \cdot \zeta'(1-s) &= - h(s) \cdot (f'(s)+f'(1-s)) \cdot \zeta(s)  - h(s) \cdot \zeta'(s) \\
+\therefore h(1-s) \cdot \zeta'(1-s) &= - h(s) \cdot \left[(f'(s)+f'(1-s)) \cdot \zeta(s)  + \zeta'(s) \right]
+\end{align}
+
+
+The purpose of these last two transformations is to provide alternative choices of conditions (functions) to identify Riemann Zeta non-trivial zeroes on the critical line
+
+\begin{align}
+-h(1/2+I\cdot t) \cdot \zeta'(1/2+I\cdot t) - h(1/2-I\cdot t) \cdot \zeta'(1/2-I\cdot t) &= 0 \qquad \text{when} \\
+\arg{\left(h(1/2+I\cdot t) \cdot \zeta'(1/2+I\cdot t)\right)} &= \frac{\pi}{2} \mod{\pi} \qquad \text{or equivalently}\\
+\arg{\left(h(1/2-I\cdot t) \cdot \zeta'(1/2-I\cdot t)\right)} &= \frac{\pi}{2} \mod{\pi}  \qquad \text{or equivalently}\\
+\arg{\left(h(1/2-I\cdot t) \left[(f'(1/2+I\cdot t)+f'(1/2-I\cdot t)) \cdot \zeta(1/2-I\cdot t)  + \zeta'(1/2-I\cdot t) \right]\right)} &= \frac{\pi}{2} \mod{\pi} \qquad \text{or equivalently}\\
+\arg{\left(h(1/2+I\cdot t) \cdot \left[(f'(1/2+I\cdot t)+f'(1/2-I\cdot t)) \cdot \zeta(1/2+I\cdot t)  + \zeta'(1/2+I\cdot t) \right]\right)} &= \frac{\pi}{2} \mod{\pi}
+\end{align}
+
+in the case that the alternative choice provide an more amenable function for calculations in later steps of Levinson's method and related approaches to calculating the proportion of zeroes on the critical line.
+
+The generalised version of $(f'(1/2+I\cdot t)+f'(1/2-I\cdot t))$ yields the following additional conditions on when Riemann Zeta non-trivial zeroes on the critical line occur.
+
+\begin{align}
+\arg{\left(h(1/2-I\cdot t) \left[2\cdot \theta'(t) \cdot \zeta(1/2-I\cdot t)  + \zeta'(1/2-I\cdot t) \right]\right)} &= \frac{\pi}{2} \mod{\pi} \qquad \text{or equivalently}\\
+\arg{\left(h(1/2+I\cdot t) \cdot \left[2\cdot \theta'(t) \cdot \zeta(1/2+I\cdot t)  + \zeta'(1/2+I\cdot t) \right]\right)} &= \frac{\pi}{2} \mod{\pi}
+\end{align}
+
+The initial questions of interest in this paper were whether the functions
+
+$\left[2\cdot \theta'(t) \cdot \zeta(1/2+I\cdot t)  + \zeta'(1/2+I\cdot t) \right]$
+
+and 
+
+$\left[2\cdot \theta_{ext}'(s) \cdot \zeta(s)  + \zeta'(s) \right]$
+
+have a direct interpretation with respect the Riemann Zeta function lineshape. 
+
+The answer being 
+
+$\text{imag}(\log(\left[\zeta'(1/2+I\cdot t)+2\cdot \theta'(t) \cdot \zeta(1/2+I\cdot t) \right])) + \theta(t)$ is an smooth function precisely interpolating the staircase function 
+
+$arg(\zeta(1/2+I\cdot t))+ \theta(t)$
+
+Therefore it can be interpreted as a smoothed mapping of the Riemann Zeta S function which allows the possibility for integration which is the purpose (with further mollification) to which the function is used by Levinson and later authors [1-3].
+
+
+## Appendix B: Argument function calculations produce nuisance discontinuities due to principal branch based calculations
+
+Figure 1 of the text is reproduced including nuisance discontinuities arising from principal branch based calculations. The $arg(\zeta(1/2+I\cdot t)+\theta(t)$ (blue line) have more principal branch discontinuities than the $\arg(G_{\text{generalised}}(1/2+i\cdot t)) +\theta(t)$ (red line). The only nuisance discontinuity observed for $\arg(G_{\text{generalised}}(1/2+i\cdot t)) +\theta(t)$ (red) in the sample of intervals provided occurs near the first Rosser point (zero number n=13999525) where |S|>2 is known to occur.
+
+
+```{r arg(zeta)_plustheta_withprincipalbranchdiscontinuities, echo=FALSE, fig.cap="Retaining the principal branch logarithm related nuisance discontinuities in a comparison of the Staircase Riemann Zeta S function (blue)  ($\\text{imag}(\\log(\\zeta(1/2+i\\cdot t)))+\\theta(t)$), $\\arg(G_{\\text{generalised}}(1/2+i\\cdot t)) +\\theta(t)$ (red) and $\\theta(t)$ (green) functions for five intervals t=(1,30), (270,290), (17141.5,17146), (17143.5,17144) and (6820049,6820054) on the critical line.", out.width = c("49%","49%"), fig.show = "hold",  warning=FALSE}
+
+
+ knitr::include_graphics("/home/john/pari/critical_line_argS_stepfunction_alsowithGfunction_start1_end30_principalbranch.pdf")
+
+
+knitr::include_graphics("/home/john/pari/critical_line_argS_stepfunction_alsowithGfunction_start270_end290_principalbranch.pdf")
+
+knitr::include_graphics("/home/john/pari/critical_line_argS_stepfunction_alsowithGfunction_start17141p5_end17146_principalbranch.pdf")
+
+knitr::include_graphics( "/home/john/pari/critical_line_argS_stepfunction_alsowithGfunction_start17143p5_end17144_principalbranch.pdf")
+
+knitr::include_graphics( "/home/john/pari/critical_line_argS_stepfunction_alsowithGfunction_start6820049_end6820054_principalbranch.pdf")
+
+```
+
+
