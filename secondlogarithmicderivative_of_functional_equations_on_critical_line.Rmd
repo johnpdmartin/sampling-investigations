@@ -163,16 +163,16 @@ Therefore there is indeed a clear mapping between $\zeta'(1/2+I\cdot t) + 2\cdot
 ```{r arg(zeta)_plustheta, echo=FALSE, fig.cap="Staircase Riemann Zeta S function (blue)  ($\\text{imag}(\\log(\\zeta(1/2+i\\cdot t)))+\\theta(t)$), $\\arg(G_{\\text{generalised}}(1/2+i\\cdot t)) +\\theta(t)$ (red) and $\\theta(t)$ (green) functions for five intervals t=(1,30), (270,290), (17141.5,17146), (17143.5,17144) and (6820049,6820054) on the critical line.", out.width = c("49%","49%"), fig.show = "hold",  warning=FALSE}
 
 
- knitr::include_graphics("/home/john/pari/critical_line_argS_stepfunction_alsowithGfunction_start1_end30.pdf")
+ knitr::include_graphics("/home/john/pari/secondlogarithmicderivative/critical_line_argS_stepfunction_alsowithGfunction_start1_end30.pdf")
 
 
-knitr::include_graphics("/home/john/pari/critical_line_argS_stepfunction_alsowithGfunction_start270_end290.pdf")
+knitr::include_graphics("/home/john/pari/secondlogarithmicderivative/critical_line_argS_stepfunction_alsowithGfunction_start270_end290.pdf")
 
-knitr::include_graphics("/home/john/pari/critical_line_argS_stepfunction_alsowithGfunction_start17141p5_end17146.pdf")
+knitr::include_graphics("/home/john/pari/secondlogarithmicderivative/critical_line_argS_stepfunction_alsowithGfunction_start17141p5_end17146.pdf")
 
-knitr::include_graphics( "/home/john/pari/critical_line_argS_stepfunction_alsowithGfunction_start17143p5_end17144.pdf")
+knitr::include_graphics( "/home/john/pari/secondlogarithmicderivative/critical_line_argS_stepfunction_alsowithGfunction_start17143p5_end17144.pdf")
 
-knitr::include_graphics( "/home/john/pari/critical_line_argS_stepfunction_alsowithGfunction_start6820049_end6820054.pdf")
+knitr::include_graphics( "/home/john/pari/secondlogarithmicderivative/critical_line_argS_stepfunction_alsowithGfunction_start6820049_end6820054.pdf")
 
 ```
 
@@ -185,35 +185,35 @@ In practical terms it is important to recognise that many argument function (and
 As a solution to the presence of nuisance discontinuities in $\arg{(G_{\text{generalised}}(1/2+I\cdot t))}$ it is worthwhile (and consequential) to derive the first derivative of the generalised G function
 
 \begin{align}
-G_{\text{generalised}}'(s) &= \frac{d}{ds}\left((\zeta'(s) + 2\cdot \theta_{ext}'(s) \cdot \zeta(s))\right) \\
-&= \zeta''(s) + 2\cdot \theta_{ext}'(s) \cdot \zeta'(s) + 2\cdot \theta_{ext}''(s) \cdot \zeta(s)
+G_{\text{generalised}}'(s) &= \frac{d}{ds}\left((\zeta'(s) + \Re\left[\theta_{ext}'(s)+\theta_{ext}'(1-s)\right] \cdot \zeta(s))\right) \\
+&= \zeta''(s) + \Re\left[\theta_{ext}'(s)+\theta_{ext}'(1-s)\right] \cdot \zeta(s) -  \Im\left[\theta_{ext}''(s)-\theta_{ext}''(1-s)\right] \cdot \zeta(s) 
 \end{align}
 
-where $\theta_{ext}(s)=-1/2\cdot\log{(\chi(s))}$. 
+where given s is an arbitrary point in the complex plane $\theta_{ext}(s)=-1/2\cdot\log{(\chi(s))}$ is used instead of $\theta(t)$ and $\Re\left[\theta_{ext}'(s)+\theta_{ext}'(1-s)\right]$ replacing $(f'(1/2+I\cdot t)+f'(1/2-I\cdot t)) \in \mathbb{R}$ is required. 
 
 
 For example using equation (25), 
 
 \begin{align}
-\frac{d}{ds} \big[\log({G_{\text{generalised}}(s)})+\theta_{ext}(s)\big] 
+\frac{d}{ds} &\big[\log({G_{\text{generalised}}(s)})+\theta_{ext}(s)\big] \nonumber \\
 &= \frac{1}{G_{\text{generalised}}(s)}\cdot G_{\text{generalised}}'(s)+\theta_{ext}'(s) \\
 &= \frac{G_{\text{generalised}}'(s)}{G_{\text{generalised}}(s)} +\theta_{ext}'(s) \\
-&= \frac{(\zeta''(s) + 2\cdot \theta_{ext}'(s) \cdot \zeta'(s) + 2\cdot \theta_{ext}''(s) \cdot \zeta(s))}{(\zeta'(s) + 2\cdot \theta_{ext}'(s) \cdot \zeta(s))} +\theta_{ext}'(s) \\
+&= \frac{(\zeta''(s) + \Re\left[\theta_{ext}'(s)+\theta_{ext}'(1-s)\right] \cdot \zeta(s) -  \Im\left[\theta_{ext}''(s)-\theta_{ext}''(1-s)\right] \cdot \zeta(s))}{(\zeta'(s) + \Re\left[\theta_{ext}'(s)+\theta_{ext}'(1-s)\right] \cdot \zeta(s))} +\theta_{ext}'(s) \\
 \end{align}
 
-The calculation gain immediately obtained is that the nuisance discontinuities in $\arg{(G_{\text{generalised}}(1/2+I\cdot t))}$ on the critical line are removed in the principal branch calculations of $\frac{(\zeta''(s) + 2\cdot \theta_{ext}'(s) \cdot \zeta'(s) + 2\cdot \theta_{ext}''(s) \cdot \zeta(s))}{(\zeta'(s) + 2\cdot \theta_{ext}'(s) \cdot \zeta(s))}$.
+The calculation gain immediately obtained is that the nuisance discontinuities in $\arg{(G_{\text{generalised}}(1/2+I\cdot t))}$ on the critical line are removed in the principal branch calculations of $\frac{(\zeta''(s) + \Re\left[\theta_{ext}'(s)+\theta_{ext}'(1-s)\right] \cdot \zeta(s) -  \Im\left[\theta_{ext}''(s)-\theta_{ext}''(1-s)\right] \cdot \zeta(s))}{(\zeta'(s) + \Re\left[\theta_{ext}'(s)+\theta_{ext}'(1-s)\right] \cdot \zeta(s))}$.
 
 Following the Cauchy Riemann equations for complex differentiable functions, since the original function involves the imaginary part of the $\log{(G_{\text{generalised}})}+\theta_{ext}(s)$ (see equation (23))  the component of the first derivative that is of interest is
 
 \begin{align}
-G_{\text{generalised}}'(s) +\text{real}(\theta_{ext}'(s)) &= \text{real}\left[\frac{(\zeta''(s) + 2\cdot \theta_{ext}'(s) \cdot \zeta'(s) + 2\cdot \theta_{ext}
-''(s) \cdot \zeta(s))}{(\zeta'(s) + 2\cdot \theta_{ext}'(s) \cdot \zeta(s))} +\theta_{ext}'(s)\right]
+\text{real}\left(G_{\text{generalised}}'(s) +\theta_{ext}'(s)\right) &= \text{real}\left[\frac{(\zeta''(s) + \Re\left[\theta_{ext}'(s)+\theta_{ext}'(1-s)\right] \cdot \zeta(s) -  \Im\left[\theta_{ext}''(s)-\theta_{ext}''(1-s)\right] \cdot \zeta(s))}{(\zeta'(s) + \Re\left[\theta_{ext}'(s)+\theta_{ext}'(1-s)\right] \cdot \zeta(s))} +\theta_{ext}'(s)\right]
 \end{align}
 
 Therefore, on the critical line the function of interest
 
 \begin{align}
-G_{\text{generalised}}'(1/2+I\cdot t) +\theta'(t) &= \text{real}\left[\frac{(\zeta''(1/2+I\cdot t) + 2\cdot \theta'(t) \cdot \zeta'(1/2+I\cdot t) + 2\cdot \theta
+\text{real}\left(G_{\text{generalised}}'(1/2+I\cdot t)\right) +\theta'(t) \nonumber \\
+&= \text{real}\left[\frac{(\zeta''(1/2+I\cdot t) + 2\cdot \theta'(t) \cdot \zeta'(1/2+I\cdot t) + 2\cdot \theta
 ''(t) \cdot \zeta(1/2+I\cdot t))}{(\zeta'(1/2+I\cdot t) + 2\cdot \theta'(t) \cdot \zeta(1/2+I\cdot t))} +\theta'(t)\right]
 \end{align}
 
@@ -272,25 +272,25 @@ which has been simply crosschecked numerically for other known non-trivial zeroe
 
 This identity behaviour 
 
-(i) supports the change in sign with higher orders of the Shank's conjecture [6] and
+(i) supports the change in sign with higher orders of the Shanks' conjecture [6] and
 
 (ii) lowers the possibility of $\zeta'(1/2+I\cdot \gamma)=\zeta(1/2+I\cdot \gamma)=0$ as the above identity would require both $\zeta''(1/2+I\cdot \gamma)=\zeta'(1/2+I\cdot \gamma)=\zeta(1/2+I\cdot \gamma)=0$ AND $\text{real}\left[\frac{\zeta''(1/2+I\cdot \gamma)}{\zeta'(1/2+I\cdot \gamma)}\right] = - 2\cdot \theta'(\gamma)$ occurring.
 
 (iii) this identity is a necessary condition but NOT the sole condition for non-trivial zeroes to occur as there are clearly other crossings of $\theta'(t)$ of equation (31) that do not coincide with non-trivial zeroes.
 
-```{r arg(zeta)_plusthetaderivative, echo=FALSE, fig.cap="Riemann Zeta S function + $\\theta'(t)$ (blue)  ($\\text{imag}(\\log(\\zeta(1/2+i\\cdot t)))+\\theta'(t)$), $\\arg(G_{\\text{generalised}}'(1/2+i\\cdot t)) +\\theta(t)$ (red) and $\\theta'(t)$ (green) functions for five intervals t=(1,30), (270,290), (17141.5,17146), (17143.5,17144) and (6820049,6820054) on the critical line.", out.width = c("49%","49%"), fig.show = "hold",  warning=FALSE}
+```{r arg(zeta)_plusthetaderivative, echo=FALSE, fig.cap="Riemann Zeta S function + $\\theta'(t)$ (blue)  ($\\text{imag}(\\log(\\zeta(1/2+i\\cdot t)))+\\theta'(t)$), $\\arg(G_{\\text{generalised}}'(1/2+i\\cdot t)) +\\theta'(t)$ (red) and $\\theta'(t)$ (green) functions for five intervals t=(1,30), (270,290), (17141.5,17146), (17143.5,17144) and (6820049,6820054) on the critical line.", out.width = c("49%","49%"), fig.show = "hold",  warning=FALSE}
 
 
- knitr::include_graphics("/home/john/pari/critical_line_argS_alsowithGfunctionderivative_start1_end30.pdf")
+ knitr::include_graphics("/home/john/pari/secondlogarithmicderivative/critical_line_argS_alsowithGfunctionderivative_start1_end30.pdf")
 
 
-knitr::include_graphics("/home/john/pari/critical_line_argS_alsowithGfunctionderivative_start270_end290.pdf")
+knitr::include_graphics("/home/john/pari/secondlogarithmicderivative/critical_line_argS_alsowithGfunctionderivative_start270_end290.pdf")
 
-knitr::include_graphics("/home/john/pari/critical_line_argS_alsowithGfunctionderivative_start17141p5_end17146.pdf")
+knitr::include_graphics("/home/john/pari/secondlogarithmicderivative/critical_line_argS_alsowithGfunctionderivative_start17141p5_end17146.pdf")
 
-knitr::include_graphics( "/home/john/pari/critical_line_argS_alsowithGfunctionderivative_start17143p5_end17144.pdf")
+knitr::include_graphics( "/home/john/pari/secondlogarithmicderivative/critical_line_argS_alsowithGfunctionderivative_start17143p5_end17144.pdf")
 
-knitr::include_graphics( "/home/john/pari/critical_line_argS_alsowithGfunctionderivative_start6820049_end6820054.pdf")
+knitr::include_graphics( "/home/john/pari/secondlogarithmicderivative/critical_line_argS_alsowithGfunctionderivative_start6820049_end6820054.pdf")
 
 ```
 
@@ -329,19 +329,20 @@ This behaviour
 (ii) the intersection of the horizontal black line in panel 1 (t=(1,30)) (which presumes $\zeta(1/2+I\cdot t)=0$) with the $\theta'(t)$ curve indicates a relatively simple condition for the first Riemann Zeta zero to occur. If such behaviour repeats for other L functions would be an interesting method of approximately finding the first non-trivial zero.
 
 
-```{r arg(zeta)_plusthetaderivativeandasymptotic, echo=FALSE, fig.cap="The strong commonality of equations (40) (violet-red) and (41) (black) to equation (31) (red) is shown in comparison to the Riemann Zeta S function + $\\theta'(t)$ (blue)  ($\\text{imag}(\\log(\\zeta(1/2+i\\cdot t)))+\\theta'(t)$), $\\arg(G_{\\text{generalised}}'(1/2+i\\cdot t)) +\\theta(t)$ (red) and $\\theta'(t)$ (green) functions for five intervals t=(1,30), (270,290), (17141.5,17146), (17143.5,17144) and (6820049,6820054) on the critical line. The red line is covered by the black lines in 4 of the panels but the red line can be checked by comparison to figure 3.", out.width = c("49%","49%"), fig.show = "hold",  warning=FALSE}
+
+```{r arg(zeta)_plusthetaderivativeandasymptotic, echo=FALSE, fig.cap="The strong commonality of equations (40) (violet-red) and (41) (black) to equation (31) (red) is shown in comparison to the Riemann Zeta S function + $\\theta'(t)$ (blue)  ($\\text{imag}(\\log(\\zeta(1/2+i\\cdot t)))+\\theta'(t)$), $\\arg(G_{\\text{generalised}}'(1/2+i\\cdot t)) +\\theta'(t)$ (red) and $\\theta'(t)$ (green) functions for five intervals t=(1,30), (270,290), (17141.5,17146), (17143.5,17144) and (6820049,6820054) on the critical line. The red line is covered by the black lines in 4 of the panels but the red line can be checked by comparison to figure 3.", out.width = c("49%","49%"), fig.show = "hold",  warning=FALSE}
 
 
- knitr::include_graphics("/home/john/pari/critical_line_argS_alsowithGfunctionderivative_and asymptotic_start1_end30.pdf")
+ knitr::include_graphics("/home/john/pari/secondlogarithmicderivative/critical_line_argS_alsowithGfunctionderivative_and asymptotic_start1_end30.pdf")
 
 
-knitr::include_graphics("/home/john/pari/critical_line_argS_alsowithGfunctionderivative_and asymptotic_start270_end290.pdf")
+knitr::include_graphics("/home/john/pari/secondlogarithmicderivative/critical_line_argS_alsowithGfunctionderivative_and asymptotic_start270_end290.pdf")
 
-knitr::include_graphics("/home/john/pari/critical_line_argS_alsowithGfunctionderivative_and asymptotic_start17141p5_end17146.pdf")
+knitr::include_graphics("/home/john/pari/secondlogarithmicderivative/critical_line_argS_alsowithGfunctionderivative_and asymptotic_start17141p5_end17146.pdf")
 
-knitr::include_graphics( "/home/john/pari/critical_line_argS_alsowithGfunctionderivative_and asymptoticstart17143p5_end17144.pdf")
+knitr::include_graphics( "/home/john/pari/secondlogarithmicderivative/critical_line_argS_alsowithGfunctionderivative_and asymptoticstart17143p5_end17144.pdf")
 
-knitr::include_graphics( "/home/john/pari/critical_line_argS_alsowithGfunctionderivative_and asymptoticstart6820049_end6820054.pdf")
+knitr::include_graphics( "/home/john/pari/secondlogarithmicderivative/critical_line_argS_alsowithGfunctionderivative_and asymptoticstart6820049_end6820054.pdf")
 
 ```
 
@@ -349,52 +350,165 @@ knitr::include_graphics( "/home/john/pari/critical_line_argS_alsowithGfunctionde
 
 ### 5-periodic Davenport Heilbronn function behaviour
 
-It is very straightforward to attempt to test analogous equations for the f1 5 periodic Davenport Heilbronn function. On the critical line the function of interest
+### f1(s)
+
+It is very straightforward to attempt to test analogous equations for the f1 5 periodic Davenport Heilbronn function. Firstly, given the function itself and its functional equation
 
 \begin{align}
-G_{\text{f1,generalised}}'(1/2+I\cdot t) +\theta_{f1}'(t) &= \text{real}\left[\frac{(f1''(1/2+I\cdot t) + 2\cdot \theta_{f1}'(t) \cdot f1'(1/2+I\cdot t) + 2\cdot \theta
-_{f1}''(t) \cdot f1(1/2+I\cdot t))}{(f1'(1/2+I\cdot t) + 2\cdot \theta_{f1}'(t) \cdot f1(1/2+I\cdot t))} +\theta_{f1}'(t)\right]
+f_{1}(s) &= \frac{1}{2cos(\theta_1)} \Big [ e^{i\theta_1}L(\chi_5(2,.),s) + e^{-i\theta_1}L(\chi_5(3,.),s) \Big ] \label{eq:func1_Lcomb} \\ 
+&= 1 + \frac{tan(\theta_1)}{2^s} - \frac{tan(\theta_1)}{3^s} - \frac{1}{4^s} + \frac{0}{5^s} + ... \label{eq:func1_series} \\ 
+&= 5^{-s}\Big ( \zeta(s,\frac{1}{5}) + tan(\theta_1)\cdot\zeta(s,\frac{2}{5}) - tan(\theta_1)\cdot\zeta(s,\frac{3}{5}) - \zeta(s,\frac{4}{5})\Big ) \label{eq:func1_hurwitz}
 \end{align}
 
-and the reduced equation omitting $f1(1/2+I\cdot t)=0$ term from the numerator and denominator of equation (44)
+where 
 
 \begin{align}
-G_{\text{f1,generalised,reduced}}'(1/2+I\cdot t) +\theta_{f1}'(t) &= \text{real}\left[\frac{(f1''(1/2+I\cdot t) + 2\cdot \theta_{f1}'(t) \cdot f1'(1/2+I\cdot t))}{(f1'(1/2+I\cdot t))}\right] +\theta_{f1}'(t) \\
--G_{\text{f1,generalised,reduced}}'(1/2+I\cdot t) +\theta_{f1}'(t) &= -\text{real}\left[\frac{(f1''(1/2+I\cdot t) + 2\cdot \theta_{f1}'(t) \cdot f1'(1/2+I\cdot t))}{(f1'(1/2+I\cdot t))}\right] +\theta_{f1}'(t)
+tan(\theta_1) &= \frac{(\sqrt{10-2\sqrt{5}}-2)}{(\sqrt{5}-1)} \label{eq:xi} \\
+&= 0.284079043840412296028291832393
 \end{align}
 
-Figure 4, displays a comparison of equation (44) (red), $\arg{(f1(1/2+I\cdot t))}+\theta_{f1}'(t)$ (blue) and $\theta_{f1}'(t)$ (green), equation (45) (violet-red) and equation (46) (black) across the two intervals t=(1,10), (70,130). There are nuisance discontinuities of $2*\pi$ present in $\arg{(f1(1/2+I\cdot t))}+\theta_{f1}'(t)$ (blue) curve.
+and 
 
-The asymptotic commonality of equations (45) (violet-red) and (46) (black) to equation (44) (red) for $f1(1/2+I\cdot t)$ is as striking as for $\zeta(1/2+\cdot t)$ in figure 4. In addition, the only time equations (44) (red) and (46) (black) go below zero is in the immediately vicinity of the two known critical strip zeroes [7,8] for t=(70,130).  
-
-Therefore it is reasonable to conjecture that
-
-(i) the two properties equations (39) and (43) for the Riemann Zeta function are generically arising from the functional equation dependence and should extend analogously to other L functions and Davenport Heilbronn functions according to their functional equations
-
-Preliminary investigations with the f2 5 periodic function indicate the presence of critical strip non-trivial zeroes is readily observed (and has negative values of equation (45) equivalent) but non-trivial zeroes outside the critical strip are not always readily detected based on critical line calculations (in equivalent of equation (45)).
+\begin{align}
+\theta_1=0.276787179448522625754266365045 \qquad radians \label{eq:theta1}
+\end{align}
 
 
-```{r arg(f1)_plusthetaderivativeandasymptotic, echo=FALSE, fig.cap="The strong commonality of equations (45) (violet-red) and (46) (black) to equation (44) (red) is shown in comparison to the f1 S function + $\\theta_{f1}'(t)$ (blue)  ($\\text{imag}(\\log(f1(1/2+i\\cdot t)))+\\theta_{f1}'(t)$), $\\arg(G_{\\text{f1,generalised}}'(1/2+i\\cdot t)) +\\theta_{f1}(t)$ (red) and $\\theta_{f1}'(t)$ (green) functions for two intervals t=(1,10), (70,130) on the critical line. The red line is covered by the black lines in the second panel.", out.width = c("100%"), fig.show = "hold",  warning=FALSE}
+The Davenport-Heilbronn $f_{1}$(s) function has the functional equation
+
+\begin{align}
+f_{1}(s) &= 5^{(\frac{1}{2}-s)}2(2\pi)^{(s-1)}cos(\frac{\pi s}{2})\Gamma(1-s)f_{1}(1-s) \\ &= \chi(f_{1}(s))\cdot f_{1}(1-s) \label{eq:eq_func1} \\
+&= e^{-I\cdot 2\cdot \theta_{f1ext}(s)}\cdot f_{1}(1-s) 
+\end{align}
+
+Thus on the critical line $s=1/2+I\cdot t$ the function of interest, the real part of the first derivative of the (generalised G function for $f1(1/2+I\cdot t)$ -$1/2\cdot \text{imag}(\log{(\chi(f_{1}(1/2+I\cdot t)))})$) is of the form
+
+\begin{align}
+\text{real}(G_{\text{f1,generalised}}'&(1/2+I\cdot t) +\theta_{f1}'(t)) \nonumber \\
+&= \text{real}\left[\frac{(f1''(1/2+I\cdot t) + 2\cdot \theta_{f1}'(t) \cdot f1'(1/2+I\cdot t) + 2\cdot \theta
+_{f1}''(t) \cdot f1(1/2+I\cdot t))}{(f1'(1/2+I\cdot t) + 2\cdot \theta_{f1}'(t) \cdot f1(1/2+I\cdot t))} +\theta_{f1}'(t)\right] \label{eq:f1_gen}
+\end{align}
+
+where $\theta_{f1}(t) = -1/2\cdot \text{imag}(\log{(\chi(f_{1}(1/2+I\cdot t)))})$ and the reduced equations omitting $f1(1/2+I\cdot t)=0$ term from the numerator and denominator of equation \eqref{eq:f1_gen} are 
+
+\begin{align}
+\text{real}(G_{\text{f1,generalised,reduced}}'(1/2+I\cdot t)) &+\theta_{f1}'(t) \nonumber \\
+&= \text{real}\left[\frac{(f1''(1/2+I\cdot t) + 2\cdot \theta_{f1}'(t) \cdot f1'(1/2+I\cdot t))}{(f1'(1/2+I\cdot t))}\right] +\theta_{f1}'(t)  \label{eq:f1_gen_reduced} \\
+-\text{real}(G_{\text{f1,generalised,reduced}}'(1/2+I\cdot t)) &+\theta_{f1}'(t) \nonumber \\ 
+&= -\text{real}\left[\frac{(f1''(1/2+I\cdot t) + 2\cdot \theta_{f1}'(t) \cdot f1'(1/2+I\cdot t))}{(f1'(1/2+I\cdot t))}\right] +\theta_{f1}'(t) \label{eq:f1_gen_reduced_minus}
+\end{align}
+
+Figure 4, displays a comparison of equation \eqref{eq:f1_gen} (red), $\arg{(f1(1/2+I\cdot t))}+\theta_{f1}'(t)$ (blue) and $\theta_{f1}'(t)$ (green), equation \eqref{eq:f1_gen_reduced} (violet-red) and equation \eqref{eq:f1_gen_reduced_minus} (black) across the two intervals t=(1,10), (70,130). There are nuisance discontinuities of $2*\pi$ present in $\arg{(f1(1/2+I\cdot t))}+\theta_{f1}'(t)$ (blue) curve.
+
+The asymptotic commonality of equations \eqref{eq:f1_gen_reduced} (violet-red) and \eqref{eq:f1_gen_reduced_minus} (black) to equation \eqref{eq:f1_gen} (red) for $f1(1/2+I\cdot t)$ is as striking as for $\zeta(1/2+I\cdot t)$ in figure 4. Analogous to the Riemann zeta function first derivative generalised G function behaviour, the three equations \eqref{eq:f1_gen}, \eqref{eq:f1_gen_reduced} and \eqref{eq:f1_gen_reduced_minus} intersect with $\theta_{f1}'(t)$ at the critical lines non-trivial zeroes ($\gamma_{f1}$) along $f1(1/2+I\cdot t)$. Which means the second order derivative identity 
+
+\begin{align}
+\text{real}\left[\frac{f1''(1/2+I\cdot \gamma_{f1})}{f1'(1/2+I\cdot \gamma_{f1})}\right] &= - 2\cdot \theta_{f1}'(\gamma_{f1}) 
+\end{align}
+
+also applies for f1 on its critical line.
+
+In addition since f1 has non-trivial zeroes away from the critical line (in the critical strip), the only time equations \eqref{eq:f1_gen} (red) and \eqref{eq:f1_gen_reduced_minus} (black) go below zero is in the immediately vicinity of the two known critical strip zeroes [7,8] for t=(70,130).  
 
 
- knitr::include_graphics("/home/john/pari/critical_line_argS_f1_DavenportHeilbronn_alsowithGfunctionderivative_and asymptotic_start1_end10.pdf")
 
-knitr::include_graphics("/home/john/pari/critical_line_argS_f1_DavenportHeilbronn_alsowithGfunctionderivative_and asymptotic_start70_end130.pdf")
+```{r arg(f1)_plusthetaderivativeandasymptotic, echo=FALSE, fig.cap="The strong commonality of equations \\eqref{eq:f1_gen_reduced} (violet-red) and \\eqref{eq:f1_gen_reduced_minus} (black) to equation \\eqref{eq:f1_gen} (red) is shown in comparison to the f1 S function + $\\theta_{f1}'(t)$ (blue)  ($\\text{imag}(\\log(f1(1/2+i\\cdot t)))+\\theta_{f1}'(t)$), $\\arg(G_{\\text{f1,generalised}}'(1/2+i\\cdot t)) +\\theta_{f1}'(t)$ (red) and $\\theta_{f1}'(t)$ (green) functions for two intervals t=(1,10), (70,130) on the critical line. The red line is covered by the black lines in the second panel.", out.width = c("100%"), fig.show = "hold",  warning=FALSE}
+
+
+ knitr::include_graphics("/home/john/pari/secondlogarithmicderivative/critical_line_argS_f1_DavenportHeilbronn_alsowithGfunctionderivative_and asymptotic_start1_end10.pdf")
+
+knitr::include_graphics("/home/john/pari/secondlogarithmicderivative/critical_line_argS_f1_DavenportHeilbronn_alsowithGfunctionderivative_and asymptotic_start70_end130.pdf")
 
 ```
 
+\newpage
+
+### f2(s)
+
+It is also very straightforward to attempt to test analogous equations for the f2 5 periodic Davenport Heilbronn function. Firstly, given the function itself expressed in L-function, Dirichlet series and Hurwitz Zeta function form the $f_{2}$(s) 5-periodic function is
+
+\begin{align}
+f_{2}(s) &= \frac{1}{2cos(\theta_2)} \Big [ e^{i\theta_2}L(\chi_5(2,.),s) + e^{-i\theta_2}L(\chi_5(3,.),s) \Big ] \label{eq:func2_Lcomb} \\ 
+&= 1 - \frac{tan(\theta_2)}{2^s} + \frac{tan(\theta_2)}{3^s} - \frac{1}{4^s} + \frac{0}{5^s} + ... \label{eq:func2_series}\\ 
+&= 5^{-s}\Big ( \zeta(s,\frac{1}{5}) - tan(\theta_2)\cdot\zeta(s,\frac{2}{5}) + tan(\theta_2)\cdot\zeta(s,\frac{3}{5}) - \zeta(s,\frac{4}{5})\Big ) \label{eq:func2_hurwitz}
+\end{align}
+
+where 
+
+\begin{align}
+tan(\theta_2) &= \frac{1}{0.284079043840412296028291832393}
+\end{align}
+
+and 
+
+\begin{align}
+\theta_2=1.2940091473463739934770553265951171821 \qquad radians \label{eq:theta2}
+\end{align}
+
+
+The Davenport-Heilbronn $f_{2}$(s) function has the functional equation [9]
+
+\begin{align}
+f_{2}(s) &= -5^{(\frac{1}{2}-s)}2(2\pi)^{(s-1)}cos(\frac{\pi s}{2})\Gamma(1-s)f_{2}(1-s) \\ 
+&= -\chi(f_{1}(s))\cdot f_{2}(1-s) \label{eq:eq_func2} \\ 
+&= e^{-I\cdot 2\cdot \theta_{f2ext}(s)}\cdot f_{2}(1-s) 
+\end{align}
+
+where the multiplicative factor on the RHS of equations \eqref{eq:eq_func2} and \eqref{eq:eq_func1} differ by a factor of -1 [9].
+
+Thus on the critical line $s=1/2+I\cdot t$ the function of interest, the real part of the first derivative of the (generalised G function for $f2(1/2+I\cdot t)$ -$1/2\cdot \text{imag}(\log{(\chi(f_{1}(1/2+I\cdot t)))})$) is of the form
+
+\begin{align}
+\text{real}(G_{\text{f2,generalised}}'&(1/2+I\cdot t) +\theta_{f2}'(t)) \nonumber \\
+&= \text{real}\left[\frac{(f2''(1/2+I\cdot t) + 2\cdot \theta_{f2}'(t) \cdot f2'(1/2+I\cdot t) + 2\cdot \theta
+_{f2}''(t) \cdot f2(1/2+I\cdot t))}{(f2'(1/2+I\cdot t) + 2\cdot \theta_{f2}'(t) \cdot f2(1/2+I\cdot t))} +\theta_{f2}'(t)\right] \label{eq:f2_gen}
+\end{align}
+
+where $\theta_{f2}(t) = -1/2\cdot \text{imag}(\log{(\chi(f_{1}(1/2+I\cdot t)))})$ and the reduced equations omitting $f2(1/2+I\cdot t)=0$ term from the numerator and denominator of equation \eqref{eq:f2_gen} are 
+
+\begin{align}
+\text{real}(G_{\text{f2,generalised,reduced}}'(1/2+I\cdot t)) &+\theta_{f2}'(t) \nonumber \\
+&= \text{real}\left[\frac{(f2''(1/2+I\cdot t) + 2\cdot \theta_{f2}'(t) \cdot f2'(1/2+I\cdot t))}{(f2'(1/2+I\cdot t))}\right] +\theta_{f2}'(t)  \label{eq:f2_gen_reduced} \\
+-\text{real}(G_{\text{f2,generalised,reduced}}'(1/2+I\cdot t)) &+\theta_{f2}'(t) \nonumber \\ 
+&= -\text{real}\left[\frac{(f2''(1/2+I\cdot t) + 2\cdot \theta_{f2}'(t) \cdot f2'(1/2+I\cdot t))}{(f2'(1/2+I\cdot t))}\right] +\theta_{f2}'(t) \label{eq:f2_gen_reduced_minus}
+\end{align}
+
+Figure 5, displays a comparison of equation \eqref{eq:f2_gen} (red), $\arg{(f2(1/2+I\cdot t))}+\theta_{f2}'(t)$ (blue) and $\theta_{f2}'(t)$ (green), equation \eqref{eq:f2_gen_reduced} (violet-red) and equation \eqref{eq:f2_gen_reduced_minus} (black) across the two intervals t=(1,10), (70,130). There are nuisance discontinuities of $2*\pi$ present in $\arg{(f2(1/2+I\cdot t))}+\theta_{f2}'(t)$ (blue) curve.
+
+The asymptotic commonality of equations \eqref{eq:f2_gen_reduced} (violet-red) and \eqref{eq:f2_gen_reduced_minus} (black) to equation \eqref{eq:f2_gen} (red) for $f2(1/2+I\cdot t)$ is as striking as for $\zeta(1/2+I\cdot t)$ in figure 4. In addition since f2 has many non-trivial zeroes away from the critical line (both inside and outside the critical strip), equations \eqref{eq:f2_gen} (red) and \eqref{eq:f2_gen_reduced_minus} (black) frequently go below zero in the immediate vicinity of the known f2(s) non-trivial zeroes that occur off the critical line [8]. However, the non-trivial zeroes outside the critical strip are not always readily detected based on these critical line calculations.
+
+Analogous to the Riemann zeta function first derivative generalised G function behaviour, the three equations \eqref{eq:f2_gen}, \eqref{eq:f2_gen_reduced} and \eqref{eq:f2_gen_reduced_minus} intersect with $\theta_{f2}'(t)$ at the critical lines non-trivial zeroes ($\gamma_{f2}$) along $f2(1/2+I\cdot t)$. Which means the second order derivative identity 
+
+\begin{align}
+\text{real}\left[\frac{f2''(1/2+I\cdot \gamma_{f2})}{f2'(1/2+I\cdot \gamma_{f2})}\right] &= - 2\cdot \theta_{f2}'(\gamma_{f2}) 
+\end{align}
+
+also applies for f2 on its critical line.
 
 
 
+```{r arg(f2)_plusthetaderivativeandasymptotic, echo=FALSE, fig.cap="The strong commonality of equations \\eqref{eq:f2_gen_reduced} (violet-red) and \\eqref{eq:f2_gen_reduced_minus} (black) to equation \\eqref{eq:f2_gen} (red) is shown in comparison to the f2 S function + $\\theta_{f2}'(t)$ (blue)  ($\\text{imag}(\\log(f2(1/2+i\\cdot t)))+\\theta_{f2}'(t)$), $\\arg(G_{\\text{f2,generalised}}'(1/2+i\\cdot t)) +\\theta_{f2}'(t)$ (red) and $\\theta_{f2}'(t)$ (green) functions for three intervals t=(1,30), (60,90) and (160,180) on the critical line. The red line is covered by the black lines in the second two panels. The sharp negative minima occurring in these critical line calculations occur at the t co-ordinates of non-trivial zeroes inside the critical strip ($s=0.69340+I\\cdot 77.3469$ in panel 2 and $s=0.82423+I\\cdot 171.2886$ in panel 3 and their (1-s) counterparts).", out.width = c("55%","55%"), fig.show = "hold", warning=FALSE}
 
 
+ knitr::include_graphics("/home/john/pari/secondlogarithmicderivative/critical_line_argS_f2_DavenportHeilbronn_alsowithGfunctionderivative_and asymptotic_start1_end30.pdf")
+
+knitr::include_graphics("/home/john/pari/secondlogarithmicderivative/critical_line_argS_f2_DavenportHeilbronn_alsowithGfunctionderivative_and asymptotic_start60_end90.pdf")
+
+knitr::include_graphics("/home/john/pari/secondlogarithmicderivative/critical_line_argS_f2_DavenportHeilbronn_alsowithGfunctionderivative_and asymptotic_start160_end180.pdf")
+
+```
 
 \newpage
+
+Therefore it is reasonable to conjecture comparing the Riemann Zeta and f1 and f2 results that
+
+(i) the two properties equations (39) and (43) for the Riemann Zeta function are generically arising from the functional equation dependence and should extend analogously to other L functions and Davenport Heilbronn functions according to their functional equations.
+
 
 
 ## Conclusions
 
-Two quantitative properties of the critical line Riemann Zeta function behaviour have been identified by examining the derivative of the starting function of Levinson's method [3]. By comparing to analogous f1 5-periodic Davenport Heilbronn function calculations which have similar (and different) behaviour the two properties likely arise from the presence of the functional equation.
+Two quantitative properties of the critical line Riemann Zeta function behaviour have been identified by examining the derivative of the starting function of Levinson's method [3]. By comparing to analogous f1 and f2 5-periodic Davenport Heilbronn function calculations which have similar (and different) behaviour the two properties likely arise from the presence of the functional equation.
 
 
 ## References
@@ -418,6 +532,10 @@ October 1994, Pages 747-748
 
 8. Balanzario, E.P. and Sanchez-Ortiz, J. Mathematics of Computation,
 Volume 76, Number 260, October 2007, Pages 2045–2049
+
+9. E. Bombieri, A. Ghosh, “Around the Davenport–Heilbronn function”, Uspekhi Mat. Nauk, 66:2(398) (2011), 15–66; Russian Math. Surveys, 66:2 (2011), 221–270
+https://doi.org/10.4213/rm9410 
+IAS lecture https://www.youtube.com/watch?v=-JUHypc2_9A
 
 
 
@@ -575,16 +693,16 @@ Figure 1 of the text is reproduced including nuisance discontinuities arising fr
 ```{r arg(zeta)_plustheta_withprincipalbranchdiscontinuities, echo=FALSE, fig.cap="Retaining the principal branch logarithm related nuisance discontinuities in a comparison of the Staircase Riemann Zeta S function (blue)  ($\\text{imag}(\\log(\\zeta(1/2+i\\cdot t)))+\\theta(t)$), $\\arg(G_{\\text{generalised}}(1/2+i\\cdot t)) +\\theta(t)$ (red) and $\\theta(t)$ (green) functions for five intervals t=(1,30), (270,290), (17141.5,17146), (17143.5,17144) and (6820049,6820054) on the critical line.", out.width = c("49%","49%"), fig.show = "hold",  warning=FALSE}
 
 
- knitr::include_graphics("/home/john/pari/critical_line_argS_stepfunction_alsowithGfunction_start1_end30_principalbranch.pdf")
+ knitr::include_graphics("/home/john/pari/secondlogarithmicderivative/critical_line_argS_stepfunction_alsowithGfunction_start1_end30_principalbranch.pdf")
 
 
-knitr::include_graphics("/home/john/pari/critical_line_argS_stepfunction_alsowithGfunction_start270_end290_principalbranch.pdf")
+knitr::include_graphics("/home/john/pari/secondlogarithmicderivative/critical_line_argS_stepfunction_alsowithGfunction_start270_end290_principalbranch.pdf")
 
-knitr::include_graphics("/home/john/pari/critical_line_argS_stepfunction_alsowithGfunction_start17141p5_end17146_principalbranch.pdf")
+knitr::include_graphics("/home/john/pari/secondlogarithmicderivative/critical_line_argS_stepfunction_alsowithGfunction_start17141p5_end17146_principalbranch.pdf")
 
-knitr::include_graphics( "/home/john/pari/critical_line_argS_stepfunction_alsowithGfunction_start17143p5_end17144_principalbranch.pdf")
+knitr::include_graphics( "/home/john/pari/secondlogarithmicderivative/critical_line_argS_stepfunction_alsowithGfunction_start17143p5_end17144_principalbranch.pdf")
 
-knitr::include_graphics( "/home/john/pari/critical_line_argS_stepfunction_alsowithGfunction_start6820049_end6820054_principalbranch.pdf")
+knitr::include_graphics( "/home/john/pari/secondlogarithmicderivative/critical_line_argS_stepfunction_alsowithGfunction_start6820049_end6820054_principalbranch.pdf")
 
 ```
 
