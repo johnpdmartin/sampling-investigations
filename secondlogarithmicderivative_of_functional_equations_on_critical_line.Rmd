@@ -456,7 +456,7 @@ f_{2}(s) &= -5^{(\frac{1}{2}-s)}2(2\pi)^{(s-1)}cos(\frac{\pi s}{2})\Gamma(1-s)f_
 
 where the multiplicative factor on the RHS of equations \eqref{eq:eq_func2} and \eqref{eq:eq_func1} differ by a factor of -1 [9].
 
-Thus on the critical line $s=1/2+I\cdot t$ the function of interest, the real part of the first derivative of the (generalised G function for $f2(1/2+I\cdot t)$ -$1/2\cdot \text{imag}(\log{(\chi(f_{1}(1/2+I\cdot t)))})$) is of the form
+Thus on the critical line $s=1/2+I\cdot t$ the function of interest, the real part of the first derivative of the (generalised G function for $f2(1/2+I\cdot t)$ -$1/2\cdot \text{imag}(\log(-1)+\log{(\chi(f_{1}(1/2+I\cdot t)))})$) is of the form
 
 \begin{align}
 \text{real}(G_{\text{f2,generalised}}'&(1/2+I\cdot t) +\theta_{f2}'(t)) \nonumber \\
@@ -464,7 +464,7 @@ Thus on the critical line $s=1/2+I\cdot t$ the function of interest, the real pa
 _{f2}''(t) \cdot f2(1/2+I\cdot t))}{(f2'(1/2+I\cdot t) + 2\cdot \theta_{f2}'(t) \cdot f2(1/2+I\cdot t))} +\theta_{f2}'(t)\right] \label{eq:f2_gen}
 \end{align}
 
-where $\theta_{f2}(t) = -1/2\cdot \text{imag}(\log{(\chi(f_{1}(1/2+I\cdot t)))})$ and the reduced equations omitting $f2(1/2+I\cdot t)=0$ term from the numerator and denominator of equation \eqref{eq:f2_gen} are 
+where $\theta_{f2}(t) = -1/2\cdot \text{imag}(\log(-1)+\log{(\chi(f_{1}(1/2+I\cdot t)))})$ and the reduced equations omitting $f2(1/2+I\cdot t)=0$ term from the numerator and denominator of equation \eqref{eq:f2_gen} are 
 
 \begin{align}
 \text{real}(G_{\text{f2,generalised,reduced}}'(1/2+I\cdot t)) &+\theta_{f2}'(t) \nonumber \\
