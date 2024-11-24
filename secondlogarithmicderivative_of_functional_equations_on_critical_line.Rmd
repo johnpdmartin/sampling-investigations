@@ -46,6 +46,11 @@ In this paper, some properties of the generalised form of equation (2) on the cr
 \item The approach is extended to the 5-perodic Davenport Heilbronn functions to show analgous results occur implying the behaviour is arising from the presence of a functional equation.
 \end{itemize}
 
+In a stack exchange question on Mathematics in 2014, Raymond Manzoni has previously obtained this relationship between $\Re{\left(\frac{\zeta''(\frac{1}{2}+I\cdot \gamma)}{\zeta'(\frac{1}{2}+I\cdot \gamma)}\right)}$ and $-2\cdot\theta'(\gamma)$.
+
+\url{https://math.stackexchange.com/questions/762066/derivative-of-riemann-zeta-is-this-inequality-true?noredirect=1&lq=1}
+
+
 
 
 
@@ -509,6 +514,10 @@ Therefore it is reasonable to conjecture comparing the Riemann Zeta and f1 and f
 ## Conclusions
 
 Two quantitative properties of the critical line Riemann Zeta function behaviour have been identified by examining the derivative of the starting function of Levinson's method [3]. By comparing to analogous f1 and f2 5-periodic Davenport Heilbronn function calculations which have similar (and different) behaviour the two properties likely arise from the presence of the functional equation.
+
+As updated in the introduction, in a stack exchange question on Mathematics in 2014, Raymond Manzoni has previously obtained this relationship between $\Re{\left(\frac{\zeta''(\frac{1}{2}+I\cdot \gamma)}{\zeta'(\frac{1}{2}+I\cdot \gamma)}\right)}$ and $-2\cdot\theta'(\gamma)$.
+
+\url{https://math.stackexchange.com/questions/762066/derivative-of-riemann-zeta-is-this-inequality-true?noredirect=1&lq=1}
 
 
 ## References
