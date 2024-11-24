@@ -186,7 +186,7 @@ As a solution to the presence of nuisance discontinuities in $\arg{(G_{\text{gen
 
 \begin{align}
 G_{\text{generalised}}'(s) &= \frac{d}{ds}\left((\zeta'(s) + \Re\left[\theta_{ext}'(s)+\theta_{ext}'(1-s)\right] \cdot \zeta(s))\right) \\
-&= \zeta''(s) + \Re\left[\theta_{ext}'(s)+\theta_{ext}'(1-s)\right] \cdot \zeta(s) -  \Im\left[\theta_{ext}''(s)-\theta_{ext}''(1-s)\right] \cdot \zeta(s) 
+&= \zeta''(s) + \Re\left[\theta_{ext}'(s)+\theta_{ext}'(1-s)\right] \cdot \zeta'(s) -  \Im\left[\theta_{ext}''(s)-\theta_{ext}''(1-s)\right] \cdot \zeta(s) 
 \end{align}
 
 where given s is an arbitrary point in the complex plane $\theta_{ext}(s)=-1/2\cdot\log{(\chi(s))}$ is used instead of $\theta(t)$ and $\Re\left[\theta_{ext}'(s)+\theta_{ext}'(1-s)\right]$ replacing $(f'(1/2+I\cdot t)+f'(1/2-I\cdot t)) \in \mathbb{R}$ is required. 
@@ -198,15 +198,15 @@ For example using equation (25),
 \frac{d}{ds} &\big[\log({G_{\text{generalised}}(s)})+\theta_{ext}(s)\big] \nonumber \\
 &= \frac{1}{G_{\text{generalised}}(s)}\cdot G_{\text{generalised}}'(s)+\theta_{ext}'(s) \\
 &= \frac{G_{\text{generalised}}'(s)}{G_{\text{generalised}}(s)} +\theta_{ext}'(s) \\
-&= \frac{(\zeta''(s) + \Re\left[\theta_{ext}'(s)+\theta_{ext}'(1-s)\right] \cdot \zeta(s) -  \Im\left[\theta_{ext}''(s)-\theta_{ext}''(1-s)\right] \cdot \zeta(s))}{(\zeta'(s) + \Re\left[\theta_{ext}'(s)+\theta_{ext}'(1-s)\right] \cdot \zeta(s))} +\theta_{ext}'(s) \\
+&= \frac{(\zeta''(s) + \Re\left[\theta_{ext}'(s)+\theta_{ext}'(1-s)\right] \cdot \zeta'(s) -  \Im\left[\theta_{ext}''(s)-\theta_{ext}''(1-s)\right] \cdot \zeta(s))}{(\zeta'(s) + \Re\left[\theta_{ext}'(s)+\theta_{ext}'(1-s)\right] \cdot \zeta(s))} +\theta_{ext}'(s) \\
 \end{align}
 
-The calculation gain immediately obtained is that the nuisance discontinuities in $\arg{(G_{\text{generalised}}(1/2+I\cdot t))}$ on the critical line are removed in the principal branch calculations of $\frac{(\zeta''(s) + \Re\left[\theta_{ext}'(s)+\theta_{ext}'(1-s)\right] \cdot \zeta(s) -  \Im\left[\theta_{ext}''(s)-\theta_{ext}''(1-s)\right] \cdot \zeta(s))}{(\zeta'(s) + \Re\left[\theta_{ext}'(s)+\theta_{ext}'(1-s)\right] \cdot \zeta(s))}$.
+The calculation gain immediately obtained is that the nuisance discontinuities in $\arg{(G_{\text{generalised}}(1/2+I\cdot t))}$ on the critical line are removed in the principal branch calculations of $\frac{(\zeta''(s) + \Re\left[\theta_{ext}'(s)+\theta_{ext}'(1-s)\right] \cdot \zeta'(s) -  \Im\left[\theta_{ext}''(s)-\theta_{ext}''(1-s)\right] \cdot \zeta(s))}{(\zeta'(s) + \Re\left[\theta_{ext}'(s)+\theta_{ext}'(1-s)\right] \cdot \zeta(s))}$.
 
 Following the Cauchy Riemann equations for complex differentiable functions, since the original function involves the imaginary part of the $\log{(G_{\text{generalised}})}+\theta_{ext}(s)$ (see equation (23))  the component of the first derivative that is of interest is
 
 \begin{align}
-\text{real}\left(G_{\text{generalised}}'(s) +\theta_{ext}'(s)\right) &= \text{real}\left[\frac{(\zeta''(s) + \Re\left[\theta_{ext}'(s)+\theta_{ext}'(1-s)\right] \cdot \zeta(s) -  \Im\left[\theta_{ext}''(s)-\theta_{ext}''(1-s)\right] \cdot \zeta(s))}{(\zeta'(s) + \Re\left[\theta_{ext}'(s)+\theta_{ext}'(1-s)\right] \cdot \zeta(s))} +\theta_{ext}'(s)\right]
+\text{real}\left(G_{\text{generalised}}'(s) +\theta_{ext}'(s)\right) &= \text{real}\left[\frac{(\zeta''(s) + \Re\left[\theta_{ext}'(s)+\theta_{ext}'(1-s)\right] \cdot \zeta'(s) -  \Im\left[\theta_{ext}''(s)-\theta_{ext}''(1-s)\right] \cdot \zeta(s))}{(\zeta'(s) + \Re\left[\theta_{ext}'(s)+\theta_{ext}'(1-s)\right] \cdot \zeta(s))} +\theta_{ext}'(s)\right]
 \end{align}
 
 Therefore, on the critical line the function of interest
