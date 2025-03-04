@@ -1,0 +1,2843 @@
+---
+title: "A useful approximation of the Riemann Zeta function, away from the real axis, using spectral filtering of the partial Euler product."
+author: "John Martin"
+date: \today
+header-includes:  \usepackage{xcolor}
+output:
+  pdf_document:
+  fig_crop: no
+---
+  
+  
+  
+  ```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+
+```
+<!-- https://stackoverflow.com/questions/41655383/r-markdown-similar-feature-to-newcommand-in-latex/41664105 -->
+\newcommand{\mychi}{\raisebox{0pt}[1ex][1ex]{$\chi$}}
+
+## Executive summary 
+
+By performing precise spectral filtering of the fourier transform of the Riemann Zeta function partial Euler Product over a finite interval on the critical line, the subsequent inverse fourier transform provides a useful approximation of the Riemann Zeta function. Two different algorithms are used for spectral filtering depending on whether the Euler Product calculation uses truncation at the first or second quiescent region of the corresponding Riemann Zeta Dirichlet series. The spectral filtering algorithm for $N_1=\sqrt{\frac{t}{2\pi}}$ truncation of the primes in the Euler product calculation involves (i) independent fourier transform calculations of the Euler Product analogues of the two Riemann-Siegel zeroth order components and (ii) a linear combination of the two spectral filtered transforms whereby the fourier transform of the $\prod \frac{1}{(1-\frac{1}{p^s})}$ term supplies the low frequency components and the fourier transform of the $\chi(s) \cdot \prod \frac{1}{(1-\frac{1}{p^{(1-s)}})}$ term supplies the high frequency components for a combined spectral function upon which the inverse fourier transform is extracted. 
+
+## Introduction
+
+The Riemann Zeta function is defined [1-3], in the complex plane by the integral 
+
+\begin{equation}
+\zeta(s) = \frac{\prod(-s)}{2\pi i}\int_{C_{\epsilon,\delta}} \frac{(-x)^s}{(e^{x}-1)x}dx
+\end{equation}
+
+
+where $s \thinspace \epsilon \thinspace \mathbb{C}$ and $C_{\epsilon,\delta}$ is the contour about the imaginary poles.
+
+The Riemann Zeta function has been shown to obey the functional equation [1-4]
+
+\begin{align}
+\zeta(s) &= \mychi(s)\zeta(1-s) \\
+&= 2^s\pi^{s-1}sin(\frac{\pi s}{2})\Gamma(1-s)\zeta(1-s) \label{eq:func} \\
+&= e^{-2\theta(s)}\zeta(1-s)
+\end{align}
+
+For $\Re(s) > 1$, the infinite Euler Product of the primes absolutely converges to the infinite Riemann Zeta Dirichlet Series sum [1,3]
+
+\begin{equation}
+\zeta(s) = {\Large\sum_{k=1}^\infty} \frac{1}{k^s} = {\Large\prod_{\rho=2}^\infty} \frac{1}{(1-1/\rho^{s})} \qquad \text{for } \Re(s) > 1
+\end{equation}
+
+Importantly, using the log(1-x) expansion of $\log(\zeta(s))$ [3-5] the Euler product also has the form
+
+\begin{equation}
+{\Large\prod_{\rho=2}^\infty} \frac{1}{(1-1/\rho^{s})} = {\Large\text{exp}}{\left(\sum_{\rho=2}^\infty \sum_{n=1}^{\infty} \frac{1}{n\cdot\rho^{ns}}\right)}
+\end{equation}
+
+
+For $\Re(s) \le 1$, the partial Euler Product diverges, however, using the above equations for finite sums (products) of integers (primes) the following relationship holds
+
+\begin{align} \label{eq:truncEP}
+{\Large\sum_{k=1}^N} \frac{1}{k^s} &= 1+\left(\sum_{\rho=2}^\infty \sum_{n=1}^{\infty} \frac{1}{n\cdot\rho^{ns}}\cdot \delta(\rho^n \le N)\right) \nonumber\\
+&+\frac{1}{2!}\left(\sum_{\rho_1=2}^\infty \sum_{n=1}^{\infty} \sum_{\rho_2=2}^\infty \sum_{m=1}^{\infty} \frac{1}{n\cdot\rho_1^{ns}}\cdot \frac{1}{m\cdot\rho_2^{ms}} \cdot \delta(\rho_1^n\cdot\rho_2^m \le N) \right)\nonumber\\
+&+\frac{1}{3!}\left(\sum_{\rho_1=2}^\infty \sum_{n=1}^{\infty} \sum_{\rho_2=2}^\infty \sum_{m=1}^{\infty} \sum_{\rho_3=2}^\infty \sum_{o=1}^{\infty} \frac{1}{n\cdot\rho_1^{ns}}\cdot \frac{1}{m\cdot\rho_2^{ms}}\cdot  \frac{1}{o\cdot\rho_3^{os}} \cdot \delta(\rho_1^n\cdot\rho_2^{m}\cdot\rho_3^{o} \le N) \right) \nonumber \\
+&+ \qquad \ldots
+\end{align}
+
+where the delta functions play a crucial role in appropriately truncating the Euler Product terms. Hence the above expression can be used with the $N_2 \sim \lfloor\frac{t}{\pi}\rfloor$ and ($N_1 \sim \lfloor\sqrt{\frac{t}{2\pi}}\rfloor$) quiescent regions of the oscillatory divergence of the Riemann Zeta function to obtain useful (but calculationally slow) partial Euler Product based approximations of the Riemann Zeta function in the critical strip (and below) [5]. In [6-8], an alternative series expansion for the truncated euler product was given in terms of finite geometric series of primes and powers of primes in the hope of identifying a faster way to calculate a finite Dirichlet Series using only primes. In the fastest algorithm [8] while primes are only used the method also requires composite numbers to be derived, thus requiring approximately $N_2/4$ terms compared to the standard zeroth order Riemann-Siegel formula (which uses $N_1$ terms).
+
+In this paper, a different approach is investigated whereby spectral filtering of the fourier tranform of the Euler Product (over an interval e.g., $\Delta t \approx 1000$) is used to remove unwanted high (and low) frequency noise, depending on the truncation used in the partial Euler product) present in the partial Euler Product for $\Re(s) \le 1$ and then the inverse fourier transform of the filtered spectrum results in a useful zeroth order approximation of the Riemann Zeta function, particularly at the centre of the interval covered by the partial Euler product calculation. For the $N_2 = \lfloor\sqrt{\frac{t}{2\pi}}\rfloor$ calculation this spectral filtering approach does bring the explicit number of terms to be calculated down to the number of primes $\le N_1$ (rather than the use of $N_2/4$ terms achieved in [9]). This spectral filtering approach then also involves the relatively small overhead of performing fourier transformation, spectral filtering and inverse fourier transformation.
+
+The paper firstly compares the fourier transform spectrum of the Riemann Zeta function and the partial Euler Product using $N_2$ (second quiescent region) truncation to highlight the characteristics of the two spectra. Secondly, an algorithm for filtering the $N_2$ partial Euler Product fourier transform is discussed whose inverse fourier transform demonstrably produces a useful zeroth order approximation for the Riemann Zeta function, away from the real axis.
+
+Thirdly, a different algorithm for independently filtering the fourier transforms of $N_1$ (first quiescent region) truncation partial Euler Product analogues of the two Riemann-Siegel zeroth order components [1,4] is presented which successfully produces a fast solely prime based zeroth order approximation for the Riemann Zeta function as $t \rightarrow \infty$.
+
+
+## Comparing the fourier transform spectra of the Riemann Zeta function and second quiescent region based partial Euler Product calculations
+
+Figures 1 and 2, illustrate the absolute value of the fourier transform of (i) the Riemann Zeta function
+
+\begin{equation}
+\zeta(s)
+\end{equation}
+
+(lefthand column) and the partial Euler Product truncated at the second quiescent region 
+
+\begin{equation}
+\prod_{p=2}^{p\le \lfloor\frac{t}{\pi}\rfloor=N_2} \frac{1}{(1-\frac{1}{p^s})}
+\end{equation}
+
+(righthand column) over the intervals t=(2500,3500) and t=(9000,10000) respectively, for five values of $\Re(s)= 1.5, 1.0, 0.75, 0.5, 0.25$.
+
+To produce the graphs, firstly the $\zeta(s)$ and $\prod_{p=2}^{p\le \lfloor\frac{t}{\pi}\rfloor=N_2} \frac{1}{(1-\frac{1}{p^s})}$ functions were calculated for a grid of points for a given $\Re(s)$ value ($\Delta t = 1000$, with a spacing 0.01 giving a waveform sample of 100000 points) and stored to file using the pari-gp language [9] and secondly the fourier transform calculations and graphs were derived using the R language [10] and Rstudio IDE [11]. 
+
+Since the input data was complex valued, the fourier transform spectrum is one sided. For convenience in figures 1 and 2, 
+
+\begin{enumerate}
+\item the fast fourier transform (fft) output vector is wrapped around so the informative non-zero fft components appear next to the DC fft component (0) as negative frequencies.
+\item the x-axis is scaled in units of angular frequency (radians per second) since the low frequency components are expected to be $|\omega| = \{\log(2), \log(3), \log(4), etc\}$ due to the Dirichlet series $\Large\sum \frac{1}{k^s}$ contribution to $\zeta(s)$.
+\end{enumerate}
+
+It can be seen in the two figures that 
+
+\begin{itemize}
+\item The DC component has amplitude 1e5 consistent with the number of sampled points (1e5) analysed for each fourier transform since $\Re(\zeta(s))$ has a DC component.
+\item As indicated by the green vertical lines both the Riemann Zeta function and the partial Euler Product truncated at the second quiescent region sampled over the finite intervals t=(2500,3500) and t=(9000,10000) do indeed have fourier spectra visibly containing angular frequency components $|\omega| = \{\log(2), \log(3), \log(4), ... , \log(20), ...  \text{etc}\}$ which is understandable since $\Large\sum \frac{1}{k^s} = 1 + e^{-\log(2)t} + e^{-\log(3)t} + e^{-\log(4)t} + e^{-\log(5)t} + ...$ has contributions at these particular angular frequencies independent of t.
+\item As indicated by the red vertical lines are broader spectral features which are successful captured by the pair of red lines $-(\log(UB/\pi/2),\log(LB/\pi/2))$, $-(\log(UB/\pi/4),\log(LB/\pi/4))$, $-(\log(UB/\pi/6),\log(LB/\pi/6))$ where UB=3500,LB=2500 (UB=10000,LB=9000) corresponding to the range of t values used in figures 1 and 2 respectively. The origin of such features is also recognizable in the known cumulative behaviour of the real and imaginary part partial sums $\Re(\Large\sum \frac{1}{k^s})$ and $\Im(\Large\sum \frac{1}{k^s})$ which typically have  steplike behaviour around $\frac{t}{2\pi}, \frac{t}{3\pi}, \frac{t}{4\pi}, \frac{t}{5\pi}, \frac{t}{6\pi}, ...$. The largest value $\frac{t}{2\pi}$ marks the final step of the partial sums $\Re(\Large\sum \frac{1}{k^s})$ and $\Im(\Large\sum \frac{1}{k^s})$ into their final plateau of oscillatory divergence when $\Re(s) \le 1$ 
+\item As indicated by the dashed blue vertical line is an angular frequency of $\log(\frac{2500}{\pi})$ ($\log(\frac{9000}{\pi})$) respectively for figures 1 and 2 beyond which it is expected that the partial Euler Product using truncation at the second quiescent region would contain fourier transform frequencies not present in the Riemann Zeta function when $\Re(s) \le 1$. 
+\end{itemize}
+
+\clearpage 
+
+\newpage
+```{r zetafunctionoveraninterval_anditsfouriertransform_2500_3500, echo=FALSE, fig.cap="A comparison of the fourier transforms of the Riemann Zeta function and Euler Product (using truncation at $N_2 = \\frac{t}{\\pi}$) in the complex plane at five real values $\\sigma=1.5, 1 ,0.75, 0.5$ and 0.25 for the interval t=(2500,3500). The positions of the frequency components indicated in green, red and blue are explainable by the known behaviour of the cumulative sum of finite Dirichlet Series.", out.width = c("49%","49%"), fig.show = "hold",  fig.height=4, warning=FALSE}
+
+
+dfEP=read.csv("/home/john/pari/zeta_res_1p5_t_2500_3500_real.csv",header=FALSE,colClasses = c("character"));
+
+
+
+dfEP$V2=as.numeric(gsub(" ","",dfEP$V2));
+
+
+
+
+dfEPi=read.csv("/home/john/pari/zeta_res_1p5_t_2500_3500_imag.csv",header=FALSE,colClasses = c("character"));
+
+
+dfEPi$V2=as.numeric(gsub(" ","",dfEPi$V2));
+
+
+
+dfzeta=as.data.frame(cbind(dfEP$V1,dfEP$V2+1i*dfEPi$V2));dfzeta$V2=as.complex(dfzeta$V2)
+
+
+fft_zeta = stats::fft(dfzeta$V2)
+
+
+
+plot(c(-50000:49999)*2*pi/1000,c(abs(fft_zeta)[50001:100000],abs(fft_zeta)[1:50000]),xlim=c(-7,+.5),typ="l",xaxt="n",xlab="angular frequency (radians per sec)",ylab="Amplitude",main="fourier transform spectra of the Zeta(s) waveform \n for Re(s)=1.5, 1, 0.75, 0.5, 0.25 over the interval Im(s)=(2500,3500)")
+abline(v=seq(-10,1,l=12),h=seq(0,1e5,l=6),lty=3,col="gray")
+axis(1,at=seq(-10,1,l=12))
+abline(v=-log((3500)/pi/c(2,4))-0,col=rgb(1,0,0,0.5))
+abline(v=-log((2500)/pi/c(2,4))-0,col=rgb(1,0,0,0.5))
+abline(v=-log(c(2:10))-0,col=rgb(0,1,0,0.5))
+
+
+dfEP=read.csv("/home/john/pari/EP_res_1p5_t_2500_3500_real.csv",header=FALSE,colClasses = c("character"));
+
+
+
+dfEP$V2=as.numeric(gsub(" ","",dfEP$V2));
+
+
+
+
+dfEPi=read.csv("/home/john/pari/EP_res_1p5_t_2500_3500_imag.csv",header=FALSE,colClasses = c("character"));
+
+
+dfEPi$V2=as.numeric(gsub(" ","",dfEPi$V2));
+
+
+
+dfEP=as.data.frame(cbind(dfEP$V1,dfEP$V2+1i*dfEPi$V2));dfEP$V2=as.complex(dfEP$V2)
+
+
+fft_EP = stats::fft(dfEP$V2)
+
+
+
+
+
+plot(c(-50000:49999)*2*pi/1000,c(abs(fft_EP)[50001:100000],abs(fft_EP)[1:50000]),xlim=c(-7,+.5),typ="l",xaxt="n",xlab="angular frequency (radians per sec)",ylab="Amplitude",main="fourier transform spectra of the partial Euler product waveform \n Re(s)=1.5, 1, 0.75, 0.5, 0.25 over the interval Im(s)=(2500,3500) \n using truncation at N2=t/pi.")
+abline(v=seq(-10,1,l=12),h=seq(0,1e5,l=6),lty=3,col="gray")
+axis(1,at=seq(-10,1,l=12))
+abline(v=-log((3500)/pi/c(2,4))-0,col=rgb(1,0,0,0.5))
+abline(v=-log((2500)/pi/c(2,4))-0,col=rgb(1,0,0,0.5))
+abline(v=-log((2500)/pi/c(1))-0,col=rgb(0,0,1,0.5),lty=2,lwd=2)
+abline(v=-log(c(2:10))-0,col=rgb(0,1,0,0.5))
+
+
+
+
+dfEP=read.csv("/home/john/pari/zeta_res_1p0_t_2500_3500_real.csv",header=FALSE,colClasses = c("character"));
+
+
+
+dfEP$V2=as.numeric(gsub(" ","",dfEP$V2));
+
+
+
+
+dfEPi=read.csv("/home/john/pari/zeta_res_1p0_t_2500_3500_imag.csv",header=FALSE,colClasses = c("character"));
+
+
+dfEPi$V2=as.numeric(gsub(" ","",dfEPi$V2));
+
+
+
+dfzeta=as.data.frame(cbind(dfEP$V1,dfEP$V2+1i*dfEPi$V2));dfzeta$V2=as.complex(dfzeta$V2)
+
+
+fft_zeta = stats::fft(dfzeta$V2)
+
+
+
+
+
+plot(c(-50000:49999)*2*pi/1000,c(abs(fft_zeta)[50001:100000],abs(fft_zeta)[1:50000]),xlim=c(-7,+.5),typ="l",xaxt="n",xlab="angular frequency (radians per sec)",ylab="Amplitude")
+abline(v=seq(-10,1,l=12),h=seq(0,1e5,l=6),lty=3,col="gray")
+axis(1,at=seq(-10,1,l=12))
+abline(v=-log((3500)/pi/c(2,4))-0,col=rgb(1,0,0,0.5))
+abline(v=-log((2500)/pi/c(2,4))-0,col=rgb(1,0,0,0.5))
+abline(v=-log(c(2:10))-0,col=rgb(0,1,0,0.5))
+
+
+dfEP=read.csv("/home/john/pari/EP_res_1p0_t_2500_3500_real.csv",header=FALSE,colClasses = c("character"));
+
+
+
+dfEP$V2=as.numeric(gsub(" ","",dfEP$V2));
+
+
+
+
+dfEPi=read.csv("/home/john/pari/EP_res_1p0_t_2500_3500_imag.csv",header=FALSE,colClasses = c("character"));
+
+
+dfEPi$V2=as.numeric(gsub(" ","",dfEPi$V2));
+
+
+
+dfEP=as.data.frame(cbind(dfEP$V1,dfEP$V2+1i*dfEPi$V2));dfEP$V2=as.complex(dfEP$V2)
+
+
+fft_EP = stats::fft(dfEP$V2)
+
+
+
+
+
+plot(c(-50000:49999)*2*pi/1000,c(abs(fft_EP)[50001:100000],abs(fft_EP)[1:50000]),xlim=c(-7,+.5),typ="l",xaxt="n",xlab="angular frequency (radians per sec)",ylab="Amplitude")
+abline(v=seq(-10,1,l=12),h=seq(0,1e5,l=6),lty=3,col="gray")
+axis(1,at=seq(-10,1,l=12))
+abline(v=-log((3500)/pi/c(2,4))-0,col=rgb(1,0,0,0.5))
+abline(v=-log((2500)/pi/c(2,4))-0,col=rgb(1,0,0,0.5))
+abline(v=-log((2500)/pi/c(1))-0,col=rgb(0,0,1,0.5),lty=2,lwd=2)
+abline(v=-log(c(2:10))-0,col=rgb(0,1,0,0.5))
+
+
+
+dfEP=read.csv("/home/john/pari/zeta_res_0p75_t_2500_3500_real.csv",header=FALSE,colClasses = c("character"));
+
+
+
+dfEP$V2=as.numeric(gsub(" ","",dfEP$V2));
+
+
+
+
+dfEPi=read.csv("/home/john/pari/zeta_res_0p75_t_2500_3500_imag.csv",header=FALSE,colClasses = c("character"));
+
+
+dfEPi$V2=as.numeric(gsub(" ","",dfEPi$V2));
+
+
+
+dfzeta=as.data.frame(cbind(dfEP$V1,dfEP$V2+1i*dfEPi$V2));dfzeta$V2=as.complex(dfzeta$V2)
+
+
+fft_zeta = stats::fft(dfzeta$V2)
+
+
+
+
+
+plot(c(-50000:49999)*2*pi/1000,c(abs(fft_zeta)[50001:100000],abs(fft_zeta)[1:50000]),xlim=c(-7,+.5),typ="l",xaxt="n",xlab="angular frequency (radians per sec)",ylab="Amplitude")
+abline(v=seq(-10,1,l=12),h=seq(0,1e5,l=6),lty=3,col="gray")
+axis(1,at=seq(-10,1,l=12))
+abline(v=-log((3500)/pi/c(2,4))-0,col=rgb(1,0,0,0.5))
+abline(v=-log((2500)/pi/c(2,4))-0,col=rgb(1,0,0,0.5))
+abline(v=-log(c(2:10))-0,col=rgb(0,1,0,0.5))
+
+
+
+dfEP=read.csv("/home/john/pari/EP_res_0p75_t_2500_3500_real.csv",header=FALSE,colClasses = c("character"));
+
+
+
+dfEP$V2=as.numeric(gsub(" ","",dfEP$V2));
+
+
+
+
+dfEPi=read.csv("/home/john/pari/EP_res_0p75_t_2500_3500_imag.csv",header=FALSE,colClasses = c("character"));
+
+
+dfEPi$V2=as.numeric(gsub(" ","",dfEPi$V2));
+
+
+
+dfEP=as.data.frame(cbind(dfEP$V1,dfEP$V2+1i*dfEPi$V2));dfEP$V2=as.complex(dfEP$V2)
+
+
+fft_EP = stats::fft(dfEP$V2)
+
+
+plot(c(-50000:49999)*2*pi/1000,c(abs(fft_EP)[50001:100000],abs(fft_EP)[1:50000]),xlim=c(-7,+.5),typ="l",xaxt="n",xlab="angular frequency (radians per sec)",ylab="Amplitude")
+abline(v=seq(-10,1,l=12),h=seq(0,1e5,l=6),lty=3,col="gray")
+axis(1,at=seq(-10,1,l=12))
+abline(v=-log((3500)/pi/c(2,4))-0,col=rgb(1,0,0,0.5))
+abline(v=-log((2500)/pi/c(2,4))-0,col=rgb(1,0,0,0.5))
+abline(v=-log((2500)/pi/c(1))-0,col=rgb(0,0,1,0.5),lty=2,lwd=2)
+abline(v=-log(c(2:10))-0,col=rgb(0,1,0,0.5))
+
+
+
+
+
+
+
+dfEP=read.csv("/home/john/pari/zeta_2500_3500_real.csv",header=FALSE,colClasses = c("character"));
+
+
+
+dfEP$V2=as.numeric(gsub(" ","",dfEP$V2));
+
+
+
+dfEPi=read.csv("/home/john/pari/zeta_2500_3500_imag.csv",header=FALSE,colClasses = c("character"));
+
+
+dfEPi$V2=as.numeric(gsub(" ","",dfEPi$V2));
+
+
+
+dfzeta=as.data.frame(cbind(dfEP$V1,dfEP$V2+1i*dfEPi$V2));dfzeta$V2=as.complex(dfzeta$V2)
+
+
+fft_zeta = stats::fft(dfzeta$V2)
+
+
+plot(c(-50000:49999)*2*pi/1000,c(abs(fft_zeta)[50001:100000],abs(fft_zeta)[1:50000]),xlim=c(-7,+.5),typ="l",xaxt="n",xlab="angular frequency (radians per sec)",ylab="Amplitude")
+abline(v=seq(-10,1,l=12),h=seq(0,1e5,l=6),lty=3,col="gray")
+axis(1,at=seq(-10,1,l=12))
+abline(v=-log((3500)/pi/c(2,4))-0,col=rgb(1,0,0,0.5))
+abline(v=-log((2500)/pi/c(2,4))-0,col=rgb(1,0,0,0.5))
+abline(v=-log(c(2:10))-0,col=rgb(0,1,0,0.5))
+
+
+
+dfEP=read.csv("/home/john/pari/EP_2500_3500_real.csv",header=FALSE,colClasses = c("character"));
+
+
+
+dfEP$V2=as.numeric(gsub(" ","",dfEP$V2));
+
+
+
+
+dfEPi=read.csv("/home/john/pari/EP_2500_3500_imag.csv",header=FALSE,colClasses = c("character"));
+
+
+dfEPi$V2=as.numeric(gsub(" ","",dfEPi$V2));
+
+
+
+dfEP=as.data.frame(cbind(dfEP$V1,dfEP$V2+1i*dfEPi$V2));dfEP$V2=as.complex(dfEP$V2)
+
+
+fft_EP = stats::fft(dfEP$V2)
+
+
+
+
+
+
+plot(c(-50000:49999)*2*pi/1000,c(abs(fft_EP)[50001:100000],abs(fft_EP)[1:50000]),xlim=c(-7,+.5),typ="l",xaxt="n",xlab="angular frequency (radians per sec)",ylab="Amplitude")
+abline(v=seq(-10,1,l=12),h=seq(0,1e5,l=6),lty=3,col="gray")
+axis(1,at=seq(-10,1,l=12))
+abline(v=-log((3500)/pi/c(2,4))-0,col=rgb(1,0,0,0.5))
+abline(v=-log((2500)/pi/c(2,4))-0,col=rgb(1,0,0,0.5))
+abline(v=-log((2500)/pi/c(1))-0,col=rgb(0,0,1,0.5),lty=2,lwd=2)
+abline(v=-log(c(2:10))-0,col=rgb(0,1,0,0.5))
+
+
+
+
+dfEP=read.csv("/home/john/pari/zeta_res_0p25_t_2500_3500_real.csv",header=FALSE,colClasses = c("character"));
+
+
+
+dfEP$V2=as.numeric(gsub(" ","",dfEP$V2));
+
+
+
+
+dfEPi=read.csv("/home/john/pari/zeta_res_0p25_t_2500_3500_imag.csv",header=FALSE,colClasses = c("character"));
+
+
+dfEPi$V2=as.numeric(gsub(" ","",dfEPi$V2));
+
+
+
+dfzeta=as.data.frame(cbind(dfEP$V1,dfEP$V2+1i*dfEPi$V2));dfzeta$V2=as.complex(dfzeta$V2)
+
+
+fft_zeta = stats::fft(dfzeta$V2)
+
+
+
+
+plot(c(-50000:49999)*2*pi/1000,c(abs(fft_zeta)[50001:100000],abs(fft_zeta)[1:50000]),xlim=c(-7,+.5),typ="l",xaxt="n",xlab="angular frequency (radians per sec)",ylab="Amplitude")
+abline(v=seq(-10,1,l=12),h=seq(0,1e5,l=6),lty=3,col="gray")
+axis(1,at=seq(-10,1,l=12))
+abline(v=-log((3500)/pi/c(2,4))-0,col=rgb(1,0,0,0.5))
+abline(v=-log((2500)/pi/c(2,4))-0,col=rgb(1,0,0,0.5))
+abline(v=-log(c(2:10))-0,col=rgb(0,1,0,0.5))
+
+
+dfEP=read.csv("/home/john/pari/EP_res_0p25_t_2500_3500_real.csv",header=FALSE,colClasses = c("character"));
+
+
+
+dfEP$V2=as.numeric(gsub(" ","",dfEP$V2));
+
+
+
+
+dfEPi=read.csv("/home/john/pari/EP_res_0p25_t_2500_3500_imag.csv",header=FALSE,colClasses = c("character"));
+
+
+dfEPi$V2=as.numeric(gsub(" ","",dfEPi$V2));
+
+
+
+dfEP=as.data.frame(cbind(dfEP$V1,dfEP$V2+1i*dfEPi$V2));dfEP$V2=as.complex(dfEP$V2)
+
+
+fft_EP = stats::fft(dfEP$V2)
+
+
+
+
+plot(c(-50000:49999)*2*pi/1000,c(abs(fft_EP)[50001:100000],abs(fft_EP)[1:50000]),xlim=c(-7,+.5),typ="l",xaxt="n",xlab="angular frequency (radians per sec)",ylab="Amplitude",ylim=c(0,1e5))
+abline(v=seq(-10,1,l=12),h=seq(0,1e5,l=6),lty=3,col="gray")
+axis(1,at=seq(-10,1,l=12))
+abline(v=-log((3500)/pi/c(2,4))-0,col=rgb(1,0,0,0.5))
+abline(v=-log((2500)/pi/c(2,4))-0,col=rgb(1,0,0,0.5))
+abline(v=-log((2500)/pi/c(1))-0,col=rgb(0,0,1,0.5),lty=2,lwd=2)
+abline(v=-log(c(2:10))-0,col=rgb(0,1,0,0.5))
+
+
+```
+
+\newpage
+```{r zetafunctionoveraninterval_anditsfouriertransform_9000_10000, echo=FALSE, fig.cap="A comparison of the fourier transforms of the Riemann Zeta function and Euler Product (using truncation at $N_2 = \\frac{t}{\\pi}$) in the complex plane at five real values $\\sigma=1.5, 1 ,0.75, 0.5$ and 0.25 for the interval t=(9000,10000). The positions of the frequency components indicated in green, red and blue are explainable by the known behaviour of the cumulative sum of finite Dirichlet Series.", out.width = c("49%","49%"), fig.show = "hold",  fig.height=4, warning=FALSE}
+
+
+dfEP=read.csv("/home/john/pari/zeta_res_1p5_t_9000_10000_real.csv",header=FALSE,colClasses = c("character"));
+
+
+
+dfEP$V2=as.numeric(gsub(" ","",dfEP$V2));
+
+
+
+
+dfEPi=read.csv("/home/john/pari/zeta_res_1p5_t_9000_10000_imag.csv",header=FALSE,colClasses = c("character"));
+
+
+dfEPi$V2=as.numeric(gsub(" ","",dfEPi$V2));
+
+
+
+dfzeta=as.data.frame(cbind(dfEP$V1,dfEP$V2+1i*dfEPi$V2));dfzeta$V2=as.complex(dfzeta$V2)
+
+
+fft_zeta = stats::fft(dfzeta$V2)
+
+
+
+plot(c(-50000:49999)*2*pi/1000,c(abs(fft_zeta)[50001:100000],abs(fft_zeta)[1:50000]),xlim=c(-9,+1.5),typ="l",xaxt="n",xlab="angular frequency (radians per sec)",ylab="Amplitude",ylim=c(0,1e5),main="fourier transform spectra of the Zeta(s) waveform \n for Re(s)=1.5, 1, 0.75, 0.5, 0.25 over the interval Im(s)=(9000,10000)")
+abline(v=seq(-10,1,l=12),h=seq(0,1e5,l=6),lty=3,col="gray")
+axis(1,at=seq(-10,1,l=12))
+abline(v=-log((10000)/pi/c(2,4,6,8,10))-0,col=rgb(1,0,0,0.5))
+abline(v=-log((9000)/pi/c(2,4,6,8,10))-0,col=rgb(1,0,0,0.5))
+abline(v=-log(c(2:10))-0,col=rgb(0,1,0,0.5))
+
+
+
+dfEP=read.csv("/home/john/pari/EP_res_1p5_t_9000_10000_real.csv",header=FALSE,colClasses = c("character"));
+
+
+
+dfEP$V2=as.numeric(gsub(" ","",dfEP$V2));
+
+
+
+
+dfEPi=read.csv("/home/john/pari/EP_res_1p5_t_9000_10000_imag.csv",header=FALSE,colClasses = c("character"));
+
+
+dfEPi$V2=as.numeric(gsub(" ","",dfEPi$V2));
+
+
+
+dfEP=as.data.frame(cbind(dfEP$V1,dfEP$V2+1i*dfEPi$V2));dfEP$V2=as.complex(dfEP$V2)
+
+
+fft_EP = stats::fft(dfEP$V2)
+
+
+
+
+
+plot(c(-50000:49999)*2*pi/1000,c(abs(fft_EP)[50001:100000],abs(fft_EP)[1:50000]),xlim=c(-9,+1.5),typ="l",xaxt="n",xlab="angular frequency (radians per sec)",ylab="Amplitude",ylim=c(0,1e5),main="fourier transform spectra of the partial Euler product waveform \n Re(s)=1.5, 1, 0.75, 0.5, 0.25 over the interval Im(s)=(9000,10000) \n using truncation at N2=t/pi.")
+abline(v=seq(-10,1,l=12),h=seq(0,1e5,l=6),lty=3,col="gray")
+axis(1,at=seq(-10,1,l=12))
+abline(v=-log((10000)/pi/c(2,4,6,8,10))-0,col=rgb(1,0,0,0.5))
+abline(v=-log((9000)/pi/c(2,4,6,8,10))-0,col=rgb(1,0,0,0.5))
+abline(v=-log((9000)/pi/c(1))-0,col=rgb(0,0,1,0.5),lty=2,lwd=2)
+abline(v=-log(c(2:10))-0,col=rgb(0,1,0,0.5))
+
+
+
+
+dfEP=read.csv("/home/john/pari/zeta_res_1p0_t_9000_10000_real.csv",header=FALSE,colClasses = c("character"));
+
+
+
+dfEP$V2=as.numeric(gsub(" ","",dfEP$V2));
+
+
+
+
+dfEPi=read.csv("/home/john/pari/zeta_res_1p0_t_9000_10000_imag.csv",header=FALSE,colClasses = c("character"));
+
+
+dfEPi$V2=as.numeric(gsub(" ","",dfEPi$V2));
+
+
+
+dfzeta=as.data.frame(cbind(dfEP$V1,dfEP$V2+1i*dfEPi$V2));dfzeta$V2=as.complex(dfzeta$V2)
+
+
+fft_zeta = stats::fft(dfzeta$V2)
+
+
+plot(c(-50000:49999)*2*pi/1000,c(abs(fft_zeta)[50001:100000],abs(fft_zeta)[1:50000]),xlim=c(-9,+1.5),typ="l",xaxt="n",xlab="angular frequency (radians per sec)",ylab="Amplitude",ylim=c(0,1e5))
+abline(v=seq(-10,1,l=12),h=seq(0,1e5,l=6),lty=3,col="gray")
+axis(1,at=seq(-10,1,l=12))
+abline(v=-log((10000)/pi/c(2,4,6,8,10))-0,col=rgb(1,0,0,0.5))
+abline(v=-log((9000)/pi/c(2,4,6,8,10))-0,col=rgb(1,0,0,0.5))
+abline(v=-log(c(2:10))-0,col=rgb(0,1,0,0.5))
+
+
+dfEP=read.csv("/home/john/pari/EP_res_1p0_t_9000_10000_real.csv",header=FALSE,colClasses = c("character"));
+
+
+
+dfEP$V2=as.numeric(gsub(" ","",dfEP$V2));
+
+
+
+
+dfEPi=read.csv("/home/john/pari/EP_res_1p0_t_9000_10000_imag.csv",header=FALSE,colClasses = c("character"));
+
+
+dfEPi$V2=as.numeric(gsub(" ","",dfEPi$V2));
+
+
+
+dfEP=as.data.frame(cbind(dfEP$V1,dfEP$V2+1i*dfEPi$V2));dfEP$V2=as.complex(dfEP$V2)
+
+
+fft_EP = stats::fft(dfEP$V2)
+
+
+
+
+
+plot(c(-50000:49999)*2*pi/1000,c(abs(fft_EP)[50001:100000],abs(fft_EP)[1:50000]),xlim=c(-9,+1.5),typ="l",xaxt="n",xlab="angular frequency (radians per sec)",ylab="Amplitude",ylim=c(0,1e5))
+abline(v=seq(-10,1,l=12),h=seq(0,1e5,l=6),lty=3,col="gray")
+axis(1,at=seq(-10,1,l=12))
+abline(v=-log((10000)/pi/c(2,4,6,8,10))-0,col=rgb(1,0,0,0.5))
+abline(v=-log((9000)/pi/c(2,4,6,8,10))-0,col=rgb(1,0,0,0.5))
+abline(v=-log((9000)/pi/c(1))-0,col=rgb(0,0,1,0.5),lty=2,lwd=2)
+abline(v=-log(c(2:10))-0,col=rgb(0,1,0,0.5))
+
+
+
+dfEP=read.csv("/home/john/pari/zeta_res_0p75_t_9000_10000_real.csv",header=FALSE,colClasses = c("character"));
+
+
+
+dfEP$V2=as.numeric(gsub(" ","",dfEP$V2));
+
+
+
+
+dfEPi=read.csv("/home/john/pari/zeta_res_0p75_t_9000_10000_imag.csv",header=FALSE,colClasses = c("character"));
+
+
+dfEPi$V2=as.numeric(gsub(" ","",dfEPi$V2));
+
+
+
+dfzeta=as.data.frame(cbind(dfEP$V1,dfEP$V2+1i*dfEPi$V2));dfzeta$V2=as.complex(dfzeta$V2)
+
+
+fft_zeta = stats::fft(dfzeta$V2)
+
+
+plot(c(-50000:49999)*2*pi/1000,c(abs(fft_zeta)[50001:100000],abs(fft_zeta)[1:50000]),xlim=c(-9,+1.5),typ="l",xaxt="n",xlab="angular frequency (radians per sec)",ylab="Amplitude",ylim=c(0,1e5))
+abline(v=seq(-10,1,l=12),h=seq(0,1e5,l=6),lty=3,col="gray")
+axis(1,at=seq(-10,1,l=12))
+abline(v=-log((10000)/pi/c(2,4,6,8,10))-0,col=rgb(1,0,0,0.5))
+abline(v=-log((9000)/pi/c(2,4,6,8,10))-0,col=rgb(1,0,0,0.5))
+abline(v=-log(c(2:10))-0,col=rgb(0,1,0,0.5))
+
+
+
+dfEP=read.csv("/home/john/pari/EP_res_0p75_t_9000_10000_real.csv",header=FALSE,colClasses = c("character"));
+
+
+
+dfEP$V2=as.numeric(gsub(" ","",dfEP$V2));
+
+
+
+
+dfEPi=read.csv("/home/john/pari/EP_res_0p75_t_9000_10000_imag.csv",header=FALSE,colClasses = c("character"));
+
+
+dfEPi$V2=as.numeric(gsub(" ","",dfEPi$V2));
+
+
+
+dfEP=as.data.frame(cbind(dfEP$V1,dfEP$V2+1i*dfEPi$V2));dfEP$V2=as.complex(dfEP$V2)
+
+
+fft_EP = stats::fft(dfEP$V2)
+
+
+
+
+
+plot(c(-50000:49999)*2*pi/1000,c(abs(fft_EP)[50001:100000],abs(fft_EP)[1:50000]),xlim=c(-9,+1.5),typ="l",xaxt="n",xlab="angular frequency (radians per sec)",ylab="Amplitude",ylim=c(0,1e5))
+abline(v=seq(-10,1,l=12),h=seq(0,1e5,l=6),lty=3,col="gray")
+axis(1,at=seq(-10,1,l=12))
+abline(v=-log((10000)/pi/c(2,4,6,8,10))-0,col=rgb(1,0,0,0.5))
+abline(v=-log((9000)/pi/c(2,4,6,8,10))-0,col=rgb(1,0,0,0.5))
+abline(v=-log((9000)/pi/c(1))-0,col=rgb(0,0,1,0.5),lty=2,lwd=2)
+abline(v=-log(c(2:10))-0,col=rgb(0,1,0,0.5))
+
+
+
+
+
+
+
+dfEP=read.csv("/home/john/pari/zeta_9000_10000_real.csv",header=FALSE,colClasses = c("character"));
+
+
+
+dfEP$V2=as.numeric(gsub(" ","",dfEP$V2));
+
+
+
+dfEPi=read.csv("/home/john/pari/zeta_9000_10000_imag.csv",header=FALSE,colClasses = c("character"));
+
+
+dfEPi$V2=as.numeric(gsub(" ","",dfEPi$V2));
+
+
+
+dfzeta=as.data.frame(cbind(dfEP$V1,dfEP$V2+1i*dfEPi$V2));dfzeta$V2=as.complex(dfzeta$V2)
+
+
+fft_zeta = stats::fft(dfzeta$V2)
+
+
+plot(c(-50000:49999)*2*pi/1000,c(abs(fft_zeta)[50001:100000],abs(fft_zeta)[1:50000]),xlim=c(-9,+1.5),typ="l",xaxt="n",xlab="angular frequency (radians per sec)",ylab="Amplitude",ylim=c(0,1e5))
+abline(v=seq(-10,1,l=12),h=seq(0,1e5,l=6),lty=3,col="gray")
+axis(1,at=seq(-10,1,l=12))
+abline(v=-log((10000)/pi/c(2,4,6,8,10))-0,col=rgb(1,0,0,0.5))
+abline(v=-log((9000)/pi/c(2,4,6,8,10))-0,col=rgb(1,0,0,0.5))
+abline(v=-log(c(2:10))-0,col=rgb(0,1,0,0.5))
+
+
+
+dfEP=read.csv("/home/john/pari/EP_9000_10000_real.csv",header=FALSE,colClasses = c("character"));
+
+
+
+dfEP$V2=as.numeric(gsub(" ","",dfEP$V2));
+
+
+
+
+dfEPi=read.csv("/home/john/pari/EP_9000_10000_imag.csv",header=FALSE,colClasses = c("character"));
+
+
+dfEPi$V2=as.numeric(gsub(" ","",dfEPi$V2));
+
+
+
+dfEP=as.data.frame(cbind(dfEP$V1,dfEP$V2+1i*dfEPi$V2));dfEP$V2=as.complex(dfEP$V2)
+
+
+fft_EP = stats::fft(dfEP$V2)
+
+
+
+
+
+
+plot(c(-50000:49999)*2*pi/1000,c(abs(fft_EP)[50001:100000],abs(fft_EP)[1:50000]),xlim=c(-9,+1.5),typ="l",xaxt="n",xlab="angular frequency (radians per sec)",ylab="Amplitude",ylim=c(0,1e5))
+abline(v=seq(-10,1,l=12),h=seq(0,1e5,l=6),lty=3,col="gray")
+axis(1,at=seq(-10,1,l=12))
+abline(v=-log((10000)/pi/c(2,4,6,8,10))-0,col=rgb(1,0,0,0.5))
+abline(v=-log((9000)/pi/c(2,4,6,8,10))-0,col=rgb(1,0,0,0.5))
+abline(v=-log((9000)/pi/c(1))-0,col=rgb(0,0,1,0.5),lty=2,lwd=2)
+abline(v=-log(c(2:10))-0,col=rgb(0,1,0,0.5))
+
+
+
+
+dfEP=read.csv("/home/john/pari/zeta_res_0p25_t_9000_10000_real.csv",header=FALSE,colClasses = c("character"));
+
+
+
+dfEP$V2=as.numeric(gsub(" ","",dfEP$V2));
+
+
+
+
+dfEPi=read.csv("/home/john/pari/zeta_res_0p25_t_9000_10000_imag.csv",header=FALSE,colClasses = c("character"));
+
+
+dfEPi$V2=as.numeric(gsub(" ","",dfEPi$V2));
+
+
+
+dfzeta=as.data.frame(cbind(dfEP$V1,dfEP$V2+1i*dfEPi$V2));dfzeta$V2=as.complex(dfzeta$V2)
+
+
+fft_zeta = stats::fft(dfzeta$V2)
+
+
+plot(c(-50000:49999)*2*pi/1000,c(abs(fft_zeta)[50001:100000],abs(fft_zeta)[1:50000]),xlim=c(-9,+1.5),typ="l",xaxt="n",xlab="angular frequency (radians per sec)",ylab="Amplitude",ylim=c(0,2e5))
+abline(v=seq(-10,1,l=12),h=seq(0,1e5,l=6),lty=3,col="gray")
+axis(1,at=seq(-10,1,l=12))
+abline(v=-log((10000)/pi/c(2,4,6,8,10))-0,col=rgb(1,0,0,0.5))
+abline(v=-log((9000)/pi/c(2,4,6,8,10))-0,col=rgb(1,0,0,0.5))
+abline(v=-log(c(2:10))-0,col=rgb(0,1,0,0.5))
+
+
+
+
+dfEP=read.csv("/home/john/pari/EP_res_0p25_t_9000_10000_real.csv",header=FALSE,colClasses = c("character"));
+
+
+
+dfEP$V2=as.numeric(gsub(" ","",dfEP$V2));
+
+
+
+
+dfEPi=read.csv("/home/john/pari/EP_res_0p25_t_9000_10000_imag.csv",header=FALSE,colClasses = c("character"));
+
+
+dfEPi$V2=as.numeric(gsub(" ","",dfEPi$V2));
+
+
+
+dfEP=as.data.frame(cbind(dfEP$V1,dfEP$V2+1i*dfEPi$V2));dfEP$V2=as.complex(dfEP$V2)
+
+
+fft_EP = stats::fft(dfEP$V2)
+
+
+
+
+plot(c(-50000:49999)*2*pi/1000,c(abs(fft_EP)[50001:100000],abs(fft_EP)[1:50000]),xlim=c(-9,+1.5),typ="l",xaxt="n",xlab="angular frequency (radians per sec)",ylab="Amplitude",ylim=c(0,2e5))
+abline(v=seq(-10,1,l=12),h=seq(0,1e5,l=6),lty=3,col="gray")
+axis(1,at=seq(-10,1,l=12))
+abline(v=-log((10000)/pi/c(2,4,6,8,10))-0,col=rgb(1,0,0,0.5))
+abline(v=-log((9000)/pi/c(2,4,6,8,10))-0,col=rgb(1,0,0,0.5))
+abline(v=-log((9000)/pi/c(1))-0,col=rgb(0,0,1,0.5),lty=2,lwd=2)
+abline(v=-log(c(2:10))-0,col=rgb(0,1,0,0.5))
+
+
+
+```
+
+\clearpage
+For completeness, in figures 3 and 4, the fourier transform spectrum of (i) the Riemann-Siegel Z function of the Riemann Zeta function
+
+\begin{equation}
+e^{\theta(s)}\zeta(s)
+\end{equation}
+
+(lefthand column) and (ii) the Riemann-Siegel Z function of the partial Euler Product truncated at the second quiescent region 
+
+\begin{equation}
+e^{\theta(s)}\prod_{p=2}^{p\le \lfloor\frac{t}{\pi}\rfloor=N_2} \frac{1}{(1-\frac{1}{p^s})}
+\end{equation}
+
+(righthand column) are compared over the intervals t=(2500,3500) and t=(9000,10000) respectively, on the critical line $\Re(s)= 0.5$.
+
+Similar to the procedure used to obtain figures 1 and 2, to produce figures 3 and 4, firstly the $e^{\theta(s)}\zeta(s)$ and $e^{\theta(s)}\prod_{p=2}^{p\le \lfloor\frac{t}{\pi}\rfloor=N_2} \frac{1}{(1-\frac{1}{p^s})}$ functions were calculated for a grid of points for $\Re(s)=0.5$ value ($\Delta t = 1000$, with a spacing 0.01 giving a waveform sample of 100000 points) and stored to file using the pari-gp language [9] and secondly the fourier transform calculations and graphs were derived using the R language [10] and Rstudio IDE [11].
+
+However, since the input data of a Riemann-Siegel Z function on the critical line is real valued, the fourier transform spectrum of a Riemann-Siegel Z function is two sided. For convenience in figures 3 and 4, 
+
+\begin{enumerate}
+\item the fast fourier transform (fft) output vector is wrapped around so that the informative non-zero fft components appear next to the DC fft component axis as positive and negative frequency cpmponents.
+\item the x-axis is scaled in units of angular frequency (radians per second) to match figures 1 and 2.
+\end{enumerate}
+
+It can be seen in figures 3 and 4 that for the Riemann Siegel Z function of the Riemann Zeta function and the partial Euler Product truncated at the second quiescent region ($N_2 = \frac{t}{\pi}$).
+
+\begin{itemize}
+\item The overall width of the negative (positive) informative non-zero angular frequencies in figures 3 and 4 is 50\% of the angular frequencies observed in figures 1 and 2. This is consistent with the knowledge that the Riemann Siegel Z function on the critical line has features with approximately twice the periodicity of the features observed for $Re(\zeta(0.5+ i.t))$ and $Im(\zeta(0.5+i.t)$.
+\item As indicated by the red vertical lines there are broad spectral features which can be successful captured by the assignment of the pair of bounds $\pm\frac{1}{2}(\log(UB/\pi/2),\log(LB/\pi/2))$, $\pm\frac{1}{2}(\log(UB/\pi/2/2^2),\log(LB/\pi/2/2^2))$, $\pm\frac{1}{2}(\log(UB/\pi/2/3^2),\log(LB/\pi/2/3^2))$ etc where UB=3500,LB=2500 (UB=10000,LB=9000) corresponding to the range of t values used in figures 3 and 4 respectively. The origin of such features is not yet confirmed but it is expected that if partial sums of the Riemann-Siegel Z function of the Riemann Zeta Dirichlet series were constructed there would likely be steps in the real and imaginary cumulative partial sums at $\frac{t}{2\pi}$, $\frac{t}{2\pi2^2}$, $\frac{t}{2\pi3^2}$, , $\frac{t}{2\pi4^2}$.
+\item As successfully captured by the dashed blue vertical line is an angular frequency of $\pm\frac{1}{2}\log(\frac{2500}{2\pi(\frac{1}{2})^2})$ ($\pm\frac{1}{2}\log(\frac{9000}{\pi(\frac{1}{2})^2})$) respectively for figures 3 and 4 beyond which the partial Euler Product using truncation at the second quiescent region contain higher fourier transform frequencies not present in the Riemann Zeta function when $\Re(s) = 0.5$. 
+\end{itemize}
+
+\newpage
+```{r Zfnzetafunctionoveraninterval_anditsfouriertransform_2500_3500, echo=FALSE, fig.cap="A comparison of the fourier transforms of the Riemann-Siegel Z functions of the Riemann Zeta function and Euler Product (using truncation at $N_2 = \\frac{t}{\\pi}$) in the complex plane at five real values $\\sigma=0.5$ for the interval t=(2500,3500). The positions of the frequency features indicated by red and blue vertical lines are successfully captured as a function of t by the expressions postulated in the paper.", out.width = c("49%","49%"), fig.show = "hold",  fig.height=5, warning=FALSE}
+
+
+dfEP=read.csv("/home/john/pari/zeta_2500_3500_Zfn.csv",header=FALSE,colClasses = c("character"));
+
+
+
+dfEP$V2=as.numeric(gsub(" ","",dfEP$V2));
+
+
+fft_zeta_Zfn = stats::fft(dfEP$V2)
+
+
+plot(c(-50000:49999)*2*pi/1000,c(abs(fft_zeta_Zfn)[50001:100000],abs(fft_zeta_Zfn)[1:50000]),xlim=c(-4,4),typ="l",xaxt="n",xlab="angular frequency (radians per sec)",ylab="Amplitude",main="fourier transform spectra of the Riemann-Siegel Z function\n of the Zeta(s) waveform for Re(s)=0.5 \n over the interval Im(s)=(2500,3500)")
+abline(v=seq(-10,10,l=21),h=seq(0,1e5,l=6),lty=3,col="gray")
+axis(1,at=seq(-10,10,l=21))
+abline(v=-1/2*log((3500)/pi/2/c(1:5)^2)-0,col=rgb(1,0,0,0.5))
+abline(v=-1/2*log((2500)/pi/2/c(1:5)^2)-0,col=rgb(1,0,0,0.5))
+abline(v=1/2*log((3500)/pi/2/c(1:5)^2)-0,col=rgb(1,0,0,0.5))
+abline(v=1/2*log((2500)/pi/2/c(1:5)^2)-0,col=rgb(1,0,0,0.5))
+
+
+
+dfEP=read.csv("/home/john/pari/EP_2500_3500_Zfn.csv",header=FALSE,colClasses = c("character"));
+
+
+
+dfEP$V2=as.numeric(gsub(" ","",dfEP$V2));
+
+
+fft_EP_Zfn = stats::fft(dfEP$V2)
+
+
+
+
+
+
+plot(c(-50000:49999)*2*pi/1000,c(abs(fft_EP_Zfn)[50001:100000],abs(fft_EP_Zfn)[1:50000]),xlim=c(-4,4),typ="l",xaxt="n",xlab="angular frequency (radians per sec)",ylab="Amplitude",main="fourier transform spectra of the Riemann-Siegel Z function\n form of the partial Euler product waveform for Re(s)=0.5\n over the interval Im(s)=(2500,3500) using truncation at N2=t/pi.")
+abline(v=seq(-10,10,l=21),h=seq(0,1e5,l=6),lty=3,col="gray")
+axis(1,at=seq(-10,10,l=21))
+abline(v=-1/2*log((3500)/pi/2/c(1:5)^2)-0,col=rgb(1,0,0,0.5))
+abline(v=-1/2*log((2500)/pi/2/c(1:5)^2)-0,col=rgb(1,0,0,0.5))
+abline(v=1/2*log((3500)/pi/2/c(1:5)^2)-0,col=rgb(1,0,0,0.5))
+abline(v=1/2*log((2500)/pi/2/c(1:5)^2)-0,col=rgb(1,0,0,0.5))
+abline(v=c(1,-1)/2*log((2500)/pi/2/c(1/2)^2)-0,col=rgb(0,0,1,0.5),lty=2,lwd=2)
+
+
+
+```
+
+
+```{r Zfnzetafunctionoveraninterval_anditsfouriertransform_9000_10000, echo=FALSE, fig.cap="A comparison of the fourier transforms of the Riemann-Siegel Z functions of the Riemann Zeta function and Euler Product (using truncation at $N_2 = \\frac{t}{\\pi}$) in the complex plane at five real values $\\sigma=0.5$ for the interval t=(9000,10000). The positions of the frequency features indicated by red and blue vertical lines are successfully captured as a function of t by the expressions postulated in the paper.", out.width = c("49%","49%"), fig.show = "hold",  fig.height=5, warning=FALSE}
+
+
+
+dfEP=read.csv("/home/john/pari/zeta_9000_10000_Zfn.csv",header=FALSE,colClasses = c("character"));
+
+
+
+dfEP$V2=as.numeric(gsub(" ","",dfEP$V2));
+
+
+fft_zeta_Zfn = stats::fft(dfEP$V2)
+
+
+plot(c(-50000:49999)*2*pi/1000,c(abs(fft_zeta_Zfn)[50001:100000],abs(fft_zeta_Zfn)[1:50000]),xlim=c(-5,5),typ="l",xaxt="n",xlab="angular frequency (radians per sec)",ylab="Amplitude",main="fourier transform spectra of the Riemann-Siegel Z function\n of the Zeta(s) waveform for Re(s)=0.5 \n over the interval Im(s)=(9000,10000)")
+abline(v=seq(-10,10,l=21),h=seq(0,1e5,l=6),lty=3,col="gray")
+axis(1,at=seq(-10,10,l=21))
+abline(v=-1/2*log((10000)/pi/2/c(1:5)^2)-0,col=rgb(1,0,0,0.5))
+abline(v=-1/2*log((9000)/pi/2/c(1:5)^2)-0,col=rgb(1,0,0,0.5))
+abline(v=1/2*log((10000)/pi/2/c(1:5)^2)-0,col=rgb(1,0,0,0.5))
+abline(v=1/2*log((9000)/pi/2/c(1:5)^2)-0,col=rgb(1,0,0,0.5))
+
+
+
+dfEP=read.csv("/home/john/pari/EP_9000_10000_Zfn.csv",header=FALSE,colClasses = c("character"));
+
+
+
+dfEP$V2=as.numeric(gsub(" ","",dfEP$V2));
+
+
+fft_EP_Zfn = stats::fft(dfEP$V2)
+
+
+
+
+
+
+plot(c(-50000:49999)*2*pi/1000,c(abs(fft_EP_Zfn)[50001:100000],abs(fft_EP_Zfn)[1:50000]),xlim=c(-5,5),typ="l",xaxt="n",xlab="angular frequency (radians per sec)",ylab="Amplitude",main="fourier transform spectra of the Riemann-Siegel Z function\n form of the partial Euler product waveform for Re(s)=0.5\n over the interval Im(s)=(9000,10000) using truncation at N2=t/pi.")
+abline(v=seq(-10,10,l=21),h=seq(0,1e5,l=6),lty=3,col="gray")
+axis(1,at=seq(-10,10,l=21))
+abline(v=-1/2*log((10000)/pi/2/c(1:5)^2)-0,col=rgb(1,0,0,0.5))
+abline(v=-1/2*log((9000)/pi/2/c(1:5)^2)-0,col=rgb(1,0,0,0.5))
+abline(v=1/2*log((10000)/pi/2/c(1:5)^2)-0,col=rgb(1,0,0,0.5))
+abline(v=1/2*log((9000)/pi/2/c(1:5)^2)-0,col=rgb(1,0,0,0.5))
+abline(v=c(-1,1)/2*log((9000)/pi/2/c(1/2)^2)-0,col=rgb(0,0,1,0.5),lty=2,lwd=2)
+
+
+
+
+
+
+
+
+
+```
+
+
+## Spectral filtering and inverse fourier transformation of the partial Euler Product using truncation at the second quiescent region to better approximate the Riemann Zeta function
+
+Given the common features between the fourier transform spectra of the Riemann Zeta function and the partial Euler Product truncated at the second quiescent region are identifiable in figures 1 and 2, the issue then becomes how to remove the fourier components of the partial Euler Product truncated at the second quiescent region that don't appear in the Riemann Zeta function fourier transform. In simple terms, spectral filtering provides a convenient method to remove the angular frequency components > $|-log(\frac{N_2}{\pi})|$ which should mean that the subsequent inverse fourier transform should be a improved approximation of the Riemann Zeta function.
+
+Figures 5 and 6, then illustrates the impact of precise spectral filtering of the fourier transform spectra of the partial Euler Product truncated at the second quiescent region for the two intervals t=(2500,3500) and t=(9000,10000) investigated in figures 1 and 2.
+
+That is, figures 5 and 6, displays (i) the real and imaginary parts of the inverse fourier transform of the spectrally filtered partial Euler Product truncated at the second quiescent region for five values of $\Re(s)= 1.5, 1.0, 0.75, 0.5, 0.25$ over the central part of the intervals t=(2500,3500) and t=(9000,10000) respectively and (ii) the error between the $|\zeta(s)|$ and absolute value of the spectrally filtered and inverse fourier transformed function over the whole intervals.
+
+The spectral filtering involved setting to zero the fourier transform components in the fourier transform vector outside the upper fft frequency bound imposed by the lower bound of the frequency range used in the partial Euler Product sample.
+
+For example, given the fft vector of the partial Euler Product (which is a complex valued function) with n elements 
+
+\begin{equation}
+\text{fftEP}_{N_2} = \{x_1,x_2,x_3, ..., x_{n}\}
+\end{equation}
+
+the spectral filtering given the partial Euler Product used truncation at the second quiescent region is of the form
+
+\begin{align}
+\text{fftEPfiltered}_{N_2} = &\{x_1,0,0,0, ..., 0, 0, \nonumber \\
+&x_{n-\lfloor\frac{\Delta t}{2\pi}*\log(\frac{LB}{\pi})\rfloor+1}, \nonumber \\ &x_{n-\lfloor\frac{\Delta t}{2\pi}*\log(\frac{LB}{\pi})\rfloor+2}, ..., x_{n}\}
+\end{align}
+
+where $x_1$ is the DC component of the fft and LB is the lower bound of the t interval included in the partial Euler Product sample.
+
+The filtered fourier transform is then subjected to an inverse fourier transform to recover an improved approximation of the Riemann Zeta function.
+
+For convenience in figures 5 and 6, 
+
+\begin{enumerate}
+\item the lefthand column compares the real and imaginary parts of (i) the original partial Euler Product truncated at the second quiescent region shown in grey, (ii) the inverse fourier transform of the spectrally filtered fft of the partial Euler Product shown in yellow and cyan and (iii) the Riemann Zeta function shown in black and red over the central interval t=(2990,3010) (t=(9490,9510)) of the sampled waveform respectively. As with figures 1 and 2, there are five Re(s) values 1.5, 1, 0.75, 0.5, 0.25.
+\item the righthand column compares the error in the absolute value the inverse fourier transform of the spectrally filtered fft of the partial Euler Product with respect to the Riemann Zeta function over the full interval t=(2500,3500) (t=(9000,10000)).
+\end{enumerate}
+
+Since the inverse fourier transform is essentially an interpolation approach it is not surprising that the central interval fit has the smallest error. In practice, this spectral filtering and inverse fourier transform could therefore be further programmed as a moving average along the imaginary axis to progressively collect only the central interval estimates. 
+
+However, using the primes truncated up to $N_2$ is still a large number of primes. Can spectral filtering help improve partial Euler Product calculations using only primes truncated up to $N_1$. This is investigated in the next section.
+
+
+
+\newpage
+```{r spectrallyfilteredinversefouriertransform_2500_3500, echo=FALSE, fig.cap="A comparison of the spectrally filtered inverse fourier transform of the partial Euler Product (using truncation at $N_2 = \\frac{t}{\\pi}$) in the complex plane at five real values $\\sigma=1.5, 1 ,0.75, 0.5$ and 0.25 for the interval t=(2500,3500) to the real, imaginary and absolute value of the Riemann Zeta function. On the lefthand column is a comparison of the real and imaginary parts of the original partial Euler Product (grey, grey), the spectrally filtered and inverse fourier transform partial Euler product (yellow, cyan) and the Riemann Zeta function (black, blue) respectively for the central interval t=(2990,3010). On the righthand column is the error between the absolute values of the spectrally filtered and inverse fourier transform partial Euler product and the Riemann Zeta function over the whole interval t=(2500,3500).", out.width = c("49%","49%"), fig.show = "hold",  fig.height=4, warning=FALSE}
+
+
+dfEP=read.csv("/home/john/pari/zeta_res_1p5_t_2500_3500_real.csv",header=FALSE,colClasses = c("character"));
+
+
+
+dfEP$V2=as.numeric(gsub(" ","",dfEP$V2));
+
+
+dfEPi=read.csv("/home/john/pari/zeta_res_1p5_t_2500_3500_imag.csv",header=FALSE,colClasses = c("character"));
+
+
+dfEPi$V2=as.numeric(gsub(" ","",dfEPi$V2));
+
+
+
+dfzeta=as.data.frame(cbind(dfEP$V1,dfEP$V2+1i*dfEPi$V2));dfzeta$V2=as.complex(dfzeta$V2)
+
+
+dfEP=read.csv("/home/john/pari/EP_res_1p5_t_2500_3500_real.csv",header=FALSE,colClasses = c("character"));
+
+
+
+dfEP$V2=as.numeric(gsub(" ","",dfEP$V2));
+
+
+
+
+dfEPi=read.csv("/home/john/pari/EP_res_1p5_t_2500_3500_imag.csv",header=FALSE,colClasses = c("character"));
+
+
+dfEPi$V2=as.numeric(gsub(" ","",dfEPi$V2));
+
+
+
+dfEP=as.data.frame(cbind(dfEP$V1,dfEP$V2+1i*dfEPi$V2));dfEP$V2=as.complex(dfEP$V2)
+
+
+fft_EP = stats::fft(dfEP$V2)
+
+spectral_filter_lowpass_cutoff=floor(1000/2/pi*log(2500/pi))
+
+fft_inp=c(fft_EP[1],rep(0,length(fft_EP)-spectral_filter_lowpass_cutoff-1),
+   fft_EP[(length(fft_EP)-spectral_filter_lowpass_cutoff+1):length(fft_EP)])
+  
+inv_resultinp=fft(fft_inp, inverse=TRUE)/length(fft_inp)
+
+yspan=range(Re(dfEP$V2)[(0.5e5-1500):(0.5e5+1500)],Im(dfEP$V2)[(0.5e5-1500):(0.5e5+1500)]);
+            
+plot(dfEP$V1,Re(dfEP$V2),typ="l",xlim=c(2990,3010),ylim=yspan,lwd=3,col="gray",ylab="function value",xlab="imaginary co-ordinate",
+     main="comparison of original and spectrally filtered partial Euler product \n truncated at second quiescent region \n with real and imaginary parts of zeta(s)");grid()
+lines(dfEP$V1,Im(dfEP$V2),col="gray",lwd=3)
+lines(dfEP$V1,Re(dfzeta$V2),col="black",lty=1,lwd=2)
+lines(dfEP$V1,Im(dfzeta$V2),col="darkblue",lty=1,lwd=2)
+lines(dfEP$V1,Re(inv_resultinp),col="yellow",lty=2,lwd=2)
+lines(dfEP$V1,Im(inv_resultinp),col="cyan",lty=2,lwd=2)
+
+plot(dfEP$V1,abs(inv_resultinp)-abs(dfzeta$V2),typ="l",
+     ylab="error wrt abs(zeta(s))",xlab="imaginary co-ordinate",
+     main="error of absolute value of spectrally filtered partial Euler product \n truncated at second quiescent region wrt absolute value of zeta(s)");grid()
+
+
+
+dfEP=read.csv("/home/john/pari/zeta_res_1p0_t_2500_3500_real.csv",header=FALSE,colClasses = c("character"));
+
+
+
+dfEP$V2=as.numeric(gsub(" ","",dfEP$V2));
+
+
+
+
+dfEPi=read.csv("/home/john/pari/zeta_res_1p0_t_2500_3500_imag.csv",header=FALSE,colClasses = c("character"));
+
+
+dfEPi$V2=as.numeric(gsub(" ","",dfEPi$V2));
+
+
+
+dfzeta=as.data.frame(cbind(dfEP$V1,dfEP$V2+1i*dfEPi$V2));dfzeta$V2=as.complex(dfzeta$V2)
+
+
+
+
+dfEP=read.csv("/home/john/pari/EP_res_1p0_t_2500_3500_real.csv",header=FALSE,colClasses = c("character"));
+
+
+
+dfEP$V2=as.numeric(gsub(" ","",dfEP$V2));
+
+
+
+
+dfEPi=read.csv("/home/john/pari/EP_res_1p0_t_2500_3500_imag.csv",header=FALSE,colClasses = c("character"));
+
+
+dfEPi$V2=as.numeric(gsub(" ","",dfEPi$V2));
+
+
+
+dfEP=as.data.frame(cbind(dfEP$V1,dfEP$V2+1i*dfEPi$V2));dfEP$V2=as.complex(dfEP$V2)
+
+
+fft_EP = stats::fft(dfEP$V2)
+
+
+spectral_filter_lowpass_cutoff=floor(1000/2/pi*log(2500/pi))
+
+fft_inp=c(fft_EP[1],rep(0,length(fft_EP)-spectral_filter_lowpass_cutoff-1),
+   fft_EP[(length(fft_EP)-spectral_filter_lowpass_cutoff+1):length(fft_EP)])
+  
+inv_resultinp=fft(fft_inp, inverse=TRUE)/length(fft_inp)
+
+yspan=range(Re(dfEP$V2)[(0.5e5-1500):(0.5e5+1500)],Im(dfEP$V2)[(0.5e5-1500):(0.5e5+1500)]);
+            
+plot(dfEP$V1,Re(dfEP$V2),typ="l",xlim=c(2990,3010),ylim=yspan,lwd=3,col="gray",ylab="function value",xlab="imaginary co-ordinate");grid()
+lines(dfEP$V1,Im(dfEP$V2),col="gray",lwd=3)
+lines(dfEP$V1,Re(dfzeta$V2),col="black",lty=1,lwd=2)
+lines(dfEP$V1,Im(dfzeta$V2),col="darkblue",lty=1,lwd=2)
+lines(dfEP$V1,Re(inv_resultinp),col="yellow",lty=2,lwd=2)
+lines(dfEP$V1,Im(inv_resultinp),col="cyan",lty=2,lwd=2)
+
+plot(dfEP$V1,abs(inv_resultinp)-abs(dfzeta$V2),typ="l",
+     ylab="error wrt abs(zeta(s))",xlab="imaginary co-ordinate");grid()
+
+
+
+dfEP=read.csv("/home/john/pari/zeta_res_0p75_t_2500_3500_real.csv",header=FALSE,colClasses = c("character"));
+
+
+
+dfEP$V2=as.numeric(gsub(" ","",dfEP$V2));
+
+
+
+
+dfEPi=read.csv("/home/john/pari/zeta_res_0p75_t_2500_3500_imag.csv",header=FALSE,colClasses = c("character"));
+
+
+dfEPi$V2=as.numeric(gsub(" ","",dfEPi$V2));
+
+
+
+dfzeta=as.data.frame(cbind(dfEP$V1,dfEP$V2+1i*dfEPi$V2));dfzeta$V2=as.complex(dfzeta$V2)
+
+
+
+
+
+dfEP=read.csv("/home/john/pari/EP_res_0p75_t_2500_3500_real.csv",header=FALSE,colClasses = c("character"));
+
+
+
+dfEP$V2=as.numeric(gsub(" ","",dfEP$V2));
+
+
+
+
+dfEPi=read.csv("/home/john/pari/EP_res_0p75_t_2500_3500_imag.csv",header=FALSE,colClasses = c("character"));
+
+
+dfEPi$V2=as.numeric(gsub(" ","",dfEPi$V2));
+
+
+
+dfEP=as.data.frame(cbind(dfEP$V1,dfEP$V2+1i*dfEPi$V2));dfEP$V2=as.complex(dfEP$V2)
+
+
+fft_EP = stats::fft(dfEP$V2)
+
+
+spectral_filter_lowpass_cutoff=floor(1000/2/pi*log(2500/pi))
+
+fft_inp=c(fft_EP[1],rep(0,length(fft_EP)-spectral_filter_lowpass_cutoff-1),
+   fft_EP[(length(fft_EP)-spectral_filter_lowpass_cutoff+1):length(fft_EP)])
+  
+inv_resultinp=fft(fft_inp, inverse=TRUE)/length(fft_inp)
+
+yspan=range(Re(dfEP$V2)[(0.5e5-1500):(0.5e5+1500)],Im(dfEP$V2)[(0.5e5-1500):(0.5e5+1500)]);
+            
+plot(dfEP$V1,Re(dfEP$V2),typ="l",xlim=c(2990,3010),ylim=yspan,lwd=3,col="gray",ylab="function value",xlab="imaginary co-ordinate");grid()
+lines(dfEP$V1,Im(dfEP$V2),col="gray",lwd=3)
+lines(dfEP$V1,Re(dfzeta$V2),col="black",lty=1,lwd=2)
+lines(dfEP$V1,Im(dfzeta$V2),col="darkblue",lty=1,lwd=2)
+lines(dfEP$V1,Re(inv_resultinp),col="yellow",lty=2,lwd=2)
+lines(dfEP$V1,Im(inv_resultinp),col="cyan",lty=2,lwd=2)
+
+plot(dfEP$V1,abs(inv_resultinp)-abs(dfzeta$V2),typ="l",
+     ylab="error wrt abs(zeta(s))",xlab="imaginary co-ordinate");grid()
+
+
+
+dfEP=read.csv("/home/john/pari/zeta_2500_3500_real.csv",header=FALSE,colClasses = c("character"));
+
+
+
+dfEP$V2=as.numeric(gsub(" ","",dfEP$V2));
+
+
+
+dfEPi=read.csv("/home/john/pari/zeta_2500_3500_imag.csv",header=FALSE,colClasses = c("character"));
+
+
+dfEPi$V2=as.numeric(gsub(" ","",dfEPi$V2));
+
+
+
+dfzeta=as.data.frame(cbind(dfEP$V1,dfEP$V2+1i*dfEPi$V2));dfzeta$V2=as.complex(dfzeta$V2)
+
+
+
+dfEP=read.csv("/home/john/pari/EP_2500_3500_real.csv",header=FALSE,colClasses = c("character"));
+
+
+
+dfEP$V2=as.numeric(gsub(" ","",dfEP$V2));
+
+
+
+
+dfEPi=read.csv("/home/john/pari/EP_2500_3500_imag.csv",header=FALSE,colClasses = c("character"));
+
+
+dfEPi$V2=as.numeric(gsub(" ","",dfEPi$V2));
+
+
+
+dfEP=as.data.frame(cbind(dfEP$V1,dfEP$V2+1i*dfEPi$V2));dfEP$V2=as.complex(dfEP$V2)
+
+
+fft_EP = stats::fft(dfEP$V2)
+
+spectral_filter_lowpass_cutoff=floor(1000/2/pi*log(2500/pi))
+
+fft_inp=c(fft_EP[1],rep(0,length(fft_EP)-spectral_filter_lowpass_cutoff-1),
+   fft_EP[(length(fft_EP)-spectral_filter_lowpass_cutoff+1):length(fft_EP)])
+  
+inv_resultinp=fft(fft_inp, inverse=TRUE)/length(fft_inp)
+
+yspan=range(Re(dfEP$V2)[(0.5e5-1500):(0.5e5+1500)],Im(dfEP$V2)[(0.5e5-1500):(0.5e5+1500)]);
+            
+plot(dfEP$V1,Re(dfEP$V2),typ="l",xlim=c(2990,3010),ylim=yspan,lwd=3,col="gray",ylab="function value",xlab="imaginary co-ordinate");grid()
+lines(dfEP$V1,Im(dfEP$V2),col="gray",lwd=3)
+lines(dfEP$V1,Re(dfzeta$V2),col="black",lty=1,lwd=2)
+lines(dfEP$V1,Im(dfzeta$V2),col="darkblue",lty=1,lwd=2)
+lines(dfEP$V1,Re(inv_resultinp),col="yellow",lty=2,lwd=2)
+lines(dfEP$V1,Im(inv_resultinp),col="cyan",lty=2,lwd=2)
+
+plot(dfEP$V1,abs(inv_resultinp)-abs(dfzeta$V2),typ="l",
+     ylab="error wrt abs(zeta(s))",xlab="imaginary co-ordinate");grid()
+
+
+dfEP=read.csv("/home/john/pari/zeta_res_0p25_t_2500_3500_real.csv",header=FALSE,colClasses = c("character"));
+
+
+
+dfEP$V2=as.numeric(gsub(" ","",dfEP$V2));
+
+
+
+
+dfEPi=read.csv("/home/john/pari/zeta_res_0p25_t_2500_3500_imag.csv",header=FALSE,colClasses = c("character"));
+
+
+dfEPi$V2=as.numeric(gsub(" ","",dfEPi$V2));
+
+
+
+dfzeta=as.data.frame(cbind(dfEP$V1,dfEP$V2+1i*dfEPi$V2));dfzeta$V2=as.complex(dfzeta$V2)
+
+
+dfEP=read.csv("/home/john/pari/EP_res_0p25_t_2500_3500_real.csv",header=FALSE,colClasses = c("character"));
+
+
+
+dfEP$V2=as.numeric(gsub(" ","",dfEP$V2));
+
+
+
+
+dfEPi=read.csv("/home/john/pari/EP_res_0p25_t_2500_3500_imag.csv",header=FALSE,colClasses = c("character"));
+
+
+dfEPi$V2=as.numeric(gsub(" ","",dfEPi$V2));
+
+
+
+dfEP=as.data.frame(cbind(dfEP$V1,dfEP$V2+1i*dfEPi$V2));dfEP$V2=as.complex(dfEP$V2)
+
+
+fft_EP = stats::fft(dfEP$V2)
+
+spectral_filter_lowpass_cutoff=floor(1000/2/pi*log(2500/pi))
+
+fft_inp=c(fft_EP[1],rep(0,length(fft_EP)-spectral_filter_lowpass_cutoff-1),
+   fft_EP[(length(fft_EP)-spectral_filter_lowpass_cutoff+1):length(fft_EP)])
+  
+inv_resultinp=fft(fft_inp, inverse=TRUE)/length(fft_inp)
+
+yspan=range(Re(dfEP$V2)[(0.5e5-1500):(0.5e5+1500)],Im(dfEP$V2)[(0.5e5-1500):(0.5e5+1500)]);
+            
+plot(dfEP$V1,Re(dfEP$V2),typ="l",xlim=c(2990,3010),ylim=yspan,lwd=3,col="gray",ylab="function value",xlab="imaginary co-ordinate");grid()
+lines(dfEP$V1,Im(dfEP$V2),col="gray",lwd=3)
+lines(dfEP$V1,Re(dfzeta$V2),col="black",lty=1,lwd=2)
+lines(dfEP$V1,Im(dfzeta$V2),col="darkblue",lty=1,lwd=2)
+lines(dfEP$V1,Re(inv_resultinp),col="yellow",lty=2,lwd=2)
+lines(dfEP$V1,Im(inv_resultinp),col="cyan",lty=2,lwd=2)
+
+plot(dfEP$V1,abs(inv_resultinp)-abs(dfzeta$V2),typ="l",
+     ylab="error wrt abs(zeta(s))",xlab="imaginary co-ordinate");grid()
+
+```
+
+\newpage
+```{r spectrallyfilteredinversefouriertransform_9000_10000, echo=FALSE, fig.cap="A comparison of the spectrally filtered inverse fourier transform of the partial Euler Product (using truncation at $N_2 = \\frac{t}{\\pi}$) in the complex plane at five real values $\\sigma=1.5, 1 ,0.75, 0.5$ and 0.25 for the interval t=(9000,10000) to the real, imaginary and absolute value of the Riemann Zeta function. On the lefthand column is a comparison of the real and imaginary parts of the original partial Euler Product (grey, grey), the spectrally filtered and inverse fourier transform partial Euler product (yellow, cyan) and the Riemann Zeta function (black, blue) respectively for the central interval t=(9490,9510). On the righthand column is the error between the absolute values of the spectrally filtered and inverse fourier transform partial Euler product and the Riemann Zeta function over the whole interval t=(9000,10000).", out.width = c("49%","49%"), fig.show = "hold",  fig.height=4, warning=FALSE}
+
+
+dfEP=read.csv("/home/john/pari/zeta_res_1p5_t_9000_10000_real.csv",header=FALSE,colClasses = c("character"));
+
+
+
+dfEP$V2=as.numeric(gsub(" ","",dfEP$V2));
+
+
+
+
+dfEPi=read.csv("/home/john/pari/zeta_res_1p5_t_9000_10000_imag.csv",header=FALSE,colClasses = c("character"));
+
+
+dfEPi$V2=as.numeric(gsub(" ","",dfEPi$V2));
+
+
+
+dfzeta=as.data.frame(cbind(dfEP$V1,dfEP$V2+1i*dfEPi$V2));dfzeta$V2=as.complex(dfzeta$V2)
+
+
+
+dfEP=read.csv("/home/john/pari/EP_res_1p5_t_9000_10000_real.csv",header=FALSE,colClasses = c("character"));
+
+
+
+dfEP$V2=as.numeric(gsub(" ","",dfEP$V2));
+
+
+
+
+dfEPi=read.csv("/home/john/pari/EP_res_1p5_t_9000_10000_imag.csv",header=FALSE,colClasses = c("character"));
+
+
+dfEPi$V2=as.numeric(gsub(" ","",dfEPi$V2));
+
+
+
+dfEP=as.data.frame(cbind(dfEP$V1,dfEP$V2+1i*dfEPi$V2));dfEP$V2=as.complex(dfEP$V2)
+
+
+fft_EP = stats::fft(dfEP$V2)
+
+spectral_filter_lowpass_cutoff=floor(1000/2/pi*log(9000/pi))
+
+fft_inp=c(fft_EP[1],rep(0,length(fft_EP)-spectral_filter_lowpass_cutoff-1),
+   fft_EP[(length(fft_EP)-spectral_filter_lowpass_cutoff+1):length(fft_EP)])
+  
+inv_resultinp=fft(fft_inp, inverse=TRUE)/length(fft_inp)
+
+yspan=range(Re(dfEP$V2)[(0.5e5-1500):(0.5e5+1500)],Im(dfEP$V2)[(0.5e5-1500):(0.5e5+1500)]);
+            
+plot(dfEP$V1,Re(dfEP$V2),typ="l",xlim=c(9490,9510),ylim=yspan,lwd=3,col="gray",ylab="function value",xlab="imaginary co-ordinate",
+     main="comparison of original and spectrally filtered partial Euler product \n truncated at second quiescent region \n with real and imaginary parts of zeta(s)");grid()
+lines(dfEP$V1,Im(dfEP$V2),col="gray",lwd=3)
+lines(dfEP$V1,Re(dfzeta$V2),col="black",lty=1,lwd=2)
+lines(dfEP$V1,Im(dfzeta$V2),col="darkblue",lty=1,lwd=2)
+lines(dfEP$V1,Re(inv_resultinp),col="yellow",lty=2,lwd=2)
+lines(dfEP$V1,Im(inv_resultinp),col="cyan",lty=2,lwd=2)
+
+plot(dfEP$V1,abs(inv_resultinp)-abs(dfzeta$V2),typ="l",
+     ylab="error wrt abs(zeta(s))",xlab="imaginary co-ordinate",
+     main="error of absolute value of spectrally filtered partial Euler product \n truncated at second quiescent region wrt absolute value of zeta(s)");grid()
+
+
+dfEP=read.csv("/home/john/pari/zeta_res_1p0_t_9000_10000_real.csv",header=FALSE,colClasses = c("character"));
+
+
+
+dfEP$V2=as.numeric(gsub(" ","",dfEP$V2));
+
+
+
+
+dfEPi=read.csv("/home/john/pari/zeta_res_1p0_t_9000_10000_imag.csv",header=FALSE,colClasses = c("character"));
+
+
+dfEPi$V2=as.numeric(gsub(" ","",dfEPi$V2));
+
+
+
+dfzeta=as.data.frame(cbind(dfEP$V1,dfEP$V2+1i*dfEPi$V2));dfzeta$V2=as.complex(dfzeta$V2)
+
+
+
+
+dfEP=read.csv("/home/john/pari/EP_res_1p0_t_9000_10000_real.csv",header=FALSE,colClasses = c("character"));
+
+
+
+dfEP$V2=as.numeric(gsub(" ","",dfEP$V2));
+
+
+
+
+dfEPi=read.csv("/home/john/pari/EP_res_1p0_t_9000_10000_imag.csv",header=FALSE,colClasses = c("character"));
+
+
+dfEPi$V2=as.numeric(gsub(" ","",dfEPi$V2));
+
+
+
+dfEP=as.data.frame(cbind(dfEP$V1,dfEP$V2+1i*dfEPi$V2));dfEP$V2=as.complex(dfEP$V2)
+
+
+fft_EP = stats::fft(dfEP$V2)
+
+spectral_filter_lowpass_cutoff=floor(1000/2/pi*log(9000/pi))
+
+fft_inp=c(fft_EP[1],rep(0,length(fft_EP)-spectral_filter_lowpass_cutoff-1),
+   fft_EP[(length(fft_EP)-spectral_filter_lowpass_cutoff+1):length(fft_EP)])
+  
+inv_resultinp=fft(fft_inp, inverse=TRUE)/length(fft_inp)
+
+yspan=range(Re(dfEP$V2)[(0.5e5-1500):(0.5e5+1500)],Im(dfEP$V2)[(0.5e5-1500):(0.5e5+1500)]);
+            
+plot(dfEP$V1,Re(dfEP$V2),typ="l",xlim=c(9490,9510),ylim=yspan,lwd=3,col="gray",ylab="function value",xlab="imaginary co-ordinate");grid()
+lines(dfEP$V1,Im(dfEP$V2),col="gray",lwd=3)
+lines(dfEP$V1,Re(dfzeta$V2),col="black",lty=1,lwd=2)
+lines(dfEP$V1,Im(dfzeta$V2),col="darkblue",lty=1,lwd=2)
+lines(dfEP$V1,Re(inv_resultinp),col="yellow",lty=2,lwd=2)
+lines(dfEP$V1,Im(inv_resultinp),col="cyan",lty=2,lwd=2)
+
+plot(dfEP$V1,abs(inv_resultinp)-abs(dfzeta$V2),typ="l",
+     ylab="error wrt abs(zeta(s))",xlab="imaginary co-ordinate");grid()
+
+
+
+dfEP=read.csv("/home/john/pari/zeta_res_0p75_t_9000_10000_real.csv",header=FALSE,colClasses = c("character"));
+
+
+
+dfEP$V2=as.numeric(gsub(" ","",dfEP$V2));
+
+
+
+
+dfEPi=read.csv("/home/john/pari/zeta_res_0p75_t_9000_10000_imag.csv",header=FALSE,colClasses = c("character"));
+
+
+dfEPi$V2=as.numeric(gsub(" ","",dfEPi$V2));
+
+
+
+dfzeta=as.data.frame(cbind(dfEP$V1,dfEP$V2+1i*dfEPi$V2));dfzeta$V2=as.complex(dfzeta$V2)
+
+
+
+
+dfEP=read.csv("/home/john/pari/EP_res_0p75_t_9000_10000_real.csv",header=FALSE,colClasses = c("character"));
+
+
+
+dfEP$V2=as.numeric(gsub(" ","",dfEP$V2));
+
+
+
+
+dfEPi=read.csv("/home/john/pari/EP_res_0p75_t_9000_10000_imag.csv",header=FALSE,colClasses = c("character"));
+
+
+dfEPi$V2=as.numeric(gsub(" ","",dfEPi$V2));
+
+
+
+dfEP=as.data.frame(cbind(dfEP$V1,dfEP$V2+1i*dfEPi$V2));dfEP$V2=as.complex(dfEP$V2)
+
+
+fft_EP = stats::fft(dfEP$V2)
+
+
+spectral_filter_lowpass_cutoff=floor(1000/2/pi*log(9000/pi))
+
+fft_inp=c(fft_EP[1],rep(0,length(fft_EP)-spectral_filter_lowpass_cutoff-1),
+   fft_EP[(length(fft_EP)-spectral_filter_lowpass_cutoff+1):length(fft_EP)])
+  
+inv_resultinp=fft(fft_inp, inverse=TRUE)/length(fft_inp)
+
+yspan=range(Re(dfEP$V2)[(0.5e5-1500):(0.5e5+1500)],Im(dfEP$V2)[(0.5e5-1500):(0.5e5+1500)]);
+            
+plot(dfEP$V1,Re(dfEP$V2),typ="l",xlim=c(9490,9510),ylim=yspan,lwd=3,col="gray",ylab="function value",xlab="imaginary co-ordinate");grid()
+lines(dfEP$V1,Im(dfEP$V2),col="gray",lwd=3)
+lines(dfEP$V1,Re(dfzeta$V2),col="black",lty=1,lwd=2)
+lines(dfEP$V1,Im(dfzeta$V2),col="darkblue",lty=1,lwd=2)
+lines(dfEP$V1,Re(inv_resultinp),col="yellow",lty=2,lwd=2)
+lines(dfEP$V1,Im(inv_resultinp),col="cyan",lty=2,lwd=2)
+
+plot(dfEP$V1,abs(inv_resultinp)-abs(dfzeta$V2),typ="l",
+     ylab="error wrt abs(zeta(s))",xlab="imaginary co-ordinate");grid()
+
+
+
+
+
+
+dfEP=read.csv("/home/john/pari/zeta_9000_10000_real.csv",header=FALSE,colClasses = c("character"));
+
+
+
+dfEP$V2=as.numeric(gsub(" ","",dfEP$V2));
+
+
+
+dfEPi=read.csv("/home/john/pari/zeta_9000_10000_imag.csv",header=FALSE,colClasses = c("character"));
+
+
+dfEPi$V2=as.numeric(gsub(" ","",dfEPi$V2));
+
+
+
+dfzeta=as.data.frame(cbind(dfEP$V1,dfEP$V2+1i*dfEPi$V2));dfzeta$V2=as.complex(dfzeta$V2)
+
+
+
+dfEP=read.csv("/home/john/pari/EP_9000_10000_real.csv",header=FALSE,colClasses = c("character"));
+
+
+
+dfEP$V2=as.numeric(gsub(" ","",dfEP$V2));
+
+
+
+
+dfEPi=read.csv("/home/john/pari/EP_9000_10000_imag.csv",header=FALSE,colClasses = c("character"));
+
+
+dfEPi$V2=as.numeric(gsub(" ","",dfEPi$V2));
+
+
+
+dfEP=as.data.frame(cbind(dfEP$V1,dfEP$V2+1i*dfEPi$V2));dfEP$V2=as.complex(dfEP$V2)
+
+
+fft_EP = stats::fft(dfEP$V2)
+
+
+spectral_filter_lowpass_cutoff=floor(1000/2/pi*log(9000/pi))
+
+fft_inp=c(fft_EP[1],rep(0,length(fft_EP)-spectral_filter_lowpass_cutoff-1),
+   fft_EP[(length(fft_EP)-spectral_filter_lowpass_cutoff+1):length(fft_EP)])
+  
+inv_resultinp=fft(fft_inp, inverse=TRUE)/length(fft_inp)
+
+yspan=range(Re(dfEP$V2)[(0.5e5-1500):(0.5e5+1500)],Im(dfEP$V2)[(0.5e5-1500):(0.5e5+1500)]);
+            
+plot(dfEP$V1,Re(dfEP$V2),typ="l",xlim=c(9490,9510),ylim=yspan,lwd=3,col="gray",ylab="function value",xlab="imaginary co-ordinate");grid()
+lines(dfEP$V1,Im(dfEP$V2),col="gray",lwd=3)
+lines(dfEP$V1,Re(dfzeta$V2),col="black",lty=1,lwd=2)
+lines(dfEP$V1,Im(dfzeta$V2),col="darkblue",lty=1,lwd=2)
+lines(dfEP$V1,Re(inv_resultinp),col="yellow",lty=2,lwd=2)
+lines(dfEP$V1,Im(inv_resultinp),col="cyan",lty=2,lwd=2)
+
+plot(dfEP$V1,abs(inv_resultinp)-abs(dfzeta$V2),typ="l",
+     ylab="error wrt abs(zeta(s))",xlab="imaginary co-ordinate");grid()
+
+
+
+
+dfEP=read.csv("/home/john/pari/zeta_res_0p25_t_9000_10000_real.csv",header=FALSE,colClasses = c("character"));
+
+
+
+dfEP$V2=as.numeric(gsub(" ","",dfEP$V2));
+
+
+
+
+dfEPi=read.csv("/home/john/pari/zeta_res_0p25_t_9000_10000_imag.csv",header=FALSE,colClasses = c("character"));
+
+
+dfEPi$V2=as.numeric(gsub(" ","",dfEPi$V2));
+
+
+
+dfzeta=as.data.frame(cbind(dfEP$V1,dfEP$V2+1i*dfEPi$V2));dfzeta$V2=as.complex(dfzeta$V2)
+
+
+
+
+dfEP=read.csv("/home/john/pari/EP_res_0p25_t_9000_10000_real.csv",header=FALSE,colClasses = c("character"));
+
+
+
+dfEP$V2=as.numeric(gsub(" ","",dfEP$V2));
+
+
+
+
+dfEPi=read.csv("/home/john/pari/EP_res_0p25_t_9000_10000_imag.csv",header=FALSE,colClasses = c("character"));
+
+
+dfEPi$V2=as.numeric(gsub(" ","",dfEPi$V2));
+
+
+
+dfEP=as.data.frame(cbind(dfEP$V1,dfEP$V2+1i*dfEPi$V2));dfEP$V2=as.complex(dfEP$V2)
+
+
+fft_EP = stats::fft(dfEP$V2)
+
+spectral_filter_lowpass_cutoff=floor(1000/2/pi*log(9000/pi))
+
+fft_inp=c(fft_EP[1],rep(0,length(fft_EP)-spectral_filter_lowpass_cutoff-1),
+   fft_EP[(length(fft_EP)-spectral_filter_lowpass_cutoff+1):length(fft_EP)])
+  
+inv_resultinp=fft(fft_inp, inverse=TRUE)/length(fft_inp)
+
+yspan=range(Re(dfEP$V2)[(0.5e5-1500):(0.5e5+1500)],Im(dfEP$V2)[(0.5e5-1500):(0.5e5+1500)]);
+            
+plot(dfEP$V1,Re(dfEP$V2),typ="l",xlim=c(9490,9510),ylim=yspan,lwd=3,col="gray",ylab="function value",xlab="imaginary co-ordinate");grid()
+lines(dfEP$V1,Im(dfEP$V2),col="gray",lwd=3)
+lines(dfEP$V1,Re(dfzeta$V2),col="black",lty=1,lwd=2)
+lines(dfEP$V1,Im(dfzeta$V2),col="darkblue",lty=1,lwd=2)
+lines(dfEP$V1,Re(inv_resultinp),col="yellow",lty=2,lwd=2)
+lines(dfEP$V1,Im(inv_resultinp),col="cyan",lty=2,lwd=2)
+
+plot(dfEP$V1,abs(inv_resultinp)-abs(dfzeta$V2),typ="l",
+     ylab="error wrt abs(zeta(s))",xlab="imaginary co-ordinate");grid()
+
+
+
+```
+
+\clearpage
+
+
+## Comparing the fourier transform spectra of the zeroth order Rieman-Siegel components of the Riemann Zeta function and first quiescent region based partial Euler Product calculations
+
+Figures 7-8, illustrates the absolute value of the fourier transform of (i) the Riemann Zeta function
+
+\begin{equation}
+\zeta(s)
+\end{equation}
+
+(lefthand column) and two partial Euler Products truncated at the first quiescent region $N_1 = \sqrt{\frac{t}{2\pi}}$
+
+\begin{equation}
+\prod_{p=2}^{p\le \lfloor\frac{t}{\pi}\rfloor=N_1} \frac{1}{(1-\frac{1}{p^s})} \end{equation}
+
+\begin{equation}
+\mychi(s) \cdot \prod_{p=2}^{p\le \lfloor\frac{|t|}{\pi}\rfloor=N_1} \frac{1}{(1-\frac{1}{p^{(1-s)}})}
+\end{equation}
+
+(righthand column) over the intervals t=(9000,10000), t=(16648,17648) respectively, on the critical line $\Re(s)=0.5$.
+
+
+Figures 8-9, illustrates the absolute value of the fourier transform of (i) the Riemann Zeta function (calculated using the Riemann-Siegel formula via 128 point tapered Dirichlet series approximation)
+
+\begin{align}
+\zeta_{RS\text{ tapered }}(s) = &\sum_{n=1}^{(\lfloor\sqrt{\frac{t}{2\pi}}\rfloor-q)} \frac{1}{n^{s}} +\sum_{i=\left(-q+1\right)}^{q}\frac{\frac{1}{2^{2q}} \left( 2^{2q}-\sum_{k=0}^{i+q-1}\binom{2q}{2q-k}\right)}{(\lfloor\sqrt{\frac{t}{2\pi}}\rfloor+i)^s} \nonumber \\ + &\chi(s) \cdot \left(\sum_{n=1}^{(\lfloor\sqrt{\frac{t}{2\pi}}\rfloor-q)} \frac{1}{n^{(1-s)}} +\sum_{i=\left(-q+1\right)}^{q}\frac{\frac{1}{2^{2q}} \left( 2^{2q}-\sum_{k=0}^{i+q-1}\binom{2q}{2q-k}\right)}{(\lfloor\sqrt{\frac{t}{2\pi}}\rfloor+i)^{(1-s)}} \right)  \qquad \text{as } t \rightarrow \infty
+\end{align}
+
+(lefthand column) and two partial Euler Products truncated at the first quiescent region 
+
+\begin{equation}
+\prod_{p=2}^{p\le \lfloor\frac{t}{\pi}\rfloor=N_1} \frac{1}{(1-\frac{1}{p^s})} \end{equation}
+
+\begin{equation}
+\mychi(s) \cdot \prod_{p=2}^{p\le \lfloor\frac{t}{\pi}\rfloor=N_1} \frac{1}{(1-\frac{1}{p^{(1-s)}})}
+\end{equation}
+
+(righthand column) over the interval t=(6818555,6821555), t=(363990455,363991955) respectively, on the critical line $\Re(s)=0.5$.
+
+Since the input data was complex valued, the fourier transform spectrum is one sided for all four intervals. The $\Delta t$ of the four intervals were different $\Delta t = 1000, 1000, 3000, 1500$ respectively. For convenience in figures 7-10, 
+
+\begin{enumerate}
+\item the fast fourier transform (fft) output vector is wrapped around so the informative non-zero fft components appear next to the DC fft component (0) as negative frequencies.
+\item the x-axis is scaled in units of angular frequency (radians per second) since the low frequency components are expected to be $|\omega| = \{\log(2), \log(3), \log(4), etc\}$ due to the Dirichlet series $\Large\sum \frac{1}{k^s}$ contribution to $\zeta(s)$.
+\end{enumerate}
+
+It can be seen in the four figures that 
+
+\begin{itemize}
+\item The DC component across the four figures has amplitude 1e5, 1e5, 3e5, 1.5e5 consistent with the number of sampled points (1e5, 1e5, 3e5, 1.5e5) analysed for each respective fourier transform.
+\item As indicated by the green vertical lines in the top and middle panels of each figure both the Riemann Zeta function and the $\prod_{p=2}^{p\le \lfloor\frac{t}{\pi}\rfloor=N_1} \frac{1}{(1-\frac{1}{p^s})}$ Riemann-Siegel component based partial Euler Products truncated at the first quiescent region sampled over the finite interval exhibit strong fourier components containing angular frequency components $|\omega| = \{\log(2), \log(3), \log(4), ... , \log(20), ...  \text{etc}\}$ which is understandable since $\Large\sum \frac{1}{k^s} = 1 + e^{-\log(2)t} + e^{-\log(3)t} + e^{-\log(4)t} + e^{-\log(5)t} + ...$ has contributions at these particular angular frequencies independent of t.
+\item As indicated by the red vertical lines in the top and bottom panels of each figure both the Riemann Zeta function and the $\mychi(s) \cdot \prod_{p=2}^{p\le \lfloor\frac{t}{\pi}\rfloor=N_1} \frac{1}{(1-\frac{1}{p^{(1-s)}})}$ exhibit strong fourier components with broader spectral features which are successful captured by the pair of red lines $-(\log(UB/\pi/2),\log(LB/\pi/2))$, $-(\log(UB/\pi/4),\log(LB/\pi/4))$, $-(\log(UB/\pi/6),\log(LB/\pi/6))$ where UB=9000,LB=10000 (UB=17648,LB=16648; UB=6821555,LB=6818555; UB=363991955,LB=363990455) corresponding to the range of t values used in figures 7-10. The origin of such features is also recognizable in the known cumulative behaviour of the real and imaginary part partial sums $\Re(\Large\sum \frac{1}{k^s})$ and $\Im(\Large\sum \frac{1}{k^s})$ which typically have  steplike behaviour around $\frac{t}{2\pi}, \frac{t}{3\pi}, \frac{t}{4\pi}, \frac{t}{5\pi}, \frac{t}{6\pi}, ...$. The largest value $\frac{t}{2\pi}$ marks the final step of the partial sums $\Re(\Large\sum \frac{1}{k^s})$ and $\Im(\Large\sum \frac{1}{k^s})$ into their final plateau of oscillatory divergence when $\Re(s) \le 1$ 
+\item As indicated by the dashed blue vertical line in the middle and bottom panels is an angular frequency of $\log(\frac{9000}{\pi})$ ($\log(\frac{17648}{\pi})$, $\log(\frac{6818555}{\pi})$, $\log(\frac{363990455}{\pi})$) respectively for figures 7-10 beyond which it is expected that the partial Euler Product using truncation at the second quiescent region would contain fourier transform frequencies not present in the Riemann Zeta function when $\Re(s) \le 1$. It can be seen that the $\prod_{p=2}^{p\le \lfloor\frac{t}{\pi}\rfloor=N_1} \frac{1}{(1-\frac{1}{p^s})}$ contains higher frequencies than are contained in the Riemann Zeta function but $\mychi(s) \cdot \prod_{p=2}^{p\le \lfloor\frac{t}{\pi}\rfloor=N_1} \frac{1}{(1-\frac{1}{p^{(1-s)}})}$ doesn't appear to have extraneous high frequencies but does exhibit noise frequencies surrounding the DC component.
+\end{itemize}
+
+So the takewaway is that the fourier transform of $\prod_{p=2}^{p\le \lfloor\frac{t}{\pi}\rfloor=N_1} \frac{1}{(1-\frac{1}{p^s})}$ contains angular frequency components closely approximating the fourier transform of the Riemann Zeta function in the region $-\log(\sqrt{\frac{UB}{2\pi}}) \le \omega \le 0$ and the fourier transform of $\mychi(s) \cdot \prod_{p=2}^{p\le \lfloor\frac{t}{\pi}\rfloor=N_1} \frac{1}{(1-\frac{1}{p^{(1-s)}})}$ contains angular frequency components closely approximating the fourier transform of the Riemann Zeta function in the region $-\log(\frac{LB}{\pi}) \le \omega < -\log(\sqrt{\frac{UB}{2\pi}})$.
+
+\clearpage 
+
+\newpage
+```{r zetafunctionandRSapproachoveraninterval_anditsfouriertransform_9000_10000, echo=FALSE, fig.cap="A comparison of the fourier transforms of the Riemann Zeta function and two partial Euler Products (using truncation at $N_1 = \\sqrt{\\frac{t}{2\\pi}}$) on the critical line for the interval t=(9000,10000). The positions of the frequency components indicated in green, red and blue are explainable by the known behaviour of the cumulative sum of finite Dirichlet Series.", out.width = c("99%"), fig.show = "hold",  fig.height=3.3, warning=FALSE}
+
+
+
+
+dfEP=read.csv("/home/john/pari/zeta_9000_10000_real.csv",header=FALSE,colClasses = c("character"));
+
+
+
+dfEP$V2=as.numeric(gsub(" ","",dfEP$V2));
+
+
+
+dfEPi=read.csv("/home/john/pari/zeta_9000_10000_imag.csv",header=FALSE,colClasses = c("character"));
+
+
+dfEPi$V2=as.numeric(gsub(" ","",dfEPi$V2));
+
+
+
+dfzeta=as.data.frame(cbind(dfEP$V1,dfEP$V2+1i*dfEPi$V2));dfzeta$V2=as.complex(dfzeta$V2)
+
+
+fft_zeta = stats::fft(dfzeta$V2)
+
+
+plot(c(-50000:49999)*2*pi/1000,c(abs(fft_zeta)[50001:100000],abs(fft_zeta)[1:50000]),xlim=c(-9,+1.5),typ="l",xaxt="n",xlab="angular frequency (radians per sec)",ylab="Amplitude",ylim=c(0,1e5),main="fourier transform spectra of the Zeta(s) waveform \n for Re(s)=0.5 over the interval Im(s)=(9000,10000)")
+abline(v=seq(-10,1,l=12),h=seq(0,1e5,l=6),lty=3,col="gray")
+axis(1,at=seq(-10,1,l=12))
+abline(v=-log((10000)/pi/c(2,4,6,8,10))-0,col=rgb(1,0,0,0.5))
+abline(v=-log((9000)/pi/c(2,4,6,8,10))-0,col=rgb(1,0,0,0.5))
+abline(v=-log(c(2:10))-0,col=rgb(0,1,0,0.5))
+
+
+
+dfEP=read.csv("/home/john/pari/EP_oneRS_9000_10000_real.csv",header=FALSE,colClasses = c("character"));
+
+
+
+dfEP$V2=as.numeric(gsub(" ","",dfEP$V2));
+
+
+
+
+dfEPi=read.csv("/home/john/pari/EP_oneRS_9000_10000_imag.csv",header=FALSE,colClasses = c("character"));
+
+
+dfEPi$V2=as.numeric(gsub(" ","",dfEPi$V2));
+
+
+
+dfEP=as.data.frame(cbind(dfEP$V1,dfEP$V2+1i*dfEPi$V2));dfEP$V2=as.complex(dfEP$V2)
+
+
+fft_EP = stats::fft(dfEP$V2)
+
+
+
+
+
+
+plot(c(-50000:49999)*2*pi/1000,c(abs(fft_EP)[50001:100000],abs(fft_EP)[1:50000]),xlim=c(-9,+1.5),typ="l",xaxt="n",xlab="angular frequency (radians per sec)",ylab="Amplitude",ylim=c(0,1e5),main="fourier transform spectra of the partial Euler product waveform \n Re(s)=0.5 over the interval Im(s)=(9000,10000) \n using truncation at N1=t/pi.")
+abline(v=seq(-10,1,l=12),h=seq(0,1e5,l=6),lty=3,col="gray")
+axis(1,at=seq(-10,1,l=12))
+abline(v=-log((10000)/pi/c(2,4,6,8,10))-0,col=rgb(1,0,0,0.5))
+abline(v=-log((9000)/pi/c(2,4,6,8,10))-0,col=rgb(1,0,0,0.5))
+abline(v=-log((9000)/pi/c(1))-0,col=rgb(0,0,1,0.5),lty=2,lwd=2)
+abline(v=-log(c(2:10))-0,col=rgb(0,1,0,0.5))
+
+
+dfEP=read.csv("/home/john/pari/EP_minusoneRS_9000_10000_real.csv",header=FALSE,colClasses = c("character"));
+
+
+
+dfEP$V2=as.numeric(gsub(" ","",dfEP$V2));
+
+
+
+
+dfEPi=read.csv("/home/john/pari/EP_minusoneRS_9000_10000_imag.csv",header=FALSE,colClasses = c("character"));
+
+
+dfEPi$V2=as.numeric(gsub(" ","",dfEPi$V2));
+
+
+
+dfEP=as.data.frame(cbind(dfEP$V1,dfEP$V2+1i*dfEPi$V2));dfEP$V2=as.complex(dfEP$V2)
+
+
+fft_EP = stats::fft(dfEP$V2)
+
+
+
+
+
+
+plot(c(-50000:49999)*2*pi/1000,c(abs(fft_EP)[50001:100000],abs(fft_EP)[1:50000]),xlim=c(-9,+1.5),typ="l",xaxt="n",xlab="angular frequency (radians per sec)",ylab="Amplitude",ylim=c(0,1e5),main="fourier transform spectra of the \n (1-s) based Riemann-Siegel partial Euler product waveform \n Re(s)=0.5 over the interval Im(s)=(9000,10000) using truncation at N1=t/pi.")
+abline(v=seq(-10,1,l=12),h=seq(0,1e5,l=6),lty=3,col="gray")
+axis(1,at=seq(-10,1,l=12))
+abline(v=-log((10000)/pi/c(2,4,6,8,10))-0,col=rgb(1,0,0,0.5))
+abline(v=-log((9000)/pi/c(2,4,6,8,10))-0,col=rgb(1,0,0,0.5))
+abline(v=-log((9000)/pi/c(1))-0,col=rgb(0,0,1,0.5),lty=2,lwd=2)
+abline(v=-log(c(2:10))-0,col=rgb(0,1,0,0.5))
+
+
+
+
+```
+
+\clearpage
+
+
+\newpage
+```{r zetafunctionandRSapproachoveraninterval_anditsfouriertransform_16648_17648, echo=FALSE, fig.cap="A comparison of the fourier transforms of the Riemann Zeta function and two partial Euler Products (using truncation at $N_1 = \\sqrt{\\frac{t}{2\\pi}}$) on the critical line for the interval t=(16648,17648). The positions of the frequency components indicated in green, red and blue are explainable by the known behaviour of the cumulative sum of finite Dirichlet Series.", out.width = c("99%"), fig.show = "hold",  fig.height=3.3, warning=FALSE}
+
+
+
+
+dfEP=read.csv("/home/john/pari/zeta_16648_17648_real.csv",header=FALSE,colClasses = c("character"));
+
+
+
+dfEP$V2=as.numeric(gsub(" ","",dfEP$V2));
+
+
+
+dfEPi=read.csv("/home/john/pari/zeta_16648_17648_imag.csv",header=FALSE,colClasses = c("character"));
+
+
+dfEPi$V2=as.numeric(gsub(" ","",dfEPi$V2));
+
+
+
+dfzeta=as.data.frame(cbind(dfEP$V1,dfEP$V2+1i*dfEPi$V2));dfzeta$V2=as.complex(dfzeta$V2)
+
+
+fft_zeta = stats::fft(dfzeta$V2)
+
+
+plot(c(-50000:49999)*2*pi/1000,c(abs(fft_zeta)[50001:100000],abs(fft_zeta)[1:50000]),xlim=c(-9,+1.5),typ="l",xaxt="n",xlab="angular frequency (radians per sec)",ylab="Amplitude",ylim=c(0,1e5),main="fourier transform spectra of the Zeta(s) waveform \n for Re(s)=0.5 over the interval Im(s)=(16648,17648)")
+abline(v=seq(-10,1,l=12),h=seq(0,1e5,l=6),lty=3,col="gray")
+axis(1,at=seq(-10,1,l=12))
+abline(v=-log((17648)/pi/c(2,4,6,8,10))-0,col=rgb(1,0,0,0.5))
+abline(v=-log((16648)/pi/c(2,4,6,8,10))-0,col=rgb(1,0,0,0.5))
+abline(v=-log(c(2:10))-0,col=rgb(0,1,0,0.5))
+
+
+
+dfEP=read.csv("/home/john/pari/EP_oneRS_16648_17648_real.csv",header=FALSE,colClasses = c("character"));
+
+
+
+dfEP$V2=as.numeric(gsub(" ","",dfEP$V2));
+
+
+
+
+dfEPi=read.csv("/home/john/pari/EP_oneRS_16648_17648_imag.csv",header=FALSE,colClasses = c("character"));
+
+
+dfEPi$V2=as.numeric(gsub(" ","",dfEPi$V2));
+
+
+
+dfEP=as.data.frame(cbind(dfEP$V1,dfEP$V2+1i*dfEPi$V2));dfEP$V2=as.complex(dfEP$V2)
+
+
+fft_EP = stats::fft(dfEP$V2)
+
+
+
+
+
+
+plot(c(-50000:49999)*2*pi/1000,c(abs(fft_EP)[50001:100000],abs(fft_EP)[1:50000]),xlim=c(-9,+1.5),typ="l",xaxt="n",xlab="angular frequency (radians per sec)",ylab="Amplitude",ylim=c(0,1e5),main="fourier transform spectra of the partial Euler product waveform \n Re(s)=0.5 over the interval Im(s)=(16648,17648) \n using truncation at N1=t/pi.")
+abline(v=seq(-10,1,l=12),h=seq(0,1e5,l=6),lty=3,col="gray")
+axis(1,at=seq(-10,1,l=12))
+abline(v=-log((17648)/pi/c(2,4,6,8,10))-0,col=rgb(1,0,0,0.5))
+abline(v=-log((16648)/pi/c(2,4,6,8,10))-0,col=rgb(1,0,0,0.5))
+abline(v=-log((16648)/pi/c(1))-0,col=rgb(0,0,1,0.5),lty=2,lwd=2)
+abline(v=-log(c(2:10))-0,col=rgb(0,1,0,0.5))
+
+
+dfEP=read.csv("/home/john/pari/EP_minusoneRS_16648_17648_real.csv",header=FALSE,colClasses = c("character"));
+
+
+
+dfEP$V2=as.numeric(gsub(" ","",dfEP$V2));
+
+
+
+
+dfEPi=read.csv("/home/john/pari/EP_minusoneRS_16648_17648_imag.csv",header=FALSE,colClasses = c("character"));
+
+
+dfEPi$V2=as.numeric(gsub(" ","",dfEPi$V2));
+
+
+
+dfEP=as.data.frame(cbind(dfEP$V1,dfEP$V2+1i*dfEPi$V2));dfEP$V2=as.complex(dfEP$V2)
+
+
+fft_EP = stats::fft(dfEP$V2)
+
+
+
+
+
+
+plot(c(-50000:49999)*2*pi/1000,c(abs(fft_EP)[50001:100000],abs(fft_EP)[1:50000]),xlim=c(-9,+1.5),typ="l",xaxt="n",xlab="angular frequency (radians per sec)",ylab="Amplitude",ylim=c(0,1e5),main="fourier transform spectra of the \n (1-s) based Riemann-Siegel partial Euler product waveform \n Re(s)=0.5 over the interval Im(s)=(16648,17648) using truncation at N1=t/pi.")
+abline(v=seq(-10,1,l=12),h=seq(0,1e5,l=6),lty=3,col="gray")
+axis(1,at=seq(-10,1,l=12))
+abline(v=-log((17648)/pi/c(2,4,6,8,10))-0,col=rgb(1,0,0,0.5))
+abline(v=-log((16648)/pi/c(2,4,6,8,10))-0,col=rgb(1,0,0,0.5))
+abline(v=-log((16648)/pi/c(1))-0,col=rgb(0,0,1,0.5),lty=2,lwd=2)
+abline(v=-log(c(2:10))-0,col=rgb(0,1,0,0.5))
+
+
+
+
+```
+
+\clearpage
+
+\newpage
+```{r zetafunctionandRSapproachoveraninterval_anditsfouriertransform_6818555_6821555, echo=FALSE, fig.cap="A comparison of the fourier transforms of the Riemann Zeta function and two partial Euler Products (using truncation at $N_1 = \\sqrt{\\frac{t}{2\\pi}}$) on the critical line for the interval t=(6818555,6821555). The positions of the frequency components indicated in green, red and blue are explainable by the known behaviour of the cumulative sum of finite Dirichlet Series.", out.width = c("99%"), fig.show = "hold",  fig.height=3.3, warning=FALSE}
+
+
+
+
+dfEP=read.csv("/home/john/pari/dirichRS_6818555_6821555_real.csv",header=FALSE,colClasses = c("character"));
+
+
+
+dfEP$V2=as.numeric(gsub(" ","",dfEP$V2));
+
+
+
+dfEPi=read.csv("/home/john/pari/dirichRS_6818555_6821555_imag.csv",header=FALSE,colClasses = c("character"));
+
+
+dfEPi$V2=as.numeric(gsub(" ","",dfEPi$V2));
+
+
+
+dfdirich=as.data.frame(cbind(dfEP$V1,dfEP$V2+1i*dfEPi$V2));dfdirich$V2=as.complex(dfdirich$V2)
+
+
+fft_dirich = stats::fft(dfdirich$V2)
+
+
+plot(c(-150000:149999)*2*pi/3000,c(abs(fft_dirich)[150001:300000],abs(fft_dirich)[1:150000]),xlim=c(-15,+1),typ="l",xaxt="n",xlab="angular frequency (radians per sec)",ylab="Amplitude",main="fourier transform spectra of the Zeta(s) waveform \n for Re(s)=0.5 over the interval Im(s)=(6818555,6821555)")
+abline(v=seq(-15,1,l=17),h=seq(0,1e5,l=6),lty=3,col="gray")
+axis(1,at=seq(-15,1,l=17))
+abline(v=-log((6821555)/pi/c(2,4,6,8,10))-0,col=rgb(1,0,0,0.5))
+abline(v=-log((6818555)/pi/c(2,4,6,8,10))-0,col=rgb(1,0,0,0.5))
+abline(v=-log(c(2:10))-0,col=rgb(0,1,0,0.5))
+lines(c(-150000:149999)*2*pi/3000,c(abs(fft_dirich)[150001:300000],abs(fft_dirich)[1:150000]))#repeated to darken sharp lines
+
+
+
+dfEP=read.csv("/home/john/pari/EP_oneRS_6818555_6821555_real.csv",header=FALSE,colClasses = c("character"));
+
+
+
+dfEP$V2=as.numeric(gsub(" ","",dfEP$V2));
+
+
+
+
+dfEPi=read.csv("/home/john/pari/EP_oneRS_6818555_6821555_imag.csv",header=FALSE,colClasses = c("character"));
+
+
+dfEPi$V2=as.numeric(gsub(" ","",dfEPi$V2));
+
+
+
+dfEP=as.data.frame(cbind(dfEP$V1,dfEP$V2+1i*dfEPi$V2));dfEP$V2=as.complex(dfEP$V2)
+
+
+fft_EP = stats::fft(dfEP$V2)
+
+
+
+
+
+
+plot(c(-150000:149999)*2*pi/3000,c(abs(fft_EP)[150001:300000],abs(fft_EP)[1:150000]),xlim=c(-15,+1),typ="l",xaxt="n",xlab="angular frequency (radians per sec)",ylab="Amplitude",main="fourier transform spectra of the partial Euler product waveform \n Re(s)=0.5 over the interval Im(s)=(6818555,6821555) \n using truncation at N1=sqrt(t/2/pi).")
+abline(v=seq(-15,1,l=17),h=seq(0,1e5,l=6),lty=3,col="gray")
+axis(1,at=seq(-15,1,l=17))
+abline(v=-log((6821555)/pi/c(2,4,6,8,10))-0,col=rgb(1,0,0,0.5))
+abline(v=-log((6818555)/pi/c(2,4,6,8,10))-0,col=rgb(1,0,0,0.5))
+abline(v=-log((6818555)/pi/c(1))-0,col=rgb(0,0,1,0.5),lty=2,lwd=2)
+abline(v=-log(c(2:10))-0,col=rgb(0,1,0,0.5))
+lines(c(-150000:149999)*2*pi/3000,c(abs(fft_EP)[150001:300000],abs(fft_EP)[1:150000]))#repeated to darken sharp lines
+
+
+dfEP=read.csv("/home/john/pari/EP_minusoneRS_6818555_6821555_real.csv",header=FALSE,colClasses = c("character"));
+
+
+
+dfEP$V2=as.numeric(gsub(" ","",dfEP$V2));
+
+
+
+
+dfEPi=read.csv("/home/john/pari/EP_minusoneRS_6818555_6821555_imag.csv",header=FALSE,colClasses = c("character"));
+
+
+dfEPi$V2=as.numeric(gsub(" ","",dfEPi$V2));
+
+
+
+dfEP=as.data.frame(cbind(dfEP$V1,dfEP$V2+1i*dfEPi$V2));dfEP$V2=as.complex(dfEP$V2)
+
+
+fft_EP = stats::fft(dfEP$V2)
+
+
+
+
+
+
+plot(c(-150000:149999)*2*pi/3000,c(abs(fft_EP)[150001:300000],abs(fft_EP)[1:150000]),xlim=c(-15,+1),typ="l",xaxt="n",xlab="angular frequency (radians per sec)",ylab="Amplitude",ylim=c(0,3e5),main="fourier transform spectra of the (1-s) based Riemann-Siegel \n partial Euler product waveform Re(s)=0.5 over the interval \n Im(s)=(6818555,6821555) using truncation at N1=sqrt(t/pi).")
+abline(v=seq(-15,1,l=17),h=seq(0,1e5,l=6),lty=3,col="gray")
+axis(1,at=seq(-15,1,l=17))
+abline(v=-log((6821555)/pi/c(2,4,6,8,10))-0,col=rgb(1,0,0,0.5))
+abline(v=-log((6818555)/pi/c(2,4,6,8,10))-0,col=rgb(1,0,0,0.5))
+abline(v=-log((6818555)/pi/c(1))-0,col=rgb(0,0,1,0.5),lty=2,lwd=2)
+abline(v=-log(c(2:10))-0,col=rgb(0,1,0,0.5))
+lines(c(-150000:149999)*2*pi/3000,c(abs(fft_EP)[150001:300000],abs(fft_EP)[1:150000]))#repeated to darken sharp lines
+
+
+
+
+```
+
+\clearpage
+
+\newpage
+```{r zetafunctionandRSapproachoveraninterval_anditsfouriertransform_dirichRS_363991205_m750_p750, echo=FALSE, fig.cap="A comparison of the fourier transforms of the Riemann Zeta function and two partial Euler Products (using truncation at $N_1 = \\sqrt{\\frac{t}{2\\pi}}$) on the critical line for the interval t=(363990455,363991955). The positions of the frequency components indicated in green, red and blue are explainable by the known behaviour of the cumulative sum of finite Dirichlet Series.", out.width = c("99%"), fig.show = "hold",  fig.height=3.3, warning=FALSE}
+
+
+
+
+dfEP=read.csv("/home/john/pari/dirichRS_363991205_m750_p750_real.csv",header=FALSE,colClasses = c("character"));
+
+
+
+dfEP$V2=as.numeric(gsub(" ","",dfEP$V2));
+
+
+
+dfEPi=read.csv("/home/john/pari/dirichRS_363991205_m750_p750_imag.csv",header=FALSE,colClasses = c("character"));
+
+
+dfEPi$V2=as.numeric(gsub(" ","",dfEPi$V2));
+
+
+
+dfdirich=as.data.frame(cbind(dfEP$V1,dfEP$V2+1i*dfEPi$V2));dfdirich$V2=as.complex(dfdirich$V2)
+
+
+fft_dirich = stats::fft(dfdirich$V2)
+
+
+plot(c(-75000:75000)*2*pi/1500,c(abs(fft_dirich)[75002:150001],abs(fft_dirich)[1:75001]),xlim=c(-19,+1),typ="l",xaxt="n",xlab="angular frequency (radians per sec)",ylab="Amplitude",main="fourier transform spectra of the Zeta(s) waveform \n for Re(s)=0.5 over the interval Im(s)=(363990455,363991955)")
+abline(v=seq(-19,1,l=21),h=seq(0,1.6e5,l=9),lty=3,col="gray")
+axis(1,at=seq(-19,1,l=21))
+abline(v=-log((363991955)/pi/c(2,4,6,8,10))-0,col=rgb(1,0,0,0.5))
+abline(v=-log((363990455)/pi/c(2,4,6,8,10))-0,col=rgb(1,0,0,0.5))
+abline(v=-log(c(2:10))-0,col=rgb(0,1,0,0.5))
+lines(c(-75000:75000)*2*pi/1500,c(abs(fft_dirich)[75002:150001],abs(fft_dirich)[1:75001]))#repeated to darken sharp lines
+
+
+
+dfEP=read.csv("/home/john/pari/EP_oneRS_363991205_m750_p750_real.csv",header=FALSE,colClasses = c("character"));
+
+
+
+dfEP$V2=as.numeric(gsub(" ","",dfEP$V2));
+
+
+
+
+dfEPi=read.csv("/home/john/pari/EP_oneRS_363991205_m750_p750_imag.csv",header=FALSE,colClasses = c("character"));
+
+
+dfEPi$V2=as.numeric(gsub(" ","",dfEPi$V2));
+
+
+
+dfEP=as.data.frame(cbind(dfEP$V1,dfEP$V2+1i*dfEPi$V2));dfEP$V2=as.complex(dfEP$V2)
+
+
+fft_EP = stats::fft(dfEP$V2)
+
+
+
+
+
+
+plot(c(-75000:75000)*2*pi/1500,c(abs(fft_EP)[75002:150001],abs(fft_EP)[1:75001]),xlim=c(-19,+1),typ="l",xaxt="n",xlab="angular frequency (radians per sec)",ylab="Amplitude",main="fourier transform spectra of the partial Euler product waveform \n Re(s)=0.5 over the interval Im(s)=(363990455,363991955) \n using truncation at N1=sqrt(t/2/pi).")
+abline(v=seq(-19,1,l=21),h=seq(0,1.6e5,l=9),lty=3,col="gray")
+axis(1,at=seq(-19,1,l=21))
+abline(v=-log((363991955)/pi/c(2,4,6,8,10))-0,col=rgb(1,0,0,0.5))
+abline(v=-log((363990455)/pi/c(2,4,6,8,10))-0,col=rgb(1,0,0,0.5))
+abline(v=-log((363990455)/pi/c(1))-0,col=rgb(0,0,1,0.5),lty=2,lwd=2)
+abline(v=-log(c(2:10))-0,col=rgb(0,1,0,0.5))
+lines(c(-75000:75000)*2*pi/1500,c(abs(fft_EP)[75002:150001],abs(fft_EP)[1:75001]))#repeated to darken sharp lines
+
+
+dfEP=read.csv("/home/john/pari/EP_minusoneRS_363991205_m750_p750_real.csv",header=FALSE,colClasses = c("character"));
+
+
+
+dfEP$V2=as.numeric(gsub(" ","",dfEP$V2));
+
+
+
+
+dfEPi=read.csv("/home/john/pari/EP_minusoneRS_363991205_m750_p750_imag.csv",header=FALSE,colClasses = c("character"));
+
+
+dfEPi$V2=as.numeric(gsub(" ","",dfEPi$V2));
+
+
+
+dfEP=as.data.frame(cbind(dfEP$V1,dfEP$V2+1i*dfEPi$V2));dfEP$V2=as.complex(dfEP$V2)
+
+
+fft_EP = stats::fft(dfEP$V2)
+
+
+
+
+
+
+plot(c(-75000:75000)*2*pi/1500,c(abs(fft_EP)[75002:150001],abs(fft_EP)[1:75001]),xlim=c(-19,+1),typ="l",xaxt="n",xlab="angular frequency (radians per sec)",ylab="Amplitude",ylim=c(0,150001),main="fourier transform spectra of the (1-s) based Riemann-Siegel \n partial Euler product waveform Re(s)=0.5 over the interval \n Im(s)=(363990455,363991955) using truncation at N1=sqrt(t/pi).")
+abline(v=seq(-19,1,l=21),h=seq(0,1.6e5,l=9),lty=3,col="gray")
+axis(1,at=seq(-19,1,l=21))
+abline(v=-log((363991955)/pi/c(2,4,6,8,10))-0,col=rgb(1,0,0,0.5))
+abline(v=-log((363990455)/pi/c(2,4,6,8,10))-0,col=rgb(1,0,0,0.5))
+abline(v=-log((363990455)/pi/c(1))-0,col=rgb(0,0,1,0.5),lty=2,lwd=2)
+abline(v=-log(c(2:10))-0,col=rgb(0,1,0,0.5))
+lines(c(-75000:75000)*2*pi/1500,c(abs(fft_EP)[75002:150001],abs(fft_EP)[1:75001]))#repeated to darken sharp lines
+
+
+
+
+```
+
+
+\clearpage
+
+## Spectral filtering and splicing together of the partial Euler Product analogues of the Riemann-Siegel components using truncation at the first quiescent region and its inverse fourier transformation to better approximate the Riemann Zeta function
+
+Looking at figures 7-10 therefore, it is immediately suggestive that a spliced combination of the middle and lower panels would be a reasonable way to approximate the fourier transform of the Riemann Zeta function (top panel) sampled along an interval.
+
+In simple terms, spectral filtering and splicing provides a convenient method to remove the angular frequency components $|\omega| > |-log(\frac{LB}{\pi})|$ and the best components in the region $0 \ge \omega \ge -log(\frac{LB}{\pi})$ of the fourier transforms of the two partial Euler Product analogues of the Riemann-Siegel components which should mean that the subsequent spliced inverse fourier transform should be a improved approximation of the Riemann Zeta function.
+
+Figure 11, then illustrates the impact of spectral filtering and splicing of the fourier transform spectra of the partial Euler Product of the partial Euler Product analogues of the Riemann-Siegel components truncated at the first quiescent region for the intervals t=(9000,10000), (16648,17648), (6818555,6821555) and (363990455,363991955) on the critical line.
+
+That is, figure 11 displays (i) the real and imaginary parts of the inverse fourier transform of the spectrally filtered and spliced partial Euler Product truncated at the first quiescent region on the critical line $\Re(s)=0.5$ and (ii) the error between the $|\zeta(s)|$ and absolute value of the spectrally filtered and inverse fourier transformed function over (a) the central part of the intervals  and (b) the whole interval.
+
+The spectral filtering involved setting to zero the fourier transform components in the fourier transform vector outside the upper fft frequency bound imposed by the lower bound of the frequency range used in the partial Euler Product sample.
+
+For example, given the fft vector of the two partial Euler Products (which are complex valued functions) with n elements 
+
+\begin{align}
+\text{fftEP1}_{N_1} &= \{x_1,x_2,x_3, ..., x_{n}\} \\
+\text{fftEP2}_{N_1} &= \{y_1,y_2,y_3, ..., y_{n}\}
+\end{align}
+
+the spectral filtering given the partial Euler Product used truncation at the first quiescent region is of the form
+
+\begin{align}
+\text{fftEPfilteredspliced}_{N_1} = &\{x_1,0,0,0, ..., 0, 0, \nonumber \\
+&y_{n-\lfloor\frac{\Delta t}{2\pi}*\log(\frac{LB}{\pi})\rfloor+1}, ..., y_{n-\lfloor\frac{\Delta t}{2\pi}*\log(\sqrt{\frac{UB}{\pi}})\rfloor-1}, \nonumber \\ 
+&x_{n-\lfloor\frac{\Delta t}{2\pi}*\log(\sqrt{\frac{UB}{\pi}})\rfloor}, ..., x_{n}\}
+\end{align}
+
+where $x_1$ is the DC component of fftEP1 (fourier transform of $\prod_{p=2}^{p\le \lfloor\frac{t}{\pi}\rfloor=N_1} \frac{1}{(1-\frac{1}{p^s})}$), fftEP2 is the fourier transform of $\mychi(s) \cdot \prod_{p=2}^{p\le \lfloor\frac{t}{\pi}\rfloor=N_1} \frac{1}{(1-\frac{1}{p^{(1-s)}})}$ and LB (UB) are the lower (upper) bound of the t interval included in the partial Euler Product sampling.
+
+The filtered fourier transform is then subjected to an inverse fourier transform to recover an improved approximation of the Riemann Zeta function.
+
+For convenience in figure 11, 
+
+\begin{enumerate}
+\item the lefthand column compares the real and imaginary parts of (i) the original partial Euler Product truncated at the second quiescent region shown in grey, (ii) the inverse fourier transform of the spectrally filtered and spliced fft $\text{fftEPfilteredspliced}_{N_1}$ shown in yellow and cyan and (iii) the Riemann Zeta function shown in black and red over a short central interval of the sampled waveform respectively for Re(s)=0.5.
+\item the middle column compares the error in the absolute value the inverse fourier transform of the spectrally filtered fft of the partial Euler Product with respect to the Riemann Zeta function over a short central interval.
+\item the righthand column compares the error in the absolute value the inverse fourier transform of the spectrally filtered fft of the partial Euler Product with respect to the Riemann Zeta function over the full interval $\Delta t =1000, 1000, 3000, 1500$ for the respective t intervals.
+\end{enumerate}
+
+Again as with the $N_2$ results, since the inverse fourier transform is essentially an interpolation approach it is not surprising that the central interval fit has the smallest error. Using $N_1$ truncation the error magnitude is similar to the $N_2$ results for the common intervals investigated t=(9000,10000) and t=(16648,17648).
+
+In summary, the $N_1$ truncation results with spectral filtering and splicing of two fourier transforms is reasonably producing zeroth order approximations of real and imaginary parts of the Riemann Zeta function lineshape.
+
+In the next section, the Riemann Zeta argument function (i.e., S value) performance is examined for the above $N_1$ based approximation.
+
+
+\clearpage
+
+
+\newpage
+```{r spectrallyfilteredinversefouriertransform_using_N1_truncation, echo=FALSE, fig.cap="A comparison of the spectrally filtered inverse fourier transform of the partial Euler Product (using truncation at $N_1 = \\sqrt{\\frac{t}{2\\pi}}$) on the critical line for four intervals t=(9000,10000), (16648,17648), (6818555,6821555) and (363990455,363991955) to the real, imaginary and absolute value of the Riemann Zeta function. On the lefthand column is a comparison of the real and imaginary parts of the original partial Euler Product (grey, grey), the spectrally filtered and inverse fourier transform partial Euler product (yellow, cyan) and the Riemann Zeta function (black, blue) respectively for the central region of each interval. On the centre and righthand column is the error between the absolute values of the spectrally filtered and inverse fourier transform partial Euler product and the Riemann Zeta function over the central region and the whole interval respectively.", out.width = c("33%","33%","33%"), fig.show = "hold",  fig.height=4.5, warning=FALSE}
+
+
+
+
+
+dfEP=read.csv("/home/john/pari/zeta_9000_10000_real.csv",header=FALSE,colClasses = c("character"));
+
+
+
+dfEP$V2=as.numeric(gsub(" ","",dfEP$V2));
+
+
+
+dfEPi=read.csv("/home/john/pari/zeta_9000_10000_imag.csv",header=FALSE,colClasses = c("character"));
+
+
+dfEPi$V2=as.numeric(gsub(" ","",dfEPi$V2));
+
+
+
+dfzeta=as.data.frame(cbind(dfEP$V1,dfEP$V2+1i*dfEPi$V2));dfzeta$V2=as.complex(dfzeta$V2)
+
+
+fft_zeta = stats::fft(dfzeta$V2)
+
+
+
+dfEP=read.csv("/home/john/pari/EP_oneRS_9000_10000_real.csv",header=FALSE,colClasses = c("character"));
+
+
+
+dfEP$V2=as.numeric(gsub(" ","",dfEP$V2));
+
+
+
+
+dfEPi=read.csv("/home/john/pari/EP_oneRS_9000_10000_imag.csv",header=FALSE,colClasses = c("character"));
+
+
+dfEPi$V2=as.numeric(gsub(" ","",dfEPi$V2));
+
+
+
+dfEP=as.data.frame(cbind(dfEP$V1,dfEP$V2+1i*dfEPi$V2));dfEP$V2=as.complex(dfEP$V2)
+
+
+fft_plusEP = stats::fft(dfEP$V2)
+
+
+
+dfEP=read.csv("/home/john/pari/EP_minusoneRS_9000_10000_real.csv",header=FALSE,colClasses = c("character"));
+
+
+
+dfEP$V2=as.numeric(gsub(" ","",dfEP$V2));
+
+
+
+
+dfEPi=read.csv("/home/john/pari/EP_minusoneRS_9000_10000_imag.csv",header=FALSE,colClasses = c("character"));
+
+
+dfEPi$V2=as.numeric(gsub(" ","",dfEPi$V2));
+
+
+
+dfEP=as.data.frame(cbind(dfEP$V1,dfEP$V2+1i*dfEPi$V2));dfEP$V2=as.complex(dfEP$V2)
+
+
+fft_minusEP = stats::fft(dfEP$V2)
+
+
+# splice together the useful parts of fft_plusEP and fft_minusEP
+
+fft_inp=c(fft_plusEP[1],rep(0,length(fft_plusEP)-floor(1000/2/pi*log(9000/pi))-2),
+fft_minusEP[(length(fft_plusEP)-floor(1000/2/pi*log(9000/pi))):(length(fft_plusEP)-floor(1000/2/pi*log(sqrt(10000/2/pi))))],fft_plusEP[(length(fft_plusEP)-floor(1000/2/pi*log(sqrt(10000/2/pi)))+1):length(fft_plusEP)])
+
+
+# inverse fourier transform to recover better approximation of zeta(s)
+
+inv_resultinp=fft(fft_inp, inverse=TRUE)/length(fft_inp)
+
+yspan=range(Re(dfEP$V2)[(0.5e5-1500):(0.5e5+1500)],Im(dfEP$V2)[(0.5e5-1500):(0.5e5+1500)],Re(dfzeta$V2)[(0.5e5-1500):(0.5e5+1500)],Im(dfzeta$V2)[(0.5e5-1500):(0.5e5+1500)]);
+            
+plot(dfEP$V1,Re(dfEP$V2),typ="l",xlim=c(9495,9505),ylim=yspan,lwd=3,col="gray",ylab="function value",xlab="imaginary co-ordinate",
+     main="comparison of original and spectrally filtered partial Euler product \n truncated at first quiescent region \n with real and imaginary parts of zeta(s)");grid()
+lines(dfEP$V1,Im(dfEP$V2),col="gray",lwd=3)
+lines(dfEP$V1,Re(dfzeta$V2),col="black",lty=1,lwd=2)
+lines(dfEP$V1,Im(dfzeta$V2),col="darkblue",lty=1,lwd=2)
+lines(dfEP$V1,Re(inv_resultinp),col="yellow",lty=2,lwd=2)
+lines(dfEP$V1,Im(inv_resultinp),col="cyan",lty=2,lwd=2)
+
+plot(dfEP$V1[(0.5e5-1500):(0.5e5+1500)],abs(inv_resultinp)[(0.5e5-1500):(0.5e5+1500)]-abs(dfzeta$V2)[(0.5e5-1500):(0.5e5+1500)],typ="l",xlim=c(9495,9505),
+     ylab="error wrt abs(zeta(s))",xlab="imaginary co-ordinate",
+     main="error of absolute value of spectrally filtered partial Euler product \n truncated at first quiescent region wrt absolute value of zeta(s) \n in central region of sampled waveform");grid()
+
+plot(dfEP$V1,abs(inv_resultinp)-abs(dfzeta$V2),typ="l",
+     ylab="error wrt abs(zeta(s))",xlab="imaginary co-ordinate",
+     main="error of absolute value of spectrally filtered partial Euler product \n truncated at first quiescent region wrt absolute value of zeta(s) \n over full interval of sampled waveform");grid()
+
+
+
+dfEP=read.csv("/home/john/pari/zeta_16648_17648_real.csv",header=FALSE,colClasses = c("character"));
+
+
+
+dfEP$V2=as.numeric(gsub(" ","",dfEP$V2));
+
+
+
+dfEPi=read.csv("/home/john/pari/zeta_16648_17648_imag.csv",header=FALSE,colClasses = c("character"));
+
+
+dfEPi$V2=as.numeric(gsub(" ","",dfEPi$V2));
+
+
+
+dfzeta=as.data.frame(cbind(dfEP$V1,dfEP$V2+1i*dfEPi$V2));dfzeta$V2=as.complex(dfzeta$V2)
+
+
+fft_zeta = stats::fft(dfzeta$V2)
+
+
+
+dfEP=read.csv("/home/john/pari/EP_oneRS_16648_17648_real.csv",header=FALSE,colClasses = c("character"));
+
+
+
+dfEP$V2=as.numeric(gsub(" ","",dfEP$V2));
+
+
+
+
+dfEPi=read.csv("/home/john/pari/EP_oneRS_16648_17648_imag.csv",header=FALSE,colClasses = c("character"));
+
+
+dfEPi$V2=as.numeric(gsub(" ","",dfEPi$V2));
+
+
+
+dfEP=as.data.frame(cbind(dfEP$V1,dfEP$V2+1i*dfEPi$V2));dfEP$V2=as.complex(dfEP$V2)
+
+
+fft_plusEP = stats::fft(dfEP$V2)
+
+
+
+dfEP=read.csv("/home/john/pari/EP_minusoneRS_16648_17648_real.csv",header=FALSE,colClasses = c("character"));
+
+
+
+dfEP$V2=as.numeric(gsub(" ","",dfEP$V2));
+
+
+
+
+dfEPi=read.csv("/home/john/pari/EP_minusoneRS_16648_17648_imag.csv",header=FALSE,colClasses = c("character"));
+
+
+dfEPi$V2=as.numeric(gsub(" ","",dfEPi$V2));
+
+
+
+dfEP=as.data.frame(cbind(dfEP$V1,dfEP$V2+1i*dfEPi$V2));dfEP$V2=as.complex(dfEP$V2)
+
+
+fft_minusEP = stats::fft(dfEP$V2)
+
+
+# splice together the useful parts of fft_plusEP and fft_minusEP
+
+fft_inp=c(fft_plusEP[1],rep(0,length(fft_plusEP)-floor(1000/2/pi*log(16648/pi))-2),
+fft_minusEP[(length(fft_plusEP)-floor(1000/2/pi*log(16648/pi))):(length(fft_plusEP)-floor(1000/2/pi*log(sqrt(17648/2/pi))))],fft_plusEP[(length(fft_plusEP)-floor(1000/2/pi*log(sqrt(17648/2/pi)))+1):length(fft_plusEP)])
+
+
+# inverse fourier transform to recover better approximation of zeta(s)
+
+inv_resultinp=fft(fft_inp, inverse=TRUE)/length(fft_inp)
+
+yspan=range(Re(dfEP$V2)[(0.5e5-1500):(0.5e5+1500)],Im(dfEP$V2)[(0.5e5-1500):(0.5e5+1500)],Re(dfzeta$V2)[(0.5e5-1500):(0.5e5+1500)],Im(dfzeta$V2)[(0.5e5-1500):(0.5e5+1500)]);
+            
+plot(dfEP$V1,Re(dfEP$V2),typ="l",xlim=c(17138,17148),ylim=yspan,lwd=3,col="gray",ylab="function value",xlab="imaginary co-ordinate");grid()
+lines(dfEP$V1,Im(dfEP$V2),col="gray",lwd=3)
+lines(dfEP$V1,Re(dfzeta$V2),col="black",lty=1,lwd=2)
+lines(dfEP$V1,Im(dfzeta$V2),col="darkblue",lty=1,lwd=2)
+lines(dfEP$V1,Re(inv_resultinp),col="yellow",lty=2,lwd=2)
+lines(dfEP$V1,Im(inv_resultinp),col="cyan",lty=2,lwd=2)
+
+plot(dfEP$V1[(0.5e5-1500):(0.5e5+1500)],abs(inv_resultinp)[(0.5e5-1500):(0.5e5+1500)]-abs(dfzeta$V2)[(0.5e5-1500):(0.5e5+1500)],typ="l",xlim=c(17138,17148),
+     ylab="error wrt abs(zeta(s))",xlab="imaginary co-ordinate");grid()
+
+plot(dfEP$V1,abs(inv_resultinp)-abs(dfzeta$V2),typ="l",
+     ylab="error wrt abs(zeta(s))",xlab="imaginary co-ordinate");grid()
+
+
+
+dfEP=read.csv("/home/john/pari/dirichRS_6818555_6821555_real.csv",header=FALSE,colClasses = c("character"));
+
+
+
+dfEP$V2=as.numeric(gsub(" ","",dfEP$V2));
+
+
+
+dfEPi=read.csv("/home/john/pari/dirichRS_6818555_6821555_imag.csv",header=FALSE,colClasses = c("character"));
+
+
+dfEPi$V2=as.numeric(gsub(" ","",dfEPi$V2));
+
+
+
+dfdirich=as.data.frame(cbind(dfEP$V1,dfEP$V2+1i*dfEPi$V2));dfdirich$V2=as.complex(dfdirich$V2)
+
+
+fft_dirich = stats::fft(dfdirich$V2)
+
+
+
+dfEP=read.csv("/home/john/pari/EP_minusoneRS_6818555_6821555_real.csv",header=FALSE,colClasses = c("character"));
+
+
+
+dfEP$V2=as.numeric(gsub(" ","",dfEP$V2));
+
+
+
+
+dfEPi=read.csv("/home/john/pari/EP_minusoneRS_6818555_6821555_imag.csv",header=FALSE,colClasses = c("character"));
+
+
+dfEPi$V2=as.numeric(gsub(" ","",dfEPi$V2));
+
+
+
+dfEP=as.data.frame(cbind(dfEP$V1,dfEP$V2+1i*dfEPi$V2));dfEP$V2=as.complex(dfEP$V2)
+
+
+fft_minusEP = stats::fft(dfEP$V2)
+
+
+dfEP=read.csv("/home/john/pari/EP_oneRS_6818555_6821555_real.csv",header=FALSE,colClasses = c("character"));
+
+
+
+dfEP$V2=as.numeric(gsub(" ","",dfEP$V2));
+
+
+
+
+dfEPi=read.csv("/home/john/pari/EP_oneRS_6818555_6821555_imag.csv",header=FALSE,colClasses = c("character"));
+
+
+dfEPi$V2=as.numeric(gsub(" ","",dfEPi$V2));
+
+
+
+dfEP=as.data.frame(cbind(dfEP$V1,dfEP$V2+1i*dfEPi$V2));dfEP$V2=as.complex(dfEP$V2)
+
+
+fft_plusEP = stats::fft(dfEP$V2)
+
+# splice together the useful parts of fft_plusEP and fft_minusEP
+
+fft_inp=c(fft_plusEP[1],rep(0,length(fft_plusEP)-floor(3000/2/pi*log(6818555/pi))-2),
+fft_minusEP[(length(fft_plusEP)-floor(3000/2/pi*log(6818555/pi))):(length(fft_plusEP)-floor(3000/2/pi*log(sqrt(6821555/2/pi))))],fft_plusEP[(length(fft_plusEP)-floor(3000/2/pi*log(sqrt(6821555/2/pi)))+1):length(fft_plusEP)])
+
+
+# inverse fourier transform to recover better approximation of dirich(s)
+
+inv_resultinp=fft(fft_inp, inverse=TRUE)/length(fft_inp)
+
+yspan=range(Re(dfEP$V2)[(1.5e5-1500):(1.5e5+1500)],Im(dfEP$V2)[(1.5e5-1500):(1.5e5+1500)],Re(dfdirich$V2)[(1.5e5-1500):(1.5e5+1500)],Im(dfdirich$V2)[(1.5e5-1500):(1.5e5+1500)]);
+            
+plot(dfEP$V1,Re(dfEP$V2),typ="l",xlim=c(6820048,6820054),ylim=yspan,lwd=3,col="gray",ylab="function value",xlab="imaginary co-ordinate");grid()
+lines(dfEP$V1,Im(dfEP$V2),col="gray",lwd=3)
+lines(dfEP$V1,Re(dfdirich$V2),col="black",lty=1,lwd=2)
+lines(dfEP$V1,Im(dfdirich$V2),col="darkblue",lty=1,lwd=2)
+lines(dfEP$V1,Re(inv_resultinp),col="yellow",lty=2,lwd=2)
+lines(dfEP$V1,Im(inv_resultinp),col="cyan",lty=2,lwd=2)
+
+plot(dfEP$V1[(1.5e5-1500):(1.5e5+1500)],abs(inv_resultinp)[(1.5e5-1500):(1.5e5+1500)]-abs(dfdirich$V2)[(1.5e5-1500):(1.5e5+1500)],typ="l",xlim=c(6820048,6820054),
+     ylab="error wrt abs(dirich(s))",xlab="imaginary co-ordinate");grid()
+
+plot(dfEP$V1,abs(inv_resultinp)-abs(dfdirich$V2),typ="l",
+     ylab="error wrt abs(dirich(s))",xlab="imaginary co-ordinate");grid()
+
+
+
+
+dfEP=read.csv("/home/john/pari/dirichRS_363991205_m750_p750_real.csv",header=FALSE,colClasses = c("character"));
+
+
+
+dfEP$V2=as.numeric(gsub(" ","",dfEP$V2));
+
+
+
+dfEPi=read.csv("/home/john/pari/dirichRS_363991205_m750_p750_imag.csv",header=FALSE,colClasses = c("character"));
+
+
+dfEPi$V2=as.numeric(gsub(" ","",dfEPi$V2));
+
+
+
+dfdirich=as.data.frame(cbind(dfEP$V1,dfEP$V2+1i*dfEPi$V2));dfdirich$V2=as.complex(dfdirich$V2)
+
+
+fft_dirich = stats::fft(dfdirich$V2)
+
+
+
+dfEP=read.csv("/home/john/pari/EP_minusoneRS_363991205_m750_p750_real.csv",header=FALSE,colClasses = c("character"));
+
+
+
+dfEP$V2=as.numeric(gsub(" ","",dfEP$V2));
+
+
+
+
+dfEPi=read.csv("/home/john/pari/EP_minusoneRS_363991205_m750_p750_imag.csv",header=FALSE,colClasses = c("character"));
+
+
+dfEPi$V2=as.numeric(gsub(" ","",dfEPi$V2));
+
+
+
+dfEP=as.data.frame(cbind(dfEP$V1,dfEP$V2+1i*dfEPi$V2));dfEP$V2=as.complex(dfEP$V2)
+
+
+fft_minusEP = stats::fft(dfEP$V2)
+
+
+dfEP=read.csv("/home/john/pari/EP_oneRS_363991205_m750_p750_real.csv",header=FALSE,colClasses = c("character"));
+
+
+
+dfEP$V2=as.numeric(gsub(" ","",dfEP$V2));
+
+
+
+
+dfEPi=read.csv("/home/john/pari/EP_oneRS_363991205_m750_p750_imag.csv",header=FALSE,colClasses = c("character"));
+
+
+dfEPi$V2=as.numeric(gsub(" ","",dfEPi$V2));
+
+
+
+dfEP=as.data.frame(cbind(dfEP$V1,dfEP$V2+1i*dfEPi$V2));dfEP$V2=as.complex(dfEP$V2)
+
+
+fft_plusEP = stats::fft(dfEP$V2)
+
+# splice together the useful parts of fft_plusEP and fft_minusEP
+
+fft_inp=c(fft_plusEP[1],rep(0,length(fft_plusEP)-floor(1500/2/pi*log(363990455/pi))-2),
+fft_minusEP[(length(fft_plusEP)-floor(1500/2/pi*log(363990455/pi))):(length(fft_plusEP)-floor(1500/2/pi*log(sqrt(363991955/2/pi))))],fft_plusEP[(length(fft_plusEP)-floor(1500/2/pi*log(sqrt(363991955/2/pi)))+1):length(fft_plusEP)])
+
+
+# inverse fourier transform to recover better approximation of dirich(s)
+
+inv_resultinp=fft(fft_inp, inverse=TRUE)/length(fft_inp)
+
+yspan=range(Re(dfEP$V2)[(75001-1500):(75001+1500)],Im(dfEP$V2)[(75001-1500):(75001+1500)],Re(dfdirich$V2)[(75001-1500):(75001+1500)],Im(dfdirich$V2)[(75001-1500):(75001+1500)]);
+
+
+plot(dfEP$V1,Re(dfEP$V2),typ="l",xlim=c(363991204,363991206),ylim=yspan,lwd=3,col="gray",ylab="function value",xlab="imaginary co-ordinate");grid()
+lines(dfEP$V1,Im(dfEP$V2),col="gray",lwd=3)
+lines(dfEP$V1,Re(dfdirich$V2),col="black",lty=1,lwd=2)
+lines(dfEP$V1,Im(dfdirich$V2),col="darkblue",lty=1,lwd=2)
+lines(dfEP$V1,Re(inv_resultinp),col="yellow",lty=2,lwd=2)
+lines(dfEP$V1,Im(inv_resultinp),col="cyan",lty=2,lwd=2)
+
+plot(dfEP$V1[(75001-1500):(75001+1500)],abs(inv_resultinp)[(75001-1500):(75001+1500)]-abs(dfdirich$V2)[(75001-1500):(75001+1500)],typ="l",xlim=c(363991204,363991206),
+     ylab="error wrt abs(dirich(s))",xlab="imaginary co-ordinate");grid()
+
+plot(dfEP$V1,abs(inv_resultinp)-abs(dfdirich$V2),typ="l",
+     ylab="error wrt abs(dirich(s))",xlab="imaginary co-ordinate");grid()
+
+
+```
+
+\clearpage
+
+## Two methods to improve the $N_1$ partial Euler Product based approximation in estimating Riemann Zeta function non-trivial zero positions
+
+Figure 12 compares argument function values of $N_1$ based partial Euler Product with spectral filtering and splicing of two fourier transforms approach with the Riemann Zeta argument function (i.e., S value)
+
+\begin{equation}
+S_\zeta = \arg{(\zeta(s))} = \text{imag}(\log(\zeta(s)))
+\end{equation}
+
+\begin{align}
+S_{app} &= \arg{(\text{inverse fft}(\text{fftEPfilteredspliced}_{N_1}))} \\
+&= \text{imag}(\log({\text{inverse fft}(\text{fftEPfilteredspliced}_{N_1})})) \nonumber 
+\end{align}
+
+Included in figure 12, are
+
+\begin{itemize}
+\item shown in black, the Riemann Zeta S values over the interval t=(363991200,363991210) (calculated using the Riemann-Siegel formula via 128 point tapered Dirichlet series approximation)
+\item top panel shown in red, $S_app$ using $N_1$ based partial Euler Product with spectral filtering and splicing based on fourier analysis of sample interval t=(363990455,363991955), $\Delta t = 1000$
+\item middle panel shown in red $S_app$ using $N_1$ based partial Euler Product with spectral filtering and splicing with additive contribution of 128 point tapering of Dirichlet series about $N_1$ based on fourier analysis of sample interval t=(363990455,363991955), $\Delta t = 1000$
+\item bottom panel shown in red, $S_app$ using $N_1$ based partial Euler Product with spectral filtering and splicing based on fourier analysis of a wider sample interval t=(363989205,363993205), $\Delta t = 4000$
+\end{itemize}
+
+From figure 12, firstly it is noted that the zero positions of $S_app$ provide excellent zeroth order approximations to the Riemann Zeta S non-trivial zero positions. Secondly, additional techniques such as (i) tapering of the dirichlet contribution about $N_1$ or (ii) performing fourier analysis over a wider sample of the imaginary axis can provide further improvements in approximating the non-trivial zero positions of the Riemann Zeta function.  
+
+
+
+\newpage
+```{r argumentfunctionresults_comparison, echo=FALSE, fig.cap="A comparison of the zero positions (shown in red) obtained from a spectrally filtered inverse fourier transform of the partial Euler Product (using truncation at $N_1 = \\sqrt{\\frac{t}{2\\pi}}$) on the critical line for the interval t=(363991200,363991210) based on fourier analysis of a much wider interval to the Riemann Zeta function non-trivial zero values (shown in black).", out.width = c("99%"), fig.show = "hold",  fig.height=3.4, warning=FALSE}
+
+
+
+dfEP=read.csv("/home/john/pari/dirichRS_363991205_m750_p750_real.csv",header=FALSE,colClasses = c("character"));
+
+
+
+dfEP$V2=as.numeric(gsub(" ","",dfEP$V2));
+
+
+
+dfEPi=read.csv("/home/john/pari/dirichRS_363991205_m750_p750_imag.csv",header=FALSE,colClasses = c("character"));
+
+
+dfEPi$V2=as.numeric(gsub(" ","",dfEPi$V2));
+
+
+
+dfdirich=as.data.frame(cbind(dfEP$V1,dfEP$V2+1i*dfEPi$V2));dfdirich$V2=as.complex(dfdirich$V2)
+
+
+
+dfEP=read.csv("/home/john/pari/EP_minusoneRS_363991205_m750_p750_real.csv",header=FALSE,colClasses = c("character"));
+
+
+
+dfEP$V2=as.numeric(gsub(" ","",dfEP$V2));
+
+
+
+
+dfEPi=read.csv("/home/john/pari/EP_minusoneRS_363991205_m750_p750_imag.csv",header=FALSE,colClasses = c("character"));
+
+
+dfEPi$V2=as.numeric(gsub(" ","",dfEPi$V2));
+
+
+
+dfEP=as.data.frame(cbind(dfEP$V1,dfEP$V2+1i*dfEPi$V2));dfEP$V2=as.complex(dfEP$V2)
+
+
+fft_minusEP = stats::fft(dfEP$V2)
+
+
+dfEP=read.csv("/home/john/pari/EP_oneRS_363991205_m750_p750_real.csv",header=FALSE,colClasses = c("character"));
+
+
+
+dfEP$V2=as.numeric(gsub(" ","",dfEP$V2));
+
+
+
+
+dfEPi=read.csv("/home/john/pari/EP_oneRS_363991205_m750_p750_imag.csv",header=FALSE,colClasses = c("character"));
+
+
+dfEPi$V2=as.numeric(gsub(" ","",dfEPi$V2));
+
+
+
+dfEP=as.data.frame(cbind(dfEP$V1,dfEP$V2+1i*dfEPi$V2));dfEP$V2=as.complex(dfEP$V2)
+
+
+fft_plusEP = stats::fft(dfEP$V2)
+
+# splice together the useful parts of fft_plusEP and fft_minusEP
+
+fft_inp=c(fft_plusEP[1],rep(0,length(fft_plusEP)-floor(1500/2/pi*log(363990455/pi))-2),
+fft_minusEP[(length(fft_plusEP)-floor(1500/2/pi*log(363990455/pi))):(length(fft_plusEP)-floor(1500/2/pi*log(sqrt(363991955/2/pi))))],fft_plusEP[(length(fft_plusEP)-floor(1500/2/pi*log(sqrt(363991955/2/pi)))+1):length(fft_plusEP)])
+
+
+# inverse fourier transform to recover better approximation of dirich(s)
+
+inv_resultinp=fft(fft_inp, inverse=TRUE)/length(fft_inp)
+
+
+plot(dfEP$V1,Im(log(dfdirich$V2)),typ="l",xlim=c(363991200,363991210),ylab="argument value",xlab="imaginary co-ordinate",main="argument function estimation using spectrally filtered partial Euler products \n truncated at N1 using a sample interval of 1000 for fourier analysis",cex.main=0.8);grid()
+lines(dfEP$V1,Im(log(inv_resultinp)),col="red",lty=2)
+
+
+
+
+dfEP=read.csv("/home/john/pari/EP_minusoneRS_363991205_m750_p750_wadj_real.csv",header=FALSE,colClasses = c("character"));
+
+
+
+dfEP$V2=as.numeric(gsub(" ","",dfEP$V2));
+
+
+
+
+dfEPi=read.csv("/home/john/pari/EP_minusoneRS_363991205_m750_p750_wadj_imag.csv",header=FALSE,colClasses = c("character"));
+
+
+dfEPi$V2=as.numeric(gsub(" ","",dfEPi$V2));
+
+
+
+dfEP=as.data.frame(cbind(dfEP$V1,dfEP$V2+1i*dfEPi$V2));dfEP$V2=as.complex(dfEP$V2)
+
+
+fft_minusEP = stats::fft(dfEP$V2)
+
+
+dfEP=read.csv("/home/john/pari/EP_oneRS_363991205_m750_p750_wadj_real.csv",header=FALSE,colClasses = c("character"));
+
+
+
+dfEP$V2=as.numeric(gsub(" ","",dfEP$V2));
+
+
+
+
+dfEPi=read.csv("/home/john/pari/EP_oneRS_363991205_m750_p750_wadj_imag.csv",header=FALSE,colClasses = c("character"));
+
+
+dfEPi$V2=as.numeric(gsub(" ","",dfEPi$V2));
+
+
+
+dfEP=as.data.frame(cbind(dfEP$V1,dfEP$V2+1i*dfEPi$V2));dfEP$V2=as.complex(dfEP$V2)
+
+
+fft_plusEP = stats::fft(dfEP$V2)
+
+# splice together the useful parts of fft_plusEP and fft_minusEP
+
+fft_inp=c(fft_plusEP[1],rep(0,length(fft_plusEP)-floor(1500/2/pi*log(363990455/pi))-2),
+fft_minusEP[(length(fft_plusEP)-floor(1500/2/pi*log(363990455/pi))):(length(fft_plusEP)-floor(1500/2/pi*log(sqrt(363991955/2/pi))))],fft_plusEP[(length(fft_plusEP)-floor(1500/2/pi*log(sqrt(363991955/2/pi)))+1):length(fft_plusEP)])
+
+
+# inverse fourier transform to recover better approximation of dirich(s)
+
+inv_resultinp=fft(fft_inp, inverse=TRUE)/length(fft_inp)
+
+
+plot(dfEP$V1,Im(log(dfdirich$V2)),typ="l",xlim=c(363991200,363991210),ylab="argument value",xlab="imaginary co-ordinate",main="partial Euler Product calculations including 128 point tapering in input fft",cex.main=0.8);grid()
+lines(dfEP$V1,Im(log(inv_resultinp)),col="red",lty=2)
+
+
+
+dfEP=read.csv("/home/john/pari/EP_minusoneRS_363991205_m2e3_p2e3_real.csv",header=FALSE,colClasses = c("character"));
+
+
+
+dfEP$V2=as.numeric(gsub(" ","",dfEP$V2));
+
+
+
+
+dfEPi=read.csv("/home/john/pari/EP_minusoneRS_363991205_m2e3_p2e3_imag.csv",header=FALSE,colClasses = c("character"));
+
+
+dfEPi$V2=as.numeric(gsub(" ","",dfEPi$V2));
+
+
+
+dfEP=as.data.frame(cbind(dfEP$V1,dfEP$V2+1i*dfEPi$V2));dfEP$V2=as.complex(dfEP$V2)
+
+
+fft_minusEP = stats::fft(dfEP$V2)
+
+
+dfEP=read.csv("/home/john/pari/EP_oneRS_363991205_m2e3_p2e3_real.csv",header=FALSE,colClasses = c("character"));
+
+
+
+dfEP$V2=as.numeric(gsub(" ","",dfEP$V2));
+
+
+
+
+dfEPi=read.csv("/home/john/pari/EP_oneRS_363991205_m2e3_p2e3_imag.csv",header=FALSE,colClasses = c("character"));
+
+
+dfEPi$V2=as.numeric(gsub(" ","",dfEPi$V2));
+
+
+
+dfEP=as.data.frame(cbind(dfEP$V1,dfEP$V2+1i*dfEPi$V2));dfEP$V2=as.complex(dfEP$V2)
+
+
+fft_plusEP = stats::fft(dfEP$V2)
+
+# splice together the useful parts of fft_plusEP and fft_minusEP
+
+fft_inp=c(fft_plusEP[1],rep(0,length(fft_plusEP)-floor(4000/2/pi*log(363990455/pi))-2),
+fft_minusEP[(length(fft_plusEP)-floor(4000/2/pi*log(363990455/pi))):(length(fft_plusEP)-floor(4000/2/pi*log(sqrt(363991955/2/pi))))],fft_plusEP[(length(fft_plusEP)-floor(4000/2/pi*log(sqrt(363991955/2/pi)))+1):length(fft_plusEP)])
+
+
+# inverse fourier transform to recover better approximation of dirich(s)
+
+inv_resultinp=fft(fft_inp, inverse=TRUE)/length(fft_inp)
+
+
+plot(dfdirich$V1,Im(log(dfdirich$V2)),typ="l",xlim=c(363991200,363991210),ylab="argument value",xlab="imaginary co-ordinate",main="partial Euler Product calculations using a wider sample interval of 4000 for fourier analysis",cex.main=0.8);grid()
+lines(dfEP$V1,Im(log(inv_resultinp)),col="red",lty=2)
+
+
+
+```
+
+\clearpage
+
+
+
+
+
+## Conclusions 
+
+
+The above two procedures using (i) spectral filtering of the fourier transform of the partial Euler Product function(s) truncated at either the second or first quiescent region of the Riemann Zeta Dirichlet series, followed by (ii) inverse fourier transformation provides useful zeroth order approximations of the real and imaginary parts of the Riemann Zeta function. It can be observed that the fourier transforms of the two partial Euler product analogues of the two zeroth order Riemann-Siegel components can be successfully filtered to contribute two different but complementary bands of angular frequency components that combined usefully approximate the fourier transform spectra of the Riemann Zeta function when sampled over an interval (along the imaginary axis co-ordinate) away from the real axis. 
+
+
+
+\newpage
+
+## References
+
+1. Edwards, H.M. (1974). Riemann's zeta function. Pure and Applied Mathematics 58. New York-London: Academic Press. ISBN 0-12-232750-0. Zbl 0315.10035.
+
+2. Riemann, Bernhard (1859). "?ber die Anzahl der Primzahlen unter einer gegebenen Gr?sse". Monatsberichte der Berliner Akademie.. In Gesammelte Werke, Teubner, Leipzig (1892), Reprinted by Dover, New York (1953).
+
+3. Titchmarsh, E.C. (1986) The Theory of the Riemann Zeta Function. 2nd Revised (Heath-Brown, D.R. ) Edition, Oxford University Press, Oxford.
+
+4. Berry, M. V. "The Riemann-Siegel Expansion for the Zeta Function: High Orders and Remainders." Proc. Roy. Soc. London A 450, 439-462, 1995.
+
+5. Martin, J.P.D. "Truncated Exponential Series based partial Euler Product calculations at quiescent regions of oscillatory divergence to produce approximations of the Riemann Siegel Z function." (2021)
+http://dx.doi.org/10.6084/m9.figshare.14842803
+
+6. Martin, J.P.D. "The finite Dirichlet Series expressed as the sum of products of finite geometric series of primes and powers of primes." (2024) 
+http://dx.doi.org/10.6084/m9.figshare.26264198
+
+7. Martin, J.P.D. "Examining the convergence behaviour of the finite Dirichlet Series and zeroth order Riemann Siegel formula calculated via the sum of products of finite geometric series of primes and powers of primes near the first Rosser point violation" (2024)
+http://dx.doi.org/10.6084/m9.figshare.26352466
+
+8. Martin, J.P.D. "A fast scalable algorithm for zeroth order Riemann Siegel formula calculations via the sum of products of finite geometric series of primes and powers of primes" (2024)
+http://dx.doi.org/10.6084/m9.figshare.26516158
+
+9. The PARI~Group, PARI/GP version 2.12.0, Univ. Bordeaux, 2018,
+\url{http://pari.math.u-bordeaux.fr/}.
+
+10. R Core Team (2017). R: A language and environment for statistical computing. R Foundation for
+Statistical Computing, Vienna, Austria. \url{https://www.R-project.org/}.
+
+11. RStudio Team (2015). RStudio: Integrated Development for R. RStudio, Inc., Boston, MA URL
+http://www.rstudio.com/.
