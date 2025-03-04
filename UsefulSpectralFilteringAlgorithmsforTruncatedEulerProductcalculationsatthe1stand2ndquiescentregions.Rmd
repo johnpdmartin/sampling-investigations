@@ -1628,10 +1628,10 @@ Figures 7-8, illustrates the absolute value of the fourier transform of (i) the 
 (lefthand column) and two partial Euler Products truncated at the first quiescent region $N_1 = \sqrt{\frac{t}{2\pi}}$
 
 \begin{equation}
-\prod_{p=2}^{p\le \lfloor\frac{t}{\pi}\rfloor=N_1} \frac{1}{(1-\frac{1}{p^s})} \end{equation}
+\prod_{p=2}^{p\le \lfloor\sqrt{\frac{t}{2\pi}}\rfloor=N_1} \frac{1}{(1-\frac{1}{p^s})} \end{equation}
 
 \begin{equation}
-\mychi(s) \cdot \prod_{p=2}^{p\le \lfloor\frac{|t|}{\pi}\rfloor=N_1} \frac{1}{(1-\frac{1}{p^{(1-s)}})}
+\mychi(s) \cdot \prod_{p=2}^{p\le \lfloor\sqrt{\frac{t}{2\pi}}\rfloor=N_1} \frac{1}{(1-\frac{1}{p^{(1-s)}})}
 \end{equation}
 
 (righthand column) over the intervals t=(9000,10000), t=(16648,17648) respectively, on the critical line $\Re(s)=0.5$.
@@ -1646,10 +1646,10 @@ Figures 8-9, illustrates the absolute value of the fourier transform of (i) the 
 (lefthand column) and two partial Euler Products truncated at the first quiescent region 
 
 \begin{equation}
-\prod_{p=2}^{p\le \lfloor\frac{t}{\pi}\rfloor=N_1} \frac{1}{(1-\frac{1}{p^s})} \end{equation}
+\prod_{p=2}^{p\le \lfloor\sqrt{\frac{t}{2\pi}}\rfloor=N_1} \frac{1}{(1-\frac{1}{p^s})} \end{equation}
 
 \begin{equation}
-\mychi(s) \cdot \prod_{p=2}^{p\le \lfloor\frac{t}{\pi}\rfloor=N_1} \frac{1}{(1-\frac{1}{p^{(1-s)}})}
+\mychi(s) \cdot \prod_{p=2}^{p\le \lfloor\sqrt{\frac{t}{2\pi}}\rfloor=N_1} \frac{1}{(1-\frac{1}{p^{(1-s)}})}
 \end{equation}
 
 (righthand column) over the interval t=(6818555,6821555), t=(363990455,363991955) respectively, on the critical line $\Re(s)=0.5$.
@@ -1665,12 +1665,12 @@ It can be seen in the four figures that
 
 \begin{itemize}
 \item The DC component across the four figures has amplitude 1e5, 1e5, 3e5, 1.5e5 consistent with the number of sampled points (1e5, 1e5, 3e5, 1.5e5) analysed for each respective fourier transform.
-\item As indicated by the green vertical lines in the top and middle panels of each figure both the Riemann Zeta function and the $\prod_{p=2}^{p\le \lfloor\frac{t}{\pi}\rfloor=N_1} \frac{1}{(1-\frac{1}{p^s})}$ Riemann-Siegel component based partial Euler Products truncated at the first quiescent region sampled over the finite interval exhibit strong fourier components containing angular frequency components $|\omega| = \{\log(2), \log(3), \log(4), ... , \log(20), ...  \text{etc}\}$ which is understandable since $\Large\sum \frac{1}{k^s} = 1 + e^{-\log(2)t} + e^{-\log(3)t} + e^{-\log(4)t} + e^{-\log(5)t} + ...$ has contributions at these particular angular frequencies independent of t.
-\item As indicated by the red vertical lines in the top and bottom panels of each figure both the Riemann Zeta function and the $\mychi(s) \cdot \prod_{p=2}^{p\le \lfloor\frac{t}{\pi}\rfloor=N_1} \frac{1}{(1-\frac{1}{p^{(1-s)}})}$ exhibit strong fourier components with broader spectral features which are successful captured by the pair of red lines $-(\log(UB/\pi/2),\log(LB/\pi/2))$, $-(\log(UB/\pi/4),\log(LB/\pi/4))$, $-(\log(UB/\pi/6),\log(LB/\pi/6))$ where UB=9000,LB=10000 (UB=17648,LB=16648; UB=6821555,LB=6818555; UB=363991955,LB=363990455) corresponding to the range of t values used in figures 7-10. The origin of such features is also recognizable in the known cumulative behaviour of the real and imaginary part partial sums $\Re(\Large\sum \frac{1}{k^s})$ and $\Im(\Large\sum \frac{1}{k^s})$ which typically have  steplike behaviour around $\frac{t}{2\pi}, \frac{t}{3\pi}, \frac{t}{4\pi}, \frac{t}{5\pi}, \frac{t}{6\pi}, ...$. The largest value $\frac{t}{2\pi}$ marks the final step of the partial sums $\Re(\Large\sum \frac{1}{k^s})$ and $\Im(\Large\sum \frac{1}{k^s})$ into their final plateau of oscillatory divergence when $\Re(s) \le 1$ 
-\item As indicated by the dashed blue vertical line in the middle and bottom panels is an angular frequency of $\log(\frac{9000}{\pi})$ ($\log(\frac{17648}{\pi})$, $\log(\frac{6818555}{\pi})$, $\log(\frac{363990455}{\pi})$) respectively for figures 7-10 beyond which it is expected that the partial Euler Product using truncation at the second quiescent region would contain fourier transform frequencies not present in the Riemann Zeta function when $\Re(s) \le 1$. It can be seen that the $\prod_{p=2}^{p\le \lfloor\frac{t}{\pi}\rfloor=N_1} \frac{1}{(1-\frac{1}{p^s})}$ contains higher frequencies than are contained in the Riemann Zeta function but $\mychi(s) \cdot \prod_{p=2}^{p\le \lfloor\frac{t}{\pi}\rfloor=N_1} \frac{1}{(1-\frac{1}{p^{(1-s)}})}$ doesn't appear to have extraneous high frequencies but does exhibit noise frequencies surrounding the DC component.
+\item As indicated by the green vertical lines in the top and middle panels of each figure both the Riemann Zeta function and the $\prod_{p=2}^{p\le \lfloor\sqrt{\frac{t}{2\pi}}\rfloor=N_1} \frac{1}{(1-\frac{1}{p^s})}$ Riemann-Siegel component based partial Euler Products truncated at the first quiescent region sampled over the finite interval exhibit strong fourier components containing angular frequency components $|\omega| = \{\log(2), \log(3), \log(4), ... , \log(20), ...  \text{etc}\}$ which is understandable since $\Large\sum \frac{1}{k^s} = 1 + e^{-\log(2)t} + e^{-\log(3)t} + e^{-\log(4)t} + e^{-\log(5)t} + ...$ has contributions at these particular angular frequencies independent of t.
+\item As indicated by the red vertical lines in the top and bottom panels of each figure both the Riemann Zeta function and the $\mychi(s) \cdot \prod_{p=2}^{p\le \lfloor\sqrt{\frac{t}{2\pi}}\rfloor=N_1} \frac{1}{(1-\frac{1}{p^{(1-s)}})}$ exhibit strong fourier components with broader spectral features which are successful captured by the pair of red lines $-(\log(UB/\pi/2),\log(LB/\pi/2))$, $-(\log(UB/\pi/4),\log(LB/\pi/4))$, $-(\log(UB/\pi/6),\log(LB/\pi/6))$ where UB=9000,LB=10000 (UB=17648,LB=16648; UB=6821555,LB=6818555; UB=363991955,LB=363990455) corresponding to the range of t values used in figures 7-10. The origin of such features is also recognizable in the known cumulative behaviour of the real and imaginary part partial sums $\Re(\Large\sum \frac{1}{k^s})$ and $\Im(\Large\sum \frac{1}{k^s})$ which typically have  steplike behaviour around $\frac{t}{2\pi}, \frac{t}{3\pi}, \frac{t}{4\pi}, \frac{t}{5\pi}, \frac{t}{6\pi}, ...$. The largest value $\frac{t}{2\pi}$ marks the final step of the partial sums $\Re(\Large\sum \frac{1}{k^s})$ and $\Im(\Large\sum \frac{1}{k^s})$ into their final plateau of oscillatory divergence when $\Re(s) \le 1$ 
+\item As indicated by the dashed blue vertical line in the middle and bottom panels is an angular frequency of $\log(\frac{9000}{\pi})$ ($\log(\frac{17648}{\pi})$, $\log(\frac{6818555}{\pi})$, $\log(\frac{363990455}{\pi})$) respectively for figures 7-10 beyond which it is expected that the partial Euler Product using truncation at the second quiescent region would contain fourier transform frequencies not present in the Riemann Zeta function when $\Re(s) \le 1$. It can be seen that the $\prod_{p=2}^{p\le \lfloor\sqrt{\frac{t}{2\pi}}\rfloor=N_1} \frac{1}{(1-\frac{1}{p^s})}$ contains higher frequencies than are contained in the Riemann Zeta function but $\mychi(s) \cdot \prod_{p=2}^{p\le \lfloor\sqrt{\frac{t}{2\pi}}\rfloor=N_1} \frac{1}{(1-\frac{1}{p^{(1-s)}})}$ doesn't appear to have extraneous high frequencies but does exhibit noise frequencies surrounding the DC component.
 \end{itemize}
 
-So the takewaway is that the fourier transform of $\prod_{p=2}^{p\le \lfloor\frac{t}{\pi}\rfloor=N_1} \frac{1}{(1-\frac{1}{p^s})}$ contains angular frequency components closely approximating the fourier transform of the Riemann Zeta function in the region $-\log(\sqrt{\frac{UB}{2\pi}}) \le \omega \le 0$ and the fourier transform of $\mychi(s) \cdot \prod_{p=2}^{p\le \lfloor\frac{t}{\pi}\rfloor=N_1} \frac{1}{(1-\frac{1}{p^{(1-s)}})}$ contains angular frequency components closely approximating the fourier transform of the Riemann Zeta function in the region $-\log(\frac{LB}{\pi}) \le \omega < -\log(\sqrt{\frac{UB}{2\pi}})$.
+So the takewaway is that the fourier transform of $\prod_{p=2}^{p\le \lfloor\sqrt{\frac{t}{2\pi}}\rfloor=N_1} \frac{1}{(1-\frac{1}{p^s})}$ contains angular frequency components closely approximating the fourier transform of the Riemann Zeta function in the region $-\log(\sqrt{\frac{UB}{2\pi}}) \le \omega \le 0$ and the fourier transform of $\mychi(s) \cdot \prod_{p=2}^{p\le \lfloor\sqrt{\frac{t}{2\pi}}\rfloor=N_1} \frac{1}{(1-\frac{1}{p^{(1-s)}})}$ contains angular frequency components closely approximating the fourier transform of the Riemann Zeta function in the region $-\log(\frac{LB}{\pi}) \le \omega < -\log(\sqrt{\frac{UB}{2\pi}})$.
 
 \clearpage 
 
@@ -1736,7 +1736,7 @@ fft_EP = stats::fft(dfEP$V2)
 
 
 
-plot(c(-50000:49999)*2*pi/1000,c(abs(fft_EP)[50001:100000],abs(fft_EP)[1:50000]),xlim=c(-9,+1.5),typ="l",xaxt="n",xlab="angular frequency (radians per sec)",ylab="Amplitude",ylim=c(0,1e5),main="fourier transform spectra of the partial Euler product waveform \n Re(s)=0.5 over the interval Im(s)=(9000,10000) \n using truncation at N1=t/pi.")
+plot(c(-50000:49999)*2*pi/1000,c(abs(fft_EP)[50001:100000],abs(fft_EP)[1:50000]),xlim=c(-9,+1.5),typ="l",xaxt="n",xlab="angular frequency (radians per sec)",ylab="Amplitude",ylim=c(0,1e5),main="fourier transform spectra of the partial Euler product waveform \n Re(s)=0.5 over the interval Im(s)=(9000,10000) \n using truncation at N1=sqrt(t/2/pi).")
 abline(v=seq(-10,1,l=12),h=seq(0,1e5,l=6),lty=3,col="gray")
 axis(1,at=seq(-10,1,l=12))
 abline(v=-log((10000)/pi/c(2,4,6,8,10))-0,col=rgb(1,0,0,0.5))
@@ -1771,7 +1771,7 @@ fft_EP = stats::fft(dfEP$V2)
 
 
 
-plot(c(-50000:49999)*2*pi/1000,c(abs(fft_EP)[50001:100000],abs(fft_EP)[1:50000]),xlim=c(-9,+1.5),typ="l",xaxt="n",xlab="angular frequency (radians per sec)",ylab="Amplitude",ylim=c(0,1e5),main="fourier transform spectra of the \n (1-s) based Riemann-Siegel partial Euler product waveform \n Re(s)=0.5 over the interval Im(s)=(9000,10000) using truncation at N1=t/pi.")
+plot(c(-50000:49999)*2*pi/1000,c(abs(fft_EP)[50001:100000],abs(fft_EP)[1:50000]),xlim=c(-9,+1.5),typ="l",xaxt="n",xlab="angular frequency (radians per sec)",ylab="Amplitude",ylim=c(0,1e5),main="fourier transform spectra of the \n (1-s) based Riemann-Siegel partial Euler product waveform \n Re(s)=0.5 over the interval Im(s)=(9000,10000) using truncation at N1=sqrt(t/2/pi).")
 abline(v=seq(-10,1,l=12),h=seq(0,1e5,l=6),lty=3,col="gray")
 axis(1,at=seq(-10,1,l=12))
 abline(v=-log((10000)/pi/c(2,4,6,8,10))-0,col=rgb(1,0,0,0.5))
@@ -1849,7 +1849,7 @@ fft_EP = stats::fft(dfEP$V2)
 
 
 
-plot(c(-50000:49999)*2*pi/1000,c(abs(fft_EP)[50001:100000],abs(fft_EP)[1:50000]),xlim=c(-9,+1.5),typ="l",xaxt="n",xlab="angular frequency (radians per sec)",ylab="Amplitude",ylim=c(0,1e5),main="fourier transform spectra of the partial Euler product waveform \n Re(s)=0.5 over the interval Im(s)=(16648,17648) \n using truncation at N1=t/pi.")
+plot(c(-50000:49999)*2*pi/1000,c(abs(fft_EP)[50001:100000],abs(fft_EP)[1:50000]),xlim=c(-9,+1.5),typ="l",xaxt="n",xlab="angular frequency (radians per sec)",ylab="Amplitude",ylim=c(0,1e5),main="fourier transform spectra of the partial Euler product waveform \n Re(s)=0.5 over the interval Im(s)=(16648,17648) \n using truncation at N1=sqrt(t/2/pi).")
 abline(v=seq(-10,1,l=12),h=seq(0,1e5,l=6),lty=3,col="gray")
 axis(1,at=seq(-10,1,l=12))
 abline(v=-log((17648)/pi/c(2,4,6,8,10))-0,col=rgb(1,0,0,0.5))
@@ -1884,7 +1884,7 @@ fft_EP = stats::fft(dfEP$V2)
 
 
 
-plot(c(-50000:49999)*2*pi/1000,c(abs(fft_EP)[50001:100000],abs(fft_EP)[1:50000]),xlim=c(-9,+1.5),typ="l",xaxt="n",xlab="angular frequency (radians per sec)",ylab="Amplitude",ylim=c(0,1e5),main="fourier transform spectra of the \n (1-s) based Riemann-Siegel partial Euler product waveform \n Re(s)=0.5 over the interval Im(s)=(16648,17648) using truncation at N1=t/pi.")
+plot(c(-50000:49999)*2*pi/1000,c(abs(fft_EP)[50001:100000],abs(fft_EP)[1:50000]),xlim=c(-9,+1.5),typ="l",xaxt="n",xlab="angular frequency (radians per sec)",ylab="Amplitude",ylim=c(0,1e5),main="fourier transform spectra of the \n (1-s) based Riemann-Siegel partial Euler product waveform \n Re(s)=0.5 over the interval Im(s)=(16648,17648) using truncation at N1=sqrt(t/2/pi).")
 abline(v=seq(-10,1,l=12),h=seq(0,1e5,l=6),lty=3,col="gray")
 axis(1,at=seq(-10,1,l=12))
 abline(v=-log((17648)/pi/c(2,4,6,8,10))-0,col=rgb(1,0,0,0.5))
@@ -2157,7 +2157,7 @@ the spectral filtering given the partial Euler Product used truncation at the fi
 &x_{n-\lfloor\frac{\Delta t}{2\pi}*\log(\sqrt{\frac{UB}{\pi}})\rfloor}, ..., x_{n}\}
 \end{align}
 
-where $x_1$ is the DC component of fftEP1 (fourier transform of $\prod_{p=2}^{p\le \lfloor\frac{t}{\pi}\rfloor=N_1} \frac{1}{(1-\frac{1}{p^s})}$), fftEP2 is the fourier transform of $\mychi(s) \cdot \prod_{p=2}^{p\le \lfloor\frac{t}{\pi}\rfloor=N_1} \frac{1}{(1-\frac{1}{p^{(1-s)}})}$ and LB (UB) are the lower (upper) bound of the t interval included in the partial Euler Product sampling.
+where $x_1$ is the DC component of fftEP1 (fourier transform of $\prod_{p=2}^{p\le \lfloor\sqrt{\frac{t}{2\pi}}\rfloor=N_1} \frac{1}{(1-\frac{1}{p^s})}$), fftEP2 is the fourier transform of $\mychi(s) \cdot \prod_{p=2}^{p\le \lfloor\sqrt{\frac{t}{2\pi}}\rfloor=N_1} \frac{1}{(1-\frac{1}{p^{(1-s)}})}$ and LB (UB) are the lower (upper) bound of the t interval included in the partial Euler Product sampling.
 
 The filtered fourier transform is then subjected to an inverse fourier transform to recover an improved approximation of the Riemann Zeta function.
 
@@ -2593,7 +2593,7 @@ From figure 12, firstly it is noted that the zero positions of $S_app$ provide e
 
 
 \newpage
-```{r argumentfunctionresults_comparison, echo=FALSE, fig.cap="A comparison of the zero positions (shown in red) obtained from a spectrally filtered inverse fourier transform of the partial Euler Product (using truncation at $N_1 = \\sqrt{\\frac{t}{2\\pi}}$) on the critical line for the interval t=(363991200,363991210) based on fourier analysis of a much wider interval to the Riemann Zeta function non-trivial zero values (shown in black).", out.width = c("99%"), fig.show = "hold",  fig.height=3.4, warning=FALSE}
+```{r argumentfunctionresults_comparison, echo=FALSE, fig.cap="A comparison of the zero positions (shown in red) obtained from a spectrally filtered inverse fourier transform of the partial Euler Product (using truncation at $N_1 = \\sqrt{\\frac{t}{2\\pi}}$) on the critical line for the interval t=(363991200,363991210) based on fourier analysis of a much wider interval to the Riemann Zeta function non-trivial zero values (shown in black).", out.width = c("99%"), fig.show = "hold",  fig.height=3., warning=FALSE}
 
 
 
