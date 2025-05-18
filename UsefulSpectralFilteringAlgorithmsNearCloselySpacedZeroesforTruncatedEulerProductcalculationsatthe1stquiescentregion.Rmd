@@ -1,0 +1,1013 @@
+---
+title: "Crucial steps for robust first quiescent region truncated partial Euler Product based approximations of closely spaced Riemann Zeta function non-trivial zeroes."
+author: "John Martin"
+date: \today
+header-includes:  \usepackage{xcolor}
+output:
+  pdf_document:
+  fig_crop: no
+---
+  
+  
+  
+  ```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+
+```
+<!-- https://stackoverflow.com/questions/41655383/r-markdown-similar-feature-to-newcommand-in-latex/41664105 -->
+\newcommand{\mychi}{\raisebox{0pt}[1ex][1ex]{$\chi$}}
+
+## Executive summary 
+
+First quiescent region $N_1=\sqrt{\frac{t}{2\pi}}$ truncated partial Euler Product based approximations of the Riemann Siegel Z function can be made robust by the following steps (i) spectral filtering and mirror reflection of the partial Euler Product fourier transform, (ii) setting the imaginary parts of fft[1] and fft[$\lceil\frac{n}{2}\rceil+1$] equal to zero, (iii) using the primes over $N_1 +\Delta$ rather than $N_1$ and (iv) averaging the results of inverse fourier transforms of the partial Euler product based Riemann Siegel Z function (of different spectrum widths). These steps reduce the impact of spectral leakage from high frequency components present in the partial Euler Product (but not contained in the Riemann Zeta function) resulting in agreement with the Riemann Zeta function to 6+ decimal places which is required for inspecting closely spaced non-trivial zeroes. 
+
+## Introduction
+
+The Riemann Zeta function is defined [1-3], in the complex plane by the integral 
+
+\begin{equation}
+\zeta(s) = \frac{\prod(-s)}{2\pi i}\int_{C_{\epsilon,\delta}} \frac{(-x)^s}{(e^{x}-1)x}dx
+\end{equation}
+
+
+where $s \thinspace \epsilon \thinspace \mathbb{C}$ and $C_{\epsilon,\delta}$ is the contour about the imaginary poles.
+
+The Riemann Zeta function has been shown to obey the functional equation [1-4]
+
+\begin{align}
+\zeta(s) &= \mychi(s)\zeta(1-s) \\
+&= 2^s\pi^{s-1}sin(\frac{\pi s}{2})\Gamma(1-s)\zeta(1-s) \label{eq:func} \\
+&= e^{-2\theta(s)}\zeta(1-s)
+\end{align}
+
+For $\Re(s) > 1$, the infinite Euler Product of the primes absolutely converges to the infinite Riemann Zeta Dirichlet Series sum [1,3]
+
+\begin{equation}
+\zeta(s) = {\Large\sum_{k=1}^\infty} \frac{1}{k^s} = {\Large\prod_{\rho=2}^\infty} \frac{1}{(1-1/\rho^{s})} \qquad \text{for } \Re(s) > 1
+\end{equation}
+
+Of interest to this paper is the Riemann-Siegel Z function of the Riemann Zeta function
+
+\begin{equation}
+Z_\zeta(0.5+I\cdot t) = e^{I\cdot\theta(t)}\zeta(0.5+I\cdot t)
+\end{equation}
+
+and how the partial Euler Product version of Riemann-Siegel Z function using truncation at the first quiescent region $N_1 = \sqrt{\frac{t}{2\pi}}$
+
+\begin{equation}
+Z_\zeta(0.5+I\cdot t) \approx e^{I\cdot\theta(t)}\left( \prod_{p=2}^{p\le \lfloor\sqrt{\frac{t}{2\pi}}\rfloor=N_1} \frac{1}{(1-\frac{1}{p^{(0.5+I\cdot t)}})} + \mychi(0.5+I\cdot t) \cdot \prod_{p=2}^{p\le \lfloor\sqrt{\frac{t}{2\pi}}\rfloor=N_1} \frac{1}{(1-\frac{1}{p^{(1-(0.5+I\cdot t))}})}\right)
+\end{equation}
+
+may be improved particularly near closely spaced Riemann Zeta function non-trivial zeroes.
+
+In this paper, the spectral filtering approach of [5] is followed concentrating on the Riemann-Siegel Z function calculation because of its higher symmetry with respect to fourier transform components. In [5] it was identified for $N_1 = \sqrt{\frac{t}{2\pi}}$ truncation of the partial Euler Product the first $\prod_{p=2}^{p\le \lfloor\sqrt{\frac{t}{2\pi}}\rfloor} \frac{1}{(1-\frac{1}{p^{(0.5+I\cdot t)}})}$ and second $\mychi(0.5+I\cdot t) \cdot \prod_{p=2}^{p\le \lfloor\sqrt{\frac{t}{2\pi}}\rfloor} \frac{1}{(1-\frac{1}{p^{(1-(0.5+I\cdot t))}}}$ components of the RHS of equation (7),  respectively contribute different angular frequency components of the fourier transform. The spectral filtering of the fourier transform attempts to (efficiently) throw away nuisance angular frequency components in the above components that are not present in the proper Riemann Zeta and Riemann-Siegel Z functions.
+
+To test the performance of the partial Euler Product version of Riemann-Siegel Z function using truncation at the first quiescent region for closely spaced Riemann Zeta non-trivial zeroes the extremely narrow pair of zeroes at 388858886.0022851... and 388858886.0023936... [6,7] is at the centre of the critical line interval investigated (t=388858886+(-750,750)). 
+
+The paper illustrates four crucial steps that enable robust approximations (to 6+ decimal places) in the Riemann-Siegel Z function via the partial Euler Product using $N_1$ (first quiescent region) hence allowing inspection of closely spaced Riemann Zeta function non-trivial zeroes. 
+
+\begin{enumerate}
+\item using mirror reflection (about the DC fourier component) of the most accurate fourier transform components of $e^{I\cdot\theta(t)}\prod_{p=2}^{p\le \lfloor\sqrt{\frac{t}{2\pi}}\rfloor} \frac{1}{(1-\frac{1}{p^{(0.5+I\cdot t)}})}$ or $e^{I\cdot\theta(t)}\mychi(0.5+I\cdot t) \cdot \prod_{p=2}^{p\le \lfloor\sqrt{\frac{t}{2\pi}}\rfloor} \frac{1}{(1-\frac{1}{p^{(1-(0.5+I\cdot t))}}}$ to derive a zeroth order approximation of $e^{I\cdot\theta(t)}\zeta(0.5+I\cdot t)$.
+\item using truncation at $N_1+\Delta$ (rather than $N_1$) to reduce the approximation errors in Riemann-Siegel Z function approximation based on the partial Euler Product
+\item setting the imaginary(DC fourier component) = 0 and imaginary(fft[$\lceil\frac{n}{2}\rceil+1$]) = 0 to enhance the symmetry/continuity of the approximate fourier transform to improve approximation accuracy
+\item execute and average fourier analyses of differing lengths as the fourier transform component errors in this partial Euler Product Riemann-Siegel Z function approximation appears to vary in random manner across the different length transforms.
+\end{enumerate}
+
+The final step of averaging across many fourier transforms (of differing length) adds to the computational cost but it is a minor cost component (for large t values) since each fourier analysis is re-examining the single Riemann_Siegel Z function spectrum obtained efficiently by the partial Euler Product calculation.  
+
+## Comparing the fourier transform spectra of the Riemann Zeta function and first quiescent region based partial Euler Product calculations
+
+### Using spectral filtering and mirror reflection to achieve zeroth order approximation for all fourier components
+
+Figure 1 illustrates the absolute value of the fourier transform of (i) the Riemann-Siegel Z function of the Riemann Zeta function
+
+\begin{equation}
+e^{\theta(t)}\zeta(0.5+I\cdot t)
+\end{equation}
+
+(shown in the middle row repeated) and (ii) the two components of the Riemann-Siegel Z function of the partial Euler Product truncated at the first quiescent region 
+
+first component (lefthand panel top row);
+\begin{equation}
+e^{I\cdot\theta(t)}\prod_{p=2}^{p\le \lfloor\sqrt{\frac{t}{2\pi}}\rfloor} \frac{1}{(1-\frac{1}{p^{(0.5+I\cdot t)}})}
+\end{equation}
+
+second component (lefthand panel bottom row);
+\begin{equation}
+e^{I\cdot\theta(t)}\mychi(0.5+I\cdot t) \cdot \prod_{p=2}^{p\le \lfloor\sqrt{\frac{t}{2\pi}}\rfloor} \frac{1}{(1-\frac{1}{p^{(1-(0.5+I\cdot t))}}}
+\end{equation}
+
+are compared over the interval t=38885886+(-750,750) respectively, on the critical line $\Re(s)= 0.5$.
+
+Most importantly, in the top and bottom rows are mirror reflections of the useful positive (negative) angular frequency halves of the first (second) components respectively of the Riemann-Siegel Z function of the partial Euler Product truncated at the first quiescent region about the DC fourier component where the reflected half is highlighted in green.
+
+To produce figure 1, firstly the $e^{\theta(t)}\zeta(0.5+I\cdot t)$, $e^{I\cdot\theta(t)}\prod_{p=2}^{p\le \lfloor\sqrt{\frac{t}{2\pi}}\rfloor} \frac{1}{(1-\frac{1}{p^{(0.5+I\cdot t)}})}$ and $e^{I\cdot\theta(t)}\mychi(0.5+I\cdot t) \cdot \prod_{p=2}^{p\le \lfloor\sqrt{\frac{t}{2\pi}}\rfloor} \frac{1}{(1-\frac{1}{p^{(1-(0.5+I\cdot t))}}}$ functions were calculated for a grid of points for $\Re(s)=0.5$ value ($t = (38885886-750, 388858886+750)$, with a spacing 0.01 giving a waveform sample of 149999 points) and stored to file using the pari-gp language [8] and secondly the fourier transform calculations and graphs were derived using the R language [9] and Rstudio IDE [10].
+
+The reference Riemann-Siegel Z function was calculated using the Riemann-Siegel formula via 128 point tapered Dirichlet series approximation (which has about 28 decimal place precision at $s=0.5+I\cdot 388858886$)
+
+\begin{align}
+e^{I\cdot \theta(0.5+I\cdot t)}&\zeta_{RS\text{ tapered }}(0.5+I\cdot t) = e^{I\cdot \theta(0.5+I\cdot t)} \Large[ \sum_{n=1}^{(\lfloor\sqrt{\frac{t}{2\pi}}\rfloor-q)} \frac{1}{n^{(0.5+I\cdot t)}} +\sum_{i=\left(-q+1\right)}^{q}\frac{\frac{1}{2^{2q}} \left( 2^{2q}-\sum_{k=0}^{i+q-1}\binom{2q}{2q-k}\right)}{(\lfloor\sqrt{\frac{t}{2\pi}}\rfloor+i)^{(0.5+I\cdot t)}} \nonumber \\ + &\chi(0.5+I\cdot t) \cdot \left(\sum_{n=1}^{(\lfloor\sqrt{\frac{t}{2\pi}}\rfloor-q)} \frac{1}{n^{(1-(0.5+I\cdot t))}} +\sum_{i=\left(-q+1\right)}^{q}\frac{\frac{1}{2^{2q}} \left( 2^{2q}-\sum_{k=0}^{i+q-1}\binom{2q}{2q-k}\right)}{(\lfloor\sqrt{\frac{t}{2\pi}}\rfloor+i)^{(1-(0.5+I\cdot t))}} \right) \Large] \qquad \text{as } t \rightarrow \infty
+\end{align}
+
+Since the input data of a Riemann-Siegel Z function on the critical line is real valued, the fourier transform spectrum of a Riemann-Siegel Z function is two sided. For convenience in figure 1, 
+
+\begin{enumerate}
+\item the fast fourier transform (fft) output vector is wrapped around so that the informative non-zero fft components appear next to the DC fourier component axis as positive and negative frequency cpmponents.
+\item the x-axis is scaled in units of angular frequency (radians per second).
+\end{enumerate}
+
+\clearpage
+
+
+```{r Zfnzetafunctionoveraninterval_anditsfouriertransform_388858886_pm750, echo=FALSE, fig.cap="A comparison of the fourier transforms of the Riemann-Siegel Z functions of the Riemann Zeta function and partial Euler Product (using truncation at $N_1 = \\sqrt{\\frac{t}{2\\pi}}$) in the complex plane at $\\sigma=0.5$ for the interval t=388858886+(-750,750). The positions of the frequency features indicated by red are successfully captured as a function of t by the expressions postulated in the paper. To help use the partial Euler Product as an approximation of the Riemann-Siegel Z function mirror reflection of the (accurate part of) partial Euler Product fourier transform about angular frequency = zero as shown in green is a strong zeroth order improvement.", out.width = c("49%","49%"), fig.show = "hold",  fig.height=5, warning=FALSE}
+
+
+    dfplusZ=read.csv("/home/john/pari/ZplusS_EP_388858886_m750_p750_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
+    dfplusZ$V2=as.numeric(gsub(" ","",dfplusZ$V2));
+    dfplusZ=dfplusZ[order(dfplusZ$V1),]
+
+    dfplusZi=read.csv("/home/john/pari/ZplusS_EP_388858886_m750_p750_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
+    dfplusZi$V2=as.numeric(gsub(" ","",dfplusZi$V2));
+    dfplusZi=dfplusZi[order(dfplusZi$V1),]
+
+    dfplusZ=as.data.frame(cbind(dfplusZ$V1,dfplusZ$V2+1i*dfplusZi$V2));dfplusZ$V2=as.complex(dfplusZ$V2)
+    fft_plusZ = stats::fft(dfplusZ$V2)
+
+
+
+    dfminusZ=read.csv("/home/john/pari/ZminusS_EP_388858886_m750_p750_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
+    dfminusZ$V2=as.numeric(gsub(" ","",dfminusZ$V2));
+    dfminusZ=dfminusZ[order(dfminusZ$V1),]
+
+    dfminusZi=read.csv("/home/john/pari/ZminusS_EP_388858886_m750_p750_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
+    dfminusZi$V2=as.numeric(gsub(" ","",dfminusZi$V2));
+    dfminusZi=dfminusZi[order(dfminusZi$V1),]
+
+    dfminusZ=as.data.frame(cbind(dfminusZ$V1,dfminusZ$V2+1i*dfminusZi$V2));dfminusZ$V2=as.complex(dfminusZ$V2)
+    fft_minusZ = stats::fft(dfminusZ$V2)
+
+    
+dfEP=read.csv("/home/john/pari/dirichRS_Z_388858886_m750_p750_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
+
+
+dfEP$V2=as.numeric(gsub(" ","",dfEP$V2));
+
+dfEP=dfEP[order(dfEP$V1),];
+
+dfEPi=read.csv("/home/john/pari/dirichRS_Z_388858886_m750_p750_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
+
+
+
+dfEPi$V2=as.numeric(gsub(" ","",dfEPi$V2));
+
+dfEPi=dfEPi[order(dfEPi$V1),];
+
+dfEP=as.data.frame(cbind(dfEP$V1,dfEP$V2+1i*dfEPi$V2));dfEP$V2=as.complex(dfEP$V2)
+
+fft_zeta_Zfn = stats::fft(dfEP$V2)
+
+
+n=dim(dfplusZ)[1]
+min_freq=388800000+min(as.numeric(substr(dfplusZ$V1,5,13)))
+max_freq=388800000+max(as.numeric(substr(dfplusZ$V1,5,13)))
+delta_fft=max(as.numeric(substr(dfplusZ$V1,5,13)))-min(as.numeric(substr(dfplusZ$V1,5,13)))
+mid=floor(delta_fft/2/pi*log(floor(sqrt(max_freq/2/pi/c(1)))))
+
+plot(c(-floor(n/2):(ceiling(n/2)-1))*2*pi/delta_fft,c(abs(fft_plusZ)[(ceiling(n/2)+1):n],abs(fft_plusZ)[1:(ceiling(n/2))]),xlim=c(-11,11),typ="l",xaxt="n",xlab="angular frequency (radians per sec)",ylab="|Amplitude|",main="fourier transform spectra of the first component of \n the partial Euler product Riemann-Siegel Z function \n using truncation at N1=sqrt(t/2/pi).")
+abline(v=seq(-20,20,l=41),h=seq(0,1e5,l=6),lty=3,col="gray")
+axis(1,at=seq(-20,20,l=41))
+abline(v=-1/2*log((max_freq)/pi/2/c(1:5)^2)-0,col=rgb(1,0,0,0.2))
+abline(v=-1/2*log((min_freq)/pi/2/c(1:5)^2)-0,col=rgb(1,0,0,0.2))
+abline(v=1/2*log((max_freq)/pi/2/c(1:5)^2)-0,col=rgb(1,0,0,0.2))
+abline(v=1/2*log((min_freq)/pi/2/c(1:5)^2)-0,col=rgb(1,0,0,0.2))
+
+
+n=dim(dfplusZ)[1]
+min_freq=388800000+min(as.numeric(substr(dfplusZ$V1,5,13)))
+max_freq=388800000+max(as.numeric(substr(dfplusZ$V1,5,13)))
+delta_fft=max(as.numeric(substr(dfplusZ$V1,5,13)))-min(as.numeric(substr(dfplusZ$V1,5,13)))
+mid=floor(delta_fft/2/pi*log(floor(sqrt(max_freq/2/pi/c(1)))))
+
+plot(c(-floor(n/2):-1)*2*pi/delta_fft,c(rev(abs(Conj(fft_plusZ))[2:ceiling(n/2)])),xlim=c(-11,11),typ="l",xaxt="n",xlab="angular frequency (radians per sec)",ylab="|Amplitude|",main="piecewise fourier transform \n spectra filtering of the first component positive frequencies \n and mirror reflection imputation of the negative frequency half.",col=3)
+lines(c(0:(ceiling(n/2)-1))*2*pi/delta_fft,c(abs(fft_plusZ)[1:(ceiling(n/2))]),col=1)
+abline(v=seq(-20,20,l=41),h=seq(0,1e5,l=6),lty=3,col="gray")
+axis(1,at=seq(-20,20,l=41))
+abline(v=-1/2*log((max_freq)/pi/2/c(1:5)^2)-0,col=rgb(1,0,0,0.2))
+abline(v=-1/2*log((min_freq)/pi/2/c(1:5)^2)-0,col=rgb(1,0,0,0.2))
+abline(v=1/2*log((max_freq)/pi/2/c(1:5)^2)-0,col=rgb(1,0,0,0.2))
+abline(v=1/2*log((min_freq)/pi/2/c(1:5)^2)-0,col=rgb(1,0,0,0.2))
+
+n=dim(dfEP)[1]
+min_freq=388800000+min(as.numeric(substr(dfEP$V1,5,13)))
+max_freq=388800000+max(as.numeric(substr(dfEP$V1,5,13)))
+delta_fft=max(as.numeric(substr(dfEP$V1,5,13)))-min(as.numeric(substr(dfEP$V1,5,13)))
+mid=floor(delta_fft/2/pi*log(floor(sqrt(max_freq/2/pi/c(1)))))
+
+plot(c(-floor(n/2):(ceiling(n/2)-1))*2*pi/delta_fft,c(abs(fft_zeta_Zfn)[(ceiling(n/2)+1):n],abs(fft_zeta_Zfn)[1:(ceiling(n/2))]),xlim=c(-11,11),typ="l",xaxt="n",xlab="angular frequency (radians per sec)",ylab="|Amplitude|",main="fourier transform spectra of the Riemann-Siegel Z function\n of the Zeta(s) waveform for Re(s)=0.5 \n over the interval Im(s)=388858886+(-750,750)")
+abline(v=seq(-20,20,l=41),h=seq(0,1e5,l=6),lty=3,col="gray")
+axis(1,at=seq(-20,20,l=41))
+abline(v=-1/2*log((max_freq)/pi/2/c(1:5)^2)-0,col=rgb(1,0,0,0.2))
+abline(v=-1/2*log((min_freq)/pi/2/c(1:5)^2)-0,col=rgb(1,0,0,0.2))
+abline(v=1/2*log((max_freq)/pi/2/c(1:5)^2)-0,col=rgb(1,0,0,0.2))
+abline(v=1/2*log((min_freq)/pi/2/c(1:5)^2)-0,col=rgb(1,0,0,0.2))
+
+
+
+plot(c(-floor(n/2):(ceiling(n/2)-1))*2*pi/delta_fft,c(abs(fft_zeta_Zfn)[(ceiling(n/2)+1):n],abs(fft_zeta_Zfn)[1:(ceiling(n/2))]),xlim=c(-11,11),typ="l",xaxt="n",xlab="angular frequency (radians per sec)",ylab="|Amplitude|",main="fourier transform spectra of the Riemann-Siegel Z function\n of the Zeta(s) waveform for Re(s)=0.5 \n over the interval Im(s)=388858886+(-750,750)")
+abline(v=seq(-20,20,l=41),h=seq(0,1e5,l=6),lty=3,col="gray")
+axis(1,at=seq(-20,20,l=41))
+abline(v=-1/2*log((max_freq)/pi/2/c(1:5)^2)-0,col=rgb(1,0,0,0.2))
+abline(v=-1/2*log((min_freq)/pi/2/c(1:5)^2)-0,col=rgb(1,0,0,0.2))
+abline(v=1/2*log((max_freq)/pi/2/c(1:5)^2)-0,col=rgb(1,0,0,0.2))
+abline(v=1/2*log((min_freq)/pi/2/c(1:5)^2)-0,col=rgb(1,0,0,0.2))
+
+
+n=dim(dfminusZ)[1]
+min_freq=388800000+min(as.numeric(substr(dfminusZ$V1,5,13)))
+max_freq=388800000+max(as.numeric(substr(dfminusZ$V1,5,13)))
+delta_fft=max(as.numeric(substr(dfminusZ$V1,5,13)))-min(as.numeric(substr(dfminusZ$V1,5,13)))
+mid=floor(delta_fft/2/pi*log(floor(sqrt(max_freq/2/pi/c(1)))))
+
+plot(c(-floor(n/2):(ceiling(n/2)-1))*2*pi/delta_fft,c(abs(fft_minusZ)[(ceiling(n/2)+1):n],abs(fft_minusZ)[1:(ceiling(n/2))]),xlim=c(-11,11),typ="l",xaxt="n",xlab="angular frequency (radians per sec)",ylab="|Amplitude|",main="fourier transform spectra of the second component of \n the partial Euler product Riemann-Siegel Z function \n using truncation at N1=sqrt(t/2/pi).")
+abline(v=seq(-20,20,l=41),h=seq(0,1e5,l=6),lty=3,col="gray")
+axis(1,at=seq(-20,20,l=41))
+abline(v=-1/2*log((max_freq)/pi/2/c(1:5)^2)-0,col=rgb(1,0,0,0.2))
+abline(v=-1/2*log((min_freq)/pi/2/c(1:5)^2)-0,col=rgb(1,0,0,0.2))
+abline(v=1/2*log((max_freq)/pi/2/c(1:5)^2)-0,col=rgb(1,0,0,0.2))
+abline(v=1/2*log((min_freq)/pi/2/c(1:5)^2)-0,col=rgb(1,0,0,0.2))
+
+
+plot(c(-floor(n/2):-1)*2*pi/delta_fft,c(abs(fft_minusZ)[(ceiling(n/2)+1):n]),xlim=c(-11,11),typ="l",xaxt="n",xlab="angular frequency (radians per sec)",ylab="|Amplitude|",main="piecewise fourier transform \n spectra filtering of the second component negative frequencies \n and mirror reflection imputation of the positive frequency half.",col=1)
+lines(c(0:(floor(n/2)))*2*pi/delta_fft,c(abs(fft_minusZ)[1],rev(abs(fft_minusZ)[(ceiling(n/2)+1):n])),col=3)
+abline(v=seq(-20,20,l=41),h=seq(0,1e5,l=6),lty=3,col="gray")
+axis(1,at=seq(-20,20,l=41))
+abline(v=-1/2*log((max_freq)/pi/2/c(1:5)^2)-0,col=rgb(1,0,0,0.2))
+abline(v=-1/2*log((min_freq)/pi/2/c(1:5)^2)-0,col=rgb(1,0,0,0.2))
+abline(v=1/2*log((max_freq)/pi/2/c(1:5)^2)-0,col=rgb(1,0,0,0.2))
+abline(v=1/2*log((min_freq)/pi/2/c(1:5)^2)-0,col=rgb(1,0,0,0.2))
+
+
+```
+
+
+
+
+
+\clearpage
+
+As indicated by the red vertical lines there are broad spectral features which can be successfully captured by the assignment of the pair of bounds $\pm\frac{1}{2}(\log(UB/\pi/2),\log(LB/\pi/2))$, $\pm\frac{1}{2}(\log(UB/\pi/2/2^2),\log(LB/\pi/2/2^2))$, $\pm\frac{1}{2}(\log(UB/\pi/2/3^2),\log(LB/\pi/2/3^2))$ etc where UB=388858886+750,LB=388858886-750 corresponding to the range of t values collected in the spectrum. These spectral features can be obtained from the leading terms of the dirichlet series and the $\theta(0.5+I\cdot t)$ function
+
+Using the well known dirichlet series version of equation (7) [1-4]
+
+\begin{equation}
+Z_\zeta(0.5+I\cdot t) \approx e^{I\cdot\theta(t)}\left( \sum_{n=1}^{n\le \lfloor\sqrt{\frac{t}{2\pi}}\rfloor=N_1} \frac{1}{n^{(0.5+I\cdot t)}} + \mychi(0.5+I\cdot t) \cdot \sum_{n=1}^{n\le \lfloor\sqrt{\frac{t}{2\pi}}\rfloor=N_1} \frac{1}{n^{(1-(0.5+I\cdot t))}} \right)
+\end{equation}
+
+and considering only the leading terms and n=1,2,3,4,..
+
+for the first summation term there are the components
+\begin{align}
+e^{I\cdot\theta(t)}\cdot \frac{1}{n^{(0.5+I\cdot t)}} \qquad &= \qquad \frac{1}{n^{0.5}}\cdot e^{I\cdot(\theta(t)-t\log(n))} \\
+&= \qquad \frac{1}{n^{0.5}}\cdot e^{I\cdot(\frac{1}{2}t\cdot\log(\frac{t}{2\pi})+...-t\log(n))} \\
+&= \qquad \frac{1}{n^{0.5}}\cdot e^{I\cdot(t\cdot\log(\sqrt{\frac{t}{2\pi}})+...-t\log(n))} \\
+&= \qquad \frac{1}{n^{0.5}}\cdot e^{I\cdot(t\cdot\log(\sqrt{\frac{t}{2\pi}}\cdot\frac{1}{n})+...)} \\
+&= \qquad \frac{1}{n^{0.5}}\cdot e^{I\cdot(t\cdot\log(\sqrt{\frac{t}{n^2\cdot 2\pi}})+...)} \\
+&= \qquad \frac{1}{n^{0.5}}\cdot e^{I\cdot(\frac{1}{2}t\cdot\log(\frac{t}{n^2\cdot 2\pi})+...)}
+&= \qquad \frac{1}{n^{0.5}}\cdot e^{I\cdot\omega_n t}
+\end{align}
+
+likewise for the second summation term there are the components
+
+\begin{align}
+e^{I\cdot\theta(t)}\cdot e^{-2\cdot I\cdot\theta(t)}\cdot \frac{1}{n^{(1-({0.5}+I\cdot t))}} \qquad &= \qquad \frac{1}{n^{0.5}}\cdot e^{I\cdot(-\theta(t)+t\log(n))} \\
+&= \qquad \frac{1}{n^{0.5}}\cdot e^{I\cdot(-\frac{1}{2}t\cdot\log(\frac{t}{2\pi})+...+t\log(n))} \\
+&= \qquad \frac{1}{n^{0.5}}\cdot e^{I\cdot(-t\cdot\log(\sqrt{\frac{t}{2\pi}})+...+t\log(n))} \\
+&= \qquad \frac{1}{n^{0.5}}\cdot e^{I\cdot(-t\cdot\log(\sqrt{\frac{t}{2\pi}}\cdot\frac{1}{n})+...)} \\
+&= \qquad \frac{1}{n^{0.5}}\cdot e^{I\cdot(-t\cdot\log(\sqrt{\frac{t}{n^2\cdot 2\pi}})+...)} \\
+&= \qquad \frac{1}{n^{0.5}}\cdot e^{I\cdot(-\frac{1}{2}t\cdot\log(\frac{t}{n^2\cdot 2\pi})+...)}
+&= \qquad \frac{1}{n^{0.5}}\cdot e^{-I\cdot\omega_n t}
+\end{align}
+
+yielding the leading values of the fourier transform component angular frequencies
+
+$\omega_n\approx\pm\frac{1}{2}log(\frac{t}{n^2\cdot 2\pi})$ where n=1,2,3,...,$\lfloor\sqrt{\frac{t}{2\pi}}\rfloor$
+
+So the positive (negative) angular frequencies of the first (second) component of the partial Euler Product truncated at $N_1$ of the Riemann Siegel Z function can be clearly seen to be a reasonable zeroth order approximations of the fourier transform of the true Riemann Siegel Z function and using a mirror reflection of these good fourier transform parts of the first (second) component of the partial Euler Product truncated at $N_1$ of the Riemann Siegel Z function provides zeroth order replications of both the peaks at low frequencies and the featureless shoulders at high positive/negative frequencies. In contrast, in [5] the shoulder region of the fourier transform of the Riemann Zeta function approximation was simply imputed with zeroes which limits the precision achievable by that earlier approach.
+
+### Assessing the dependence of the errors in real and imaginary parts of the zeroth order fourier transform approximation on the truncation length of the finite product of primes
+
+
+Figure 2 illustrates the elementwise difference between the real and imaginary parts respectively of the (two) zeroth order approximation Riemann-Siegel Z function fourier transforms  and the true Riemann-Siegel Z function fourier transform over the interval t=38885886+(-750,750), on the critical line $\Re(s)= 0.5$ for three different truncation lengths of the finite product of primes $N_1, N_1+2000, 3\cdot N_1$.
+
+
+It can be seen that 
+
+\begin{enumerate}
+\item comparing the lefthand column to the righthand column graphs the errors for the two possible spectral filtering and mirror reflection approximation (biased on the first or second component of equation (7)) are essentially the same consistent with the higher symmetry of the Riemann-Siegel Z function compared to the Riemann Zeta function
+\item comparing the rows increasing the truncation length beyond $N_1$ helps reduce the elementwise errors in the fourier components 
+\item that largest error occurs for the DC fourier component
+\end{enumerate}
+
+### Fine tuning the symmetry and/or continuity of imaginary part of the zeroth order fourier transform approximation for the DC, ceiling(n/2) and (ceiling(n/2)+1) fourier components
+
+In finer detail, the true discrete Rieman-Siegel Z function has a zero imaginary part at
+
+(i) the DC fourier component (occurring numerically as fft_zeta_Zfn[1])
+
+example
+\begin{verbatim}
+fft_zeta_Zfn[c(n,1,2)]
+[1] -2149.371-45.732i -1826.913+ 0.000i -2149.371+45.732i
+\end{verbatim}
+
+(ii) when circularly joining the positive and negative frequency ends together in the frequency domain (occurring numerically as between the fourier components fft_zeta_Zfn[ceiling(n/2)] and fft_zeta_Zfn[ceiling(n/2)+1])) the imaginary component has values close to zero during sign change
+
+example
+\begin{verbatim}
+fft_zeta_Zfn[ceiling(n/2)+c(-1,0,1,2,3)]) 
+[1] -0.8394496+0.0000260i -0.8394496+0.0000087i -0.8394496-0.0000087i -0.8394496-0.0000260i
+[5] -0.8394496-0.0000434i
+\end{verbatim}
+
+Therefore to enhance the spectral filtering and mirror reflection approximation of the partial Euler product
+
+\begin{itemize}
+\item the non-zero imaginary part of the DC component of the approximation fourier transform (shown as a black circle in figure 2) is imputed to zero to match the true discrete fourier transform imaginary part DC component of Riemann-Siegel Z function behavior
+\item the imaginary part of the (ceiling(n/2)+1) component of the approximation fourier transform is imputed to zero to more closely resemble the true discrete fourier transform imaginary part of Riemann-Siegel Z function behavior (since it clearly very strongly sets the imaginary part of the inverse fourier transform to zero)
+\end{itemize}
+
+(As a future option setting the imaginary parts of both the ceiling(n/2) and (ceiling(n/2)+1) components of the approximation fourier transform are both imputed to zero could also be considered since perhaps it provides a slightly better inverse fourier transform real value. See next section). 
+
+
+
+
+```{r Zfnzetafunctionoveraninterval_anditsfouriertransform_difference, echo=FALSE, fig.cap="A comparison of the elementwise difference in the fourier transforms of the Riemann-Siegel Z functions of the Riemann Zeta function and partial Euler Product using three truncation lengths (top row $N_1 = \\sqrt{\\frac{t}{2\\pi}}$, middle row $N_1+2000$, bottom row $3N_1$) in the complex plane at $\\sigma=0.5$ for the interval t=388858886+(-750,750)..", out.width = c("49%","49%"), fig.show = "hold",  fig.height=5, warning=FALSE}
+
+
+
+n=dim(dfplusZ)[1]
+min_freq=388800000+min(as.numeric(substr(dfplusZ$V1,5,13)))
+max_freq=388800000+max(as.numeric(substr(dfplusZ$V1,5,13)))
+delta_fft=max(as.numeric(substr(dfplusZ$V1,5,13)))-min(as.numeric(substr(dfplusZ$V1,5,13)))
+mid=floor(delta_fft/2/pi*log(floor(sqrt(max_freq/2/pi/c(1)))))
+
+
+yspan=range(c(rev(Re(Conj(fft_plusZ))[2:ceiling(n/2)]),Re(fft_plusZ)[1:(ceiling(n/2))])-c(Re(fft_zeta_Zfn)[(ceiling(n/2)+1):n],Re(fft_zeta_Zfn)[1:(ceiling(n/2))]),
+          c(rev(Im(Conj(fft_plusZ))[2:ceiling(n/2)]),Im(fft_plusZ)[1:(ceiling(n/2))])-c(Im(fft_zeta_Zfn)[(ceiling(n/2)+1):n],Im(fft_zeta_Zfn)[1:(ceiling(n/2))]))
+plot(c(-floor(n/2):(ceiling(n/2)-1))*2*pi/delta_fft,c(rev(Re(Conj(fft_plusZ))[2:ceiling(n/2)]),Re(fft_plusZ)[1:(ceiling(n/2))])-c(Re(fft_zeta_Zfn)[(ceiling(n/2)+1):n],Re(fft_zeta_Zfn)[1:(ceiling(n/2))]),xlim=c(-11,11),typ="l",xaxt="n",xlab="angular frequency (radians per sec)",ylab="error in fourier transform",main="errors real and imaginary parts in Riemann-Siegel Z function \n using the first component of the partial Euler product \n using truncation at N1=sqrt(t/2/pi).",cex.main=0.9,ylim=yspan);grid(col="gray")
+lines(c(-floor(n/2):(ceiling(n/2)-1))*2*pi/delta_fft,c(rev(Im(Conj(fft_plusZ))[2:ceiling(n/2)]),Im(fft_plusZ)[1:(ceiling(n/2))])-c(Im(fft_zeta_Zfn)[(ceiling(n/2)+1):n],Im(fft_zeta_Zfn)[1:(ceiling(n/2))]),col=2)
+points(0,Im(fft_plusZ)[1]-Im(fft_zeta_Zfn)[1])
+axis(1,at=seq(-20,20,l=41))
+legend(x="topright",legend=c("errors in real part fourier transform","errors in imaginary part fourier transform","imaginary value error at DC fourier component"),col=c(1,2,1),lty=c(1,1,-1),pch=c(-1,-1,1),lwd=2,cex=0.6)
+
+
+
+
+yspan=range(c(Re(fft_minusZ)[(ceiling(n/2)+1):n],Re(fft_minusZ)[1],rev(Re(Conj(fft_minusZ)[(ceiling(n/2)+1):n])))-c(Re(fft_zeta_Zfn)[(ceiling(n/2)+1):n],Re(fft_zeta_Zfn)[1:(ceiling(n/2))]),
+          c(Im(fft_minusZ)[(ceiling(n/2)+1):n],Im(fft_minusZ)[1],rev(Im(Conj(fft_minusZ)[(ceiling(n/2)+1):n])))-c(Im(fft_zeta_Zfn)[(ceiling(n/2)+1):n],Im(fft_zeta_Zfn)[1:(ceiling(n/2))]))
+plot(c(-floor(n/2):(ceiling(n/2)-1))*2*pi/delta_fft,c(Re(fft_minusZ)[(ceiling(n/2)+1):n],Re(fft_minusZ)[1],rev(Re(Conj(fft_minusZ)[(ceiling(n/2)+1):n])))-c(Re(fft_zeta_Zfn)[(ceiling(n/2)+1):n],Re(fft_zeta_Zfn)[1:(ceiling(n/2))]),xlim=c(-11,11),typ="l",xaxt="n",xlab="angular frequency (radians per sec)",ylab="error in fourier transform",main="errors real and imaginary parts in Riemann-Siegel Z function \n using the second component of the partial Euler product \n  using truncation at N1=sqrt(t/2/pi).",cex.main=0.9,ylim=yspan);grid(col="gray")
+lines(c(-floor(n/2):(ceiling(n/2)-1))*2*pi/delta_fft,c(Im(fft_minusZ)[(ceiling(n/2)+1):n],Im(fft_minusZ)[1],rev(Im(Conj(fft_minusZ)[(ceiling(n/2)+1):n])))-c(Im(fft_zeta_Zfn)[(ceiling(n/2)+1):n],Im(fft_zeta_Zfn)[1:(ceiling(n/2))]),col=2)
+points(0,Im(fft_minusZ)[1]-Im(fft_zeta_Zfn)[1])
+axis(1,at=seq(-20,20,l=41))
+legend(x="topright",legend=c("errors in real part fourier transform","errors in imaginary part fourier transform","imaginary value error at DC fourier component"),col=c(1,2,1),lty=c(1,1,-1),pch=c(-1,-1,1),lwd=2,cex=0.6)
+
+    dfplusZ=read.csv("/home/john/pari/ZplusS_EP_388858886_m750_p750_extra2000_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
+    dfplusZ$V2=as.numeric(gsub(" ","",dfplusZ$V2));
+    dfplusZ=dfplusZ[order(dfplusZ$V1),]
+
+    dfplusZi=read.csv("/home/john/pari/ZplusS_EP_388858886_m750_p750_extra2000_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
+    dfplusZi$V2=as.numeric(gsub(" ","",dfplusZi$V2));
+    dfplusZi=dfplusZi[order(dfplusZi$V1),]
+
+    dfplusZ=as.data.frame(cbind(dfplusZ$V1,dfplusZ$V2+1i*dfplusZi$V2));dfplusZ$V2=as.complex(dfplusZ$V2)
+    fft_plusZ = stats::fft(dfplusZ$V2)
+
+
+
+    dfminusZ=read.csv("/home/john/pari/ZminusS_EP_388858886_m750_p750_extra2000_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
+    dfminusZ$V2=as.numeric(gsub(" ","",dfminusZ$V2));
+    dfminusZ=dfminusZ[order(dfminusZ$V1),]
+
+    dfminusZi=read.csv("/home/john/pari/ZminusS_EP_388858886_m750_p750_extra2000_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
+    dfminusZi$V2=as.numeric(gsub(" ","",dfminusZi$V2));
+    dfminusZi=dfminusZi[order(dfminusZi$V1),]
+
+    dfminusZ=as.data.frame(cbind(dfminusZ$V1,dfminusZ$V2+1i*dfminusZi$V2));dfminusZ$V2=as.complex(dfminusZ$V2)
+    fft_minusZ = stats::fft(dfminusZ$V2)
+
+
+n=dim(dfplusZ)[1]
+min_freq=388800000+min(as.numeric(substr(dfplusZ$V1,5,13)))
+max_freq=388800000+max(as.numeric(substr(dfplusZ$V1,5,13)))
+delta_fft=max(as.numeric(substr(dfplusZ$V1,5,13)))-min(as.numeric(substr(dfplusZ$V1,5,13)))
+mid=floor(delta_fft/2/pi*log(floor(sqrt(max_freq/2/pi/c(1)))))
+
+yspan=range(c(rev(Re(Conj(fft_plusZ))[2:ceiling(n/2)]),Re(fft_plusZ)[1:(ceiling(n/2))])-c(Re(fft_zeta_Zfn)[(ceiling(n/2)+1):n],Re(fft_zeta_Zfn)[1:(ceiling(n/2))]),
+          c(rev(Im(Conj(fft_plusZ))[2:ceiling(n/2)]),Im(fft_plusZ)[1:(ceiling(n/2))])-c(Im(fft_zeta_Zfn)[(ceiling(n/2)+1):n],Im(fft_zeta_Zfn)[1:(ceiling(n/2))]))
+plot(c(-floor(n/2):(ceiling(n/2)-1))*2*pi/delta_fft,c(rev(Re(Conj(fft_plusZ))[2:ceiling(n/2)]),Re(fft_plusZ)[1:(ceiling(n/2))])-c(Re(fft_zeta_Zfn)[(ceiling(n/2)+1):n],Re(fft_zeta_Zfn)[1:(ceiling(n/2))]),xlim=c(-11,11),typ="l",xaxt="n",xlab="angular frequency (radians per sec)",ylab="error in fourier transform",main="errors real and imaginary parts in Riemann-Siegel Z function\n using the first component of the partial Euler product \n  using truncation at N1+2000.",cex.main=0.9,ylim=yspan);grid(col="gray")
+lines(c(-floor(n/2):(ceiling(n/2)-1))*2*pi/delta_fft,c(rev(Im(Conj(fft_plusZ))[2:ceiling(n/2)]),Im(fft_plusZ)[1:(ceiling(n/2))])-c(Im(fft_zeta_Zfn)[(ceiling(n/2)+1):n],Im(fft_zeta_Zfn)[1:(ceiling(n/2))]),col=2)
+points(0,Im(fft_plusZ)[1]-Im(fft_zeta_Zfn)[1])
+axis(1,at=seq(-20,20,l=41))
+legend(x="topright",legend=c("errors in real part fourier transform","errors in imaginary part fourier transform","imaginary value error at DC fourier component"),col=c(1,2,1),lty=c(1,1,-1),pch=c(-1,-1,1),lwd=2,cex=0.6)
+
+
+yspan=range(c(Re(fft_minusZ)[(ceiling(n/2)+1):n],Re(fft_minusZ)[1],rev(Re(Conj(fft_minusZ)[(ceiling(n/2)+1):n])))-c(Re(fft_zeta_Zfn)[(ceiling(n/2)+1):n],Re(fft_zeta_Zfn)[1:(ceiling(n/2))]),
+          c(Im(fft_minusZ)[(ceiling(n/2)+1):n],Im(fft_minusZ)[1],rev(Im(Conj(fft_minusZ)[(ceiling(n/2)+1):n])))-c(Im(fft_zeta_Zfn)[(ceiling(n/2)+1):n],Im(fft_zeta_Zfn)[1:(ceiling(n/2))]))
+plot(c(-floor(n/2):(ceiling(n/2)-1))*2*pi/delta_fft,c(Re(fft_minusZ)[(ceiling(n/2)+1):n],Re(fft_minusZ)[1],rev(Re(Conj(fft_minusZ)[(ceiling(n/2)+1):n])))-c(Re(fft_zeta_Zfn)[(ceiling(n/2)+1):n],Re(fft_zeta_Zfn)[1:(ceiling(n/2))]),xlim=c(-11,11),typ="l",xaxt="n",xlab="angular frequency (radians per sec)",ylab="error in fourier transform",main="approximation errors real and imaginary parts \n using the second component of the partial Euler product \n Riemann-Siegel Z function using truncation at N1+2000.",cex.main=0.9,ylim=yspan);grid(col="gray");grid(col="gray")
+lines(c(-floor(n/2):(ceiling(n/2)-1))*2*pi/delta_fft,c(Im(fft_minusZ)[(ceiling(n/2)+1):n],Im(fft_minusZ)[1],rev(Im(Conj(fft_minusZ)[(ceiling(n/2)+1):n])))-c(Im(fft_zeta_Zfn)[(ceiling(n/2)+1):n],Im(fft_zeta_Zfn)[1:(ceiling(n/2))]),col=2)
+points(0,Im(fft_minusZ)[1]-Im(fft_zeta_Zfn)[1])
+axis(1,at=seq(-20,20,l=41))
+legend(x="topright",legend=c("errors in real part fourier transform","errors in imaginary part fourier transform","imaginary value error at DC fourier component"),col=c(1,2,1),lty=c(1,1,-1),pch=c(-1,-1,1),lwd=2,cex=0.6)
+
+
+    dfplusZ=read.csv("/home/john/pari/ZplusS_EP_388858886_m750_p750_extra2xsqrt_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
+    dfplusZ$V2=as.numeric(gsub(" ","",dfplusZ$V2));
+    dfplusZ=dfplusZ[order(dfplusZ$V1),]
+
+    dfplusZi=read.csv("/home/john/pari/ZplusS_EP_388858886_m750_p750_extra2xsqrt_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
+    dfplusZi$V2=as.numeric(gsub(" ","",dfplusZi$V2));
+    dfplusZi=dfplusZi[order(dfplusZi$V1),]
+
+    dfplusZ=as.data.frame(cbind(dfplusZ$V1,dfplusZ$V2+1i*dfplusZi$V2));dfplusZ$V2=as.complex(dfplusZ$V2)
+    fft_plusZ = stats::fft(dfplusZ$V2)
+
+
+
+    dfminusZ=read.csv("/home/john/pari/ZminusS_EP_388858886_m750_p750_extra2xsqrt_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
+    dfminusZ$V2=as.numeric(gsub(" ","",dfminusZ$V2));
+    dfminusZ=dfminusZ[order(dfminusZ$V1),]
+
+    dfminusZi=read.csv("/home/john/pari/ZminusS_EP_388858886_m750_p750_extra2xsqrt_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
+    dfminusZi$V2=as.numeric(gsub(" ","",dfminusZi$V2));
+    dfminusZi=dfminusZi[order(dfminusZi$V1),]
+
+    dfminusZ=as.data.frame(cbind(dfminusZ$V1,dfminusZ$V2+1i*dfminusZi$V2));dfminusZ$V2=as.complex(dfminusZ$V2)
+    fft_minusZ = stats::fft(dfminusZ$V2)
+
+
+n=dim(dfplusZ)[1]
+min_freq=388800000+min(as.numeric(substr(dfplusZ$V1,5,13)))
+max_freq=388800000+max(as.numeric(substr(dfplusZ$V1,5,13)))
+delta_fft=max(as.numeric(substr(dfplusZ$V1,5,13)))-min(as.numeric(substr(dfplusZ$V1,5,13)))
+mid=floor(delta_fft/2/pi*log(floor(sqrt(max_freq/2/pi/c(1)))))
+
+yspan=range(c(rev(Re(Conj(fft_plusZ))[2:ceiling(n/2)]),Re(fft_plusZ)[1:(ceiling(n/2))])-c(Re(fft_zeta_Zfn)[(ceiling(n/2)+1):n],Re(fft_zeta_Zfn)[1:(ceiling(n/2))]),
+          c(rev(Im(Conj(fft_plusZ))[2:ceiling(n/2)]),Im(fft_plusZ)[1:(ceiling(n/2))])-c(Im(fft_zeta_Zfn)[(ceiling(n/2)+1):n],Im(fft_zeta_Zfn)[1:(ceiling(n/2))]))
+plot(c(-floor(n/2):(ceiling(n/2)-1))*2*pi/delta_fft,c(rev(Re(Conj(fft_plusZ))[2:ceiling(n/2)]),Re(fft_plusZ)[1:(ceiling(n/2))])-c(Re(fft_zeta_Zfn)[(ceiling(n/2)+1):n],Re(fft_zeta_Zfn)[1:(ceiling(n/2))]),xlim=c(-11,11),typ="l",xaxt="n",xlab="angular frequency (radians per sec)",ylab="error in fourier transform",main="errors real and imaginary parts in Riemann-Siegel Z function\n using the first component of the partial Euler product \n  using truncation at 3*N1.",cex.main=0.9,ylim=yspan);grid(col="gray")
+lines(c(-floor(n/2):(ceiling(n/2)-1))*2*pi/delta_fft,c(rev(Im(Conj(fft_plusZ))[2:ceiling(n/2)]),Im(fft_plusZ)[1:(ceiling(n/2))])-c(Im(fft_zeta_Zfn)[(ceiling(n/2)+1):n],Im(fft_zeta_Zfn)[1:(ceiling(n/2))]),col=2)
+points(0,Im(fft_plusZ)[1]-Im(fft_zeta_Zfn)[1])
+axis(1,at=seq(-20,20,l=41))
+legend(x="topright",legend=c("errors in real part fourier transform","errors in imaginary part fourier transform","imaginary value error at DC fourier component"),col=c(1,2,1),lty=c(1,1,-1),pch=c(-1,-1,1),lwd=2,cex=0.6)
+
+
+yspan=range(c(Re(fft_minusZ)[(ceiling(n/2)+1):n],Re(fft_minusZ)[1],rev(Re(Conj(fft_minusZ)[(ceiling(n/2)+1):n])))-c(Re(fft_zeta_Zfn)[(ceiling(n/2)+1):n],Re(fft_zeta_Zfn)[1:(ceiling(n/2))]),
+          c(Im(fft_minusZ)[(ceiling(n/2)+1):n],Im(fft_minusZ)[1],rev(Im(Conj(fft_minusZ)[(ceiling(n/2)+1):n])))-c(Im(fft_zeta_Zfn)[(ceiling(n/2)+1):n],Im(fft_zeta_Zfn)[1:(ceiling(n/2))]))
+plot(c(-floor(n/2):(ceiling(n/2)-1))*2*pi/delta_fft,c(Re(fft_minusZ)[(ceiling(n/2)+1):n],Re(fft_minusZ)[1],rev(Re(Conj(fft_minusZ)[(ceiling(n/2)+1):n])))-c(Re(fft_zeta_Zfn)[(ceiling(n/2)+1):n],Re(fft_zeta_Zfn)[1:(ceiling(n/2))]),xlim=c(-11,11),typ="l",xaxt="n",xlab="angular frequency (radians per sec)",ylab="error in fourier transform",main="errors real and imaginary parts in Riemann-Siegel Z function\n using the second component of the partial Euler product \n  using truncation at 3*N1.",cex.main=0.9,ylim=yspan);grid(col="gray")
+lines(c(-floor(n/2):(ceiling(n/2)-1))*2*pi/delta_fft,c(Im(fft_minusZ)[(ceiling(n/2)+1):n],Im(fft_minusZ)[1],rev(Im(Conj(fft_minusZ)[(ceiling(n/2)+1):n])))-c(Im(fft_zeta_Zfn)[(ceiling(n/2)+1):n],Im(fft_zeta_Zfn)[1:(ceiling(n/2))]),col=2)
+points(0,Im(fft_minusZ)[1]-Im(fft_zeta_Zfn)[1])
+axis(1,at=seq(-20,20,l=41))
+legend(x="topright",legend=c("errors in real part fourier transform","errors in imaginary part fourier transform","imaginary value error at DC fourier component"),col=c(1,2,1),lty=c(1,1,-1),pch=c(-1,-1,1),lwd=2,cex=0.6)
+
+```
+
+\clearpage
+
+### Using averaging of (fourier transforms and their) inverse fourier transforms of different lengths to cancel out partial Euler product fourier transform approximation errors
+
+On inspection of varying the length of the fourier transform of the partial Euler product approximation of the Riemann-Siegel Z function it was observed that the approximation errors in the fourier components varied sign. Thus it became important to investigate whether the fourier transform errors in the partial Euler product approximation could be cancelled by averaging over the results of fourier transforms (and inverse fourier transforms) of different lengths.
+
+As the results for example A indicate (i) this averaging step and (ii) partial Euler Product truncation > $N_1$ can both be very beneficial to the approximation accuracy.
+
+As the results for example B indicate using a wider input spectrum for analysis can beneficial to the approximation accuracy (since truncation >> $N_1$ would greatly increase the partial Euler Product calculation time).
+
+\textbf{example A}; reference value - Riemann-Siegel Z function value at $s=0.5+I\cdot 388858886$
+
+using fourier transform of first component of partial Euler product approximation of Riemann-Siegel Z function
+applying spectral filtering and mirror reflection about DC component
+setting imaginary part of DC fourier component to zero
+setting only the imaginary part of (ceiling(n/2)+1) fourier component to zero in partial Euler product approximation
+
+pari-gp [8] calculation using 128 tapered Dirichlet series truncation at $N_1$
+
+\begin{verbatim}
+dirichRS_S_sum128(0.5+I*388858886)*exp(I*vtheta(388858886))
+time = 116 ms.
+%31 = 0.00041148914820069374095342320372253831362 + 9.442756329679734991 E-33*I
+\end{verbatim}
+
+\newpage
+
+approximation 1 - based on partial Euler Product truncation at $N_1$
+
+using spectrum collected in the interval t=388858886+(-750,750)
+
+maximum available sample n=149999
+
+below is the inverse fourier transform result for the Riemann-Siegel Z function at $s=0.5+I\cdot 388858886$ under 1000 iterations of fourier transforms of different sample lengths
+
+\begin{verbatim}
+[1] "index; single run estimate; sample length; cumulative average"
+[1] "1 8.49768103287636e-03+5.4e-16i 129920 8.49768103287636e-03+5.4e-16i"
+[1] "2 8.49794082199887e-03-3.8e-16i 129940 8.49781092743761e-03+8e-17i"
+[1] "3 8.49823675472306e-03-2.2e-16i 129960 8.4979528698661e-03-2e-17i"
+[1] "4 8.49858167929387e-03+9e-17i 129980 8.49811007222304e-03+7e-18i"
+[1] "5 8.49895691678528e-03-1.11e-15i 130000 8.49827944113549e-03-2.2e-16i"
+[1] "6 8.49932606353117e-03+7.3e-16i 130020 8.49845387820143e-03-6e-17i"
+[1] "7 8.49965765251919e-03-1.1e-16i 130040 8.49862584596111e-03-7e-17i"
+[1] "8 8.49994037947753e-03+6.5e-16i 130060 8.49879016265066e-03+2e-17i"
+[1] "9 8.5001887231925e-03-3e-17i 130080 8.49894555826643e-03+2e-17i"
+[1] "10 8.50043180720463e-03-7.27e-15i 130100 8.49909418316025e-03-7.1e-16i"
+...
+[1] "991 8.61783159103806e-03-4.9e-16i 149720 8.57243955748697e-03-8e-18i"
+[1] "992 8.61784276533639e-03-1e-16i 149740 8.57248532684972e-03-8e-18i"
+[1] "993 8.61786488285779e-03+9e-17i 149760 8.5725310263019e-03-8e-18i"
+[1] "994 8.61788466528794e-03-3.2e-16i 149780 8.5725766537053e-03-8e-18i"
+[1] "995 8.61789676627772e-03+2.2e-16i 149800 8.57262220155713e-03-8e-18i"
+[1] "996 8.61790483276872e-03+3.1e-16i 149820 8.5726676660463e-03-8e-18i"
+[1] "997 8.61790957968082e-03-5.1e-16i 149840 8.57271304409408e-03-8e-18i"
+[1] "998 8.61790829377404e-03+5.3e-16i 149860 8.5727583299154e-03-7e-18i"
+[1] "999 8.61789770457076e-03+1.2e-16i 149880 8.57280351447462e-03-7e-18i"
+[1] "1000 8.61787530627357e-03+4.76e-15i 149900 0.00857284858626642-0i"
+\end{verbatim}
+
+The partial Euler Product based estimate after averaging above using truncation at $N_1$ $Z(0.5+I*388858886)\approx 0.00857284858626642-0i$ clearly has a bias with respect to the known Riemann-Siegel Z function value $Z(0.5+I*388858886)=0.00041148914820069374095342320372253831362 + 9.442756329679734991 E-33*I$
+
+
+\newpage
+approximation 2 - based on partial Euler Product truncation at $N_1+2000$ 
+
+maximum available sample n=149999
+
+below is the inverse fourier transform result for the Riemann-Siegel Z function at $s=0.5+I\cdot 388858886$ under 1000 iterations of fourier transforms of different sample lengths
+
+\begin{verbatim}
+[1] "index; single run estimate; sample length; cumulative average"
+[1] "1 4.09371524606039e-04+8.89e-16i 129920 4.09371524606039e-04+8.89e-16i"
+[1] "2 4.0966590672624e-04-1.289e-15i 129940 4.0951871566614e-04-2e-16i"
+[1] "3 4.09992297593216e-04+1.022e-15i 129960 4.09676576308499e-04+2.07e-16i"
+[1] "4 4.10362501154867e-04-7.58e-16i 129980 4.09848057520091e-04-3.4e-17i"
+[1] "5 4.10759435479458e-04-2.3e-16i 130000 4.10030333111964e-04-7.3e-17i"
+[1] "6 4.1115072565886e-04+1.208e-15i 130020 4.10217065203113e-04+1.4e-16i"
+[1] "7 4.11507348200488e-04-7e-18i 130040 4.10401391345596e-04+1.19e-16i"
+[1] "8 4.11818369350253e-04+3.8e-17i 130060 4.10578513596178e-04+1.09e-16i"
+[1] "9 4.12097675482704e-04+8e-18i 130080 4.10747309361347e-04+9.8e-17i"
+[1] "10 4.12373614171234e-04+9.42e-16i 130100 4.10909939842336e-04+1.82e-16i"
+...
+[1] "991 4.11435856017834e-04+9.79e-16i 149720 4.11945683089485e-04+2.9e-17i"
+[1] "992 4.11387205863618e-04+3.06e-16i 149740 4.1194512010841e-04+3e-17i"
+[1] "993 4.11347470088248e-04-3e-17i 149760 4.11944518245349e-04+3e-17i"
+[1] "994 4.11303099672093e-04+3.56e-16i 149780 4.11943872955034e-04+3e-17i"
+[1] "995 4.11250699815255e-04+4.1e-16i 149800 4.11943176298612e-04+3e-17i"
+[1] "996 4.11196085340993e-04-4.09e-16i 149820 4.11942426207289e-04+3e-17i"
+[1] "997 4.1113972651385e-04+3.28e-15i 149840 4.1194162109225e-04+3.3e-17i"
+[1] "998 4.11078136352287e-04+5.9e-17i 149860 4.1194075587708e-04+3.3e-17i"
+[1] "999 4.11007692404555e-04+4.42e-16i 149880 4.1193982187961e-04+3.4e-17i"
+[1] "1000 4.10925599788654e-04+2.49e-16i 149900 4.11938807657519e-04+3.4e-17i"
+\end{verbatim}
+
+The partial Euler Product based estimate after averaging above using truncation at $N_1+2000$ $Z(0.5+I*388858886)\approx 4.11938807657519e-04+3.4e-17i$ agrees to 6 decimal places with respect to the known Riemann-Siegel Z function value $Z(0.5+I*388858886)=0.00041148914820069374095342320372253831362 + 9.442756329679734991 E-33*I$
+
+
+\newpage
+
+approximation 3 - based on partial Euler Product truncation at $3N_1$ 
+
+maximum available sample n=149999
+
+below is the inverse fourier transform result for the Riemann-Siegel Z function at $s=0.5+I\cdot 388858886$ under 1000 iterations of fourier transforms of different sample lengths
+
+\begin{verbatim}
+[1] "1 4.11547109231009e-04-9.8e-17i 129920 4.11547109231009e-04-9.8e-17i"
+[1] "2 4.11548431336232e-04-9.04e-16i 129940 4.1154777028362e-04-5.01e-16i"
+[1] "3 4.11569975803885e-04-3.6e-17i 129960 4.11555172123709e-04-3.46e-16i"
+[1] "4 4.11615652508731e-04+4.9e-17i 129980 4.11570292219964e-04-2.47e-16i"
+[1] "5 4.11659762034049e-04+2.26e-16i 130000 4.11588186182781e-04-1.53e-16i"
+[1] "6 4.11679701140506e-04-5.16e-16i 130020 4.11603438675735e-04-2.13e-16i"
+[1] "7 4.11668777573243e-04+1.04e-16i 130040 4.11612772803951e-04-1.68e-16i"
+[1] "8 4.11624207422545e-04+4.66e-16i 130060 4.11614202131275e-04-8.9e-17i"
+[1] "9 4.11556357393006e-04+6.22e-16i 130080 4.11607774938134e-04-1e-17i"
+[1] "10 4.11488764037412e-04-6.777e-15i 130100 4.11595873848062e-04-6.86e-16i"
+[1] "11 4.11438769355671e-04+4.25e-16i 130120 4.11581591621481e-04-5.85e-16i"
+...
+[1] "991 4.11437823607544e-04+7.22e-16i 149720 4.11487663521972e-04-3.7e-17i"
+[1] "992 4.11449978267239e-04-1.7e-17i 149740 4.11487625532804e-04-3.7e-17i"
+[1] "993 4.11473777848688e-04+9.1e-17i 149760 4.11487611587503e-04-3.7e-17i"
+[1] "994 4.11494885432857e-04+4.7e-17i 149780 4.11487618905255e-04-3.7e-17i"
+[1] "995 4.11504994606922e-04-3.9e-17i 149800 4.11487636368272e-04-3.7e-17i"
+[1] "996 4.11507807864887e-04+1.7e-16i 149820 4.11487656620778e-04-3.7e-17i"
+[1] "997 4.11507072061461e-04+4.58e-16i 149840 4.11487676094641e-04-3.7e-17i"
+[1] "998 4.11501640003581e-04+2.08e-16i 149860 4.11487690086533e-04-3.6e-17i"
+[1] "999 4.11488540757704e-04-5.3e-17i 149880 4.11487690938056e-04-3.6e-17i"
+[1] "1000 4.1146528589172e-04-2.984e-15i 149900 4.1148766853301e-04-3.9e-17i"
+\end{verbatim}
+
+The partial Euler Product based estimate after averaging above using truncation at $N_1+2000$ $Z(0.5+I*388858886)\approx 4.1148766853301e-04-3.9e-17i$ agrees to 8 decimal places with respect to the known Riemann-Siegel Z function value $Z(0.5+I*388858886)=0.00041148914820069374095342320372253831362 + 9.442756329679734991 E-33*I$
+
+The above tabular results are also summarized in figure 3 showing the improvement in precision by using averaging and reducing bias using longer truncation lengths.
+
+
+
+```{r Zfnzetafunctionoveraninterval_andaveragingitsinversefouriertransform, echo=FALSE, fig.cap="A comparison of the impact of averaging fourier transforms and inverse fourier transforms of different lengths of the partial Euler Product using three truncation lengths (left panel $N_1 = \\sqrt{\\frac{t}{2\\pi}}$, righthand panel $N_1+2000$ and $3N_1$) for the Riemann-Siegel Z function approximation at $\\sigma=0.5+I\\cdot 388858886$", out.width = c("49%","49%"), fig.show = "hold",  fig.height=5, warning=FALSE}
+
+
+
+df0=read.csv("/home/john/pari/approximation_extrazero_cumulative_mean_estimate.csv")
+df2000=read.csv("/home/john/pari/approximation_extra2000_cumulative_mean_estimate.csv")
+df3sqrt=read.csv("/home/john/pari/approximation_extra2xsqrt_cumulative_mean_estimate.csv")
+
+
+yspan=range(0,Re(df0$x),0.0004114891482006)
+plot(1:1000,Re(df0$x),typ="b",ylim=yspan,cex=0.3,
+     main="impact of taking fourier transforms of different lengths \n and averaging their inverse fourier transforms components \n for partial Euler Product truncation at N1",
+     xlab="number of inverse fourier transforms averaged",
+     ylab="Z(0.5+388858886I) value estimate");grid(col="gray")
+abline(h=0.0004114891482006,col="darkblue",lty=3)
+legend(x="right",legend=c("truncation at N1","true value"),
+       col=c(1,"darkblue"),lty=c(1,3),lwd=2)
+
+
+yspan=range(Re(df2000$x),Re(df3sqrt$x))
+plot(1:1000,Re(df2000$x),typ="b",col=2,ylim=yspan,cex=0.3,
+     main="impact of taking fourier transforms of different lengths \n and averaging their inverse fourier transforms components \n for partial Euler Product truncation at N1+2000 & 3N1",
+     xlab="number of inverse fourier transforms averaged",
+     ylab="Z(0.5+388858886I) value estimate");grid(col="gray")
+points(1:1000,Re(df3sqrt$x),typ="b",col=3,cex=0.3)
+abline(h=0.0004114891482006,col="darkblue",lty=3)
+legend(x="topright",legend=c("truncation at N1+2000","truncation at 3N1","true value"),
+       col=c(2,3,"darkblue"),lty=c(1,1,3),lwd=2)
+
+
+```
+
+
+
+
+
+\clearpage
+
+The following example shows the benefit of analyszing data from a wider spectrum  t=388858886+(-7500,7500)
+
+\textbf{example B}; reference value - Riemann-Siegel Z function value at $s=0.5+I\cdot 388858886$
+
+using fourier transform of first component of partial Euler product approximation of Riemann-Siegel Z function
+applying spectral filtering and mirror reflection about DC component
+setting imaginary part of DC fourier component to zero
+setting only the imaginary part of (ceiling(n/2)+1) fourier component to zero in partial Euler product approximation
+
+pari-gp [8] calculation using 128 tapered Dirichlet series truncation at $N_1$
+
+\begin{verbatim}
+dirichRS_S_sum128(0.5+I*388858886)*exp(I*vtheta(388858886))
+time = 116 ms.
+%31 = 0.00041148914820069374095342320372253831362 + 9.442756329679734991 E-33*I
+\end{verbatim}
+
+approximation 4 - based on partial Euler Product truncation at $N_1+2000$
+
+using much wider spectrum collected in the interval t=388858886+(-7500,7500)
+
+maximum available sample n=1,499,999
+
+below is the inverse fourier transform result for the Riemann-Siegel Z function at $s=0.5+I\cdot 388858886$ under 1000 iterations of fourier transforms of different sample lengths
+
+\begin{verbatim}
+[1] "index; single run estimate; sample length; cumulative average"
+[1] "1 4.11466038283134e-04-5.8e-16i 1300100 4.11466038283134e-04-5.8e-16i"
+[1] "2 4.11453528611139e-04-4.838e-15i 1300300 4.11459783447137e-04-2.709e-15i"
+[1] "3 4.11433677848974e-04-5.05e-16i 1300500 4.11451081581082e-04-1.974e-15i"
+[1] "4 4.11424717555921e-04+2.329e-15i 1300700 4.11444490574792e-04-8.99e-16i"
+[1] "5 4.11423227942308e-04+3.583e-15i 1300900 4.11440238048295e-04-2e-18i"
+[1] "6 4.11430182984948e-04-2.845e-15i 1301100 4.11438562204404e-04-4.76e-16i"
+[1] "7 4.11439874335925e-04+1.234e-15i 1301300 4.11438749651764e-04-2.32e-16i"
+[1] "8 4.11451171204889e-04-5.75e-16i 1301500 4.11440302345905e-04-2.75e-16i"
+[1] "9 4.11475119378088e-04-2.784e-15i 1301700 4.11444170905036e-04-5.54e-16i"
+[1] "10 4.11500703053298e-04+2.033e-15i 1301900 4.11449824119862e-04-2.95e-16i"
+...
+[1] "991 4.1151488055867e-04+1.237e-15i 1498100 4.11488807848297e-04-2.05e-16i"
+[1] "992 4.11522091084896e-04-3.484e-15i 1498300 4.11488841399947e-04-2.08e-16i"
+[1] "993 4.11527492831721e-04+2.036e-15i 1498500 4.11488880323846e-04-2.06e-16i"
+[1] "994 4.115310211014e-04-9.54e-16i 1498700 4.11488922718994e-04-2.07e-16i"
+[1] "995 4.11518603004167e-04-1.422e-15i 1498900 4.11488952548427e-04-2.08e-16i"
+[1] "996 4.11511187298495e-04-3.66e-16i 1499100 4.11488974872473e-04-2.08e-16i"
+[1] "997 4.11498875585709e-04+8.93e-16i 1499300 4.11488984802978e-04-2.07e-16i"
+[1] "998 4.11482914140921e-04-7.7e-16i 1499500 4.1148897872015e-04-2.08e-16i"
+[1] "999 4.11473488798251e-04+9.399e-15i 1499700 4.11488963214723e-04-1.98e-16i"
+[1] "1000 4.11467236398466e-04+1.992e-15i 1499900 4.11488941487906e-04-1.96e-16i"
+\end{verbatim}
+
+The partial Euler Product based approach analyzing a wider spectrum $t=388858886+(-7500,7500)$ but with the same grid point spacing $\delta t =0.01$ before (after) averaging above using truncation at $N_1+2000$ has the estimates $Z(0.5+I*388858886)\approx 4.11466038283134e-04-5.8e-16i$ ($Z(0.5+I*388858886)\approx 4.11488941487906e-04-1.96e-16i$) agrees to 7 (8) decimal places with respect to the known Riemann-Siegel Z function value $Z(0.5+I*388858886)=0.00041148914820069374095342320372253831362 + 9.442756329679734991 E-33*I$ showing the value in reducing the need for averaging by using a wider input spectrum.
+
+Figure 5 shows the errors in the fitted values of the spectrum grid ($\delta t =0.01$) for example B in the region t=(388858884,388858888) in comparison to the true Riemann-Siegel Z function. The fitted values for the grid points (include averaging over the 1000 fourier analyses of different sample lengths) hence for $s=0.5+I*388858886$ the error calculation is $\epsilon = real(4.11488941487906e-04-1.96e-16i) - real(0.00041148914820069374095342320372253831362 + 9.442756329679734991 E-33*I)\approx -2.067128e-10$.
+
+
+
+```{r Zfnzetafunctionoveraninterval_andaveragingitsinversefouriertransform_widerspectrum, echo=FALSE, fig.cap="A comparison of the impact of averaging fourier transforms and inverse fourier transforms of different lengths of the partial Euler Product using truncation length $N_1+2000$ based on wider spectrum t=388858886+(-7500,7500) for the Riemann-Siegel Z function approximation at $\\sigma=0.5+I\\cdot 388858886$. The scale is the same as figure 3 indicating the wider spectrum can result in more accurate results for truncation length $N_1+2000$", out.width = c("99%"), fig.show = "hold",  fig.height=5, warning=FALSE}
+
+
+dfnarrow2000=read.csv("/home/john/pari/approximation_extra2000_cumulative_mean_estimate.csv")
+
+# df2000=read.csv("/home/john/pari/approximation_pm7500input_extra2000_cumulative_mean_estimate.csv")
+
+df2000=read.csv("/home/john/pari/approximation_pm7500input_extra2000_p01_1000reps_cumulative_mean_estimate.csv")
+
+
+yspan=range(Re(df2000$x),Re(dfnarrow2000$x))
+plot(1:1000,Re(df2000$x),typ="b",col=2,ylim=yspan,xlim=c(0,1000),cex=0.3,cex.main=0.9,
+     main="impact of taking wider spectrum to analyze when performing \n fourier transforms of different lengths \n and averaging their inverse fourier transforms components \n for partial Euler Product truncation at N1+2000",
+     xlab="number of inverse fourier transforms averaged",
+     ylab="Z(0.5+388858886I) value estimate");grid(col="gray")
+abline(h=0.0004114891482006,col="darkblue",lty=3)
+legend(x="topright",legend=c("truncation at N1+2000","true value"),
+       col=c(2,"darkblue"),lty=c(1,3),lwd=2)
+
+
+```
+
+
+```{r Zfnzetafunction_partialEulerproductfit_errors_incentralregion, echo=FALSE, fig.cap="Errors in fitted values of inverse fourier transform approximation based on the partial Euler Product using truncation length $N_1+2000$ using spectral filtering, mirror reflection, two imputed imaginary zeroes and averaging inverse fourier transforms of different lengths analyzing the wider spectrum t=388858886+(-7500,7500) on the critical line around $\\sigma=0.5+I\\cdot 388858886$", out.width = c("99%"), fig.show = "hold",  fig.height=5, warning=FALSE}
+
+#interpolation based on averaging of 1000 inverse fourier transform of different lengths
+dfinterpolate_results=read.csv("/home/john/pari/approximation_pm7500input_extra2000_p01_1000reps_interpolationgridoutput.csv")
+
+fitted_rows=seq(1,400001,l=401)
+
+dffittedpts=dfinterpolate_results[fitted_rows,]
+
+dfZfunction=read.csv("/home/john/pari/dirichRS_Z_388858886_m750_p750_spacing_p01_real.csv",header=FALSE,colClasses="character")
+
+dfZfunction=dfZfunction[order(dfZfunction$V1),]
+dfZfunction=dfZfunction[as.numeric(substr(dfZfunction$V1,5,13)) >= 58884 &
+                          as.numeric(substr(dfZfunction$V1,5,13)) <= 58888,]
+
+plot(seq(4,8,l=401),dffittedpts$x-as.numeric(dfZfunction$V2),typ="b",cex=0.3,cex.main=0.9,
+     main="Errors of fitted values of fourier grid points (dt=0.01 spacing) of \n partial Euler Product approximation using truncation at N1+2000 \n using spectral filtering, mirror reflection, two imputes and averaging",
+     xlab="(t-388858880) co-ordinate",
+     ylab="error in fitted points");grid(col="gray")
+abline(v=6,col=6,lty=2)
+legend(x="bottomright",legend=c("fitted point","lines indicating order of points","t=388858886.0"),cex=0.8,
+       col=c(1,1,6),lty=c(-1,1,2),lwd=1,pch=c(1,-1,-1))
+
+
+```
+
+\clearpage
+
+It is important to note from a practical standpoint that 
+\begin{itemize}
+\item what is meant by averaging the inverse fourier transforms of different length fourier samples is that (i) given the single input dataset with (time) domain t=388858886+(-7500,7500) with grid size 0.01 which has 1499999 fourier components, (ii) different length fourier sample analysis involves taking samples t=388858886+(-7499,7499), t=388858886+(-7498,7498), t=388858886+(-7497,7497), ..., t=388858886+(-6499,6499) from the single input dataset and performing fourier analysis of the first component of equation (7) (but with truncation $N_1+\Delta$ using spectral filtering, mirror reflection, imputation of imaginary part zero for fft[1], fft[$\lceil n/2 \rceil +1$] followed by calculating the inverse fourier transform and storing and/or averaging the results for the inverse fourier components common to all the different samples length (i.e. the smallest analyzed spectrum interval t=388858886+(-6499,6499) where the results for the interval t=388858886+(-2,2) has been presented in this paper). The common results are fitted points 388858886+(-6499, ..., -2, -1.99, -1.98, ..., -0.03, -0.02, -0.01, 0, 0.01, 0.02, 0.03, ..., 6499).
+\item what appears to be happening with different sample sizes is that the spectral leakage/aliasing from high frequency components in the partial Euler product that are not contained in the Riemann-Siegel Z function or Riemann Zeta function differs in magnitude/sign and by averaging the impact of the spectral leakage/aliasing is greatly reduced.
+\item the differing fourier samples use sizes rounded to nearest tens, hundreds or thousands (depending on initial maximum available sample e.g. 149999, 1499999, 14999999) in order to avoid the \textbf{exceedingly long} fourier analysis computation times that occur with fourier sample sizes equal to large prime numbers.
+\end{itemize}
+
+\clearpage
+
+
+## Using spline interpolation to obtain preliminary estimates of the non-trivial zero positions
+
+Since discrete fourier analysis only provides a explicit fit of the grid of input data points, spline interpolation between the fitted points of the inverse fourier transform can provide a preliminary estimate of other data points (t co-ordinate values) including zero crossings.
+
+Figure 6 shows the predicted Riemann-Siegel Z function behaviour using spline interpolation of the averaged inverse fourier transform where the fourier analysis was based on an input grid size of $\delta t=0.01$. It can be seen that the spline interpolation provides preliminary estimates of closely spaced non-trivial zeroes between t=388858886.0022 and t=388858886.0024 but the positions are not aligned with the known values [6,7].
+
+
+
+```{r Zfnzetafunction_interpolationresults, echo=FALSE, fig.cap="Using an input grid size of $\\delta t=0.01$.  A comparison of the true Riemann-Siegel Z function and the inverse fourier transform approximation based on the partial Euler Product using truncation length $N_1+2000$ using spectral filtering, mirror reflection, two imputed imaginary zeroes and averaging inverse fourier transforms of different lengths analyzing the on wider spectrum t=388858886+(-7500,7500) on the critical line around $\\sigma=0.5+I\\cdot 388858886$. Each panel shows a progressively magnified closeup of the closely spaced zeroes at t=388858886.0022851... and t=388858886.0023936... [6,7].", out.width = c("49%","49%"), fig.show = "hold",  fig.height=5, warning=FALSE}
+
+dfinterpolate_results=read.csv("/home/john/pari/approximation_pm7500input_extra2000_p01_1000reps_interpolationgridoutput.csv")
+
+#interpolation based on averaging of 10 inverse fourier transform of different lengths
+
+
+
+dfZfunction=read.csv("/home/john/pari/dirichRS_Z_388858886_m750_p750_spacing_p01_real.csv",header=FALSE,colClasses="character")
+
+dfZfunction=dfZfunction[order(dfZfunction$V1),]
+dfZfunction=dfZfunction[as.numeric(substr(dfZfunction$V1,5,13)) >= 58884 &
+                          as.numeric(substr(dfZfunction$V1,5,13)) <= 58888,]
+
+plot(seq(4,8,l=400001),Re(dfinterpolate_results$x),typ="l",col=2,cex=0.3,cex.main=0.9,
+     main="Riemann-Siegel Z function overlayed by interpolation of \n partial Euler Product approximation using truncation at N1+2000 \n using spectral filtering, mirror reflection, two imputes and averaging",
+     xlab="(t-388858880) co-ordinate",
+     ylab="Z value critical line estimate");grid(col="gray")
+lines(seq(4,8,l=401),Re(as.numeric(dfZfunction$V2)),lty=2,col=1)
+abline(v=c(3.84727,4.1524,4.3228,4.8267,
+                     5.2310,5.3843,6.00228,6.00239,
+                     6.69074,6.8913,7.01657,7.3533,
+                     7.98275,8.4138),col="darkblue",lty=2)
+legend(x="topleft",legend=c("true Riemann-Siegel Z function","spline interpolation of N1+2000 approximation","non-trivial zeroes positions (LMFDB)"),cex=0.5,
+       col=c(1,2,"darkblue"),lty=c(1,2,2),lwd=2)
+
+
+plot(seq(4,8,l=400001),Re(dfinterpolate_results$x),typ="l",col=2,cex=0.3,cex.main=0.9,
+     main="Riemann-Siegel Z function overlayed by interpolation of \n partial Euler Product approximation using truncation at N1+2000 \n using spectral filtering, mirror reflection, two imputes and averaging",
+     xlab="(t-388858880) co-ordinate",
+     ylab="Z value critical line estimate",xlim=c(5.8,6.2),ylim=c(-0.001,0.5));grid(col="gray")
+points(seq(4,8,l=401),Re(as.numeric(dfZfunction$V2)),cex=0.5,col=1)
+abline(v=c(3.84727,4.1524,4.3228,4.8267,
+                     5.2310,5.3843,6.00228,6.00239,
+                     6.69074,6.8913,7.01657,7.3533,
+                     7.98275,8.4138),col="darkblue",lty=2)
+legend(x="topleft",legend=c("true Riemann-Siegel Z function","spline interpolation of N1+2000 approximation","non-trivial zeroes positions (LMFDB)"),cex=0.5,
+       col=c(1,2,"darkblue"),lty=c(-1,2,2),pch=c(1,-1,-1),lwd=2)
+
+
+plot(seq(4,8,l=400001),Re(dfinterpolate_results$x),typ="l",col=2,cex=0.3,cex.main=0.9,
+     main="Riemann-Siegel Z function overlayed by interpolation of \n partial Euler Product approximation using truncation at N1+2000 \n using spectral filtering, mirror reflection, two imputes and averaging",
+     xlab="(t-388858880) co-ordinate",
+     ylab="Z value critical line estimate",xlim=c(5.999,6.011),ylim=c(-0.0001,0.0045));grid(col="gray")
+points(seq(4,8,l=401),Re(as.numeric(dfZfunction$V2)),cex=0.5,col=1)
+abline(v=c(3.84727,4.1524,4.3228,4.8267,
+                     5.2310,5.3843,6.00228,6.00239,
+                     6.69074,6.8913,7.01657,7.3533,
+                     7.98275,8.4138),col="darkblue",lty=2)
+legend(x="topleft",legend=c("true Riemann-Siegel Z function","spline interpolation of N1+2000 approximation","non-trivial zeroes positions (LMFDB)"),cex=0.5,
+       col=c(1,2,"darkblue"),lty=c(-1,2,2),pch=c(1,-1,-1),lwd=2)
+
+
+plot(seq(4,8,l=400001),Re(dfinterpolate_results$x),typ="l",col=2,cex=0.3,cex.main=0.9,
+     main="Riemann-Siegel Z function overlayed by interpolation of \n partial Euler Product approximation using truncation at N1+2000 \n using spectral filtering, mirror reflection, two imputes and averaging",
+     xlab="(t-388858880) co-ordinate",
+     ylab="Z value critical line estimate",xlim=c(6.0019,6.0027),ylim=c(-0.000001,0.00001));grid(col="gray")
+points(seq(4,8,l=401),Re(as.numeric(dfZfunction$V2)),cex=0.5,col=1)
+abline(v=c(3.84727,4.1524,4.3228,4.8267,
+                     5.2310,5.3843,6.00228,6.00239,
+                     6.69074,6.8913,7.01657,7.3533,
+                     7.98275,8.4138),col="darkblue",lty=2)
+legend(x="topleft",legend=c("true Riemann-Siegel Z function","spline interpolation of N1+2000 approximation","non-trivial zeroes positions (LMFDB)"),cex=0.5,
+       col=c(1,2,"darkblue"),lty=c(-1,2,2),pch=c(1,-1,-1),lwd=2)
+
+
+```
+
+
+\clearpage
+
+Given the difference between preliminary estimates of the closely spaced Riemann-Siegel Z function non-trivial zeroes and their known values. Spectral filtered partial Euler Product based approximation of the Riemann-Siegel Z function with grid size $\delta t=0.001$ is attempted.
+
+
+\textbf{example C}; reference value - Riemann-Siegel Z function value at $s=0.5+I\cdot 388858886$
+
+using fourier transform of first component of partial Euler product approximation of Riemann-Siegel Z function
+applying spectral filtering and mirror reflection about DC component
+setting imaginary part of DC fourier component to zero
+setting only the imaginary part of (ceiling(n/2)+1) fourier component to zero in partial Euler product approximation
+
+pari-gp [8] calculation using 128 tapered Dirichlet series truncation at $N_1$
+
+\begin{verbatim}
+dirichRS_S_sum128(0.5+I*388858886)*exp(I*vtheta(388858886))
+time = 116 ms.
+%31 = 0.00041148914820069374095342320372253831362 + 9.442756329679734991 E-33*I
+\end{verbatim}
+
+approximation 5 - based on partial Euler Product truncation at $N_1+2000$ 
+
+using spectrum collected with grid size $\delta t=0.001$ in the interval t=388858886+(-3832.622,3769.377)
+
+maximum available sample n=7,602,060
+
+below is the inverse fourier transform result for the Riemann-Siegel Z function at $s=0.5+I\cdot 388858886$ under 100 iterations of fourier transforms of different sample lengths
+
+\begin{verbatim}
+[1] "index; single run estimate; sample length; cumulative average"
+[1] "1 4.11362087990669e-04+1.468e-15i 7404000 4.11362087990669e-04+1.468e-15i"
+[1] "2 4.1203224202535e-04+2.968e-15i 7406000 4.1169716500801e-04+2.218e-15i"
+[1] "3 4.11530613334881e-04-2.686e-15i 7408000 4.11641647783633e-04+5.83e-16i"
+[1] "4 4.08697304819609e-04+7.37e-16i 7410000 4.10905562042627e-04+6.22e-16i"
+[1] "5 4.10296247345262e-04+2.262e-15i 7412000 4.10783699103154e-04+9.5e-16i"
+[1] "6 4.10956890543605e-04+1.2899e-14i 7414000 4.10812564343229e-04+2.941e-15i"
+[1] "7 4.11330379679623e-04-1.6023e-14i 7416000 4.10886537962714e-04+2.32e-16i"
+[1] "8 4.11711510463301e-04+6.75e-15i 7418000 4.10989659525287e-04+1.047e-15i"
+[1] "9 4.12292651175126e-04+1.0295e-14i 7420000 4.11134436375269e-04+2.074e-15i"
+[1] "10 4.12407567449154e-04+1.7412e-14i 7422000 4.11261749482658e-04+3.608e-15i"
+...
+[1] "91 4.11255089089398e-04+2.206e-15i 7584000 4.11530814797245e-04+1.387e-15i"
+[1] "92 4.12629367637724e-04-5.9258e-14i 7586000 4.1154275558899e-04+7.28e-16i"
+[1] "93 4.10343570399683e-04-4.684e-15i 7588000 4.11529861124589e-04+6.7e-16i"
+[1] "94 4.10850329210734e-04-2.9e-17i 7590000 4.11522632061675e-04+6.63e-16i"
+[1] "95 4.11747187646636e-04+1.641e-15i 7592000 4.11524995804675e-04+6.73e-16i"
+[1] "96 4.11188429188644e-04-4.4185e-14i 7594000 4.11521489902425e-04+2.06e-16i"
+[1] "97 4.12052049816024e-04-7.425e-15i 7596000 4.11526959592255e-04+1.27e-16i"
+[1] "98 4.11607681569761e-04-2.329e-15i 7598000 4.11527783285903e-04+1.02e-16i"
+[1] "99 4.12031416315095e-04+2.061e-15i 7600000 4.11532870488219e-04+1.22e-16i"
+[1] "100 4.10751669041205e-04-7.2e-17i 7602000 4.11525058473748e-04+1.2e-16i"
+\end{verbatim}
+
+
+It can be seen that the single sample results of example C are noisier than example B which is related to the use of a smaller grid size but there are now fitted grid points available for 388858886.001, 388858886.002, 388858886.003, 388858886.004 which will be useful for spline interpolation between 388858886.002 and 388858886.003.  Figure 7 then presents the results of the fitted points of this finer input grid size of $\delta t=0.001$ calculation and it can be seen that the spline interpolation now provides preliminary estimates of closely spaced non-trivial zeroes well aligned with the known values [6,7]. 
+
+
+```{r Zfnzetafunction_interpolationresults_p001, echo=FALSE, fig.cap="Using an input grid size of $\\delta t=0.001$.  A comparison of the true Riemann-Siegel Z function and the inverse fourier transform approximation based on the partial Euler Product using truncation length $N_1+2000$ using spectral filtering, mirror reflection, two imputed imaginary zeroes and averaging inverse fourier transforms of different lengths analyzing the on wider spectrum t=388858886+(-3832.622,3769.377) on the critical line around $\\sigma=0.5+I\\cdot 388858886$. Each panel shows a progressively magnified closeup of the closely spaced zeroes at t=388858886.0022851... and t=388858886.0023936... [6,7].", out.width = c("49%","49%"), fig.show = "hold",  fig.height=5, warning=FALSE}
+
+dfinterpolate_results=read.csv("/home/john/pari/approximation_pm7500input_extra2000_p001_interpolationgridoutput.csv")
+
+#interpolation based on averaging of 10 inverse fourier transform of different lengths
+
+
+
+dfZfunction=read.csv("/home/john/pari/dirichRS_Z_388858886_m750_p750_spacing_p01_real.csv",header=FALSE,colClasses="character")
+
+dfZfunction=dfZfunction[order(dfZfunction$V1),]
+dfZfunction=dfZfunction[as.numeric(substr(dfZfunction$V1,5,13)) >= 58884 &
+                          as.numeric(substr(dfZfunction$V1,5,13)) <= 58888,]
+
+dfZspacingp001=read.csv("/home/john/pari/dirichRS_Zfn_p001_res_0p5_start_388858884_end_388858888.csv",header=FALSE,colClasses="character")
+
+dfZspacingp001$V2=as.numeric(gsub(" ","",dfZspacingp001$V2));
+dfZspacingp001=dfZspacingp001[order(dfZspacingp001$V1),]
+
+
+plot(seq(4,8,l=400001),Re(dfinterpolate_results$x),typ="l",col=2,cex=0.3,cex.main=0.9,
+     main="Riemann-Siegel Z function overlayed by interpolation of \n partial Euler Product approximation using truncation at N1+2000 \n using spectral filtering, mirror reflection, two imputes and averaging",
+     xlab="(t-388858880) co-ordinate",
+     ylab="Z value critical line estimate");grid(col="gray")
+lines(seq(4,8,l=401),Re(as.numeric(dfZfunction$V2)),lty=2,col=1)
+abline(v=c(3.84727,4.1524,4.3228,4.8267,
+                     5.2310,5.3843,6.00228,6.00239,
+                     6.69074,6.8913,7.01657,7.3533,
+                     7.98275,8.4138),col="darkblue",lty=2)
+legend(x="topleft",legend=c("true Riemann-Siegel Z function","spline interpolation of N1+2000 approximation","non-trivial zeroes positions (LMFDB)"),cex=0.5,
+       col=c(1,2,"darkblue"),lty=c(1,2,2),lwd=2)
+
+
+plot(seq(4,8,l=400001),Re(dfinterpolate_results$x),typ="l",col=2,cex=0.3,cex.main=0.9,
+     main="Riemann-Siegel Z function overlayed by interpolation of \n partial Euler Product approximation using truncation at N1+2000 \n using spectral filtering, mirror reflection, two imputes and averaging",
+     xlab="(t-388858880) co-ordinate",
+     ylab="Z value critical line estimate",xlim=c(5.8,6.2),ylim=c(-0.001,0.5));grid(col="gray")
+points(seq(4,8,l=401),Re(as.numeric(dfZfunction$V2)),cex=0.5,col=1)
+points(Re(as.numeric(substr(dfZspacingp001$V1,9,13))),Re(as.numeric(dfZspacingp001$V2)),cex=0.3,col=1)
+abline(v=c(3.84727,4.1524,4.3228,4.8267,
+                     5.2310,5.3843,6.00228,6.00239,
+                     6.69074,6.8913,7.01657,7.3533,
+                     7.98275,8.4138),col="darkblue",lty=2)
+legend(x="topleft",legend=c("true Riemann-Siegel Z function","spline interpolation of N1+2000 approximation","non-trivial zeroes positions (LMFDB)"),cex=0.5,
+       col=c(1,2,"darkblue"),lty=c(-1,2,2),pch=c(1,-1,-1),lwd=2)
+
+
+plot(seq(4,8,l=400001),Re(dfinterpolate_results$x),typ="l",col=2,cex=0.3,cex.main=0.9,
+     main="Riemann-Siegel Z function overlayed by interpolation of \n partial Euler Product approximation using truncation at N1+2000 \n using spectral filtering, mirror reflection, two imputes and averaging",
+     xlab="(t-388858880) co-ordinate",
+     ylab="Z value critical line estimate",xlim=c(5.999,6.011),ylim=c(-0.0001,0.0045));grid(col="gray")
+points(seq(4,8,l=401),Re(as.numeric(dfZfunction$V2)),cex=0.5,col=1)
+points(Re(as.numeric(substr(dfZspacingp001$V1,9,13))),Re(as.numeric(dfZspacingp001$V2)),cex=0.3,col=1)
+abline(v=c(3.84727,4.1524,4.3228,4.8267,
+                     5.2310,5.3843,6.00228,6.00239,
+                     6.69074,6.8913,7.01657,7.3533,
+                     7.98275,8.4138),col="darkblue",lty=2)
+legend(x="topleft",legend=c("true Riemann-Siegel Z function","spline interpolation of N1+2000 approximation","non-trivial zeroes positions (LMFDB)"),cex=0.5,
+       col=c(1,2,"darkblue"),lty=c(-1,2,2),pch=c(1,-1,-1),lwd=2)
+
+
+plot(seq(4,8,l=400001),Re(dfinterpolate_results$x),typ="l",col=2,cex=0.3,cex.main=0.9,
+     main="Riemann-Siegel Z function overlayed by interpolation of \n partial Euler Product approximation using truncation at N1+2000 \n using spectral filtering, mirror reflection, two imputes and averaging",
+     xlab="(t-388858880) co-ordinate",
+     ylab="Z value critical line estimate",xlim=c(6.0019,6.0031),ylim=c(-0.000001,0.000035));grid(col="gray")
+points(seq(4,8,l=401),Re(as.numeric(dfZfunction$V2)),cex=0.5,col=1)
+points(Re(as.numeric(substr(dfZspacingp001$V1,9,13))),Re(as.numeric(dfZspacingp001$V2)),cex=0.3,col=1)
+abline(v=c(3.84727,4.1524,4.3228,4.8267,
+                     5.2310,5.3843,6.00228,6.00239,
+                     6.69074,6.8913,7.01657,7.3533,
+                     7.98275,8.4138),col="darkblue",lty=2)
+legend(x="topleft",legend=c("true Riemann-Siegel Z function","spline interpolation of N1+2000 approximation","non-trivial zeroes positions (LMFDB)"),cex=0.5,
+       col=c(1,2,"darkblue"),lty=c(-1,2,2),pch=c(1,-1,-1),lwd=2)
+
+
+```
+
+
+\clearpage
+
+## Conclusions 
+
+
+The above steps of spectral filtering, mirror reflection, imputation of zero imaginary parts for two fourier components, using truncation lengths of $N_1 +\Delta$ and averaging of the inverse fourier transform results under different spectrum widths leads to a robust partial Euler Product based approximations of the Riemann_Siegel function useful for examing closely separated Riemann Zeta function non-trivial zeroes (away from the real axis). In the above fourier analysis processing, spectral leakage from high frequency components present in the partial Euler Product but not present in the Riemann Zeta function is greatly suppressed (where the choice of input grid size for fourier analysis, the maximum width of the input spectrum, the truncation length $N_1 +\Delta$ and the number of different length fourier samples to be averaged all influence the robustness for examining closely spaced Riemann-Siegel Z function non-trivial zeroes).
+
+
+
+\newpage
+
+## References
+
+1. Edwards, H.M. (1974). Riemann's zeta function. Pure and Applied Mathematics 58. New York-London: Academic Press. ISBN 0-12-232750-0. Zbl 0315.10035.
+
+2. Riemann, Bernhard (1859). "?ber die Anzahl der Primzahlen unter einer gegebenen Gr?sse". Monatsberichte der Berliner Akademie.. In Gesammelte Werke, Teubner, Leipzig (1892), Reprinted by Dover, New York (1953).
+
+3. Titchmarsh, E.C. (1986) The Theory of the Riemann Zeta Function. 2nd Revised (Heath-Brown, D.R. ) Edition, Oxford University Press, Oxford.
+
+4. Berry, M. V. "The Riemann-Siegel Expansion for the Zeta Function: High Orders and Remainders." Proc. Roy. Soc. London A 450, 439-462, 1995.
+
+5. Martin, J.P.D. "A useful approximation of the Riemann Zeta function away from the real axis using spectral filtering of the partial Euler product" (2025)
+http://dx.doi.org/10.6084/m9.figshare.28528652
+
+6. van de Lune J., te Riele H.J.J. and Winter D.T. (1986) “On the Zeros of the Riemann Zeta
+function in the Critical Strip. IV” Mathematics of Computation, Volume 46, Pages 667-681
+
+7. The LMFDB Collaboration, The L-functions and Modular Forms Database, http://www.lmfdb.org
+
+8. The PARI~Group, PARI/GP version 2.12.0, Univ. Bordeaux, 2018,
+\url{http://pari.math.u-bordeaux.fr/}.
+
+9. R Core Team (2017). R: A language and environment for statistical computing. R Foundation for
+Statistical Computing, Vienna, Austria. \url{https://www.R-project.org/}.
+
+10. RStudio Team (2015). RStudio: Integrated Development for R. RStudio, Inc., Boston, MA URL
+http://www.rstudio.com/.
