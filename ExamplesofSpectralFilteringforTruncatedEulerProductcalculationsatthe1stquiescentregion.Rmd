@@ -17,7 +17,7 @@ knitr::opts_chunk$set(echo = FALSE)
 <!-- https://stackoverflow.com/questions/41655383/r-markdown-similar-feature-to-newcommand-in-latex/41664105 -->
 \newcommand{\mychi}{\raisebox{0pt}[1ex][1ex]{$\chi$}}
 
-## DRAFT Executive summary 
+## Executive summary 
 
 Examples of first quiescent region $N_1=\sqrt{(\frac{t}{2\pi})^d\cdot N_C}$ truncated partial Euler Product based approximations of the Riemann Siegel Z analogue function spectrally filtered (and averaged over different spectra widths) using fourier analysis (n~150,000) of finite intervals $\Delta t=(t_0-750,t_0+750)$ along the imaginary co-ordinate of the complex plane are presented away from the real axis for (i) Ramanujan's Tau L-function, (ii) an elliptic curve L-function 11.a, and (iii) the two Davenport-Heilbronn 5-periodic functions. The use of the Riemann Siegel Z analogue function (rather than the L function itself) for fourier analysis spectral filtering allows a simple splicing specification dependent only on n (the length of the fourier spectrum) when combining the two components of the first quiescent region truncated partial Euler Product rather than the splicing specification being dependent on n, $N_1=\sqrt{(\frac{t}{2\pi})^d\cdot N_C}$ and $\Delta t$ the length of the L-function spectrum under analysis.
 
@@ -86,7 +86,7 @@ The contrasting feature of Davenport-Heilbronn functions compared to L-functions
 However, given their functional equation Davenport-Heilbronn functions do have a Riemann-Siegel Z function analogue
 
 \begin{align}
-Z_f(\chi_d,k+I\cdot t) &= e^{I\cdot\theta_f(t)}f(\chi_d,k+I\cdot t) 
+Z_f(\chi_d,k+I\cdot t) &= e^{I\cdot\theta_f(t)}f(k+I\cdot t) 
 \end{align}
 
 where the Davenport-Heilbronn function Riemann-Siegel Theta function $\theta_f(t)$ on its critical line $s=k+I\cdot t$ is obtained from
@@ -129,7 +129,7 @@ EP_{RS2,L}(k+I\cdot t,\beta) &= e^{I\cdot \theta_L(t)}\cdot\mychi(k+I\cdot t) \c
 
 where (i) $F_{p,L}(p^{-(k+I\cdot t)})^{-1}$ are the Euler factors of the L-function and (ii) $\beta \ge 1$ is a hyperparameter multiplicative factor included to adjust the primes included in the Euler product(s) for the purpose of reducing the effects of spectral leakage when used in conjunction fourier analysis of these partial Euler product(s). In this paper, $\beta=1.25$ will be used.  
 
-For Davenport-Heilbronn functions on the critical line $s=k+I\cdot t$ the partial Euler Products analogues of the first and second terms in equations (18) are a linear combination of the Euler products of the dual L-functions comprising the Davenport-Heilbronn
+For Davenport-Heilbronn functions on the critical line $s=k+I\cdot t$ the partial Euler Products analogues of the first and second terms in equations (18) are a linear combination of the Euler products of the dual L-functions comprising the Davenport-Heilbronn function
 
 \begin{align}
 EP_{RS1,f}(k+I\cdot t,\beta) &= e^{I\cdot \theta_L(t)} \left(\alpha_L \cdot \prod_{p=2}^{P \le (\lfloor\beta\cdot\sqrt{(\frac{t}{2\pi})^d\cdot N_C}\rfloor)} F_{p,L}(p^{-(k+I\cdot t)})^{-1} + \alpha_{\bar{L}} \cdot \prod_{p=2}^{P \le (\lfloor\beta\cdot\sqrt{(\frac{t}{2\pi})^d\cdot N_C}\rfloor)} F_{p,\bar{L}}(p^{-(k+I\cdot t)})^{-1}\right) \\
@@ -149,7 +149,7 @@ For the case of a L-function using $EP_{RS1,L}(k+I\cdot t,\beta)$ calculations o
 \item use spectral filtering to retain only the discrete fourier transform components of $EP_{RS1,L}(k+I\cdot t,\beta)$ arising from primes $2, ..., \lfloor N_1\rfloor$ i.e., the [0,+) angular frequencies 
 \item using phase conjugate reflection (about the DC fourier component) of the [0,+) angular frequencies to impute the (-,0] discrete fourier components of the fourier transform of the Riemann-Siegel formula (greatly improving the discrete fourier transform approximation with respect to the actual Riemann-Siegel Z function's discrete fourier transform)
 \item setting the imaginary(DC fourier component) = 0 and imaginary(fft[$\lceil\frac{n}{2}\rceil+1$]) = 0 to enhance the symmetry/continuity of the approximate fourier transform to improve approximation accuracy since the input true spectra is purely real [12]
-\item execute and average fourier analyses of differing lengths from the original stored spectrum (e.g., averaging 100+ fourier analyses using $n\sim 225,000$ $\Delta t = (t_0-637.5,t_0+637.5)$ to $ n\sim 150,000$ $\Delta t = (t_0-750,t_0+750)$) to compute the spectrally cleaned inverse fourier transform of the central region $\Delta t = (t_0-5^-,t_0+5^+)$ as the fourier transform component errors in this partial Euler Product Riemann-Siegel Z function approximation appears to vary in random manner across the different length transforms.
+\item execute and average fourier analyses of differing lengths from the original stored spectrum (e.g., averaging 100+ fourier analyses using $n\sim 127,500$ $\Delta t = (t_0-637.5,t_0+637.5)$ to $ n\sim 150,000$ $\Delta t = (t_0-750,t_0+750)$) to compute the spectrally cleaned inverse fourier transform of the central region $\Delta t = (t_0-5^-,t_0+5^+)$ as the fourier transform component errors in this partial Euler Product Riemann-Siegel Z function approximation appears to vary in random manner across the different length transforms.
 \item use interpolation of the final fitted results (spacing 0.01) onto a fine interpolation grid (spacing 0.00001) to estimate non-trivial zero positions
 \end{enumerate}
 
@@ -189,7 +189,7 @@ The infinite dirichlet series is only convergent for $\Re(s) > 6.5$ with its kno
 The functional equation for the the  Ramanujan Tau L-function is given by
 
 \begin{equation}
-\tau L(s) = \left[(2\pi)^{2s-12}\frac{\Gamma(12-s)}{\Gamma(s)}\right]\cdot \tau L(s) 
+\tau L(s) = \left[(2\pi)^{2s-12}\frac{\Gamma(12-s)}{\Gamma(s)}\right]\cdot \tau L(12-s) 
 \end{equation}
 
 The Riemann Siegel Theta function for the  Ramanujan Tau L-function on the critical line $s=6+I\cdot t$ is given by
@@ -216,7 +216,7 @@ and the zeroth order Riemann-Siegel formula for the Riemann-Siegel Z function an
 Z_{\tau L}(6+I\cdot t)_{EP} &\approx EP_{RS1,\tau L}(6+I\cdot t,\beta=1.25) \nonumber \\ &+ EP_{RS2,\tau L}(6+I\cdot t,\beta=1.25) + ... \qquad t \rightarrow \infty
 \end{align}
 
-using (i) equations (19), (20) and the known Euler factors [4] of Ramanujan's Tau L-function and (ii) $\beta=1.25$ is a small cushion factor in the truncation length of the included primes that is empirically observed to improve the quality of the fourier transform components of the finite Euler product arising nearby $N_1$.
+using (i) equations (19), (20) and the known Euler factors [4] of Ramanujan's Tau L-function and (ii) $\beta=1.25$ is a small cushion factor in the truncation length of the included primes that is empirically observed to improve the quality of the fourier transform components of the finite Euler product arising nearby $N_1$. For the Riemann-Siegel Z function analogue the fourier transform components arising nearby $N_1$ are the fourier transform components namely surrounding (and including) the DC (zero) angular frequency.
 
 Figures 1, 3 and 5 respectively for the critical line intervals 
 
@@ -234,10 +234,10 @@ display the individual fourier transforms of the spectra of the two components o
 
 The long tails in these lefthand panel fourier spectra arise from high frequencies generated by the finite Euler product that do not exist in finite Dirichlet Series of the same truncation length.
 
-On the righthand panel are spectrally filtered fourier transforms where only the low frequency components are retained and used via conjugate symmetry reflection (as shown in green) to replace the high frequency components following the first 4 steps of fourier analysis procedure described earlier in this paper. This spectral filtering and splicing provides a useful improvement in approximating the fourier transform of the true Riemann-Siegel Z function.  
+On the righthand panel are spectrally filtered fourier transforms where only the low frequency components are retained and used via conjugate symmetry reflection (as shown in green) to replace the high frequency components following the first 4 steps of the fourier analysis procedure described earlier in this paper. This spectral filtering and splicing provides a useful improvement in approximating the fourier transform of the true Riemann-Siegel Z function.  
 
 \begin{enumerate}
-\item To produce figures 1, 3, 5, a discrete spectra of ~ n=150,000 was collected and stored for each interval using a spacing of 0.01. 
+\item To produce figures 1, 3, 5, a discrete spectra of a grid of ~ n=150,000 points was collected and stored for each interval using a spacing of 0.01. 
 \item the fast fourier transform (fft) output vector is wrapped around so that the informative non-zero fft components appear next to the DC fourier component axis as positive and negative frequency components.
 \item the x-axis is scaled in units of angular frequency (radians per second).
 \end{enumerate}
@@ -280,11 +280,11 @@ Figures 2, 4, 6 pair with figures 1, 3 and 5 respectively in illustrating the pe
 
 (iii) $s=(6+I\cdot 29995,6+I\cdot 30005)$ 
 
-following the final 3 steps of the fourier analysis procedure described earlier in this paper. The averaging of the central region inverse fourier transforms over different spectral length (85%-100% of the available n~150,000 grid) helps reduce spectral leakage particularly for closely separated non-trivial zeroes on the critical line [11] is spectral filtering and splicing provides a useful improvement in approximating the fourier transform of the true Riemann-Siegel Z function.  
+following the final 3 steps of the fourier analysis procedure described earlier in this paper. The averaging of the central region inverse fourier transforms over different spectral length (85%-100% of the available n~150,000 grid) helps reduce spectral leakage particularly for closely separated non-trivial zeroes on the critical line [11]. This spectral filtering and splicing provides a useful improvement in approximating the fourier transform of the true Riemann-Siegel Z function.  
 
 It can be seen from figures 2, 4 and 6 
 
-(i) in the top graph of each figure there is excellent visual overlap of the true coarse grid of true Riemann-Siegel Z function values with the partial Euler Product based approximation after (i) spectral filtering, conjugate symmetry reflaction, imputing two imaginary zero points and averaging (100+) inverse fourier transforms of different length (n~127500 to n~150,000) in the central $t=\pm5$ region of the examined function and (ii) spline interpolation between the fiited fourier grid to estimate the position of the non-trivial zeroes.
+(i) in the top graph of each figure there is excellent visual overlap of the true coarse grid of true Riemann-Siegel Z function values with the partial Euler Product based approximation after (i) spectral filtering, conjugate symmetry reflaction, imputing two imaginary zero points and averaging (100+) inverse fourier transforms of different length (n~127,500 to n~150,000) in the central $t=\pm5$ region of the examined function and (ii) spline interpolation between the fiited fourier grid to estimate the position of the non-trivial zeroes.
 
 (ii) in the bottom graph of each figure the magnitude of the errors in the approximation with respect to the true function values are shown and generally the approximation errors are observed to reduce as the inspected t interval is further away from the real axis.
 
@@ -880,7 +880,7 @@ plot(seq(29995.1,30004.9,l=99),Re(agg_hybrid[seq(1,98001,l=99)])-Re(dfZ$V2),typ=
 
 ## Truncated Euler Product approximation of the Riemann-Siegel Z function analogue of the L-function 2-11-1.1-c1-0-0 on the critical line $s=1+I\cdot t$ using spectral filtering and averaging based fourier analyses
 
-The second degree L function, 2-1-1.1-c11-0-0 [4] associated with the  elliptic curve isogeny class with LMFDB label 11.a under the arithmetic version of the L-function is written in dirichlet series [4] form as
+The second degree L function, 2-1-1.1-c11-0-0 [4] associated with the  elliptic curve isogeny class with LMFDB label 11.a under the arithmetic version of the L-function is written in dirichlet series [4] form (convergent for $\sigma > 1.5$) as
 
 \begin{equation}
 L_{11.a}(s) = \sum_{k=1}^{\infty}\left(\frac{\chi_{11.a}(k)}{k^s}\right)
@@ -982,17 +982,17 @@ Figures 8 and 10 pair with figures 7 and 9 respectively in illustrating the perf
 
 (ii) $s=(1+I\cdot 19995,1+I\cdot 20005)$ 
 
-following the final 3 steps of the fourier analysis procedure described earlier in this paper. The averaging of the central region inverse fourier transforms over different spectral length (85%-100% of the available n~150,000 grid) helps reduce spectral leakage particularly for closely separated non-trivial zeroes on the critical line [11] is spectral filtering and splicing provides a useful improvement in approximating the fourier transform of the true Riemann-Siegel Z function.  
+following the final 3 steps of the fourier analysis procedure described earlier in this paper. The averaging of the central region inverse fourier transforms over different spectral length (85%-100% of the available n~150,000 grid) helps reduce spectral leakage particularly for closely separated non-trivial zeroes on the critical line [11]. This spectral filtering and splicing provides a useful improvement in approximating the fourier transform of the true Riemann-Siegel Z function.  
 
 It can be seen from figures 8 and 10 
 
-(i) in the top graph of each figure there is excellent visual overlap of the true coarse grid of true Riemann-Siegel Z function values with the partial Euler Product based approximation after (i) spectral filtering, conjugate symmetry reflaction, imputing two imaginary zero points and averaging (100+) inverse fourier transforms of different length (n~127500 to n~150,000) in the central $t=\pm5$ region of the examined function and (ii) spline interpolation between the fiited fourier grid to estimate the position of the non-trivial zeroes.
+(i) in the top graph of each figure there is excellent visual overlap of the true coarse grid of true Riemann-Siegel Z function values with the partial Euler Product based approximation after (i) spectral filtering, conjugate symmetry reflaction, imputing two imaginary zero points and averaging (100+) inverse fourier transforms of different length (n~127,500 to n~150,000) in the central $t=\pm5$ region of the examined function and (ii) spline interpolation between the fiited fourier grid to estimate the position of the non-trivial zeroes.
 
 (ii) in the bottom graph of each figure the magnitude of the errors in the approximation with respect to the true function values are shown and generally the approximation errors are observed to reduce as the inspected t interval is further away from the real axis.
 
 
 
-```{r Zfn11a_Lfunctionoveraninterval_anditsfouriertransform_9516p5_pm750, echo=FALSE, fig.cap="A comparison of the fourier transforms of the Riemann-Siegel Z function analogue of the L-function 2-1-1.1-c11-0-0 and partial Euler Product (using truncation at $N_1 ~ \\sqrt{((\\frac{t}{2\\pi})^2\\cdot 11}$) in the complex plane at $\\sigma=6$ for the interval t=9516.5+(-750,750). The positions of the frequency features indicated by red are successfully captured as a function of t by the expressions postulated in the paper. To help use the partial Euler Product as an approximation of the Riemann-Siegel Z function phase conjugate reflection of the (accurate part of) partial Euler Product fourier transform about angular frequency = zero as shown in green is a strong zeroth order improvement. To reduce spectral leakage in the vicinity of the zero angular frequency components for the Riemann-Siegel Z function analogue truncation at $1.25 \\cdot N_1$ is employed.", out.width = c("49%","49%"), fig.show = "hold",  fig.height=5, warning=FALSE, cache=TRUE}
+```{r Zfn11a_Lfunctionoveraninterval_anditsfouriertransform_9516p5_pm750, echo=FALSE, fig.cap="A comparison of the fourier transforms of the Riemann-Siegel Z function analogue of the L-function 2-1-1.1-c11-0-0 and partial Euler Product (using truncation at $N_1 ~ \\sqrt{((\\frac{t}{2\\pi})^2\\cdot 11}$) in the complex plane at $\\sigma=1$ for the interval t=9516.5+(-750,750). The positions of the frequency features indicated by red are successfully captured as a function of t by the expressions postulated in the paper. To help use the partial Euler Product as an approximation of the Riemann-Siegel Z function phase conjugate reflection of the (accurate part of) partial Euler Product fourier transform about angular frequency = zero as shown in green is a strong zeroth order improvement. To reduce spectral leakage in the vicinity of the zero angular frequency components for the Riemann-Siegel Z function analogue truncation at $1.25 \\cdot N_1$ is employed.", out.width = c("49%","49%"), fig.show = "hold",  fig.height=5, warning=FALSE, cache=TRUE}
 
 
 dfplusZ=read.csv("/home/john/pari/Zplus11a_EP_9516p5_m750_p750_xp25_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
@@ -1186,7 +1186,7 @@ plot(seq(9511.3,9521.7,l=105),Re(agg_hybrid[seq(1,104001,l=105)])-Re(dfZ$V2),typ
 
 
 
-```{r Zfn11a_Lfunctionoveraninterval_anditsfouriertransform_20000_pm750, echo=FALSE, fig.cap="A comparison of the fourier transforms of the Riemann-Siegel Z function analogue of the L-function 2-1-1.1-c11-0-0 and partial Euler Product (using truncation at $N_1 ~ \\sqrt{((\\frac{t}{2\\pi})^2\\cdot 11}$) in the complex plane at $\\sigma=6$ for the interval t=20000+(-750,750). The positions of the frequency features indicated by red are successfully captured as a function of t by the expressions postulated in the paper. To help use the partial Euler Product as an approximation of the Riemann-Siegel Z function phase conjugate reflection of the (accurate part of) partial Euler Product fourier transform about angular frequency = zero as shown in green is a strong zeroth order improvement. To reduce spectral leakage in the vicinity of the zero angular frequency components for the Riemann-Siegel Z function analogue truncation at $1.25 \\cdot N_1$ is employed.", out.width = c("49%","49%"), fig.show = "hold",  fig.height=5, warning=FALSE, cache=TRUE}
+```{r Zfn11a_Lfunctionoveraninterval_anditsfouriertransform_20000_pm750, echo=FALSE, fig.cap="A comparison of the fourier transforms of the Riemann-Siegel Z function analogue of the L-function 2-1-1.1-c11-0-0 and partial Euler Product (using truncation at $N_1 ~ \\sqrt{((\\frac{t}{2\\pi})^2\\cdot 11}$) in the complex plane at $\\sigma=1$ for the interval t=20000+(-750,750). The positions of the frequency features indicated by red are successfully captured as a function of t by the expressions postulated in the paper. To help use the partial Euler Product as an approximation of the Riemann-Siegel Z function phase conjugate reflection of the (accurate part of) partial Euler Product fourier transform about angular frequency = zero as shown in green is a strong zeroth order improvement. To reduce spectral leakage in the vicinity of the zero angular frequency components for the Riemann-Siegel Z function analogue truncation at $1.25 \\cdot N_1$ is employed.", out.width = c("49%","49%"), fig.show = "hold",  fig.height=5, warning=FALSE, cache=TRUE}
 
 dfplusZ=read.csv("/home/john/pari/Zplus11a_EP_2e4_m750_p750_xp25_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
 dfplusZ$V2=as.numeric(gsub(" ","",dfplusZ$V2));
@@ -1440,7 +1440,7 @@ and the zeroth order Riemann-Siegel formula for the Riemann-Siegel Z function an
 Z_{f1}(0.5+I\cdot t)_{EP} &\approx EP_{RS1,f1}(0.5+I\cdot t,\beta=1.25) \nonumber \\ &+ EP_{RS2,f1}(0.5+I\cdot t,\beta=1.25) + ... \qquad t \rightarrow \infty
 \end{align}
 
-using (i) equations (21), (22) and the known Euler factors [4] of dual pair of L-functions comprising $f_1(s)$ and (ii) $\beta=1.25$ is a small cushion factor in the truncation length of the included primes that is empirically observed to improve the quality of the fourier transform components of the finite Euler product arising nearby $N_1$.
+using (i) equations (21), (22) and the known Euler factors [4] of the dual pair of L-functions ($L(\chi_5(2,.),s)$ & $L(\chi_5(3,.),s)$) comprising $f_1(s)$ and (ii) $\beta=1.25$ is a small cushion factor in the truncation length of the included primes that is empirically observed to improve the quality of the fourier transform components of the finite Euler product arising nearby $N_1$.
 
 Figures 11, 13 and 15 respectively for the critical line intervals 
 
@@ -1543,11 +1543,11 @@ Figures 12, 14, 16 pair with figures 11, 13 and 15 respectively in illustrating 
 
 (iii) $s=(0.5+I\cdot 749995,0.5+I\cdot 750005)$ 
 
-following the final 3 steps of the fourier analysis procedure described earlier in this paper. The averaging of the central region inverse fourier transforms over different spectral length (85%-100% of the available n~150,000 grid) helps reduce spectral leakage particularly for closely separated non-trivial zeroes on the critical line [11] is spectral filtering and splicing provides a useful improvement in approximating the fourier transform of the true Riemann-Siegel Z function.  
+following the final 3 steps of the fourier analysis procedure described earlier in this paper. The averaging of the central region inverse fourier transforms over different spectral length (85%-100% of the available n~150,000 grid) helps reduce spectral leakage particularly for closely separated non-trivial zeroes on the critical line [11]. This spectral filtering and splicing provides a useful improvement in approximating the fourier transform of the true Riemann-Siegel Z function.  
 
 It can be seen from figures 12, 14 and 16 
 
-(i) in the top graph of each figure there is excellent visual overlap of the true grid of close approximation of the $f_1(0.5+I\cdot t)$ Riemann-Siegel Z function values with the partial Euler Product based approximation after (i) spectral filtering, conjugate symmetry reflaction, imputing two imaginary zero points and averaging (100+) inverse fourier transforms of different length (n~127500 to n~150,000) in the central $t=\pm5$ region of the examined function and (ii) spline interpolation between the fiited fourier grid to estimate the position of the non-trivial zeroes.
+(i) in the top graph of each figure there is excellent visual overlap of the true grid of close approximation of the $f_1(0.5+I\cdot t)$ Riemann-Siegel Z function values with the partial Euler Product based approximation after (i) spectral filtering, conjugate symmetry reflaction, imputing two imaginary zero points and averaging (100+) inverse fourier transforms of different length (n~127,500 to n~150,000) in the central $t=\pm5$ region of the examined function and (ii) spline interpolation between the fiited fourier grid to estimate the position of the non-trivial zeroes.
 
 (ii) in the bottom graph of each figure the magnitude of the errors in the approximation with respect to the tapered Dirichlet Series approximation using second quiescent region function values are shown and generally the approximation errors of the partial Euler product etimates are observed to reduce as the inspected t interval is further away from the real axis.
 
@@ -2220,7 +2220,7 @@ plot(seq(749994.9,750005.1,l=103),Re(agg_hybrid[seq(1,102001,l=103)])-Re(dfZ$V2)
 
 Importantly because of the negative sign inside the logarithm in equation \eqref{eq:thetafuncDHf2} the Riemann-Siegel Z function analogue on the critical line for f2 is pure imaginary. 
 
-This lesser known lineshape compared to the well known behavior that the Riemann-Siegel Z function for the Riemann Zeta function is purely real has ramifications for fourier analysis of f2 spectra and deliberate phase shifts (of -I and I respectively) are used in this investigation specifically for the fourier transform (and inverse fourier transforms) calculations of the Riemann-Siegel Z function analogue for f2 to ensure (i) easier interpretation as in producing an absorptive lineshape for the real component of the phase shifted fourier transform of Z_{f2} and (ii) to allow the spectral cleaning step of "setting the imaginary(DC fourier component) = 0 and imaginary(fft[$\lceil\frac{n}{2}\rceil+1$]) = 0" to produce its intended outcome.  
+This lesser known lineshape compared to the well known behavior that the Riemann-Siegel Z function for the Riemann Zeta function is purely real has ramifications for fourier analysis of f2 spectra and deliberate phase shifts (of -I and I respectively) are used in this investigation specifically for the fourier transform (and inverse fourier transforms) calculations of the Riemann-Siegel Z function analogue for f2 to ensure (i) easier interpretation as in producing an absorptive lineshape for the real component of the phase shifted fourier transform of $Z_{f2}$ and (ii) to allow the spectral cleaning step of "setting the imaginary(DC fourier component) = 0 and imaginary(fft[$\lceil\frac{n}{2}\rceil+1$]) = 0" to produce its intended outcome.  
 
 The 5-periodic Davenport-Heilbronn function $f_2(s)$ is comprised of a dual pair of degree 1 L-functions (d=1) and its conductor value is 1 [7,8,9]. Hence the first quiescent region of the dirichlet series of $f_2(s)$ is given by
 
@@ -2240,7 +2240,7 @@ and the zeroth order Riemann-Siegel formula for the Riemann-Siegel Z function an
 Z_{f2}(0.5+I\cdot t)_{EP} &\approx EP_{RS1,f2}(0.5+I\cdot t,\beta=1.25) \nonumber \\ &+ EP_{RS2,f2}(0.5+I\cdot t,\beta=1.25) + ... \qquad t \rightarrow \infty
 \end{align}
 
-using (i) equations (21), (22) and the known Euler factors [4] of dual pair of L-functions comprising $f_2(s)$ and (ii) $\beta=1.25$ is a small cushion factor in the truncation length of the included primes that is empirically observed to improve the quality of the fourier transform components of the finite Euler product arising nearby $N_1$.
+using (i) equations (21), (22) and the known Euler factors [4] of dual pair of L-functions ($L(\chi_5(2,.),s)$ & $L(\chi_5(3,.),s)$) comprising $f_2(s)$ and (ii) $\beta=1.25$ is a small cushion factor in the truncation length of the included primes that is empirically observed to improve the quality of the fourier transform components of the finite Euler product arising nearby $N_1$.
 
 Figures 17, 19 and 21 respectively for the critical line intervals 
 
@@ -2252,7 +2252,7 @@ Figures 17, 19 and 21 respectively for the critical line intervals
 
 display the individual fourier transforms of the spectra of the two components of the zeroth order Riemann-Siegel formula approximation of the Riemann-Siegel Z function using partial Euler Products truncated at the first quiescent region as defined in equation (30). 
 
-Note that a phase shift of -I was included in the fourier transforms of $f_2(s)$ approximations (see explicit code in Rmd file of this paper) because without the phase shift the real component of the fourier transform is dispersive. This original dispersive fourier transform lineshape arises because the Riemann-Siegel Z function of $f_2(0.5+I\cdot t)$ is pure imaginary due to the negative sign in the functional equation \eqref{eq:thetafuncDHf2}. 
+Again note that a phase shift of -I was included in the fourier transforms of $f_2(s)$ approximations (see explicit code in Rmd file of this paper) because without the phase shift the real component of the fourier transform is dispersive. This original dispersive fourier transform lineshape arises because the Riemann-Siegel Z function of $f_2(0.5+I\cdot t)$ is pure imaginary due to the negative sign in the functional equation \eqref{eq:thetafuncDHf2}. 
 
 On performing the inverse fourier transform a phase shift of +I is included which brings the predicted $f_2(0.5+I\cdot t)$ Riemann-Siegel Z function into being a purely imaginary function as required to match the true $f_2(0.5+I\cdot t)$ Riemann-Siegel Z function behavior.
 
@@ -2320,7 +2320,7 @@ and considering only the leading terms and n=1,2,3,4,..
 for the first summation term there are the components
 \begin{align}
 e^{I\cdot\theta_{f2}(t)}\cdot\frac{1}{2cos(\theta_2)} &\cdot \frac{e^{I\theta_2}\chi_{L52}(n)+e^{-I\theta_2}\chi_{L53}(n)}{n^{(0.5+I\cdot t)}} \nonumber \\
-&= \frac{e^{I\theta_2}\chi_{L52}(n)+e^{-I\theta_2}\chi_{L53}(n)}{2cos(\theta_2)}\cdot \frac{1}{n^{0.5}}\cdot e^{I\cdot(\theta_{f1}(t)-t\log(n))} \\
+&= \frac{e^{I\theta_2}\chi_{L52}(n)+e^{-I\theta_2}\chi_{L53}(n)}{2cos(\theta_2)}\cdot \frac{1}{n^{0.5}}\cdot e^{I\cdot(\theta_{f2}(t)-t\log(n))} \\
 &= \frac{e^{I\theta_2}\chi_{L52}(n)+e^{-I\theta_2}\chi_{L53}(n)}{2cos(\theta_2)}\cdot \frac{1}{n^{0.5}}\cdot e^{I\cdot(\frac{1}{2}\cdot t\cdot\log(\frac{t\cdot 5}{2\pi})+...-t\log(n))} \\
 &= \frac{e^{I\theta_2}\chi_{L52}(n)+e^{-I\theta_2}\chi_{L53}(n)}{2cos(\theta_2)}\cdot \frac{1}{n^{0.5}}\cdot e^{I\cdot(t\cdot\log(\sqrt{\frac{t\cdot 5}{2\pi}})+...-t\log(n))} \\
 &= \frac{e^{I\theta_2}\chi_{L52}(n)+e^{-I\theta_2}\chi_{L53}(n)}{2cos(\theta_2)}\cdot \frac{1}{n^{0.5}}\cdot e^{I\cdot(t\cdot\log(\sqrt{\frac{t\cdot 5}{2\pi n^2}})+...)} \\
@@ -2331,7 +2331,7 @@ likewise for the second summation term there are the components
 
 \begin{align}
 e^{I\cdot\theta_{f1}(t)}&\cdot e^{-2\cdot I\cdot\theta_{f1}(t)}\cdot\frac{1}{2cos(\theta_2)} \cdot \frac{e^{I\theta_2}\chi_{L52}(n)+e^{-I\theta_2}\chi_{L53}(n)}{n^{(1-(0.5+I\cdot t))}} \nonumber \\
-&= \frac{e^{I\theta_2}\chi_{L52}(n)+e^{-I\theta_2}\chi_{L53}(n)}{2cos(\theta_2)}\cdot \frac{1}{n^{0.5}}\cdot e^{I\cdot(-\theta_{f1}(t)+t\log(n))} \\
+&= \frac{e^{I\theta_2}\chi_{L52}(n)+e^{-I\theta_2}\chi_{L53}(n)}{2cos(\theta_2)}\cdot \frac{1}{n^{0.5}}\cdot e^{I\cdot(-\theta_{f2}(t)+t\log(n))} \\
 &= \frac{e^{I\theta_2}\chi_{L52}(n)+e^{-I\theta_2}\chi_{L53}(n)}{2cos(\theta_2)}\cdot \frac{1}{n^{0.5}}\cdot e^{-I\cdot(-\frac{1}{2}\cdot t\cdot\log(\frac{t\cdot 5}{2\pi})+...+t\log(n))} \\
 &= \frac{e^{I\theta_2}\chi_{L52}(n)+e^{-I\theta_2}\chi_{L53}(n)}{2cos(\theta_2)}\cdot \frac{1}{n^{0.5}}\cdot e^{I\cdot(-t\cdot\log(\sqrt{\frac{t\cdot 5}{2\pi}})+...+t\log(n))} \\
 &= \frac{e^{I\theta_2}\chi_{L52}(n)+e^{-I\theta_2}\chi_{L53}(n)}{2cos(\theta_2)}\cdot \frac{1}{n^{0.5}}\cdot e^{I\cdot(-t\cdot\log(\sqrt{\frac{t\cdot 5}{2\pi n^2}})+...)} \\
@@ -2348,11 +2348,11 @@ Figures 18, 20, 22 pair with figures 17, 19 and 21 respectively in illustrating 
 
 (iii) $s=(0.5+I\cdot 749995,0.5+I\cdot 750005)$ 
 
-following the final 3 steps of the fourier analysis procedure described earlier in this paper. The averaging of the central region inverse fourier transforms over different spectral length (85%-100% of the available n~150,000 grid) helps reduce spectral leakage particularly for closely separated non-trivial zeroes on the critical line [11] is spectral filtering and splicing provides a useful improvement in approximating the fourier transform of the true Riemann-Siegel Z function.  
+following the final 3 steps of the fourier analysis procedure described earlier in this paper. The averaging of the central region inverse fourier transforms over different spectral length (85%-100% of the available n~150,000 grid) helps reduce spectral leakage particularly for closely separated non-trivial zeroes on the critical line [11]. This spectral filtering and splicing provides a useful improvement in approximating the fourier transform of the true Riemann-Siegel Z function.  
 
 It can be seen from figures 18, 20 and 22 
 
-(i) in the top graph of each figure there is excellent visual overlap of the true grid of close approximation of the $f_2(0.5+I\cdot t)$ Riemann-Siegel Z function values with the partial Euler Product based approximation after (i) spectral filtering, conjugate symmetry reflaction, imputing two imaginary zero points and averaging (100+) inverse fourier transforms of different length (n~127500 to n~150,000) in the central $t=\pm5$ region of the examined function and (ii) spline interpolation between the fiited fourier grid to estimate the position of the non-trivial zeroes.
+(i) in the top graph of each figure there is excellent visual overlap of the true grid of close approximation of the $f_2(0.5+I\cdot t)$ Riemann-Siegel Z function values with the partial Euler Product based approximation after (i) spectral filtering, conjugate symmetry reflaction, imputing two imaginary zero points and averaging (100+) inverse fourier transforms of different length (n~127,500 to n~150,000) in the central $t=\pm5$ region of the examined function and (ii) spline interpolation between the fiited fourier grid to estimate the position of the non-trivial zeroes.
 
 (ii) in the bottom graph of each figure the magnitude of the errors in the approximation with respect to the tapered Dirichlet Series approximation using second quiescent region function values are shown and generally the approximation errors of the partial Euler product etimates are observed to reduce as the inspected t interval is further away from the real axis.
 
@@ -3091,7 +3091,7 @@ plot(seq(749994.9,750005.1,l=103),Re(agg_hybrid[seq(1,102001,l=103)])-Re(dfZi$V2
 ## Conclusions 
 
 
-The above fourier analysis steps on the partial Euler product components of the zeroth order Riemann-Siegel formula spectral filtering, phase conjugate reflection, imputation of zero imaginary parts for two fourier components, using truncation lengths of $1.25N_1$ and averaging of the inverse fourier transform results under different spectrum widths leads to a robust partial Euler Product based approximations of the Riemann-Siegel Z function analogues on the critical line (away from the real axis) which are useful for examining L-function and Davenport-Heilbronn function non-trivial zeroes. 
+The above demonstrated fourier analysis steps on the partial Euler product components of the zeroth order Riemann-Siegel formula of spectral filtering, phase conjugate reflection, imputation of zero imaginary parts for two fourier components, using truncation lengths of $1.25N_1$ and averaging of the inverse fourier transform results under different spectrum widths has been shown to lead to robust partial Euler Product based approximations of the Riemann-Siegel Z function analogues on the critical line (away from the real axis) which are useful for examining L-function and Davenport-Heilbronn function non-trivial zeroes. 
 
 
 
