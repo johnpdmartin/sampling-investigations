@@ -1951,11 +1951,11 @@ For the Riemann-Siegel Z function analogue the fourier transform components aris
 
 Figures 7, 10 and 12 respectively for the following intervals around the real axis 
 
-(i) $s=(2-I\cdot 750,0.5+I\cdot 750)$, 
+(i) $s=(2-I\cdot 750,2+I\cdot 750)$, 
 
-(ii) $s=(2.3-I\cdot 750,0.9+I\cdot 750)$ and 
+(ii) $s=(2.3-I\cdot 750,2.3+I\cdot 750)$ and 
 
-(iii) $s=(1.7-I\cdot 750,0.1+I\cdot 750)$ 
+(iii) $s=(1.7-I\cdot 750,1.7+I\cdot 750)$ 
 
 display the individual fourier transforms of the spectra of the two components of the zeroth order Riemann-Siegel formula approximation of the Riemann-Siegel Z function using partial Euler Products truncated at the first quiescent region as defined in equation (16). Shown in the
 
@@ -2001,11 +2001,11 @@ following the fourth step of the fourier analysis procedure described earlier in
 
 In the righthand panels of figures 8, 9, 11 and 13, the approximation error (real(spectrally filtered, spliced inverse fourier transform based approximation)-real(Z)) is displayed for the entire span of the input spectra
 
-(i) $s=(2-I\cdot 750,0.5+I\cdot 750)$ 
+(i) $s=(2-I\cdot 750,2+I\cdot 750)$ 
 
-(ii) $s=(2.3-I\cdot 750,0.9+I\cdot 750)$ and 
+(ii) $s=(2.3-I\cdot 750,2.3+I\cdot 750)$ and 
 
-(iii) $s=(1.7-I\cdot 750,0.1+I\cdot 750)$ 
+(iii) $s=(1.7-I\cdot 750,1.7+I\cdot 750)$ 
 
 and there are clear error peaks that can be associated with discontinuous changes in $P_{min}$. The errors at each end $\pm750$ occur due to the rectangular window used for the input spectra. 
 
@@ -2020,7 +2020,7 @@ It can be seen from figures 8, 9, 11 and 12
 
 ### Numerical performance issues with the partial Euler Product approximation
 
-For the 2-13-1.1-c3-0-2 L-function, when fourier analysis for the interval $s=(2.5-I\cdot 750,0.5+I\cdot 750)$ was attempted the magnitude of the peaks in the input spectra near t=0, of one of the Riemann-Siegel formula using a minimum prime set to 537 exceeded $2^{10}$. Such large peaks prevented the R language based fourier transform code to successfully conduct fourier analysis. Hence the lower value of $\sigma=2.3$ (rather than 2.5) was used in the presented analysis where the largest peak had a magnitude of only 300.
+For the 2-13-1.1-c3-0-2 L-function, when fourier analysis for the interval $s=(2.5-I\cdot 750,2.5+I\cdot 750)$ was attempted the magnitude of the peaks in the input spectra near t=0, of one of the Riemann-Siegel formula using a minimum prime set to 537 exceeded $2^{10}$. Such large peaks prevented the R language based fourier transform code to successfully conduct fourier analysis. Hence the lower value of $\sigma=2.3$ (rather than 2.5) was used in the presented analysis where the largest peak had a magnitude of only 300.
 
 \clearpage
 
