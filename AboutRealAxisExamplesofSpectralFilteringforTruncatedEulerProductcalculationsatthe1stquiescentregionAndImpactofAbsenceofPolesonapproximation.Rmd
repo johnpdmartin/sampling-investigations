@@ -17,7 +17,7 @@ knitr::opts_chunk$set(echo = FALSE)
 <!-- https://stackoverflow.com/questions/41655383/r-markdown-similar-feature-to-newcommand-in-latex/41664105 -->
 \newcommand{\mychi}{\raisebox{0pt}[1ex][1ex]{$\chi$}}
 
-## DRAFT Executive summary 
+## Executive summary 
 
 For L-functions without poles on the real axis, truncated partial Euler Product based approximations of the Riemann Siegel Z analogue function spectrally filtered (and averaged over different spectra widths) using fourier analysis (n~150,000) of finite intervals $\Delta t=(-750,750)$ along the imaginary co-ordinate of the complex plane can produce useful approximations (without nuisance discontinuities) via the fixed truncation length condition $1.25\cdot \sqrt{(\frac{750}{2\pi})^d\cdot N_C}$ (compared to the varying truncation length $1.25\cdot \sqrt{(\frac{t}{2\pi})^d\cdot N_C}$ used as $t \rightarrow \infty$) across the critical strip. In this paper the averaging step in the fourier analysis is not performed as the non-trivial zeroes are well spaced near the real axis for the investigated L-functions without poles and the corresponding measured approximation errors of the final algorithm are sufficiently small in the central interval of the fourier analysis.  
 
@@ -81,8 +81,8 @@ The partial Euler Product analogues of the first and second terms [1-3] in equat
 For L-functions across the complex plane $s=\sigma+I\cdot t$
 
 \begin{align}
-EP_{RS1,L}(s,\beta) &= e^{I\cdot \theta_{extL}(s)} \prod_{p=2}^{P \le (\lfloor\beta\cdot\sqrt{(\frac{t}{2\pi})^d\cdot N_C}\rfloor)} F_{p,L}(p^{-(s)})^{-1}  \\
-EP_{RS2,L}(s,\beta) &= e^{I\cdot \theta_{extL}(s)}\cdot\mychi(s) \cdot \prod_{p=2}^{P\le(\lfloor\beta\cdot\sqrt{(\frac{t}{2\pi})^d\cdot N_C}\rfloor)} F_{p,L}(p^{-(k-s)})^{-1} 
+EP_{RS1,extL}(s,\beta) &= e^{I\cdot \theta_{extL}(s)} \prod_{p=2}^{P \le (\lfloor\beta\cdot\sqrt{(\frac{t}{2\pi})^d\cdot N_C}\rfloor)} F_{p,L}(p^{-(s)})^{-1}  \\
+EP_{RS2,extL}(s,\beta) &= e^{I\cdot \theta_{extL}(s)}\cdot\mychi(s) \cdot \prod_{p=2}^{P\le(\lfloor\beta\cdot\sqrt{(\frac{t}{2\pi})^d\cdot N_C}\rfloor)} F_{p,L}(p^{-(k-s)})^{-1} 
 \end{align}
 
 where (i) $F_{p,L}(p^{-(s)})^{-1}$ are the Euler factors of the L-function and (ii) $\beta \ge 1$ is a hyperparameter multiplicative factor included to adjust the primes included in the Euler product(s) for the purpose of reducing the effects of spectral leakage when used in conjunction fourier analysis of these partial Euler product(s). In this paper, $\beta=1.25$ will be used.  
@@ -93,7 +93,7 @@ This paper also illustrates a counterexample in the appendix, that the following
 
 \textbf{\color{blue}Partial Euler Product based zeroth order Riemann-Siegel formula fourier analysis procedure across the critical plane}
 
-For the case of a L-function using both $EP_{RS1,L}(s,\beta)$ and $EP_{RS2,L}(s,\beta)$ calculations
+For the case of a L-function using both $EP_{RS1,extL}(s,\beta)$ and $EP_{RS2,extL}(s,\beta)$ calculations
 
 \begin{enumerate}
 \item Obtain a maximum discrete spectrum sample $\Delta t = (t_0-750,t_0+750)$, spacing 0.01, $n\sim 150,000$ for both $EP_{RS1,extL}(s,1.25)$ and $EP_{RS2,extL}(s,1.25)$. Using truncation at $1.25\cdot N_1$ rather than $N_1$ to reduce spectral leakage from unwanted higher frequency components [1-3].
@@ -108,7 +108,7 @@ where \begin{verbatim}fft_plusZ\end{verbatim} is the discrete fourier transform 
 \item use interpolation of the final fitted results (spacing 0.01) onto a fine interpolation grid (spacing 0.00001) to estimate non-trivial zero positions. This step is not used in this paper as the non-trivial zeroes are widely spaced compared to the fourier sample grid in the examined intervals.
 \end{enumerate}
 
-On the critical line $k+I\cdot t$, the simpler spectral filtering and splicing algorithm described in [3] is employed as only one component $EP_{RS1,L}(k+I\cdot t,\beta)$ or $EP_{RS2,L}(k+I\cdot t,\beta)$ is then needed and conjugate symmetry reflection imputation is employed to complete the improved fourier transform approximation. As noted in [3], the advantage of using the Riemann-Siegel Z function analogue for fourier analysis is that the above splicing specification only involves n the sample length.
+On the critical line $k+I\cdot t$, the simpler spectral filtering and splicing algorithm described in [3] is employed as only one component $EP_{RS1,extL}(k+I\cdot t,\beta)$ or $EP_{RS2,extL}(k+I\cdot t,\beta)$ is then needed and conjugate symmetry reflection imputation is employed to complete the improved fourier transform approximation. As noted in [3], the advantage of using the Riemann-Siegel Z function analogue for fourier analysis is that the above splicing specification only involves n the sample length.
 
 The input discrete spectra samples are calculated using Pari-GP [10] and the fourier transforms, inverse fourier transforms, spectral filtering and graphing is performed using R [11] and RStudio IDE [12]. The Rmd version of this paper contains the r script used in producing the fourier analysis and graphs.
 
@@ -131,7 +131,6 @@ The globally convergent integral form of the $L(\mychi{(3,2)},s)$ L function can
 
 The functional equation for the the  $L(\mychi{(3,2)},s)$ L-function is given by
 
-log(3)*(1/2-(res+I*t))+log(Pi)*(-1/2+(res+I*t))+lngamma(((1-(res+I*t))+1)/2)-lngamma(((res+I*t)+1)/2)
 \begin{equation}
 L(\mychi{(3,2)},s) = \left[3^{1/2-s}\pi^{(s-1/2)}\frac{\Gamma((2-s)/2)}{\Gamma(s+1)}\right]\cdot L(\mychi{(3,2)},1-s) 
 \end{equation}
@@ -139,7 +138,7 @@ L(\mychi{(3,2)},s) = \left[3^{1/2-s}\pi^{(s-1/2)}\frac{\Gamma((2-s)/2)}{\Gamma(s
 The (normalised) extended Riemann Siegel Theta function for the  $L(\mychi{(3,2)},s)$ L-function is given by
 
 \begin{align}
-\theta_{normext\mychi{(3,2)}}(s) &= -\frac{1}{2}imag\left[(1/2-s)\cdot \log(3)\cdot(s-1/2)\cdot\log(\pi)+lngamma((2-s)/2)-lngamma(s+1)\right]
+\theta_{normext\mychi{(3,2)}}(s) &= -\frac{1}{2}imag\left[(1/2-s)\cdot \log(3)+(s-1/2)\cdot\log(\pi)+\text{lngamma}((2-s)/2)-\text{lngamma(s+1)}\right]
 \end{align}
 
 The $L(\mychi{(3,2)},s)$ L-function is a degree 1 L-function (d=1) and its conductor value is 3 [7]. Hence the first quiescent region of the dirichlet series of $L(\mychi{(3,2)},s)$ is given by
@@ -157,7 +156,7 @@ Z_{extL(\mychi{(3,2)})}(s) = e^{I\theta_{normext\mychi{(3,2)}}(s)}L(\mychi{(3,2)
 and the zeroth order Riemann-Siegel formula for the Riemann-Siegel Z function analogue of $L(\mychi{(3,2)},s)$ L-function using partial Euler products is used as the basis of the approximation
 
 \begin{align}
-Z_{extL(\mychi{(3,2)})}(s)_{EP} &\approx EP_{RS1,L(\mychi{(3,2)})}(s,\beta=1.25) \nonumber \\ &+ EP_{RS2,L(\mychi{(3,2)})}(s,\beta=1.25) + ... \qquad t \rightarrow \infty
+Z_{extL(\mychi{(3,2)})}(s)_{EP} &\approx EP_{RS1,extL(\mychi{(3,2)})}(s,\beta=1.25) \nonumber \\ &+ EP_{RS2,extL(\mychi{(3,2)})}(s,\beta=1.25) + ... \qquad t \rightarrow \infty
 \end{align}
 
 using (i) equations (8) & (9) and the known Euler factors  [7] of the $L(\mychi{(3,2)},s)$ L-function and (ii) $\beta=1.25$ is a small cushion factor in the truncation length of the included primes that is empirically observed to improve the quality of the fourier transform components of the finite Euler product arising nearby $N_1$ [2,3]. For the Riemann-Siegel Z function analogue the fourier transform components arising nearby $N_1$ are the fourier transform components namely surrounding (and including) the DC (zero) angular frequency.
@@ -172,11 +171,11 @@ Figures 1, 3 and 5 respectively for the following intervals around the real axis
 
 display the individual fourier transforms of the spectra of the two components of the zeroth order Riemann-Siegel formula approximation of the Riemann-Siegel Z function using partial Euler Products truncated at the first quiescent region as defined in equation (16). Shown in the
 
-(lefthand panel top row); $EP_{RS1,L(\mychi{(3,2)})}(s,\beta=1.25)$
+(lefthand panel top row); $EP_{RS1,extL(\mychi{(3,2)})}(s,\beta=1.25)$
 
 (lefthand panel middle row); $Z_{L(\mychi{(3,2)})}(s)$ - true Riemann-Siegel Z function
 
-(lefthand panel bottom row); $EP_{RS2,L(\mychi{(3,2)})}(s,\beta=1.25)$
+(lefthand panel bottom row); $EP_{RS2,extL(\mychi{(3,2)})}(s,\beta=1.25)$
 
 The long tails in the top and bottom rows of the lefthand panel fourier spectra arise from high frequencies generated by the finite Euler product that do not exist in finite Dirichlet Series of the same truncation length.
 
@@ -190,7 +189,7 @@ On the top and bottom rows of the righthand panels are spectrally filtered fouri
 
 As indicated by the red vertical lines there are broad spectral features which can be successfully captured by the assignment of the pair of bounds $\pm\frac{1}{2}(\log(UB/\pi/2\cdot 3),\log(LB/\pi/2\cdot 3))$, $\pm\frac{1}{2}(\log(UB/\pi/2\cdot 3/2^2),\log(LB/\pi/2\cdot 3/2^2))$ where UB=750,LB=-750 corresponding to the range of t values collected in the spectrum for figures 1, 3 and 5. 
 
-Figures 2, 4, 6 pair with figures 1, 3 and 5 respectively in illustrating in the lefthand panels, the performance of the averaged inverse fourier transform for the central regions compared to the real (imaginary) parts of the true Riemann-Siegel Z function shown in magenta (cyan) at the fourier grid spacing 0.01. That is, in the lefthand panels of figures 2, 4, 6 the following interval is displayed for five different values of the minimum prime in partial Euler product calculation $P_{min}=\left\lfloor 1.25\cdot \max\left(\{1,2,3,5,23\},\sqrt{(\frac{t}{2\pi})^d\cdot N_C}\right)\right\rfloor$ with each row (top to bottom) respectively belonging to the minimum prime value \{1,2,3,5,23\} which is active when t=0.
+Figures 2, 4, 6 pair with figures 1, 3 and 5 respectively in illustrating in the lefthand panels, the performance of the averaged inverse fourier transform for the central regions compared to the real (imaginary) parts of the true Riemann-Siegel Z function shown in magenta (cyan) at the fourier grid spacing 0.01. That is, in the lefthand panels of figures 2, 4, 6 the following interval is displayed for five different values of the minimum prime in partial Euler product calculation $P_{min}=\left\lfloor  \max\left(\{1,2,3,5,23\},1.25\cdot\sqrt{(\frac{t}{2\pi})^d\cdot N_C}\right)\right\rfloor$ with each row (top to bottom) respectively belonging to the minimum prime value \{1,2,3,5,23\} which is active when t=0.
 
 (i) $s=(0.5-I\cdot 40,0.5+I\cdot 40)$ 
 
@@ -227,11 +226,11 @@ It can be seen from figures 2, 4 and 6
 # Riemann-Siegel Z function of L32 function on critical line
 # values recorded every .01 spacing in interval [-750,+750]
 
-dfZ=read.csv("/home/john/pari/ZL32_res_p5_0_m750_p750_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
+dfZ=read.csv("/home/john/pari/aboutrealaxis/ZL32_res_p5_0_m750_p750_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
 dfZ$V2=as.numeric(gsub(" ","",dfZ$V2));
 dfZ=dfZ[order(as.numeric(dfZ$V1)),]
 
-dfZi=read.csv("/home/john/pari/ZL32_res_p5_0_m750_p750_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
+dfZi=read.csv("/home/john/pari/aboutrealaxis/ZL32_res_p5_0_m750_p750_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
 dfZi$V2=as.numeric(gsub(" ","",dfZi$V2));
 dfZi=dfZi[order(as.numeric(dfZi$V1)),]
 
@@ -242,11 +241,11 @@ fft_zeta_Zfn =  stats::fft(dfZ$V2+1i*dfZi$V2)
 #EP(sigma+i*t)*exp(i*theta)
 #using minimum 23 primes in prodeuler pari-gp function
 
-dfplusZ=read.csv("/home/john/pari/ZL32plus_EP_res_p5_0_m750_p750_23upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
+dfplusZ=read.csv("/home/john/pari/aboutrealaxis/ZL32plus_EP_res_p5_0_m750_p750_23upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
 dfplusZ$V2=as.numeric(gsub(" ","",dfplusZ$V2));
 dfplusZ=dfplusZ[order(as.numeric(dfplusZ$V1)),]
 
-dfplusZi=read.csv("/home/john/pari/ZL32plus_EP_res_p5_0_m750_p750_23upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
+dfplusZi=read.csv("/home/john/pari/aboutrealaxis/ZL32plus_EP_res_p5_0_m750_p750_23upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
 dfplusZi$V2=as.numeric(gsub(" ","",dfplusZi$V2));
 dfplusZi=dfplusZi[order(as.numeric(dfplusZi$V1)),]
 
@@ -269,11 +268,11 @@ n=lenf2
 #EP(1-(sigma+i*t))*chi(sigma+i*t)*exp(i*theta)
 #using minimum 23 primes in prodeuler pari-gp function
 
-dfminusZ=read.csv("/home/john/pari/ZL32minus_EP_res_p5_0_m750_p750_23upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
+dfminusZ=read.csv("/home/john/pari/aboutrealaxis/ZL32minus_EP_res_p5_0_m750_p750_23upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
 dfminusZ$V2=as.numeric(gsub(" ","",dfminusZ$V2));
 dfminusZ=dfminusZ[order(as.numeric(dfminusZ$V1)),]
 
-dfminusZi=read.csv("/home/john/pari/ZL32minus_EP_res_p5_0_m750_p750_23upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
+dfminusZi=read.csv("/home/john/pari/aboutrealaxis/ZL32minus_EP_res_p5_0_m750_p750_23upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
 dfminusZi$V2=as.numeric(gsub(" ","",dfminusZi$V2));
 dfminusZi=dfminusZi[order(as.numeric(dfminusZi$V1)),]
 
@@ -363,17 +362,17 @@ abline(v=1/2*log((max_freq)/pi/2*3/c(1:2)^2)-0,col=rgb(1,0,0,0.3))
 
 \clearpage
 
-```{r Zfnchi32Lfunctionoveraninterval_anditsfouriertransform_0_pm750, echo=FALSE, fig.cap="Lefthand panel - True Z function shown in magenta (cyan) for real (imaginary) parts and spectral filtered based EP approximation shown in black (blue) for real (imaginary) parts, Right hand panel - Error in the real(Z) EP approximation. A comparison of the Riemann-Siegel Z function analogue of the L(\\mychi{(3,2)},s) L-function and spectrally filtered partial Euler Product (using truncation at $\\max (P,\\sqrt{((\\frac{t}{2\\pi})^1\\cdot 3}) $) in the complex plane at $\\sigma=0.5$ for the interval t=(-750,750) where $P_{min}={1,2,3,5,23}$ for rows 1-5. ", out.width = c("49%","49%"), fig.show = "hold",  fig.height=3.8, warning=FALSE, cache=TRUE}
+```{r Zfnchi32Lfunctionoveraninterval_anditsfouriertransform_0_pm750, echo=FALSE, fig.cap="Lefthand panel - True Z function shown in magenta (cyan) for real (imaginary) parts and spectral filtered based EP approximation shown in black (blue) for real (imaginary) parts, Right hand panel - Error in the real(Z) EP approximation. A comparison of the Riemann-Siegel Z function analogue of the L(\\mychi{(3,2)},s) L-function and spectrally filtered partial Euler Product (using truncation at $\\max (P,1.25\\cdot\\sqrt{((\\frac{t}{2\\pi})^1\\cdot 3}) $) in the complex plane at $\\sigma=0.5$ for the interval t=(-750,750) where $P_{min}={1,2,3,5,23}$ for rows 1-5. ", out.width = c("49%","49%"), fig.show = "hold",  fig.height=3.8, warning=FALSE, cache=TRUE}
 
 
 # Riemann-Siegel Z function of L32 function on critical line
 # values recorded every .01 spacing in interval [-750,+750]
 
-dfZ=read.csv("/home/john/pari/ZL32_res_p5_0_m750_p750_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
+dfZ=read.csv("/home/john/pari/aboutrealaxis/ZL32_res_p5_0_m750_p750_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
 dfZ$V2=as.numeric(gsub(" ","",dfZ$V2));
 dfZ=dfZ[order(as.numeric(dfZ$V1)),]
 
-dfZi=read.csv("/home/john/pari/ZL32_res_p5_0_m750_p750_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
+dfZi=read.csv("/home/john/pari/aboutrealaxis/ZL32_res_p5_0_m750_p750_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
 dfZi$V2=as.numeric(gsub(" ","",dfZi$V2));
 dfZi=dfZi[order(as.numeric(dfZi$V1)),]
 
@@ -383,11 +382,11 @@ dfZi=dfZi[order(as.numeric(dfZi$V1)),]
 #EP(sigma+i*t)*exp(i*theta)
 #using 0 extra integers in prodeuler pari-gp function
 
-dfplusZ=read.csv("/home/john/pari/ZL32plus_EP_res_p5_0_m750_p750_0extra_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
+dfplusZ=read.csv("/home/john/pari/aboutrealaxis/ZL32plus_EP_res_p5_0_m750_p750_0extra_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
 dfplusZ$V2=as.numeric(gsub(" ","",dfplusZ$V2));
 dfplusZ=dfplusZ[order(as.numeric(dfplusZ$V1)),]
 
-dfplusZi=read.csv("/home/john/pari/ZL32plus_EP_res_p5_0_m750_p750_0extra_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
+dfplusZi=read.csv("/home/john/pari/aboutrealaxis/ZL32plus_EP_res_p5_0_m750_p750_0extra_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
 dfplusZi$V2=as.numeric(gsub(" ","",dfplusZi$V2));
 dfplusZi=dfplusZi[order(as.numeric(dfplusZi$V1)),]
 
@@ -410,11 +409,11 @@ n=lenf2
 #EP(1-(sigma+i*t))*chi(sigma+i*t)*exp(i*theta)
 #using 0 extra integers in prodeuler pari-gp function
 
-dfminusZ=read.csv("/home/john/pari/ZL32minus_EP_res_p5_0_m750_p750_0extra_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
+dfminusZ=read.csv("/home/john/pari/aboutrealaxis/ZL32minus_EP_res_p5_0_m750_p750_0extra_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
 dfminusZ$V2=as.numeric(gsub(" ","",dfminusZ$V2));
 dfminusZ=dfminusZ[order(as.numeric(dfminusZ$V1)),]
 
-dfminusZi=read.csv("/home/john/pari/ZL32minus_EP_res_p5_0_m750_p750_0extra_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
+dfminusZi=read.csv("/home/john/pari/aboutrealaxis/ZL32minus_EP_res_p5_0_m750_p750_0extra_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
 dfminusZi$V2=as.numeric(gsub(" ","",dfminusZi$V2));
 dfminusZi=dfminusZi[order(as.numeric(dfminusZi$V1)),]
 
@@ -457,11 +456,11 @@ plot(as.numeric(substr(dfreal$V1,1,22)),Re(inv_hybrid)/n-Re(dfZ$V2),typ="l",xlab
 #EP(sigma+i*t)*exp(i*theta)
 #using 0 extra integers in prodeuler pari-gp function
 
-dfplusZ=read.csv("/home/john/pari/ZL32plus_EP_res_p5_0_m750_p750_2upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
+dfplusZ=read.csv("/home/john/pari/aboutrealaxis/ZL32plus_EP_res_p5_0_m750_p750_2upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
 dfplusZ$V2=as.numeric(gsub(" ","",dfplusZ$V2));
 dfplusZ=dfplusZ[order(as.numeric(dfplusZ$V1)),]
 
-dfplusZi=read.csv("/home/john/pari/ZL32plus_EP_res_p5_0_m750_p750_2upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
+dfplusZi=read.csv("/home/john/pari/aboutrealaxis/ZL32plus_EP_res_p5_0_m750_p750_2upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
 dfplusZi$V2=as.numeric(gsub(" ","",dfplusZi$V2));
 dfplusZi=dfplusZi[order(as.numeric(dfplusZi$V1)),]
 
@@ -484,11 +483,11 @@ n=lenf2
 #EP(1-(sigma+i*t))*chi(sigma+i*t)*exp(i*theta)
 #using 0 extra integers in prodeuler pari-gp function
 
-dfminusZ=read.csv("/home/john/pari/ZL32minus_EP_res_p5_0_m750_p750_2upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
+dfminusZ=read.csv("/home/john/pari/aboutrealaxis/ZL32minus_EP_res_p5_0_m750_p750_2upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
 dfminusZ$V2=as.numeric(gsub(" ","",dfminusZ$V2));
 dfminusZ=dfminusZ[order(as.numeric(dfminusZ$V1)),]
 
-dfminusZi=read.csv("/home/john/pari/ZL32minus_EP_res_p5_0_m750_p750_2upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
+dfminusZi=read.csv("/home/john/pari/aboutrealaxis/ZL32minus_EP_res_p5_0_m750_p750_2upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
 dfminusZi$V2=as.numeric(gsub(" ","",dfminusZi$V2));
 dfminusZi=dfminusZi[order(as.numeric(dfminusZi$V1)),]
 
@@ -531,11 +530,11 @@ plot(as.numeric(substr(dfreal$V1,1,22)),Re(inv_hybrid)/n-Re(dfZ$V2),typ="l",xlab
 #EP(sigma+i*t)*exp(i*theta)
 #using 0 extra integers in prodeuler pari-gp function
 
-dfplusZ=read.csv("/home/john/pari/ZL32plus_EP_res_p5_0_m750_p750_3upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
+dfplusZ=read.csv("/home/john/pari/aboutrealaxis/ZL32plus_EP_res_p5_0_m750_p750_3upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
 dfplusZ$V2=as.numeric(gsub(" ","",dfplusZ$V2));
 dfplusZ=dfplusZ[order(as.numeric(dfplusZ$V1)),]
 
-dfplusZi=read.csv("/home/john/pari/ZL32plus_EP_res_p5_0_m750_p750_3upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
+dfplusZi=read.csv("/home/john/pari/aboutrealaxis/ZL32plus_EP_res_p5_0_m750_p750_3upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
 dfplusZi$V2=as.numeric(gsub(" ","",dfplusZi$V2));
 dfplusZi=dfplusZi[order(as.numeric(dfplusZi$V1)),]
 
@@ -558,11 +557,11 @@ n=lenf2
 #EP(1-(sigma+i*t))*chi(sigma+i*t)*exp(i*theta)
 #using 0 extra integers in prodeuler pari-gp function
 
-dfminusZ=read.csv("/home/john/pari/ZL32minus_EP_res_p5_0_m750_p750_3upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
+dfminusZ=read.csv("/home/john/pari/aboutrealaxis/ZL32minus_EP_res_p5_0_m750_p750_3upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
 dfminusZ$V2=as.numeric(gsub(" ","",dfminusZ$V2));
 dfminusZ=dfminusZ[order(as.numeric(dfminusZ$V1)),]
 
-dfminusZi=read.csv("/home/john/pari/ZL32minus_EP_res_p5_0_m750_p750_3upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
+dfminusZi=read.csv("/home/john/pari/aboutrealaxis/ZL32minus_EP_res_p5_0_m750_p750_3upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
 dfminusZi$V2=as.numeric(gsub(" ","",dfminusZi$V2));
 dfminusZi=dfminusZi[order(as.numeric(dfminusZi$V1)),]
 
@@ -606,11 +605,11 @@ plot(as.numeric(substr(dfreal$V1,1,22)),Re(inv_hybrid)/n-Re(dfZ$V2),typ="l",xlab
 #EP(sigma+i*t)*exp(i*theta)
 #using 0 extra integers in prodeuler pari-gp function
 
-dfplusZ=read.csv("/home/john/pari/ZL32plus_EP_res_p5_0_m750_p750_5upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
+dfplusZ=read.csv("/home/john/pari/aboutrealaxis/ZL32plus_EP_res_p5_0_m750_p750_5upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
 dfplusZ$V2=as.numeric(gsub(" ","",dfplusZ$V2));
 dfplusZ=dfplusZ[order(as.numeric(dfplusZ$V1)),]
 
-dfplusZi=read.csv("/home/john/pari/ZL32plus_EP_res_p5_0_m750_p750_5upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
+dfplusZi=read.csv("/home/john/pari/aboutrealaxis/ZL32plus_EP_res_p5_0_m750_p750_5upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
 dfplusZi$V2=as.numeric(gsub(" ","",dfplusZi$V2));
 dfplusZi=dfplusZi[order(as.numeric(dfplusZi$V1)),]
 
@@ -633,11 +632,11 @@ n=lenf2
 #EP(1-(sigma+i*t))*chi(sigma+i*t)*exp(i*theta)
 #using 0 extra integers in prodeuler pari-gp function
 
-dfminusZ=read.csv("/home/john/pari/ZL32minus_EP_res_p5_0_m750_p750_5upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
+dfminusZ=read.csv("/home/john/pari/aboutrealaxis/ZL32minus_EP_res_p5_0_m750_p750_5upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
 dfminusZ$V2=as.numeric(gsub(" ","",dfminusZ$V2));
 dfminusZ=dfminusZ[order(as.numeric(dfminusZ$V1)),]
 
-dfminusZi=read.csv("/home/john/pari/ZL32minus_EP_res_p5_0_m750_p750_5upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
+dfminusZi=read.csv("/home/john/pari/aboutrealaxis/ZL32minus_EP_res_p5_0_m750_p750_5upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
 dfminusZi$V2=as.numeric(gsub(" ","",dfminusZi$V2));
 dfminusZi=dfminusZi[order(as.numeric(dfminusZi$V1)),]
 
@@ -699,11 +698,11 @@ text(x=50,y=-0.5,"t value when next prime is included in EP")
 #EP(sigma+i*t)*exp(i*theta)
 #using 0 extra integers in prodeuler pari-gp function
 
-dfplusZ=read.csv("/home/john/pari/ZL32plus_EP_res_p5_0_m750_p750_23upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
+dfplusZ=read.csv("/home/john/pari/aboutrealaxis/ZL32plus_EP_res_p5_0_m750_p750_23upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
 dfplusZ$V2=as.numeric(gsub(" ","",dfplusZ$V2));
 dfplusZ=dfplusZ[order(as.numeric(dfplusZ$V1)),]
 
-dfplusZi=read.csv("/home/john/pari/ZL32plus_EP_res_p5_0_m750_p750_23upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
+dfplusZi=read.csv("/home/john/pari/aboutrealaxis/ZL32plus_EP_res_p5_0_m750_p750_23upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
 dfplusZi$V2=as.numeric(gsub(" ","",dfplusZi$V2));
 dfplusZi=dfplusZi[order(as.numeric(dfplusZi$V1)),]
 
@@ -726,11 +725,11 @@ n=lenf2
 #EP(1-(sigma+i*t))*chi(sigma+i*t)*exp(i*theta)
 #using 0 extra integers in prodeuler pari-gp function
 
-dfminusZ=read.csv("/home/john/pari/ZL32minus_EP_res_p5_0_m750_p750_23upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
+dfminusZ=read.csv("/home/john/pari/aboutrealaxis/ZL32minus_EP_res_p5_0_m750_p750_23upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
 dfminusZ$V2=as.numeric(gsub(" ","",dfminusZ$V2));
 dfminusZ=dfminusZ[order(as.numeric(dfminusZ$V1)),]
 
-dfminusZi=read.csv("/home/john/pari/ZL32minus_EP_res_p5_0_m750_p750_23upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
+dfminusZi=read.csv("/home/john/pari/aboutrealaxis/ZL32minus_EP_res_p5_0_m750_p750_23upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
 dfminusZi$V2=as.numeric(gsub(" ","",dfminusZi$V2));
 dfminusZi=dfminusZi[order(as.numeric(dfminusZi$V1)),]
 
@@ -783,11 +782,11 @@ plot(as.numeric(substr(dfreal$V1,1,22)),Re(inv_hybrid)/n-Re(dfZ$V2),typ="l",xlab
 # Riemann-Siegel Z function of L32 function on critical line
 # values recorded every .01 spacing in interval [-750,+750]
 
-dfZ=read.csv("/home/john/pari/ZL32_res_p9_0_m750_p750_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
+dfZ=read.csv("/home/john/pari/aboutrealaxis/ZL32_res_p9_0_m750_p750_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
 dfZ$V2=as.numeric(gsub(" ","",dfZ$V2));
 dfZ=dfZ[order(as.numeric(dfZ$V1)),]
 
-dfZi=read.csv("/home/john/pari/ZL32_res_p9_0_m750_p750_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
+dfZi=read.csv("/home/john/pari/aboutrealaxis/ZL32_res_p9_0_m750_p750_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
 dfZi$V2=as.numeric(gsub(" ","",dfZi$V2));
 dfZi=dfZi[order(as.numeric(dfZi$V1)),]
 
@@ -798,11 +797,11 @@ fft_zeta_Zfn =  stats::fft(dfZ$V2+1i*dfZi$V2)
 #EP(sigma+i*t)*exp(i*theta)
 #using minimum 23 primes in prodeuler pari-gp function
 
-dfplusZ=read.csv("/home/john/pari/ZL32plus_EP_res_p9_0_m750_p750_23upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
+dfplusZ=read.csv("/home/john/pari/aboutrealaxis/ZL32plus_EP_res_p9_0_m750_p750_23upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
 dfplusZ$V2=as.numeric(gsub(" ","",dfplusZ$V2));
 dfplusZ=dfplusZ[order(as.numeric(dfplusZ$V1)),]
 
-dfplusZi=read.csv("/home/john/pari/ZL32plus_EP_res_p9_0_m750_p750_23upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
+dfplusZi=read.csv("/home/john/pari/aboutrealaxis/ZL32plus_EP_res_p9_0_m750_p750_23upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
 dfplusZi$V2=as.numeric(gsub(" ","",dfplusZi$V2));
 dfplusZi=dfplusZi[order(as.numeric(dfplusZi$V1)),]
 
@@ -825,11 +824,11 @@ n=lenf2
 #EP(1-(sigma+i*t))*chi(sigma+i*t)*exp(i*theta)
 #using minimum 23 primes in prodeuler pari-gp function
 
-dfminusZ=read.csv("/home/john/pari/ZL32minus_EP_res_p9_0_m750_p750_23upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
+dfminusZ=read.csv("/home/john/pari/aboutrealaxis/ZL32minus_EP_res_p9_0_m750_p750_23upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
 dfminusZ$V2=as.numeric(gsub(" ","",dfminusZ$V2));
 dfminusZ=dfminusZ[order(as.numeric(dfminusZ$V1)),]
 
-dfminusZi=read.csv("/home/john/pari/ZL32minus_EP_res_p9_0_m750_p750_23upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
+dfminusZi=read.csv("/home/john/pari/aboutrealaxis/ZL32minus_EP_res_p9_0_m750_p750_23upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
 dfminusZi$V2=as.numeric(gsub(" ","",dfminusZi$V2));
 dfminusZi=dfminusZi[order(as.numeric(dfminusZi$V1)),]
 
@@ -925,17 +924,17 @@ abline(v=1/2*log((max_freq)/pi/2*3/c(1:2)^2)-0,col=rgb(1,0,0,0.3))
 \clearpage
 
 
-```{r Zfnchi32Lfunctionoveraninterval_anditsfouriertransform_0_pm750_sigma_0.9, echo=FALSE, fig.cap="Lefthand panel - True Z function shown in magenta (cyan) for real (imaginary) parts and spectral filtered based EP approximation shown in black (blue) for real (imaginary) parts, Right hand panel - Error in the real(Z) EP approximation. A comparison of the Riemann-Siegel Z function analogue of the L(\\mychi{(3,2)},s) L-function and spectrally filtered partial Euler Product (using truncation at $\\max (P,\\sqrt{((\\frac{t}{2\\pi})^1\\cdot 3}) $) in the complex plane at $\\sigma=0.9$ for the interval t=(-750,750) where $P_{min}={1,2,3,5,23}$ for rows 1-5. ", out.width = c("49%","49%"), fig.show = "hold",  fig.height=3.8, warning=FALSE, cache=TRUE}
+```{r Zfnchi32Lfunctionoveraninterval_anditsfouriertransform_0_pm750_sigma_0.9, echo=FALSE, fig.cap="Lefthand panel - True Z function shown in magenta (cyan) for real (imaginary) parts and spectral filtered based EP approximation shown in black (blue) for real (imaginary) parts, Right hand panel - Error in the real(Z) EP approximation. A comparison of the Riemann-Siegel Z function analogue of the L(\\mychi{(3,2)},s) L-function and spectrally filtered partial Euler Product (using truncation at $\\max (P,1.25\\cdot\\sqrt{((\\frac{t}{2\\pi})^1\\cdot 3}) $) in the complex plane at $\\sigma=0.9$ for the interval t=(-750,750) where $P_{min}={1,2,3,5,23}$ for rows 1-5. ", out.width = c("49%","49%"), fig.show = "hold",  fig.height=3.8, warning=FALSE, cache=TRUE}
 
 
 # Riemann-Siegel Z function of L32 function on critical line
 # values recorded every .01 spacing in interval [-750,+750]
 
-dfZ=read.csv("/home/john/pari/ZL32_res_p9_0_m750_p750_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
+dfZ=read.csv("/home/john/pari/aboutrealaxis/ZL32_res_p9_0_m750_p750_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
 dfZ$V2=as.numeric(gsub(" ","",dfZ$V2));
 dfZ=dfZ[order(as.numeric(dfZ$V1)),]
 
-dfZi=read.csv("/home/john/pari/ZL32_res_p9_0_m750_p750_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
+dfZi=read.csv("/home/john/pari/aboutrealaxis/ZL32_res_p9_0_m750_p750_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
 dfZi$V2=as.numeric(gsub(" ","",dfZi$V2));
 dfZi=dfZi[order(as.numeric(dfZi$V1)),]
 
@@ -945,11 +944,11 @@ dfZi=dfZi[order(as.numeric(dfZi$V1)),]
 #EP(sigma+i*t)*exp(i*theta)
 #using 0 extra integers in prodeuler pari-gp function
 
-dfplusZ=read.csv("/home/john/pari/ZL32plus_EP_res_p9_0_m750_p750_0extra_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
+dfplusZ=read.csv("/home/john/pari/aboutrealaxis/ZL32plus_EP_res_p9_0_m750_p750_0extra_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
 dfplusZ$V2=as.numeric(gsub(" ","",dfplusZ$V2));
 dfplusZ=dfplusZ[order(as.numeric(dfplusZ$V1)),]
 
-dfplusZi=read.csv("/home/john/pari/ZL32plus_EP_res_p9_0_m750_p750_0extra_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
+dfplusZi=read.csv("/home/john/pari/aboutrealaxis/ZL32plus_EP_res_p9_0_m750_p750_0extra_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
 dfplusZi$V2=as.numeric(gsub(" ","",dfplusZi$V2));
 dfplusZi=dfplusZi[order(as.numeric(dfplusZi$V1)),]
 
@@ -972,11 +971,11 @@ n=lenf2
 #EP(1-(sigma+i*t))*chi(sigma+i*t)*exp(i*theta)
 #using 0 extra integers in prodeuler pari-gp function
 
-dfminusZ=read.csv("/home/john/pari/ZL32minus_EP_res_p9_0_m750_p750_0extra_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
+dfminusZ=read.csv("/home/john/pari/aboutrealaxis/ZL32minus_EP_res_p9_0_m750_p750_0extra_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
 dfminusZ$V2=as.numeric(gsub(" ","",dfminusZ$V2));
 dfminusZ=dfminusZ[order(as.numeric(dfminusZ$V1)),]
 
-dfminusZi=read.csv("/home/john/pari/ZL32minus_EP_res_p9_0_m750_p750_0extra_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
+dfminusZi=read.csv("/home/john/pari/aboutrealaxis/ZL32minus_EP_res_p9_0_m750_p750_0extra_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
 dfminusZi$V2=as.numeric(gsub(" ","",dfminusZi$V2));
 dfminusZi=dfminusZi[order(as.numeric(dfminusZi$V1)),]
 
@@ -1019,11 +1018,11 @@ plot(as.numeric(substr(dfreal$V1,1,22)),Re(inv_hybrid)/n-Re(dfZ$V2),typ="l",xlab
 #EP(sigma+i*t)*exp(i*theta)
 #using 0 extra integers in prodeuler pari-gp function
 
-dfplusZ=read.csv("/home/john/pari/ZL32plus_EP_res_p9_0_m750_p750_2upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
+dfplusZ=read.csv("/home/john/pari/aboutrealaxis/ZL32plus_EP_res_p9_0_m750_p750_2upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
 dfplusZ$V2=as.numeric(gsub(" ","",dfplusZ$V2));
 dfplusZ=dfplusZ[order(as.numeric(dfplusZ$V1)),]
 
-dfplusZi=read.csv("/home/john/pari/ZL32plus_EP_res_p9_0_m750_p750_2upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
+dfplusZi=read.csv("/home/john/pari/aboutrealaxis/ZL32plus_EP_res_p9_0_m750_p750_2upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
 dfplusZi$V2=as.numeric(gsub(" ","",dfplusZi$V2));
 dfplusZi=dfplusZi[order(as.numeric(dfplusZi$V1)),]
 
@@ -1046,11 +1045,11 @@ n=lenf2
 #EP(1-(sigma+i*t))*chi(sigma+i*t)*exp(i*theta)
 #using 0 extra integers in prodeuler pari-gp function
 
-dfminusZ=read.csv("/home/john/pari/ZL32minus_EP_res_p9_0_m750_p750_2upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
+dfminusZ=read.csv("/home/john/pari/aboutrealaxis/ZL32minus_EP_res_p9_0_m750_p750_2upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
 dfminusZ$V2=as.numeric(gsub(" ","",dfminusZ$V2));
 dfminusZ=dfminusZ[order(as.numeric(dfminusZ$V1)),]
 
-dfminusZi=read.csv("/home/john/pari/ZL32minus_EP_res_p9_0_m750_p750_2upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
+dfminusZi=read.csv("/home/john/pari/aboutrealaxis/ZL32minus_EP_res_p9_0_m750_p750_2upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
 dfminusZi$V2=as.numeric(gsub(" ","",dfminusZi$V2));
 dfminusZi=dfminusZi[order(as.numeric(dfminusZi$V1)),]
 
@@ -1093,11 +1092,11 @@ plot(as.numeric(substr(dfreal$V1,1,22)),Re(inv_hybrid)/n-Re(dfZ$V2),typ="l",xlab
 #EP(sigma+i*t)*exp(i*theta)
 #using 0 extra integers in prodeuler pari-gp function
 
-dfplusZ=read.csv("/home/john/pari/ZL32plus_EP_res_p9_0_m750_p750_3upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
+dfplusZ=read.csv("/home/john/pari/aboutrealaxis/ZL32plus_EP_res_p9_0_m750_p750_3upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
 dfplusZ$V2=as.numeric(gsub(" ","",dfplusZ$V2));
 dfplusZ=dfplusZ[order(as.numeric(dfplusZ$V1)),]
 
-dfplusZi=read.csv("/home/john/pari/ZL32plus_EP_res_p9_0_m750_p750_3upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
+dfplusZi=read.csv("/home/john/pari/aboutrealaxis/ZL32plus_EP_res_p9_0_m750_p750_3upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
 dfplusZi$V2=as.numeric(gsub(" ","",dfplusZi$V2));
 dfplusZi=dfplusZi[order(as.numeric(dfplusZi$V1)),]
 
@@ -1120,11 +1119,11 @@ n=lenf2
 #EP(1-(sigma+i*t))*chi(sigma+i*t)*exp(i*theta)
 #using 0 extra integers in prodeuler pari-gp function
 
-dfminusZ=read.csv("/home/john/pari/ZL32minus_EP_res_p9_0_m750_p750_3upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
+dfminusZ=read.csv("/home/john/pari/aboutrealaxis/ZL32minus_EP_res_p9_0_m750_p750_3upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
 dfminusZ$V2=as.numeric(gsub(" ","",dfminusZ$V2));
 dfminusZ=dfminusZ[order(as.numeric(dfminusZ$V1)),]
 
-dfminusZi=read.csv("/home/john/pari/ZL32minus_EP_res_p9_0_m750_p750_3upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
+dfminusZi=read.csv("/home/john/pari/aboutrealaxis/ZL32minus_EP_res_p9_0_m750_p750_3upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
 dfminusZi$V2=as.numeric(gsub(" ","",dfminusZi$V2));
 dfminusZi=dfminusZi[order(as.numeric(dfminusZi$V1)),]
 
@@ -1168,11 +1167,11 @@ plot(as.numeric(substr(dfreal$V1,1,22)),Re(inv_hybrid)/n-Re(dfZ$V2),typ="l",xlab
 #EP(sigma+i*t)*exp(i*theta)
 #using 0 extra integers in prodeuler pari-gp function
 
-dfplusZ=read.csv("/home/john/pari/ZL32plus_EP_res_p9_0_m750_p750_5upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
+dfplusZ=read.csv("/home/john/pari/aboutrealaxis/ZL32plus_EP_res_p9_0_m750_p750_5upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
 dfplusZ$V2=as.numeric(gsub(" ","",dfplusZ$V2));
 dfplusZ=dfplusZ[order(as.numeric(dfplusZ$V1)),]
 
-dfplusZi=read.csv("/home/john/pari/ZL32plus_EP_res_p9_0_m750_p750_5upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
+dfplusZi=read.csv("/home/john/pari/aboutrealaxis/ZL32plus_EP_res_p9_0_m750_p750_5upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
 dfplusZi$V2=as.numeric(gsub(" ","",dfplusZi$V2));
 dfplusZi=dfplusZi[order(as.numeric(dfplusZi$V1)),]
 
@@ -1195,11 +1194,11 @@ n=lenf2
 #EP(1-(sigma+i*t))*chi(sigma+i*t)*exp(i*theta)
 #using 0 extra integers in prodeuler pari-gp function
 
-dfminusZ=read.csv("/home/john/pari/ZL32minus_EP_res_p9_0_m750_p750_5upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
+dfminusZ=read.csv("/home/john/pari/aboutrealaxis/ZL32minus_EP_res_p9_0_m750_p750_5upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
 dfminusZ$V2=as.numeric(gsub(" ","",dfminusZ$V2));
 dfminusZ=dfminusZ[order(as.numeric(dfminusZ$V1)),]
 
-dfminusZi=read.csv("/home/john/pari/ZL32minus_EP_res_p9_0_m750_p750_5upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
+dfminusZi=read.csv("/home/john/pari/aboutrealaxis/ZL32minus_EP_res_p9_0_m750_p750_5upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
 dfminusZi$V2=as.numeric(gsub(" ","",dfminusZi$V2));
 dfminusZi=dfminusZi[order(as.numeric(dfminusZi$V1)),]
 
@@ -1261,11 +1260,11 @@ text(x=50,y=-0.5,"t value when next prime is included in EP")
 #EP(sigma+i*t)*exp(i*theta)
 #using 0 extra integers in prodeuler pari-gp function
 
-dfplusZ=read.csv("/home/john/pari/ZL32plus_EP_res_p9_0_m750_p750_23upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
+dfplusZ=read.csv("/home/john/pari/aboutrealaxis/ZL32plus_EP_res_p9_0_m750_p750_23upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
 dfplusZ$V2=as.numeric(gsub(" ","",dfplusZ$V2));
 dfplusZ=dfplusZ[order(as.numeric(dfplusZ$V1)),]
 
-dfplusZi=read.csv("/home/john/pari/ZL32plus_EP_res_p9_0_m750_p750_23upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
+dfplusZi=read.csv("/home/john/pari/aboutrealaxis/ZL32plus_EP_res_p9_0_m750_p750_23upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
 dfplusZi$V2=as.numeric(gsub(" ","",dfplusZi$V2));
 dfplusZi=dfplusZi[order(as.numeric(dfplusZi$V1)),]
 
@@ -1288,11 +1287,11 @@ n=lenf2
 #EP(1-(sigma+i*t))*chi(sigma+i*t)*exp(i*theta)
 #using 0 extra integers in prodeuler pari-gp function
 
-dfminusZ=read.csv("/home/john/pari/ZL32minus_EP_res_p9_0_m750_p750_23upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
+dfminusZ=read.csv("/home/john/pari/aboutrealaxis/ZL32minus_EP_res_p9_0_m750_p750_23upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
 dfminusZ$V2=as.numeric(gsub(" ","",dfminusZ$V2));
 dfminusZ=dfminusZ[order(as.numeric(dfminusZ$V1)),]
 
-dfminusZi=read.csv("/home/john/pari/ZL32minus_EP_res_p9_0_m750_p750_23upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
+dfminusZi=read.csv("/home/john/pari/aboutrealaxis/ZL32minus_EP_res_p9_0_m750_p750_23upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
 dfminusZi$V2=as.numeric(gsub(" ","",dfminusZi$V2));
 dfminusZi=dfminusZi[order(as.numeric(dfminusZi$V1)),]
 
@@ -1344,11 +1343,11 @@ plot(as.numeric(substr(dfreal$V1,1,22)),Re(inv_hybrid)/n-Re(dfZ$V2),typ="l",xlab
 # Riemann-Siegel Z function of L32 function on critical line
 # values recorded every .01 spacing in interval [-750,+750]
 
-dfZ=read.csv("/home/john/pari/ZL32_res_p1_0_m750_p750_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
+dfZ=read.csv("/home/john/pari/aboutrealaxis/ZL32_res_p1_0_m750_p750_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
 dfZ$V2=as.numeric(gsub(" ","",dfZ$V2));
 dfZ=dfZ[order(as.numeric(dfZ$V1)),]
 
-dfZi=read.csv("/home/john/pari/ZL32_res_p1_0_m750_p750_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
+dfZi=read.csv("/home/john/pari/aboutrealaxis/ZL32_res_p1_0_m750_p750_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
 dfZi$V2=as.numeric(gsub(" ","",dfZi$V2));
 dfZi=dfZi[order(as.numeric(dfZi$V1)),]
 
@@ -1359,11 +1358,11 @@ fft_zeta_Zfn =  stats::fft(dfZ$V2+1i*dfZi$V2)
 #EP(sigma+i*t)*exp(i*theta)
 #using minimum 23 primes in prodeuler pari-gp function
 
-dfplusZ=read.csv("/home/john/pari/ZL32plus_EP_res_p1_0_m750_p750_23upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
+dfplusZ=read.csv("/home/john/pari/aboutrealaxis/ZL32plus_EP_res_p1_0_m750_p750_23upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
 dfplusZ$V2=as.numeric(gsub(" ","",dfplusZ$V2));
 dfplusZ=dfplusZ[order(as.numeric(dfplusZ$V1)),]
 
-dfplusZi=read.csv("/home/john/pari/ZL32plus_EP_res_p1_0_m750_p750_23upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
+dfplusZi=read.csv("/home/john/pari/aboutrealaxis/ZL32plus_EP_res_p1_0_m750_p750_23upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
 dfplusZi$V2=as.numeric(gsub(" ","",dfplusZi$V2));
 dfplusZi=dfplusZi[order(as.numeric(dfplusZi$V1)),]
 
@@ -1386,11 +1385,11 @@ n=lenf2
 #EP(1-(sigma+i*t))*chi(sigma+i*t)*exp(i*theta)
 #using minimum 23 primes in prodeuler pari-gp function
 
-dfminusZ=read.csv("/home/john/pari/ZL32minus_EP_res_p1_0_m750_p750_23upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
+dfminusZ=read.csv("/home/john/pari/aboutrealaxis/ZL32minus_EP_res_p1_0_m750_p750_23upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
 dfminusZ$V2=as.numeric(gsub(" ","",dfminusZ$V2));
 dfminusZ=dfminusZ[order(as.numeric(dfminusZ$V1)),]
 
-dfminusZi=read.csv("/home/john/pari/ZL32minus_EP_res_p1_0_m750_p750_23upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
+dfminusZi=read.csv("/home/john/pari/aboutrealaxis/ZL32minus_EP_res_p1_0_m750_p750_23upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
 dfminusZi$V2=as.numeric(gsub(" ","",dfminusZi$V2));
 dfminusZi=dfminusZi[order(as.numeric(dfminusZi$V1)),]
 
@@ -1488,17 +1487,17 @@ abline(v=1/2*log((max_freq)/pi/2*3/c(1:2)^2)-0,col=rgb(1,0,0,0.3))
 \clearpage
 
 
-```{r Zfnchi32Lfunctionoveraninterval_anditsfouriertransform_0_pm750_sigma_0.1, echo=FALSE, fig.cap="Lefthand panel - True Z function shown in magenta (cyan) for real (imaginary) parts and spectral filtered based EP approximation shown in black (blue) for real (imaginary) parts, Right hand panel - Error in the real(Z) EP approximation. A comparison of the Riemann-Siegel Z function analogue of the L(\\mychi{(3,2)},s) L-function and spectrally filtered partial Euler Product (using truncation at $\\max (P,\\sqrt{((\\frac{t}{2\\pi})^1\\cdot 3}) $) in the complex plane at $\\sigma=0.1$ for the interval t=(-750,750) where $P_{min}={1,2,3,5,23}$ for rows 1-5. ", out.width = c("49%","49%"), fig.show = "hold",  fig.height=3.8, warning=FALSE, cache=TRUE}
+```{r Zfnchi32Lfunctionoveraninterval_anditsfouriertransform_0_pm750_sigma_0.1, echo=FALSE, fig.cap="Lefthand panel - True Z function shown in magenta (cyan) for real (imaginary) parts and spectral filtered based EP approximation shown in black (blue) for real (imaginary) parts, Right hand panel - Error in the real(Z) EP approximation. A comparison of the Riemann-Siegel Z function analogue of the L(\\mychi{(3,2)},s) L-function and spectrally filtered partial Euler Product (using truncation at $\\max (P,1.25\\cdot\\sqrt{((\\frac{t}{2\\pi})^1\\cdot 3}) $) in the complex plane at $\\sigma=0.1$ for the interval t=(-750,750) where $P_{min}={1,2,3,5,23}$ for rows 1-5. ", out.width = c("49%","49%"), fig.show = "hold",  fig.height=3.8, warning=FALSE, cache=TRUE}
 
 
 # Riemann-Siegel Z function of L32 function on critical line
 # values recorded every .01 spacing in interval [-750,+750]
 
-dfZ=read.csv("/home/john/pari/ZL32_res_p1_0_m750_p750_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
+dfZ=read.csv("/home/john/pari/aboutrealaxis/ZL32_res_p1_0_m750_p750_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
 dfZ$V2=as.numeric(gsub(" ","",dfZ$V2));
 dfZ=dfZ[order(as.numeric(dfZ$V1)),]
 
-dfZi=read.csv("/home/john/pari/ZL32_res_p1_0_m750_p750_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
+dfZi=read.csv("/home/john/pari/aboutrealaxis/ZL32_res_p1_0_m750_p750_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
 dfZi$V2=as.numeric(gsub(" ","",dfZi$V2));
 dfZi=dfZi[order(as.numeric(dfZi$V1)),]
 
@@ -1508,11 +1507,11 @@ dfZi=dfZi[order(as.numeric(dfZi$V1)),]
 #EP(sigma+i*t)*exp(i*theta)
 #using 0 extra integers in prodeuler pari-gp function
 
-dfplusZ=read.csv("/home/john/pari/ZL32plus_EP_res_p1_0_m750_p750_0extra_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
+dfplusZ=read.csv("/home/john/pari/aboutrealaxis/ZL32plus_EP_res_p1_0_m750_p750_0extra_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
 dfplusZ$V2=as.numeric(gsub(" ","",dfplusZ$V2));
 dfplusZ=dfplusZ[order(as.numeric(dfplusZ$V1)),]
 
-dfplusZi=read.csv("/home/john/pari/ZL32plus_EP_res_p1_0_m750_p750_0extra_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
+dfplusZi=read.csv("/home/john/pari/aboutrealaxis/ZL32plus_EP_res_p1_0_m750_p750_0extra_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
 dfplusZi$V2=as.numeric(gsub(" ","",dfplusZi$V2));
 dfplusZi=dfplusZi[order(as.numeric(dfplusZi$V1)),]
 
@@ -1535,11 +1534,11 @@ n=lenf2
 #EP(1-(sigma+i*t))*chi(sigma+i*t)*exp(i*theta)
 #using 0 extra integers in prodeuler pari-gp function
 
-dfminusZ=read.csv("/home/john/pari/ZL32minus_EP_res_p1_0_m750_p750_0extra_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
+dfminusZ=read.csv("/home/john/pari/aboutrealaxis/ZL32minus_EP_res_p1_0_m750_p750_0extra_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
 dfminusZ$V2=as.numeric(gsub(" ","",dfminusZ$V2));
 dfminusZ=dfminusZ[order(as.numeric(dfminusZ$V1)),]
 
-dfminusZi=read.csv("/home/john/pari/ZL32minus_EP_res_p1_0_m750_p750_0extra_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
+dfminusZi=read.csv("/home/john/pari/aboutrealaxis/ZL32minus_EP_res_p1_0_m750_p750_0extra_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
 dfminusZi$V2=as.numeric(gsub(" ","",dfminusZi$V2));
 dfminusZi=dfminusZi[order(as.numeric(dfminusZi$V1)),]
 
@@ -1582,11 +1581,11 @@ plot(as.numeric(substr(dfreal$V1,1,22)),Re(inv_hybrid)/n-Re(dfZ$V2),typ="l",xlab
 #EP(sigma+i*t)*exp(i*theta)
 #using 0 extra integers in prodeuler pari-gp function
 
-dfplusZ=read.csv("/home/john/pari/ZL32plus_EP_res_p1_0_m750_p750_2upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
+dfplusZ=read.csv("/home/john/pari/aboutrealaxis/ZL32plus_EP_res_p1_0_m750_p750_2upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
 dfplusZ$V2=as.numeric(gsub(" ","",dfplusZ$V2));
 dfplusZ=dfplusZ[order(as.numeric(dfplusZ$V1)),]
 
-dfplusZi=read.csv("/home/john/pari/ZL32plus_EP_res_p1_0_m750_p750_2upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
+dfplusZi=read.csv("/home/john/pari/aboutrealaxis/ZL32plus_EP_res_p1_0_m750_p750_2upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
 dfplusZi$V2=as.numeric(gsub(" ","",dfplusZi$V2));
 dfplusZi=dfplusZi[order(as.numeric(dfplusZi$V1)),]
 
@@ -1609,11 +1608,11 @@ n=lenf2
 #EP(1-(sigma+i*t))*chi(sigma+i*t)*exp(i*theta)
 #using 0 extra integers in prodeuler pari-gp function
 
-dfminusZ=read.csv("/home/john/pari/ZL32minus_EP_res_p1_0_m750_p750_2upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
+dfminusZ=read.csv("/home/john/pari/aboutrealaxis/ZL32minus_EP_res_p1_0_m750_p750_2upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
 dfminusZ$V2=as.numeric(gsub(" ","",dfminusZ$V2));
 dfminusZ=dfminusZ[order(as.numeric(dfminusZ$V1)),]
 
-dfminusZi=read.csv("/home/john/pari/ZL32minus_EP_res_p1_0_m750_p750_2upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
+dfminusZi=read.csv("/home/john/pari/aboutrealaxis/ZL32minus_EP_res_p1_0_m750_p750_2upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
 dfminusZi$V2=as.numeric(gsub(" ","",dfminusZi$V2));
 dfminusZi=dfminusZi[order(as.numeric(dfminusZi$V1)),]
 
@@ -1656,11 +1655,11 @@ plot(as.numeric(substr(dfreal$V1,1,22)),Re(inv_hybrid)/n-Re(dfZ$V2),typ="l",xlab
 #EP(sigma+i*t)*exp(i*theta)
 #using 0 extra integers in prodeuler pari-gp function
 
-dfplusZ=read.csv("/home/john/pari/ZL32plus_EP_res_p1_0_m750_p750_3upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
+dfplusZ=read.csv("/home/john/pari/aboutrealaxis/ZL32plus_EP_res_p1_0_m750_p750_3upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
 dfplusZ$V2=as.numeric(gsub(" ","",dfplusZ$V2));
 dfplusZ=dfplusZ[order(as.numeric(dfplusZ$V1)),]
 
-dfplusZi=read.csv("/home/john/pari/ZL32plus_EP_res_p1_0_m750_p750_3upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
+dfplusZi=read.csv("/home/john/pari/aboutrealaxis/ZL32plus_EP_res_p1_0_m750_p750_3upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
 dfplusZi$V2=as.numeric(gsub(" ","",dfplusZi$V2));
 dfplusZi=dfplusZi[order(as.numeric(dfplusZi$V1)),]
 
@@ -1683,11 +1682,11 @@ n=lenf2
 #EP(1-(sigma+i*t))*chi(sigma+i*t)*exp(i*theta)
 #using 0 extra integers in prodeuler pari-gp function
 
-dfminusZ=read.csv("/home/john/pari/ZL32minus_EP_res_p1_0_m750_p750_3upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
+dfminusZ=read.csv("/home/john/pari/aboutrealaxis/ZL32minus_EP_res_p1_0_m750_p750_3upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
 dfminusZ$V2=as.numeric(gsub(" ","",dfminusZ$V2));
 dfminusZ=dfminusZ[order(as.numeric(dfminusZ$V1)),]
 
-dfminusZi=read.csv("/home/john/pari/ZL32minus_EP_res_p1_0_m750_p750_3upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
+dfminusZi=read.csv("/home/john/pari/aboutrealaxis/ZL32minus_EP_res_p1_0_m750_p750_3upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
 dfminusZi$V2=as.numeric(gsub(" ","",dfminusZi$V2));
 dfminusZi=dfminusZi[order(as.numeric(dfminusZi$V1)),]
 
@@ -1731,11 +1730,11 @@ plot(as.numeric(substr(dfreal$V1,1,22)),Re(inv_hybrid)/n-Re(dfZ$V2),typ="l",xlab
 #EP(sigma+i*t)*exp(i*theta)
 #using 0 extra integers in prodeuler pari-gp function
 
-dfplusZ=read.csv("/home/john/pari/ZL32plus_EP_res_p1_0_m750_p750_5upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
+dfplusZ=read.csv("/home/john/pari/aboutrealaxis/ZL32plus_EP_res_p1_0_m750_p750_5upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
 dfplusZ$V2=as.numeric(gsub(" ","",dfplusZ$V2));
 dfplusZ=dfplusZ[order(as.numeric(dfplusZ$V1)),]
 
-dfplusZi=read.csv("/home/john/pari/ZL32plus_EP_res_p1_0_m750_p750_5upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
+dfplusZi=read.csv("/home/john/pari/aboutrealaxis/ZL32plus_EP_res_p1_0_m750_p750_5upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
 dfplusZi$V2=as.numeric(gsub(" ","",dfplusZi$V2));
 dfplusZi=dfplusZi[order(as.numeric(dfplusZi$V1)),]
 
@@ -1758,11 +1757,11 @@ n=lenf2
 #EP(1-(sigma+i*t))*chi(sigma+i*t)*exp(i*theta)
 #using 0 extra integers in prodeuler pari-gp function
 
-dfminusZ=read.csv("/home/john/pari/ZL32minus_EP_res_p1_0_m750_p750_5upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
+dfminusZ=read.csv("/home/john/pari/aboutrealaxis/ZL32minus_EP_res_p1_0_m750_p750_5upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
 dfminusZ$V2=as.numeric(gsub(" ","",dfminusZ$V2));
 dfminusZ=dfminusZ[order(as.numeric(dfminusZ$V1)),]
 
-dfminusZi=read.csv("/home/john/pari/ZL32minus_EP_res_p1_0_m750_p750_5upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
+dfminusZi=read.csv("/home/john/pari/aboutrealaxis/ZL32minus_EP_res_p1_0_m750_p750_5upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
 dfminusZi$V2=as.numeric(gsub(" ","",dfminusZi$V2));
 dfminusZi=dfminusZi[order(as.numeric(dfminusZi$V1)),]
 
@@ -1824,11 +1823,11 @@ text(x=50,y=-4,"t value when next prime is included in EP")
 #EP(sigma+i*t)*exp(i*theta)
 #using 0 extra integers in prodeuler pari-gp function
 
-dfplusZ=read.csv("/home/john/pari/ZL32plus_EP_res_p1_0_m750_p750_23upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
+dfplusZ=read.csv("/home/john/pari/aboutrealaxis/ZL32plus_EP_res_p1_0_m750_p750_23upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
 dfplusZ$V2=as.numeric(gsub(" ","",dfplusZ$V2));
 dfplusZ=dfplusZ[order(as.numeric(dfplusZ$V1)),]
 
-dfplusZi=read.csv("/home/john/pari/ZL32plus_EP_res_p1_0_m750_p750_23upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
+dfplusZi=read.csv("/home/john/pari/aboutrealaxis/ZL32plus_EP_res_p1_0_m750_p750_23upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
 dfplusZi$V2=as.numeric(gsub(" ","",dfplusZi$V2));
 dfplusZi=dfplusZi[order(as.numeric(dfplusZi$V1)),]
 
@@ -1851,11 +1850,11 @@ n=lenf2
 #EP(1-(sigma+i*t))*chi(sigma+i*t)*exp(i*theta)
 #using 0 extra integers in prodeuler pari-gp function
 
-dfminusZ=read.csv("/home/john/pari/ZL32minus_EP_res_p1_0_m750_p750_23upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
+dfminusZ=read.csv("/home/john/pari/aboutrealaxis/ZL32minus_EP_res_p1_0_m750_p750_23upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
 dfminusZ$V2=as.numeric(gsub(" ","",dfminusZ$V2));
 dfminusZ=dfminusZ[order(as.numeric(dfminusZ$V1)),]
 
-dfminusZi=read.csv("/home/john/pari/ZL32minus_EP_res_p1_0_m750_p750_23upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
+dfminusZi=read.csv("/home/john/pari/aboutrealaxis/ZL32minus_EP_res_p1_0_m750_p750_23upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
 dfminusZi$V2=as.numeric(gsub(" ","",dfminusZi$V2));
 dfminusZi=dfminusZi[order(as.numeric(dfminusZi$V1)),]
 
@@ -1924,7 +1923,7 @@ L_{13.4.a.a}(s) = -\left[13^{2-s}(2\pi)^{2(s-2)}\frac{\Gamma(4-s)}{\Gamma(s)}\ri
 The (normalised) extended Riemann Siegel Theta function for the 2-13-1.1-c3-0-2 L-function is given by
 
 \begin{align}
-\theta_{normextL13.4.a.a}(s) &= -\frac{1}{2}imag\left[\log\left(log(13)\cdot (2-s)+log(2\pi)\cdot (2(s-2))+lngamma(4-s)-lngamma(s)\right)\right] 
+\theta_{normextL13.4.a.a}(s) &= -\frac{1}{2}imag\left[\log\left(log(13)\cdot (2-s)+log(2\pi)\cdot (2(s-2))+\text{lngamma}(4-s)-\text{lngamma}(s)\right)\right] 
 \end{align}
 
 The 2-13-1.1-c3-0-2 L-function is a degree 2 L-function (d=2) with weight 4 and its conductor value is 13  [7]. Hence the first quiescent region of the dirichlet series of $L_{13.4.a.a}(s)$ is given by
@@ -1942,7 +1941,7 @@ Z_{extL13.4.a.a}(s) = e^{I\theta_{normextL13.4.a.a}(t)}L_{13.4.a.a}(s)
 and the zeroth order Riemann-Siegel formula for the Riemann-Siegel Z function analogue of the 2-13-1.1-c3-0-2 L-function using partial Euler products is used as the basis of the approximation
 
 \begin{align}
-Z_{extL13.4.a.a}(s)_{EP} &\approx EP_{RS1,L_{13.4.a.a}}(s,\beta=1.25) \nonumber \\ &+ EP_{RS2,L_{13.4.a.a}}(s,\beta=1.25) + ... \qquad t \rightarrow \infty
+Z_{extL13.4.a.a}(s)_{EP} &\approx EP_{RS1,extL_{13.4.a.a}}(s,\beta=1.25) \nonumber \\ &+ EP_{RS2,extL_{13.4.a.a}}(s,\beta=1.25) + ... \qquad t \rightarrow \infty
 \end{align}
 
 using (i) equations (8), (9) and the known Euler factors  [7] of the 2-13-1.1-c3-0-2 L-function and (ii) $\beta=1.25$ is a small cushion factor in the truncation length of the included primes that is empirically observed to improve the quality of the fourier transform components of the finite Euler product arising nearby $N_1$ [2,3].
@@ -1959,11 +1958,11 @@ Figures 7, 10 and 12 respectively for the following intervals around the real ax
 
 display the individual fourier transforms of the spectra of the two components of the zeroth order Riemann-Siegel formula approximation of the Riemann-Siegel Z function using partial Euler Products truncated at the first quiescent region as defined in equation (16). Shown in the
 
-(lefthand panel top row); $EP_{RS1,L_{13.4.a.a}}(s,\beta=1.25)$
+(lefthand panel top row); $EP_{RS1,extL_{13.4.a.a}}(s,\beta=1.25)$
 
 (lefthand panel middle row); $Z_{L_{13.4.a.a}}(s)$ - true Riemann-Siegel Z function
 
-(lefthand panel bottom row); $EP_{RS2,L_{13.4.a.a}}(s,\beta=1.25)$
+(lefthand panel bottom row); $EP_{RS2,extL_{13.4.a.a}}(s,\beta=1.25)$
 
 The long tails in the top and bottom rows of the lefthand panel fourier spectra arise from high frequencies generated by the finite Euler product that do not exist in finite Dirichlet Series of the same truncation length.
 
@@ -1983,15 +1982,15 @@ That is, in the lefthand panels of figure 8 the following interval
 
 (i) $s=(2-I\cdot 40,0.5+I\cdot 40)$
 
-is displayed for 3 different values of the minimum prime in partial Euler product calculation $P_{min}=\left\lfloor 1.25\cdot \max\left(\{1,2,3\},\sqrt{(\frac{t}{2\pi})^d\cdot N_C}\right)\right\rfloor$ with each row (top to bottom) respectively belonging to the minimum prime value \{1,2,3\} which is active when t=0.
+is displayed for 3 different values of the minimum prime in partial Euler product calculation $P_{min}=\left\lfloor \max\left(\{1,2,3\},1.25\cdot \sqrt{(\frac{t}{2\pi})^d\cdot N_C}\right)\right\rfloor$ with each row (top to bottom) respectively belonging to the minimum prime value \{1,2,3\} which is active when t=0.
 
 In the lefthand panels of figure 9 the same interval 
 
 (i) $s=(2-I\cdot 40,0.5+I\cdot 40)$
 
-is displayed for 3 different values of the minimum prime in partial Euler product calculation $P_{min}=\left\lfloor 1.25\cdot \max\left(\{50, 430, 537\},\sqrt{(\frac{t}{2\pi})^d\cdot N_C}\right)\right\rfloor$ with each row (top to bottom) respectively belonging to the minimum prime value \{50, 430, 537\} which is active when t=0. 
+is displayed for 3 different values of the minimum prime in partial Euler product calculation $P_{min}=\left\lfloor \max\left(\{50, 430, 537\},1.25\cdot \sqrt{(\frac{t}{2\pi})^d\cdot N_C}\right)\right\rfloor$ with each row (top to bottom) respectively belonging to the minimum prime value \{50, 430, 537\} which is active when t=0. 
 
-In the lefthand panels of figures 11 and 13 the following interval is displayed for four different values of the minimum prime in partial Euler product calculation $P_{min}=\left\lfloor 1.25\cdot \max\left(\{1,2,50,537\},\sqrt{(\frac{t}{2\pi})^d\cdot N_C}\right)\right\rfloor$ with each row (top to bottom) respectively belonging to the minimum prime value \{1,2,50,537\} which is active when t=0.
+In the lefthand panels of figures 11 and 13 the following interval is displayed for four different values of the minimum prime in partial Euler product calculation $P_{min}=\left\lfloor \max\left(\{1,2,50,537\},1.25\cdot \sqrt{(\frac{t}{2\pi})^d\cdot N_C}\right)\right\rfloor$ with each row (top to bottom) respectively belonging to the minimum prime value \{1,2,50,537\} which is active when t=0.
 
 (ii) $s=(2.3-I\cdot 40,0.9+I\cdot 40)$ and 
 
@@ -2031,11 +2030,11 @@ For the 2-13-1.1-c3-0-2 L-function, when fourier analysis for the interval $s=(2
 # Riemann-Siegel Z function of L32 function on critical line
 # values recorded every .01 spacing in interval [-750,+750]
 
-dfZ=read.csv("/home/john/pari/Z13p4aa_res_2p_0_m750_p750_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
+dfZ=read.csv("/home/john/pari/aboutrealaxis/Z13p4aa_res_2p_0_m750_p750_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
 dfZ$V2=as.numeric(gsub(" ","",dfZ$V2));
 dfZ=dfZ[order(as.numeric(dfZ$V1)),]
 
-dfZi=read.csv("/home/john/pari/Z13p4aa_res_2p_0_m750_p750_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
+dfZi=read.csv("/home/john/pari/aboutrealaxis/Z13p4aa_res_2p_0_m750_p750_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
 dfZi$V2=as.numeric(gsub(" ","",dfZi$V2));
 dfZi=dfZi[order(as.numeric(dfZi$V1)),]
 
@@ -2046,11 +2045,11 @@ fft_zeta_Zfn =  stats::fft(dfZ$V2+1i*dfZi$V2)
 #EP(sigma+i*t)*exp(i*theta)
 #using minimum 23 primes in prodeuler pari-gp function
  
- dfplusZ=read.csv("/home/john/pari/Zplus13p4aa_EP_res_2p_0_m750_p750_537upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
+ dfplusZ=read.csv("/home/john/pari/aboutrealaxis/Zplus13p4aa_EP_res_2p_0_m750_p750_537upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
  dfplusZ$V2=as.numeric(gsub(" ","",dfplusZ$V2));
  dfplusZ=dfplusZ[order(as.numeric(dfplusZ$V1)),]
  
- dfplusZi=read.csv("/home/john/pari/Zplus13p4aa_EP_res_2p_0_m750_p750_537upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
+ dfplusZi=read.csv("/home/john/pari/aboutrealaxis/Zplus13p4aa_EP_res_2p_0_m750_p750_537upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
  dfplusZi$V2=as.numeric(gsub(" ","",dfplusZi$V2));
  dfplusZi=dfplusZi[order(as.numeric(dfplusZi$V1)),]
  
@@ -2073,11 +2072,11 @@ fft_zeta_Zfn =  stats::fft(dfZ$V2+1i*dfZi$V2)
  #EP(1-(sigma+i*t))*chi(sigma+i*t)*exp(i*theta)
  #using minimum 23 primes in prodeuler pari-gp function
  
- dfminusZ=read.csv("/home/john/pari/Zminus13p4aa_EP_res_2p_0_m750_p750_537upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
+ dfminusZ=read.csv("/home/john/pari/aboutrealaxis/Zminus13p4aa_EP_res_2p_0_m750_p750_537upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
  dfminusZ$V2=as.numeric(gsub(" ","",dfminusZ$V2));
  dfminusZ=dfminusZ[order(as.numeric(dfminusZ$V1)),]
  
- dfminusZi=read.csv("/home/john/pari/Zminus13p4aa_EP_res_2p_0_m750_p750_537upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
+ dfminusZi=read.csv("/home/john/pari/aboutrealaxis/Zminus13p4aa_EP_res_2p_0_m750_p750_537upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
  dfminusZi$V2=as.numeric(gsub(" ","",dfminusZi$V2));
  dfminusZi=dfminusZi[order(as.numeric(dfminusZi$V1)),]
  
@@ -2168,17 +2167,17 @@ abline(v=1/2*log(((max_freq)/pi/2)^2*13/c(1:2)^2)-0,col=rgb(1,0,0,0.3))
 \clearpage
 
 
-```{r Zfn13p4aaModularFormLfunctionoveraninterval_anditsfouriertransform_0_pm750, echo=FALSE, fig.cap="Lefthand panel - True Z function shown in magenta (cyan) for real (imaginary) parts and spectral filtered based EP approximation shown in black (blue) for real (imaginary) parts, Right hand panel - Error in the real(Z) EP approximation. A comparison of the Riemann-Siegel Z function analogue of the L-function 2-13-1.1-c3-0-2 (LMFDB label) and spectrally filtered partial Euler Product (using truncation at $\\max (P,\\sqrt{((\\frac{t}{2\\pi})^2\\cdot 13}) $) in the complex plane at $\\sigma=2$ for the interval t=(-750,750) where $P_{min}={1,2,3}$ for rows 1-3. ", out.width = c("49%","49%"), fig.show = "hold",  fig.height=5, warning=FALSE, cache=TRUE}
+```{r Zfn13p4aaModularFormLfunctionoveraninterval_anditsfouriertransform_0_pm750, echo=FALSE, fig.cap="Lefthand panel - True Z function shown in magenta (cyan) for real (imaginary) parts and spectral filtered based EP approximation shown in black (blue) for real (imaginary) parts, Right hand panel - Error in the real(Z) EP approximation. A comparison of the Riemann-Siegel Z function analogue of the L-function 2-13-1.1-c3-0-2 (LMFDB label) and spectrally filtered partial Euler Product (using truncation at $\\max (P,1.25\\cdot \\sqrt{((\\frac{t}{2\\pi})^2\\cdot 13}) $) in the complex plane at $\\sigma=2$ for the interval t=(-750,750) where $P_{min}={1,2,3}$ for rows 1-3. ", out.width = c("49%","49%"), fig.show = "hold",  fig.height=5, warning=FALSE, cache=TRUE}
 
 
 # Riemann-Siegel Z function of L32 function on critical line
 # values recorded every .01 spacing in interval [-750,+750]
 
-dfZ=read.csv("/home/john/pari/Z13p4aa_res_2p_0_m750_p750_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
+dfZ=read.csv("/home/john/pari/aboutrealaxis/Z13p4aa_res_2p_0_m750_p750_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
 dfZ$V2=as.numeric(gsub(" ","",dfZ$V2));
 dfZ=dfZ[order(as.numeric(dfZ$V1)),]
 
-dfZi=read.csv("/home/john/pari/Z13p4aa_res_2p_0_m750_p750_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
+dfZi=read.csv("/home/john/pari/aboutrealaxis/Z13p4aa_res_2p_0_m750_p750_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
 dfZi$V2=as.numeric(gsub(" ","",dfZi$V2));
 dfZi=dfZi[order(as.numeric(dfZi$V1)),]
 
@@ -2188,11 +2187,11 @@ dfZi=dfZi[order(as.numeric(dfZi$V1)),]
 #EP(sigma+i*t)*exp(i*theta)
 #using 0 extra integers in prodeuler pari-gp function
 
-dfplusZ=read.csv("/home/john/pari/Zplus13p4aa_EP_res_2p_0_m750_p750_0extra_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
+dfplusZ=read.csv("/home/john/pari/aboutrealaxis/Zplus13p4aa_EP_res_2p_0_m750_p750_0extra_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
 dfplusZ$V2=as.numeric(gsub(" ","",dfplusZ$V2));
 dfplusZ=dfplusZ[order(as.numeric(dfplusZ$V1)),]
 
-dfplusZi=read.csv("/home/john/pari/Zplus13p4aa_EP_res_2p_0_m750_p750_0extra_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
+dfplusZi=read.csv("/home/john/pari/aboutrealaxis/Zplus13p4aa_EP_res_2p_0_m750_p750_0extra_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
 dfplusZi$V2=as.numeric(gsub(" ","",dfplusZi$V2));
 dfplusZi=dfplusZi[order(as.numeric(dfplusZi$V1)),]
 
@@ -2215,11 +2214,11 @@ n=lenf2
 #EP(1-(sigma+i*t))*chi(sigma+i*t)*exp(i*theta)
 #using 0 extra integers in prodeuler pari-gp function
 
-dfminusZ=read.csv("/home/john/pari/Zminus13p4aa_EP_res_2p_0_m750_p750_0extra_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
+dfminusZ=read.csv("/home/john/pari/aboutrealaxis/Zminus13p4aa_EP_res_2p_0_m750_p750_0extra_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
 dfminusZ$V2=as.numeric(gsub(" ","",dfminusZ$V2));
 dfminusZ=dfminusZ[order(as.numeric(dfminusZ$V1)),]
 
-dfminusZi=read.csv("/home/john/pari/Zminus13p4aa_EP_res_2p_0_m750_p750_0extra_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
+dfminusZi=read.csv("/home/john/pari/aboutrealaxis/Zminus13p4aa_EP_res_2p_0_m750_p750_0extra_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
 dfminusZi$V2=as.numeric(gsub(" ","",dfminusZi$V2));
 dfminusZi=dfminusZi[order(as.numeric(dfminusZi$V1)),]
 
@@ -2269,11 +2268,11 @@ plot(as.numeric(substr(dfreal$V1,1,22)),Re(inv_hybrid)/n-Re(dfZ$V2),typ="l",xlab
 #EP(sigma+i*t)*exp(i*theta)
 #using 0 extra integers in prodeuler pari-gp function
 
-dfplusZ=read.csv("/home/john/pari/Zplus13p4aa_EP_res_2p_0_m750_p750_2upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
+dfplusZ=read.csv("/home/john/pari/aboutrealaxis/Zplus13p4aa_EP_res_2p_0_m750_p750_2upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
 dfplusZ$V2=as.numeric(gsub(" ","",dfplusZ$V2));
 dfplusZ=dfplusZ[order(as.numeric(dfplusZ$V1)),]
 
-dfplusZi=read.csv("/home/john/pari/Zplus13p4aa_EP_res_2p_0_m750_p750_2upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
+dfplusZi=read.csv("/home/john/pari/aboutrealaxis/Zplus13p4aa_EP_res_2p_0_m750_p750_2upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
 dfplusZi$V2=as.numeric(gsub(" ","",dfplusZi$V2));
 dfplusZi=dfplusZi[order(as.numeric(dfplusZi$V1)),]
 
@@ -2296,11 +2295,11 @@ n=lenf2
 #EP(1-(sigma+i*t))*chi(sigma+i*t)*exp(i*theta)
 #using 0 extra integers in prodeuler pari-gp function
 
-dfminusZ=read.csv("/home/john/pari/Zminus13p4aa_EP_res_2p_0_m750_p750_2upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
+dfminusZ=read.csv("/home/john/pari/aboutrealaxis/Zminus13p4aa_EP_res_2p_0_m750_p750_2upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
 dfminusZ$V2=as.numeric(gsub(" ","",dfminusZ$V2));
 dfminusZ=dfminusZ[order(as.numeric(dfminusZ$V1)),]
 
-dfminusZi=read.csv("/home/john/pari/Zminus13p4aa_EP_res_2p_0_m750_p750_2upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
+dfminusZi=read.csv("/home/john/pari/aboutrealaxis/Zminus13p4aa_EP_res_2p_0_m750_p750_2upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
 dfminusZi$V2=as.numeric(gsub(" ","",dfminusZi$V2));
 dfminusZi=dfminusZi[order(as.numeric(dfminusZi$V1)),]
 
@@ -2347,11 +2346,11 @@ plot(as.numeric(substr(dfreal$V1,1,22)),Re(inv_hybrid)/n-Re(dfZ$V2),typ="l",xlab
 #EP(sigma+i*t)*exp(i*theta)
 #using 0 extra integers in prodeuler pari-gp function
 
-dfplusZ=read.csv("/home/john/pari/Zplus13p4aa_EP_res_2p_0_m750_p750_3upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
+dfplusZ=read.csv("/home/john/pari/aboutrealaxis/Zplus13p4aa_EP_res_2p_0_m750_p750_3upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
 dfplusZ$V2=as.numeric(gsub(" ","",dfplusZ$V2));
 dfplusZ=dfplusZ[order(as.numeric(dfplusZ$V1)),]
 
-dfplusZi=read.csv("/home/john/pari/Zplus13p4aa_EP_res_2p_0_m750_p750_3upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
+dfplusZi=read.csv("/home/john/pari/aboutrealaxis/Zplus13p4aa_EP_res_2p_0_m750_p750_3upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
 dfplusZi$V2=as.numeric(gsub(" ","",dfplusZi$V2));
 dfplusZi=dfplusZi[order(as.numeric(dfplusZi$V1)),]
 
@@ -2374,11 +2373,11 @@ n=lenf2
 #EP(1-(sigma+i*t))*chi(sigma+i*t)*exp(i*theta)
 #using 0 extra integers in prodeuler pari-gp function
 
-dfminusZ=read.csv("/home/john/pari/Zminus13p4aa_EP_res_2p_0_m750_p750_3upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
+dfminusZ=read.csv("/home/john/pari/aboutrealaxis/Zminus13p4aa_EP_res_2p_0_m750_p750_3upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
 dfminusZ$V2=as.numeric(gsub(" ","",dfminusZ$V2));
 dfminusZ=dfminusZ[order(as.numeric(dfminusZ$V1)),]
 
-dfminusZi=read.csv("/home/john/pari/Zminus13p4aa_EP_res_2p_0_m750_p750_3upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
+dfminusZi=read.csv("/home/john/pari/aboutrealaxis/Zminus13p4aa_EP_res_2p_0_m750_p750_3upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
 dfminusZi$V2=as.numeric(gsub(" ","",dfminusZi$V2));
 dfminusZi=dfminusZi[order(as.numeric(dfminusZi$V1)),]
 
@@ -2424,7 +2423,7 @@ plot(as.numeric(substr(dfreal$V1,1,22)),Re(inv_hybrid)/n-Re(dfZ$V2),typ="l",xlab
 ```
 
 
-```{r Zfn13p4aaModularFormLfunctionoveraninterval_anditsfouriertransform_0_pm750_pt2, echo=FALSE, fig.cap="Lefthand panel - True Z function shown in magenta (cyan) for real (imaginary) parts and spectral filtered based EP approximation shown in black (blue) for real (imaginary) parts, Right hand panel - Error in the real(Z) EP approximation. A comparison of the Riemann-Siegel Z function analogue of the L-function 2-13-1.1-c3-0-2 (LMFDB label) and spectrally filtered partial Euler Product (using truncation at $\\max (P,\\sqrt{((\\frac{t}{2\\pi})^2\\cdot 13}) $) in the complex plane at $\\sigma=2$ for the interval t=(-750,750) where $P_{min}={50,430,537}$ for rows 1-3. ", out.width = c("49%","49%"), fig.show = "hold",  fig.height=5, warning=FALSE, cache=TRUE}
+```{r Zfn13p4aaModularFormLfunctionoveraninterval_anditsfouriertransform_0_pm750_pt2, echo=FALSE, fig.cap="Lefthand panel - True Z function shown in magenta (cyan) for real (imaginary) parts and spectral filtered based EP approximation shown in black (blue) for real (imaginary) parts, Right hand panel - Error in the real(Z) EP approximation. A comparison of the Riemann-Siegel Z function analogue of the L-function 2-13-1.1-c3-0-2 (LMFDB label) and spectrally filtered partial Euler Product (using truncation at $\\max (P,1.25\\cdot\\sqrt{((\\frac{t}{2\\pi})^2\\cdot 13}) $) in the complex plane at $\\sigma=2$ for the interval t=(-750,750) where $P_{min}={50,430,537}$ for rows 1-3. ", out.width = c("49%","49%"), fig.show = "hold",  fig.height=5, warning=FALSE, cache=TRUE}
 
 
 #Riemann-Siegel Z function of truncated Euler product at first quiescent region
@@ -2432,11 +2431,11 @@ plot(as.numeric(substr(dfreal$V1,1,22)),Re(inv_hybrid)/n-Re(dfZ$V2),typ="l",xlab
 #EP(sigma+i*t)*exp(i*theta)
 #using 0 extra integers in prodeuler pari-gp function
 
-dfplusZ=read.csv("/home/john/pari/Zplus13p4aa_EP_res_2p_0_m750_p750_50upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
+dfplusZ=read.csv("/home/john/pari/aboutrealaxis/Zplus13p4aa_EP_res_2p_0_m750_p750_50upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
 dfplusZ$V2=as.numeric(gsub(" ","",dfplusZ$V2));
 dfplusZ=dfplusZ[order(as.numeric(dfplusZ$V1)),]
 
-dfplusZi=read.csv("/home/john/pari/Zplus13p4aa_EP_res_2p_0_m750_p750_50upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
+dfplusZi=read.csv("/home/john/pari/aboutrealaxis/Zplus13p4aa_EP_res_2p_0_m750_p750_50upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
 dfplusZi$V2=as.numeric(gsub(" ","",dfplusZi$V2));
 dfplusZi=dfplusZi[order(as.numeric(dfplusZi$V1)),]
 
@@ -2459,11 +2458,11 @@ n=lenf2
 #EP(1-(sigma+i*t))*chi(sigma+i*t)*exp(i*theta)
 #using 0 extra integers in prodeuler pari-gp function
 
-dfminusZ=read.csv("/home/john/pari/Zminus13p4aa_EP_res_2p_0_m750_p750_50upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
+dfminusZ=read.csv("/home/john/pari/aboutrealaxis/Zminus13p4aa_EP_res_2p_0_m750_p750_50upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
 dfminusZ$V2=as.numeric(gsub(" ","",dfminusZ$V2));
 dfminusZ=dfminusZ[order(as.numeric(dfminusZ$V1)),]
 
-dfminusZi=read.csv("/home/john/pari/Zminus13p4aa_EP_res_2p_0_m750_p750_50upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
+dfminusZi=read.csv("/home/john/pari/aboutrealaxis/Zminus13p4aa_EP_res_2p_0_m750_p750_50upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
 dfminusZi$V2=as.numeric(gsub(" ","",dfminusZi$V2));
 dfminusZi=dfminusZi[order(as.numeric(dfminusZi$V1)),]
 
@@ -2511,11 +2510,11 @@ text(x=0,y=-.65,"t value when next prime is included in EP",cex=0.7)
 #EP(sigma+i*t)*exp(i*theta)
 #using 0 extra integers in prodeuler pari-gp function
 
-dfplusZ=read.csv("/home/john/pari/Zplus13p4aa_EP_res_2p_0_m750_p750_430upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
+dfplusZ=read.csv("/home/john/pari/aboutrealaxis/Zplus13p4aa_EP_res_2p_0_m750_p750_430upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
 dfplusZ$V2=as.numeric(gsub(" ","",dfplusZ$V2));
 dfplusZ=dfplusZ[order(as.numeric(dfplusZ$V1)),]
 
-dfplusZi=read.csv("/home/john/pari/Zplus13p4aa_EP_res_2p_0_m750_p750_430upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
+dfplusZi=read.csv("/home/john/pari/aboutrealaxis/Zplus13p4aa_EP_res_2p_0_m750_p750_430upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
 dfplusZi$V2=as.numeric(gsub(" ","",dfplusZi$V2));
 dfplusZi=dfplusZi[order(as.numeric(dfplusZi$V1)),]
 
@@ -2538,11 +2537,11 @@ n=lenf2
 #EP(1-(sigma+i*t))*chi(sigma+i*t)*exp(i*theta)
 #using 0 extra integers in prodeuler pari-gp function
 
-dfminusZ=read.csv("/home/john/pari/Zminus13p4aa_EP_res_2p_0_m750_p750_430upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
+dfminusZ=read.csv("/home/john/pari/aboutrealaxis/Zminus13p4aa_EP_res_2p_0_m750_p750_430upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
 dfminusZ$V2=as.numeric(gsub(" ","",dfminusZ$V2));
 dfminusZ=dfminusZ[order(as.numeric(dfminusZ$V1)),]
 
-dfminusZi=read.csv("/home/john/pari/Zminus13p4aa_EP_res_2p_0_m750_p750_430upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
+dfminusZi=read.csv("/home/john/pari/aboutrealaxis/Zminus13p4aa_EP_res_2p_0_m750_p750_430upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
 dfminusZi$V2=as.numeric(gsub(" ","",dfminusZi$V2));
 dfminusZi=dfminusZi[order(as.numeric(dfminusZi$V1)),]
 
@@ -2591,11 +2590,11 @@ text(x=0,y=-.6,"t value when next prime is included in EP",cex=0.7)
 #EP(sigma+i*t)*exp(i*theta)
 #using 0 extra integers in prodeuler pari-gp function
 
-dfplusZ=read.csv("/home/john/pari/Zplus13p4aa_EP_res_2p_0_m750_p750_537upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
+dfplusZ=read.csv("/home/john/pari/aboutrealaxis/Zplus13p4aa_EP_res_2p_0_m750_p750_537upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
 dfplusZ$V2=as.numeric(gsub(" ","",dfplusZ$V2));
 dfplusZ=dfplusZ[order(as.numeric(dfplusZ$V1)),]
 
-dfplusZi=read.csv("/home/john/pari/Zplus13p4aa_EP_res_2p_0_m750_p750_537upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
+dfplusZi=read.csv("/home/john/pari/aboutrealaxis/Zplus13p4aa_EP_res_2p_0_m750_p750_537upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
 dfplusZi$V2=as.numeric(gsub(" ","",dfplusZi$V2));
 dfplusZi=dfplusZi[order(as.numeric(dfplusZi$V1)),]
 
@@ -2618,11 +2617,11 @@ n=lenf2
 #EP(1-(sigma+i*t))*chi(sigma+i*t)*exp(i*theta)
 #using 0 extra integers in prodeuler pari-gp function
 
-dfminusZ=read.csv("/home/john/pari/Zminus13p4aa_EP_res_2p_0_m750_p750_537upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
+dfminusZ=read.csv("/home/john/pari/aboutrealaxis/Zminus13p4aa_EP_res_2p_0_m750_p750_537upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
 dfminusZ$V2=as.numeric(gsub(" ","",dfminusZ$V2));
 dfminusZ=dfminusZ[order(as.numeric(dfminusZ$V1)),]
 
-dfminusZi=read.csv("/home/john/pari/Zminus13p4aa_EP_res_2p_0_m750_p750_537upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
+dfminusZi=read.csv("/home/john/pari/aboutrealaxis/Zminus13p4aa_EP_res_2p_0_m750_p750_537upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
 dfminusZi$V2=as.numeric(gsub(" ","",dfminusZi$V2));
 dfminusZi=dfminusZi[order(as.numeric(dfminusZi$V1)),]
 
@@ -2674,11 +2673,11 @@ plot(as.numeric(substr(dfreal$V1,1,22)),Re(inv_hybrid)/n-Re(dfZ$V2),typ="l",xlab
 # Riemann-Siegel Z function of L32 function on critical line
 # values recorded every .01 spacing in interval [-750,+750]
 
-dfZ=read.csv("/home/john/pari/Z13p4aa_res_2p3_0_m750_p750_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
+dfZ=read.csv("/home/john/pari/aboutrealaxis/Z13p4aa_res_2p3_0_m750_p750_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
 dfZ$V2=as.numeric(gsub(" ","",dfZ$V2));
 dfZ=dfZ[order(as.numeric(dfZ$V1)),]
 
-dfZi=read.csv("/home/john/pari/Z13p4aa_res_2p3_0_m750_p750_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
+dfZi=read.csv("/home/john/pari/aboutrealaxis/Z13p4aa_res_2p3_0_m750_p750_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
 dfZi$V2=as.numeric(gsub(" ","",dfZi$V2));
 dfZi=dfZi[order(as.numeric(dfZi$V1)),]
 
@@ -2689,11 +2688,11 @@ fft_zeta_Zfn =  stats::fft(dfZ$V2+1i*dfZi$V2)
 #EP(sigma+i*t)*exp(i*theta)
 #using minimum 23 primes in prodeuler pari-gp function
 
-dfplusZ=read.csv("/home/john/pari/Zplus13p4aa_EP_res_2p3_0_m750_p750_537upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
+dfplusZ=read.csv("/home/john/pari/aboutrealaxis/Zplus13p4aa_EP_res_2p3_0_m750_p750_537upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
 dfplusZ$V2=as.numeric(gsub(" ","",dfplusZ$V2));
 dfplusZ=dfplusZ[order(as.numeric(dfplusZ$V1)),]
 
-dfplusZi=read.csv("/home/john/pari/Zplus13p4aa_EP_res_2p3_0_m750_p750_537upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
+dfplusZi=read.csv("/home/john/pari/aboutrealaxis/Zplus13p4aa_EP_res_2p3_0_m750_p750_537upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
 dfplusZi$V2=as.numeric(gsub(" ","",dfplusZi$V2));
 dfplusZi=dfplusZi[order(as.numeric(dfplusZi$V1)),]
 
@@ -2716,11 +2715,11 @@ n=lenf2
 #EP(1-(sigma+i*t))*chi(sigma+i*t)*exp(i*theta)
 #using minimum 23 primes in prodeuler pari-gp function
 
-dfminusZ=read.csv("/home/john/pari/Zminus13p4aa_EP_res_2p3_0_m750_p750_537upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
+dfminusZ=read.csv("/home/john/pari/aboutrealaxis/Zminus13p4aa_EP_res_2p3_0_m750_p750_537upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
 dfminusZ$V2=as.numeric(gsub(" ","",dfminusZ$V2));
 dfminusZ=dfminusZ[order(as.numeric(dfminusZ$V1)),]
 
-dfminusZi=read.csv("/home/john/pari/Zminus13p4aa_EP_res_2p3_0_m750_p750_537upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
+dfminusZi=read.csv("/home/john/pari/aboutrealaxis/Zminus13p4aa_EP_res_2p3_0_m750_p750_537upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
 dfminusZi$V2=as.numeric(gsub(" ","",dfminusZi$V2));
 dfminusZi=dfminusZi[order(as.numeric(dfminusZi$V1)),]
 
@@ -2816,17 +2815,17 @@ abline(v=1/2*log(((max_freq)/pi/2)^2*13/c(1:2)^2)-0,col=rgb(1,0,0,0.3))
 
 \clearpage
 
-```{r Zfn13p4aaModularFormLfunctionoveraninterval_anditsfouriertransform_0_pm750_2p3, echo=FALSE, fig.cap="Lefthand panel - True Z function shown in magenta (cyan) for real (imaginary) parts and spectral filtered based EP approximation shown in black (blue) for real (imaginary) parts, Right hand panel - Error in the real(Z) EP approximation. A comparison of the Riemann-Siegel Z function analogue of the L-function 2-13-1.1-c3-0-2 (LMFDB label) and spectrally filtered partial Euler Product (using truncation at $\\max (P,\\sqrt{((\\frac{t}{2\\pi})^2\\cdot 13}) $) in the complex plane at $\\sigma=2.3$ for the interval t=(-750,750) where $P_{min}={1,2,50,537}$ for rows 1-4. ", out.width = c("49%","49%"), fig.show = "hold",  fig.height=4.5, warning=FALSE, cache=TRUE}
+```{r Zfn13p4aaModularFormLfunctionoveraninterval_anditsfouriertransform_0_pm750_2p3, echo=FALSE, fig.cap="Lefthand panel - True Z function shown in magenta (cyan) for real (imaginary) parts and spectral filtered based EP approximation shown in black (blue) for real (imaginary) parts, Right hand panel - Error in the real(Z) EP approximation. A comparison of the Riemann-Siegel Z function analogue of the L-function 2-13-1.1-c3-0-2 (LMFDB label) and spectrally filtered partial Euler Product (using truncation at $\\max (P,1.25\\cdot\\sqrt{((\\frac{t}{2\\pi})^2\\cdot 13}) $) in the complex plane at $\\sigma=2.3$ for the interval t=(-750,750) where $P_{min}={1,2,50,537}$ for rows 1-4. ", out.width = c("49%","49%"), fig.show = "hold",  fig.height=4.5, warning=FALSE, cache=TRUE}
 
 
 # Riemann-Siegel Z function of L32 function on critical line
 # values recorded every .01 spacing in interval [-750,+750]
 
-dfZ=read.csv("/home/john/pari/Z13p4aa_res_2p3_0_m750_p750_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
+dfZ=read.csv("/home/john/pari/aboutrealaxis/Z13p4aa_res_2p3_0_m750_p750_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
 dfZ$V2=as.numeric(gsub(" ","",dfZ$V2));
 dfZ=dfZ[order(as.numeric(dfZ$V1)),]
 
-dfZi=read.csv("/home/john/pari/Z13p4aa_res_2p3_0_m750_p750_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
+dfZi=read.csv("/home/john/pari/aboutrealaxis/Z13p4aa_res_2p3_0_m750_p750_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
 dfZi$V2=as.numeric(gsub(" ","",dfZi$V2));
 dfZi=dfZi[order(as.numeric(dfZi$V1)),]
 
@@ -2836,11 +2835,11 @@ dfZi=dfZi[order(as.numeric(dfZi$V1)),]
 #EP(sigma+i*t)*exp(i*theta)
 #using 0 extra integers in prodeuler pari-gp function
 
-dfplusZ=read.csv("/home/john/pari/Zplus13p4aa_EP_res_2p3_0_m750_p750_0extra_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
+dfplusZ=read.csv("/home/john/pari/aboutrealaxis/Zplus13p4aa_EP_res_2p3_0_m750_p750_0extra_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
 dfplusZ$V2=as.numeric(gsub(" ","",dfplusZ$V2));
 dfplusZ=dfplusZ[order(as.numeric(dfplusZ$V1)),]
 
-dfplusZi=read.csv("/home/john/pari/Zplus13p4aa_EP_res_2p3_0_m750_p750_0extra_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
+dfplusZi=read.csv("/home/john/pari/aboutrealaxis/Zplus13p4aa_EP_res_2p3_0_m750_p750_0extra_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
 dfplusZi$V2=as.numeric(gsub(" ","",dfplusZi$V2));
 dfplusZi=dfplusZi[order(as.numeric(dfplusZi$V1)),]
 
@@ -2863,11 +2862,11 @@ n=lenf2
 #EP(1-(sigma+i*t))*chi(sigma+i*t)*exp(i*theta)
 #using 0 extra integers in prodeuler pari-gp function
 
-dfminusZ=read.csv("/home/john/pari/Zminus13p4aa_EP_res_2p3_0_m750_p750_0extra_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
+dfminusZ=read.csv("/home/john/pari/aboutrealaxis/Zminus13p4aa_EP_res_2p3_0_m750_p750_0extra_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
 dfminusZ$V2=as.numeric(gsub(" ","",dfminusZ$V2));
 dfminusZ=dfminusZ[order(as.numeric(dfminusZ$V1)),]
 
-dfminusZi=read.csv("/home/john/pari/Zminus13p4aa_EP_res_2p3_0_m750_p750_0extra_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
+dfminusZi=read.csv("/home/john/pari/aboutrealaxis/Zminus13p4aa_EP_res_2p3_0_m750_p750_0extra_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
 dfminusZi$V2=as.numeric(gsub(" ","",dfminusZi$V2));
 dfminusZi=dfminusZi[order(as.numeric(dfminusZi$V1)),]
 
@@ -2917,11 +2916,11 @@ plot(as.numeric(substr(dfreal$V1,1,22)),Re(inv_hybrid)/n-Re(dfZ$V2),typ="l",xlab
 #EP(sigma+i*t)*exp(i*theta)
 #using 0 extra integers in prodeuler pari-gp function
 
-dfplusZ=read.csv("/home/john/pari/Zplus13p4aa_EP_res_2p3_0_m750_p750_2upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
+dfplusZ=read.csv("/home/john/pari/aboutrealaxis/Zplus13p4aa_EP_res_2p3_0_m750_p750_2upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
 dfplusZ$V2=as.numeric(gsub(" ","",dfplusZ$V2));
 dfplusZ=dfplusZ[order(as.numeric(dfplusZ$V1)),]
 
-dfplusZi=read.csv("/home/john/pari/Zplus13p4aa_EP_res_2p3_0_m750_p750_2upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
+dfplusZi=read.csv("/home/john/pari/aboutrealaxis/Zplus13p4aa_EP_res_2p3_0_m750_p750_2upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
 dfplusZi$V2=as.numeric(gsub(" ","",dfplusZi$V2));
 dfplusZi=dfplusZi[order(as.numeric(dfplusZi$V1)),]
 
@@ -2944,11 +2943,11 @@ n=lenf2
 #EP(1-(sigma+i*t))*chi(sigma+i*t)*exp(i*theta)
 #using 0 extra integers in prodeuler pari-gp function
 
-dfminusZ=read.csv("/home/john/pari/Zminus13p4aa_EP_res_2p3_0_m750_p750_2upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
+dfminusZ=read.csv("/home/john/pari/aboutrealaxis/Zminus13p4aa_EP_res_2p3_0_m750_p750_2upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
 dfminusZ$V2=as.numeric(gsub(" ","",dfminusZ$V2));
 dfminusZ=dfminusZ[order(as.numeric(dfminusZ$V1)),]
 
-dfminusZi=read.csv("/home/john/pari/Zminus13p4aa_EP_res_2p3_0_m750_p750_2upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
+dfminusZi=read.csv("/home/john/pari/aboutrealaxis/Zminus13p4aa_EP_res_2p3_0_m750_p750_2upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
 dfminusZi$V2=as.numeric(gsub(" ","",dfminusZi$V2));
 dfminusZi=dfminusZi[order(as.numeric(dfminusZi$V1)),]
 
@@ -2995,11 +2994,11 @@ plot(as.numeric(substr(dfreal$V1,1,22)),Re(inv_hybrid)/n-Re(dfZ$V2),typ="l",xlab
 #EP(sigma+i*t)*exp(i*theta)
 #using 0 extra integers in prodeuler pari-gp function
 
-dfplusZ=read.csv("/home/john/pari/Zplus13p4aa_EP_res_2p3_0_m750_p750_50upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
+dfplusZ=read.csv("/home/john/pari/aboutrealaxis/Zplus13p4aa_EP_res_2p3_0_m750_p750_50upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
 dfplusZ$V2=as.numeric(gsub(" ","",dfplusZ$V2));
 dfplusZ=dfplusZ[order(as.numeric(dfplusZ$V1)),]
 
-dfplusZi=read.csv("/home/john/pari/Zplus13p4aa_EP_res_2p3_0_m750_p750_50upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
+dfplusZi=read.csv("/home/john/pari/aboutrealaxis/Zplus13p4aa_EP_res_2p3_0_m750_p750_50upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
 dfplusZi$V2=as.numeric(gsub(" ","",dfplusZi$V2));
 dfplusZi=dfplusZi[order(as.numeric(dfplusZi$V1)),]
 
@@ -3022,11 +3021,11 @@ n=lenf2
 #EP(1-(sigma+i*t))*chi(sigma+i*t)*exp(i*theta)
 #using 0 extra integers in prodeuler pari-gp function
 
-dfminusZ=read.csv("/home/john/pari/Zminus13p4aa_EP_res_2p3_0_m750_p750_50upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
+dfminusZ=read.csv("/home/john/pari/aboutrealaxis/Zminus13p4aa_EP_res_2p3_0_m750_p750_50upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
 dfminusZ$V2=as.numeric(gsub(" ","",dfminusZ$V2));
 dfminusZ=dfminusZ[order(as.numeric(dfminusZ$V1)),]
 
-dfminusZi=read.csv("/home/john/pari/Zminus13p4aa_EP_res_2p3_0_m750_p750_50upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
+dfminusZi=read.csv("/home/john/pari/aboutrealaxis/Zminus13p4aa_EP_res_2p3_0_m750_p750_50upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
 dfminusZi$V2=as.numeric(gsub(" ","",dfminusZi$V2));
 dfminusZi=dfminusZi[order(as.numeric(dfminusZi$V1)),]
 
@@ -3074,11 +3073,11 @@ text(x=0,y=-.65,"t value when next prime is included in EP",cex=0.7)
 #EP(sigma+i*t)*exp(i*theta)
 #using 0 extra integers in prodeuler pari-gp function
 
-dfplusZ=read.csv("/home/john/pari/Zplus13p4aa_EP_res_2p3_0_m750_p750_537upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
+dfplusZ=read.csv("/home/john/pari/aboutrealaxis/Zplus13p4aa_EP_res_2p3_0_m750_p750_537upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
 dfplusZ$V2=as.numeric(gsub(" ","",dfplusZ$V2));
 dfplusZ=dfplusZ[order(as.numeric(dfplusZ$V1)),]
 
-dfplusZi=read.csv("/home/john/pari/Zplus13p4aa_EP_res_2p3_0_m750_p750_537upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
+dfplusZi=read.csv("/home/john/pari/aboutrealaxis/Zplus13p4aa_EP_res_2p3_0_m750_p750_537upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
 dfplusZi$V2=as.numeric(gsub(" ","",dfplusZi$V2));
 dfplusZi=dfplusZi[order(as.numeric(dfplusZi$V1)),]
 
@@ -3101,11 +3100,11 @@ n=lenf2
 #EP(1-(sigma+i*t))*chi(sigma+i*t)*exp(i*theta)
 #using 0 extra integers in prodeuler pari-gp function
 
-dfminusZ=read.csv("/home/john/pari/Zminus13p4aa_EP_res_2p3_0_m750_p750_537upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
+dfminusZ=read.csv("/home/john/pari/aboutrealaxis/Zminus13p4aa_EP_res_2p3_0_m750_p750_537upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
 dfminusZ$V2=as.numeric(gsub(" ","",dfminusZ$V2));
 dfminusZ=dfminusZ[order(as.numeric(dfminusZ$V1)),]
 
-dfminusZi=read.csv("/home/john/pari/Zminus13p4aa_EP_res_2p3_0_m750_p750_537upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
+dfminusZi=read.csv("/home/john/pari/aboutrealaxis/Zminus13p4aa_EP_res_2p3_0_m750_p750_537upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
 dfminusZi$V2=as.numeric(gsub(" ","",dfminusZi$V2));
 dfminusZi=dfminusZi[order(as.numeric(dfminusZi$V1)),]
 
@@ -3156,11 +3155,11 @@ plot(as.numeric(substr(dfreal$V1,1,22)),Re(inv_hybrid)/n-Re(dfZ$V2),typ="l",xlab
 # Riemann-Siegel Z function of L32 function on critical line
 # values recorded every .01 spacing in interval [-750,+750]
 
-dfZ=read.csv("/home/john/pari/Z13p4aa_res_1p7_0_m750_p750_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
+dfZ=read.csv("/home/john/pari/aboutrealaxis/Z13p4aa_res_1p7_0_m750_p750_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
 dfZ$V2=as.numeric(gsub(" ","",dfZ$V2));
 dfZ=dfZ[order(as.numeric(dfZ$V1)),]
 
-dfZi=read.csv("/home/john/pari/Z13p4aa_res_1p7_0_m750_p750_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
+dfZi=read.csv("/home/john/pari/aboutrealaxis/Z13p4aa_res_1p7_0_m750_p750_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
 dfZi$V2=as.numeric(gsub(" ","",dfZi$V2));
 dfZi=dfZi[order(as.numeric(dfZi$V1)),]
 
@@ -3171,11 +3170,11 @@ fft_zeta_Zfn =  stats::fft(dfZ$V2+1i*dfZi$V2)
 #EP(sigma+i*t)*exp(i*theta)
 #using minimum 23 primes in prodeuler pari-gp function
 
-dfplusZ=read.csv("/home/john/pari/Zplus13p4aa_EP_res_1p7_0_m750_p750_537upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
+dfplusZ=read.csv("/home/john/pari/aboutrealaxis/Zplus13p4aa_EP_res_1p7_0_m750_p750_537upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
 dfplusZ$V2=as.numeric(gsub(" ","",dfplusZ$V2));
 dfplusZ=dfplusZ[order(as.numeric(dfplusZ$V1)),]
 
-dfplusZi=read.csv("/home/john/pari/Zplus13p4aa_EP_res_1p7_0_m750_p750_537upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
+dfplusZi=read.csv("/home/john/pari/aboutrealaxis/Zplus13p4aa_EP_res_1p7_0_m750_p750_537upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
 dfplusZi$V2=as.numeric(gsub(" ","",dfplusZi$V2));
 dfplusZi=dfplusZi[order(as.numeric(dfplusZi$V1)),]
 
@@ -3198,11 +3197,11 @@ n=lenf2
 #EP(1-(sigma+i*t))*chi(sigma+i*t)*exp(i*theta)
 #using minimum 23 primes in prodeuler pari-gp function
 
-dfminusZ=read.csv("/home/john/pari/Zminus13p4aa_EP_res_1p7_0_m750_p750_537upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
+dfminusZ=read.csv("/home/john/pari/aboutrealaxis/Zminus13p4aa_EP_res_1p7_0_m750_p750_537upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
 dfminusZ$V2=as.numeric(gsub(" ","",dfminusZ$V2));
 dfminusZ=dfminusZ[order(as.numeric(dfminusZ$V1)),]
 
-dfminusZi=read.csv("/home/john/pari/Zminus13p4aa_EP_res_1p7_0_m750_p750_537upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
+dfminusZi=read.csv("/home/john/pari/aboutrealaxis/Zminus13p4aa_EP_res_1p7_0_m750_p750_537upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
 dfminusZi$V2=as.numeric(gsub(" ","",dfminusZi$V2));
 dfminusZi=dfminusZi[order(as.numeric(dfminusZi$V1)),]
 
@@ -3300,17 +3299,17 @@ abline(v=1/2*log(((max_freq)/pi/2)^2*13/c(1:2)^2)-0,col=rgb(1,0,0,0.3))
 
 \clearpage
 
-```{r Zfn13p4aaModularFormLfunctionoveraninterval_anditsfouriertransform_0_pm750_1p7, echo=FALSE, fig.cap="Lefthand panel - True Z function shown in magenta (cyan) for real (imaginary) parts and spectral filtered based EP approximation shown in black (blue) for real (imaginary) parts, Right hand panel - Error in the real(Z) EP approximation. A comparison of the Riemann-Siegel Z function analogue of the L-function 2-13-1.1-c3-0-2 (LMFDB label) and spectrally filtered partial Euler Product (using truncation at $\\max (P,\\sqrt{((\\frac{t}{2\\pi})^2\\cdot 13}) $) in the complex plane at $\\sigma=1.7$ for the interval t=(-750,750) where $P_{min}={1,2,50,537}$ for rows 1-4. ", out.width = c("49%","49%"), fig.show = "hold",  fig.height=4.5, warning=FALSE, cache=TRUE}
+```{r Zfn13p4aaModularFormLfunctionoveraninterval_anditsfouriertransform_0_pm750_1p7, echo=FALSE, fig.cap="Lefthand panel - True Z function shown in magenta (cyan) for real (imaginary) parts and spectral filtered based EP approximation shown in black (blue) for real (imaginary) parts, Right hand panel - Error in the real(Z) EP approximation. A comparison of the Riemann-Siegel Z function analogue of the L-function 2-13-1.1-c3-0-2 (LMFDB label) and spectrally filtered partial Euler Product (using truncation at $\\max (P,1.25\\cdot\\sqrt{((\\frac{t}{2\\pi})^2\\cdot 13}) $) in the complex plane at $\\sigma=1.7$ for the interval t=(-750,750) where $P_{min}={1,2,50,537}$ for rows 1-4. ", out.width = c("49%","49%"), fig.show = "hold",  fig.height=4.5, warning=FALSE, cache=TRUE}
 
 
 # Riemann-Siegel Z function of L32 function on critical line
 # values recorded every .01 spacing in interval [-750,+750]
 
-dfZ=read.csv("/home/john/pari/Z13p4aa_res_1p7_0_m750_p750_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
+dfZ=read.csv("/home/john/pari/aboutrealaxis/Z13p4aa_res_1p7_0_m750_p750_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
 dfZ$V2=as.numeric(gsub(" ","",dfZ$V2));
 dfZ=dfZ[order(as.numeric(dfZ$V1)),]
 
-dfZi=read.csv("/home/john/pari/Z13p4aa_res_1p7_0_m750_p750_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
+dfZi=read.csv("/home/john/pari/aboutrealaxis/Z13p4aa_res_1p7_0_m750_p750_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
 dfZi$V2=as.numeric(gsub(" ","",dfZi$V2));
 dfZi=dfZi[order(as.numeric(dfZi$V1)),]
 
@@ -3320,11 +3319,11 @@ dfZi=dfZi[order(as.numeric(dfZi$V1)),]
 #EP(sigma+i*t)*exp(i*theta)
 #using 0 extra integers in prodeuler pari-gp function
 
-dfplusZ=read.csv("/home/john/pari/Zplus13p4aa_EP_res_1p7_0_m750_p750_0extra_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
+dfplusZ=read.csv("/home/john/pari/aboutrealaxis/Zplus13p4aa_EP_res_1p7_0_m750_p750_0extra_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
 dfplusZ$V2=as.numeric(gsub(" ","",dfplusZ$V2));
 dfplusZ=dfplusZ[order(as.numeric(dfplusZ$V1)),]
 
-dfplusZi=read.csv("/home/john/pari/Zplus13p4aa_EP_res_1p7_0_m750_p750_0extra_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
+dfplusZi=read.csv("/home/john/pari/aboutrealaxis/Zplus13p4aa_EP_res_1p7_0_m750_p750_0extra_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
 dfplusZi$V2=as.numeric(gsub(" ","",dfplusZi$V2));
 dfplusZi=dfplusZi[order(as.numeric(dfplusZi$V1)),]
 
@@ -3347,11 +3346,11 @@ n=lenf2
 #EP(1-(sigma+i*t))*chi(sigma+i*t)*exp(i*theta)
 #using 0 extra integers in prodeuler pari-gp function
 
-dfminusZ=read.csv("/home/john/pari/Zminus13p4aa_EP_res_1p7_0_m750_p750_0extra_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
+dfminusZ=read.csv("/home/john/pari/aboutrealaxis/Zminus13p4aa_EP_res_1p7_0_m750_p750_0extra_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
 dfminusZ$V2=as.numeric(gsub(" ","",dfminusZ$V2));
 dfminusZ=dfminusZ[order(as.numeric(dfminusZ$V1)),]
 
-dfminusZi=read.csv("/home/john/pari/Zminus13p4aa_EP_res_1p7_0_m750_p750_0extra_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
+dfminusZi=read.csv("/home/john/pari/aboutrealaxis/Zminus13p4aa_EP_res_1p7_0_m750_p750_0extra_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
 dfminusZi$V2=as.numeric(gsub(" ","",dfminusZi$V2));
 dfminusZi=dfminusZi[order(as.numeric(dfminusZi$V1)),]
 
@@ -3401,11 +3400,11 @@ plot(as.numeric(substr(dfreal$V1,1,22)),Re(inv_hybrid)/n-Re(dfZ$V2),typ="l",xlab
 #EP(sigma+i*t)*exp(i*theta)
 #using 0 extra integers in prodeuler pari-gp function
 
-dfplusZ=read.csv("/home/john/pari/Zplus13p4aa_EP_res_1p7_0_m750_p750_2upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
+dfplusZ=read.csv("/home/john/pari/aboutrealaxis/Zplus13p4aa_EP_res_1p7_0_m750_p750_2upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
 dfplusZ$V2=as.numeric(gsub(" ","",dfplusZ$V2));
 dfplusZ=dfplusZ[order(as.numeric(dfplusZ$V1)),]
 
-dfplusZi=read.csv("/home/john/pari/Zplus13p4aa_EP_res_1p7_0_m750_p750_2upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
+dfplusZi=read.csv("/home/john/pari/aboutrealaxis/Zplus13p4aa_EP_res_1p7_0_m750_p750_2upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
 dfplusZi$V2=as.numeric(gsub(" ","",dfplusZi$V2));
 dfplusZi=dfplusZi[order(as.numeric(dfplusZi$V1)),]
 
@@ -3428,11 +3427,11 @@ n=lenf2
 #EP(1-(sigma+i*t))*chi(sigma+i*t)*exp(i*theta)
 #using 0 extra integers in prodeuler pari-gp function
 
-dfminusZ=read.csv("/home/john/pari/Zminus13p4aa_EP_res_1p7_0_m750_p750_2upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
+dfminusZ=read.csv("/home/john/pari/aboutrealaxis/Zminus13p4aa_EP_res_1p7_0_m750_p750_2upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
 dfminusZ$V2=as.numeric(gsub(" ","",dfminusZ$V2));
 dfminusZ=dfminusZ[order(as.numeric(dfminusZ$V1)),]
 
-dfminusZi=read.csv("/home/john/pari/Zminus13p4aa_EP_res_1p7_0_m750_p750_2upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
+dfminusZi=read.csv("/home/john/pari/aboutrealaxis/Zminus13p4aa_EP_res_1p7_0_m750_p750_2upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
 dfminusZi$V2=as.numeric(gsub(" ","",dfminusZi$V2));
 dfminusZi=dfminusZi[order(as.numeric(dfminusZi$V1)),]
 
@@ -3479,11 +3478,11 @@ plot(as.numeric(substr(dfreal$V1,1,22)),Re(inv_hybrid)/n-Re(dfZ$V2),typ="l",xlab
 #EP(sigma+i*t)*exp(i*theta)
 #using 0 extra integers in prodeuler pari-gp function
 
-dfplusZ=read.csv("/home/john/pari/Zplus13p4aa_EP_res_1p7_0_m750_p750_50upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
+dfplusZ=read.csv("/home/john/pari/aboutrealaxis/Zplus13p4aa_EP_res_1p7_0_m750_p750_50upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
 dfplusZ$V2=as.numeric(gsub(" ","",dfplusZ$V2));
 dfplusZ=dfplusZ[order(as.numeric(dfplusZ$V1)),]
 
-dfplusZi=read.csv("/home/john/pari/Zplus13p4aa_EP_res_1p7_0_m750_p750_50upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
+dfplusZi=read.csv("/home/john/pari/aboutrealaxis/Zplus13p4aa_EP_res_1p7_0_m750_p750_50upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
 dfplusZi$V2=as.numeric(gsub(" ","",dfplusZi$V2));
 dfplusZi=dfplusZi[order(as.numeric(dfplusZi$V1)),]
 
@@ -3506,11 +3505,11 @@ n=lenf2
 #EP(1-(sigma+i*t))*chi(sigma+i*t)*exp(i*theta)
 #using 0 extra integers in prodeuler pari-gp function
 
-dfminusZ=read.csv("/home/john/pari/Zminus13p4aa_EP_res_1p7_0_m750_p750_50upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
+dfminusZ=read.csv("/home/john/pari/aboutrealaxis/Zminus13p4aa_EP_res_1p7_0_m750_p750_50upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
 dfminusZ$V2=as.numeric(gsub(" ","",dfminusZ$V2));
 dfminusZ=dfminusZ[order(as.numeric(dfminusZ$V1)),]
 
-dfminusZi=read.csv("/home/john/pari/Zminus13p4aa_EP_res_1p7_0_m750_p750_50upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
+dfminusZi=read.csv("/home/john/pari/aboutrealaxis/Zminus13p4aa_EP_res_1p7_0_m750_p750_50upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
 dfminusZi$V2=as.numeric(gsub(" ","",dfminusZi$V2));
 dfminusZi=dfminusZi[order(as.numeric(dfminusZi$V1)),]
 
@@ -3558,11 +3557,11 @@ text(x=0,y=-12,"t value when next prime is included in EP",cex=0.7)
 #EP(sigma+i*t)*exp(i*theta)
 #using 0 extra integers in prodeuler pari-gp function
 
-dfplusZ=read.csv("/home/john/pari/Zplus13p4aa_EP_res_1p7_0_m750_p750_537upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
+dfplusZ=read.csv("/home/john/pari/aboutrealaxis/Zplus13p4aa_EP_res_1p7_0_m750_p750_537upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
 dfplusZ$V2=as.numeric(gsub(" ","",dfplusZ$V2));
 dfplusZ=dfplusZ[order(as.numeric(dfplusZ$V1)),]
 
-dfplusZi=read.csv("/home/john/pari/Zplus13p4aa_EP_res_1p7_0_m750_p750_537upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
+dfplusZi=read.csv("/home/john/pari/aboutrealaxis/Zplus13p4aa_EP_res_1p7_0_m750_p750_537upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
 dfplusZi$V2=as.numeric(gsub(" ","",dfplusZi$V2));
 dfplusZi=dfplusZi[order(as.numeric(dfplusZi$V1)),]
 
@@ -3585,11 +3584,11 @@ n=lenf2
 #EP(1-(sigma+i*t))*chi(sigma+i*t)*exp(i*theta)
 #using 0 extra integers in prodeuler pari-gp function
 
-dfminusZ=read.csv("/home/john/pari/Zminus13p4aa_EP_res_1p7_0_m750_p750_537upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
+dfminusZ=read.csv("/home/john/pari/aboutrealaxis/Zminus13p4aa_EP_res_1p7_0_m750_p750_537upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
 dfminusZ$V2=as.numeric(gsub(" ","",dfminusZ$V2));
 dfminusZ=dfminusZ[order(as.numeric(dfminusZ$V1)),]
 
-dfminusZi=read.csv("/home/john/pari/Zminus13p4aa_EP_res_1p7_0_m750_p750_537upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
+dfminusZi=read.csv("/home/john/pari/aboutrealaxis/Zminus13p4aa_EP_res_1p7_0_m750_p750_537upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
 dfminusZi$V2=as.numeric(gsub(" ","",dfminusZi$V2));
 dfminusZi=dfminusZi[order(as.numeric(dfminusZi$V1)),]
 
@@ -3726,14 +3725,14 @@ where $\sqrt{\zeta(s)\zeta(1-s)|\chi(s)|}$ is an alternate (but discontinuous) e
 The zeroth order Riemann-Siegel formula for the Riemann-Siegel Z function analogue of the Riemann Zeta L-function using partial Euler products is used as the basis of the approximation
 
 \begin{align}
-Z_{ext\zeta}(s)_{EP} &\approx EP_{RS1,\zeta}(s,\beta=1.25) \nonumber \\ &+ EP_{RS2,\zeta}(s,\beta=1.25) + ... \qquad t \rightarrow \infty
+Z_{ext\zeta}(s)_{EP} &\approx EP_{RS1,ext\zeta}(s,\beta=1.25) \nonumber \\ &+ EP_{RS2,ext\zeta}(s,\beta=1.25) + ... \qquad t \rightarrow \infty
 \end{align}
 
 using (i) equations (8) & (9) and the known Euler factors  [7] of the $\zeta(s)$ L-function and (ii) $\beta=1.25$ is a small cushion factor in the truncation length of the included primes that is empirically observed to improve the quality of the fourier transform components of the finite Euler product arising nearby $N_1$ [2,3]. For the Riemann-Siegel Z function analogue the fourier transform components arising nearby $N_1$ are the fourier transform components namely surrounding (and including) the DC (zero) angular frequency.
 
 Importantly, $\zeta(s)$ has known pole [4-7] at s=1 and thus $\zeta(s)$ serves as a counterexample of a L-function with a pole on to gauge the spectrally filtered partial Euler Product based approximation considered in this paper in the presence of a pole.
 
-Figures 14, 15, 16 respectively illustrate in the lefthand panels, the performance of the averaged inverse fourier transform around the real axis compared to the real (imaginary) parts of the true Riemann-Siegel Z function shown in magenta (cyan) at the fourier grid spacing 0.01. That is, in the lefthand panels of figures 14, 15, 16 the following interval is displayed for five different values of the minimum prime in partial Euler product calculation $P_{min}=\left\lfloor 1.25\cdot \max\left(\{1,2,3,5,13\},\sqrt{(\frac{t}{2\pi})^d\cdot N_C}\right)\right\rfloor$ with each row (top to bottom) respectively belonging to the minimum prime value \{1,2,3,5,13\} which is active when t=0.
+Figures 14, 15, 16 respectively illustrate in the lefthand panels, the performance of the averaged inverse fourier transform around the real axis compared to the real (imaginary) parts of the true Riemann-Siegel Z function shown in magenta (cyan) at the fourier grid spacing 0.01. That is, in the lefthand panels of figures 14, 15, 16 the following interval is displayed for five different values of the minimum prime in partial Euler product calculation $P_{min}=\left\lfloor \max\left(\{1,2,3,5,13\},1.25\cdot \sqrt{(\frac{t}{2\pi})^d\cdot N_C}\right)\right\rfloor$ with each row (top to bottom) respectively belonging to the minimum prime value \{1,2,3,5,13\} which is active when t=0.
 
 (i) $s=(0.5-I\cdot 40,0.5+I\cdot 40)$ 
 
@@ -3759,16 +3758,16 @@ It can be seen from figures 14, 15 and 16 that as the number of primes involved 
 
 
 
-```{r Zfnzeta_andtruncatedEPfouriertransform_0_pm750, echo=FALSE, fig.cap="Lefthand panel - True Z function shown in magenta (cyan) for real (imaginary) parts and spectral filtered based EP approximation shown in black (blue) for real (imaginary) parts, Right hand panel - Error in the real(Z) EP approximation. A comparison of the Riemann-Siegel Z function of the Riemann Zeta L-function and spectrally filtered partial Euler Product (using truncation at $\\max (P,\\sqrt{((\\frac{t}{2\\pi})^1\\cdot 1}) $) in the complex plane at $\\sigma=0.5$ for the interval t=(-750,750) where $P_{min}={1,2,3,5,13}$ for rows 1-5. The approximation error around t=0 does not disappear by adding primes.", out.width = c("49%","49%"), fig.show = "hold",  fig.height=3.8, warning=FALSE, cache=TRUE}
+```{r Zfnzeta_andtruncatedEPfouriertransform_0_pm750, echo=FALSE, fig.cap="Lefthand panel - True Z function shown in magenta (cyan) for real (imaginary) parts and spectral filtered based EP approximation shown in black (blue) for real (imaginary) parts, Right hand panel - Error in the real(Z) EP approximation. A comparison of the Riemann-Siegel Z function of the Riemann Zeta L-function and spectrally filtered partial Euler Product (using truncation at $\\max (P,1.25\\cdot\\sqrt{((\\frac{t}{2\\pi})^1\\cdot 1}) $) in the complex plane at $\\sigma=0.5$ for the interval t=(-750,750) where $P_{min}={1,2,3,5,13}$ for rows 1-5. The approximation error around t=0 does not disappear by adding primes.", out.width = c("49%","49%"), fig.show = "hold",  fig.height=3.8, warning=FALSE, cache=TRUE}
 
 # Riemann-Siegel Z function of Riemann Zeta function on critical line
 # values recorded every .01 spacing in interval [-750,+750]
 
-dfZ=read.csv("/home/john/pari/Zzeta_res_p5_0_m750_p750_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
+dfZ=read.csv("/home/john/pari/aboutrealaxis/Zzeta_res_p5_0_m750_p750_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
 dfZ$V2=as.numeric(gsub(" ","",dfZ$V2));
 dfZ=dfZ[order(as.numeric(dfZ$V1)),]
 
-dfZi=read.csv("/home/john/pari/Zzeta_res_p5_0_m750_p750_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
+dfZi=read.csv("/home/john/pari/aboutrealaxis/Zzeta_res_p5_0_m750_p750_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
 dfZi$V2=as.numeric(gsub(" ","",dfZi$V2));
 dfZi=dfZi[order(as.numeric(dfZi$V1)),]
 
@@ -3778,11 +3777,11 @@ dfZi=dfZi[order(as.numeric(dfZi$V1)),]
 #EP(sigma+i*t)*exp(i*theta)
 #using 0 extra integers in prodeuler pari-gp function
 
-dfplusZ=read.csv("/home/john/pari/Zplus_EPonly_res_p5_0_m750_p750_0extra_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
+dfplusZ=read.csv("/home/john/pari/aboutrealaxis/Zplus_EPonly_res_p5_0_m750_p750_0extra_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
 dfplusZ$V2=as.numeric(gsub(" ","",dfplusZ$V2));
 dfplusZ=dfplusZ[order(as.numeric(dfplusZ$V1)),]
 
-dfplusZi=read.csv("/home/john/pari/Zplus_EPonly_res_p5_0_m750_p750_0extra_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
+dfplusZi=read.csv("/home/john/pari/aboutrealaxis/Zplus_EPonly_res_p5_0_m750_p750_0extra_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
 dfplusZi$V2=as.numeric(gsub(" ","",dfplusZi$V2));
 dfplusZi=dfplusZi[order(as.numeric(dfplusZi$V1)),]
 
@@ -3805,11 +3804,11 @@ n=lenf2
 #EP(1-(sigma+i*t))*chi(sigma+i*t)*exp(i*theta)
 #using 0 extra integers in prodeuler pari-gp function
 
-dfminusZ=read.csv("/home/john/pari/Zminus_EPonly_res_p5_0_m750_p750_0extra_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
+dfminusZ=read.csv("/home/john/pari/aboutrealaxis/Zminus_EPonly_res_p5_0_m750_p750_0extra_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
 dfminusZ$V2=as.numeric(gsub(" ","",dfminusZ$V2));
 dfminusZ=dfminusZ[order(as.numeric(dfminusZ$V1)),]
 
-dfminusZi=read.csv("/home/john/pari/Zminus_EPonly_res_p5_0_m750_p750_0extra_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
+dfminusZi=read.csv("/home/john/pari/aboutrealaxis/Zminus_EPonly_res_p5_0_m750_p750_0extra_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
 dfminusZi$V2=as.numeric(gsub(" ","",dfminusZi$V2));
 dfminusZi=dfminusZi[order(as.numeric(dfminusZi$V1)),]
 
@@ -3858,11 +3857,11 @@ plot(as.numeric(substr(dfreal$V1,1,22)),Re(inv_hybrid)/n-Re(dfZ$V2),typ="l",xlab
 #EP(sigma+i*t)*exp(i*theta)
 #using 2 and upwards in prodeuler pari-gp function for all t
 
-dfplusZ=read.csv("/home/john/pari/Zplus_EPonly_res_p5_0_m750_p750_2upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
+dfplusZ=read.csv("/home/john/pari/aboutrealaxis/Zplus_EPonly_res_p5_0_m750_p750_2upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
 dfplusZ$V2=as.numeric(gsub(" ","",dfplusZ$V2));
 dfplusZ=dfplusZ[order(as.numeric(dfplusZ$V1)),]
 
-dfplusZi=read.csv("/home/john/pari/Zplus_EPonly_res_p5_0_m750_p750_2upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
+dfplusZi=read.csv("/home/john/pari/aboutrealaxis/Zplus_EPonly_res_p5_0_m750_p750_2upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
 dfplusZi$V2=as.numeric(gsub(" ","",dfplusZi$V2));
 dfplusZi=dfplusZi[order(as.numeric(dfplusZi$V1)),]
 
@@ -3885,11 +3884,11 @@ n=lenf2
 #EP(1-(sigma+i*t))*chi(sigma+i*t)*exp(i*theta)
 #using 2 and upwards in prodeuler pari-gp function for all t
 
-dfminusZ=read.csv("/home/john/pari/Zminus_EPonly_res_p5_0_m750_p750_2upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
+dfminusZ=read.csv("/home/john/pari/aboutrealaxis/Zminus_EPonly_res_p5_0_m750_p750_2upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
 dfminusZ$V2=as.numeric(gsub(" ","",dfminusZ$V2));
 dfminusZ=dfminusZ[order(as.numeric(dfminusZ$V1)),]
 
-dfminusZi=read.csv("/home/john/pari/Zminus_EPonly_res_p5_0_m750_p750_2upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
+dfminusZi=read.csv("/home/john/pari/aboutrealaxis/Zminus_EPonly_res_p5_0_m750_p750_2upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
 dfminusZi$V2=as.numeric(gsub(" ","",dfminusZi$V2));
 dfminusZi=dfminusZi[order(as.numeric(dfminusZi$V1)),]
 
@@ -3946,11 +3945,11 @@ text(x=0,y=-1.2,"t value when next prime is included in EP")
 #EP(sigma+i*t)*exp(i*theta)
 #using 3 and upwards in prodeuler pari-gp function for all t
 
-dfplusZ=read.csv("/home/john/pari/Zplus_EPonly_res_p5_0_m750_p750_3upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
+dfplusZ=read.csv("/home/john/pari/aboutrealaxis/Zplus_EPonly_res_p5_0_m750_p750_3upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
 dfplusZ$V2=as.numeric(gsub(" ","",dfplusZ$V2));
 dfplusZ=dfplusZ[order(as.numeric(dfplusZ$V1)),]
 
-dfplusZi=read.csv("/home/john/pari/Zplus_EPonly_res_p5_0_m750_p750_3upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
+dfplusZi=read.csv("/home/john/pari/aboutrealaxis/Zplus_EPonly_res_p5_0_m750_p750_3upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
 dfplusZi$V2=as.numeric(gsub(" ","",dfplusZi$V2));
 dfplusZi=dfplusZi[order(as.numeric(dfplusZi$V1)),]
 
@@ -3973,11 +3972,11 @@ n=lenf2
 #EP(1-(sigma+i*t))*chi(sigma+i*t)*exp(i*theta)
 #using 3 and upwards in prodeuler pari-gp function for all t
 
-dfminusZ=read.csv("/home/john/pari/Zminus_EPonly_res_p5_0_m750_p750_3upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
+dfminusZ=read.csv("/home/john/pari/aboutrealaxis/Zminus_EPonly_res_p5_0_m750_p750_3upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
 dfminusZ$V2=as.numeric(gsub(" ","",dfminusZ$V2));
 dfminusZ=dfminusZ[order(as.numeric(dfminusZ$V1)),]
 
-dfminusZi=read.csv("/home/john/pari/Zminus_EPonly_res_p5_0_m750_p750_3upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
+dfminusZi=read.csv("/home/john/pari/aboutrealaxis/Zminus_EPonly_res_p5_0_m750_p750_3upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
 dfminusZi$V2=as.numeric(gsub(" ","",dfminusZi$V2));
 dfminusZi=dfminusZi[order(as.numeric(dfminusZi$V1)),]
 
@@ -4027,11 +4026,11 @@ text(x=0,y=-1.2,"t value when next prime is included in EP")
 #EP(sigma+i*t)*exp(i*theta)
 #using 5 and upwards in prodeuler pari-gp function for all t
 
-dfplusZ=read.csv("/home/john/pari/Zplus_EPonly_res_p5_0_m750_p750_5upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
+dfplusZ=read.csv("/home/john/pari/aboutrealaxis/Zplus_EPonly_res_p5_0_m750_p750_5upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
 dfplusZ$V2=as.numeric(gsub(" ","",dfplusZ$V2));
 dfplusZ=dfplusZ[order(as.numeric(dfplusZ$V1)),]
 
-dfplusZi=read.csv("/home/john/pari/Zplus_EPonly_res_p5_0_m750_p750_5upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
+dfplusZi=read.csv("/home/john/pari/aboutrealaxis/Zplus_EPonly_res_p5_0_m750_p750_5upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
 dfplusZi$V2=as.numeric(gsub(" ","",dfplusZi$V2));
 dfplusZi=dfplusZi[order(as.numeric(dfplusZi$V1)),]
 
@@ -4054,11 +4053,11 @@ n=lenf2
 #EP(1-(sigma+i*t))*chi(sigma+i*t)*exp(i*theta)
 #using 5 and upwards in prodeuler pari-gp function for all t
 
-dfminusZ=read.csv("/home/john/pari/Zminus_EPonly_res_p5_0_m750_p750_5upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
+dfminusZ=read.csv("/home/john/pari/aboutrealaxis/Zminus_EPonly_res_p5_0_m750_p750_5upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
 dfminusZ$V2=as.numeric(gsub(" ","",dfminusZ$V2));
 dfminusZ=dfminusZ[order(as.numeric(dfminusZ$V1)),]
 
-dfminusZi=read.csv("/home/john/pari/Zminus_EPonly_res_p5_0_m750_p750_5upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
+dfminusZi=read.csv("/home/john/pari/aboutrealaxis/Zminus_EPonly_res_p5_0_m750_p750_5upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
 dfminusZi$V2=as.numeric(gsub(" ","",dfminusZi$V2));
 dfminusZi=dfminusZi[order(as.numeric(dfminusZi$V1)),]
 
@@ -4111,11 +4110,11 @@ text(x=c(-1,1)*(13/1.25)^2*2*pi/1,y=0.6,"13")
 #EP(sigma+i*t)*exp(i*theta)
 #using 13 and upwards in prodeuler pari-gp function for all t
 
-dfplusZ=read.csv("/home/john/pari/Zplus_EPonly_res_p5_0_m750_p750_13upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
+dfplusZ=read.csv("/home/john/pari/aboutrealaxis/Zplus_EPonly_res_p5_0_m750_p750_13upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
 dfplusZ$V2=as.numeric(gsub(" ","",dfplusZ$V2));
 dfplusZ=dfplusZ[order(as.numeric(dfplusZ$V1)),]
 
-dfplusZi=read.csv("/home/john/pari/Zplus_EPonly_res_p5_0_m750_p750_13upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
+dfplusZi=read.csv("/home/john/pari/aboutrealaxis/Zplus_EPonly_res_p5_0_m750_p750_13upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
 dfplusZi$V2=as.numeric(gsub(" ","",dfplusZi$V2));
 dfplusZi=dfplusZi[order(as.numeric(dfplusZi$V1)),]
 
@@ -4138,11 +4137,11 @@ n=lenf2
 #EP(1-(sigma+i*t))*chi(sigma+i*t)*exp(i*theta)
 #using 5 and upwards in prodeuler pari-gp function for all t
 
-dfminusZ=read.csv("/home/john/pari/Zminus_EPonly_res_p5_0_m750_p750_13upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
+dfminusZ=read.csv("/home/john/pari/aboutrealaxis/Zminus_EPonly_res_p5_0_m750_p750_13upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
 dfminusZ$V2=as.numeric(gsub(" ","",dfminusZ$V2));
 dfminusZ=dfminusZ[order(as.numeric(dfminusZ$V1)),]
 
-dfminusZi=read.csv("/home/john/pari/Zminus_EPonly_res_p5_0_m750_p750_13upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
+dfminusZi=read.csv("/home/john/pari/aboutrealaxis/Zminus_EPonly_res_p5_0_m750_p750_13upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
 dfminusZi$V2=as.numeric(gsub(" ","",dfminusZi$V2));
 dfminusZi=dfminusZi[order(as.numeric(dfminusZi$V1)),]
 
@@ -4191,16 +4190,16 @@ text(x=250,y=-0.5,"as shown the error in the zeta Z EP \n approximation around t
 
 
 
-```{r Zfnzeta_andtruncatedEPfouriertransform_0_pm750_p1, echo=FALSE, fig.cap="Lefthand panel - True Z function shown in magenta (cyan) for real (imaginary) parts and spectral filtered based EP approximation shown in black (blue) for real (imaginary) parts, Right hand panel - Error in the real(Z) EP approximation. A comparison of the Riemann-Siegel Z function of the Riemann Zeta L-function and spectrally filtered partial Euler Product (using truncation at $\\max (P,\\sqrt{((\\frac{t}{2\\pi})^1\\cdot 1}) $) in the complex plane at $\\sigma=0.1$ for the interval t=(-750,750) where $P_{min}={1,2,3,5,13}$ for rows 1-5. The approximation error around t=0 only increases by adding primes.", out.width = c("49%","49%"), fig.show = "hold",  fig.height=3.8, warning=FALSE, cache=TRUE}
+```{r Zfnzeta_andtruncatedEPfouriertransform_0_pm750_p1, echo=FALSE, fig.cap="Lefthand panel - True Z function shown in magenta (cyan) for real (imaginary) parts and spectral filtered based EP approximation shown in black (blue) for real (imaginary) parts, Right hand panel - Error in the real(Z) EP approximation. A comparison of the Riemann-Siegel Z function of the Riemann Zeta L-function and spectrally filtered partial Euler Product (using truncation at $\\max (P,1.25\\cdot\\sqrt{((\\frac{t}{2\\pi})^1\\cdot 1}) $) in the complex plane at $\\sigma=0.1$ for the interval t=(-750,750) where $P_{min}={1,2,3,5,13}$ for rows 1-5. The approximation error around t=0 only increases by adding primes.", out.width = c("49%","49%"), fig.show = "hold",  fig.height=3.8, warning=FALSE, cache=TRUE}
 
 # Riemann-Siegel Z function of Riemann Zeta function on critical line
 # values recorded every .01 spacing in interval [-750,+750]
 
-dfZ=read.csv("/home/john/pari/Zzeta_res_p1_0_m750_p750_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
+dfZ=read.csv("/home/john/pari/aboutrealaxis/Zzeta_res_p1_0_m750_p750_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
 dfZ$V2=as.numeric(gsub(" ","",dfZ$V2));
 dfZ=dfZ[order(as.numeric(dfZ$V1)),]
 
-dfZi=read.csv("/home/john/pari/Zzeta_res_p1_0_m750_p750_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
+dfZi=read.csv("/home/john/pari/aboutrealaxis/Zzeta_res_p1_0_m750_p750_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
 dfZi$V2=as.numeric(gsub(" ","",dfZi$V2));
 dfZi=dfZi[order(as.numeric(dfZi$V1)),]
 
@@ -4210,11 +4209,11 @@ dfZi=dfZi[order(as.numeric(dfZi$V1)),]
 #EP(sigma+i*t)*exp(i*theta)
 #using 0 extra integers in prodeuler pari-gp function
 
-dfplusZ=read.csv("/home/john/pari/Zplus_EPonly_res_p1_0_m750_p750_0extra_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
+dfplusZ=read.csv("/home/john/pari/aboutrealaxis/Zplus_EPonly_res_p1_0_m750_p750_0extra_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
 dfplusZ$V2=as.numeric(gsub(" ","",dfplusZ$V2));
 dfplusZ=dfplusZ[order(as.numeric(dfplusZ$V1)),]
 
-dfplusZi=read.csv("/home/john/pari/Zplus_EPonly_res_p1_0_m750_p750_0extra_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
+dfplusZi=read.csv("/home/john/pari/aboutrealaxis/Zplus_EPonly_res_p1_0_m750_p750_0extra_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
 dfplusZi$V2=as.numeric(gsub(" ","",dfplusZi$V2));
 dfplusZi=dfplusZi[order(as.numeric(dfplusZi$V1)),]
 
@@ -4237,11 +4236,11 @@ n=lenf2
 #EP(1-(sigma+i*t))*chi(sigma+i*t)*exp(i*theta)
 #using 0 extra integers in prodeuler pari-gp function
 
-dfminusZ=read.csv("/home/john/pari/Zminus_EPonly_res_p1_0_m750_p750_0extra_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
+dfminusZ=read.csv("/home/john/pari/aboutrealaxis/Zminus_EPonly_res_p1_0_m750_p750_0extra_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
 dfminusZ$V2=as.numeric(gsub(" ","",dfminusZ$V2));
 dfminusZ=dfminusZ[order(as.numeric(dfminusZ$V1)),]
 
-dfminusZi=read.csv("/home/john/pari/Zminus_EPonly_res_p1_0_m750_p750_0extra_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
+dfminusZi=read.csv("/home/john/pari/aboutrealaxis/Zminus_EPonly_res_p1_0_m750_p750_0extra_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
 dfminusZi$V2=as.numeric(gsub(" ","",dfminusZi$V2));
 dfminusZi=dfminusZi[order(as.numeric(dfminusZi$V1)),]
 
@@ -4290,11 +4289,11 @@ plot(as.numeric(substr(dfreal$V1,1,22)),Re(inv_hybrid)/n-Re(dfZ$V2),typ="l",xlab
 #EP(sigma+i*t)*exp(i*theta)
 #using 2 and upwards in prodeuler pari-gp function for all t
 
-dfplusZ=read.csv("/home/john/pari/Zplus_EPonly_res_p1_0_m750_p750_2upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
+dfplusZ=read.csv("/home/john/pari/aboutrealaxis/Zplus_EPonly_res_p1_0_m750_p750_2upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
 dfplusZ$V2=as.numeric(gsub(" ","",dfplusZ$V2));
 dfplusZ=dfplusZ[order(as.numeric(dfplusZ$V1)),]
 
-dfplusZi=read.csv("/home/john/pari/Zplus_EPonly_res_p1_0_m750_p750_2upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
+dfplusZi=read.csv("/home/john/pari/aboutrealaxis/Zplus_EPonly_res_p1_0_m750_p750_2upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
 dfplusZi$V2=as.numeric(gsub(" ","",dfplusZi$V2));
 dfplusZi=dfplusZi[order(as.numeric(dfplusZi$V1)),]
 
@@ -4317,11 +4316,11 @@ n=lenf2
 #EP(1-(sigma+i*t))*chi(sigma+i*t)*exp(i*theta)
 #using 2 and upwards in prodeuler pari-gp function for all t
 
-dfminusZ=read.csv("/home/john/pari/Zminus_EPonly_res_p1_0_m750_p750_2upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
+dfminusZ=read.csv("/home/john/pari/aboutrealaxis/Zminus_EPonly_res_p1_0_m750_p750_2upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
 dfminusZ$V2=as.numeric(gsub(" ","",dfminusZ$V2));
 dfminusZ=dfminusZ[order(as.numeric(dfminusZ$V1)),]
 
-dfminusZi=read.csv("/home/john/pari/Zminus_EPonly_res_p1_0_m750_p750_2upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
+dfminusZi=read.csv("/home/john/pari/aboutrealaxis/Zminus_EPonly_res_p1_0_m750_p750_2upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
 dfminusZi$V2=as.numeric(gsub(" ","",dfminusZi$V2));
 dfminusZi=dfminusZi[order(as.numeric(dfminusZi$V1)),]
 
@@ -4378,11 +4377,11 @@ plot(as.numeric(substr(dfreal$V1,1,22)),Re(inv_hybrid)/n-Re(dfZ$V2),typ="l",xlab
 #EP(sigma+i*t)*exp(i*theta)
 #using 3 and upwards in prodeuler pari-gp function for all t
 
-dfplusZ=read.csv("/home/john/pari/Zplus_EPonly_res_p1_0_m750_p750_3upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
+dfplusZ=read.csv("/home/john/pari/aboutrealaxis/Zplus_EPonly_res_p1_0_m750_p750_3upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
 dfplusZ$V2=as.numeric(gsub(" ","",dfplusZ$V2));
 dfplusZ=dfplusZ[order(as.numeric(dfplusZ$V1)),]
 
-dfplusZi=read.csv("/home/john/pari/Zplus_EPonly_res_p1_0_m750_p750_3upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
+dfplusZi=read.csv("/home/john/pari/aboutrealaxis/Zplus_EPonly_res_p1_0_m750_p750_3upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
 dfplusZi$V2=as.numeric(gsub(" ","",dfplusZi$V2));
 dfplusZi=dfplusZi[order(as.numeric(dfplusZi$V1)),]
 
@@ -4405,11 +4404,11 @@ n=lenf2
 #EP(1-(sigma+i*t))*chi(sigma+i*t)*exp(i*theta)
 #using 3 and upwards in prodeuler pari-gp function for all t
 
-dfminusZ=read.csv("/home/john/pari/Zminus_EPonly_res_p1_0_m750_p750_3upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
+dfminusZ=read.csv("/home/john/pari/aboutrealaxis/Zminus_EPonly_res_p1_0_m750_p750_3upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
 dfminusZ$V2=as.numeric(gsub(" ","",dfminusZ$V2));
 dfminusZ=dfminusZ[order(as.numeric(dfminusZ$V1)),]
 
-dfminusZi=read.csv("/home/john/pari/Zminus_EPonly_res_p1_0_m750_p750_3upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
+dfminusZi=read.csv("/home/john/pari/aboutrealaxis/Zminus_EPonly_res_p1_0_m750_p750_3upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
 dfminusZi$V2=as.numeric(gsub(" ","",dfminusZi$V2));
 dfminusZi=dfminusZi[order(as.numeric(dfminusZi$V1)),]
 
@@ -4459,11 +4458,11 @@ plot(as.numeric(substr(dfreal$V1,1,22)),Re(inv_hybrid)/n-Re(dfZ$V2),typ="l",xlab
 #EP(sigma+i*t)*exp(i*theta)
 #using 5 and upwards in prodeuler pari-gp function for all t
 
-dfplusZ=read.csv("/home/john/pari/Zplus_EPonly_res_p1_0_m750_p750_5upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
+dfplusZ=read.csv("/home/john/pari/aboutrealaxis/Zplus_EPonly_res_p1_0_m750_p750_5upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
 dfplusZ$V2=as.numeric(gsub(" ","",dfplusZ$V2));
 dfplusZ=dfplusZ[order(as.numeric(dfplusZ$V1)),]
 
-dfplusZi=read.csv("/home/john/pari/Zplus_EPonly_res_p1_0_m750_p750_5upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
+dfplusZi=read.csv("/home/john/pari/aboutrealaxis/Zplus_EPonly_res_p1_0_m750_p750_5upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
 dfplusZi$V2=as.numeric(gsub(" ","",dfplusZi$V2));
 dfplusZi=dfplusZi[order(as.numeric(dfplusZi$V1)),]
 
@@ -4486,11 +4485,11 @@ n=lenf2
 #EP(1-(sigma+i*t))*chi(sigma+i*t)*exp(i*theta)
 #using 5 and upwards in prodeuler pari-gp function for all t
 
-dfminusZ=read.csv("/home/john/pari/Zminus_EPonly_res_p1_0_m750_p750_5upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
+dfminusZ=read.csv("/home/john/pari/aboutrealaxis/Zminus_EPonly_res_p1_0_m750_p750_5upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
 dfminusZ$V2=as.numeric(gsub(" ","",dfminusZ$V2));
 dfminusZ=dfminusZ[order(as.numeric(dfminusZ$V1)),]
 
-dfminusZi=read.csv("/home/john/pari/Zminus_EPonly_res_p1_0_m750_p750_5upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
+dfminusZi=read.csv("/home/john/pari/aboutrealaxis/Zminus_EPonly_res_p1_0_m750_p750_5upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
 dfminusZi$V2=as.numeric(gsub(" ","",dfminusZi$V2));
 dfminusZi=dfminusZi[order(as.numeric(dfminusZi$V1)),]
 
@@ -4543,11 +4542,11 @@ plot(as.numeric(substr(dfreal$V1,1,22)),Re(inv_hybrid)/n-Re(dfZ$V2),typ="l",xlab
 #EP(sigma+i*t)*exp(i*theta)
 #using 13 and upwards in prodeuler pari-gp function for all t
 
-dfplusZ=read.csv("/home/john/pari/Zplus_EPonly_res_p1_0_m750_p750_13upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
+dfplusZ=read.csv("/home/john/pari/aboutrealaxis/Zplus_EPonly_res_p1_0_m750_p750_13upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
 dfplusZ$V2=as.numeric(gsub(" ","",dfplusZ$V2));
 dfplusZ=dfplusZ[order(as.numeric(dfplusZ$V1)),]
 
-dfplusZi=read.csv("/home/john/pari/Zplus_EPonly_res_p1_0_m750_p750_13upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
+dfplusZi=read.csv("/home/john/pari/aboutrealaxis/Zplus_EPonly_res_p1_0_m750_p750_13upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
 dfplusZi$V2=as.numeric(gsub(" ","",dfplusZi$V2));
 dfplusZi=dfplusZi[order(as.numeric(dfplusZi$V1)),]
 
@@ -4570,11 +4569,11 @@ n=lenf2
 #EP(1-(sigma+i*t))*chi(sigma+i*t)*exp(i*theta)
 #using 5 and upwards in prodeuler pari-gp function for all t
 
-dfminusZ=read.csv("/home/john/pari/Zminus_EPonly_res_p1_0_m750_p750_13upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
+dfminusZ=read.csv("/home/john/pari/aboutrealaxis/Zminus_EPonly_res_p1_0_m750_p750_13upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
 dfminusZ$V2=as.numeric(gsub(" ","",dfminusZ$V2));
 dfminusZ=dfminusZ[order(as.numeric(dfminusZ$V1)),]
 
-dfminusZi=read.csv("/home/john/pari/Zminus_EPonly_res_p1_0_m750_p750_13upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
+dfminusZi=read.csv("/home/john/pari/aboutrealaxis/Zminus_EPonly_res_p1_0_m750_p750_13upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
 dfminusZi$V2=as.numeric(gsub(" ","",dfminusZi$V2));
 dfminusZi=dfminusZi[order(as.numeric(dfminusZi$V1)),]
 
@@ -4623,16 +4622,16 @@ text(x=250,y=-0.5,"as shown the error in the zeta Z EP \n approximation around t
 
 
 
-```{r Zfnzeta_andtruncatedEPfouriertransform_0_pm750_p9, echo=FALSE, fig.cap="Lefthand panel - True Z function shown in magenta (cyan) for real (imaginary) parts and spectral filtered based EP approximation shown in black (blue) for real (imaginary) parts, Right hand panel - Error in the real(Z) EP approximation. A comparison of the Riemann-Siegel Z function of the Riemann Zeta L-function and spectrally filtered partial Euler Product (using truncation at $\\max (P,\\sqrt{((\\frac{t}{2\\pi})^1\\cdot 1}) $) in the complex plane at $\\sigma=0.1$ for the interval t=(-750,750) where $P_{min}={1,2,3,5,13}$ for rows 1-5. The approximation error around t=0 only increases by adding primes.", out.width = c("49%","49%"), fig.show = "hold",  fig.height=3.8, warning=FALSE, cache=TRUE}
+```{r Zfnzeta_andtruncatedEPfouriertransform_0_pm750_p9, echo=FALSE, fig.cap="Lefthand panel - True Z function shown in magenta (cyan) for real (imaginary) parts and spectral filtered based EP approximation shown in black (blue) for real (imaginary) parts, Right hand panel - Error in the real(Z) EP approximation. A comparison of the Riemann-Siegel Z function of the Riemann Zeta L-function and spectrally filtered partial Euler Product (using truncation at $\\max (P,1.25\\cdot\\sqrt{((\\frac{t}{2\\pi})^1\\cdot 1}) $) in the complex plane at $\\sigma=0.1$ for the interval t=(-750,750) where $P_{min}={1,2,3,5,13}$ for rows 1-5. The approximation error around t=0 only increases by adding primes.", out.width = c("49%","49%"), fig.show = "hold",  fig.height=3.8, warning=FALSE, cache=TRUE}
 
 # Riemann-Siegel Z function of Riemann Zeta function on critical line
 # values recorded every .01 spacing in interval [-750,+750]
 
-dfZ=read.csv("/home/john/pari/Zzeta_res_p9_0_m750_p750_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
+dfZ=read.csv("/home/john/pari/aboutrealaxis/Zzeta_res_p9_0_m750_p750_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
 dfZ$V2=as.numeric(gsub(" ","",dfZ$V2));
 dfZ=dfZ[order(as.numeric(dfZ$V1)),]
 
-dfZi=read.csv("/home/john/pari/Zzeta_res_p9_0_m750_p750_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
+dfZi=read.csv("/home/john/pari/aboutrealaxis/Zzeta_res_p9_0_m750_p750_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
 dfZi$V2=as.numeric(gsub(" ","",dfZi$V2));
 dfZi=dfZi[order(as.numeric(dfZi$V1)),]
 
@@ -4642,11 +4641,11 @@ dfZi=dfZi[order(as.numeric(dfZi$V1)),]
 #EP(sigma+i*t)*exp(i*theta)
 #using 0 extra integers in prodeuler pari-gp function
 
-dfplusZ=read.csv("/home/john/pari/Zplus_EPonly_res_p9_0_m750_p750_0extra_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
+dfplusZ=read.csv("/home/john/pari/aboutrealaxis/Zplus_EPonly_res_p9_0_m750_p750_0extra_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
 dfplusZ$V2=as.numeric(gsub(" ","",dfplusZ$V2));
 dfplusZ=dfplusZ[order(as.numeric(dfplusZ$V1)),]
 
-dfplusZi=read.csv("/home/john/pari/Zplus_EPonly_res_p9_0_m750_p750_0extra_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
+dfplusZi=read.csv("/home/john/pari/aboutrealaxis/Zplus_EPonly_res_p9_0_m750_p750_0extra_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
 dfplusZi$V2=as.numeric(gsub(" ","",dfplusZi$V2));
 dfplusZi=dfplusZi[order(as.numeric(dfplusZi$V1)),]
 
@@ -4669,11 +4668,11 @@ n=lenf2
 #EP(1-(sigma+i*t))*chi(sigma+i*t)*exp(i*theta)
 #using 0 extra integers in prodeuler pari-gp function
 
-dfminusZ=read.csv("/home/john/pari/Zminus_EPonly_res_p9_0_m750_p750_0extra_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
+dfminusZ=read.csv("/home/john/pari/aboutrealaxis/Zminus_EPonly_res_p9_0_m750_p750_0extra_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
 dfminusZ$V2=as.numeric(gsub(" ","",dfminusZ$V2));
 dfminusZ=dfminusZ[order(as.numeric(dfminusZ$V1)),]
 
-dfminusZi=read.csv("/home/john/pari/Zminus_EPonly_res_p9_0_m750_p750_0extra_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
+dfminusZi=read.csv("/home/john/pari/aboutrealaxis/Zminus_EPonly_res_p9_0_m750_p750_0extra_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
 dfminusZi$V2=as.numeric(gsub(" ","",dfminusZi$V2));
 dfminusZi=dfminusZi[order(as.numeric(dfminusZi$V1)),]
 
@@ -4722,11 +4721,11 @@ plot(as.numeric(substr(dfreal$V1,1,22)),Re(inv_hybrid)/n-Re(dfZ$V2),typ="l",xlab
 #EP(sigma+i*t)*exp(i*theta)
 #using 2 and upwards in prodeuler pari-gp function for all t
 
-dfplusZ=read.csv("/home/john/pari/Zplus_EPonly_res_p9_0_m750_p750_2upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
+dfplusZ=read.csv("/home/john/pari/aboutrealaxis/Zplus_EPonly_res_p9_0_m750_p750_2upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
 dfplusZ$V2=as.numeric(gsub(" ","",dfplusZ$V2));
 dfplusZ=dfplusZ[order(as.numeric(dfplusZ$V1)),]
 
-dfplusZi=read.csv("/home/john/pari/Zplus_EPonly_res_p9_0_m750_p750_2upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
+dfplusZi=read.csv("/home/john/pari/aboutrealaxis/Zplus_EPonly_res_p9_0_m750_p750_2upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
 dfplusZi$V2=as.numeric(gsub(" ","",dfplusZi$V2));
 dfplusZi=dfplusZi[order(as.numeric(dfplusZi$V1)),]
 
@@ -4749,11 +4748,11 @@ n=lenf2
 #EP(1-(sigma+i*t))*chi(sigma+i*t)*exp(i*theta)
 #using 2 and upwards in prodeuler pari-gp function for all t
 
-dfminusZ=read.csv("/home/john/pari/Zminus_EPonly_res_p9_0_m750_p750_2upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
+dfminusZ=read.csv("/home/john/pari/aboutrealaxis/Zminus_EPonly_res_p9_0_m750_p750_2upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
 dfminusZ$V2=as.numeric(gsub(" ","",dfminusZ$V2));
 dfminusZ=dfminusZ[order(as.numeric(dfminusZ$V1)),]
 
-dfminusZi=read.csv("/home/john/pari/Zminus_EPonly_res_p9_0_m750_p750_2upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
+dfminusZi=read.csv("/home/john/pari/aboutrealaxis/Zminus_EPonly_res_p9_0_m750_p750_2upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
 dfminusZi$V2=as.numeric(gsub(" ","",dfminusZi$V2));
 dfminusZi=dfminusZi[order(as.numeric(dfminusZi$V1)),]
 
@@ -4810,11 +4809,11 @@ plot(as.numeric(substr(dfreal$V1,1,22)),Re(inv_hybrid)/n-Re(dfZ$V2),typ="l",xlab
 #EP(sigma+i*t)*exp(i*theta)
 #using 3 and upwards in prodeuler pari-gp function for all t
 
-dfplusZ=read.csv("/home/john/pari/Zplus_EPonly_res_p9_0_m750_p750_3upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
+dfplusZ=read.csv("/home/john/pari/aboutrealaxis/Zplus_EPonly_res_p9_0_m750_p750_3upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
 dfplusZ$V2=as.numeric(gsub(" ","",dfplusZ$V2));
 dfplusZ=dfplusZ[order(as.numeric(dfplusZ$V1)),]
 
-dfplusZi=read.csv("/home/john/pari/Zplus_EPonly_res_p9_0_m750_p750_3upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
+dfplusZi=read.csv("/home/john/pari/aboutrealaxis/Zplus_EPonly_res_p9_0_m750_p750_3upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
 dfplusZi$V2=as.numeric(gsub(" ","",dfplusZi$V2));
 dfplusZi=dfplusZi[order(as.numeric(dfplusZi$V1)),]
 
@@ -4837,11 +4836,11 @@ n=lenf2
 #EP(1-(sigma+i*t))*chi(sigma+i*t)*exp(i*theta)
 #using 3 and upwards in prodeuler pari-gp function for all t
 
-dfminusZ=read.csv("/home/john/pari/Zminus_EPonly_res_p9_0_m750_p750_3upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
+dfminusZ=read.csv("/home/john/pari/aboutrealaxis/Zminus_EPonly_res_p9_0_m750_p750_3upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
 dfminusZ$V2=as.numeric(gsub(" ","",dfminusZ$V2));
 dfminusZ=dfminusZ[order(as.numeric(dfminusZ$V1)),]
 
-dfminusZi=read.csv("/home/john/pari/Zminus_EPonly_res_p9_0_m750_p750_3upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
+dfminusZi=read.csv("/home/john/pari/aboutrealaxis/Zminus_EPonly_res_p9_0_m750_p750_3upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
 dfminusZi$V2=as.numeric(gsub(" ","",dfminusZi$V2));
 dfminusZi=dfminusZi[order(as.numeric(dfminusZi$V1)),]
 
@@ -4891,11 +4890,11 @@ plot(as.numeric(substr(dfreal$V1,1,22)),Re(inv_hybrid)/n-Re(dfZ$V2),typ="l",xlab
 #EP(sigma+i*t)*exp(i*theta)
 #using 5 and upwards in prodeuler pari-gp function for all t
 
-dfplusZ=read.csv("/home/john/pari/Zplus_EPonly_res_p9_0_m750_p750_5upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
+dfplusZ=read.csv("/home/john/pari/aboutrealaxis/Zplus_EPonly_res_p9_0_m750_p750_5upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
 dfplusZ$V2=as.numeric(gsub(" ","",dfplusZ$V2));
 dfplusZ=dfplusZ[order(as.numeric(dfplusZ$V1)),]
 
-dfplusZi=read.csv("/home/john/pari/Zplus_EPonly_res_p9_0_m750_p750_5upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
+dfplusZi=read.csv("/home/john/pari/aboutrealaxis/Zplus_EPonly_res_p9_0_m750_p750_5upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
 dfplusZi$V2=as.numeric(gsub(" ","",dfplusZi$V2));
 dfplusZi=dfplusZi[order(as.numeric(dfplusZi$V1)),]
 
@@ -4918,11 +4917,11 @@ n=lenf2
 #EP(1-(sigma+i*t))*chi(sigma+i*t)*exp(i*theta)
 #using 5 and upwards in prodeuler pari-gp function for all t
 
-dfminusZ=read.csv("/home/john/pari/Zminus_EPonly_res_p9_0_m750_p750_5upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
+dfminusZ=read.csv("/home/john/pari/aboutrealaxis/Zminus_EPonly_res_p9_0_m750_p750_5upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
 dfminusZ$V2=as.numeric(gsub(" ","",dfminusZ$V2));
 dfminusZ=dfminusZ[order(as.numeric(dfminusZ$V1)),]
 
-dfminusZi=read.csv("/home/john/pari/Zminus_EPonly_res_p9_0_m750_p750_5upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
+dfminusZi=read.csv("/home/john/pari/aboutrealaxis/Zminus_EPonly_res_p9_0_m750_p750_5upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
 dfminusZi$V2=as.numeric(gsub(" ","",dfminusZi$V2));
 dfminusZi=dfminusZi[order(as.numeric(dfminusZi$V1)),]
 
@@ -4975,11 +4974,11 @@ plot(as.numeric(substr(dfreal$V1,1,22)),Re(inv_hybrid)/n-Re(dfZ$V2),typ="l",xlab
 #EP(sigma+i*t)*exp(i*theta)
 #using 13 and upwards in prodeuler pari-gp function for all t
 
-dfplusZ=read.csv("/home/john/pari/Zplus_EPonly_res_p9_0_m750_p750_13upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
+dfplusZ=read.csv("/home/john/pari/aboutrealaxis/Zplus_EPonly_res_p9_0_m750_p750_13upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
 dfplusZ$V2=as.numeric(gsub(" ","",dfplusZ$V2));
 dfplusZ=dfplusZ[order(as.numeric(dfplusZ$V1)),]
 
-dfplusZi=read.csv("/home/john/pari/Zplus_EPonly_res_p9_0_m750_p750_13upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
+dfplusZi=read.csv("/home/john/pari/aboutrealaxis/Zplus_EPonly_res_p9_0_m750_p750_13upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
 dfplusZi$V2=as.numeric(gsub(" ","",dfplusZi$V2));
 dfplusZi=dfplusZi[order(as.numeric(dfplusZi$V1)),]
 
@@ -5002,11 +5001,11 @@ n=lenf2
 #EP(1-(sigma+i*t))*chi(sigma+i*t)*exp(i*theta)
 #using 5 and upwards in prodeuler pari-gp function for all t
 
-dfminusZ=read.csv("/home/john/pari/Zminus_EPonly_res_p9_0_m750_p750_13upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
+dfminusZ=read.csv("/home/john/pari/aboutrealaxis/Zminus_EPonly_res_p9_0_m750_p750_13upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
 dfminusZ$V2=as.numeric(gsub(" ","",dfminusZ$V2));
 dfminusZ=dfminusZ[order(as.numeric(dfminusZ$V1)),]
 
-dfminusZi=read.csv("/home/john/pari/Zminus_EPonly_res_p9_0_m750_p750_13upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
+dfminusZi=read.csv("/home/john/pari/aboutrealaxis/Zminus_EPonly_res_p9_0_m750_p750_13upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
 dfminusZi$V2=as.numeric(gsub(" ","",dfminusZi$V2));
 dfminusZi=dfminusZi[order(as.numeric(dfminusZi$V1)),]
 
@@ -5074,7 +5073,7 @@ delta(dt)=6*dt^5-15*dt^4+10*dt^3;
 
 with the joining interval for the smoothstep function being placed at $\Delta t=(1.5\cdot\pi,1.5\cdot\pi+1)$.
 
-After performing fourier analysis of the hybrid versions of the two components of equation (32), figures 17, 18, 19 respectively illustrate in the lefthand panels, the performance of the averaged inverse fourier transform around the real axis compared to the real (imaginary) parts of the true Riemann-Siegel Z function shown in magenta (cyan) at the fourier grid spacing 0.01. That is, in the lefthand panels of figures 14, 15, 16 the following interval is displayed for five different values of the minimum prime in partial Euler product calculation $P_{min}=\left\lfloor 1.25\cdot \max\left(\{1,2,3,5,13\},\sqrt{(\frac{t}{2\pi})^d\cdot N_C}\right)\right\rfloor$ with each row (top to bottom) respectively belonging to the minimum prime value \{1,2,3,5,13\} which is active when t=0.
+After performing fourier analysis of the hybrid versions of the two components of equation (32), figures 17, 18, 19 respectively illustrate in the lefthand panels, the performance of the averaged inverse fourier transform around the real axis compared to the real (imaginary) parts of the true Riemann-Siegel Z function shown in magenta (cyan) at the fourier grid spacing 0.01. That is, in the lefthand panels of figures 14, 15, 16 the following interval is displayed for five different values of the minimum prime in partial Euler product calculation $P_{min}=\left\lfloor \max\left(\{1,2,3,5,13\},1.25\cdot\sqrt{(\frac{t}{2\pi})^d\cdot N_C}\right)\right\rfloor$ with each row (top to bottom) respectively belonging to the minimum prime value \{1,2,3,5,13\} which is active when t=0.
 
 (i) $s=(0.5-I\cdot 40,0.5+I\cdot 40)$ 
 
@@ -5107,16 +5106,16 @@ It can be seen from figures 17, 18 and 19
 
 
 
-```{r Zfnzeta_andtruncatedEPfouriertransform_0_pm750_LaurentSerieshybrid, echo=FALSE, fig.cap="Lefthand panel - True Z function shown in magenta (cyan) for real (imaginary) parts and hybrid spectral filtered based EP/Laurent Series approximation shown in black (blue) for real (imaginary) parts, Right hand panel - Error in the real(Z) EP approximation. A comparison of the Riemann-Siegel Z function of the Riemann Zeta L-function and spectrally filtered partial Euler Product/Laurent Series (using truncation at $\\max (P,\\sqrt{((\\frac{t}{2\\pi})^1\\cdot 1}) $) in the complex plane at $\\sigma=0.5$ for the interval t=(-750,750) where $P_{min}={1,2,3,5,13}$ for rows 1-5.", out.width = c("49%","49%"), fig.show = "hold",  fig.height=3.8, warning=FALSE, cache=TRUE}
+```{r Zfnzeta_andtruncatedEPfouriertransform_0_pm750_LaurentSerieshybrid, echo=FALSE, fig.cap="Lefthand panel - True Z function shown in magenta (cyan) for real (imaginary) parts and hybrid spectral filtered based EP/Laurent Series approximation shown in black (blue) for real (imaginary) parts, Right hand panel - Error in the real(Z) EP approximation. A comparison of the Riemann-Siegel Z function of the Riemann Zeta L-function and spectrally filtered partial Euler Product/Laurent Series (using truncation at $\\max (P,1.25\\cdot\\sqrt{((\\frac{t}{2\\pi})^1\\cdot 1}) $) in the complex plane at $\\sigma=0.5$ for the interval t=(-750,750) where $P_{min}={1,2,3,5,13}$ for rows 1-5.", out.width = c("49%","49%"), fig.show = "hold",  fig.height=3.8, warning=FALSE, cache=TRUE}
 
 # Riemann-Siegel Z function of Riemann Zeta function on critical line
 # values recorded every .01 spacing in interval [-750,+750]
 
-dfZ=read.csv("/home/john/pari/Zzeta_res_p5_0_m750_p750_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
+dfZ=read.csv("/home/john/pari/aboutrealaxis/Zzeta_res_p5_0_m750_p750_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
 dfZ$V2=as.numeric(gsub(" ","",dfZ$V2));
 dfZ=dfZ[order(as.numeric(dfZ$V1)),]
 
-dfZi=read.csv("/home/john/pari/Zzeta_res_p5_0_m750_p750_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
+dfZi=read.csv("/home/john/pari/aboutrealaxis/Zzeta_res_p5_0_m750_p750_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
 dfZi$V2=as.numeric(gsub(" ","",dfZi$V2));
 dfZi=dfZi[order(as.numeric(dfZi$V1)),]
 
@@ -5126,11 +5125,11 @@ dfZi=dfZi[order(as.numeric(dfZi$V1)),]
 #EP(sigma+i*t)*exp(i*theta)
 #using 0 extra integers in prodeuler pari-gp function
 
-dfplusZ=read.csv("/home/john/pari/Zplus_EP_res_p5_0_m750_p750_0extra_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
+dfplusZ=read.csv("/home/john/pari/aboutrealaxis/Zplus_EP_res_p5_0_m750_p750_0extra_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
 dfplusZ$V2=as.numeric(gsub(" ","",dfplusZ$V2));
 dfplusZ=dfplusZ[order(as.numeric(dfplusZ$V1)),]
 
-dfplusZi=read.csv("/home/john/pari/Zplus_EP_res_p5_0_m750_p750_0extra_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
+dfplusZi=read.csv("/home/john/pari/aboutrealaxis/Zplus_EP_res_p5_0_m750_p750_0extra_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
 dfplusZi$V2=as.numeric(gsub(" ","",dfplusZi$V2));
 dfplusZi=dfplusZi[order(as.numeric(dfplusZi$V1)),]
 
@@ -5153,11 +5152,11 @@ n=lenf2
 #EP(1-(sigma+i*t))*chi(sigma+i*t)*exp(i*theta)
 #using 0 extra integers in prodeuler pari-gp function
 
-dfminusZ=read.csv("/home/john/pari/Zminus_EP_res_p5_0_m750_p750_0extra_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
+dfminusZ=read.csv("/home/john/pari/aboutrealaxis/Zminus_EP_res_p5_0_m750_p750_0extra_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
 dfminusZ$V2=as.numeric(gsub(" ","",dfminusZ$V2));
 dfminusZ=dfminusZ[order(as.numeric(dfminusZ$V1)),]
 
-dfminusZi=read.csv("/home/john/pari/Zminus_EP_res_p5_0_m750_p750_0extra_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
+dfminusZi=read.csv("/home/john/pari/aboutrealaxis/Zminus_EP_res_p5_0_m750_p750_0extra_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
 dfminusZi$V2=as.numeric(gsub(" ","",dfminusZi$V2));
 dfminusZi=dfminusZi[order(as.numeric(dfminusZi$V1)),]
 
@@ -5206,11 +5205,11 @@ plot(as.numeric(substr(dfreal$V1,1,22)),Re(inv_hybrid)/n-Re(dfZ$V2),typ="l",xlab
 #EP(sigma+i*t)*exp(i*theta)
 #using 2 and upwards in prodeuler pari-gp function for all t
 
-dfplusZ=read.csv("/home/john/pari/Zplus_EP_res_p5_0_m750_p750_2upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
+dfplusZ=read.csv("/home/john/pari/aboutrealaxis/Zplus_EP_res_p5_0_m750_p750_2upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
 dfplusZ$V2=as.numeric(gsub(" ","",dfplusZ$V2));
 dfplusZ=dfplusZ[order(as.numeric(dfplusZ$V1)),]
 
-dfplusZi=read.csv("/home/john/pari/Zplus_EP_res_p5_0_m750_p750_2upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
+dfplusZi=read.csv("/home/john/pari/aboutrealaxis/Zplus_EP_res_p5_0_m750_p750_2upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
 dfplusZi$V2=as.numeric(gsub(" ","",dfplusZi$V2));
 dfplusZi=dfplusZi[order(as.numeric(dfplusZi$V1)),]
 
@@ -5233,11 +5232,11 @@ n=lenf2
 #EP(1-(sigma+i*t))*chi(sigma+i*t)*exp(i*theta)
 #using 2 and upwards in prodeuler pari-gp function for all t
 
-dfminusZ=read.csv("/home/john/pari/Zminus_EP_res_p5_0_m750_p750_2upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
+dfminusZ=read.csv("/home/john/pari/aboutrealaxis/Zminus_EP_res_p5_0_m750_p750_2upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
 dfminusZ$V2=as.numeric(gsub(" ","",dfminusZ$V2));
 dfminusZ=dfminusZ[order(as.numeric(dfminusZ$V1)),]
 
-dfminusZi=read.csv("/home/john/pari/Zminus_EP_res_p5_0_m750_p750_2upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
+dfminusZi=read.csv("/home/john/pari/aboutrealaxis/Zminus_EP_res_p5_0_m750_p750_2upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
 dfminusZi$V2=as.numeric(gsub(" ","",dfminusZi$V2));
 dfminusZi=dfminusZi[order(as.numeric(dfminusZi$V1)),]
 
@@ -5294,11 +5293,11 @@ text(x=0,y=-1.2,"t value when next prime is included in EP")
 #EP(sigma+i*t)*exp(i*theta)
 #using 3 and upwards in prodeuler pari-gp function for all t
 
-dfplusZ=read.csv("/home/john/pari/Zplus_EP_res_p5_0_m750_p750_3upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
+dfplusZ=read.csv("/home/john/pari/aboutrealaxis/Zplus_EP_res_p5_0_m750_p750_3upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
 dfplusZ$V2=as.numeric(gsub(" ","",dfplusZ$V2));
 dfplusZ=dfplusZ[order(as.numeric(dfplusZ$V1)),]
 
-dfplusZi=read.csv("/home/john/pari/Zplus_EP_res_p5_0_m750_p750_3upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
+dfplusZi=read.csv("/home/john/pari/aboutrealaxis/Zplus_EP_res_p5_0_m750_p750_3upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
 dfplusZi$V2=as.numeric(gsub(" ","",dfplusZi$V2));
 dfplusZi=dfplusZi[order(as.numeric(dfplusZi$V1)),]
 
@@ -5321,11 +5320,11 @@ n=lenf2
 #EP(1-(sigma+i*t))*chi(sigma+i*t)*exp(i*theta)
 #using 3 and upwards in prodeuler pari-gp function for all t
 
-dfminusZ=read.csv("/home/john/pari/Zminus_EP_res_p5_0_m750_p750_3upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
+dfminusZ=read.csv("/home/john/pari/aboutrealaxis/Zminus_EP_res_p5_0_m750_p750_3upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
 dfminusZ$V2=as.numeric(gsub(" ","",dfminusZ$V2));
 dfminusZ=dfminusZ[order(as.numeric(dfminusZ$V1)),]
 
-dfminusZi=read.csv("/home/john/pari/Zminus_EP_res_p5_0_m750_p750_3upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
+dfminusZi=read.csv("/home/john/pari/aboutrealaxis/Zminus_EP_res_p5_0_m750_p750_3upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
 dfminusZi$V2=as.numeric(gsub(" ","",dfminusZi$V2));
 dfminusZi=dfminusZi[order(as.numeric(dfminusZi$V1)),]
 
@@ -5375,11 +5374,11 @@ text(x=0,y=-1.2,"t value when next prime is included in EP")
 #EP(sigma+i*t)*exp(i*theta)
 #using 5 and upwards in prodeuler pari-gp function for all t
 
-dfplusZ=read.csv("/home/john/pari/Zplus_EP_res_p5_0_m750_p750_5upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
+dfplusZ=read.csv("/home/john/pari/aboutrealaxis/Zplus_EP_res_p5_0_m750_p750_5upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
 dfplusZ$V2=as.numeric(gsub(" ","",dfplusZ$V2));
 dfplusZ=dfplusZ[order(as.numeric(dfplusZ$V1)),]
 
-dfplusZi=read.csv("/home/john/pari/Zplus_EP_res_p5_0_m750_p750_5upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
+dfplusZi=read.csv("/home/john/pari/aboutrealaxis/Zplus_EP_res_p5_0_m750_p750_5upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
 dfplusZi$V2=as.numeric(gsub(" ","",dfplusZi$V2));
 dfplusZi=dfplusZi[order(as.numeric(dfplusZi$V1)),]
 
@@ -5402,11 +5401,11 @@ n=lenf2
 #EP(1-(sigma+i*t))*chi(sigma+i*t)*exp(i*theta)
 #using 5 and upwards in prodeuler pari-gp function for all t
 
-dfminusZ=read.csv("/home/john/pari/Zminus_EP_res_p5_0_m750_p750_5upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
+dfminusZ=read.csv("/home/john/pari/aboutrealaxis/Zminus_EP_res_p5_0_m750_p750_5upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
 dfminusZ$V2=as.numeric(gsub(" ","",dfminusZ$V2));
 dfminusZ=dfminusZ[order(as.numeric(dfminusZ$V1)),]
 
-dfminusZi=read.csv("/home/john/pari/Zminus_EP_res_p5_0_m750_p750_5upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
+dfminusZi=read.csv("/home/john/pari/aboutrealaxis/Zminus_EP_res_p5_0_m750_p750_5upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
 dfminusZi$V2=as.numeric(gsub(" ","",dfminusZi$V2));
 dfminusZi=dfminusZi[order(as.numeric(dfminusZi$V1)),]
 
@@ -5459,11 +5458,11 @@ text(x=c(-1,1)*(13/1.25)^2*2*pi/1,y=0.6,"13")
 #EP(sigma+i*t)*exp(i*theta)
 #using 13 and upwards in prodeuler pari-gp function for all t
 
-dfplusZ=read.csv("/home/john/pari/Zplus_EP_res_p5_0_m750_p750_13upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
+dfplusZ=read.csv("/home/john/pari/aboutrealaxis/Zplus_EP_res_p5_0_m750_p750_13upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
 dfplusZ$V2=as.numeric(gsub(" ","",dfplusZ$V2));
 dfplusZ=dfplusZ[order(as.numeric(dfplusZ$V1)),]
 
-dfplusZi=read.csv("/home/john/pari/Zplus_EP_res_p5_0_m750_p750_13upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
+dfplusZi=read.csv("/home/john/pari/aboutrealaxis/Zplus_EP_res_p5_0_m750_p750_13upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
 dfplusZi$V2=as.numeric(gsub(" ","",dfplusZi$V2));
 dfplusZi=dfplusZi[order(as.numeric(dfplusZi$V1)),]
 
@@ -5486,11 +5485,11 @@ n=lenf2
 #EP(1-(sigma+i*t))*chi(sigma+i*t)*exp(i*theta)
 #using 5 and upwards in prodeuler pari-gp function for all t
 
-dfminusZ=read.csv("/home/john/pari/Zminus_EP_res_p5_0_m750_p750_13upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
+dfminusZ=read.csv("/home/john/pari/aboutrealaxis/Zminus_EP_res_p5_0_m750_p750_13upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
 dfminusZ$V2=as.numeric(gsub(" ","",dfminusZ$V2));
 dfminusZ=dfminusZ[order(as.numeric(dfminusZ$V1)),]
 
-dfminusZi=read.csv("/home/john/pari/Zminus_EP_res_p5_0_m750_p750_13upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
+dfminusZi=read.csv("/home/john/pari/aboutrealaxis/Zminus_EP_res_p5_0_m750_p750_13upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
 dfminusZi$V2=as.numeric(gsub(" ","",dfminusZi$V2));
 dfminusZi=dfminusZi[order(as.numeric(dfminusZi$V1)),]
 
@@ -5542,16 +5541,16 @@ text(x=250,y=-0.25,"as shown the error in joining the hybrid  EP/Laurent Series 
 
 
 
-```{r Zfnzeta_andtruncatedEPfouriertransform_0_pm750_LaurentSerieshybrid_p1, echo=FALSE, fig.cap="Lefthand panel - True Z function shown in magenta (cyan) for real (imaginary) parts and hybrid spectral filtered based EP/Laurent Series approximation shown in black (blue) for real (imaginary) parts, Right hand panel - Error in the real(Z) EP approximation. A comparison of the Riemann-Siegel Z function of the Riemann Zeta L-function and spectrally filtered partial Euler Product/Laurent Series (using truncation at $\\max (P,\\sqrt{((\\frac{t}{2\\pi})^1\\cdot 1}) $) in the complex plane at $\\sigma=0.1$ for the interval t=(-750,750) where $P_{min}={1,2,3,5,13}$ for rows 1-5.", out.width = c("49%","49%"), fig.show = "hold",  fig.height=3.8, warning=FALSE, cache=TRUE}
+```{r Zfnzeta_andtruncatedEPfouriertransform_0_pm750_LaurentSerieshybrid_p1, echo=FALSE, fig.cap="Lefthand panel - True Z function shown in magenta (cyan) for real (imaginary) parts and hybrid spectral filtered based EP/Laurent Series approximation shown in black (blue) for real (imaginary) parts, Right hand panel - Error in the real(Z) EP approximation. A comparison of the Riemann-Siegel Z function of the Riemann Zeta L-function and spectrally filtered partial Euler Product/Laurent Series (using truncation at $\\max (P,1.25\\cdot\\sqrt{((\\frac{t}{2\\pi})^1\\cdot 1}) $) in the complex plane at $\\sigma=0.1$ for the interval t=(-750,750) where $P_{min}={1,2,3,5,13}$ for rows 1-5.", out.width = c("49%","49%"), fig.show = "hold",  fig.height=3.8, warning=FALSE, cache=TRUE}
 
 # Riemann-Siegel Z function of Riemann Zeta function on critical line
 # values recorded every .01 spacing in interval [-750,+750]
 
-dfZ=read.csv("/home/john/pari/Zzeta_res_p1_0_m750_p750_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
+dfZ=read.csv("/home/john/pari/aboutrealaxis/Zzeta_res_p1_0_m750_p750_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
 dfZ$V2=as.numeric(gsub(" ","",dfZ$V2));
 dfZ=dfZ[order(as.numeric(dfZ$V1)),]
 
-dfZi=read.csv("/home/john/pari/Zzeta_res_p1_0_m750_p750_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
+dfZi=read.csv("/home/john/pari/aboutrealaxis/Zzeta_res_p1_0_m750_p750_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
 dfZi$V2=as.numeric(gsub(" ","",dfZi$V2));
 dfZi=dfZi[order(as.numeric(dfZi$V1)),]
 
@@ -5561,11 +5560,11 @@ dfZi=dfZi[order(as.numeric(dfZi$V1)),]
 #EP(sigma+i*t)*exp(i*theta)
 #using 0 extra integers in prodeuler pari-gp function
 
-dfplusZ=read.csv("/home/john/pari/Zplus_EP_res_p1_0_m750_p750_0extra_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
+dfplusZ=read.csv("/home/john/pari/aboutrealaxis/Zplus_EP_res_p1_0_m750_p750_0extra_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
 dfplusZ$V2=as.numeric(gsub(" ","",dfplusZ$V2));
 dfplusZ=dfplusZ[order(as.numeric(dfplusZ$V1)),]
 
-dfplusZi=read.csv("/home/john/pari/Zplus_EP_res_p1_0_m750_p750_0extra_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
+dfplusZi=read.csv("/home/john/pari/aboutrealaxis/Zplus_EP_res_p1_0_m750_p750_0extra_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
 dfplusZi$V2=as.numeric(gsub(" ","",dfplusZi$V2));
 dfplusZi=dfplusZi[order(as.numeric(dfplusZi$V1)),]
 
@@ -5588,11 +5587,11 @@ n=lenf2
 #EP(1-(sigma+i*t))*chi(sigma+i*t)*exp(i*theta)
 #using 0 extra integers in prodeuler pari-gp function
 
-dfminusZ=read.csv("/home/john/pari/Zminus_EP_res_p1_0_m750_p750_0extra_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
+dfminusZ=read.csv("/home/john/pari/aboutrealaxis/Zminus_EP_res_p1_0_m750_p750_0extra_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
 dfminusZ$V2=as.numeric(gsub(" ","",dfminusZ$V2));
 dfminusZ=dfminusZ[order(as.numeric(dfminusZ$V1)),]
 
-dfminusZi=read.csv("/home/john/pari/Zminus_EP_res_p1_0_m750_p750_0extra_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
+dfminusZi=read.csv("/home/john/pari/aboutrealaxis/Zminus_EP_res_p1_0_m750_p750_0extra_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
 dfminusZi$V2=as.numeric(gsub(" ","",dfminusZi$V2));
 dfminusZi=dfminusZi[order(as.numeric(dfminusZi$V1)),]
 
@@ -5641,11 +5640,11 @@ plot(as.numeric(substr(dfreal$V1,1,22)),Re(inv_hybrid)/n-Re(dfZ$V2),typ="l",xlab
 #EP(sigma+i*t)*exp(i*theta)
 #using 2 and upwards in prodeuler pari-gp function for all t
 
-dfplusZ=read.csv("/home/john/pari/Zplus_EP_res_p1_0_m750_p750_2upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
+dfplusZ=read.csv("/home/john/pari/aboutrealaxis/Zplus_EP_res_p1_0_m750_p750_2upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
 dfplusZ$V2=as.numeric(gsub(" ","",dfplusZ$V2));
 dfplusZ=dfplusZ[order(as.numeric(dfplusZ$V1)),]
 
-dfplusZi=read.csv("/home/john/pari/Zplus_EP_res_p1_0_m750_p750_2upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
+dfplusZi=read.csv("/home/john/pari/aboutrealaxis/Zplus_EP_res_p1_0_m750_p750_2upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
 dfplusZi$V2=as.numeric(gsub(" ","",dfplusZi$V2));
 dfplusZi=dfplusZi[order(as.numeric(dfplusZi$V1)),]
 
@@ -5668,11 +5667,11 @@ n=lenf2
 #EP(1-(sigma+i*t))*chi(sigma+i*t)*exp(i*theta)
 #using 2 and upwards in prodeuler pari-gp function for all t
 
-dfminusZ=read.csv("/home/john/pari/Zminus_EP_res_p1_0_m750_p750_2upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
+dfminusZ=read.csv("/home/john/pari/aboutrealaxis/Zminus_EP_res_p1_0_m750_p750_2upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
 dfminusZ$V2=as.numeric(gsub(" ","",dfminusZ$V2));
 dfminusZ=dfminusZ[order(as.numeric(dfminusZ$V1)),]
 
-dfminusZi=read.csv("/home/john/pari/Zminus_EP_res_p1_0_m750_p750_2upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
+dfminusZi=read.csv("/home/john/pari/aboutrealaxis/Zminus_EP_res_p1_0_m750_p750_2upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
 dfminusZi$V2=as.numeric(gsub(" ","",dfminusZi$V2));
 dfminusZi=dfminusZi[order(as.numeric(dfminusZi$V1)),]
 
@@ -5729,11 +5728,11 @@ plot(as.numeric(substr(dfreal$V1,1,22)),Re(inv_hybrid)/n-Re(dfZ$V2),typ="l",xlab
 #EP(sigma+i*t)*exp(i*theta)
 #using 3 and upwards in prodeuler pari-gp function for all t
 
-dfplusZ=read.csv("/home/john/pari/Zplus_EP_res_p1_0_m750_p750_3upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
+dfplusZ=read.csv("/home/john/pari/aboutrealaxis/Zplus_EP_res_p1_0_m750_p750_3upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
 dfplusZ$V2=as.numeric(gsub(" ","",dfplusZ$V2));
 dfplusZ=dfplusZ[order(as.numeric(dfplusZ$V1)),]
 
-dfplusZi=read.csv("/home/john/pari/Zplus_EP_res_p1_0_m750_p750_3upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
+dfplusZi=read.csv("/home/john/pari/aboutrealaxis/Zplus_EP_res_p1_0_m750_p750_3upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
 dfplusZi$V2=as.numeric(gsub(" ","",dfplusZi$V2));
 dfplusZi=dfplusZi[order(as.numeric(dfplusZi$V1)),]
 
@@ -5756,11 +5755,11 @@ n=lenf2
 #EP(1-(sigma+i*t))*chi(sigma+i*t)*exp(i*theta)
 #using 3 and upwards in prodeuler pari-gp function for all t
 
-dfminusZ=read.csv("/home/john/pari/Zminus_EP_res_p1_0_m750_p750_3upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
+dfminusZ=read.csv("/home/john/pari/aboutrealaxis/Zminus_EP_res_p1_0_m750_p750_3upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
 dfminusZ$V2=as.numeric(gsub(" ","",dfminusZ$V2));
 dfminusZ=dfminusZ[order(as.numeric(dfminusZ$V1)),]
 
-dfminusZi=read.csv("/home/john/pari/Zminus_EP_res_p1_0_m750_p750_3upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
+dfminusZi=read.csv("/home/john/pari/aboutrealaxis/Zminus_EP_res_p1_0_m750_p750_3upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
 dfminusZi$V2=as.numeric(gsub(" ","",dfminusZi$V2));
 dfminusZi=dfminusZi[order(as.numeric(dfminusZi$V1)),]
 
@@ -5810,11 +5809,11 @@ plot(as.numeric(substr(dfreal$V1,1,22)),Re(inv_hybrid)/n-Re(dfZ$V2),typ="l",xlab
 #EP(sigma+i*t)*exp(i*theta)
 #using 5 and upwards in prodeuler pari-gp function for all t
 
-dfplusZ=read.csv("/home/john/pari/Zplus_EP_res_p1_0_m750_p750_5upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
+dfplusZ=read.csv("/home/john/pari/aboutrealaxis/Zplus_EP_res_p1_0_m750_p750_5upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
 dfplusZ$V2=as.numeric(gsub(" ","",dfplusZ$V2));
 dfplusZ=dfplusZ[order(as.numeric(dfplusZ$V1)),]
 
-dfplusZi=read.csv("/home/john/pari/Zplus_EP_res_p1_0_m750_p750_5upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
+dfplusZi=read.csv("/home/john/pari/aboutrealaxis/Zplus_EP_res_p1_0_m750_p750_5upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
 dfplusZi$V2=as.numeric(gsub(" ","",dfplusZi$V2));
 dfplusZi=dfplusZi[order(as.numeric(dfplusZi$V1)),]
 
@@ -5837,11 +5836,11 @@ n=lenf2
 #EP(1-(sigma+i*t))*chi(sigma+i*t)*exp(i*theta)
 #using 5 and upwards in prodeuler pari-gp function for all t
 
-dfminusZ=read.csv("/home/john/pari/Zminus_EP_res_p1_0_m750_p750_5upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
+dfminusZ=read.csv("/home/john/pari/aboutrealaxis/Zminus_EP_res_p1_0_m750_p750_5upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
 dfminusZ$V2=as.numeric(gsub(" ","",dfminusZ$V2));
 dfminusZ=dfminusZ[order(as.numeric(dfminusZ$V1)),]
 
-dfminusZi=read.csv("/home/john/pari/Zminus_EP_res_p1_0_m750_p750_5upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
+dfminusZi=read.csv("/home/john/pari/aboutrealaxis/Zminus_EP_res_p1_0_m750_p750_5upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
 dfminusZi$V2=as.numeric(gsub(" ","",dfminusZi$V2));
 dfminusZi=dfminusZi[order(as.numeric(dfminusZi$V1)),]
 
@@ -5894,11 +5893,11 @@ plot(as.numeric(substr(dfreal$V1,1,22)),Re(inv_hybrid)/n-Re(dfZ$V2),typ="l",xlab
 #EP(sigma+i*t)*exp(i*theta)
 #using 13 and upwards in prodeuler pari-gp function for all t
 
-dfplusZ=read.csv("/home/john/pari/Zplus_EP_res_p1_0_m750_p750_13upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
+dfplusZ=read.csv("/home/john/pari/aboutrealaxis/Zplus_EP_res_p1_0_m750_p750_13upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
 dfplusZ$V2=as.numeric(gsub(" ","",dfplusZ$V2));
 dfplusZ=dfplusZ[order(as.numeric(dfplusZ$V1)),]
 
-dfplusZi=read.csv("/home/john/pari/Zplus_EP_res_p1_0_m750_p750_13upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
+dfplusZi=read.csv("/home/john/pari/aboutrealaxis/Zplus_EP_res_p1_0_m750_p750_13upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
 dfplusZi$V2=as.numeric(gsub(" ","",dfplusZi$V2));
 dfplusZi=dfplusZi[order(as.numeric(dfplusZi$V1)),]
 
@@ -5921,11 +5920,11 @@ n=lenf2
 #EP(1-(sigma+i*t))*chi(sigma+i*t)*exp(i*theta)
 #using 5 and upwards in prodeuler pari-gp function for all t
 
-dfminusZ=read.csv("/home/john/pari/Zminus_EP_res_p1_0_m750_p750_13upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
+dfminusZ=read.csv("/home/john/pari/aboutrealaxis/Zminus_EP_res_p1_0_m750_p750_13upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
 dfminusZ$V2=as.numeric(gsub(" ","",dfminusZ$V2));
 dfminusZ=dfminusZ[order(as.numeric(dfminusZ$V1)),]
 
-dfminusZi=read.csv("/home/john/pari/Zminus_EP_res_p1_0_m750_p750_13upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
+dfminusZi=read.csv("/home/john/pari/aboutrealaxis/Zminus_EP_res_p1_0_m750_p750_13upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
 dfminusZi$V2=as.numeric(gsub(" ","",dfminusZi$V2));
 dfminusZi=dfminusZi[order(as.numeric(dfminusZi$V1)),]
 
@@ -5975,16 +5974,16 @@ text(x=250,y=0.5,"as shown the error in joining the hybrid  EP/Laurent Series \n
 
 
 
-```{r Zfnzeta_andtruncatedEPfouriertransform_0_pm750_LaurentSerieshybrid_p9, echo=FALSE, fig.cap="Lefthand panel - True Z function shown in magenta (cyan) for real (imaginary) parts and hybrid spectral filtered based EP/Laurent Series approximation shown in black (blue) for real (imaginary) parts, Right hand panel - Error in the real(Z) EP approximation. A comparison of the Riemann-Siegel Z function of the Riemann Zeta L-function and spectrally filtered partial Euler Product/Laurent Series (using truncation at $\\max (P,\\sqrt{((\\frac{t}{2\\pi})^1\\cdot 1}) $) in the complex plane at $\\sigma=0.9$ for the interval t=(-750,750) where $P_{min}={1,2,3,5,13}$ for rows 1-5.", out.width = c("49%","49%"), fig.show = "hold",  fig.height=3.8, warning=FALSE, cache=TRUE}
+```{r Zfnzeta_andtruncatedEPfouriertransform_0_pm750_LaurentSerieshybrid_p9, echo=FALSE, fig.cap="Lefthand panel - True Z function shown in magenta (cyan) for real (imaginary) parts and hybrid spectral filtered based EP/Laurent Series approximation shown in black (blue) for real (imaginary) parts, Right hand panel - Error in the real(Z) EP approximation. A comparison of the Riemann-Siegel Z function of the Riemann Zeta L-function and spectrally filtered partial Euler Product/Laurent Series (using truncation at $\\max (P,1.25\\cdot\\sqrt{((\\frac{t}{2\\pi})^1\\cdot 1}) $) in the complex plane at $\\sigma=0.9$ for the interval t=(-750,750) where $P_{min}={1,2,3,5,13}$ for rows 1-5.", out.width = c("49%","49%"), fig.show = "hold",  fig.height=3.8, warning=FALSE, cache=TRUE}
 
 # Riemann-Siegel Z function of Riemann Zeta function on critical line
 # values recorded every .01 spacing in interval [-750,+750]
 
-dfZ=read.csv("/home/john/pari/Zzeta_res_p9_0_m750_p750_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
+dfZ=read.csv("/home/john/pari/aboutrealaxis/Zzeta_res_p9_0_m750_p750_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
 dfZ$V2=as.numeric(gsub(" ","",dfZ$V2));
 dfZ=dfZ[order(as.numeric(dfZ$V1)),]
 
-dfZi=read.csv("/home/john/pari/Zzeta_res_p9_0_m750_p750_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
+dfZi=read.csv("/home/john/pari/aboutrealaxis/Zzeta_res_p9_0_m750_p750_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
 dfZi$V2=as.numeric(gsub(" ","",dfZi$V2));
 dfZi=dfZi[order(as.numeric(dfZi$V1)),]
 
@@ -5994,11 +5993,11 @@ dfZi=dfZi[order(as.numeric(dfZi$V1)),]
 #EP(sigma+i*t)*exp(i*theta)
 #using 0 extra integers in prodeuler pari-gp function
 
-dfplusZ=read.csv("/home/john/pari/Zplus_EP_res_p9_0_m750_p750_0extra_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
+dfplusZ=read.csv("/home/john/pari/aboutrealaxis/Zplus_EP_res_p9_0_m750_p750_0extra_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
 dfplusZ$V2=as.numeric(gsub(" ","",dfplusZ$V2));
 dfplusZ=dfplusZ[order(as.numeric(dfplusZ$V1)),]
 
-dfplusZi=read.csv("/home/john/pari/Zplus_EP_res_p9_0_m750_p750_0extra_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
+dfplusZi=read.csv("/home/john/pari/aboutrealaxis/Zplus_EP_res_p9_0_m750_p750_0extra_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
 dfplusZi$V2=as.numeric(gsub(" ","",dfplusZi$V2));
 dfplusZi=dfplusZi[order(as.numeric(dfplusZi$V1)),]
 
@@ -6021,11 +6020,11 @@ n=lenf2
 #EP(1-(sigma+i*t))*chi(sigma+i*t)*exp(i*theta)
 #using 0 extra integers in prodeuler pari-gp function
 
-dfminusZ=read.csv("/home/john/pari/Zminus_EP_res_p9_0_m750_p750_0extra_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
+dfminusZ=read.csv("/home/john/pari/aboutrealaxis/Zminus_EP_res_p9_0_m750_p750_0extra_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
 dfminusZ$V2=as.numeric(gsub(" ","",dfminusZ$V2));
 dfminusZ=dfminusZ[order(as.numeric(dfminusZ$V1)),]
 
-dfminusZi=read.csv("/home/john/pari/Zminus_EP_res_p9_0_m750_p750_0extra_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
+dfminusZi=read.csv("/home/john/pari/aboutrealaxis/Zminus_EP_res_p9_0_m750_p750_0extra_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
 dfminusZi$V2=as.numeric(gsub(" ","",dfminusZi$V2));
 dfminusZi=dfminusZi[order(as.numeric(dfminusZi$V1)),]
 
@@ -6074,11 +6073,11 @@ plot(as.numeric(substr(dfreal$V1,1,22)),Re(inv_hybrid)/n-Re(dfZ$V2),typ="l",xlab
 #EP(sigma+i*t)*exp(i*theta)
 #using 2 and upwards in prodeuler pari-gp function for all t
 
-dfplusZ=read.csv("/home/john/pari/Zplus_EP_res_p9_0_m750_p750_2upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
+dfplusZ=read.csv("/home/john/pari/aboutrealaxis/Zplus_EP_res_p9_0_m750_p750_2upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
 dfplusZ$V2=as.numeric(gsub(" ","",dfplusZ$V2));
 dfplusZ=dfplusZ[order(as.numeric(dfplusZ$V1)),]
 
-dfplusZi=read.csv("/home/john/pari/Zplus_EP_res_p9_0_m750_p750_2upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
+dfplusZi=read.csv("/home/john/pari/aboutrealaxis/Zplus_EP_res_p9_0_m750_p750_2upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
 dfplusZi$V2=as.numeric(gsub(" ","",dfplusZi$V2));
 dfplusZi=dfplusZi[order(as.numeric(dfplusZi$V1)),]
 
@@ -6101,11 +6100,11 @@ n=lenf2
 #EP(1-(sigma+i*t))*chi(sigma+i*t)*exp(i*theta)
 #using 2 and upwards in prodeuler pari-gp function for all t
 
-dfminusZ=read.csv("/home/john/pari/Zminus_EP_res_p9_0_m750_p750_2upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
+dfminusZ=read.csv("/home/john/pari/aboutrealaxis/Zminus_EP_res_p9_0_m750_p750_2upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
 dfminusZ$V2=as.numeric(gsub(" ","",dfminusZ$V2));
 dfminusZ=dfminusZ[order(as.numeric(dfminusZ$V1)),]
 
-dfminusZi=read.csv("/home/john/pari/Zminus_EP_res_p9_0_m750_p750_2upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
+dfminusZi=read.csv("/home/john/pari/aboutrealaxis/Zminus_EP_res_p9_0_m750_p750_2upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
 dfminusZi$V2=as.numeric(gsub(" ","",dfminusZi$V2));
 dfminusZi=dfminusZi[order(as.numeric(dfminusZi$V1)),]
 
@@ -6162,11 +6161,11 @@ plot(as.numeric(substr(dfreal$V1,1,22)),Re(inv_hybrid)/n-Re(dfZ$V2),typ="l",xlab
 #EP(sigma+i*t)*exp(i*theta)
 #using 3 and upwards in prodeuler pari-gp function for all t
 
-dfplusZ=read.csv("/home/john/pari/Zplus_EP_res_p9_0_m750_p750_3upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
+dfplusZ=read.csv("/home/john/pari/aboutrealaxis/Zplus_EP_res_p9_0_m750_p750_3upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
 dfplusZ$V2=as.numeric(gsub(" ","",dfplusZ$V2));
 dfplusZ=dfplusZ[order(as.numeric(dfplusZ$V1)),]
 
-dfplusZi=read.csv("/home/john/pari/Zplus_EP_res_p9_0_m750_p750_3upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
+dfplusZi=read.csv("/home/john/pari/aboutrealaxis/Zplus_EP_res_p9_0_m750_p750_3upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
 dfplusZi$V2=as.numeric(gsub(" ","",dfplusZi$V2));
 dfplusZi=dfplusZi[order(as.numeric(dfplusZi$V1)),]
 
@@ -6189,11 +6188,11 @@ n=lenf2
 #EP(1-(sigma+i*t))*chi(sigma+i*t)*exp(i*theta)
 #using 3 and upwards in prodeuler pari-gp function for all t
 
-dfminusZ=read.csv("/home/john/pari/Zminus_EP_res_p9_0_m750_p750_3upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
+dfminusZ=read.csv("/home/john/pari/aboutrealaxis/Zminus_EP_res_p9_0_m750_p750_3upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
 dfminusZ$V2=as.numeric(gsub(" ","",dfminusZ$V2));
 dfminusZ=dfminusZ[order(as.numeric(dfminusZ$V1)),]
 
-dfminusZi=read.csv("/home/john/pari/Zminus_EP_res_p9_0_m750_p750_3upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
+dfminusZi=read.csv("/home/john/pari/aboutrealaxis/Zminus_EP_res_p9_0_m750_p750_3upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
 dfminusZi$V2=as.numeric(gsub(" ","",dfminusZi$V2));
 dfminusZi=dfminusZi[order(as.numeric(dfminusZi$V1)),]
 
@@ -6243,11 +6242,11 @@ plot(as.numeric(substr(dfreal$V1,1,22)),Re(inv_hybrid)/n-Re(dfZ$V2),typ="l",xlab
 #EP(sigma+i*t)*exp(i*theta)
 #using 5 and upwards in prodeuler pari-gp function for all t
 
-dfplusZ=read.csv("/home/john/pari/Zplus_EP_res_p9_0_m750_p750_5upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
+dfplusZ=read.csv("/home/john/pari/aboutrealaxis/Zplus_EP_res_p9_0_m750_p750_5upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
 dfplusZ$V2=as.numeric(gsub(" ","",dfplusZ$V2));
 dfplusZ=dfplusZ[order(as.numeric(dfplusZ$V1)),]
 
-dfplusZi=read.csv("/home/john/pari/Zplus_EP_res_p9_0_m750_p750_5upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
+dfplusZi=read.csv("/home/john/pari/aboutrealaxis/Zplus_EP_res_p9_0_m750_p750_5upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
 dfplusZi$V2=as.numeric(gsub(" ","",dfplusZi$V2));
 dfplusZi=dfplusZi[order(as.numeric(dfplusZi$V1)),]
 
@@ -6270,11 +6269,11 @@ n=lenf2
 #EP(1-(sigma+i*t))*chi(sigma+i*t)*exp(i*theta)
 #using 5 and upwards in prodeuler pari-gp function for all t
 
-dfminusZ=read.csv("/home/john/pari/Zminus_EP_res_p9_0_m750_p750_5upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
+dfminusZ=read.csv("/home/john/pari/aboutrealaxis/Zminus_EP_res_p9_0_m750_p750_5upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
 dfminusZ$V2=as.numeric(gsub(" ","",dfminusZ$V2));
 dfminusZ=dfminusZ[order(as.numeric(dfminusZ$V1)),]
 
-dfminusZi=read.csv("/home/john/pari/Zminus_EP_res_p9_0_m750_p750_5upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
+dfminusZi=read.csv("/home/john/pari/aboutrealaxis/Zminus_EP_res_p9_0_m750_p750_5upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
 dfminusZi$V2=as.numeric(gsub(" ","",dfminusZi$V2));
 dfminusZi=dfminusZi[order(as.numeric(dfminusZi$V1)),]
 
@@ -6327,11 +6326,11 @@ plot(as.numeric(substr(dfreal$V1,1,22)),Re(inv_hybrid)/n-Re(dfZ$V2),typ="l",xlab
 #EP(sigma+i*t)*exp(i*theta)
 #using 13 and upwards in prodeuler pari-gp function for all t
 
-dfplusZ=read.csv("/home/john/pari/Zplus_EP_res_p9_0_m750_p750_13upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
+dfplusZ=read.csv("/home/john/pari/aboutrealaxis/Zplus_EP_res_p9_0_m750_p750_13upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
 dfplusZ$V2=as.numeric(gsub(" ","",dfplusZ$V2));
 dfplusZ=dfplusZ[order(as.numeric(dfplusZ$V1)),]
 
-dfplusZi=read.csv("/home/john/pari/Zplus_EP_res_p9_0_m750_p750_13upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
+dfplusZi=read.csv("/home/john/pari/aboutrealaxis/Zplus_EP_res_p9_0_m750_p750_13upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
 dfplusZi$V2=as.numeric(gsub(" ","",dfplusZi$V2));
 dfplusZi=dfplusZi[order(as.numeric(dfplusZi$V1)),]
 
@@ -6354,11 +6353,11 @@ n=lenf2
 #EP(1-(sigma+i*t))*chi(sigma+i*t)*exp(i*theta)
 #using 5 and upwards in prodeuler pari-gp function for all t
 
-dfminusZ=read.csv("/home/john/pari/Zminus_EP_res_p9_0_m750_p750_13upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
+dfminusZ=read.csv("/home/john/pari/aboutrealaxis/Zminus_EP_res_p9_0_m750_p750_13upwards_spacing_p01_real.csv",header=FALSE,colClasses = c("character"));
 dfminusZ$V2=as.numeric(gsub(" ","",dfminusZ$V2));
 dfminusZ=dfminusZ[order(as.numeric(dfminusZ$V1)),]
 
-dfminusZi=read.csv("/home/john/pari/Zminus_EP_res_p9_0_m750_p750_13upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
+dfminusZi=read.csv("/home/john/pari/aboutrealaxis/Zminus_EP_res_p9_0_m750_p750_13upwards_spacing_p01_imag.csv",header=FALSE,colClasses = c("character"));
 dfminusZi$V2=as.numeric(gsub(" ","",dfminusZi$V2));
 dfminusZi=dfminusZi[order(as.numeric(dfminusZi$V1)),]
 
