@@ -1,0 +1,646 @@
+---
+title: "Evidence of a sharp multi-modal distribution in the relative position of the highest Riemann Zeta peaks along the critical line in the piecewise intervals $[N^2\\cdot 2\\pi,(N+1)^2\\cdot 2\\pi),N\\in\\mathbb{Z}$ and a possible explanation using a heuristic approximation on the critical line of the indefinite integral of the Riemann Siegel Z function."
+author: "John Martin"
+date: \today
+header-includes:  
+  - \usepackage{xcolor}
+  - \usepackage{pdflscape}
+  - \newcommand{\blandscape}{\begin{landscape}}
+  - \newcommand{\elandscape}{\end{landscape}}
+output:
+  pdf_document:
+  fig_crop: no
+
+---
+  
+  ```{r setup, include=FALSE}
+# knitr::opts_chunk$set(echo = FALSE)
+
+```
+
+<!-- https://stackoverflow.com/questions/41655383/r-markdown-similar-feature-to-newcommand-in-latex/41664105 -->
+  \newcommand{\mychi}{\raisebox{0pt}[1ex][1ex]{$\chi$}}
+
+
+##DRAFT Executive Summary
+
+Examination of publically available data in the range t=(0,1e15) shows clear evidence that there is a higher density of the largest Riemann Zeta peaks as t increases around $(N+0.25)^2\cdot 2\pi$, $(N+0.75)^2\cdot 2\pi$ and $(N)^2\cdot 2\pi$ where $N\in\mathbb{Z}$. The analysis involves  rescaling the imaginary axis by $\sqrt{\frac{t}{2\pi}}$, hence piecewise intervals from $[N^2\cdot 2\pi,(N+1)^2\cdot 2\pi),N\in\mathbb{Z}$ become rescaled intervals of [N,N+1) which can then be all superimposed together into the one interval [0,1). Empirically, performing this transformation on the largest Riemann Zeta peak from each piecewise interval $[N^2\cdot 2\pi,(N+1)^2\cdot 2\pi),N\in\mathbb{Z}$ for N={0-721,1651-1709,2651-2675} agrees with the historical calculations on peak positions and results in clear distribution modes around (0.25,0.75,1) in the rescaled interval [0,1). One possible explanation for the modes at relative positions (0.25,0.75,1) is presented arising from a heuristic approximation of the indefinite integral of the Riemann Siegel Z function analogues using the tapered Riemann Zeta finite Dirichlet Series sum. In particular, the indefinite integral approximation of finite Dirichlet Series sum exhibits piecewise behaviour on the critical line with clear mesoscale features about $(N+0.25)^2\cdot 2\pi$, $(N+0.75)^2\cdot 2\pi$ and $(N)^2\cdot 2\pi$ that consistently have the steepest curvature in the interval $[N^2\cdot 2\pi,(N+1)^2\cdot 2\pi)$. Of further interest, the indefinite integral approximation exhibits consistent growth of $(\frac{t}{2\pi})^{0.25}$ on the critical line for the investigated t intervals and there are mesoscale differences for the piecewise intervals between three different Dirichlet Series sum approaches to the indefinite integral approximation, the zeroth order Riemann Siegel formula Dirichlet Series sum, and the tapered Dirichlet Series sum results truncated at the first quiescent region and second quiescent region respectively.
+
+
+
+
+##Introduction
+
+In this paper, the distribution of the extreme Riemann Siegel Z function [1-3] peaks within each piecewise interval $[N^2*2*Pi,(N+1)^2*2*Pi)$ is investigated as a function of its transformed co-ordinate $\sqrt{\frac{t}{2\pi}}-\left\lfloor\sqrt{\frac{t}{2\pi}}\right\rfloor$ value.
+
+It can be seen in figure 1, that upon re-examining the extreme Riemann Siegel Z function peaks reported by Gourdon & Sabah [4] and Kotnick [5] and binning the relative positions of the largest peaks in each piecewise interval $[N^2\cdot 2\pi,(N+1)^2\cdot 2\pi),N\in\mathbb{Z}$ into the interval $\sqrt{\frac{t}{2\pi}}-\left\lfloor\sqrt{\frac{t}{2\pi}}\right\rfloor$ it can be seen that there is a higher density of large peaks about t={$(N+0.25)^2\cdot 2\pi$, $(N+0.75)^2\cdot 2\pi$ and $(N)^2\cdot 2\pi$}. 
+
+
+
+
+
+```{r highest_peaks_in_sequence_distribution_by_normalised_position_pt1, echo=FALSE, warnings=FALSE, fig.show = "hold",  out.width = c("99%"), fig.align = "center", fig.cap="Histogram of the relative position of the highest peak from each piecewise intervals $[N^2*2*Pi,(N+1)^2*2*Pi)$ after transformation of the t co-ordinate to the standardised reference frame $\\sqrt{\\frac{t}{2\\pi}}-\\lfloor\\sqrt{\\frac{t}{2\\pi}}\\rfloor$. Top panel - highest peaks in each 1e9 Gram Point band t=(75e3,2.446e12) - Gourdon 2004. Bottom panel - highest peaks obtained t=(0,1e13) through predictive search - Kotnick 2003. Red vertical lines indicate co-ordinate positions {0.25,0.75,1.0}.", fig.height=4.5}
+
+
+df_gourdon=read.csv("/home/john/pari/MaxiZAll.txt",header=TRUE,sep=",")
+df_gourdon$floor=floor(df_gourdon$Value.of.t)
+df_gourdon$logratio=log(df_gourdon$X..abs.Z.)/log(df_gourdon$Value.of.t)
+# removing Gourdon smaller Zeta peaks that occur in the same [N^2*2*Pi,(N+1)^2*2*Pi) interval
+df_gourdon_dup=df_gourdon[duplicated(df_gourdon$floor),]
+hist(df_gourdon$residual,breaks=151,main="Frequency distribution of the relative position of the highest observed \n Riemann Siegel Z function peak every 1e9 Gram point band t=(75e3,2.446e12) Gourdon 2004 \n and binned using its sqrt{t/(2Pi)}-floor(sqrt{t/(2Pi)}) co-ordinate. 10000 peaks",xlab="sqrt{t/(2Pi)}-floor(sqrt{t/(2Pi)})  value for each peak",cex.main=0.8);grid(col="gray2")
+abline(v=c(0.25,0.75,1),col="red",lwd=1,lty=2)
+
+df_kotnick=read.csv("/home/john/pari/kotnick_list_peaks.csv",header=TRUE,sep=",",colClasses = "character")
+df_kotnick$Z=gsub("–","-",df_kotnick$Z)
+df_kotnick$V2=sqrt(as.numeric(df_kotnick$t)/2/pi)
+df_kotnick$floor=floor(df_kotnick$V2)
+df_kotnick$residual=df_kotnick$V2-df_kotnick$floor
+df_kotnick=df_kotnick[order(df_kotnick$floor,abs(as.numeric(df_kotnick$Z)),decreasing = c(FALSE,TRUE)),]
+
+# removing smaller Zeta peaks that occur in the same [N^2*2*Pi,(N+1)^2*2*Pi) interval in the Kotnick data
+df_kotnick_nodup=df_kotnick[!duplicated(df_kotnick$floor),]
+hist(df_kotnick_nodup$residual,breaks=151,main="Frequency distribution of the relative position of the next extreme Riemann Siegel Z function \n peak obtained t=(0,1e13) by Kotnick 2003 using predictive search and binned using its \n sqrt{t/(2Pi)}-floor(sqrt{t/(2Pi)}) co-ordinate. \n Data filtered to 154 unique $[N^2*2*Pi,(N+1)^2*2*Pi)$ intervals.",xlab="sqrt{t/(2Pi)}-floor(sqrt{t/(2Pi)})  value for each peak",cex.main=0.8);grid(col="gray2")
+abline(v=c(0.25,0.75,1),col="red",lwd=1,lty=2)
+
+
+
+```
+
+\clearpage
+
+Since [4,5] had other purposes for their research they did not systematically calculate every largest Riemann Siegel Z function peak in each successive $[N^2\cdot 2\pi,(N+1)^2\cdot 2\pi),N\in\mathbb{Z}$ piecewise interval, this author has calculated the largest Riemann Siegel Z function peak for N={0-721,1651-1709,2651-2675}. The top panel in figure 2 shows that the result of such a calculation has a distribution of largest Riemann Siegel Z function peaks with (i) a more rounded shape than  [4] and the modes peaks are slightly lower than 0.25, 0.75 but Gourdon & Sabah's results also contains data points at much higher t values and (ii) more data points than Kotnick [5] but in general agreement. 
+
+For completeness on the growth on extreme Riemann Siegel Z function values, the bottom panel in figure 2 overlays the results of [4,5] with the fresh calculations in this paper and then includes higher t values for known extreme Riemann Siegel Z function values from Odlyzko [6], Hiary [7,9],  Hiary and Bober [8], Tihanyi, Kovacs and Kovacs [10], Tihanyi and Kovacs [11] and Tihanyi [12]. In the bottom panel, it can be seen that (i) Gourdon & Sabah [4], Kotnick [5] and the present paper results are in agreement for their shared peaks, (ii) Gourdon & Sabah [4] and the present papers show more datapoints that just below the extremum because of their grid search style of identifying extreme peaks rather than Kotnick's [5] aim to only find the most extreme peaks, (iii) the highest peak reported by Odzylko [6] is in general agreement with the growth at lower t and (iv) more data points are needed to bridge the gap to the higher t results reported by [7-12].
+
+\textbf{Note from the author:}
+
+The discovery of the above $[N^2\cdot 2\pi,(N+1)^2\cdot 2\pi),N\in\mathbb{Z}$ behaviour and hence $\sqrt{\frac{t}{2\pi}}-\left\lfloor\sqrt{\frac{t}{2\pi}}\right\rfloor$ transformation did not happen by chance. The author was firstly investigating approximations for the indefinite integral of the Riemann Siegel Z function analogue of the tapered finite Dirichlet Series sum and found interesting piecewise indefinite integral lineshapes at periodicity $[N^2\cdot 2\pi,(N+1)^2\cdot 2\pi),N\in\mathbb{Z}$ with re-occurring mesoscale features. This hint at piecewise behaviour then incited the $\sqrt{\frac{t}{2\pi}}-\left\lfloor\sqrt{\frac{t}{2\pi}}\right\rfloor$ examination of large Riemann Siegel Z function peak locations. 
+
+However since 
+\begin{itemize}
+\item existing comprehensive tabulation of the true maximum Riemann Siegel Z function peak data was already present in the research literature and could easily be combined/confirmed with this author's own calculations on the Riemann Zeta function and tapered finite Dirichlet Series approximation for higher t values which "discovered" the $\sqrt{\frac{t}{2\pi}}-\left\lfloor\sqrt{\frac{t}{2\pi}}\right\rfloor$ mode features shown in figures 1 \& 2 and 
+\item the indefinite integral approximation discussed by the author in the next section is only a zeroth order term approximation that empirically works much better than expected on the critical line.
+\end{itemize}
+Therefore the logical flow of this paper needed to be to start with presenting the unequivocal evidence about the extreme Riemann Siegel Z function peak data having some $\left(\sqrt{\frac{t}{2\pi}}-\left\lfloor\sqrt{\frac{t}{2\pi}}\right\rfloor\right)$ piecewise behaviour and then subsequently to propose a possible explanation based on an indefinite integral approximation that will need further research.
+
+\newpage
+
+```{r highest_peaks_in_sequence_distribution_by_normalised_position_pt2, echo=FALSE, warnings=FALSE, fig.show = "hold",  out.width = c("99%"), fig.align = "center", fig.cap="Top panel - Distribution of highest peaks within each $[N^2*2*Pi,(N+1)^2*2*Pi)$ piecewise interval Martin 2025 for N={0-721,1651-1709,2651-2675} using their normalised positions $\\sqrt{\\frac{t}{2\\pi}}-\\lfloor\\sqrt{\\frac{t}{2\\pi}}\\rfloor$. Bottom panel - Overlay of growth of largest Riemann Siegel Z function peak heights from different calculations. Kotnick was looking for monotonically increasing increasing peak height and seems to have reported data as such. Gourdon and Martin who both report largest peak height in consecutive intervals also include some peaks heights under the extremum. As expected there is overlap in the Kotnick, Gourdon and Martin datapoints.", fig.height=4.5}
+
+
+
+df=read.csv("/home/john/pari/largest_value_insqrtsegment.csv",header=FALSE,sep=",",colClasses = "character")
+#closely repeated value in dataframe
+df=df[df$V1 != "15118.272484195778726916463176472692297",]
+df2=read.csv("/home/john/pari/largest_value_insqrtsegment_high.csv",header=FALSE,sep=",",colClasses = "character")
+df=rbind(df,df2)
+df=df[order(as.numeric(df$V1)),]
+df$Z=as.numeric(df$V4)
+df$residual=as.numeric(df$V3)
+hist(df$residual,breaks=151,main="Frequency distribution of the relative position of the largest Riemann Siegel Z function \n peak within each $[N^2*2*Pi,(N+1)^2*2*Pi)$ piecewise interval for N={0-650,1651-1660, \n 2651-2660} Martin 2025. Binned using its sqrt{t/(2Pi)}-floor(sqrt{t/(2Pi)}) co-ordinate.",xlab="sqrt{t/(2Pi)}-floor(sqrt{t/(2Pi)})  value for each peak",cex.main=0.8);grid(col="gray2")
+abline(v=c(0.25,0.75,1),col="red",lwd=1,lty=2)
+
+df_Hiary=read.csv("/home/john/pari/high_peaks_HiaryBober.csv",header=TRUE,colClasses = c("character","character",rep("numeric",5)))
+#str(df_Hiary)
+#hist(df_Hiary$residual[df_Hiary$ratio>0.12],breaks=51)
+df_Hiary$floor=1
+for(j in 1:dim(df_Hiary)[1]){
+  
+  df_Hiary$floor[j]=strsplit(df_Hiary$Q1[j],"\\.")[[1]][1]
+  
+}
+
+df_Hiary=df_Hiary[order(as.numeric(df_Hiary$T),abs(df_Hiary$Z),decreasing = c(FALSE,TRUE)),]
+df_Hiary_nodup=df_Hiary[!duplicated(df_Hiary$floor),]
+
+df_Hiary_nodup$increasing=0
+for(j in 2:dim(df_Hiary_nodup)[1]){
+  
+  if(j==2){high_val=7.5}
+  if(log(abs(df_Hiary_nodup$Z)[j])>high_val-0.1) {
+  df_Hiary_nodup$increasing[j]=1
+  high_val=log(abs(df_Hiary_nodup$Z)[j]) 
+  }
+  
+}
+#str(df_Hiary_nodup)
+
+df_Tihanyi=read.csv("/home/john/pari/tihanyi_thesis_largest_peaks.csv",header=TRUE,colClasses = c("character",rep("numeric",2)))
+#str(df_Tihanyi)
+#hist(df_Tihanyi$residual,breaks=51)
+
+xspan=range(log(as.numeric(df$V1)),log(df_gourdon$Value.of.t),
+            log(as.numeric(df_kotnick_nodup$t)),
+            log(as.numeric(df_Hiary$T)),
+            log(as.numeric(df_Tihanyi$t)))
+yspan=range(log(as.numeric(df$Z)),log(df_gourdon$X..abs.Z.),
+            log(abs(as.numeric(df_kotnick_nodup$Z))),
+            log(abs(as.numeric(df_Hiary$Z))),
+            log(abs(as.numeric(df_Tihanyi$Z))))
+plot(log(as.numeric(df_kotnick_nodup$t)),log(abs(as.numeric(df_kotnick_nodup$Z))),ylim=yspan,xlim=c(0,max(xspan)),pch=1,
+     main="growth of largest Riemann Siegel |Z| peaks from several authors",xlab="log(t) value",ylab="log(|Z|) value");grid(col="gray2")
+points(log(as.numeric(df_gourdon$Value.of.t)),log(df_gourdon$X..abs.Z.),pch=20,col=rgb(1,0,0,0.5))
+points(log(as.numeric(df$V1)),log(df$Z),pch=20,col=rgb(0,0,1,0.5))
+points(log(as.numeric(df_Hiary_nodup$T))[df_Hiary_nodup$increasing==1],log(abs(df_Hiary_nodup$Z))[df_Hiary_nodup$increasing==1],pch=0,col="darkblue")
+points(log(as.numeric(df_Tihanyi$t)),log(abs(df_Tihanyi$Z)),pch=20,col=rgb(0,1,0,0.5))
+#Points below from IMPROVEMENTS ON FINDING LARGE VALUES OF THE RIEMANN ZETA FUNCTION
+#ON THE CRITICAL LINE
+#Attila Kov´acs and Norbert Tihanyi
+points(log(c(356071078353654562.22,6578787583549202400.03,1322092402124830098554392373.32)/2/pi),log(abs(c(1287.14,-1368.459,-5012))),pch=20,col="green")
+#Point below from Odlyzko, A.M.: The 10 20 -th zero of the riemann zeta
+#function and 175 million of its neighbors. 
+#http://www.dtc.umn.edu/&sim;odlyzko/unpublished/
+points(log(5032868769288289111.35/2/pi),log(1581.7),pch=2,col="purple")
+#Peak near first bad gram point
+#abline(v=log(280.8),lty=2,col="darkblue")
+legend(x="bottomright",legend=c("Kotnick 2003 large peak predictive search \n t=(0,1e13)","Gourdon  2004 largest peak encountered \n each 1e9 Gram Point band t=(75e3,2.446e12)","Martin 2025 largest peak every interval \n t=[N^2*2*Pi,(N+1)^2*2*Pi) for, \n N={0-721,1651-1709,2651-2675}","Hiary 2011, Hiary and Bober 2018 \n highest peaks observed","Tihanyi thesis 2019, Tihanyi and Kovacs 2018 \n highest peaks observed","Odlyzko 1989 highest peaks observed"),cex=0.6,bty="n",
+       pch=c(1,20,20,0,20,2),col=c(1,rgb(1,0,0,0.5),rgb(0,0,1,0.5),"darkblue",rgb(0,1,0,0.5),"brown"))
+
+```
+
+\clearpage
+
+##A possible explanation for the distribution peaks at {0.25,0.75,1} in figures 1 and 2, from examining a heuristic approximation of the indefinite integral of the Riemann Siegel Z function analogue of the Dirichlet Series sum on the critical line.
+
+### The indefinite integral of the tapered finite Riemann Zeta function Dirichlet Series at the second quiescent region
+
+Firstly, it is remarked that a useful approximation of the indefinite integral of the Riemann Zeta function can be obtained via end point tapering of finite Dirichlet Series sums at the second quiescent region with partial sums of binomial coefficients \textbf{away from the real axis} across the complex plane [13]
+
+\begin{align}
+\int \zeta(s)~ds &\approx s + \sum_{k=2}^{\left(\lfloor\frac{t}{\pi}\rfloor-p\right)}\left(\frac{1}{-log(k) \cdot k^s}\right)+\sum_{i=\left(-p+1\right)}^{p}\frac{\frac{1}{2^{2p}} \left( 2^{2p}-\sum_{k=1}^{i+p}\binom{2p}{2p-k}\right)}{\left(-log(\lfloor\frac{t}{\pi}\rfloor+i) \cdot (\lfloor\frac{t}{\pi}\rfloor+i)^s\right)},  \qquad \qquad  \quad \Im(s) \rightarrow \infty    \label {eq:endtapindefiniteintegral} 
+\end{align}
+
+Where (i) $\left\lfloor\frac{t}{\pi}\right\rfloor$ is the location of the second quiescent region for the Riemann Zeta function Dirichlet Series sum, which 
+\begin{itemize}
+\item exhibits low noise in the final plateau of the Dirichlet Series sum oscillating divergence (for points s away from the real axis) and 
+\item via resurgence allows accurate approximation of both the real and imaginary components of the Riemann Zeta function,
+\end{itemize}
+, (ii) 2p is the number of end taper weighted points present in the second term of the equation and (iii) $\binom{2p}{2p-k}$ are the binomial coefficients. Away from the real axis this tapered Dirichlet Series sum provides an excellent approximation of its Riemann Zeta function analogue.
+
+On the critical line [10], the dominant behaviour of this indefinite integral is that the imaginary component has a linear trend arising from the first term in equation (1), i.e., $s=\sigma+it$ while the real component was non-zero (with horizontal trend) and of much smaller magnitude. 
+
+In [13], a Riemann Siegel Z function product formula derivation using $\int \zeta(s)~ds$ and $\int \zeta(1-s)~ds$ components approach was also attempted 
+
+\begin{align}
+Z_{\int \zeta(s)~ds}(s) = \sqrt{\left(\int \zeta(s)~ds\right)\cdot \left(\int \zeta(1-s)~ds\right) \cdot abs\left(\frac{\left(\int \zeta(s)~ds\right)}{\left(\int \zeta(1-s)~ds\right)}\right)}    \label {eq:Zfn_indefiniteintegral} 
+\end{align}
+
+which did achieve, on the critical line, a wholly real component. The dominant behaviour was real$\left\{\sqrt{\left(\int \zeta(s)~ds\right)\cdot \left(\int \zeta(1-s)~ds\right) \cdot abs\left(\frac{\left(\int \zeta(s)~ds\right)}{\left(\int \zeta(1-s)~ds\right)}\right)}\right\}_{(1/2+I\cdot t)} \sim t$ and 
+
+imag$\left\{\sqrt{\left(\int \zeta(s)~ds\right)\cdot \left(\int \zeta(1-s)~ds\right) \cdot abs\left(\frac{\left(\int \zeta(s)~ds\right)}{\left(\int \zeta(1-s)~ds\right)}\right)}\right\}_{(1/2+I\cdot t)} = 0$. 
+
+\clearpage
+
+### A heuristic approximation for the indefinite integrals of the Riemann Siegel Z function analogue of tapered and untapered finite the Riemann Zeta function Dirichlet Series truncated at the second and first quiescent regions
+
+A possible second function to attempt to investigate for insight into $\sqrt{\frac{t}{2\pi}}-\left\lfloor\sqrt{\frac{t}{2\pi}}\right\rfloor$ behaviour of Riemann Zeta function peak height would be to investigate approximations for the first principles calculation of the indefinite integral of the Riemann Siegel Z function.
+
+Empirically, the following heuristic approximation has been investigated by the author
+
+\begin{align}
+\int e^{-\frac{1}{2}log(\mychi(s))}\zeta(s)~ds &= \int e^{\theta(s)}\zeta(s)~ds \\
+&\approx e^{\theta(s)}\cdot\Bigg[\sum_{k=1}^{\left(\lfloor\frac{t}{\pi}\rfloor-p\right)}\left(\frac{1}{\left[\Re(\theta'(s))-log(k)\right] \cdot k^s}\right) \nonumber \\ &+\sum_{i=\left(-p+1\right)}^{p}\frac{\frac{1}{2^{2p}} \left( 2^{2p}-\sum_{k=1}^{i+p}\binom{2p}{2p-k}\right)}{\left(\left[\Re(\theta'(s))-log(\lfloor\frac{t}{\pi}\rfloor+i)\right] \cdot (\lfloor\frac{t}{\pi}\rfloor+i)^s\right)}\Bigg] + \text{ error},  \qquad \qquad  \quad \Im(s) \rightarrow \infty
+\end{align}
+
+where $\zeta(s)=\mychi(s)\zeta(1-s)$, $e^{-2\theta(s)}=\mychi(s)$, $\theta(s)$ being the extended Riemann Siegel theta function and $Z_{\zeta(s)}=e^{\theta(s)}\zeta(s)$ the Rieman Siegel Z function [1-3].
+
+As discussed below, first and second quiescent region truncation approximations of equation (4) suprisingly have excellent zeroth order performance \textbf{on the critical line} in terms of numerical derivative estimation of the Riemann Siegel Z function to high accuracy away from the real axis. Part of the approximation prescription is explicitly using only $\Re(\theta'(s))$ so further research is required to understand the approximation's underpinnings. 
+
+In this paper, the following three critical line zeroth order approximations of equation (1) are investigated
+
+(i) tapered truncation at the second quiescent region for Riemann Zeta Dirichlet Series $\left\lfloor\frac{t}{\pi}\right\rfloor$
+
+\begin{align}
+\left(\int e^{\theta(s)}\zeta(s)~ds\right)_{s=1/2+I\cdot t,\left\lfloor\frac{t}{\pi}\right\rfloor,\text{tapered}}
+&\approx e^{\theta(1/2+I\cdot t)}\cdot\Bigg[\sum_{k=1}^{\left(\lfloor\frac{t}{\pi}\rfloor-p\right)}\left(\frac{1}{\left[\Re(\theta'(1/2+I\cdot t))-log(k)\right] \cdot k^{(1/2+I\cdot t)}}\right) \nonumber \\ &+\sum_{i=\left(-p+1\right)}^{p}\frac{\frac{1}{2^{2p}} \left( 2^{2p}-\sum_{k=1}^{i+p}\binom{2p}{2p-k}\right)}{\left(\left[\Re(\theta'(1/2+I\cdot t))-log(\lfloor\frac{t}{\pi}\rfloor+i)\right] \cdot (\lfloor\frac{t}{\pi}\rfloor+i)^{(1/2+I\cdot t)}\right)}\Bigg] \nonumber \\
+&,  \qquad \Im(1/2+I\cdot t) \rightarrow \infty
+\end{align}
+
+(ii) tapered truncation at the first quiescent region for Riemann Zeta Dirichlet Series $\left\lfloor\sqrt{\frac{t}{2\pi}}\right\rfloor$
+
+\begin{align}
+\left(\int e^{\theta(s)}\zeta(s)~ds\right)_{s=1/2+I\cdot t,\left\lfloor\sqrt{\frac{t}{2\pi}}\right\rfloor,\text{tapered}}
+&\approx e^{\theta(1/2+I\cdot t)}\cdot\Bigg[\sum_{k=1}^{\left(\lfloor\sqrt{\frac{t}{2\pi}}\rfloor-p\right)}\left(\frac{1}{\left[\Re(\theta'(1/2+I\cdot t))-log(k)\right] \cdot k^{(1/2+I\cdot t)}}\right) \nonumber \\ &+\sum_{i=\left(-p+1\right)}^{p}\frac{\frac{1}{2^{2p}} \left( 2^{2p}-\sum_{k=1}^{i+p}\binom{2p}{2p-k}\right)}{\left(\left[\Re(\theta'(1/2+I\cdot t))-log(\lfloor\sqrt{\frac{t}{2\pi}}\rfloor+i)\right] \cdot (\lfloor\sqrt{\frac{t}{2\pi}}\rfloor+i)^{(1/2+I\cdot t)}\right)} \nonumber \\
+&+ \mychi(1/2+I\cdot t)\cdot\Bigg(\sum_{k=1}^{\left(\lfloor\sqrt{\frac{t}{2\pi}}\rfloor-p\right)}\left(\frac{1}{\left[\Re(\theta'(1/2+I\cdot t))-log(k)\right] \cdot k^{(1/2+I\cdot t)}}\right) \nonumber \\ &+\sum_{i=\left(-p+1\right)}^{p}\frac{\frac{1}{2^{2p}} \left( 2^{2p}-\sum_{k=1}^{i+p}\binom{2p}{2p-k}\right)}{\left(\left[\Re(\theta'(1/2+I\cdot t))-log(\lfloor\sqrt{\frac{t}{2\pi}}\rfloor+i)\right] \cdot (\lfloor\sqrt{\frac{t}{2\pi}}\rfloor+i)^{(1/2+I\cdot t)}\right)}\Bigg)\Bigg] \nonumber \\
+&,  \qquad \Im(1/2+I\cdot t) \rightarrow \infty
+\end{align}
+
+
+(ii) truncation at the first quiescent region for Riemann Zeta Dirichlet Series $\left\lfloor\sqrt{\frac{t}{2\pi}}\right\rfloor$
+
+\begin{align}
+\left(\int e^{\theta(s)}\zeta(s)~ds\right)_{s=1/2+I\cdot t,\left\lfloor\sqrt{\frac{t}{2\pi}}\right\rfloor}
+&\approx e^{\theta(1/2+I\cdot t)}\cdot\Bigg[\sum_{k=1}^{\left(\lfloor\sqrt{\frac{t}{2\pi}}\rfloor\right)}\left(\frac{1}{\left[\Re(\theta'(1/2+I\cdot t))-log(k)\right] \cdot k^{(1/2+I\cdot t)}}\right) \nonumber \\
+&+ \mychi(1/2+I\cdot t)\cdot\sum_{k=1}^{\left(\lfloor\sqrt{\frac{t}{2\pi}}\rfloor\right)}\left(\frac{1}{\left[\Re(\theta'(1/2+I\cdot t))+log(k)\right] \cdot k^{(1-(1/2+I\cdot t))}}\right) \Bigg] \nonumber \\
+&,  \qquad \Im(1/2+I\cdot t) \rightarrow \infty
+\end{align}
+
+### Total derivative behaviour of equations (4), (5) and (6) on the critical line
+
+To be useful heuristic approximations the total derivatives $\frac{d}{ds} \left(equations (4,5,6)\right)$ under numerical computation must result in useful approximations of the Riemann Siegel Z function.
+
+Figure 3 and 4 check the performance of the numerical total derivatives of equations (4-6) on the critical line, for the two intervals t=(275,300) and t=(26538,26555). 
+
+The left column of Figure 3 shows an overlay of the real( numerical $\frac{d}{ds} \left(\text{equation (4)}\right)$) and real( numerical $\frac{d}{ds} \left(\text{equation (6)}\right)$) top (bottom) row (shown in green) respectively with the true Riemann Siegel Z  function (shown in red). The right column of Figure 3 shows the real and imaginary parts (shown in red and green respectively) of the differences with the true Riemann Siegel Z  function -- top row numerical( $\frac{d}{ds} \left(\text{equation (4)}\right) - e^{\theta(s)}\zeta(s)$) and -- bottom row numerical ($\frac{d}{ds} \left(\text{equation (6)}\right) - e^{\theta(s)}\zeta(s)$). Note that in figure 3, for t=(275,300), equation (5) is not feasible as 128 point tapering about the 1st quiescent region $N_1=\sqrt{\frac{t}{2\pi}}$ requires $t>(128/2)^2\cdot 2\cdot\pi=25735.93$ since with 128 point tapering, 64 integers are used from the Dirichlet Series up to and including $N_1$ as well as the next 64 integers after $N_1$.
+
+The left column of Figure 4 shows an overlay of the real( numerical $\frac{d}{ds} \left(\text{equation (4)}\right)$) and real( numerical $\frac{d}{ds} \left(\text{equation (5)}\right)$) and real( numerical $\frac{d}{ds} \left(\text{equation (6)}\right)$) top (middle and bottom) rows (shown in green) respectively with the true Riemann Siegel Z  function (shown in red). The right column of Figure 4 shows the real and imaginary parts (shown in red and green respectively) of the differences with the true Riemann Siegel Z  function -- top row numerical( $\frac{d}{ds} \left(\text{equation (4)}\right) - e^{\theta(s)}\zeta(s)$), -- middle row numerical ($\frac{d}{ds} \left(\text{equation (5)}\right) - e^{\theta(s)}\zeta(s)$)and -- bottom row numerical ($\frac{d}{ds} \left(\text{equation (6)}\right) - e^{\theta(s)}\zeta(s)$).
+
+From the two figures, 
+
+\begin{itemize}
+\item the numerical derivative of $\frac{d}{ds} \left(\text{equation (4)}\right)$ has excellent multi decimal place agreement with  $e^{\theta(1/2+I\cdot t)}\zeta(1/2+I\cdot t)$ with the residual error contribution appearing to be random in nature.
+\item the numerical derivative of $\frac{d}{ds} \left(\text{equation (6)}\right)$ has small visible systematic deviations from  $e^{\theta(1/2+I\cdot t)}\zeta(1/2+I\cdot t)$. The leading order of the visible systematic difference is in agreement with the first order Riemann Siegel formula correction.
+\item the numerical derivative of $\frac{d}{ds} \left(\text{equation (5)}\right)$ has smaller but systematic deviations than $\frac{d}{ds} \left(\text{equation (6)}\right)$ because $\frac{d}{ds} \left(\text{equation (5)}\right)$ includes tapering which should introduce higher order corrections to equation (6).
+\end{itemize}
+
+Thus equations (4-6) under numerical calculation of the total derivative $\frac{d}{ds}$ (for known t intervals) on the critical line provide good performance in approximating $e^{\theta(1/2+I\cdot t)}\zeta(1/2+I\cdot t)$. Hence there is empirical support that equations (4-6) may provide useful information on the behaviour of $\left(\int e^{\theta(s)}\zeta(s)~ds\right)_{s=1/2+I\cdot t}$ the indefinite integral of the Riemann Siegel Z function and its total derivative \textbf{on the critical line}.
+
+
+
+```{r numerical_derivative_qualitycheck_275, echo=FALSE,  fig.show = "hold",  out.width=c("49%","49%"), fig.align = "center", fig.height=3, fig.cap="On the critical line, for the interval t=(275,300). Left column - A overlay of real and imaginary components of Riemann Siegel Z function (red and blue) and the numerical total derivative d/ds of equations 4 (6) (green and black) in top (bottom row). Right column - the difference in the real (red) and imaginary (green) components of the approximations and the true Riemann Siegel Z function."}
+
+knitr::include_graphics("/home/john/pari/IndefiniteIntegralZfn/graph_zetaZbased_compare_tapered2ndQ_Region_actual_tscale_0.5_275_25.pdf")
+
+knitr::include_graphics("/home/john/pari/IndefiniteIntegralZfn/graph_zetaZbased_error_tapered2ndQ_Region_actual_tscale_0.5_275_25.pdf")
+
+#128 point tapered1stQ_region doesn't work until t>64^2*2*Pi
+# knitr::include_graphics("/home/john/pari/IndefiniteIntegralZfn/graph_zetaZbased_compare_tapered1stQ_Region_actual_tscale_0.5_275_25.pdf")
+# 
+# knitr::include_graphics("/home/john/pari/IndefiniteIntegralZfn/graph_zetaZbased_error_tapered1stQ_Region_actual_tscale_0.5_275_25.pdf")
+
+knitr::include_graphics("/home/john/pari/IndefiniteIntegralZfn/graph_zetaZbased_compare_zerothorderRSestimate1stQ_Region_actual_tscale_0.5_275_25.pdf")
+
+knitr::include_graphics("/home/john/pari/IndefiniteIntegralZfn/graph_zetaZbased_error_zerothorderRSestimate1stQ_Region_actual_tscale_0.5_275_25.pdf")
+
+```
+
+
+
+```{r numerical_derivative_qualitycheck_26538, echo=FALSE,  fig.show = "hold",  out.width=c("49%","49%"), fig.align = "center", fig.height=3, fig.cap="On the critical line, for the interval t=(26538,26555). Left column - A overlay of real and imaginary components of Riemann Siegel Z function function (red and blue) and the numerical total derivative d/ds of equations 4, 5, and 6 (green and black) in the top, middle and bottom rows. Right column - the difference in the real (red) and imaginary (green) components of the approximations and the true Riemann Siegel Z function."}
+
+knitr::include_graphics("/home/john/pari/IndefiniteIntegralZfn/graph_zetaZbased_compare_tapered2ndQ_Region_actual_tscale_0.5_26538_17.pdf")
+
+knitr::include_graphics("/home/john/pari/IndefiniteIntegralZfn/graph_zetaZbased_error_tapered2ndQ_Region_actual_tscale_0.5_26538_17.pdf")
+
+knitr::include_graphics("/home/john/pari/IndefiniteIntegralZfn/graph_zetaZbased_compare_tapered1stQ_Region_actual_tscale_0.5_26538_17.pdf")
+
+knitr::include_graphics("/home/john/pari/IndefiniteIntegralZfn/graph_zetaZbased_error_tapered1stQ_Region_actual_tscale_0.5_26538_17.pdf")
+
+knitr::include_graphics("/home/john/pari/IndefiniteIntegralZfn/graph_zetaZbased_compare_zerothorderRSestimate1stQ_Region_actual_tscale_0.5_26538_17.pdf")
+
+knitr::include_graphics("/home/john/pari/IndefiniteIntegralZfn/graph_zetaZbased_error_zerothorderRSestimate1stQ_Region_actual_tscale_0.5_26538_17.pdf")
+
+```
+
+\clearpage
+
+### Off the critical line
+
+For completeness, appendix A shows an example for $s=(0.6+I\cdot t)$ where off the critical line the numerical total derivatives of equations (4-6) contain singularities at $N^2\cdot2\cdot\pi$. Hence for the purposes of this paper equations (4-6) should only currently be considered reliable approximations, \textbf{on the critical line only}. 
+
+### Piecewise nature of the indefinite integral approximations equation (4)
+
+In order to show the piecewise nature of the heuristic approximation equation (4) and its total derivative on the same graph with enough resolution of its approximation of the Riemann Zeta non-trivial zero positions, the lowest t interval for 128 point tapering of the Riemann Zeta function Dirichlet Series truncation at the second quiescent region. Figure 5 displays along $s=0.5+I*t$ in the lowest possible interval $t=(226,403)$ for 128 point tapering at the second quiescent region, both the behaviour of the numerical total derivative of the approximate indefinite integral Riemann Siegel Z function approximation imag part in gray, real part in green and the approximate indefinite integral itself imag part in red, real part in blue.
+
+The top row displays the approximate indefinite integral function and its numerical total derivative using the regular t scale, while the bottom row displays the functions using $\sqrt{(\frac{t}{2\pi})}$ scale. Thus quasi-discontinuities in the indefinite integral at $\sqrt{(\frac{t}{2\pi})}=\{6,7,8\}$ can be observed and the mesoscale structure across each piecewise domain has similarities. The real(numerical total derivative of equation (4)) shown in green has zeroes (closely approximating the true Riemann Siegel Z function approximation) as turning points at the co-ordinates of imag(indefinite integral) shown in red. While the real(indefinite integral) shown in blue has curvature with respect to t, its total derivative (not the partial derivative with respect to t) numerically computed along the critical line and coinciding with the imag(Riemann Siegel Z function approximation) shown in gray is zero! This behaviour for the imaginary part of the total derivative of the indefinite integral implies that the imag(total derivative of the approximate indefinite integral equation (4)) has a $(\sigma-1/2)$ multiplicative factor on the critical line.
+
+To aid in highlighting the $\sqrt{\frac{t}{2\pi}}-\left\lfloor\sqrt{\frac{t}{2\pi}}\right\rfloor$ behaviour of the indefinite integral and the potential for a varying density of the relative position of the highest Riemann Siegel Z function peaks the bottom row of the figure 5 uses  $\sqrt{\frac{t}{2\pi}}-\left\lfloor\sqrt{\frac{t}{2\pi}}\right\rfloor$ scaling of the t coordinate axis. This results in equally spaced piecewise intervals of the approximate indefinite integral equation (4). Numerically, the height of the function at $(N)^2\cdot 2\cdot \pi$ while large does not appear to be infinity so the piecewise intervals are described as having quasi-discontinuities driven by the contribution of the Dirichlet Series term with $k \approx \sqrt{(\frac{t}{2\pi})}$.
+
+The evidence of piecewise behaviour depending on $\sqrt{\frac{t}{2\pi}}-\left\lfloor\sqrt{\frac{t}{2\pi}}\right\rfloor$ is re-inforced in figure 6 for the approximation equation (4) by showing the longer t interval t=(277,977). Where the indefinite integral equation (4) and its numerical total derivative are shown for the 6 piecewise sections $t=(6^2\cdot 2\cdot \pi,12^2\cdot 2\cdot \pi)$.
+
+It can be seen that there are clearly mesoscale features, on the critical line, that are common (but not exactly the same) across the piecewise segments. The real(indefinite integral equation (4)) shown in blue is smooth, hyperbolic in nature and changes sign each piecewise segment. The imag(indefinite integral equation (4)) shown in red has mesoscale features eg. the hyperbolic component changes sign each piecewise segment, rapid changes in sign about $(N+0.25)^2\cdot 2\cdot \pi, (N+0.75)^2\cdot 2\cdot \pi$  and contains fine scale features which dominate the contribution to its total derivative being (an approximation) of the Riemann Siegel Z function.
+
+Comparing to figures 1 & 2, the largest Riemann Siegel Z  function peak in figures 5 & 6 for $t=[6^2\cdot2\cdot\pi,7^2\cdot2\cdot\pi)$ occurs at t=280.8 which has the scaled co-ordinate 0.685. Which is similar to 0.75 but really somewhat lower than 0.75 which is agreement with the real Riemann Siegel Z function in that at low t (top panel figure 2) the highest density of large peaks is lower than 0.25 and 0.75 and only at higher t do peaks at 0.25 and 0.75 become more common.  
+
+```{r fig_cap__zeta_275, echo=FALSE}
+cap2 <- "\\scriptsize{The behaviour of a heuristic approximation of the indefinite integral of the Riemann Siegel Z function {\\color{red}imag part in red}, {\\color{blue}real part in blue} and its numerical derivative (approximating the Riemann Siegel Z function itself) based on \\textbf{128 point end tapered} finite Riemann Zeta Dirichlet Series sum (truncated at the second quiescent region) along the critical line $s=0.5+I*t$ in the interval $t=(226,403)$. From t > 201.0619 ($64\\cdot\\pi$), \\textbf{128 point end tapered} finite Riemann Zeta Dirichlet Series sums provide an excellent approximation of the Riemann Zeta function to many decimal places. First row displays the functions using regular t scale, while the second row displays the functions using $\\sqrt{(\\frac{t}{2\\pi})}$ scale. Thus quasi-discontinuities in the indefinite integral at $\\sqrt{(\\frac{t}{2\\pi})}=\\{6,7,8\\}$ can be observed and the mesoscale structure across each piecewise domain has similarities. The {\\color{green}real(Riemann Siegel Z function approximation)} zeroes are turning points at the co-ordinates of imag(indefinite integral). While the real(indefinite integral) has curvature with respect to t, its total derivative (not the partial derivative with respect to t) numerically computed along the critical line and coinciding with the {\\color{gray}imag(Riemann Siegel Z function approximation)} is zero!}"
+
+```
+
+
+
+```{r image_2periods, echo=FALSE, fig.show = "hold",  out.width = c("99%"), fig.align = "center", fig.cap=cap2, fig.height=3}
+
+knitr::include_graphics("/home/john/pari/IndefiniteIntegralZfn/graph_zetaZbased_1stInt_tapered2ndQ_Region_actual_tscale_0.5_226_177.pdf")
+
+knitr::include_graphics("/home/john/pari/IndefiniteIntegralZfn/graph_zetaZbased_1stInt_tapered2ndQ_Region_tscaled_to_sqrt_td2Pi_0.5_226_177.pdf")
+
+
+```
+
+
+
+```{r fig_cap__zeta_277_927, echo=FALSE}
+cap1 <- "\\scriptsize{The behaviour of a heuristic approximation of the indefinite integral of the Riemann Siegel Z function {\\color{red}imag part in red}, {\\color{blue}real part in blue} and its numerical derivative (approximating the Riemann Siegel Z function itself) based on \\textbf{128 point end tapered} finite Riemann Zeta Dirichlet Series sum (truncated at the second quiescent region) along the critical line $s=0.5+I*t$ in the interval $t=(227,927)$. From t > 201.0619 ($64\\cdot\\pi$), \\textbf{128 point end tapered} finite Riemann Zeta Dirichlet Series sums provide an excellent approximation of the Riemann Zeta function to many decimal places. First row displays the functions using regular t scale, while the second row displays the functions using $\\sqrt{(\\frac{t}{2\\pi})}$ scale. Thus quasi-discontinuities in the indefinite integral at $\\sqrt{(\\frac{t}{2\\pi})}=\\{6,7,8,9,10,11,12\\}$ can be observed and the mesoscale structure across each piecewise domain has similarities. The {\\color{green}real(Riemann Siegel Z function approximation)} zeroes are turning points at the co-ordinates of imag(indefinite integral). While the real(indefinite integral) has curvature with respect to t, its total derivative (not the partial derivative with respect to t) numerically computed along the critical line and coinciding with the {\\color{gray}imag(Riemann Siegel Z function approximation)} is zero!}"
+
+```
+
+
+```{r image_5periods, echo=FALSE,  fig.show = "hold",  out.width=c("99%"), fig.align = "center", fig.height=3, fig.cap=cap1}
+
+knitr::include_graphics("/home/john/pari/IndefiniteIntegralZfn/graph_zetaZbased_1stInt_tapered2ndQ_Region_actual_tscale_0.5_226_701.pdf")
+
+knitr::include_graphics("/home/john/pari/IndefiniteIntegralZfn/graph_zetaZbased_1stInt_tapered2ndQ_Region_tscaled_to_sqrt_td2Pi_0.5_226_701.pdf")
+
+```
+
+
+
+
+
+
+\clearpage
+
+### Differences in the piecewise nature of the indefinite integral approximations equations (4,5,6) - part I
+
+While equation (4) provides the most accurate version of the presented heuristic approximation to the indefinite integral using tapered second quiescent region truncation of the finite Dirichlet Series it is not efficient for calculations as $t \rightarrow \infty$. Hence the Riemann Siegel formula analogues equations (5) and (6) are necessary which use truncation of the Dirichlet Series at the first quiescent region.
+
+Figures 7 and 8 display along $s=0.5+I*t$ in the lowest possible interval $t=(25744,27370)$ for 128 point tapering at the first quiescent region, the behaviour of the heuristic approximation of the indefinite integral of the Riemann Siegel Z function imag part in red, real part in blue. The left column - top, middle and bottom rows present equation (4), equation (5) and equation (6) results while the right column of the middle and bottom rows present the real and imaginary part differences of equation (5) - equation (4) and  equation (6) - equation (4) respectively. In figure 7 the actual t scale is used on the horizontal axis while figure 8 uses the [N,N+1) scale derived from the $\sqrt{\frac{t}{2\pi}}$ transformation.    
+
+It can be seen from figures 7 and 8 again that there are clearly mesoscale features, on the critical line, that are common (but not exactly the same) across the piecewise segments for a given approximation. 
+
+In particular,
+
+\begin{itemize}
+\item the imag(equation (4)) shown in red (i) is sharpening up with a plateau containing mesoscale oscillations between (N+0.25,N+0.75), changes of sign at ~N+0.25 and ~N+0.75 and a hyperbolic contribution (N,N+0.25) and (N+0.75,N+1) that changes sign every piecewise component. The Riemann Siegel Z function information is fine structure on top of mesoscale behaviour.
+\item the real(equation (4)) shown in blue, on the critical line is a smooth hyperbolic lineshape that changes sign every piecewise component.
+\item comparing figures 3-8 there is growth as t increases in the value of the indefinite integral which is easily fitted to $\left(\frac{t}{2\pi}\right)^{0.25}$ behaviour.
+\item the imag(equation (5)) closely approximates imag(equation (4)) except around the quasi-discontinuities
+\item the real(equation (5)) = 0 on the critical line which is a marked departure from real(equation (4)) but not of any practical consequence for critical line Riemann Siegel Z function calculation
+\item the imag(equation (6)) is does not have a "U" hyperbolic lineshape like imag(equations (4,5)). The major differences occur for (N,N+0.25) and (N+0.75,N+1). The practical consequence for critical line Riemann Siegel Z function calculations is that this difference in the imaginary component of the indefinite integral of equation (6) (compared to equations (4,5)) can be related to the first order Riemann Siegel formula correction. 
+\item the real(equation (6)) = 0 on the critical line which is a marked departure from real(equation (4)) but not of any practical consequence for critical line Riemann Siegel Z function calculation
+\end{itemize}
+
+
+
+The real(indefinite integral equation (4)) shown in blue is smooth, hyperbolic in nature and changes sign each piecewise segment. The imag(indefinite integral equation (4)) shown in red has mesoscale features eg. the hyperbolic component changes sign each piecewise segment, rapid changes in sign about $(N+0.25)^2\cdot 2\cdot \pi, (N+0.75)^2\cdot 2\cdot \pi$  and contains fine scale features which dominate the contribution to its total derivative being (an approximation) of the Riemann Siegel Z function.
+
+Comparing to figures 1 & 2, the largest Riemann Siegel Z  function peak in figures 5 & 6 for $t=[6^2\cdot2\cdot\pi,7^2\cdot2\cdot\pi)$ occurs at t=280.8 which has the scaled co-ordinate 0.685. Which is similar to 0.75 but really somewhat lower than 0.75 which is agreement with the real Riemann Siegel Z function in that at low t (top panel figure 2) the highest density of large peaks is lower than 0.25 and 0.75 and only at higher t do peaks at 0.25 and 0.75 become more common. 
+
+
+
+```{r fig_cap_25744_27370_t_scale, echo=FALSE}
+cap3 <- "\\scriptsize{The behaviour of a heuristic approximation of the indefinite integral of the Riemann Siegel Z function {\\color{red}imag part in red}, {\\color{blue}real part in blue} based on the finite Riemann Zeta Dirichlet Series sum truncated at the tapered second (top), tapered first (middle) and first (bottom)  quiescent region along the critical line $s=0.5+I*t$ in the interval $t=(25744,27370)$. From t > 25735.94 ($64^2\\cdot 2\\cdot\\pi$), \\textbf{128 point end tapered} finite Riemann Zeta Dirichlet Series sums at the first quiescent region provide an excellent approximation of the Riemann Zeta function to several decimal places. Displaying the real and imaginary components of equations (4-6) in the top, middle and bottom rows using regular t scale differences can be observed between the mesoscale structure of the three approximations. In particular, equations (5) and (6) have zero real components on the critical line and equation (6) does NOT have a 'U' hyperbolic shape for the imaginary component.}"
+
+
+```
+
+
+```{r image_2periods_hight, echo=FALSE,  fig.show = "hold",  out.width=c("49%","49%"), fig.align = "center", fig.height=3, fig.cap=cap3}
+
+knitr::include_graphics("/home/john/pari/IndefiniteIntegralZfn/graph_zetaZbased_1stInt_tapered2ndQ_Region_actual_tscale_0.5_25744_1626.pdf")
+
+plot.new()
+
+knitr::include_graphics("/home/john/pari/IndefiniteIntegralZfn/graph_zetaZbased_1stInt_tapered1stQ_Region_actual_tscale_0.5_25744_1626.pdf")
+
+knitr::include_graphics("/home/john/pari/IndefiniteIntegralZfn/graph_zetaZbased_1stIntdiff_tapered1stQ_Region_actual_tscale_0.5_25744_1626.pdf")
+
+knitr::include_graphics("/home/john/pari/IndefiniteIntegralZfn/graph_zetaZbased_1stInt_zerothorderRSestimate1stQ_Region_actual_tscale_0.5_25744_1626.pdf")
+
+
+knitr::include_graphics("/home/john/pari/IndefiniteIntegralZfn/graph_zetaZbased_1stIntdiff_zerothorderRSestimate1stQ_Region_actual_tscale_0.5_25744_1626.pdf")
+
+```
+
+```{r fig_cap_25744_27370_tscaled_to_sqrt_td2Pi, echo=FALSE}
+cap4 <- "\\scriptsize{A repeat of figure 7 using an x axis transformed by $\\sqrt{\\frac{t}{2\\pi}}$ to an [N,N+1) scale to more clearly present the piecewise behaviour of the heuristic approximation to the indefinite integral of the Riemann Siegel Z function.}"
+
+
+```
+
+
+```{r image_2periods_hight_tscaled_to_sqrt_td2Pi, echo=FALSE,  fig.show = "hold",  out.width=c("49%","49%"), fig.align = "center", fig.height=3, fig.cap=cap4}
+
+knitr::include_graphics("/home/john/pari/IndefiniteIntegralZfn/graph_zetaZbased_1stInt_tapered2ndQ_Region_tscaled_to_sqrt_td2Pi_0.5_25744_1626.pdf")
+
+plot.new()
+
+knitr::include_graphics("/home/john/pari/IndefiniteIntegralZfn/graph_zetaZbased_1stInt_tapered1stQ_Region_tscaled_to_sqrt_td2Pi_0.5_25744_1626.pdf")
+
+knitr::include_graphics("/home/john/pari/IndefiniteIntegralZfn/graph_zetaZbased_1stIntdiff_tapered1stQ_Region_tscaled_to_sqrt_td2Pi_0.5_25744_1626.pdf")
+
+knitr::include_graphics("/home/john/pari/IndefiniteIntegralZfn/graph_zetaZbased_1stInt_zerothorderRSestimate1stQ_Region_tscaled_to_sqrt_td2Pi_0.5_25744_1626.pdf")
+
+
+knitr::include_graphics("/home/john/pari/IndefiniteIntegralZfn/graph_zetaZbased_1stIntdiff_zerothorderRSestimate1stQ_Region_tscaled_to_sqrt_td2Pi_0.5_25744_1626.pdf")
+
+```
+
+\clearpage
+
+Figures 9 and 10 display along $s=0.5+I*t$ in the higher interval $t=(251327,256380)$ for 128 point tapering at the first quiescent region, the behaviour of the heuristic approximation of the indefinite integral of the Riemann Siegel Z function imag part in red, real part in blue. The left column - top, middle and bottom rows present equation (4), equation (5) and equation (6) results while the right column of the middle and bottom rows present the real and imaginary part differences of equation (5) - equation (4) and  equation (6) - equation (4) respectively. In figure 7 the actual t scale is used on the horizontal axis while figure 8 uses the [N,N+1) scale derived from the $\sqrt{\frac{t}{2\pi}}$ transformation.    
+
+It can be seen from figures 9 and 10 again that there are clearly mesoscale features, on the critical line, that are common (but not exactly the same) across the piecewise segments for a given approximation. 
+
+In particular,
+
+\begin{itemize}
+\item the imag(equation (4)) shown in red (i) is now a clearer plateau containing a higher number of mesoscale oscillations between (N+0.25,N+0.75), changes of sign at ~N+0.25 and ~N+0.75 and a hyperbolic contribution (N,N+0.25) and (N+0.75,N+1) that changes sign every piecewise component. The Riemann Siegel Z function information is fine structure on top of mesoscale behaviour which is not possible to discern at this scale.
+\item the real(equation (4)) shown in blue, on the critical line is a smooth hyperbolic lineshape that changes sign every piecewise component.
+\item comparing figures 3-8 there is growth as t increases in the value of the indefinite integral which is easily fitted to $\left(\frac{t}{2\pi}\right)^{0.25}$ behaviour.
+\item the imag(equation (5)) closely approximates imag(equation (4)) except around the quasi-discontinuities
+\item the real(equation (5)) = 0 on the critical line which is a marked departure from real(equation (4)) but not of any practical consequence for critical line Riemann Siegel Z function calculation
+\item the imag(equation (6)) is does not have a "U" hyperbolic lineshape like imag(equations (4,5)). The major differences occur for (N,N+0.25) and (N+0.75,N+1). The practical consequence for critical line Riemann Siegel Z function calculations is that this difference in the imaginary component of the indefinite integral of equation (6) (compared to equations (4,5)) can be related to the first order Riemann Siegel formula correction. 
+\item the real(equation (6)) = 0 on the critical line which is a marked departure from real(equation (4)) but not of any practical consequence for critical line Riemann Siegel Z function calculation
+\end{itemize}
+
+Finally, comparing identical rows in the \textbf{righthand} columns of figures 8 and 10. It can be seen that there is very little visible change in
+
+imag(equantion (5)) - imag(equation (4)) - red
+
+real(equantion (5)) - real(equation (4)) - blue
+
+and 
+
+imag(equantion (6)) - imag(equation (4)) - red
+
+real(equantion (6)) - real(equation (4)) - blue
+
+as t increasing using the standardised [N,N+1) scale. The vertical difference in scale between figures 8 and 10 is a consistent value $10\cdot \left(\sqrt{\frac{t}{2\pi}}\right)^{0.5}$. This is part of the evidence that the growth rate of both the real and imaginary components of equations (4), (5) and (6) is $(\frac{t}{2\pi})^{0.25}$.
+
+
+```{r fig_cap_251327_256380_t_scale, echo=FALSE}
+cap5 <- "\\scriptsize{The behaviour of a heuristic approximation of the indefinite integral of the Riemann Siegel Z function {\\color{red}imag part in red}, {\\color{blue}real part in blue} based on the finite Riemann Zeta Dirichlet Series sum truncated at the tapered second (top), tapered first (middle) and first (bottom)  quiescent region along the critical line $s=0.5+I*t$ in the interval $t=(251327,256380)$. From t > 25735.94 ($64^2\\cdot 2\\cdot\\pi$), \\textbf{128 point end tapered} finite Riemann Zeta Dirichlet Series sums at the first quiescent region provide an excellent approximation of the Riemann Zeta function to several decimal places. Displaying the real and imaginary components of equations (4-6) in the top, middle and bottom rows using regular t scale differences can be observed between the mesoscale structure of the three approximations. In particular, equations (5) and (6) have zero real components on the critical line and equation (6) does NOT have a 'U' hyperbolic shape for the imaginary component.}"
+
+
+```
+
+
+```{r image_2periods_hight_251327, echo=FALSE,  fig.show = "hold",  out.width=c("49%","49%"), fig.align = "center", fig.height=3, fig.cap=cap5}
+
+knitr::include_graphics("/home/john/pari/IndefiniteIntegralZfn/graph_zetaZbased_1stInt_tapered2ndQ_Region_actual_tscale_0.5_251327_5053.pdf")
+
+plot.new()
+
+knitr::include_graphics("/home/john/pari/IndefiniteIntegralZfn/graph_zetaZbased_1stInt_tapered1stQ_Region_actual_tscale_0.5_251327_5053.pdf")
+
+knitr::include_graphics("/home/john/pari/IndefiniteIntegralZfn/graph_zetaZbased_1stIntdiff_tapered1stQ_Region_actual_tscale_0.5_251327_5053.pdf")
+
+knitr::include_graphics("/home/john/pari/IndefiniteIntegralZfn/graph_zetaZbased_1stInt_zerothorderRSestimate1stQ_Region_actual_tscale_0.5_251327_5053.pdf")
+
+
+knitr::include_graphics("/home/john/pari/IndefiniteIntegralZfn/graph_zetaZbased_1stIntdiff_zerothorderRSestimate1stQ_Region_actual_tscale_0.5_251327_5053.pdf")
+
+```
+
+```{r fig_cap_251327_256380_tscaled_to_sqrt_td2Pi, echo=FALSE}
+cap6 <- "\\scriptsize{A repeat of figure 9 using an x axis transformed by $\\sqrt{\\frac{t}{2\\pi}}$ to an [N,N+1) scale to more clearly present the piecewise behaviour of the heuristic approximation to the indefinite integral of the Riemann Siegel Z function.}"
+
+
+```
+
+
+```{r image_2periods_hight_tscaled_to_sqrt_td2Pi_251327, echo=FALSE,  fig.show = "hold",  out.width=c("49%","49%"), fig.align = "center", fig.height=3, fig.cap=cap6}
+
+knitr::include_graphics("/home/john/pari/IndefiniteIntegralZfn/graph_zetaZbased_1stInt_tapered2ndQ_Region_tscaled_to_sqrt_td2Pi_0.5_251327_5053.pdf")
+
+plot.new()
+
+knitr::include_graphics("/home/john/pari/IndefiniteIntegralZfn/graph_zetaZbased_1stInt_tapered1stQ_Region_tscaled_to_sqrt_td2Pi_0.5_251327_5053.pdf")
+
+knitr::include_graphics("/home/john/pari/IndefiniteIntegralZfn/graph_zetaZbased_1stIntdiff_tapered1stQ_Region_tscaled_to_sqrt_td2Pi_0.5_251327_5053.pdf")
+
+knitr::include_graphics("/home/john/pari/IndefiniteIntegralZfn/graph_zetaZbased_1stInt_zerothorderRSestimate1stQ_Region_tscaled_to_sqrt_td2Pi_0.5_251327_5053.pdf")
+
+
+knitr::include_graphics("/home/john/pari/IndefiniteIntegralZfn/graph_zetaZbased_1stIntdiff_zerothorderRSestimate1stQ_Region_tscaled_to_sqrt_td2Pi_0.5_251327_5053.pdf")
+
+```
+
+\clearpage
+
+### Differences in the piecewise nature of the indefinite integral approximations equations (4,5,6) - part II
+
+
+It can be remarked that real$\left\{equation (6) - equation (4)\right\}$ (and real$\left\{equation (6) - equation (5)\right\}$ shown in the righthand columns of figures 7-10 shown in blue are \textbf{smooth looking} differences of two functions containing mesoscale and fine structure oscillations (where the fine structure is related to the Riemann Siegel Z function). So it is likely the two functions being differenced have systematic differences.
+
+On numerically calculating the total derivative of $\frac{d}{ds} \left\{equation (6) - equation (4)\right\}$ (and $\frac{d}{ds} \left\{equation (6) - equation (5)\right\}$ at much higher t) the familiar (smooth looking) catenary shape of the first order Riemann Siegel formula correction [1,2,3] is obtained, since the above numerical derivative is estimating $Z_{\zeta(1/2+I\cdot t)}-\text{zeroth order Riemann Siegel terms}$.
+
+### Differences in the piecewise nature of the indefinite integral approximations equations (4,5,6) - part III
+
+Given that there is (i) $\sqrt{\frac{t}{2\pi}}-\left\lfloor\sqrt{\frac{t}{2\pi}}\right\rfloor$ piecewise interval behaviour to the heuristic approximation of the indefinite integral Riemann Siegel Z function using finite Dirichlet series and (ii) the empirical growth rate is $(\frac{t}{2\pi})^{0.25}$ both the x axis and y axis can be standardised to compare the heuristic approximation calculated values of the indefinite integral Riemann Siegel Z function for vastly different t values.
+
+Figure 11 presents the normalised magnitude of the heuristic approximations equations (4,5,6) of the indefinite integral of the Riemann Siegel Z function {\\color{red}imag part in red}, {\\color{blue}real part in blue} based on the finite Riemann Zeta Dirichlet Series sum truncated at the tapered second (lefthand column), tapered first (middle column) and first (righthand)  quiescent region along the critical line $s=0.5+I*t$ in various intervals $t=(226,403)$, $t=(25744,27370)$, $t=(251327,256380)$, $t=(6795893,6822057)$ and $t=(633355132,633607490)$.
+
+The evolution of the imag(equations(4,5,6)) can clearly be seen with the sharpening of a central plateau in the sub-interval (N+0.5,N+0.75) of different sign from the outer parts of the (N,N+1) normalised t scale. This behaviour helps understand why figure 2 top panel examining the higher density of largest Riemann Siegel Z function peaks is not quite at N+0.25, N+0.75 but as t increases the steepest curvature in imag(equations(4,5,6)) is very close around N+0.25, N+0.75 and Gourdon and Sabah [4], Kotnick [5] in figure 1 examined the extreme Riemann Siegel peaks at higher t than analysed in figure 2.
+
+
+
+```{r fig_cap_universal_xy_scaling, echo=FALSE}
+cap7 <- "\\scriptsize{The normalised magnitude of the heuristic approximations equations (4,5,6) of the indefinite integral of the Riemann Siegel Z function {\\color{red}imag part in red}, {\\color{blue}real part in blue} based on the finite Riemann Zeta Dirichlet Series sum truncated at the tapered second (lefthand column), tapered first (middle column) and first (righthand)  quiescent region along the critical line $s=0.5+I*t$ in various intervals $t=(226,403)$ top row, $t=(25744,27370)$ second row, $t=(251327,256380)$ third row, $t=(6795893,6822057)$ fourth row and $t=(633355132,633607490)$ bottom row. Mesoscale features are observed to evolve as t increases for the three approximations. The real component of equation (6) shown in blue has a minimum magnitude $\\sim1.202\\cdot\\left(\\frac{t}{2\\pi}\\right)^{0.25}$. The middle of the oscillating plateau enclosed by (N+0.25,N+0.75) on the horizontal axis, of the imag component of equations (4,5,6) shown in red has its mean magnitude $\\sim3\\cdot\\left(\\frac{t}{2\\pi}\\right)^{0.25}$ but more research is needed. The gaps in the grid of graphs occur where an approximation is infeasible (below the tapering limit) or calculationally much slower to obtain. The last row should be right-justified to properly align with the earlier rows.}"
+
+
+```
+
+```{r image_2periods_universal_xy_scaling, echo=FALSE,  fig.show = "hold",  out.width=c("32%","32%","32%"), fig.align = 'center', fig.height=3, fig.cap=cap7}
+
+knitr::include_graphics("/home/john/pari/IndefiniteIntegralZfn/graph_zetaZbased_1stInt_tapered2ndQ_Region_tscaled_to_sqrt_td2Pi_and_yscaled_0.5_226_177.pdf")
+
+plot.new()
+
+knitr::include_graphics("/home/john/pari/IndefiniteIntegralZfn/graph_zetaZbased_1stInt_zerothorderRSestimate1stQ_Region_tscaled_to_sqrt_td2Pi_and_yscaled_0.5_226_177.pdf")
+
+
+knitr::include_graphics("/home/john/pari/IndefiniteIntegralZfn/graph_zetaZbased_1stInt_tapered2ndQ_Region_tscaled_to_sqrt_td2Pi_and_yscaled_0.5_25744_1626.pdf")
+
+knitr::include_graphics("/home/john/pari/IndefiniteIntegralZfn/graph_zetaZbased_1stInt_tapered1stQ_Region_tscaled_to_sqrt_td2Pi_and_yscaled_0.5_25744_1626.pdf")
+
+knitr::include_graphics("/home/john/pari/IndefiniteIntegralZfn/graph_zetaZbased_1stInt_zerothorderRSestimate1stQ_Region_tscaled_to_sqrt_td2Pi_and_yscaled_0.5_25744_1626.pdf")
+
+
+knitr::include_graphics("/home/john/pari/IndefiniteIntegralZfn/graph_zetaZbased_1stInt_tapered2ndQ_Region_tscaled_to_sqrt_td2Pi_and_yscaled_0.5_251327_5053.pdf")
+
+knitr::include_graphics("/home/john/pari/IndefiniteIntegralZfn/graph_zetaZbased_1stInt_tapered1stQ_Region_tscaled_to_sqrt_td2Pi_and_yscaled_0.5_251327_5053.pdf")
+
+knitr::include_graphics("/home/john/pari/IndefiniteIntegralZfn/graph_zetaZbased_1stInt_zerothorderRSestimate1stQ_Region_tscaled_to_sqrt_td2Pi_and_yscaled_0.5_251327_5053.pdf")
+
+
+plot.new()
+
+knitr::include_graphics("/home/john/pari/IndefiniteIntegralZfn/graph_zetaZbased_1stInt_tapered1stQ_Region_tscaled_to_sqrt_td2Pi_and_yscaled_0.5_6795893_26164.pdf")
+
+knitr::include_graphics("/home/john/pari/IndefiniteIntegralZfn/graph_zetaZbased_1stInt_zerothorderRSestimate1stQ_Region_tscaled_to_sqrt_td2Pi_and_yscaled_0.5_6795893_26164.pdf")
+
+
+
+plot.new()
+
+knitr::include_graphics("/home/john/pari/IndefiniteIntegralZfn/graph_zetaZbased_1stInt_tapered1stQ_Region_tscaled_to_sqrt_td2Pi_and_yscaled_0.5_633355132_252358.pdf")
+
+knitr::include_graphics("/home/john/pari/IndefiniteIntegralZfn/graph_zetaZbased_1stInt_zerothorderRSestimate1stQ_Region_tscaled_to_sqrt_td2Pi_and_yscaled_0.5_633355132_252358.pdf")
+
+
+
+```
+
+\clearpage
+
+##Conclusion
+
+A higher density of the extreme Riemann Siegel Z function peaks is observed to occur as t increases around $(N+0.25)^2\cdot 2\pi$, $(N+0.75)^2\cdot 2\pi$ and $(N)^2\cdot 2\pi$ where $N\in\mathbb{Z}$ from analysing available data on the Riemann Zeta function [4,5]. 
+
+A heuristic approximation of the indefinite integral of the Riemann Siegel Z function exhibits interesting piecewise interval mesoscale features that may help explain this observed higher density of the extreme Riemann Siegel Z function peaks under $\sqrt{\frac{t}{2\pi}}-\left\lfloor\sqrt{\frac{t}{2\pi}}\right\rfloor$ transformation of the t co-ordinate.
+
+\clearpage
+##References
+
+1. Edwards, H.M. (1974). Riemann’s zeta function. Pure and Applied Mathematics 58. New York-London:
+Academic Press. ISBN 0-12-232750-0. Zbl 0315.10035.
+
+2. Berry, M. V. “The Riemann-Siegel Expansion for the Zeta Function: High Orders and Remainders.”
+Proc. Roy. Soc. London A 450, 439-462, 1995.
+
+3. J. Arias De Reyna, “High precision computation of Riemann’s Zeta function by the Riemann-Siegel formula”, Mathematics of Computation Vol 80, no. 274, 2011, Pages 995–1009
+
+4. Gourdon X. and Sebah P., Numbers, Constants and Computation, http://numbers.computation.free.fr/Constants/constants.html, (1999) 
+table of maximum Riemann Zeta peaks http://numbers.computation.free.fr/Constants/Miscellaneous/MaxiZAll.txt
+
+5. Kotnick T., "COMPUTATIONAL ESTIMATION OF THE ORDER OF $\zeta$(1/2+it)" (2003) MATHEMATICS OF COMPUTATION, Volume 73, Number 246, Pages 949–956 S 0025-5718(03)01568-0
+
+6. Odlyzko, A.M. The $10^{20th}$ zero of the Riemann Zeta function and 175 million of its neighbors. (1988) http://www.dtc.umn.edu/~odlyzko/unpublished/
+
+7. Hiary G.A., "Fast methods to compute the Riemann Zeta function" (2011)	
+Annals of Mathematics, Valome 174, Pages 891-946	https://doi.org/http://dx.doi.org/10.4007/annals.2011.174.2.4
+
+8. Bober J.W. and Hiary G.A., "New computations of the Riemann zeta function on the critical line" (2018) Experimental Mathematics, 27(2), 125-137. https://doi.org/10.1080/10586458.2016.1233083
+
+9. Hiary G.A., Table of high Riemann Zeta peaks (second table on the url page) https://people.math.osu.edu/hiary.1/fastmethods.html
+
+10. Tihanyi N., Kovacs A. and Kovacs J., "Computing Extremely Large Values of the Riemann Zeta Function" (2017) J Grid Computing 15:527–534
+https://doi.org/10.1007/s10723-017-9416-0
+
+11. Tihanyi N. and Kovacs A. "IMPROVEMENTS ON FINDING LARGE VALUES OF THE RIEMANN ZETA FUNCTION ON THE CRITICAL LINE" (2018) Annales Univ. Sci. Budapest., Sect. Comp., 48, p53–64
+
+12. Tihanyi N. "Numerical computing of extremely large
+values of the Riemann-Siegel Z-function" (2019) Doctoral Thesis, Eötvös Loránd University
+
+13. Martin, J.P.D. “Away from the real axis an examination of the behaviour of the indefinite integral of the Riemann Zeta finite Dirichlet Series across the complex plane” (2022) https://dx.doi.org/10.6084/m9.figshare.21652073
+
+\clearpage
+
+##Appendix A - Discontinuities at $t=N^2\cdot 2\cdot\pi$ in $\frac{d}{ds} \left(\text{equations (4-6)}\right)$) off the critical line
+
+Figure  checks the performance of the real and imaginary parts of the numerical total derivatives of equations (4-6) off the critical line, along $s=0.6+I\cdot t$ for the interval t=(26538,26555). 
+
+The left column of Figure  shows an overlay of the ( numerical $\frac{d}{ds} \left(\text{equation (4)}\right)$) and ( numerical $\frac{d}{ds} \left(\text{equation (5)}\right)$) and ( numerical $\frac{d}{ds} \left(\text{equation (6)}\right)$) top (middle and bottom) rows (shown in green and black for the real and imaginary parts) respectively with the true Riemann Siegel Z  function (shown in red and blue for the real and imaginary parts). The right column of Figure  shows the real and imaginary parts (shown in red and green respectively) of the differences with the true Riemann Siegel Z  function -- top row numerical( $\frac{d}{ds} \left(\text{equation (4)}\right) - e^{\theta(s)}\zeta(s)$), -- middle row numerical ($\frac{d}{ds} \left(\text{equation (5)}\right) - e^{\theta(s)}\zeta(s)$)and -- bottom row numerical ($\frac{d}{ds} \left(\text{equation (6)}\right) - e^{\theta(s)}\zeta(s)$).
+
+From the figure, the numerical derivatives of $\frac{d}{ds} \left(\text{equation (4-6)}\right)$ behave as reasonable approximations of both the real and imaginary parts of $e^{\theta(0.6+I\cdot t)}\zeta(0.6+I\cdot t)$ except for a region close to a singularity (in the approximation) at $65^2\cdot 2\cdot\pi$.
+
+
+```{r numerical_derivative_qualitycheck_26538_off_the_critical_line, echo=FALSE,  fig.show = "hold",  out.width=c("49%","49%"), fig.align = "center", fig.height=3, fig.cap="Off the critical line at $\\sigma=0.6$, for the interval t=(26538,26555). Left column - A overlay of real and imaginary components of Riemann Siegel Z function (red and blue) and the numerical total derivative d/ds of equations 4, 5, and 6 (green and black) in the top, middle and bottom rows. Right column - the difference in the real (red) and imaginary (green) components of the approximations and the true Riemann Siegel Z function."}
+
+knitr::include_graphics("/home/john/pari/IndefiniteIntegralZfn/graph_zetaZbased_compare_tapered2ndQ_Region_actual_tscale_0.6_26538_17.pdf")
+
+knitr::include_graphics("/home/john/pari/IndefiniteIntegralZfn/graph_zetaZbased_error_tapered2ndQ_Region_actual_tscale_0.6_26538_17.pdf")
+
+knitr::include_graphics("/home/john/pari/IndefiniteIntegralZfn/graph_zetaZbased_compare_tapered1stQ_Region_actual_tscale_0.6_26538_17.pdf")
+
+knitr::include_graphics("/home/john/pari/IndefiniteIntegralZfn/graph_zetaZbased_error_tapered1stQ_Region_actual_tscale_0.6_26538_17.pdf")
+
+knitr::include_graphics("/home/john/pari/IndefiniteIntegralZfn/graph_zetaZbased_compare_zerothorderRSestimate1stQ_Region_actual_tscale_0.6_26538_17.pdf")
+
+knitr::include_graphics("/home/john/pari/IndefiniteIntegralZfn/graph_zetaZbased_error_zerothorderRSestimate1stQ_Region_actual_tscale_0.6_26538_17.pdf")
+
+```
+
