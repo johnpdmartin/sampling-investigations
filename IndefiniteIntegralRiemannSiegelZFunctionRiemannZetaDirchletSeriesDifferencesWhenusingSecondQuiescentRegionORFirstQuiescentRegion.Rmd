@@ -221,7 +221,7 @@ In this paper, the following three critical line zeroth order approximations of 
 \begin{align}
 \left(\int e^{\theta(s)}\zeta(s)~ds\right)_{s=1/2+I\cdot t,\left\lfloor\sqrt{\frac{t}{2\pi}}\right\rfloor,\text{tapered}}
 &\approx e^{\theta(1/2+I\cdot t)}\cdot\Bigg[\sum_{k=1}^{\left(\lfloor\sqrt{\frac{t}{2\pi}}\rfloor-p\right)}\left(\frac{1}{\left[\Re(\theta'(1/2+I\cdot t))-log(k)\right] \cdot k^{(1/2+I\cdot t)}}\right) \nonumber \\ &+\sum_{i=\left(-p+1\right)}^{p}\frac{\frac{1}{2^{2p}} \left( 2^{2p}-\sum_{k=1}^{i+p}\binom{2p}{2p-k}\right)}{\left(\left[\Re(\theta'(1/2+I\cdot t))-log(\lfloor\sqrt{\frac{t}{2\pi}}\rfloor+i)\right] \cdot (\lfloor\sqrt{\frac{t}{2\pi}}\rfloor+i)^{(1/2+I\cdot t)}\right)} \nonumber \\
-&+ \mychi(1/2+I\cdot t)\cdot\Bigg(\sum_{k=1}^{\left(\lfloor\sqrt{\frac{t}{2\pi}}\rfloor-p\right)}\left(\frac{1}{\left[\Re(\theta'(1/2+I\cdot t))+log(k)\right] \cdot k^{(1-(1/2+I\cdot t))}}\right) \nonumber \\ &+\sum_{i=\left(-p+1\right)}^{p}\frac{\frac{1}{2^{2p}} \left( 2^{2p}-\sum_{k=1}^{i+p}\binom{2p}{2p-k}\right)}{\left(\left[\Re(\theta'(1/2+I\cdot t))+log(\lfloor\sqrt{\frac{t}{2\pi}}\rfloor+i)\right] \cdot (\lfloor\sqrt{\frac{t}{2\pi}}\rfloor+i)^{(1-(1/2+I\cdot t))}\right)}\Bigg)\Bigg] \nonumber \\
+&+ \mychi(1/2+I\cdot t)\cdot\Bigg(\sum_{k=1}^{\left(\lfloor\sqrt{\frac{t}{2\pi}}\rfloor-p\right)}\left(\frac{1}{\left[-\Re(\theta'(1/2+I\cdot t))+log(k)\right] \cdot k^{(1-(1/2+I\cdot t))}}\right) \nonumber \\ &+\sum_{i=\left(-p+1\right)}^{p}\frac{\frac{1}{2^{2p}} \left( 2^{2p}-\sum_{k=1}^{i+p}\binom{2p}{2p-k}\right)}{\left(\left[-\Re(\theta'(1/2+I\cdot t))+log(\lfloor\sqrt{\frac{t}{2\pi}}\rfloor+i)\right] \cdot (\lfloor\sqrt{\frac{t}{2\pi}}\rfloor+i)^{(1-(1/2+I\cdot t))}\right)}\Bigg)\Bigg] \nonumber \\
 &,  \qquad \Im(1/2+I\cdot t) \rightarrow \infty
 \end{align}
 
@@ -231,9 +231,11 @@ In this paper, the following three critical line zeroth order approximations of 
 \begin{align}
 \left(\int e^{\theta(s)}\zeta(s)~ds\right)_{s=1/2+I\cdot t,\left\lfloor\sqrt{\frac{t}{2\pi}}\right\rfloor}
 &\approx e^{\theta(1/2+I\cdot t)}\cdot\Bigg[\sum_{k=1}^{\left(\lfloor\sqrt{\frac{t}{2\pi}}\rfloor\right)}\left(\frac{1}{\left[\Re(\theta'(1/2+I\cdot t))-log(k)\right] \cdot k^{(1/2+I\cdot t)}}\right) \nonumber \\
-&+ \mychi(1/2+I\cdot t)\cdot\sum_{k=1}^{\left(\lfloor\sqrt{\frac{t}{2\pi}}\rfloor\right)}\left(\frac{1}{\left[\Re(\theta'(1/2+I\cdot t))+log(k)\right] \cdot k^{(1-(1/2+I\cdot t))}}\right) \Bigg] \nonumber \\
+&+ \mychi(1/2+I\cdot t)\cdot\sum_{k=1}^{\left(\lfloor\sqrt{\frac{t}{2\pi}}\rfloor\right)}\left(\frac{1}{\left[-\Re(\theta'(1/2+I\cdot t))+log(k)\right] \cdot k^{(1-(1/2+I\cdot t))}}\right) \Bigg] \nonumber \\
 &,  \qquad \Im(1/2+I\cdot t) \rightarrow \infty
 \end{align}
+
+As shown in figures 5-11, the magnitude across the horizontal axis for the real part of equation (4) has symmetry and the real parts of equations (4) & 5 on the critical line are zero. Therefore the explicit integration constant(s) required for the indefinite integral approximations given by equations (4,5,6) have all been set to zero.
 
 ### Total derivative behaviour of equations (4), (5) and (6) on the critical line
 
