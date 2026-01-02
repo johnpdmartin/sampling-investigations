@@ -2637,7 +2637,7 @@ On the critical line, a higher density of the extreme Riemann Siegel Z function 
 
 A heuristic approximation of the indefinite integral of the Riemann Siegel Z function analogues for the four 5-perodic functions (currently only valid on the critical line) exhibits interesting piecewise interval mesoscale features that may help explain this observed higher density of the extreme Riemann Siegel Z function peaks under $\sqrt{\frac{t\cdot5}{2\pi}}-\left\lfloor\sqrt{\frac{t\cdot5}{2\pi}}\right\rfloor$ transformation of the t co-ordinate. 
 
-The growth rate of these heuristic approximations of the indefinite integral of the Riemann Siegel Z function analogues for the four 5-perodic functions scales as $(\frac{t}{2\pi}\cdot 5)^{0.25}$ on the critical line, which is similar but slightly different from the analogous heuristic approximation behaviour of the indefinite integral of the Riemann Siegel Z function of $\zeta(0.5+I\cdot t)$ which empirically has a growth rate of $(\frac{t}{2\pi}\cdot 5)^{0.25}$. The factor 5 above arises from $N_C=5$ for $L(\chi_5(3,.),s)$ and $L(\chi_5(2,.),s)$.
+The growth rate of these heuristic approximations of the indefinite integral of the Riemann Siegel Z function analogues for the four 5-perodic functions scales as $(\frac{t}{2\pi}\cdot 5)^{0.25}$ on the critical line, which is similar but slightly different from the analogous heuristic approximation behaviour of the indefinite integral of the Riemann Siegel Z function of $\zeta(0.5+I\cdot t)$ which empirically has a growth rate of $(\frac{t}{2\pi})^{0.25}$. The factor 5 above arises from $N_C=5$ for $L(\chi_5(3,.),s)$ and $L(\chi_5(2,.),s)$.
 
 \clearpage
 
