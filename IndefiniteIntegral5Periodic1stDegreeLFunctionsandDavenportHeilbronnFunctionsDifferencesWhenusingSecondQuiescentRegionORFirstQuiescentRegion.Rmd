@@ -2708,9 +2708,9 @@ Restating the three critical line heurisitic approximations of the indefinite in
 (ii) truncation at the first quiescent region $N_1=\left\lfloor\sqrt{\frac{t}{2\pi}}\right\rfloor$ for $\zeta(s)$ Dirichlet Series 
 
 \begin{align}
-&\Bigg(\int e^{-\frac{1}{2}\log{\mychi(\zeta(s))}}\zeta(s)~ds\Bigg)_{s=1/2+I\cdot t,\left\lfloor\sqrt{\frac{t}{2\pi}}\right\rfloor,\text{tapered}} \nonumber \\
+&\Bigg(\int e^{-\frac{1}{2}\log{\mychi(\zeta(s))}}\zeta(s)~ds\Bigg)_{s=1/2+I\cdot t,\left\lfloor\sqrt{\frac{t}{2\pi}}\right\rfloor} \nonumber \\
 &\qquad \approx e^{I\cdot\theta_{\zeta}(t)}\cdot\Bigg[\sum_{n=1}^{\left(\lfloor\sqrt{\frac{t}{2\pi}}\rfloor\right)}\left(\frac{1}{\left[\Re\left(\frac{d}{ds}\left[-\frac{1}{2}\log\{\mychi(\zeta(s))\}\right]_{s=(1/2+I\cdot t)}\right)-\log(n)\right] \cdot n^{(1/2+I\cdot t)}}\right) \nonumber \\
-&+ \mychi_{\zeta}(1/2+I\cdot t)\cdot\Bigg(\sum_{n=1}^{\left(\lfloor\sqrt{\frac{t}{2\pi}}\rfloor\right)}\left(\frac{1}{\left[-\Re\left(\frac{d}{ds}\left[-\frac{1}{2}\log\{\mychi(\zeta(s))\}\right]_{s=(1/2+I\cdot t)}\right)+\log(n)\right] \cdot n^{(1-(1/2+I\cdot t))}}\right),  t \rightarrow \infty \label{eq:zetaQ1RS}
+&+ \mychi_{\zeta}(1/2+I\cdot t)\cdot\sum_{n=1}^{\left(\lfloor\sqrt{\frac{t}{2\pi}}\rfloor\right)}\left(\frac{1}{\left[-\Re\left(\frac{d}{ds}\left[-\frac{1}{2}\log\{\mychi(\zeta(s))\}\right]_{s=(1/2+I\cdot t)}\right)+\log(n)\right] \cdot n^{(1-(1/2+I\cdot t))}}\right)\Bigg],  t \rightarrow \infty \label{eq:zetaQ1RS}
 \end{align}
 
 and restating in general the Riemann Zeta functional equation
