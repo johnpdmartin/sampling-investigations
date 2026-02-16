@@ -1,0 +1,1198 @@
+---
+title: "A useful approximate functional relationship between the fourier analysis sidebands of the Riemann Siegel Z function and its application for robust spectral filtering of partial Euler Products when $Re(s) \\rightarrow 1 \\text{ or } 0$."
+author: "John Martin"
+date: \today
+header-includes:  
+  - \usepackage{xcolor}
+  - \usepackage{pdflscape}
+  - \newcommand{\blandscape}{\begin{landscape}}
+  - \newcommand{\elandscape}{\end{landscape}}
+  - \usepackage{caption}
+output:
+  pdf_document:
+  fig_crop: no
+---
+  
+  
+  
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+
+```
+<!-- https://stackoverflow.com/questions/41655383/r-markdown-similar-feature-to-newcommand-in-latex/41664105 -->
+\newcommand{\mychi}{\raisebox{0pt}[1ex][1ex]{$\chi$}}
+
+## Executive summary 
+
+First quiescent region $N_1=\sqrt{\frac{t}{2\pi}}$ spectrally filtered truncated partial Euler Product based approximations of the Riemann Siegel Z function away from the critical line can be improved (in accuracy, numerical stability and runtime) by co-opting a heuristic zeroth order functional relationship between the true Riemann Siegel Z function fourier analysis sidebands. For example, with fourier analysis of the true Riemann Siegel Z function spectrum for fixed Re(s) along the interval t=t0+(-819.1,819.2) via Pari-GP FFT functions using a 32768 point fourier grid with spacing $\Delta t=0.05$ when Re(s) > 0.5 the weaker fourier sideband $F(-w) \approx \overline{F(w)}\cdot \left|\mychi(\sigma+I\cdot 2\pi\cdot e^{\left(2\cdot w\right)})\right|$ and for Re(s) < 0.5 the weaker sideband $F(w) \approx \overline{F(-w)}\cdot \left|\mychi(1-(\sigma+I\cdot 2\pi\cdot e^{\left(2\cdot w\right)}))\right|$ where $|\mychi|$ is the (absolute magnitude of the) multiplicative factor in the Riemann Zeta functional equation but its use occurs in the frame of reference of the Riemann-Siegel Z function fourier transform using $w_i=\frac{i\cdot 4\cdot\pi}{32768\cdot 0.05}\equiv\frac{i\cdot 4\cdot\pi}{n\cdot \Delta t}, i \in [-n/2+1,n/2]$. This functional relationship is particularly useful for grid search calculations of Riemann Zeta extreme peaks on the line s=1+It via partial Euler Product based calculations. 
+
+## Introduction
+
+The Riemann Zeta function is defined [1-3], in the complex plane by the integral 
+
+\begin{equation}
+\zeta(s) = \frac{\prod(-s)}{2\pi i}\int_{C_{\epsilon,\delta}} \frac{(-x)^s}{(e^{x}-1)x}dx
+\end{equation}
+
+
+where $s \thinspace \epsilon \thinspace \mathbb{C}$ and $C_{\epsilon,\delta}$ is the contour about the imaginary poles.
+
+The Riemann Zeta function has been shown to obey the functional equation [1-4]
+
+\begin{align}
+\zeta(s) &= \mychi(s)\zeta(1-s) \\
+&= 2^s\pi^{s-1}sin(\frac{\pi s}{2})\Gamma(1-s)\zeta(1-s) \label{eq:func} \\
+&\equiv e^{\log{\left[\mychi(s)\right]}}\zeta(1-s) \\
+&= e^{\left((s-1/2)\cdot\log{[Pi]}+\log\Gamma\left[(\frac{(1-s)}{2})\right]-\log\left[\Gamma(\frac{s}{2})\right]\right)}\zeta(1-s) \label{eq:altversion} \\ 
+&\equiv e^{-2\theta_{ext}(s)}\zeta(1-s)
+\end{align}
+
+where 
+
+\begin{equation}
+\mychi(z)=e^{\left((z-1/2)\cdot\log{[Pi]}+\log\Gamma\left[(\frac{(1-z)}{2})\right]-\log\left[\Gamma(\frac{z}{2})\right]\right)}
+\end{equation}
+
+from equation \eqref{eq:altversion} provides the most numerically stable version of calculating $\mychi(z)$ for the Pari-GP [5] calculations (performed in the fourier transform reference frame) in this paper.
+
+For $\Re(s) > 1$, the infinite Euler Product of the primes absolutely converges to the infinite Riemann Zeta Dirichlet Series sum [1,3]
+
+\begin{equation}
+\zeta(s) = {\Large\sum_{k=1}^\infty} \frac{1}{k^s} = {\Large\prod_{\rho=2}^\infty} \frac{1}{(1-1/\rho^{s})} \qquad \text{for } \Re(s) > 1
+\end{equation}
+
+Of interest to this paper is the Riemann-Siegel Z function of the Riemann Zeta function (on the critical line)
+
+\begin{equation}
+Z_\zeta(0.5+I\cdot t) = e^{I\cdot\theta(t)}\zeta(0.5+I\cdot t)
+\end{equation}
+
+where $\theta (t)$ is the Riemann-Siegel Theta function [1-4] and in particular, its (unnormalised) generalization across the complex plane
+
+\begin{equation}
+Z_{ext\zeta(s)} = e^{I\cdot imag(\theta_{ext}(s))}\zeta(s)
+\end{equation}
+
+and how the below approximation of equation (10) via the partial Euler Product version of Riemann-Siegel Z function using truncation at the first quiescent region $N_1 = \sqrt{\frac{t}{2\pi}}$
+
+\begin{align}
+Z_{ext\zeta}(s) &\approx e^{I\cdot imag(\theta_{ext}(s))}\left( \prod_{p=2}^{p\le \lfloor\sqrt{\frac{t}{2\pi}}\rfloor=N_1} \frac{1}{(1-\frac{1}{p^{s}})} + \mychi(s) \cdot \prod_{p=2}^{p\le \lfloor\sqrt{\frac{t}{2\pi}}\rfloor=N_1} \frac{1}{(1-\frac{1}{p^{(1-s)}})}\right) \\
+&= EP_1 + EP_2
+\end{align}
+
+may be improved particularly for aiding grid search approximations of $\zeta(1+\cdot t)$ extreme peak behaviour since
+
+\begin{equation}
+|Z_{ext\zeta}(s)| = |e^{I\cdot imag(\theta_{ext}(s))}|\cdot|\zeta(s)| = |\zeta(s)|
+\end{equation}
+
+In this paper, the spectral filtering approach of [6-12] is further developed, concentrating on improving the stability of the Riemann-Siegel Z function approximation near $Re(s) \rightarrow 1 \thinspace \& \thinspace 0$. The input discrete spectra samples, the fourier transforms, the spectral filtering, the zeroth order sideband functional relationship approximation, the rescaled conjugate mirror reflection values and the inverse fourier transforms are calculated using Pari-GP [5] and graphing is performed using R [13] and RStudio IDE [14].
+
+## A zeroth order functional relationship between the positive and negative sidebands of the fourier transform of the true Riemann-Siegel Z function
+
+Do the fourier analysis sidebands of the Riemann-Siegel Z function have any functional relationship dependent either on $\sigma$, the length of the spectrum sample or the $Im(s)$ of the spectrum? 
+
+### Investigating the $\sigma$ dependence between the fourier sidebands F[w] & F[-w]
+
+The lefthand column in figures 1 and 2 illustrates the absolute magnitude of the fourier transform of equation (10) (the unnormalised Riemann-Siegel Z function) for the spectrum interval $s=(\sigma+I\cdot (26140-819.1),\sigma+I\cdot (26140+819.2))$ for six values of $\sigma=\{1,0.95,0.75,0.25,0.05,0.0\}$. The FFT analysis of 32768 grid points with spacing $\Delta t=0.05$ spectrum sample was conducted using Pari-GP [5] and for $\sigma > 1/2$, the negative sideband of the fourier transform has the higher magnitude (see figure 1) while for $\sigma < 1/2$, the positive sideband of the fourier transform has the higher magnitude.
+
+The middle and righthand columns in figures 1 and 2 highlight one possible zeroth order functional relationship with $\sigma$ and the length of the spectrum sample where (i) an approximation using the zeroth order functional relationship (dashed red line) has good overlap with the weaker sideband fourier component of the Riemann-Siegel Z function (middle column) and (ii) the empirical ratio of the weak to strong sideband magnitude is well approximated by the zeroth order functional relationship where the F[w] components have peaks (righthand column).
+
+One important behaviour described in [6] (leading to the identification of a heuristic zeroth order approximation for the functional relationship)  was that the positions of the strong peaks in the fourier transform of the Riemann-Siegel Z function on the critical line can be successfully captured by the assignment of the pair of bounds $\pm\frac{1}{2}(\log(UB/\pi/2),\log(LB/\pi/2))$, $\pm\frac{1}{2}(\log(UB/\pi/2/2^2),\log(LB/\pi/2/2^2))$, $\pm\frac{1}{2}(\log(UB/\pi/2/3^2),\log(LB/\pi/2/3^2))$ etc where for figures 1 and 2, LB=26140-819.1, UB=26140+819.2 corresponding to the range of t values collected in the spectrum. These spectral features can be obtained from the leading terms of the dirichlet series and the $\theta(0.5+I\cdot t)$ function
+
+Using the standard dirichlet series version of the zeroth order Riemann-Siegel formula [1-4] on the critical line (compared to the partial Euler Product based version in equation (11)) 
+
+\begin{equation}
+Z_\zeta(0.5+I\cdot t) \approx e^{I\cdot\theta(t)}\left( \sum_{n=1}^{n\le \lfloor\sqrt{\frac{t}{2\pi}}\rfloor=N_1} \frac{1}{n^{(0.5+I\cdot t)}} + \mychi(0.5+I\cdot t) \cdot \sum_{n=1}^{n\le \lfloor\sqrt{\frac{t}{2\pi}}\rfloor=N_1} \frac{1}{n^{(1-(0.5+I\cdot t))}} \right)
+\end{equation}
+
+and considering only the leading terms and n=1,2,3,4,.. [6] presented that for the first summation term in equation (14) there are the components
+
+\begin{align}
+e^{I\cdot\theta(t)}\cdot \frac{1}{n^{(0.5+I\cdot t)}} \qquad &= \qquad \frac{1}{n^{0.5}}\cdot e^{I\cdot(\theta(t)-t\log(n))} \\
+&= \qquad \frac{1}{n^{0.5}}\cdot e^{I\cdot(\frac{1}{2}t\cdot\log(\frac{t}{2\pi})+...-t\log(n))} \\
+&= \qquad \frac{1}{n^{0.5}}\cdot e^{I\cdot(t\cdot\log(\sqrt{\frac{t}{2\pi}})+...-t\log(n))} \\
+&= \qquad \frac{1}{n^{0.5}}\cdot e^{I\cdot(t\cdot\log(\sqrt{\frac{t}{2\pi}}\cdot\frac{1}{n})+...)} \\
+&= \qquad \frac{1}{n^{0.5}}\cdot e^{I\cdot(t\cdot\log(\sqrt{\frac{t}{n^2\cdot 2\pi}})+...)} \\
+&= \qquad \frac{1}{n^{0.5}}\cdot e^{I\cdot(\frac{1}{2}t\cdot\log(\frac{t}{n^2\cdot 2\pi})+...)} \\
+&= \qquad \frac{1}{n^{0.5}}\cdot e^{I\cdot\omega_n t}
+\end{align}
+
+likewise for the second summation term there are the components
+
+
+
+```{r Zfnzetafunctionoveraninterval_anditsfouriertransform_26140_pm819_resp75_mirror_relationship, echo=FALSE, fig.cap="Lefthand column - A comparison of the \\textbf{absolute magnitude} of the fourier transform of the Riemann-Siegel Z function of the Riemann Zeta function in the complex plane at $\\sigma=\\{1,0.95,0.75\\}$ (top, middle and bottom row) for the interval t=26140+(-819.1,819.2). Middle column - A comparison of the \\textbf{imaginary part } of the weaker (+ve) sideband of the fourier transform of the Riemann-Siegel Z function (green line) to its approximation using the observed stronger (-ve) sideband behaviour and equation (36) (dashed red line). Righthand column - A comparison of the \\textbf{ratio of the magnitudes} of the (weaker/stronger) sidebands of the fourier transform of the Riemann-Siegel Z function (darkblue line) to its zeroth order approximation equation (40) (dashed red line).", out.width = c("99%"), fig.show = "hold",  fig.height=7.5, warning=FALSE}
+
+
+df1=read.csv("/home/john/pari/vhat_1p_26140_Z.csv",header=FALSE,sep=",",colClasses = "character")
+df1$V1=as.numeric(gsub(" ","",df1$V1));
+df1$V2=as.numeric(gsub(" ","",df1$V2));
+
+
+di1=read.csv("/home/john/pari/vhat_1p_26140_fadj.csv",header=FALSE,sep=",",colClasses = "character")
+di1$V1=as.numeric(gsub(" ","",di1$V1));
+di1$V2=as.numeric(gsub(" ","",di1$V2));
+
+par(mar = c(1.75, 2.05, 1.5, 1.5))
+
+layout(mat = matrix(c(1,2,3,
+                      4,5,6,
+                      7,8,9),
+                    nrow = 3,
+                    byrow = TRUE))
+
+plot(c(-floor(32768/2):(ceiling(32768/2)-1))*2*pi/32768/.05,c(abs(df1$V1)[16385:32768],1*abs(df1$V1)[1:16384]),col="darkblue",typ="l",
+     xlim=c(-2,2)*pi,ylim=c(0,1.2e4),main="",xlab="",ylab="absolute magnitude of F(w)_Z_zeta",cex.axis=0.6,cex.main=0.8,mgp = c(0.7, 0.2, 0),tck=-.02,cex.lab=0.7);grid(col="gray2")
+abline(v=c(-20,20)*pi,col=6,lty=2)
+plot(c(0:(ceiling(32768/2)-1))*2*pi/32768/.05,c((df1$V2)[1:16384]),typ="l",col=3,xlim=c(0,2)*pi,ylim=c(-1e3,1e3),main="",xlab="",ylab="imaginary part of F(w)_Z_zeta +ve sideband",cex.axis=0.6,mgp = c(0.7, 0.2, 0),tck=-.02,cex.lab=0.7);grid(col="gray2")
+mtext("True fourier transform behaviour of the Riemann-Siegel Z function for the interval s=(1+I*25320.9,1+I*26959.2)",side=3,line=0.5,cex=0.7)
+lines(c(1:(ceiling(32768/2)-1))*2*pi/32768/.05,-rev((df1$V2)[16386:32768])*(di1$V1[-1]),col=6,lty=2)
+legend(x="topleft",legend=c("imag(F[w])",expression(imag(bar(F[-w]))%*% abs(~chi(1+I%*%2%*%pi%*%exp(2%*%w)) ))),bg="white",xjust=0,cex=0.6,
+       lty=c(1,2),col=c(3,6))
+plot(c(1:(ceiling(32768/2)-1))*2*pi/32768/.05,c(sqrt(df1$V1^2+df1$V2^2)[2:16384]/rev(sqrt(df1$V1^2+df1$V2^2)[16386:32768])),col="darkblue",typ="l",    xlim=c(-2,2)*pi,main="",xlab="",ylab="ratio of (|F(w)_Z_zeta|)/(|F(-w)_Z_zeta|)",cex.axis=0.6,cex.main=0.8,mgp = c(0.7, 0.2, 0),tck=-.02,cex.lab=0.7);grid(col="gray2")
+lines(c(0:(ceiling(32768/2)-1))*2*pi/32768/.05,(di1$V1),col=6,lty=2)
+legend(x="topleft",legend=c("ratio of |F[w]|/|F[-w]|",expression( abs(~chi(1+I%*%2%*%pi%*%exp(2%*%w)) ))),bg="white",xjust=0,cex=0.6,
+       lty=c(1,2),col=c("darkblue",6))
+
+df95=read.csv("/home/john/pari/vhat_p95_26140_Z.csv",header=FALSE,sep=",",colClasses = "character")
+df95$V1=as.numeric(gsub(" ","",df95$V1));
+df95$V2=as.numeric(gsub(" ","",df95$V2));
+
+
+di95=read.csv("/home/john/pari/vhat_p95_26140_fadj.csv",header=FALSE,sep=",",colClasses = "character")
+di95$V1=as.numeric(gsub(" ","",di95$V1));
+di95$V2=as.numeric(gsub(" ","",di95$V2));
+
+
+
+plot(c(-floor(32768/2):(ceiling(32768/2)-1))*2*pi/32768/.05,c(abs(df95$V1)[16385:32768],1*abs(df95$V1)[1:16384]),col="darkblue",typ="l",
+     xlim=c(-2,2)*pi,ylim=c(0,1.2e4),main="",xlab="",ylab="absolute magnitude of F(w)_Z_zeta",cex.axis=0.6,cex.main=0.8,mgp = c(0.7, 0.2, 0),tck=-.02,cex.lab=0.7);grid(col="gray2")
+abline(v=c(-20,20)*pi,col=6,lty=2)
+plot(c(0:(ceiling(32768/2)-1))*2*pi/32768/.05,c((df95$V2)[1:16384]),typ="l",col=3,xlim=c(0,2)*pi,ylim=c(-1e3,1e3),main="",xlab="",ylab="imaginary part of F(w)_Z_zeta +ve sideband",cex.axis=0.6,mgp = c(0.7, 0.2, 0),tck=-.02,cex.lab=0.7);grid(col="gray2")
+mtext("True fourier transform behaviour of the Riemann-Siegel Z function for the interval s=(0.95+I*25320.9,0.95+I*26959.2)",side=3,line=0.5,cex=0.7)
+lines(c(1:(ceiling(32768/2)-1))*2*pi/32768/.05,-rev((df95$V2)[16386:32768])*(di95$V1[-1]),col=6,lty=2)
+legend(x="topleft",legend=c("imag(F[w])",expression(imag(bar(F[-w]))%*% abs(~chi(0.95+I%*%2%*%pi%*%exp(2%*%w)) ))),bg="white",xjust=0,cex=0.6,
+       lty=c(1,2),col=c(3,6))
+plot(c(1:(ceiling(32768/2)-1))*2*pi/32768/.05,c(sqrt(df95$V1^2+df95$V2^2)[2:16384]/rev(sqrt(df95$V1^2+df95$V2^2)[16386:32768])),col="darkblue",typ="l",    xlim=c(-2,2)*pi,main="",xlab="",ylab="ratio of (|F(w)_Z_zeta|)/(|F(-w)_Z_zeta|)",cex.axis=0.6,cex.main=0.8,mgp = c(0.7, 0.2, 0),tck=-.02,cex.lab=0.7);grid(col="gray2")
+lines(c(0:(ceiling(32768/2)-1))*2*pi/32768/.05,(di95$V1),col=6,lty=2)
+legend(x="topleft",legend=c("ratio of |F[w]|/|F[-w]|",expression( abs(~chi(0.95+I%*%2%*%pi%*%exp(2%*%w)) ))),bg="white",xjust=0,cex=0.6,
+       lty=c(1,2),col=c("darkblue",6))
+
+df75=read.csv("/home/john/pari/vhat_p75_26140_Z.csv",header=FALSE,sep=",",colClasses = "character")
+df75$V1=as.numeric(gsub(" ","",df75$V1));
+df75$V2=as.numeric(gsub(" ","",df75$V2));
+
+
+di75=read.csv("/home/john/pari/vhat_p75_26140_fadj.csv",header=FALSE,sep=",",colClasses = "character")
+di75$V1=as.numeric(gsub(" ","",di75$V1));
+di75$V2=as.numeric(gsub(" ","",di75$V2));
+
+
+
+plot(c(-floor(32768/2):(ceiling(32768/2)-1))*2*pi/32768/.05,c(abs(df75$V1)[16385:32768],1*abs(df75$V1)[1:16384]),col="darkblue",typ="l",
+     xlim=c(-2,2)*pi,ylim=c(0,1.2e4),main="",xlab="w - sideband angular frequency (rad/sec) ",ylab="absolute magnitude of F(w)_Z_zeta",cex.axis=0.6,cex.main=0.8,mgp = c(0.7, 0.2, 0),tck=-.02,cex.lab=0.7);grid(col="gray2")
+abline(v=c(-20,20)*pi,col=6,lty=2)
+plot(c(0:(ceiling(32768/2)-1))*2*pi/32768/.05,c((df75$V2)[1:16384]),typ="l",col=3,xlim=c(0,2)*pi,ylim=c(-1.5e3,1.5e3),main="",xlab="w - sideband angular frequency (rad/sec) ",ylab="imaginary part of F(w)_Z_zeta +ve sideband",cex.axis=0.6,mgp = c(0.7, 0.2, 0),tck=-.02,cex.lab=0.7);grid(col="gray2")
+mtext("True fourier transform behaviour of the Riemann-Siegel Z function for the interval s=(0.75+I*25320.9,0.75+I*26959.2)",side=3,line=0.5,cex=0.7)
+lines(c(1:(ceiling(32768/2)-1))*2*pi/32768/.05,-rev((df75$V2)[16386:32768])*(di75$V1[-1]),col=6,lty=2)
+legend(x="topleft",legend=c("imag(F[w])",expression(imag(bar(F[-w]))%*% abs(~chi(0.75+I%*%2%*%pi%*%exp(2%*%w)) ))),bg="white",xjust=0,cex=0.6,
+       lty=c(1,2),col=c(3,6))
+plot(c(1:(ceiling(32768/2)-1))*2*pi/32768/.05,c(sqrt(df75$V1^2+df75$V2^2)[2:16384]/rev(sqrt(df75$V1^2+df75$V2^2)[16386:32768])),col="darkblue",typ="l",    xlim=c(-2,2)*pi,main="",xlab="w - sideband angular frequency (rad/sec) ",ylab="ratio of (|F(w)_Z_zeta|)/(|F(-w)_Z_zeta|)",cex.axis=0.6,cex.main=0.8,mgp = c(0.7, 0.2, 0),tck=-.02,cex.lab=0.7);grid(col="gray2")
+lines(c(0:(ceiling(32768/2)-1))*2*pi/32768/.05,(di75$V1),col=6,lty=2)
+legend(x="topleft",legend=c("ratio of |F[w]|/|F[-w]|",expression( abs(~chi(0.75+I%*%2%*%pi%*%exp(2%*%w)) ))),bg="white",xjust=0,cex=0.6,
+       lty=c(1,2),col=c("darkblue",6))
+
+
+```
+
+\clearpage
+
+```{r Zfnzetafunctionoveraninterval_anditsfouriertransform_26140_pm819_resp25_mirror_relationship, echo=FALSE, fig.cap="Lefthand column - A comparison of the \\textbf{absolute magnitude} of the fourier transform of the Riemann-Siegel Z function of the Riemann Zeta function in the complex plane at $\\sigma=\\{0.25,0.05,0.0\\}$ (top, middle and bottom row) for the interval t=26140+(-819.1,819.2). Middle column - A comparison of the \\textbf{imaginary part } of the weaker (-ve) sideband of the fourier transform of the Riemann-Siegel Z function (green line) to its approximation using the observed stronger (+ve) sideband behaviour and equation (37) (dashed red line). Righthand column - A comparison of the \\textbf{ratio of the magnitudes} of the (weaker/stronger) sidebands of the fourier transform of the Riemann-Siegel Z function (darkblue line) to its zeroth order approximation equation (41) (dashed red line).", out.width = c("99%"), fig.show = "hold",  fig.height=7.5, warning=FALSE}
+
+
+
+par(mar = c(1.75, 2.05, 1.5, 1.5))
+
+layout(mat = matrix(c(1,2,3,
+                      4,5,6,
+                      7,8,9),
+                    nrow = 3,
+                    byrow = TRUE))
+
+dfp25=read.csv("/home/john/pari/vhat_p25_26140_Z.csv",header=FALSE,sep=",",colClasses = "character")
+dfp25$V1=as.numeric(gsub(" ","",dfp25$V1));
+dfp25$V2=as.numeric(gsub(" ","",dfp25$V2));
+
+
+dip25=read.csv("/home/john/pari/vhat_p25_26140_fadjneg.csv",header=FALSE,sep=",",colClasses = "character")
+dip25$V1=as.numeric(gsub(" ","",dip25$V1));
+dip25$V2=as.numeric(gsub(" ","",dip25$V2));
+
+
+
+plot(c(-floor(32768/2):(ceiling(32768/2)-1))*2*pi/32768/.05,c(abs(dfp25$V1^2+dfp25$V2^2)[16385:32768],1*abs(dfp25$V1^2+dfp25$V2^2)[1:16384]),col="darkblue",typ="l",
+     xlim=c(-2,2)*pi,ylim=c(0,1.1e10),main="",xlab="",ylab="absolute magnitude of F(w)_Z_zeta",cex.axis=0.6,cex.main=0.8,mgp = c(0.7, 0.2, 0),tck=-.02,cex.lab=0.7);grid(col="gray2")
+abline(v=c(-20,20)*pi,col=6,lty=2)
+plot(c(-floor(32768/2):(-1))*2*pi/32768/.05,c((dfp25$V2)[16385:32768]),typ="l",col=3,xlim=c(-2,0)*pi,ylim=c(-4e4,4e4),main="",xlab="",ylab="imaginary part of F(w)_Z_zeta -ve sideband",cex.axis=0.6,mgp = c(0.7, 0.2, 0),tck=-.02,cex.lab=0.7);grid(col="gray2")
+mtext("True fourier transform behaviour of the Riemann-Siegel Z function for the interval s=(0.25+I*25320.9,0.25+I*26959.2)",side=3,line=0.5,cex=0.7)
+lines(c(-floor(32768/2):(-1))*2*pi/32768/.05,-rev((dfp25$V2)[1:16384]*(dip25$V1)),col=6,lty=2)
+legend(x="topleft",legend=c("imag(F[-w])",expression(imag(bar(F[w]))%*% abs(~chi(1-(0.25+I%*%2%*%pi%*%exp(2%*%w))) ))),bg="white",xjust=0,cex=0.6,
+       lty=c(1,2),col=c(3,6))
+plot(c((-floor(32768/2)+1):(-1))*2*pi/32768/.05,c((sqrt(dfp25$V1^2+dfp25$V2^2)[16386:32768]/rev(sqrt(dfp25$V1^2+dfp25$V2^2)[2:16384]))),col="darkblue",typ="l",    xlim=c(-2,2)*pi,ylim=c(0,2),main="",xlab="",ylab="ratio of (|F(-w)_Z_zeta|)/(|F(w)_Z_zeta|)",cex.axis=0.6,cex.main=0.8,mgp = c(0.7, 0.2, 0),tck=-.02,cex.lab=0.7);grid(col="gray2")
+lines(c(-floor(32768/2):(-1))*2*pi/32768/.05,rev(dip25$V1),col=6,lty=2)
+legend(x="topleft",legend=c("ratio of |F[-w]|/|F[w]|",expression( abs(~chi(1-(0.25+I%*%2%*%pi%*%exp(2%*%w))) ))),bg="white",xjust=0,cex=0.6,
+       lty=c(1,2),col=c("darkblue",6))
+
+
+
+dfp05=read.csv("/home/john/pari/vhat_p05_26140_Z.csv",header=FALSE,sep=",",colClasses = "character")
+dfp05$V1=as.numeric(gsub(" ","",dfp05$V1));
+dfp05$V2=as.numeric(gsub(" ","",dfp05$V2));
+
+
+dip05=read.csv("/home/john/pari/vhat_p05_26140_fadjneg.csv",header=FALSE,sep=",",colClasses = "character")
+dip05$V1=as.numeric(gsub(" ","",dip05$V1));
+dip05$V2=as.numeric(gsub(" ","",dip05$V2));
+
+
+
+plot(c(-floor(32768/2):(ceiling(32768/2)-1))*2*pi/32768/.05,c(abs(dfp05$V1^2+dfp05$V2^2)[16385:32768],1*abs(dfp05$V1^2+dfp05$V2^2)[1:16384]),col="darkblue",typ="l",
+     xlim=c(-2,2)*pi,ylim=c(0,3e11),main="",xlab="",ylab="absolute magnitude of F(w)_Z_zeta",cex.axis=0.6,cex.main=0.8,mgp = c(0.7, 0.2, 0),tck=-.02,cex.lab=0.7);grid(col="gray2")
+abline(v=c(-20,20)*pi,col=6,lty=2)
+plot(c(-floor(32768/2):(-1))*2*pi/32768/.05,c((dfp05$V2)[16385:32768]),typ="l",col=3,xlim=c(-2,0)*pi,ylim=c(-4e4,4e4),main="",xlab="",ylab="imaginary part of F(w)_Z_zeta -ve sideband",cex.axis=0.6,mgp = c(0.7, 0.2, 0),tck=-.02,cex.lab=0.7);grid(col="gray2")
+mtext("True fourier transform behaviour of the Riemann-Siegel Z function for the interval s=(0.05+I*25320.9,0.25+I*26959.2)",side=3,line=0.5,cex=0.7)
+lines(c(-floor(32768/2):(-1))*2*pi/32768/.05,-rev((dfp05$V2)[1:16384]*(dip05$V1)),col=6,lty=2)
+legend(x="topleft",legend=c("imag(F[-w])",expression(imag(bar(F[w]))%*% abs(~chi(1-(0.05+I%*%2%*%pi%*%exp(2%*%w))) ))),bg="white",xjust=0,cex=0.6,
+       lty=c(1,2),col=c(3,6))
+plot(c((-floor(32768/2)+1):(-1))*2*pi/32768/.05,c((sqrt(dfp05$V1^2+dfp05$V2^2)[16386:32768]/rev(sqrt(dfp05$V1^2+dfp05$V2^2)[2:16384]))),col="darkblue",typ="l",    xlim=c(-2,2)*pi,ylim=c(0,2),main="",xlab="",ylab="ratio of (|F(-w)_Z_zeta|)/(|F(w)_Z_zeta|)",cex.axis=0.6,cex.main=0.8,mgp = c(0.7, 0.2, 0),tck=-.02,cex.lab=0.7);grid(col="gray2")
+lines(c(-floor(32768/2):(-1))*2*pi/32768/.05,rev(dip05$V1),col=6,lty=2)
+legend(x="topleft",legend=c("ratio of |F[-w]|/|F[w]|",expression( abs(~chi(1-(0.05+I%*%2%*%pi%*%exp(2%*%w))) ))),bg="white",xjust=0,cex=0.6,
+       lty=c(1,2),col=c("darkblue",6))
+
+df0=read.csv("/home/john/pari/vhat_p0_26140_Z.csv",header=FALSE,sep=",",colClasses = "character")
+df0$V1=as.numeric(gsub(" ","",df0$V1));
+df0$V2=as.numeric(gsub(" ","",df0$V2));
+
+
+di0=read.csv("/home/john/pari/vhat_p0_26140_fadjneg.csv",header=FALSE,sep=",",colClasses = "character")
+di0$V1=as.numeric(gsub(" ","",di0$V1));
+di0$V2=as.numeric(gsub(" ","",di0$V2));
+
+
+
+plot(c(-floor(32768/2):(ceiling(32768/2)-1))*2*pi/32768/.05,c(abs(df0$V1^2+df0$V2^2)[16385:32768],1*abs(df0$V1^2+df0$V2^2)[1:16384]),col="darkblue",typ="l",
+     xlim=c(-2,2)*pi,ylim=c(0,7e11),main="",xlab="w - sideband angular frequency (rad/sec) ",ylab="absolute magnitude of F(w)_Z_zeta",cex.axis=0.6,cex.main=0.8,mgp = c(0.7, 0.2, 0),tck=-.02,cex.lab=0.7);grid(col="gray2")
+abline(v=c(-20,20)*pi,col=6,lty=2)
+plot(c(-floor(32768/2):(-1))*2*pi/32768/.05,c((df0$V2)[16385:32768]),typ="l",col=3,xlim=c(-2,0)*pi,ylim=c(-4e4,4e4),main="",xlab="w - sideband angular frequency (rad/sec) ",ylab="imaginary part of F(w)_Z_zeta -ve sideband",cex.axis=0.6,mgp = c(0.7, 0.2, 0),tck=-.02,cex.lab=0.7);grid(col="gray2")
+mtext("True fourier transform behaviour of the Riemann-Siegel Z function for the interval s=(0.0+I*25320.9,0.0+I*26959.2)",side=3,line=0.5,cex=0.7)
+lines(c(-floor(32768/2):(-1))*2*pi/32768/.05,-rev((df0$V2)[1:16384]*(di0$V1)),col=6,lty=2)
+legend(x="topleft",legend=c("imag(F[-w])",expression(imag(bar(F[w]))%*% abs(~chi(1-(0+I%*%2%*%pi%*%exp(2%*%w))) ))),bg="white",xjust=0,cex=0.6,
+       lty=c(1,2),col=c(3,6))
+plot(c((-floor(32768/2)+1):(-1))*2*pi/32768/.05,c((sqrt(df0$V1^2+df0$V2^2)[16386:32768]/rev(sqrt(df0$V1^2+df0$V2^2)[2:16384]))),col="darkblue",typ="l",    xlim=c(-2,2)*pi,ylim=c(0,2),main="",xlab="w - sideband angular frequency (rad/sec) ",ylab="ratio of (|F(-w)_Z_zeta|)/(|F(w)_Z_zeta|)",cex.axis=0.6,cex.main=0.8,mgp = c(0.7, 0.2, 0),tck=-.02,cex.lab=0.7);grid(col="gray2")
+lines(c(-floor(32768/2):(-1))*2*pi/32768/.05,rev(di0$V1),col=6,lty=2)
+legend(x="topleft",legend=c("ratio of |F[-w]|/|F[w]|",expression( abs(~chi(1-(0+I%*%2%*%pi%*%exp(2%*%w))) ))),bg="white",xjust=0,cex=0.6,
+       lty=c(1,2),col=c("darkblue",6))
+
+
+```
+
+\clearpage
+
+\begin{align}
+e^{I\cdot\theta(t)}\cdot e^{-2\cdot I\cdot\theta(t)}\cdot \frac{1}{n^{(1-({0.5}+I\cdot t))}} \qquad &= \qquad \frac{1}{n^{0.5}}\cdot e^{I\cdot(-\theta(t)+t\log(n))} \\
+&= \qquad \frac{1}{n^{0.5}}\cdot e^{I\cdot(-\frac{1}{2}t\cdot\log(\frac{t}{2\pi})+...+t\log(n))} \\
+&= \qquad \frac{1}{n^{0.5}}\cdot e^{I\cdot(-t\cdot\log(\sqrt{\frac{t}{2\pi}})+...+t\log(n))} \\
+&= \qquad \frac{1}{n^{0.5}}\cdot e^{I\cdot(-t\cdot\log(\sqrt{\frac{t}{2\pi}}\cdot\frac{1}{n})+...)} \\
+&= \qquad \frac{1}{n^{0.5}}\cdot e^{I\cdot(-t\cdot\log(\sqrt{\frac{t}{n^2\cdot 2\pi}})+...)} \\
+&= \qquad \frac{1}{n^{0.5}}\cdot e^{I\cdot(-\frac{1}{2}t\cdot\log(\frac{t}{n^2\cdot 2\pi})+...)} \\
+&= \qquad \frac{1}{n^{0.5}}\cdot e^{-I\cdot\omega_n t}
+\end{align}
+
+
+yielding the leading values of the fourier transform component angular frequencies
+
+$\omega_n\approx\pm\frac{1}{2}log(\frac{t}{n^2\cdot 2\pi})$ where n=1,2,3,...,$\lfloor\sqrt{\frac{t}{2\pi}}\rfloor$
+
+Using this above mapping and noting that within the digital fourier transform frame of reference used in figures 1 and 2
+
+\begin{equation}
+w[i]=\frac{i\cdot 2 \cdot \pi}{32768\cdot 0.05}, i \in \{-16383,16384\}
+\end{equation}
+
+based on the 32768 fourier point grid, with $\Delta t=0.05$ grid spacing investigated in this paper (which was previously found in [11,12] to be sufficient using Pari-GP FFT calculations of partial Euler product based approximations of the Riemann-Siegel Z function on the critical line to provide 3+ decimal place accuracy for grid searches of extreme L-function peaks), a transformed t value ($t \rightarrow t^\prime$) in the digital fourier transform frame of reference can be defined by
+
+\begin{align}
+w[i]=\frac{i\cdot 2 \cdot \pi}{32768\cdot 0.05}&=\frac{1}{2}log(\frac{t^\prime_i}{ 2\pi}), i \in \{-16383,16384\}
+\end{align}
+
+which when rearranged provides the span of t co-ordinates that could possibly provide spectral features in the fourier transform 
+
+\begin{align}
+log(\frac{t_i}{ 2\pi}) &= 2\cdot\frac{i\cdot 2 \cdot \pi}{32768\cdot 0.05} \\
+\frac{t_i}{ 2\pi}&=e^{(2\cdot\frac{i\cdot 2 \cdot \pi}{32768\cdot 0.05})} \\
+t_i &= 2\pi\cdot e^{(2\cdot\frac{i\cdot 2 \cdot \pi}{32768\cdot 0.05})} \\
+t_i &= 2\pi\cdot e^{(2\cdot w[i])}, i \in \{-16383,16384\}
+\end{align}
+
+Meaning that, for example given an input spectra comprising LB=26140-819.1,UB=26140+819.2 with 32768 fourier grid points and $\Delta t=0.05$ the span of $t^\prime_i=(-2.361751e+55,2.361751e+55)$. So the length of the sample (via the number of grid points and grid spacing) would impact on the span of $t^\prime$. 
+
+A third piece of known information is that on the critical line [6-8,11], conjugate mirror reflection of either the fourier transform of $EP_1$ (or $EP_2$) from equation (12) produces an excellent approximation of the fourier transform of the Riemann-Siegel Z function. That is,
+
+\begin{equation}
+F[w] =\overline{F[-w]}, \sigma=0.5
+\end{equation}
+
+Two obvious heuristic functional dependence parametrisations to immediately trial are therefore $\mychi(s')$ and $\mychi(1-s')$ where $s'=\sigma+I\cdot t^\prime_i$ contains the transformed t co-ordinate, since $|\mychi(1/2+I\cdot t^\prime_i)|=|\mychi(1-(1/2+I\cdot t^\prime_i))|=1$ which satisfies equation (33). 
+
+As shown in the middle columns of figures 1 and 2, the following functional dependence of the fourier sideband components is an useful zeroth order approximation. 
+
+\begin{align}
+F[w] &= \overline{F[-w]}\cdot\left|\mychi(\sigma+I\cdot2\cdot\pi e^{w})\right|, \sigma \ge 0.5 \\
+F[-w] &= \overline{F[w]}\cdot\left|\mychi(1-(\sigma+I\cdot2\cdot\pi e^{w}))\right|, \sigma \le 0.5
+\end{align}
+
+where the absolute magnitudes $|\mychi(s')|$, $|\mychi(1-s')|$ are found to be useful zeroth order scaling factors above and below the critical line respectively rescaling the stronger fourier sideband (shown by dashed red line) given $\sigma$ to the weaker fourier sideband (shown by solid green line).
+
+The righthand columns of figures 1 and 2, then compare the empirical ratio of the fourier sideband magnitudes of the Riemann-Siegel Z function (darkblue line with volatility about spectral peaks)
+
+\begin{align}
+\frac{\left|F[w]\right|}{\left|F[-w]\right|}, \text{for figure 1} \\
+\frac{\left|F[-w]\right|}{\left|F[w]\right|}, \text{for figure 2}
+\end{align}
+
+to the monotonic zeroth order approximate rescaling behaviour
+
+\begin{align}
+\left|\mychi(\sigma+I\cdot2\cdot\pi e^{w})\right|, \sigma \ge 0.5 \\
+\left|\mychi(1-(\sigma+I\cdot2\cdot\pi e^{w}))\right|, \sigma \le 0.5
+\end{align}
+
+and it can be seen the rescaling factor is a useful approximation in the trend of the empirical ratio of the fourier sideband magnitudes of the Riemann-Siegel Z function particularly within the span of the important spectral features (|w| < 4.1 given the input spectra covering LB=26140-819.1,UB=26140+819.2). (The empirical ratio of magnitudes in the righthand column is susceptible to volatility when values of the denominator become very small. Hence a better comparison is to restrict the comparison to fourier components in the righthand column where the fourier transform of the Riemann-Siegel Z function has strong signal.) 
+
+### Investigating the $\Im(s)$ dependence between the fourier sidebands F[w] & F[-w]
+
+Figure 3 explores whether the zeroth order functional dependence between the fourier sidebands of the Riemann-Siegel Z function is affected by the Im(s) interval of input spectra of the same length (32769 grid points, $\Delta t=0.05$) by comparing 
+
+for the three input spectrum intervals 
+
+\begin{enumerate}
+\item $s=(1+I*10.9,1+I*1649.2)$ (top row),
+\item $s=(1+I*6070.9,1+I*7709.2)$ (middle row),
+\item $s=(1+I*168180.9,1+I*169819.2)$ (bottom row),
+\end{enumerate}
+
+\blandscape
+```{r compare_t_sensitivity, echo=FALSE, fig.show = "hold",  out.width = "24%", fig.pos='p', fig.align="center", fig.height=6.3, fig.cap="Lefthand column - A comparison of the \\textbf{absolute magnitude} of the fourier transform of the Riemann-Siegel Z function of the Riemann Zeta function in the complex plane at $\\sigma=1$ for the different intervals t=(10.9,1649.2) (top row), t=(6070.9,7709.2) (middle row) and t=(168180.9,169819.2) (bottom row). Second column - A comparison of the \\textbf{imaginary part} of the weaker (+ve) sideband of the fourier transform of the Riemann-Siegel Z function (green line) to its approximation using the observed (-ve) sideband behaviour and equation (36) (dashed red line) and some vertical lines (cyan) indicating the position of expected spectral features. Third column - A magnified comparison of the \\textbf{imaginary part} of the weaker (+ve) sideband of the fourier transform of the Riemann-Siegel Z function (green line) to its approximation using the observed (-ve) sideband behaviour and equation (36) (dashed red line) and some vertical lines (cyan) indicating the position of expected spectral features with the largest angular frequencies. Righthand column - A comparison of the \\textbf{ratio of the magnitudes} of the (weaker/stronger) sidebands of the fourier transform of the Riemann-Siegel Z function (darkblue line) to its zeroth order approximation equation (40) (dashed red line) and some vertical lines (cyan) indicating the position of expected spectral features."}
+
+par(mar=c(5.1, 4.1, 4.1, 2.1))
+
+df1=read.csv("/home/john/pari/vhat_1p_830_Z.csv",header=FALSE,sep=",",colClasses = "character")
+df1$V1=as.numeric(gsub(" ","",df1$V1));
+df1$V2=as.numeric(gsub(" ","",df1$V2));
+
+
+di1=read.csv("/home/john/pari/vhat_1p_830_fadj.csv",header=FALSE,sep=",",colClasses = "character")
+di1$V1=as.numeric(gsub(" ","",di1$V1));
+di1$V2=as.numeric(gsub(" ","",di1$V2));
+
+
+plot(c(-floor(32768/2):(ceiling(32768/2)-1))*2*pi/32768/.05,c(abs(df1$V1)[16385:32768],1*abs(df1$V1)[1:16384]),col="darkblue",typ="l",
+     xlim=c(-1,1)*pi,ylim=c(0,3e3),main="",xlab="",ylab="absolute magnitude of F(w)_Z_zeta",cex.axis=0.6,cex.main=0.8,mgp = c(0.7, 0.2, 0),tck=-.02,cex.lab=0.7);grid(col="gray2")
+abline(v=c(-20,20)*pi,col=6,lty=2)
+legend(x="top",legend=c("True fourier transform behaviour of the Riemann-Siegel \n Z function for the interval s=(1+I*10.9,1+I*1649.2)",""),bg="white",cex=1,
+       lty=c(1,0),col=c("darkblue"))
+plot(c(0:(ceiling(32768/2)-1))*2*pi/32768/.05,c((df1$V2)[1:16384]),typ="l",col=3,xlim=c(0,1)*pi,ylim=c(-1e3,1e3),main="",xlab="",ylab="imaginary part of F(w)_Z_zeta +ve sideband",cex.axis=0.6,mgp = c(0.7, 0.2, 0),tck=-.02,cex.lab=0.7);grid(col="gray2")
+lines(rep(1/2*log(1649.2/2/pi/1^2),2),c(-1e3,-0.9e3)+600,lty=1,col=rgb(0,1,1,0.5))
+lines(c(1:(ceiling(32768/2)-1))*2*pi/32768/.05,-rev((df1$V2)[16386:32768])*(di1$V1[-1]),col=6,lty=2)
+legend(x="topright",legend=c("imag(F[w])",expression(imag(bar(F[-w]))%*% abs(~chi(1+I%*%2%*%pi%*%exp(2%*%w)) )),"position(s) of expected spectral features"),bg="white",xjust=0,cex=0.8,
+       lty=c(1,2,1),col=c(3,6,5))
+plot(c(0:(ceiling(32768/2)-1))*2*pi/32768/.05,c((df1$V2)[1:16384]),typ="l",col=3,xlim=c(0.855,0.9)*pi,ylim=c(-1e3,1e3),main="",xlab="",ylab="imaginary part of F(w)_Z_zeta +ve sideband",cex.axis=0.6,mgp = c(0.7, 0.2, 0),tck=-.02,cex.lab=0.7);grid(col="gray2")
+lines(rep(1/2*log(1649.2/2/pi/1^2),2),c(-1e3,-0.9e3)+600,lty=1,col=rgb(0,1,1,0.5))
+lines(c(1:(ceiling(32768/2)-1))*2*pi/32768/.05,-rev((df1$V2)[16386:32768])*(di1$V1[-1]),col=6,lty=2)
+legend(x="topleft",legend=c("imag(F[w])",expression(imag(bar(F[-w]))%*% abs(~chi(1+I%*%2%*%pi%*%exp(2%*%w)) )),"position(s) of expected spectral features"),bg="white",xjust=0,cex=0.8,
+       lty=c(1,2,1),col=c(3,6,5))
+plot(c(1:(ceiling(32768/2)-1))*2*pi/32768/.05,c(sqrt(df1$V1^2+df1$V2^2)[2:16384]/rev(sqrt(df1$V1^2+df1$V2^2)[16386:32768])),col="darkblue",typ="l",    xlim=c(-0.5,1)*pi,ylim=c(0,1.25),main="",xlab="",ylab="ratio of (|F(w)_Z_zeta|)/(|F(-w)_Z_zeta|)",cex.axis=0.6,cex.main=0.8,mgp = c(0.7, 0.2, 0),tck=-.02,cex.lab=0.7);grid(col="gray2")
+lines(c(0:(ceiling(32768/2)-1))*2*pi/32768/.05,(di1$V1),col=6,lty=2)
+lines(rep(1/2*log(1649.2/2/pi/1^2),2),c(0,-0.1),lty=1,col=rgb(0,1,1,0.5))
+legend(x="topright",legend=c("ratio of |F[w]|/|F[-w]|",expression( abs(~chi(1+I%*%2%*%pi%*%exp(2%*%w)) )),"position(s) of expected spectral features"),bg="white",xjust=0,cex=0.8,
+       lty=c(1,2,1),col=c(3,6,5))
+
+
+df1=read.csv("/home/john/pari/vhat_1p_6890_Z.csv",header=FALSE,sep=",",colClasses = "character")
+df1$V1=as.numeric(gsub(" ","",df1$V1));
+df1$V2=as.numeric(gsub(" ","",df1$V2));
+
+
+di1=read.csv("/home/john/pari/vhat_1p_6890_fadj.csv",header=FALSE,sep=",",colClasses = "character")
+di1$V1=as.numeric(gsub(" ","",di1$V1));
+di1$V2=as.numeric(gsub(" ","",di1$V2));
+
+
+plot(c(-floor(32768/2):(ceiling(32768/2)-1))*2*pi/32768/.05,c(abs(df1$V1)[16385:32768],1*abs(df1$V1)[1:16384]),col="darkblue",typ="l",
+     xlim=c(-1.5,1.5)*pi,ylim=c(0,0.8e4),main="",xlab="",ylab="absolute magnitude of F(w)_Z_zeta",cex.axis=0.6,cex.main=0.8,mgp = c(0.7, 0.2, 0),tck=-.02,cex.lab=0.7);grid(col="gray2")
+abline(v=c(-20,20)*pi,col=6,lty=2)
+legend(x="top",legend=c("True fourier transform behaviour of the Riemann-Siegel \n Z function for the interval s=(1+I*6070.9,1+I*7709.2)",""),bg="white",cex=1,
+       lty=c(1,0),col=c("darkblue"))
+plot(c(0:(ceiling(32768/2)-1))*2*pi/32768/.05,c((df1$V2)[1:16384]),typ="l",col=3,xlim=c(0,1.5)*pi,ylim=c(-1e3,1e3),main="",xlab="",ylab="imaginary part of F(w)_Z_zeta +ve sideband",cex.axis=0.6,mgp = c(0.7, 0.2, 0),tck=-.02,cex.lab=0.7);grid(col="gray2")
+lines(rep(1/2*log(7709.2/2/pi/1^2),2),c(-1e3,-0.9e3)+600,lty=1,col=rgb(0,1,1,0.5))
+lines(rep(1/2*log(7709.2/2/pi/2^2),2),c(-1e3,-0.9e3)+600,lty=1,col=rgb(0,1,1,0.5))
+lines(rep(1/2*log(7709.2/2/pi/3^2),2),c(-1e3,-0.9e3)+600,lty=1,col=rgb(0,1,1,0.5))
+lines(rep(1/2*log(7709.2/2/pi/4^2),2),c(-1e3,-0.9e3)+600,lty=1,col=rgb(0,1,1,0.5))
+lines(rep(1/2*log(7709.2/2/pi/5^2),2),c(-1e3,-0.9e3)+600,lty=1,col=rgb(0,1,1,0.5))
+lines(rep(1/2*log(7709.2/2/pi/6^2),2),c(-1e3,-0.9e3)+600,lty=1,col=rgb(0,1,1,0.5))
+lines(rep(1/2*log(7709.2/2/pi/7^2),2),c(-1e3,-0.9e3)+600,lty=1,col=rgb(0,1,1,0.5))
+lines(rep(1/2*log(6070.9/2/pi/1^2),2),c(-1e3,-0.9e3)+600,lty=1,col=rgb(0,1,1,0.5))
+lines(rep(1/2*log(6070.9/2/pi/2^2),2),c(-1e3,-0.9e3)+600,lty=1,col=rgb(0,1,1,0.5))
+lines(rep(1/2*log(6070.9/2/pi/3^2),2),c(-1e3,-0.9e3)+600,lty=1,col=rgb(0,1,1,0.5))
+lines(rep(1/2*log(6070.9/2/pi/4^2),2),c(-1e3,-0.9e3)+600,lty=1,col=rgb(0,1,1,0.5))
+lines(rep(1/2*log(6070.9/2/pi/5^2),2),c(-1e3,-0.9e3)+600,lty=1,col=rgb(0,1,1,0.5))
+lines(rep(1/2*log(6070.9/2/pi/6^2),2),c(-1e3,-0.9e3)+600,lty=1,col=rgb(0,1,1,0.5))
+lines(rep(1/2*log(6070.9/2/pi/7^2),2),c(-1e3,-0.9e3)+600,lty=1,col=rgb(0,1,1,0.5))
+lines(c(1:(ceiling(32768/2)-1))*2*pi/32768/.05,-rev((df1$V2)[16386:32768])*(di1$V1[-1]),col=6,lty=2)
+legend(x="topleft",legend=c("imag(F[w])",expression(imag(bar(F[-w]))%*% abs(~chi(1+I%*%2%*%pi%*%exp(2%*%w)) )),"position(s) of expected spectral features"),bg="white",xjust=0,cex=0.8,
+       lty=c(1,2,1),col=c(3,6,5))
+plot(c(0:(ceiling(32768/2)-1))*2*pi/32768/.05,c((df1$V2)[1:16384]),typ="l",col=3,xlim=c(1.085,1.15)*pi,ylim=c(-1e3,1e3),main="",xlab="",ylab="imaginary part of F(w)_Z_zeta +ve sideband",cex.axis=0.6,mgp = c(0.7, 0.2, 0),tck=-.02,cex.lab=0.7);grid(col="gray2")
+lines(rep(1/2*log(7709.2/2/pi/1^2),2),c(-1e3,-0.9e3)+600,lty=1,col=rgb(0,1,1,0.5))
+lines(rep(1/2*log(7709.2/2/pi/2^2),2),c(-1e3,-0.9e3)+600,lty=1,col=rgb(0,1,1,0.5))
+lines(rep(1/2*log(7709.2/2/pi/3^2),2),c(-1e3,-0.9e3)+600,lty=1,col=rgb(0,1,1,0.5))
+lines(rep(1/2*log(7709.2/2/pi/4^2),2),c(-1e3,-0.9e3)+600,lty=1,col=rgb(0,1,1,0.5))
+lines(rep(1/2*log(7709.2/2/pi/5^2),2),c(-1e3,-0.9e3)+600,lty=1,col=rgb(0,1,1,0.5))
+lines(rep(1/2*log(7709.2/2/pi/6^2),2),c(-1e3,-0.9e3)+600,lty=1,col=rgb(0,1,1,0.5))
+lines(rep(1/2*log(7709.2/2/pi/7^2),2),c(-1e3,-0.9e3)+600,lty=1,col=rgb(0,1,1,0.5))
+lines(rep(1/2*log(6070.9/2/pi/1^2),2),c(-1e3,-0.9e3)+600,lty=1,col=rgb(0,1,1,0.5))
+lines(rep(1/2*log(6070.9/2/pi/2^2),2),c(-1e3,-0.9e3)+600,lty=1,col=rgb(0,1,1,0.5))
+lines(rep(1/2*log(6070.9/2/pi/3^2),2),c(-1e3,-0.9e3)+600,lty=1,col=rgb(0,1,1,0.5))
+lines(rep(1/2*log(6070.9/2/pi/4^2),2),c(-1e3,-0.9e3)+600,lty=1,col=rgb(0,1,1,0.5))
+lines(rep(1/2*log(6070.9/2/pi/5^2),2),c(-1e3,-0.9e3)+600,lty=1,col=rgb(0,1,1,0.5))
+lines(rep(1/2*log(6070.9/2/pi/6^2),2),c(-1e3,-0.9e3)+600,lty=1,col=rgb(0,1,1,0.5))
+lines(rep(1/2*log(6070.9/2/pi/7^2),2),c(-1e3,-0.9e3)+600,lty=1,col=rgb(0,1,1,0.5))
+lines(c(1:(ceiling(32768/2)-1))*2*pi/32768/.05,-rev((df1$V2)[16386:32768])*(di1$V1[-1]),col=6,lty=2)
+legend(x="topleft",legend=c("imag(F[w])",expression(imag(bar(F[-w]))%*% abs(~chi(1+I%*%2%*%pi%*%exp(2%*%w)) )),"position(s) of expected spectral features"),bg="white",xjust=0,cex=0.8,
+       lty=c(1,2,1),col=c(3,6,5))
+plot(c(1:(ceiling(32768/2)-1))*2*pi/32768/.05,c(sqrt(df1$V1^2+df1$V2^2)[2:16384]/rev(sqrt(df1$V1^2+df1$V2^2)[16386:32768])),col="darkblue",typ="l",    xlim=c(-0.5,1.5)*pi,ylim=c(0,1.25),main="",xlab="",ylab="ratio of (|F(w)_Z_zeta|)/(|F(-w)_Z_zeta|)",cex.axis=0.6,cex.main=0.8,mgp = c(0.7, 0.2, 0),tck=-.02,cex.lab=0.7);grid(col="gray2")
+lines(c(0:(ceiling(32768/2)-1))*2*pi/32768/.05,(di1$V1),col=6,lty=2)
+lines(rep(1/2*log(7709.2/2/pi/1^2),2),c(0,-0.1),lty=1,col=rgb(0,1,1,0.5))
+lines(rep(1/2*log(7709.2/2/pi/2^2),2),c(0,-0.1),lty=1,col=rgb(0,1,1,0.5))
+lines(rep(1/2*log(7709.2/2/pi/3^2),2),c(0,-0.1),lty=1,col=rgb(0,1,1,0.5))
+lines(rep(1/2*log(7709.2/2/pi/4^2),2),c(0,-0.1),lty=1,col=rgb(0,1,1,0.5))
+lines(rep(1/2*log(7709.2/2/pi/5^2),2),c(0,-0.1),lty=1,col=rgb(0,1,1,0.5))
+lines(rep(1/2*log(7709.2/2/pi/6^2),2),c(0,-0.1),lty=1,col=rgb(0,1,1,0.5))
+lines(rep(1/2*log(7709.2/2/pi/7^2),2),c(0,-0.1),lty=1,col=rgb(0,1,1,0.5))
+lines(rep(1/2*log(6070.9/2/pi/1^2),2),c(0,-0.1),lty=1,col=rgb(0,1,1,0.5))
+lines(rep(1/2*log(6070.9/2/pi/2^2),2),c(0,-0.1),lty=1,col=rgb(0,1,1,0.5))
+lines(rep(1/2*log(6070.9/2/pi/3^2),2),c(0,-0.1),lty=1,col=rgb(0,1,1,0.5))
+lines(rep(1/2*log(6070.9/2/pi/4^2),2),c(0,-0.1),lty=1,col=rgb(0,1,1,0.5))
+lines(rep(1/2*log(6070.9/2/pi/5^2),2),c(0,-0.1),lty=1,col=rgb(0,1,1,0.5))
+lines(rep(1/2*log(6070.9/2/pi/6^2),2),c(0,-0.1),lty=1,col=rgb(0,1,1,0.5))
+lines(rep(1/2*log(6070.9/2/pi/7^2),2),c(0,-0.1),lty=1,col=rgb(0,1,1,0.5))
+legend(x="topright",legend=c("ratio of |F[w]|/|F[-w]|",expression( abs(~chi(1+I%*%2%*%pi%*%exp(2%*%w)) )),"position(s) of expected spectral features"),bg="white",xjust=0,cex=0.8,
+       lty=c(1,2,1),col=c(3,6,5))
+
+
+df1=read.csv("/home/john/pari/vhat_1p_169000_Z.csv",header=FALSE,sep=",",colClasses = "character")
+df1$V1=as.numeric(gsub(" ","",df1$V1));
+df1$V2=as.numeric(gsub(" ","",df1$V2));
+
+
+di1=read.csv("/home/john/pari/vhat_1p_169000_fadj.csv",header=FALSE,sep=",",colClasses = "character")
+di1$V1=as.numeric(gsub(" ","",di1$V1));
+di1$V2=as.numeric(gsub(" ","",di1$V2));
+
+
+plot(c(-floor(32768/2):(ceiling(32768/2)-1))*2*pi/32768/.05,c(abs(df1$V1)[16385:32768],1*abs(df1$V1)[1:16384]),col="darkblue",typ="l",
+     xlim=c(-2,2)*pi,ylim=c(0,2.7e4),xlab="w - sideband angular frequency (rad/sec) ",ylab="absolute magnitude of F(w)_Z_zeta",cex.axis=0.6,cex.main=0.8,mgp = c(0.7, 0.2, 0),tck=-.02,cex.lab=0.9);grid(col="gray2")
+abline(v=c(-20,20)*pi,col=6,lty=2)
+legend(x="top",legend=c("True fourier transform behaviour of the Riemann-Siegel \n Z function for the interval s=(1+I*168180.9,1+I*169819.2)",""),bg="white",cex=1,
+       lty=c(1,0),col=c("darkblue"))
+plot(c(0:(ceiling(32768/2)-1))*2*pi/32768/.05,c((df1$V2)[1:16384]),typ="l",col=3,xlim=c(0,2)*pi,ylim=c(-0.5e3,0.5e3),main="",xlab="w - sideband angular frequency (rad/sec) ",ylab="imaginary part of F(w)_Z_zeta +ve sideband",cex.axis=0.6,mgp = c(0.7, 0.2, 0),tck=-.02,cex.lab=0.9);grid(col="gray2")
+lines(rep(1/2*log(169819.2/2/pi/1^2),2),c(-1e3,-0.9e3)+600,lty=1,col=rgb(0,1,1,0.5))
+lines(rep(1/2*log(169819.2/2/pi/2^2),2),c(-1e3,-0.9e3)+600,lty=1,col=rgb(0,1,1,0.5))
+lines(rep(1/2*log(169819.2/2/pi/3^2),2),c(-1e3,-0.9e3)+600,lty=1,col=rgb(0,1,1,0.5))
+lines(rep(1/2*log(169819.2/2/pi/4^2),2),c(-1e3,-0.9e3)+600,lty=1,col=rgb(0,1,1,0.5))
+lines(rep(1/2*log(169819.2/2/pi/5^2),2),c(-1e3,-0.9e3)+600,lty=1,col=rgb(0,1,1,0.5))
+lines(rep(1/2*log(169819.2/2/pi/6^2),2),c(-1e3,-0.9e3)+600,lty=1,col=rgb(0,1,1,0.5))
+lines(rep(1/2*log(169819.2/2/pi/7^2),2),c(-1e3,-0.9e3)+600,lty=1,col=rgb(0,1,1,0.5))
+lines(rep(1/2*log(169819.2/2/pi/8^2),2),c(-1e3,-0.9e3)+600,lty=1,col=rgb(0,1,1,0.5))
+lines(rep(1/2*log(168180.9/2/pi/1^2),2),c(-1e3,-0.9e3)+600,lty=1,col=rgb(0,1,1,0.5))
+lines(rep(1/2*log(168180.9/2/pi/2^2),2),c(-1e3,-0.9e3)+600,lty=1,col=rgb(0,1,1,0.5))
+lines(rep(1/2*log(168180.9/2/pi/3^2),2),c(-1e3,-0.9e3)+600,lty=1,col=rgb(0,1,1,0.5))
+lines(rep(1/2*log(168180.9/2/pi/4^2),2),c(-1e3,-0.9e3)+600,lty=1,col=rgb(0,1,1,0.5))
+lines(rep(1/2*log(168180.9/2/pi/5^2),2),c(-1e3,-0.9e3)+600,lty=1,col=rgb(0,1,1,0.5))
+lines(rep(1/2*log(168180.9/2/pi/6^2),2),c(-1e3,-0.9e3)+600,lty=1,col=rgb(0,1,1,0.5))
+lines(rep(1/2*log(168180.9/2/pi/7^2),2),c(-1e3,-0.9e3)+600,lty=1,col=rgb(0,1,1,0.5))
+lines(rep(1/2*log(168180.9/2/pi/8^2),2),c(-1e3,-0.9e3)+600,lty=1,col=rgb(0,1,1,0.5))
+lines(c(1:(ceiling(32768/2)-1))*2*pi/32768/.05,-rev((df1$V2)[16386:32768])*(di1$V1[-1]),col=6,lty=2)
+legend(x="topleft",legend=c("imag(F[w])",expression(imag(bar(F[-w]))%*% abs(~chi(1+I%*%2%*%pi%*%exp(2%*%w)) )),"position(s) of expected spectral features"),bg="white",xjust=0,cex=0.8,
+       lty=c(1,2,1),col=c(3,6,5))
+plot(c(0:(ceiling(32768/2)-1))*2*pi/32768/.05,c((df1$V2)[1:16384]),typ="l",col=3,xlim=c(1.4,1.63)*pi,ylim=c(-0.5e3,0.5e3),main="",xlab="w - sideband angular frequency (rad/sec) ",ylab="imaginary part of F(w)_Z_zeta +ve sideband",cex.axis=0.6,mgp = c(0.7, 0.2, 0),tck=-.02,cex.lab=0.9);grid(col="gray2")
+lines(rep(1/2*log(169819.2/2/pi/1^2),2),c(-1e3,-0.9e3)+600,lty=1,col=rgb(0,1,1,0.5))
+lines(rep(1/2*log(169819.2/2/pi/2^2),2),c(-1e3,-0.9e3)+600,lty=1,col=rgb(0,1,1,0.5))
+lines(rep(1/2*log(169819.2/2/pi/3^2),2),c(-1e3,-0.9e3)+600,lty=1,col=rgb(0,1,1,0.5))
+lines(rep(1/2*log(169819.2/2/pi/4^2),2),c(-1e3,-0.9e3)+600,lty=1,col=rgb(0,1,1,0.5))
+lines(rep(1/2*log(169819.2/2/pi/5^2),2),c(-1e3,-0.9e3)+600,lty=1,col=rgb(0,1,1,0.5))
+lines(rep(1/2*log(169819.2/2/pi/6^2),2),c(-1e3,-0.9e3)+600,lty=1,col=rgb(0,1,1,0.5))
+lines(rep(1/2*log(169819.2/2/pi/7^2),2),c(-1e3,-0.9e3)+600,lty=1,col=rgb(0,1,1,0.5))
+lines(rep(1/2*log(169819.2/2/pi/8^2),2),c(-1e3,-0.9e3)+600,lty=1,col=rgb(0,1,1,0.5))
+lines(rep(1/2*log(168180.9/2/pi/1^2),2),c(-1e3,-0.9e3)+600,lty=1,col=rgb(0,1,1,0.5))
+lines(rep(1/2*log(168180.9/2/pi/2^2),2),c(-1e3,-0.9e3)+600,lty=1,col=rgb(0,1,1,0.5))
+lines(rep(1/2*log(168180.9/2/pi/3^2),2),c(-1e3,-0.9e3)+600,lty=1,col=rgb(0,1,1,0.5))
+lines(rep(1/2*log(168180.9/2/pi/4^2),2),c(-1e3,-0.9e3)+600,lty=1,col=rgb(0,1,1,0.5))
+lines(rep(1/2*log(168180.9/2/pi/5^2),2),c(-1e3,-0.9e3)+600,lty=1,col=rgb(0,1,1,0.5))
+lines(rep(1/2*log(168180.9/2/pi/6^2),2),c(-1e3,-0.9e3)+600,lty=1,col=rgb(0,1,1,0.5))
+lines(rep(1/2*log(168180.9/2/pi/7^2),2),c(-1e3,-0.9e3)+600,lty=1,col=rgb(0,1,1,0.5))
+lines(rep(1/2*log(168180.9/2/pi/8^2),2),c(-1e3,-0.9e3)+600,lty=1,col=rgb(0,1,1,0.5))
+lines(c(1:(ceiling(32768/2)-1))*2*pi/32768/.05,-rev((df1$V2)[16386:32768])*(di1$V1[-1]),col=6,lty=2)
+legend(x="topleft",legend=c("imag(F[w])",expression(imag(bar(F[-w]))%*% abs(~chi(1+I%*%2%*%pi%*%exp(2%*%w)) )),"position(s) of expected spectral features"),bg="white",xjust=0,cex=0.8,
+       lty=c(1,2,1),col=c(3,6,5))
+plot(c(1:(ceiling(32768/2)-1))*2*pi/32768/.05,c(sqrt(df1$V1^2+df1$V2^2)[2:16384]/rev(sqrt(df1$V1^2+df1$V2^2)[16386:32768])),col="darkblue",typ="l",    xlim=c(-0.5,2)*pi,ylim=c(0,1.25),main="",xlab="w - sideband angular frequency (rad/sec) ",ylab="ratio of (|F(w)_Z_zeta|)/(|F(-w)_Z_zeta|)",cex.axis=0.6,cex.main=0.8,mgp = c(0.7, 0.2, 0),tck=-.02,cex.lab=0.9);grid(col="gray2")
+lines(c(0:(ceiling(32768/2)-1))*2*pi/32768/.05,(di1$V1),col=6,lty=2)
+lines(rep(1/2*log(169819.2/2/pi/1^2),2),c(0,-0.1),lty=1,col=rgb(0,1,1,0.5))
+lines(rep(1/2*log(169819.2/2/pi/2^2),2),c(0,-0.1),lty=1,col=rgb(0,1,1,0.5))
+lines(rep(1/2*log(169819.2/2/pi/3^2),2),c(0,-0.1),lty=1,col=rgb(0,1,1,0.5))
+lines(rep(1/2*log(169819.2/2/pi/4^2),2),c(0,-0.1),lty=1,col=rgb(0,1,1,0.5))
+lines(rep(1/2*log(169819.2/2/pi/5^2),2),c(0,-0.1),lty=1,col=rgb(0,1,1,0.5))
+lines(rep(1/2*log(169819.2/2/pi/6^2),2),c(0,-0.1),lty=1,col=rgb(0,1,1,0.5))
+lines(rep(1/2*log(169819.2/2/pi/7^2),2),c(0,-0.1),lty=1,col=rgb(0,1,1,0.5))
+lines(rep(1/2*log(169819.2/2/pi/8^2),2),c(0,-0.1),lty=1,col=rgb(0,1,1,0.5))
+lines(rep(1/2*log(168180.9/2/pi/1^2),2),c(0,-0.1),lty=1,col=rgb(0,1,1,0.5))
+lines(rep(1/2*log(168180.9/2/pi/2^2),2),c(0,-0.1),lty=1,col=rgb(0,1,1,0.5))
+lines(rep(1/2*log(168180.9/2/pi/3^2),2),c(0,-0.1),lty=1,col=rgb(0,1,1,0.5))
+lines(rep(1/2*log(168180.9/2/pi/4^2),2),c(0,-0.1),lty=1,col=rgb(0,1,1,0.5))
+lines(rep(1/2*log(168180.9/2/pi/5^2),2),c(0,-0.1),lty=1,col=rgb(0,1,1,0.5))
+lines(rep(1/2*log(168180.9/2/pi/6^2),2),c(0,-0.1),lty=1,col=rgb(0,1,1,0.5))
+lines(rep(1/2*log(168180.9/2/pi/7^2),2),c(0,-0.1),lty=1,col=rgb(0,1,1,0.5))
+lines(rep(1/2*log(168180.9/2/pi/8^2),2),c(0,-0.1),lty=1,col=rgb(0,1,1,0.5))
+legend(x="topright",legend=c("ratio of |F[w]|/|F[-w]|",expression( abs(~chi(1+I%*%2%*%pi%*%exp(2%*%w)) )),"position(s) of expected spectral features"),bg="white",xjust=0,cex=0.8,
+       lty=c(1,2,1),col=c(3,6,5))
+
+
+```
+\elandscape
+
+\begin{itemize}
+\item their fourier transforms (in the lefthand column), 
+\item the $Im(F[w])$ (green line) and $Im(\overline{F[-w]}\cdot\left|\mychi(\sigma+I\cdot2\cdot\pi e^{w})\right|)$ (dashed red line) (in the middle column) and 
+\item the empirical ratio of sideband magnitudes $\frac{\left|F[w]\right|}{\left|F[-w]\right|}$ (darkblue line) and the zeroth order approximation $\left|\mychi(\sigma+I\cdot2\cdot\pi e^{w})\right|$ (dashed red line) (in the righthand column).
+\end{itemize}
+
+Also shown in the middle and righthand columns are the expected positions of noticeable sideband spectral features (cyan lines) using $\frac{1}{2}log(\frac{UB^2}{n^2\cdot 2\pi})$ and $\frac{1}{2}log(\frac{LB^2}{n^2\cdot 2\pi })$ behaviour where n=1,2,... which become more distinct and numerous for the largest LB,UB in the bottom row of figure 3.
+
+It can be seen that for a range of Im(s) the zeroth order approximation equations (36) and (37) continue to perform well for $\sigma=1$. In the next sections, by proxy it will also be obvious that equations (36) and (37) are also independent of Im(s) for other $\sigma$ values. However, it should be noted that if the pole at s=1 were in the input spectra then the fourier transform would be numerically unstable.
+
+In the following sections, the zeroth order approximation equations (36) and (37) are co-opted into spectral filtering and splicing of the partial Euler Product based Riemann-Siegel formula equations (11) and (12) to produce numerically stable approximations of the Riemann-Siegel Z function across the complex plane.
+
+## Improving the spectral filtering and imputation of partial Euler Product based zeroth order Riemann-Siegel formula calculations using equations (36) and (37)
+
+### On the critical line
+
+In [6-8], it was identified on the critical line for $N_1 = \sqrt{\frac{t}{2\pi}}$ truncation of the partial Euler Product 
+
+\begin{itemize}
+\item the first term $e^{I\cdot\theta(t)}\cdot\prod_{p=2}^{p\le \lfloor\sqrt{\frac{t}{2\pi}}\rfloor} \frac{1}{(1-\frac{1}{p^{(0.5+I\cdot t)}})}=EP_1$ and
+\item the second term $e^{I\cdot\theta(t)}\cdot\mychi(0.5+I\cdot t) \cdot \prod_{p=2}^{p\le \lfloor\sqrt{\frac{t}{2\pi}}\rfloor} \frac{1}{(1-\frac{1}{p^{(1-(0.5+I\cdot t))}}}=EP_2$ 
+\end{itemize}
+
+fourier transform components of the RHS of equation (11) (on the critical line) respectively contribute different angular frequency components of the overall fourier transform of the zeroth order Riemann-Siegel formula approximation using partial Euler Products. The spectral filtering described in [6-8] of the fourier transform attempts to (efficiently) remove nuisance angular frequency components in the above $EP_1$, $EP_2$ components that are not present in the proper fourier transforms of the true Riemann-Siegel Z function. On the critical line [6-8] provided an identified filtering and splicing solution (in the fourier transform frame of reference) to only calculate the fourier transform results of one component e.g. $EP_1$ (or $EP_2$), keep the accurate fourier components (and throw away the nuisance components)\footnote{The sign of the angular frequencies of the accurate/nuisance components, i.e., the positive/negative OR negative/positive fourier sidebands of the Riemann-Siegel Z function approximation fourier analysis may depend on the programming language used for analysis. For this author, r language based fourier analysis of $EP_1$ had -ve fourier sideband as nuisance components while Pari-GP FFT analysis of $EP_1$ had the +ve fourier sideband as the nuisance component.} and then impute the missing fourier components by taking the conjugate mirror values of the accurate fourier components. To best approximate closely spaced zero positions of $\zeta(s)$ averaging of the results of fourier analysis from different spectral lengths was important in improving approximation accuracy (i.e. reducing spectral leakage) for that use case.
+
+### Off the critical line - OLD approach
+
+Secondly, in [9-10] spectrally filtering of partial Euler Products off the critical line was investigated about the real axis. Three approaches attempted were fourier analysis and filtering of the Riemann-Siegel formula partial Euler Product analogues of 
+
+\begin{enumerate}
+\item $e^{I\cdot imag(\theta_{ext}(s))}\zeta(s)$ i.e. equation (11), an unnormalised extended Riemann-Siegel Z function, equivalent in magnitude to the discontinuous function $\sqrt{\zeta(s)\zeta(1-s)|\mychi(s)|}$ with approximation by partial Euler Product version of the zeroth Riemann-Siegel formula and 
+\item $e^{\theta_{ext}(s)}\zeta(s)$ a \textbf{normalised} extended Riemann-Siegel Z function , equivalent in magnitude to the discontinuous function $\sqrt{\zeta(s)\zeta(1-s)}$ with approximation by partial Euler Product version of the zeroth Riemann-Siegel formula and
+\item $e^{\theta_{ext}(s)}\zeta(s)$ a \textbf{normalised} extended Riemann-Siegel Z function , equivalent in magnitude to the discontinuous function $\sqrt{\zeta(s)\zeta(1-s)}$ with approximation by partial Euler Product version of the zeroth Riemann-Siegel formula + pole terms ($\frac{N^{1-s}}{1-s}$, $\frac{N^{s}}{s}$).
+\end{enumerate}
+
+In all three approaches, off the critical line both the fourier transforms $EP_1$ and $EP_2$ (plus the pole terms for approach 3) were (calculated and) filtered removing their nuisance fourier components and the two filtered fourier components were spliced together since the non-zero components (after filtering) were different elements in the fourier component vectors for $EP_1$ and $EP_2$ except for elements [1] and $[\lceil\frac{n}{2}\rceil]$ where for those two vector elements held the average of $EP_1$ and $EP_2$ values. 
+
+The quality of approach 1 & 2 estimates became unstable for Re(s) < 0.05 and Re(s) > 0.95 because very large oscillations were present in the input spectra for $EP_1$ for Re(s) < 0.05 ($EP_2$ for Re(s) > 0.95) which exceed double precision calculation limits (hence the motivation for this current paper). Approach 3 used normalisation via $e^{\theta_{ext}(s)}$ rather than $e^{I\cdot imag(\theta_{ext}(s))}$ and added the pole at s=1 to the input data which solved the approximation accuracy about the real axis but didn't address what happens when $N_1$ grows away from the real axis and many more primes are included in the Euler Product away from the critical line again resulting in very large oscillations were present in the input spectra for $EP_1$ for Re(s) < 0.05 ($EP_2$ for Re(s) > 0.95).
+
+The algorithm (denoted OLD) used for spectral filtering and splicing using r language [13] FFT analysis consisted of
+
+\begin{enumerate}
+\item Obtain a maximum discrete spectrum sample $\Delta t = (t_0-750,t_0+750)$, spacing 0.01, $n\sim 150,000$ for both $EP_1(s,1.25)$ and $EP_2(s,1.25)$ with pole terms included for approach 3 around the real axis. Using truncation at $1.25\cdot N_1$ rather than $N_1$ to reduce spectral leakage from unwanted higher frequency components [6-8].
+\item use spectral filtering to retain only the discrete fourier transform components of (i) $EP_1(s,\beta)$ arising from primes $2, ..., \lfloor N_1\rfloor$ i.e., the [0,+) angular frequencies and (ii) $EP_2(s,\beta)$ arising from primes $2, ..., \lfloor N_1\rfloor$ i.e., the (-, 0] angular frequencies 
+\item splice together the [0,+) angular frequencies from $EP_1(s,\beta)$ and the (-, 0] angular frequencies from $EP_2(s,\beta)$ using the prescription (shown in code) 
+\subitem \begin{verbatim}
+fft_hybrid=c(1/2*(fft_plusZ[1]+fft_minusZ[1]),(fft_plusZ)[2:(ceiling(n/2)+0)], 
+1/2*(fft_plusZ[ceiling(n/2)+1]+fft_minusZ[ceiling(n/2)+1]),fft_minusZ[(ceiling(n/2)+2):n])
+\end{verbatim}
+where \begin{verbatim}fft_plusZ\end{verbatim} is the discrete fourier transform of $EP_1(s,\beta)$, \begin{verbatim}fft_minusZ\end{verbatim} is the discrete fourier transform of $EP_2(s,\beta)$, n is the discrete fourier sample length. The term \begin{verbatim}{1/2*(fft_plusZ[1]+fft_minusZ[1])}\end{verbatim} averages the DC component of the two zeroth order Riemann-Siegel components (giving zero imaginary component on the critical line) and the term \begin{verbatim}{1/2*(fft_plusZ[ceiling(n/2)+1]+fft_minusZ[ceiling(n/2)+1])}\end{verbatim} averages the midway component of the n vector [7] to improve continuity of the splicing.  
+\item \textbf{OPTIONAL for close spacings between non-trivial zeroes} execute and average fourier analyses of differing lengths from the original stored spectrum (e.g., averaging 100+ fourier analyses using $n\sim 127,500$ $\Delta t = (t_0-637.5,t_0+637.5)$ to $ n\sim 150,000$ $\Delta t = (t_0-750,t_0+750)$) [7,8]. The averaging prescribed this step is not performed in [9,10] as the non-trivial zeroes are widely spaced compared to the fourier sample grid in the examined intervals. In [9,10] only a single inverse fourier transform $n \sim 150000$ is returned for each spectral sample. 
+\item \textbf{OPTIONAL} use interpolation of the final fitted results (spacing 0.01) onto a fine interpolation grid (spacing 0.00001) to estimate non-trivial zero positions. This step is not used in [9,10] as the non-trivial zeroes are widely spaced compared to the fourier sample grid in the examined intervals.
+\end{enumerate}
+
+\textbf{Very important to note}, is that the above OLD algorithm applied to FFT analysis conducted using the r language [13]. In [11,12] and this current paper the FFT analysis is conducted using Pari-GP language and on inspection the fourier analysis output that needs to be retained using Pari-GP language for $EP_1$ are the (-,0] angular frequencies while for $EP_2$ it is the [0,+) angular frequencies.
+
+### Use case - Conducting grid searches of extreme peaks with 3+ decimal place accuracy away from the real axis
+
+Thirdly, in [11,12] the different use case of performing a grid search of extreme peak heights on the critical line using the spectrally filtered partial Euler Product  approximation of the zeroth order Riemann-Siegel formula was conducted. A comparison with known Rieman Zeta peak heights on the critical line showed that the spectrally filtered partial Euler Product approximation (with 32768 grid points of spacing $\Delta t=0.05$) can provide 3 decimal place accuracy of the extreme peak height without the use of averaging over differing spectral lengths.
+
+### Off the critical line - NEW approach 
+
+This section incorporates equations (36) and (37) into an improved algorithm for the spectrally filtered partial Euler Product  approximation of the zeroth order Riemann-Siegel formula equation (11) when $Re(s)\ne 0.5$ and evaluates its performance (i) graphically against the true fourier transform of the Riemann-Siegel Z function and (ii) estimates of extreme peaks of $|\zeta(1+I\cdot t)|$. As well as the improvement in numerical stability for $Re(s) > 0.9$ and $Re(s) < 0.1$ this revised approach also only requires $EP_1$ or $EP_2$ to be used depending on whether $Re(s) > 0.5$ or $Re(s) > 0.5$ which halves calculation speed over the OLD (off the critical line) approach [9-10].
+
+
+
+A NEW improved algorithm used for spectral filtering and splicing using Pari-GP language [5] FFT analysis and equations (36) and (37) consists of
+
+\begin{enumerate}
+\item Obtain a maximum discrete spectrum sample $\Delta t = (t_0-819.1,t_0+819.2)$, spacing 0.05, $n\sim 32,768$ for only one of $EP_1(s,1.25)$ (if Re(s) > 0.5) OR $EP_2(s,1.25)$ (if Re(s) < 0.5) away from the real axis. Using truncation at $1.25\cdot N_1$ rather than $N_1$ to reduce spectral leakage from unwanted higher frequency components [6-8].
+\item use spectral filtering to retain only the discrete fourier transform components under Pari-GP [5] FFT analysis of (i) $EP_1(s,\beta)$ (if Re(s) > 0.5) arising from primes $2, ..., \lfloor N_1\rfloor$ i.e., the (-,0] angular frequencies OR (ii) $EP_2(s,\beta)$ (if Re(s) < 0.5) arising from primes $2, ..., \lfloor N_1\rfloor$ i.e., the [0,+) angular frequencies 
+\item splice together either the (-,0] angular frequencies from $EP_1(s,\beta)$ (if Re(s) > 0.5) and the imputed values from equation (36) using the prescription (shown in code, where sval=Re(s))
+\subitem \begin{verbatim}
+fadj=listcreate(10)
+forstep(k=0,16383,1,listput(fadj,abs(exp(log_chi(sval+I*exp(k*4*Pi/32768/.05)*2*Pi)))));
+\\equation (36) adjustment
+fh=(concat((vhat1[1]),concat(conj(Vecrev(vecextract(vhat1,"16386..32768"))),
+concat(vhat1[16385],vecextract(vhat1,"16386..32768")))));
+forstep(k=2,16384,1,fh[k]=fh[k]*fadj[k]);
+\end{verbatim}
+where vhat1 is the vector output of FFT($EP_1$)
+OR the [0,+) angular frequencies from $EP_2(s,\beta)$ (if Re(s) < 0.5) and the imputed values from equation (37) using the prescription (shown in code, where sval=Re(s))
+\subitem \begin{verbatim}
+fadjneg=listcreate(10);
+forstep(k=0,16383,1,listput(fadjneg,abs(exp(log_chi(1-(sval+I*exp(k*4*Pi/32768/.05)*2*Pi))))));
+\\equation (37) adjustment
+fh=(concat((vhat2[1]),concat(((vecextract(vhat2,"2..16384"))),
+concat(vhat2[16385],conj(Vecrev(vecextract(vhat2,"2..16384")))))));
+forstep(k=2,16384,1,fh[32768+2-k]=fh[32768+2-k]*fadjneg[k]);
+\end{verbatim}
+where vhat2 is the vector output of FFT($EP_2$).  
+\item \textbf{OPTIONAL for close spacings between non-trivial zeroes} execute and average fourier analyses of differing lengths from the original stored spectrum. The averaging prescribed this step is not performed in this paper. 
+\item \textbf{OPTIONAL} use interpolation of the final fitted results (spacing 0.05) onto a finer interpolation grid to estimate non-trivial zero positions. The interpolation prescribed this step is not performed in this paper.
+\end{enumerate}
+
+Note that in the NEW algorithm only one partial Euler Product term needs to be calculated (just $EP_1$ or $EP_2$) which reduces the the number of calculations required compared to the OLD algorithm.
+
+## Comparing the fourier transform spectra of the true Riemann-Siegel Z function and the OLD and NEW first quiescent region based partial Euler Product spectral filtering and splicing calculations
+
+Figures 4-9 compare the real part of the fourier transform spectra of the true Riemann-Siegel Z function and the OLD and NEW first quiescent region based partial Euler Product spectral filtering and splicing calculations for the spectrum interval $s=(\sigma+I\cdot (26140-819.1),\sigma+I\cdot (26140+819.2))$ for six values of $\sigma=\{0.98,0.95,0.75,0.25,0.05,0.0\}$. The FFT analysis of 32768 grid points with spacing $\Delta t=0.05$ spectrum sample was conducted using Pari-GP [5].
+
+Similar to figures 1-3 (which showed the absolute and imaginary parts of the true Riemann-Siegel Z function) 
+
+\begin{enumerate}
+\item the fast fourier transform (fft) output vector is wrapped around so that the informative non-zero fft components appear next to the DC fourier component axis as positive and negative frequency components.
+\item the x-axis is scaled in units of angular frequency (radians per second).
+\end{enumerate}
+
+In each figure, 
+
+\begin{itemize}
+\item the lefthand column displays 
+\subitem (i) (top row) the FFT($EP_2$) for the OLD algorithm  and 
+\subitem (ii) (bottom row) if $Re(s) < 0.5$ the [0,+) sideband of FFT($EP_2$) OR
+\subsubitem if $Re(s) > 0.5$ a filtered conjugate rescaled mirror transformation of FFT($EP_1$)  for the NEW algorithm. 
+\item the righthand column displays 
+\subitem (i) (top row) the FFT($EP_1$) for the OLD algorithm and 
+\subitem (ii) (bottom row) if $Re(s) > 0.5$ the (-,0]) sideband of FFT($EP_1$) OR 
+\subsubitem if $Re(s) < 0.5$ a filtered conjugate rescaled mirror transformation of FFT($EP_2$) for the NEW algorithm.
+\item the middle row displays 
+\subitem (i) (middle row) the true Riemann-Siegel Z function fourier transform, 
+\subitem (ii) (top row) the OLD algorithm splicing of the most useful FFT($EP_2$), FFT($EP_1$) components which leads to inaccurate approximation when $Re(s) > 0.9$ or $Re(s) < 0.1$ and 
+\subitem (iii) (bottom row) the NEW algorithm splicing of the most useful FFT($EP_1$), conjugate rescaled FFT($EP_1$) components if $Re(s) > 0.5$ OR the (most useful FFT($EP_2$), conjugate rescaled FFT($EP_2$) components if $Re(s) < 0.5$) which empirically produces robust useful approximations for all the investigated $Re(s)$ values away from the real axis.
+\end{itemize}
+
+
+From a comparison of the middle row and bottom row fourier spectra in the middle column (to the top row spectra) it is clearly obvious that the NEW partial Euler Product algorithm (co-opting equations (36) and (37) which approximates the true Riemann-Siegel Z function fourier transform sideband behaviour) outperforms the OLD partial Euler Product algorithm in approximating the Riemann-Siegel Z function.
+
+
+
+
+\clearpage
+
+```{r Zfnzetafunctionoveraninterval_anditsfouriertransform_26140_pm819_resp98, echo=FALSE, fig.cap="A comparison of the \\textbf{real part} of the fourier transforms of the Riemann-Siegel Z functions of the Riemann Zeta function and partial Euler Product (using truncation at $N_1 = \\sqrt{\\frac{t}{2\\pi}}$) in the complex plane at $\\sigma=0.98$ for the interval t=26140+(-819.1,819.2). The first row shows an existing method to filter and splice together the \\textbf{real parts} of the two fourier transform components of the partial Euler Product approximation of the Riemann-Siegel Z function. This old method is not accurate for $\\sigma=0.98$ as can be seen with the difference in middle column result compared to the true fourier transform of the Riemann-Siegel Z function shown in the second row. The bottom row uses the zeroth order functional relationship between the fourier sidebands of the Riemann-Siegel Z function to provide a robust partial Euler Product approximation whereby (since $\\sigma=0.98 > 0.5$) only the \\textbf{real part} of the filtered first fourier transform component is spliced together with the \\textbf{real part} of a scaled mirror conjugate of itself.", out.width = c("99%"), fig.show = "hold",  fig.height=7.5, warning=FALSE}
+
+
+df=read.csv("/home/john/pari/vhat_p98_26140_Z.csv",header=FALSE,sep=",",colClasses = "character")
+df$V1=as.numeric(gsub(" ","",df$V1));
+df$V2=as.numeric(gsub(" ","",df$V2));
+
+dg=read.csv("/home/john/pari/vhat_p98_26140_zeta.csv",header=FALSE,sep=",",colClasses = "character")
+dg$V1=as.numeric(gsub(" ","",dg$V1));
+dg$V2=as.numeric(gsub(" ","",dg$V2));
+
+dh=read.csv("/home/john/pari/vhat_p98_26140_EP12b.csv",header=FALSE,sep=",",colClasses = "character")
+dh$V1=as.numeric(gsub(" ","",dh$V1));
+dh$V2=as.numeric(gsub(" ","",dh$V2));
+
+di=read.csv("/home/john/pari/vhat_p98_26140_fadj.csv",header=FALSE,sep=",",colClasses = "character")
+di$V1=as.numeric(gsub(" ","",di$V1));
+di$V2=as.numeric(gsub(" ","",di$V2));
+
+dj=read.csv("/home/john/pari/vhat_p98_26140_fhEP12a.csv",header=FALSE,sep=",",colClasses = "character")
+dj$V1=as.numeric(gsub(" ","",dj$V1));
+dj$V2=as.numeric(gsub(" ","",dj$V2));
+
+dk=read.csv("/home/john/pari/vhat_p98_26140_EP12a.csv",header=FALSE,sep=",",colClasses = "character")
+dk$V1=as.numeric(gsub(" ","",dk$V1));
+dk$V2=as.numeric(gsub(" ","",dk$V2));
+
+par(mar = c(1.75, 2.05, 1.5, 1.5))
+
+layout(mat = matrix(c(1,2,3,
+                      4,5,6,
+                      7,8,9),
+                    nrow = 3,
+                    byrow = TRUE))
+
+plot(c(-floor(32768/2):(ceiling(32768/2)-1))*2*pi/32768/.05,c((dh$V1)[16385:32768],(dh$V1)[1:16384]),typ="l",col=3,xlim=c(-2,2)*pi,ylim=c(-1e4,1e4),main="",xlab="",ylab="real part of F(w)_EP2",cex.axis=0.6,mgp = c(0.7, 0.2, 0),tck=-.02,cex.lab=0.7);grid(col="gray2")
+legend(x="topleft",legend=c("this fourier component is numerically unstable \n for Re(s)=0.98 due to very large oscillations \n in the input EP2 Euler Product spectra \n exceeding double precision limit",""),bg="white",xjust=0,cex=0.6)
+plot(c(-floor(32768/2):(ceiling(32768/2)-1))*2*pi/32768/.05,c(0*(dh$V1)[16385:32768],(dh$V1)[1:16384]),typ="l",col=3,xlim=c(-2,2)*pi,ylim=c(-1e4,1e4),main="",xlab="",ylab="real part of filtered spliced F(w)_EP1+F(w)_EP2",cex.axis=0.6,cex.main=1,mgp = c(0.7, 0.2, 0),tck=-.02,cex.lab=0.7);grid(col="gray2")
+lines(c(-floor(32768/2):(ceiling(32768/2)-1))*2*pi/32768/.05,c((dk$V1)[16385:32768],0*(dk$V1)[1:16384]),typ="l",col=4)
+mtext("Splicing together the filtered fourier transforms of both Riemann-Siegel Euler Product components.",side=3,line=0.5,cex=0.8)
+plot(c(-floor(32768/2):(ceiling(32768/2)-1))*2*pi/32768/.05,c((dk$V1)[16385:32768],(dk$V1)[1:16384]),typ="l",col=4,xlim=c(-2,2)*pi,ylim=c(-1e4,1e4),main="",xlab="",ylab="real part of F(w)_EP1",cex.axis=0.6,mgp = c(0.7, 0.2, 0),tck=-.02,cex.lab=0.7);grid(col="gray2")
+legend(x="topleft",legend=c("old splicing method \n produces inaccurate result \n for Re(s)=0.98",""),bg="white",xjust=0,cex=0.8)
+plot.new()
+plot(c(-floor(32768/2):(ceiling(32768/2)-1))*2*pi/32768/.05,c((df$V1)[16385:32768],1*(df$V1)[1:16384]),col="darkblue",typ="l",
+     xlim=c(-2,2)*pi,ylim=c(-1e4,1e4),main="",xlab="",ylab="real part of F(w)_Z_zeta",cex.axis=0.6,cex.main=0.8,mgp = c(0.7, 0.2, 0),tck=-.02,cex.lab=0.7);grid(col="gray2")
+abline(v=c(-20,20)*pi,col=6,lty=2)
+mtext("True fourier transform of the Riemann-Siegel Z function for the interval s=(0.25+I*25320.9,0.25+I*26959.2)",side=3,line=0.5,cex=0.75)
+plot.new()
+plot(c(0:(ceiling(32768/2)-1))*2*pi/32768/.05,c((dj$V1)[1:16384]),typ="l",col=3,xlim=c(-2,2)*pi,ylim=c(-1e4,1e4),main="",xlab="w - sideband angular frequency (rad/sec) ",ylab="real part of scaled filtered conj(F(w)_EP1)",cex.axis=0.6,mgp = c(0.7, 0.2, 0),tck=-.02,cex.lab=0.7);grid(col="gray2")
+legend(x="topleft",legend=c(expression(F[w] == bar(F[-w])%*% abs(~chi(0.98+I%*%2%*%pi%*%exp(2%*%w)) )),""),bg="white",xjust=0,cex=0.6)
+plot(c(0:(ceiling(32768/2)-1))*2*pi/32768/.05,c((dj$V1)[1:16384]),typ="l",col=3,xlim=c(-2,2)*pi,ylim=c(-1e4,1e4),main="",xlab="w - sideband angular frequency (rad/sec) ",ylab="real part of spliced filtered F(w)_EP1 + \n scaled filtered conj(F(w)_EP1)",cex.axis=0.6,cex.main=0.5,mgp = c(0.7, 0.2, 0),tck=-.02,cex.lab=0.7);grid(col="gray2")
+lines(c(-floor(32768/2):(-1))*2*pi/32768/.05,c((dk$V1)[16385:32768]),typ="l",col=5,xlim=c(-2,2)*pi,ylim=c(-1e4,1e4))
+mtext("Splicing together the filtered fourier transform of the first Riemann-Siegel Euler Product component and its scaled mirror conjugate.",side=3,line=0.5,cex=0.62)
+plot(c(-floor(32768/2):(-1))*2*pi/32768/.05,c((dk$V1)[16385:32768]),typ="l",col=5,xlim=c(-2,2)*pi,ylim=c(-1e4,1e4),main="",xlab="w - sideband angular frequency (rad/sec) ",ylab="real part of filtered F(w)_EP1",cex.axis=0.6,mgp = c(0.7, 0.2, 0),tck=-.02,cex.lab=0.7);grid(col="gray2")
+legend(x="topleft",legend="NEW splicing method",bg="white",xjust=0)
+
+
+```
+
+\clearpage
+
+
+```{r Zfnzetafunctionoveraninterval_anditsfouriertransform_26140_pm819_resp95, echo=FALSE, fig.cap="A comparison of the \\textbf{real part} of the fourier transforms of the Riemann-Siegel Z functions of the Riemann Zeta function and partial Euler Product (using truncation at $N_1 = \\sqrt{\\frac{t}{2\\pi}}$) in the complex plane at $\\sigma=0.95$ for the interval t=26140+(-819.1,819.2). The first row shows an existing method to filter and splice together the \\textbf{real parts} of the two fourier transform components of the partial Euler Product approximation of the Riemann-Siegel Z function. This old method is not accurate for $\\sigma=0.95$ as can be seen with the difference in middle column result compared to the true fourier transform of the Riemann-Siegel Z function shown in the second row. The bottom row uses the zeroth order functional relationship between the fourier sidebands of the Riemann-Siegel Z function to provide a robust partial Euler Product approximation whereby (since $\\sigma=0.95 > 0.5$) only the \\textbf{real part} of the filtered first fourier transform component is spliced together with the \\textbf{real part} of a scaled mirror conjugate of itself.", out.width = c("99%"), fig.show = "hold",  fig.height=7.5, warning=FALSE}
+
+
+df=read.csv("/home/john/pari/vhat_p95_26140_Z.csv",header=FALSE,sep=",",colClasses = "character")
+df$V1=as.numeric(gsub(" ","",df$V1));
+df$V2=as.numeric(gsub(" ","",df$V2));
+
+dg=read.csv("/home/john/pari/vhat_p95_26140_zeta.csv",header=FALSE,sep=",",colClasses = "character")
+dg$V1=as.numeric(gsub(" ","",dg$V1));
+dg$V2=as.numeric(gsub(" ","",dg$V2));
+
+dh=read.csv("/home/john/pari/vhat_p95_26140_EP12b.csv",header=FALSE,sep=",",colClasses = "character")
+dh$V1=as.numeric(gsub(" ","",dh$V1));
+dh$V2=as.numeric(gsub(" ","",dh$V2));
+
+di=read.csv("/home/john/pari/vhat_p95_26140_fadj.csv",header=FALSE,sep=",",colClasses = "character")
+di$V1=as.numeric(gsub(" ","",di$V1));
+di$V2=as.numeric(gsub(" ","",di$V2));
+
+dj=read.csv("/home/john/pari/vhat_p95_26140_fhEP12a.csv",header=FALSE,sep=",",colClasses = "character")
+dj$V1=as.numeric(gsub(" ","",dj$V1));
+dj$V2=as.numeric(gsub(" ","",dj$V2));
+
+dk=read.csv("/home/john/pari/vhat_p95_26140_EP12a.csv",header=FALSE,sep=",",colClasses = "character")
+dk$V1=as.numeric(gsub(" ","",dk$V1));
+dk$V2=as.numeric(gsub(" ","",dk$V2));
+
+par(mar = c(1.75, 2.05, 1.5, 1.5))
+
+layout(mat = matrix(c(1,2,3,
+                      4,5,6,
+                      7,8,9),
+                    nrow = 3,
+                    byrow = TRUE))
+
+plot(c(-floor(32768/2):(ceiling(32768/2)-1))*2*pi/32768/.05,c((dh$V1)[16385:32768],(dh$V1)[1:16384]),typ="l",col=3,xlim=c(-2,2)*pi,ylim=c(-1e4,1e4),main="",xlab="",ylab="real part of F(w)_EP2",cex.axis=0.6,mgp = c(0.7, 0.2, 0),tck=-.02,cex.lab=0.7);grid(col="gray2")
+legend(x="topleft",legend=c("this fourier component is losing accuracy \n for Re(s)=0.95 due to increasingly large \n oscillations in the input EP2 Euler Product spectra \n approaching double precision limit",""),bg="white",xjust=0,cex=0.6)
+plot(c(-floor(32768/2):(ceiling(32768/2)-1))*2*pi/32768/.05,c(0*(dh$V1)[16385:32768],(dh$V1)[1:16384]),typ="l",col=3,xlim=c(-2,2)*pi,ylim=c(-1e4,1e4),main="",xlab="",ylab="real part of filtered spliced F(w)_EP1+F(w)_EP2",cex.axis=0.6,cex.main=1,mgp = c(0.7, 0.2, 0),tck=-.02,cex.lab=0.7);grid(col="gray2")
+lines(c(-floor(32768/2):(ceiling(32768/2)-1))*2*pi/32768/.05,c((dk$V1)[16385:32768],0*(dk$V1)[1:16384]),typ="l",col=4)
+mtext("Splicing together the filtered fourier transforms of both Riemann-Siegel Euler Product components.",side=3,line=0.5,cex=0.8)
+plot(c(-floor(32768/2):(ceiling(32768/2)-1))*2*pi/32768/.05,c((dk$V1)[16385:32768],(dk$V1)[1:16384]),typ="l",col=4,xlim=c(-2,2)*pi,ylim=c(-1e4,1e4),main="",xlab="",ylab="real part of F(w)_EP1",cex.axis=0.6,mgp = c(0.7, 0.2, 0),tck=-.02,cex.lab=0.7);grid(col="gray2")
+legend(x="topleft",legend=c("old splicing method \n produces inaccurate result \n for Re(s)=0.95",""),bg="white",xjust=0,cex=0.8)
+plot.new()
+plot(c(-floor(32768/2):(ceiling(32768/2)-1))*2*pi/32768/.05,c((df$V1)[16385:32768],1*(df$V1)[1:16384]),col="darkblue",typ="l",
+     xlim=c(-2,2)*pi,ylim=c(-1e4,1e4),main="",xlab="",ylab="real part of F(w)_Z_zeta",cex.axis=0.6,cex.main=0.8,mgp = c(0.7, 0.2, 0),tck=-.02,cex.lab=0.7);grid(col="gray2")
+abline(v=c(-20,20)*pi,col=6,lty=2)
+mtext("True fourier transform of the Riemann-Siegel Z function for the interval s=(0.25+I*25320.9,0.25+I*26959.2)",side=3,line=0.5,cex=0.75)
+plot.new()
+plot(c(0:(ceiling(32768/2)-1))*2*pi/32768/.05,c((dj$V1)[1:16384]),typ="l",col=3,xlim=c(-2,2)*pi,ylim=c(-1e4,1e4),main="",xlab="w - sideband angular frequency (rad/sec) ",ylab="real part of scaled filtered conj(F(w)_EP1)",cex.axis=0.6,mgp = c(0.7, 0.2, 0),tck=-.02,cex.lab=0.7);grid(col="gray2")
+legend(x="topleft",legend=c(expression(F[w] == bar(F[-w])%*% abs(~chi(0.95+I%*%2%*%pi%*%exp(2%*%w)) )),""),bg="white",xjust=0,cex=0.6)
+plot(c(0:(ceiling(32768/2)-1))*2*pi/32768/.05,c((dj$V1)[1:16384]),typ="l",col=3,xlim=c(-2,2)*pi,ylim=c(-1e4,1e4),main="",xlab="w - sideband angular frequency (rad/sec) ",ylab="real part of spliced filtered F(w)_EP1 + \n scaled filtered conj(F(w)_EP1)",cex.axis=0.6,cex.main=0.5,mgp = c(0.7, 0.2, 0),tck=-.02,cex.lab=0.7);grid(col="gray2")
+lines(c(-floor(32768/2):(-1))*2*pi/32768/.05,c((dk$V1)[16385:32768]),typ="l",col=5,xlim=c(-2,2)*pi,ylim=c(-1e4,1e4))
+mtext("Splicing together the filtered fourier transform of the first Riemann-Siegel Euler Product component and its scaled mirror conjugate.",side=3,line=0.5,cex=0.62)
+plot(c(-floor(32768/2):(-1))*2*pi/32768/.05,c((dk$V1)[16385:32768]),typ="l",col=5,xlim=c(-2,2)*pi,ylim=c(-1e4,1e4),main="",xlab="w - sideband angular frequency (rad/sec) ",ylab="real part of filtered F(w)_EP1",cex.axis=0.6,mgp = c(0.7, 0.2, 0),tck=-.02,cex.lab=0.7);grid(col="gray2")
+legend(x="topleft",legend="NEW splicing method",bg="white",xjust=0)
+
+
+```
+
+\clearpage
+
+```{r Zfnzetafunctionoveraninterval_anditsfouriertransform_26140_pm819_resp75, echo=FALSE, fig.cap="A comparison of the \\textbf{real part} of the fourier transforms of the Riemann-Siegel Z functions of the Riemann Zeta function and partial Euler Product (using truncation at $N_1 = \\sqrt{\\frac{t}{2\\pi}}$) in the complex plane at $\\sigma=0.75$ for the interval t=26140+(-819.1,819.2). The first row shows an existing method to filter and splice together the \\textbf{real parts} of the two fourier transform components of the partial Euler Product approximation of the Riemann-Siegel Z function. This old method has reasonable accuracy for $\\sigma=0.75$ as can be seen with little visual difference in the middle column result compared to the true fourier transform of the Riemann-Siegel Z function shown in the middle row. The bottom row uses the zeroth order functional relationship between the fourier sidebands of the Riemann-Siegel Z function to provide a robust partial Euler Product approximation whereby (since $\\sigma=0.5 > 0.5$) only the \\textbf{real part} of the filtered first fourier transform component is spliced together with the \\textbf{real part} of a scaled mirror conjugate of itself.", out.width = c("99%"), fig.show = "hold",  fig.height=7.5, warning=FALSE}
+
+
+df=read.csv("/home/john/pari/vhat_p75_26140_Z.csv",header=FALSE,sep=",",colClasses = "character")
+df$V1=as.numeric(gsub(" ","",df$V1));
+df$V2=as.numeric(gsub(" ","",df$V2));
+
+dg=read.csv("/home/john/pari/vhat_p75_26140_zeta.csv",header=FALSE,sep=",",colClasses = "character")
+dg$V1=as.numeric(gsub(" ","",dg$V1));
+dg$V2=as.numeric(gsub(" ","",dg$V2));
+
+dh=read.csv("/home/john/pari/vhat_p75_26140_EP12b.csv",header=FALSE,sep=",",colClasses = "character")
+dh$V1=as.numeric(gsub(" ","",dh$V1));
+dh$V2=as.numeric(gsub(" ","",dh$V2));
+
+di=read.csv("/home/john/pari/vhat_p75_26140_fadj.csv",header=FALSE,sep=",",colClasses = "character")
+di$V1=as.numeric(gsub(" ","",di$V1));
+di$V2=as.numeric(gsub(" ","",di$V2));
+
+dj=read.csv("/home/john/pari/vhat_p75_26140_fhEP12a.csv",header=FALSE,sep=",",colClasses = "character")
+dj$V1=as.numeric(gsub(" ","",dj$V1));
+dj$V2=as.numeric(gsub(" ","",dj$V2));
+
+dk=read.csv("/home/john/pari/vhat_p75_26140_EP12a.csv",header=FALSE,sep=",",colClasses = "character")
+dk$V1=as.numeric(gsub(" ","",dk$V1));
+dk$V2=as.numeric(gsub(" ","",dk$V2));
+
+par(mar = c(1.75, 2.05, 1.5, 1.5))
+
+layout(mat = matrix(c(1,2,3,
+                      4,5,6,
+                      7,8,9),
+                    nrow = 3,
+                    byrow = TRUE))
+
+plot(c(-floor(32768/2):(ceiling(32768/2)-1))*2*pi/32768/.05,c((dh$V1)[16385:32768],(dh$V1)[1:16384]),typ="l",col=3,xlim=c(-2,2)*pi,ylim=c(-1e4,1e4),main="",xlab="",ylab="real part of F(w)_EP2",cex.axis=0.6,mgp = c(0.7, 0.2, 0),tck=-.02,cex.lab=0.7);grid(col="gray2")
+plot(c(-floor(32768/2):(ceiling(32768/2)-1))*2*pi/32768/.05,c(0*(dh$V1)[16385:32768],(dh$V1)[1:16384]),typ="l",col=3,xlim=c(-2,2)*pi,ylim=c(-1e4,1e4),main="",xlab="",ylab="real part of filtered spliced F(w)_EP1+F(w)_EP2",cex.axis=0.6,cex.main=1,mgp = c(0.7, 0.2, 0),tck=-.02,cex.lab=0.7);grid(col="gray2")
+lines(c(-floor(32768/2):(ceiling(32768/2)-1))*2*pi/32768/.05,c((dk$V1)[16385:32768],0*(dk$V1)[1:16384]),typ="l",col=4)
+mtext("Splicing together the filtered fourier transforms of both Riemann-Siegel Euler Product components.",side=3,line=0.5,cex=0.8)
+plot(c(-floor(32768/2):(ceiling(32768/2)-1))*2*pi/32768/.05,c((dk$V1)[16385:32768],(dk$V1)[1:16384]),typ="l",col=4,xlim=c(-2,2)*pi,ylim=c(-1e4,1e4),main="",xlab="",ylab="real part of F(w)_EP1",cex.axis=0.6,mgp = c(0.7, 0.2, 0),tck=-.02,cex.lab=0.7);grid(col="gray2")
+legend(x="topleft",legend=c("old splicing method",""),bg="white",xjust=0,cex=0.8)
+plot.new()
+plot(c(-floor(32768/2):(ceiling(32768/2)-1))*2*pi/32768/.05,c((df$V1)[16385:32768],1*(df$V1)[1:16384]),col="darkblue",typ="l",
+     xlim=c(-2,2)*pi,ylim=c(-1e4,1e4),main="",xlab="",ylab="real part of F(w)_Z_zeta",cex.axis=0.6,cex.main=0.8,mgp = c(0.7, 0.2, 0),tck=-.02,cex.lab=0.7);grid(col="gray2")
+abline(v=c(-20,20)*pi,col=6,lty=2)
+mtext("True fourier transform of the Riemann-Siegel Z function for the interval s=(0.25+I*25320.9,0.25+I*26959.2)",side=3,line=0.5,cex=0.75)
+plot.new()
+plot(c(0:(ceiling(32768/2)-1))*2*pi/32768/.05,c((dj$V1)[1:16384]),typ="l",col=3,xlim=c(-2,2)*pi,ylim=c(-1e4,1e4),main="",xlab="w - sideband angular frequency (rad/sec) ",ylab="real part of scaled filtered conj(F(w)_EP1)",cex.axis=0.6,mgp = c(0.7, 0.2, 0),tck=-.02,cex.lab=0.7);grid(col="gray2")
+legend(x="topleft",legend=c(expression(F[w] == bar(F[-w])%*% abs(~chi(0.75+I%*%2%*%pi%*%exp(2%*%w)) )),""),bg="white",xjust=0,cex=0.6)
+plot(c(0:(ceiling(32768/2)-1))*2*pi/32768/.05,c((dj$V1)[1:16384]),typ="l",col=3,xlim=c(-2,2)*pi,ylim=c(-1e4,1e4),main="",xlab="w - sideband angular frequency (rad/sec) ",ylab="real part of spliced filtered F(w)_EP1 + \n scaled filtered conj(F(w)_EP1)",cex.axis=0.6,cex.main=0.5,mgp = c(0.7, 0.2, 0),tck=-.02,cex.lab=0.7);grid(col="gray2")
+lines(c(-floor(32768/2):(-1))*2*pi/32768/.05,c((dk$V1)[16385:32768]),typ="l",col=5,xlim=c(-2,2)*pi,ylim=c(-1e4,1e4))
+mtext("Splicing together the filtered fourier transform of the first Riemann-Siegel Euler Product component and its scaled mirror conjugate.",side=3,line=0.5,cex=0.62)
+plot(c(-floor(32768/2):(-1))*2*pi/32768/.05,c((dk$V1)[16385:32768]),typ="l",col=5,xlim=c(-2,2)*pi,ylim=c(-1e4,1e4),main="",xlab="w - sideband angular frequency (rad/sec) ",ylab="real part of filtered F(w)_EP1",cex.axis=0.6,mgp = c(0.7, 0.2, 0),tck=-.02,cex.lab=0.7);grid(col="gray2")
+legend(x="topleft",legend="NEW splicing method",bg="white",xjust=0)
+
+
+```
+
+\clearpage
+
+
+```{r Zfnzetafunctionoveraninterval_anditsfouriertransform_26140_pm819_resp, echo=FALSE, fig.cap="A comparison of the \\textbf{real part} of the fourier transforms of the Riemann-Siegel Z functions of the Riemann Zeta function and partial Euler Product (using truncation at $N_1 = \\sqrt{\\frac{t}{2\\pi}}$) in the complex plane at $\\sigma=0.25$ for the interval t=26140+(-819.1,819.2). The first row shows an existing method to filter and splice together the \\textbf{real parts} of the two fourier transform components of the partial Euler Product approximation of the Riemann-Siegel Z function. This old method has reasonable accuracy for $\\sigma=0.75$ as can be seen with little visual difference in the middle column result compared to the true fourier transform of the Riemann-Siegel Z function shown in the middle row. The bottom row uses the zeroth order functional relationship between the fourier sidebands of the Riemann-Siegel Z function to provide a robust partial Euler Product approximation whereby (since $\\sigma=0.25 < 0.5$) only the \\textbf{real part} of the filtered second fourier transform component is spliced together with the \\textbf{real part} of a scaled mirror conjugate of itself.", out.width = c("99%"), fig.show = "hold",  fig.height=7.5, warning=FALSE}
+
+df=read.csv("/home/john/pari/vhat_p25_26140_Z.csv",header=FALSE,sep=",",colClasses = "character")
+df$V1=as.numeric(gsub(" ","",df$V1));
+df$V2=as.numeric(gsub(" ","",df$V2));
+
+dg=read.csv("/home/john/pari/vhat_p25_26140_zeta.csv",header=FALSE,sep=",",colClasses = "character")
+dg$V1=as.numeric(gsub(" ","",dg$V1));
+dg$V2=as.numeric(gsub(" ","",dg$V2));
+
+dh=read.csv("/home/john/pari/vhat_p25_26140_EP12b.csv",header=FALSE,sep=",",colClasses = "character")
+dh$V1=as.numeric(gsub(" ","",dh$V1));
+dh$V2=as.numeric(gsub(" ","",dh$V2));
+
+di=read.csv("/home/john/pari/vhat_p25_26140_fadjneg.csv",header=FALSE,sep=",",colClasses = "character")
+di$V1=as.numeric(gsub(" ","",di$V1));
+di$V2=as.numeric(gsub(" ","",di$V2));
+
+dj=read.csv("/home/john/pari/vhat_p25_26140_fhEP12b.csv",header=FALSE,sep=",",colClasses = "character")
+dj$V1=as.numeric(gsub(" ","",dj$V1));
+dj$V2=as.numeric(gsub(" ","",dj$V2));
+
+dk=read.csv("/home/john/pari/vhat_p25_26140_EP12a.csv",header=FALSE,sep=",",colClasses = "character")
+dk$V1=as.numeric(gsub(" ","",dk$V1));
+dk$V2=as.numeric(gsub(" ","",dk$V2));
+
+par(mar = c(1.75, 2.05, 1.5, 1.5))
+# plot(c(-floor(32768/2):(ceiling(32768/2)-1)),c(as.numeric(df$V1)[16385:32768],as.numeric(df$V1)[1:16384]),col="gray",typ="l",    xlim=c(-2500,2500),ylim=c(-3e5,3e5));grid(col="gray2")
+
+layout(mat = matrix(c(1,2,3,
+                      4,5,6,
+                      7,8,9),
+                    nrow = 3,
+                    byrow = TRUE))
+
+plot(c(-floor(32768/2):(ceiling(32768/2)-1))*2*pi/32768/.05,c((dh$V1)[16385:32768],(dh$V1)[1:16384]),typ="l",col=3,xlim=c(-2,2)*pi,ylim=c(-1e5,1e5),main="",xlab="",ylab="real part of F(w)_EP2",cex.axis=0.6,mgp = c(0.7, 0.2, 0),tck=-.02,cex.lab=0.7);grid(col="gray2")
+legend(x="topleft",legend="old splicing method",bg="white",xjust=0)
+plot(c(-floor(32768/2):(ceiling(32768/2)-1))*2*pi/32768/.05,c(0*(dh$V1)[16385:32768],(dh$V1)[1:16384]),typ="l",col=3,xlim=c(-2,2)*pi,ylim=c(-1e5,1e5),main="",xlab="",ylab="real part of filtered spliced F(w)_EP1+F(w)_EP2",cex.axis=0.6,cex.main=1,mgp = c(0.7, 0.2, 0),tck=-.02,cex.lab=0.7);grid(col="gray2")
+lines(c(-floor(32768/2):(ceiling(32768/2)-1))*2*pi/32768/.05,c((dk$V1)[16385:32768],0*(dk$V1)[1:16384]),typ="l",col=4)
+mtext("Splicing together the filtered fourier transforms of both Riemann-Siegel Euler Product components.",side=3,line=0.5,cex=0.8)
+plot(c(-floor(32768/2):(ceiling(32768/2)-1))*2*pi/32768/.05,c((dk$V1)[16385:32768],(dk$V1)[1:16384]),typ="l",col=4,xlim=c(-2,2)*pi,ylim=c(-1e5,1e5),main="",xlab="",ylab="real part of F(w)_EP1",cex.axis=0.6,mgp = c(0.7, 0.2, 0),tck=-.02,cex.lab=0.7);grid(col="gray2")
+plot.new()
+plot(c(-floor(32768/2):(ceiling(32768/2)-1))*2*pi/32768/.05,c((df$V1)[16385:32768],1*(df$V1)[1:16384]),col="darkblue",typ="l",
+     xlim=c(-2,2)*pi,ylim=c(-1e5,1e5),main="",xlab="",ylab="real part of F(w)_Z_zeta",cex.axis=0.6,cex.main=0.8,mgp = c(0.7, 0.2, 0),tck=-.02,cex.lab=0.7);grid(col="gray2")
+abline(v=c(-20,20)*pi,col=6,lty=2)
+mtext("True fourier transform of the Riemann-Siegel Z function for the interval s=(0.25+I*25320.9,0.25+I*26959.2)",side=3,line=0.5,cex=0.75)
+plot.new()
+plot(c(0:(ceiling(32768/2)-1))*2*pi/32768/.05,c((dh$V1)[1:16384]),typ="l",col=3,xlim=c(-2,2)*pi,ylim=c(-1e5,1e5),main="",xlab="w - sideband angular frequency (rad/sec) ",ylab="real part of filtered F(w)_EP2",cex.axis=0.6,mgp = c(0.7, 0.2, 0),tck=-.02,cex.lab=0.7);grid(col="gray2")
+legend(x="topleft",legend="NEW splicing method",bg="white",xjust=0)
+plot(c(0:(ceiling(32768/2)-1))*2*pi/32768/.05,c((dh$V1)[1:16384]),typ="l",col=3,xlim=c(-2,2)*pi,ylim=c(-1e5,1e5),main="",xlab="w - sideband angular frequency (rad/sec) ",ylab="real part of spliced filtered F(w)_EP2 + \n scaled filtered conj(F(w)_EP2)",cex.axis=0.6,cex.main=0.5,mgp = c(0.7, 0.2, 0),tck=-.02,cex.lab=0.7);grid(col="gray2")
+lines(c(-floor(32768/2):(-1))*2*pi/32768/.05,c((dj$V1)[16385:32768]),typ="l",col=5,xlim=c(-2,2)*pi,ylim=c(-1e5,1e5))
+mtext("Splicing together the filtered fourier transform of the second Riemann-Siegel Euler Product component and its scaled mirror conjugate.",side=3,line=0.5,cex=0.62)
+plot(c(-floor(32768/2):(-1))*2*pi/32768/.05,c((dj$V1)[16385:32768]),typ="l",col=5,xlim=c(-2,2)*pi,ylim=c(-1e5,1e5),main="",xlab="w - sideband angular frequency (rad/sec) ",ylab="real part of scaled filtered conj(F(w)_EP2)",cex.axis=0.6,mgp = c(0.7, 0.2, 0),tck=-.02,cex.lab=0.7);grid(col="gray2")
+legend(x="topleft",legend=c(expression(F[-w] == bar(F[w])%*% abs(~chi(1-(0.25+I%*%2%*%pi%*%exp(2%*%w))) )),""),bg="white",xjust=0,cex=0.6)
+
+
+```
+
+
+
+
+
+
+```{r Zfnzetafunctionoveraninterval_anditsfouriertransform_26140_pm819_resp05, echo=FALSE, fig.cap="A comparison of the \\textbf{real part} of the fourier transforms of the Riemann-Siegel Z functions of the Riemann Zeta function and partial Euler Product (using truncation at $N_1 = \\sqrt{\\frac{t}{2\\pi}}$) in the complex plane at $\\sigma=0.05$ for the interval t=26140+(-819.1,819.2). The first row shows an existing method to filter and splice together the \\textbf{real parts} of the two fourier transform components of the partial Euler Product approximation of the Riemann-Siegel Z function. This old method is not accurate for $\\sigma=0.05$ as can be seen with the difference in middle column result compared to the true fourier transform of the Riemann-Siegel Z function shown in the second row. The bottom row uses the zeroth order functional relationship between the fourier sidebands of the Riemann-Siegel Z function to provide a robust partial Euler Product approximation whereby (since $\\sigma=0.05 < 0.5$) only the \\textbf{real part} of the filtered second fourier transform component is spliced together with the \\textbf{real part} of a scaled mirror conjugate of itself.", out.width = c("99%"), fig.show = "hold",  fig.height=7.5, warning=FALSE}
+
+
+df=read.csv("/home/john/pari/vhat_p05_26140_Z.csv",header=FALSE,sep=",",colClasses = "character")
+df$V1=as.numeric(gsub(" ","",df$V1));
+df$V2=as.numeric(gsub(" ","",df$V2));
+
+dg=read.csv("/home/john/pari/vhat_p05_26140_zeta.csv",header=FALSE,sep=",",colClasses = "character")
+dg$V1=as.numeric(gsub(" ","",dg$V1));
+dg$V2=as.numeric(gsub(" ","",dg$V2));
+
+dh=read.csv("/home/john/pari/vhat_p05_26140_EP12b.csv",header=FALSE,sep=",",colClasses = "character")
+dh$V1=as.numeric(gsub(" ","",dh$V1));
+dh$V2=as.numeric(gsub(" ","",dh$V2));
+
+di=read.csv("/home/john/pari/vhat_p05_26140_fadjneg.csv",header=FALSE,sep=",",colClasses = "character")
+di$V1=as.numeric(gsub(" ","",di$V1));
+di$V2=as.numeric(gsub(" ","",di$V2));
+
+dj=read.csv("/home/john/pari/vhat_p05_26140_fhEP12b.csv",header=FALSE,sep=",",colClasses = "character")
+dj$V1=as.numeric(gsub(" ","",dj$V1));
+dj$V2=as.numeric(gsub(" ","",dj$V2));
+
+dk=read.csv("/home/john/pari/vhat_p05_26140_EP12a.csv",header=FALSE,sep=",",colClasses = "character")
+dk$V1=as.numeric(gsub(" ","",dk$V1));
+dk$V2=as.numeric(gsub(" ","",dk$V2));
+
+par(mar = c(1.75, 2.05, 1.5, 1.5))
+# plot(c(-floor(32768/2):(ceiling(32768/2)-1)),c(as.numeric(df$V1)[16385:32768],as.numeric(df$V1)[1:16384]),col="gray",typ="l",    xlim=c(-2500,2500),ylim=c(-3e5,3e5));grid(col="gray2")
+
+layout(mat = matrix(c(1,2,3,
+                      4,5,6,
+                      7,8,9),
+                    nrow = 3,
+                    byrow = TRUE))
+
+plot(c(-floor(32768/2):(ceiling(32768/2)-1))*2*pi/32768/.05,c((dh$V1)[16385:32768],(dh$V1)[1:16384]),typ="l",col=3,xlim=c(-2,2)*pi,ylim=c(-1e5,1e5),main="",xlab="",ylab="real part of F(w)_EP2",cex.axis=0.6,mgp = c(0.7, 0.2, 0),tck=-.02,cex.lab=0.7);grid(col="gray2")
+legend(x="topleft",legend=c("old splicing method \n produces inaccurate result \n for Re(s)=0.05",""),bg="white",xjust=0,cex=0.8)
+plot(c(-floor(32768/2):(ceiling(32768/2)-1))*2*pi/32768/.05,c(0*(dh$V1)[16385:32768],(dh$V1)[1:16384]),typ="l",col=3,xlim=c(-2,2)*pi,ylim=c(-1e5,1e5),main="",xlab="",ylab="real part of filtered spliced F(w)_EP1+F(w)_EP2",cex.axis=0.6,cex.main=1,mgp = c(0.7, 0.2, 0),tck=-.02,cex.lab=0.7);grid(col="gray2")
+lines(c(-floor(32768/2):(ceiling(32768/2)-1))*2*pi/32768/.05,c((dk$V1)[16385:32768],0*(dk$V1)[1:16384]),typ="l",col=4)
+mtext("Splicing together the filtered fourier transforms of both Riemann-Siegel Euler Product components.",side=3,line=0.5,cex=0.8)
+plot(c(-floor(32768/2):(ceiling(32768/2)-1))*2*pi/32768/.05,c((dk$V1)[16385:32768],(dk$V1)[1:16384]),typ="l",col=4,xlim=c(-2,2)*pi,ylim=c(-1e5,1e5),main="",xlab="",ylab="real part of F(w)_EP1",cex.axis=0.6,mgp = c(0.7, 0.2, 0),tck=-.02,cex.lab=0.7);grid(col="gray2")
+legend(x="topleft",legend=c("this fourier component is numerically unstable \n for Re(s)=0.05 due to very large magnitude \n oscillations in the input EP1 Euler Product spectra \n exceeding double precision limit",""),bg="white",xjust=0,cex=0.6)
+plot.new()
+plot(c(-floor(32768/2):(ceiling(32768/2)-1))*2*pi/32768/.05,c((df$V1)[16385:32768],1*(df$V1)[1:16384]),col="darkblue",typ="l",
+     xlim=c(-2,2)*pi,ylim=c(-1e5,1e5),main="",xlab="",ylab="real part of F(w)_Z_zeta",cex.axis=0.6,cex.main=0.8,mgp = c(0.7, 0.2, 0),tck=-.02,cex.lab=0.7);grid(col="gray2")
+abline(v=c(-20,20)*pi,col=6,lty=2)
+mtext("True fourier transform of the Riemann-Siegel Z function for the interval s=(0.25+I*25320.9,0.25+I*26959.2)",side=3,line=0.5,cex=0.75)
+plot.new()
+plot(c(0:(ceiling(32768/2)-1))*2*pi/32768/.05,c((dh$V1)[1:16384]),typ="l",col=3,xlim=c(-2,2)*pi,ylim=c(-1e5,1e5),main="",xlab="w - sideband angular frequency (rad/sec) ",ylab="real part of filtered F(w)_EP2",cex.axis=0.6,mgp = c(0.7, 0.2, 0),tck=-.02,cex.lab=0.7);grid(col="gray2")
+legend(x="topleft",legend="NEW splicing method",bg="white",xjust=0)
+plot(c(0:(ceiling(32768/2)-1))*2*pi/32768/.05,c((dh$V1)[1:16384]),typ="l",col=3,xlim=c(-2,2)*pi,ylim=c(-1e5,1e5),main="",xlab="w - sideband angular frequency (rad/sec) ",ylab="real part of spliced filtered F(w)_EP2 + \n scaled filtered conj(F(w)_EP2)",cex.axis=0.6,cex.main=0.5,mgp = c(0.7, 0.2, 0),tck=-.02,cex.lab=0.7);grid(col="gray2")
+lines(c(-floor(32768/2):(-1))*2*pi/32768/.05,c((dj$V1)[16385:32768]),typ="l",col=5,xlim=c(-2,2)*pi,ylim=c(-1e5,1e5))
+mtext("Splicing together the filtered fourier transform of the second Riemann-Siegel Euler Product component and its scaled mirror conjugate.",side=3,line=0.5,cex=0.62)
+plot(c(-floor(32768/2):(-1))*2*pi/32768/.05,c((dj$V1)[16385:32768]),typ="l",col=5,xlim=c(-2,2)*pi,ylim=c(-1e5,1e5),main="",xlab="w - sideband angular frequency (rad/sec) ",ylab="real part of scaled filtered conj(F(w)_EP2)",cex.axis=0.6,mgp = c(0.7, 0.2, 0),tck=-.02,cex.lab=0.7);grid(col="gray2")
+legend(x="topleft",legend=c(expression(F[-w] == bar(F[w])%*% abs(~chi(1-(0.05+I%*%2%*%pi%*%exp(2%*%w))) )),""),bg="white",xjust=0,cex=0.6)
+
+
+```
+
+
+
+```{r Zfnzetafunctionoveraninterval_anditsfouriertransform_26140_pm819_resp0, echo=FALSE, fig.cap="A comparison of the \\textbf{real part} of the fourier transforms of the Riemann-Siegel Z functions of the Riemann Zeta function and partial Euler Product (using truncation at $N_1 = \\sqrt{\\frac{t}{2\\pi}}$) in the complex plane at $\\sigma=0.0$ for the interval t=26140+(-819.1,819.2). The first row shows an existing method to filter and splice together the \\textbf{real parts} of the two fourier transform components of the partial Euler Product approximation of the Riemann-Siegel Z function. This old method is not accurate for $\\sigma=0.0$ as can be seen with the difference in middle column result compared to the true fourier transform of the Riemann-Siegel Z function shown in the second row. The bottom row uses the zeroth order functional relationship between the fourier sidebands of the Riemann-Siegel Z function to provide a robust partial Euler Product approximation whereby (since $\\sigma=0.0 < 0.5$) only the \\textbf{real part} of the filtered second fourier transform component is spliced together with the \\textbf{real part} of a scaled mirror conjugate of itself.", out.width = c("99%"), fig.show = "hold",  fig.height=7.5, warning=FALSE}
+
+
+df=read.csv("/home/john/pari/vhat_p0_26140_Z.csv",header=FALSE,sep=",",colClasses = "character")
+df$V1=as.numeric(gsub(" ","",df$V1));
+df$V2=as.numeric(gsub(" ","",df$V2));
+
+dg=read.csv("/home/john/pari/vhat_p0_26140_zeta.csv",header=FALSE,sep=",",colClasses = "character")
+dg$V1=as.numeric(gsub(" ","",dg$V1));
+dg$V2=as.numeric(gsub(" ","",dg$V2));
+
+dh=read.csv("/home/john/pari/vhat_p0_26140_EP12b.csv",header=FALSE,sep=",",colClasses = "character")
+dh$V1=as.numeric(gsub(" ","",dh$V1));
+dh$V2=as.numeric(gsub(" ","",dh$V2));
+
+di=read.csv("/home/john/pari/vhat_p0_26140_fadjneg.csv",header=FALSE,sep=",",colClasses = "character")
+di$V1=as.numeric(gsub(" ","",di$V1));
+di$V2=as.numeric(gsub(" ","",di$V2));
+
+dj=read.csv("/home/john/pari/vhat_p0_26140_fhEP12b.csv",header=FALSE,sep=",",colClasses = "character")
+dj$V1=as.numeric(gsub(" ","",dj$V1));
+dj$V2=as.numeric(gsub(" ","",dj$V2));
+
+dk=read.csv("/home/john/pari/vhat_p0_26140_EP12a.csv",header=FALSE,sep=",",colClasses = "character")
+dk$V1=as.numeric(gsub(" ","",dk$V1));
+dk$V2=as.numeric(gsub(" ","",dk$V2));
+
+par(mar = c(1.75, 2.05, 1.5, 1.5))
+
+layout(mat = matrix(c(1,2,3,
+                      4,5,6,
+                      7,8,9),
+                    nrow = 3,
+                    byrow = TRUE))
+
+plot(c(-floor(32768/2):(ceiling(32768/2)-1))*2*pi/32768/.05,c((dh$V1)[16385:32768],(dh$V1)[1:16384]),typ="l",col=3,xlim=c(-2,2)*pi,ylim=c(-1e5,1e5),main="",xlab="",ylab="real part of F(w)_EP2",cex.axis=0.6,mgp = c(0.7, 0.2, 0),tck=-.02,cex.lab=0.7);grid(col="gray2")
+legend(x="topleft",legend=c("old splicing method \n produces inaccurate result \n for Re(s)=0.0",""),bg="white",xjust=0,cex=0.8)
+plot(c(-floor(32768/2):(ceiling(32768/2)-1))*2*pi/32768/.05,c(0*(dh$V1)[16385:32768],(dh$V1)[1:16384]),typ="l",col=3,xlim=c(-2,2)*pi,ylim=c(-1e5,1e5),main="",xlab="",ylab="real part of filtered spliced F(w)_EP1+F(w)_EP2",cex.axis=0.6,cex.main=1,mgp = c(0.7, 0.2, 0),tck=-.02,cex.lab=0.7);grid(col="gray2")
+lines(c(-floor(32768/2):(ceiling(32768/2)-1))*2*pi/32768/.05,c((dk$V1)[16385:32768],0*(dk$V1)[1:16384]),typ="l",col=4)
+mtext("Splicing together the filtered fourier transforms of both Riemann-Siegel Euler Product components.",side=3,line=0.5,cex=0.8)
+plot(c(-floor(32768/2):(ceiling(32768/2)-1))*2*pi/32768/.05,c((dk$V1)[16385:32768],(dk$V1)[1:16384]),typ="l",col=4,xlim=c(-2,2)*pi,ylim=c(-1e5,1e5),main="",xlab="",ylab="real part of F(w)_EP1",cex.axis=0.6,mgp = c(0.7, 0.2, 0),tck=-.02,cex.lab=0.7);grid(col="gray2")
+legend(x="topleft",legend=c("this fourier component is numerically unstable \n for Re(s)=0.0 due to very large magnitude \n oscillations in the input EP1 Euler Product spectra \n exceeding double precision limit",""),bg="white",xjust=0,cex=0.6)
+plot.new()
+plot(c(-floor(32768/2):(ceiling(32768/2)-1))*2*pi/32768/.05,c((df$V1)[16385:32768],1*(df$V1)[1:16384]),col="darkblue",typ="l",
+     xlim=c(-2,2)*pi,ylim=c(-1e5,1e5),main="",xlab="",ylab="real part of F(w)_Z_zeta",cex.axis=0.6,cex.main=0.8,mgp = c(0.7, 0.2, 0),tck=-.02,cex.lab=0.7);grid(col="gray2")
+abline(v=c(-20,20)*pi,col=6,lty=2)
+mtext("True fourier transform of the Riemann-Siegel Z function for the interval s=(0.0+I*25320.9,0.0+I*26959.2)",side=3,line=0.5,cex=0.75)
+plot.new()
+plot(c(0:(ceiling(32768/2)-1))*2*pi/32768/.05,c((dh$V1)[1:16384]),typ="l",col=3,xlim=c(-2,2)*pi,ylim=c(-1e5,1e5),main="",xlab="w - sideband angular frequency (rad/sec) ",ylab="real part of filtered F(w)_EP2",cex.axis=0.6,mgp = c(0.7, 0.2, 0),tck=-.02,cex.lab=0.7);grid(col="gray2")
+legend(x="topleft",legend="NEW splicing method",bg="white",xjust=0)
+plot(c(0:(ceiling(32768/2)-1))*2*pi/32768/.05,c((dh$V1)[1:16384]),typ="l",col=3,xlim=c(-2,2)*pi,ylim=c(-1e5,1e5),main="",xlab="w - sideband angular frequency (rad/sec) ",ylab="real part of spliced filtered F(w)_EP2 + \n scaled filtered conj(F(w)_EP2)",cex.axis=0.6,cex.main=0.5,mgp = c(0.7, 0.2, 0),tck=-.02,cex.lab=0.7);grid(col="gray2")
+lines(c(-floor(32768/2):(-1))*2*pi/32768/.05,c((dj$V1)[16385:32768]),typ="l",col=5,xlim=c(-2,2)*pi,ylim=c(-1e5,1e5))
+mtext("Splicing together the filtered fourier transform of the second Riemann-Siegel Euler Product component and its scaled mirror conjugate.",side=3,line=0.5,cex=0.62)
+plot(c(-floor(32768/2):(-1))*2*pi/32768/.05,c((dj$V1)[16385:32768]),typ="l",col=5,xlim=c(-2,2)*pi,ylim=c(-1e5,1e5),main="",xlab="w - sideband angular frequency (rad/sec) ",ylab="real part of scaled filtered conj(F(w)_EP2)",cex.axis=0.6,mgp = c(0.7, 0.2, 0),tck=-.02,cex.lab=0.7);grid(col="gray2")
+legend(x="topleft",legend=c(expression(F[-w] == bar(F[w])%*% abs(~chi(1-(0.05+I%*%2%*%pi%*%exp(2%*%w))) )),""),bg="white",xjust=0,cex=0.6)
+
+
+```
+
+
+
+
+\clearpage
+
+## Comparing NEW algorithm based partial Euler Product spectral filtering and splicing calculations of extreme peak heights along $s=1+I\cdot t$ to known peak heights
+
+In [11,12] the n=32768 point fourier grid with $\Delta t=0.05$ was found to be sufficient for 3+ decimal accuracy with respect to grid search of extreme Riemann Zeta peaks on the critical line. Using the NEW algorithm for generating a partial Euler Product based spectral filtering and splicing approximation of the fourier transform of the Riemann-Siegel Z function off the critical line, followed by inverse fourier transformation, Table 1 below compares 
+
+(i) the NEW algorithm accuracy for extreme peak height estimation away from the real axis within a given spectral sample $t=t_0+(-819.1,819.2)$,
+
+(ii) the NEW algorithm accuracy for extreme peak height estimation away from the real axis \textbf{when the extreme peak is in the centre} of the spectral sample being fourier analysed,
+
+(iii) the magnitude of the Riemann Zeta function at the identified peak position
+
+\begin{equation}
+|\zeta(s)| = |e^{I\cdot imag(\theta_{ext}(s))}\zeta(s)|
+\end{equation}
+
+(iv) the magnitude of the tapered truncation at the second quiescent region for Riemann Zeta Dirichlet Series $\left\lfloor\frac{t}{\pi}\right\rfloor$ approximation
+
+\begin{align}
+e^{I\cdot imag(\theta_{ext}(s))}\zeta(s)
+&\approx e^{I\cdot imag(\theta_ext(s))}\cdot\Bigg[\sum_{k=1}^{\left(\lfloor\frac{t}{\pi}\rfloor-p\right)}\left(\frac{1}{k^{(s)}}\right) +\sum_{i=\left(-p+1\right)}^{p}\frac{\frac{1}{2^{2p}} \left( 2^{2p}-\sum_{k=1}^{i+p}\binom{2p}{2p-k}\right)}{\left( (\lfloor\frac{t}{\pi}\rfloor+i)^{(s)}\right)}\Bigg] \nonumber \\
+&,  \qquad \Im(s) \rightarrow \infty
+\end{align}
+
+(v) the magnitude of the tapered truncation at the first quiescent region for Riemann Zeta Dirichlet Series $\left\lfloor\sqrt{\frac{t}{2\pi}}\right\rfloor$ approximation
+
+\begin{align}
+e^{I\cdot imag(\theta_{ext}(s))}\zeta(s)
+&\approx e^{I\cdot imag(\theta_ext(s))}\cdot\Bigg[\sum_{k=1}^{\left(\lfloor\sqrt{\frac{t}{2\pi}}\rfloor-p\right)}\left(\frac{1}{ k^{(s)}}\right) +\sum_{i=\left(-p+1\right)}^{p}\frac{\frac{1}{2^{2p}} \left( 2^{2p}-\sum_{k=1}^{i+p}\binom{2p}{2p-k}\right)}{\left( (\lfloor\sqrt{\frac{t}{2\pi}}\rfloor+i)^{(s)}\right)} \nonumber \\
+&+ \mychi(s)\cdot\Bigg(\sum_{k=1}^{\left(\lfloor\sqrt{\frac{t}{2\pi}}\rfloor-p\right)}\left(\frac{1}{ k^{(1-(s))}}\right) +\sum_{i=\left(-p+1\right)}^{p}\frac{\frac{1}{2^{2p}} \left( 2^{2p}-\sum_{k=1}^{i+p}\binom{2p}{2p-k}\right)}{\left( (\lfloor\sqrt{\frac{t}{2\pi}}\rfloor+i)^{(1-(s))}\right)}\Bigg)\Bigg] \nonumber \\
+&,  \qquad \Im(s) \rightarrow \infty
+\end{align}
+
+\clearpage
+
+```{r grid_results_high_t, echo = FALSE,results = "asis", warning=FALSE} 
+
+
+table_grid_results <- as.data.frame(t(cbind(c("1550.000000","3.81427349447277009026177975012395686430","3.82098147266946298513433937840428486060","3.8209838739756127237948324067439304325271277061277","3.8209838739756127237948324067439304325271584627085","NA"),
+c("6925.650000000000000","4.2773760728572830456601738267522583703","4.2773543212666240534477652405731518666754450488018","4.2773442646975451046824721786196846954195827066742","4.2773442646975451046824721786196846954195889396867","NA"),
+c("26296.900000000000","4.5574628174494795719122188871121978341","4.5574670966689239807364690601664918787","4.5574680258665123569578559562192740682519007435177","4.5574680258665123569578559562192740682518955735448","4.5521032113915580119881973344542598186"),
+c("169482.90000000000000000","4.9005026086992034270673467101401986755","4.9008243360367104822015507450235654935","4.9008275450501695124083614004064418867124261657061","4.9008275450501695124083614004064418867124254365690","4.9025370064657944920712538374650128215004880399121"),
+c("6820051.00000000","5.4081902619865721986678623219534479100","5.4081380515393187224534844162659543851","NA","5.4081342277595713129426940538474247188419805488234","5.4081342564821392949386784538436256497733297801067"),
+c("363991205.17884","6.5874214207540373881068647596462073514","6.5874302616031437456237705988207225394","NA","6.5874323368077774601084287955172252229283839001500","6.5874920563487529758857070076184971822406998959080"))))
+
+colnames(table_grid_results) = c("t co-ordinate of peak", 
+"filtered EP |estimate|  peak NOT centred in the input spectrum","filtered EP |estimate|  peak centred in input spectrum", "|zeta(1+I*t)|","tapered Dirichlet series |estimate|","tapered RS Dirichlet series |estimate|")
+# for (i in 1:length(colnames(table_grid_results))) {
+#   table_grid_results[,i] <- round(as.numeric(table_grid_results[,i]),26)
+# }
+
+for (i in 1:length(colnames(table_grid_results))) {
+  table_grid_results[,i] = substr(table_grid_results[,i],1,10)
+}
+
+knitr::kable(table_grid_results,  caption = "A comparison of fourier transform filtered Euler Product estimate of extreme peak using NEW algorithm (i) when the peak is arbitrarily located in the input spectrum, (ii) the peak is centred in the input spectrum, (iii) $|\\zeta(1+I\\cdot t)|$, and 128 point tapered Dirichlet Series estimate based peak heights using (iv) truncation at the second quiescent region $N_2=\\left\\lfloor\\frac{t}{\\pi}\\right\\rfloor$ and (iv) at the first quiescent region $N_1=\\left\\lfloor\\sqrt{\\frac{t}{2\\pi}}\\right\\rfloor$",
+             align = c("l","r","r","r","r","r","r"),longtable=TRUE)
+
+
+
+```
+
+Note that (i) the $N_1$ dirichlet estimate in the righthand column is NA when $t < 64^2*2*Pi=25735.93$ due to its 128 point tapering constraint and (ii) $|\zeta(s)|$ estimate is NA, i.e. unavailable due to the slow computation speed of the high precision method at higher t.
+
+As can be seen from table 1, 
+
+\begin{itemize}
+\item the magnitude of the tapered truncation at the second quiescent region for Riemann Zeta Dirichlet Series $\left\lfloor\frac{t}{\pi}\right\rfloor$ approximation column 5 is in multidecimal place agreement with $|\zeta(1+I\cdot t)|$
+\item if the extreme peak is at the centre of the input spectrum sample (see column 3) then the NEW algorithm for generating a partial Euler Product based spectral filtering and splicing approximation of the fourier transform of the Riemann-Siegel Z function off the critical line, followed by inverse fourier transformation has 4+ decimal place agreement with $\zeta(1+\cdot t)|$ as a benefit of lower error for the centre of a fourier transform (since it is an interpolation method)
+\item if the extreme peak is otherwise located within the input spectrum sample then the agreement with $\zeta(1+I\cdot t)|$ is poorer (2-3+decimal places) but remains useful for the NEW algorithm for generating a partial Euler Product based spectral filtering and splicing approximation of the fourier transform of the Riemann-Siegel Z function off the critical line, followed by inverse fourier transformation
+\item comparing columns 3 and 7, the NEW algorithm for generating a partial Euler Product based spectral filtering and splicing approximation of the fourier transform of the Riemann-Siegel Z function off the critical line, followed by inverse fourier transformation can be a better estimate of $\zeta(1+\cdot t)|$ than the tapered truncation at the first quiescent region for Riemann Zeta Dirichlet Series $\left\lfloor\sqrt{\frac{t}{2\pi}}\right\rfloor$ approximation
+\end{itemize}
+
+
+## Conclusions 
+
+
+The above spectral filtering and a revised method of rescaled phase conjugate reflection based on a zeroth order approximation for the functional behaviour between fourier transform Riemann-Siegel Z function sidebands based on only one partial Euler Product fourier component (see equations (36) and (37)), using truncation lengths of $N_1 +\Delta$ and subsequent inverse fourier transformation results in more robust and quicker partial Euler Product based approximations of the Riemann-Siegel Z function (away from the real axis) off the critical line. 
+
+
+
+\newpage
+
+## References
+
+1. Edwards, H.M. (1974). Riemann's zeta function. Pure and Applied Mathematics 58. New York-London: Academic Press. ISBN 0-12-232750-0. Zbl 0315.10035.
+
+2. Riemann, Bernhard (1859). "?ber die Anzahl der Primzahlen unter einer gegebenen Gr?sse". Monatsberichte der Berliner Akademie.. In Gesammelte Werke, Teubner, Leipzig (1892), Reprinted by Dover, New York (1953).
+
+3. Titchmarsh, E.C. (1986) The Theory of the Riemann Zeta Function. 2nd Revised (Heath-Brown, D.R. ) Edition, Oxford University Press, Oxford.
+
+4. Berry, M. V. "The Riemann-Siegel Expansion for the Zeta Function: High Orders and Remainders." Proc. Roy. Soc. London A 450, 439-462, 1995.
+
+5. The PARI~Group, PARI/GP version 2.12.0, Univ. Bordeaux, 2018,
+\url{http://pari.math.u-bordeaux.fr/}.
+
+6. Martin, J.P.D. "A useful approximation of the Riemann Zeta function away from the real axis using spectral filtering of the partial Euler product" (2025)
+http://dx.doi.org/10.6084/m9.figshare.28528652
+
+7. Martin, J.P.D. "Crucial steps for robust first quiescent region truncated partial Euler Product based approximations of closely spaced Riemann Zeta function non-trivial zeroes" (2025)
+http://dx.doi.org/10.6084/m9.figshare.29095232
+
+8. Martin, J.P.D. "Examples of spectrally filtered first quiescent region truncated partial Euler Product based approximations of Riemann Siegel Z functions for different L-functions and the two Davenport-Heilbronn 5-periodic functions on the critical line away from the real axis" (2025)
+http://dx.doi.org/10.6084/m9.figshare.29577545
+
+9. Martin, J.P.D. "For L-functions without poles spectrally filtered first quiescent region truncated partial Euler Product based estimates of Riemann-Siegel Z functions can provide useful standalone approximations about the real axis across the critical strip." (2025)
+https://dx.doi.org/10.6084/m9.figshare.29825609
+
+10. Martin, J.P.D. "A first order approximation about the real axis across the critical strip of the continuous version of $\sqrt{\zeta(s)\zeta(1-s)}$ using a spectrally filtered linear combination of the first quiescent region truncated partial Euler Product and the simple s=1 pole." (2025)
+https://dx.doi.org/10.6084/m9.figshare.29991979
+
+11. Martin, J.P.D. "Evidence of a sharp multi-modal distribution in the relative position of the highest Riemann Zeta peaks along the critical line in the piecewise intervals $[N^2\cdot 2\pi,(N+1)^2\cdot 2\pi),N\in\mathbb{Z}$ and a possible explanation using a heuristic approximation on the critical line of the indefinite integral of the Riemann Siegel Z function." (2025) https://dx.doi.org/10.6084/m9.figshare.30740681
+
+12. Martin, J.P.D. "Evidence of a sharp multi-modal distribution in the relative position of the highest Riemann Siegel Z function analogue peaks of 5 periodic 1st degree L-functions and Davenport Heilbronn functions, along the critical line in the piecewise intervals $[N^2\cdot \frac{2\pi}{5},(N+1)^2\cdot \frac{2\pi}{5}),N\in\mathbb{Z}$." (2026) https://dx.doi.org/10.6084/m9.figshare.30992710
+
+13. R Core Team (2017). R: A language and environment for statistical computing. R Foundation for
+Statistical Computing, Vienna, Austria. \url{https://www.R-project.org/}.
+
+14. RStudio Team (2015). RStudio: Integrated Development for R. RStudio, Inc., Boston, MA URL
+http://www.rstudio.com/.
+
+
