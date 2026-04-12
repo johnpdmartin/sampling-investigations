@@ -157,7 +157,7 @@ Qualitatively, from figure 1 it can be seen that
 \item equation (12) estimates of extreme peak height (magenta squares) are noticeably closer to the true peak height for $t < 10^{12}$ (red, green and blue solid circles from the different data sources) but some overestimates are observed. Similar to equation (14) however for higher t (on the log log plot scale) there is moderately useful agreement between the equation (12) estimates and the true values on the growth behaviour of the extreme Riemann Siegel Z function peak height with t. With the visual suggestion between 1e15 < t < 1e30 that magenta squares (spectrally filtered equation (12)) often appear (but not always) between the green solid circles (Tihanyi et al [16-18]) and the black crosses (spectrally filtered equation (14)).
 \end{itemize}
 
-Quantitatively, in figure 2 uses the same extreme peak height data from figure 1 but presents the ratios (i) |equation (12)|/|known peak height| (magenta squares), (ii) |equation (14)|/|known peak height| (black crosses). The figure also presents the ratio |equation (14))/|known peak height |Z| > 500| (green triangles) for large (but not all extreme) peak heights reported in Hiary [13].
+Quantitatively, figure 2 uses the same extreme peak height data from figure 1 but presents the ratios (i) |equation (12)|/|known peak height| (magenta squares), (ii) |equation (14)|/|known peak height| (black crosses). The figure also presents the ratio |equation (14))/|known peak height |Z| > 500| (green triangles) for large (but not all extreme) peak heights reported in Hiary [13].
 
 Hence in figure 2 it can be seen that
 \begin{itemize}
@@ -226,7 +226,7 @@ dk=dk[dk$V1 != "6578787583549202398.93000000000",]
 
 points(as.numeric(dk$V1),abs(as.numeric(dk$V4)),pch=0,cex=0.3,col=rgb(1,0,1,0.5))
 
-legend(x=5e17, y=500, legend=c("Kotnick + Odlyzko |Z| values","Tihanyi, Kovacs & Kovacs + Odlyzko |Z| values","Hiary & Bober |Z| values","(t/2/Pi)^0.25 truncation and spectral filtering EP preliminary |Z| values","~0.5*(t/2/Pi)^0.25 truncation and spectral filtering EP preliminary |Z| values"),pch=c(20,20,20,4,0),col=c("red",3,"darkblue",rgb(0,0,0,0.5),rgb(1,0,1,0.5)),lty=0,bg="white",cex=0.5)
+legend(x=5e17, y=500, legend=c("Kotnick + Odlyzko |Z| values","Tihanyi, Kovacs & Kovacs + Odlyzko |Z| values","Hiary & Bober |Z| values","(t/2/Pi)^0.25 truncation and spectral filtering EP preliminary |Z| values","~0.5*(t/2/Pi)^0.25 truncation and spectral filtering EP preliminary |Z| values"),pch=c(20,20,20,0,4),col=c("red",3,"darkblue",rgb(1,0,1,0.5),rgb(0,0,0,0.5)),lty=0,bg="white",cex=0.5)
 
 ```
 
