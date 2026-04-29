@@ -1,0 +1,857 @@
+---
+title: "Preliminary estimates of extreme Riemann Zeta function peak heights on three lines $s=\\{0+I\\cdot t, 1+I\\cdot t, 1.5+I\\cdot t\\}$ away from the real axis with $\\pm 1\\%, \\pm 1\\%, \\pm 0.1\\%$ accuracy for $10^{12} < t < 10^{40}$ using spectrally filtered heavily truncated partial Euler Product calculations."
+author: "John Martin"
+date: \today
+header-includes:  
+  - \usepackage{xcolor}
+  - \usepackage{pdflscape}
+  - \newcommand{\blandscape}{\begin{landscape}}
+  - \newcommand{\elandscape}{\end{landscape}}
+  - \usepackage{caption}
+output:
+  pdf_document:
+  fig_crop: no
+---
+  
+  
+  
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+
+```
+<!-- https://stackoverflow.com/questions/41655383/r-markdown-similar-feature-to-newcommand-in-latex/41664105 -->
+\newcommand{\mychi}{\raisebox{0pt}[1ex][1ex]{$\chi$}}
+
+## Executive summary 
+
+A comparison of known extreme and large Riemann Siegel Z function peak heights to spectrally filtered heavy truncated $N_{\frac{\sqrt{N_1}}{2}}\sim\frac{1}{2}\cdot\left(\sqrt{\frac{t}{2\pi}}\right)^{0.5}$ partial Euler Products of the Riemann Zeta Z function estimated peak heights on the  $s=\{0+I\cdot t, 1+I\cdot t\}$ lines with $\pm 1\%$ accuracy for 1e12 < t < 1e21 and the $s= 1.5+I\cdot t$ line with $\pm 0.1\%$ accuracy for 1e12 < t < 1e40. This behaviour is used to justify publication of the preliminary estimates of the height of extreme or large Riemann Zeta peaks heights (obtained from $N_{\frac{\sqrt{N_1}}{2}}$ based spectrally filtered partial Euler product calculations) on the  $s=\{0+I\cdot t, 1+I\cdot t\}$ lines in the interval $10^{22}<t<10^{40}$.
+ 
+## Introduction
+
+Various authors [1-18] have identified large and/or extreme Riemann Siegel Z function peaks \textbf{on the critical line}. Of these authors, Gourdon and Sebah [9] and  Kotnick [11] presented systematic tabulations of the growth of extreme Riemann Siegel Z function peaks up to t < $10^{13}$. Odlyzko and Schönhage [5] and Hiary [12] made significant algorithm improvements in Riemann Zeta function calculations and Tihanyi, Kovacs and Szűcs [15] and Tihanyi, Kovacs and Kovacs [16] introduced improvements to the searching method to find candidate locations for extremely large values of the Riemann zeta function. 
+
+
+In [19], spectrally filtered heavily truncated Euler Products at $N_{\frac{\sqrt{N_1}}{2}}\sim\frac{1}{2}\cdot\left(\sqrt{\frac{t}{2\pi}}\space\right)^{0.5}$ and $N_{\sqrt{N_1}}\sim\left(\sqrt{\frac{t}{2\pi}}\space\right)^{0.5}$ rather than $N_1$ truncation were attempted to provide fast \textbf{preliminary} estimates of extreme Riemann Siegel Z function peaks on the critical line in the range $1e8 < t < 1e40$ and exhibited $\pm 10\%$ accuracy for $t > 1e12$ compared to known peak heights. 
+
+
+In practice, spectrally filtered partial Euler Product based Riemann Siegel Z function calculation [19-25] requires a finite interval of the first order partial Euler Product approximation (using truncation at the first quiescent region $N_1 = \sqrt{\frac{t}{2\pi}}$) of the Riemann Siegel Z function to be fourier analyzed, the fourier components are then filtered and scaled conjugate reflection is performed to replaced the dropped frequency components in order to derive a good approximation of the fourier signal of the true Riemann Siegel Z function. The inverse fourier transform of the spectrally filtered partial Euler Product based Riemann Siegel Z function calculation (using truncation at the first quiescent region $N_1 = \sqrt{\frac{t}{2\pi}}$) then represents a good approximation of the true Riemann Siegel Z function for both Riemann Zeta function zero location and lineshape as unnecessary frequency components present in raw partial Euler Product calculations are removed by the fourier analysis with spectral filtering process. A practical issue for spectrally filtered partial Euler Product based Riemann Siegel Z function calculations is that due to the need for a \textbf{finite input spectrum interval} for fourier analysis the spectrally filtered partial Euler Product based Riemann Siegel Z function calculation with $N_1$ truncation of the partial Euler Product is technically slower to execute than the first order Riemann Siegel formula [26-28] which works as a useful approximation for a single t-coordinate away from the real axis. By using spectrally filtered heavily truncated Euler Products at $N_{\frac{\sqrt{N_1}}{2}}\sim\frac{1}{2}\cdot\left(\sqrt{\frac{t}{2\pi}}\space\right)^{0.5}$ rather than $N_1$ truncation based on [19] 256 fourier grid points over the interval t=t0+{-6.35,6.4} with spacing $\Delta t=0.05$ allows faster (than first order Riemann-Siegel formula calculations) preliminary screening of extreme and/or large Riemann Siegel Z function peak heights and location over a wider range of the imaginary axis co-ordinate away from the real axis. (The heavy truncation trades away the precision required for locating Rieman Zeta function zero crossings but has sufficient precision for extreme peak identification.)
+
+
+In this paper, the use of spectrally filtered partial Euler Product based calculations modified by using heavily truncated Euler Products at $N_{\frac{\sqrt{N_1}}{2}}\sim\frac{1}{2}\cdot\left(\sqrt{\frac{t}{2\pi}}\space\right)^{0.5}$ are attempted to provide \textbf{preliminary} estimates of extreme Riemann Siegel Z function peaks on the $s=\{0+I\cdot t, 1+I\cdot t, 1.5+I\cdot t\}$ lines in the range $1e8 < t < 1e40$ using the approximate functional relationship [25] existing between the negative and positive sidebands of the finite Riemann Siegel Z function fourier transform. Improved accuracy of the spectrally filtered heavily truncated Euler Products away from the critical line is observed since the higher frequency fourier components (which the heavy truncation omits) contribute less to the Riemann Siegel Z function signal away from the critical line.
+
+The input discrete spectra samples, the fourier transforms, the spectral filtering, the zeroth order sideband functional relationship approximation, the rescaled conjugate mirror reflection values and the inverse fourier transforms are calculated using Pari-GP [26] and graphing is performed using R [27] and RStudio IDE [28].
+
+
+## The Riemann Siegel Z function approximately estimated via spectrally filtered partial Euler Products
+
+
+The Riemann Zeta function is defined [29,32,33], in the complex plane by the integral 
+
+\begin{equation}
+\zeta(s) = \frac{\prod(-s)}{2\pi i}\int_{C_{\epsilon,\delta}} \frac{(-x)^s}{(e^{x}-1)x}dx
+\end{equation}
+
+
+where $s \thinspace \epsilon \thinspace \mathbb{C}$ and $C_{\epsilon,\delta}$ is the contour about the imaginary poles.
+
+The Riemann Zeta function has been shown to obey the functional equation [29,32,33]
+
+\begin{align}
+\zeta(s) &= \mychi(s)\zeta(1-s) \\
+&= 2^s\pi^{s-1}sin(\frac{\pi s}{2})\Gamma(1-s)\zeta(1-s) \label{eq:func} \\
+&\equiv e^{\log{\left[\mychi(s)\right]}}\zeta(1-s) \\
+&= e^{\left((s-1/2)\cdot\log{[\pi]}+\log\Gamma\left[(\frac{(1-s)}{2})\right]-\log\left[\Gamma(\frac{s}{2})\right]\right)}\zeta(1-s) \label{eq:altversion} \\ 
+&\equiv e^{-2\theta_{ext}(s)}\zeta(1-s)
+\end{align}
+
+where 
+
+\begin{equation}
+\mychi(z)=e^{\left((z-1/2)\cdot\log{[\pi]}+\log\Gamma\left[(\frac{(1-z)}{2})\right]-\log\left[\Gamma(\frac{z}{2})\right]\right)}
+\end{equation}
+
+from equation \eqref{eq:altversion} provides the most numerically stable version of calculating $\mychi(z)$ for the Pari-GP [26] calculations performed in this paper.
+
+For $\Re(s) > 1$, the infinite Euler Product of the primes absolutely converges to the infinite Riemann Zeta Dirichlet Series sum [29,32,33]
+
+\begin{equation}
+\zeta(s) = {\Large\sum_{k=1}^\infty} \frac{1}{k^s} = {\Large\prod_{\rho=2}^\infty} \frac{1}{(1-1/\rho^{s})} \qquad \text{for } \Re(s) > 1
+\end{equation}
+
+
+Of interest to this paper is obtaining (fast) preliminary estimates of extreme or large Riemann-Siegel Z function peak heights of the Riemann Zeta function across the complex plane at high t
+
+\begin{equation}
+Z_\zeta(s) = e^{I\cdot imag(\theta_{ext}(s))}\zeta(s)
+\end{equation}
+
+where (i) equation (8) is used to calculate the $|Z_\zeta(1.5+I\cdot t)|=|e^{I\cdot imag(\theta_{ext}(1.5+I\cdot t)))}\zeta(s)|=|e^{I\cdot imag(\theta_{ext}(1.5+I\cdot t)))}||\zeta(1.5+I\cdot t))|\equiv|\zeta(1.5+I\cdot t)|$ peak height reference values for t > 1e21 used in this paper, and (ii) $\theta {ext}(s)$ is the extended function version (applicable across the complex plane) of the well known Riemann-Siegel Theta function [29-33] on the critical line given that the spectrally filtered partial Euler Product based approximation of the Riemann-Siegel Z function truncated at the first quiescent region $N_1 = \sqrt{\frac{t}{2\pi}}$ approximated by
+
+\begin{align}
+Z_{\zeta}(s) &\approx e^{I\cdot imag(\theta_{ext}(s))}\left( \prod_{p=2}^{p\le \lfloor 1.25\cdot N_1\rfloor} \frac{1}{(1-\frac{1}{p^{s}})} + \mychi(s) \cdot \prod_{p=2}^{p\le \lfloor 1.25\cdot N_1\rfloor} \frac{1}{(1-\frac{1}{p^{(1-(s))}})}\right) \\
+&= EP_1 + EP_2
+\end{align}
+
+investigated in [20-25] used fourier analysis of finite spectrum intervals t=(t0-819.15,t0+819.2) based on a 32768 point fourier grid of spacing $\Delta t=0.05$ was a (more accurate) but slower calculation than first order Riemann Siegel formula calculations [29-31] such as equation (18) below (which requires only a single grid point). The 1.25 hyperparameter is employed [20-25] with full first quiescent region $N_1$ truncation as it was found to improve decimal place accuracy and its effect is interpreted as helping reduce spectral leakage under fourier analysis.
+
+To improve calculation speed for the \textbf{sole} purpose of estimating extreme Riemann Siegel Z function peak heights two improvements were identified [19]
+
+(i) The truncation threshold of the partial Euler Product can be lowered significantly and useful preliminary estimates of the extreme Riemann Siegel Z function peak height are still obtained. In this paper, the results of the following truncation threshold is reported
+
+$N_{\frac{\sqrt{N_1}}{2}}=\frac{1}{2}\cdot\left(\sqrt{\frac{t}{2\pi}}\space\right)^{0.5}$
+
+\begin{align}
+|Z_{\zeta}(s)| &\approx \left|e^{I\cdot imag(\theta_{ext}(s))}\left( \prod_{p=2}^{p\le \lfloor N_{\frac{\sqrt{N_1}}{2}}\rfloor} \frac{1}{(1-\frac{1}{p^{s}})} + \mychi(s) \cdot \prod_{p=2}^{p\le \lfloor N_{\frac{\sqrt{N_1}}{2}}\rfloor} \frac{1}{(1-\frac{1}{p^{(1-(s))}})}\right)\right| \\
+&= |EP_1 + EP_2|
+\end{align}
+ 
+ where when $Re(s) \ne 0.5$ the Riemann Siegel Z function has both real and imaginary components so $|Z_\zeta(1.5+I\cdot t)|$ is the natural way to rank extreme peaks and  
+(ii) The width of the analyzed spectrum can be lowered to t=(t0-6.35,t0+6.4) based on a 256 point fourier grid of spacing $\Delta t=0.05$
+
+with minimal loss in the estimated extreme peak height (i.e., the difference in extreme peak height of |Z| > 1000 was $\epsilon < 1$ between using a 32768 point grid and an 256 point grid of the same $\Delta t=0.05$ spacing and $N_{\frac{\sqrt{N_1}}{2}}$ truncation of the partial Euler Product) resulting in a 128x speed up in estimating extreme Riemann Siegel Z function peak height compared to [20-25] algorithm.
+
+The tradeoff for the above improvement in calculation speed (in preliminary estimates of extreme Riemann Siegel Z function heights) was the loss of precision to identify Riemann Zeta function zero locations. 
+
+As Re(s) varies the location of extreme and/or large Riemann siegel Z function peak moves slightly with respect to the critical line location (as well as the magnitude changing). Since this location shift is already covered by the width of the finite fourier sample grid encompassing (t0-6.35,t0+6.4) the nearest grid point to the extreme peak is occasionally found to be shifted by one grid point $\Delta t=0.05$ with respect its critical line t co-ordinate.
+
+This paper combines the approaches used in [19] (spectral filtering with heavy truncation) and [25] (spectral filtering with conjugate reflection using approximate functional relationship between finite Riemann Siegel Z function sidebands) to present preliminary estimates of extreme and/or large Riemann Siegel Z function peaks for the $s=\{0+I\cdot t, 1+I\cdot t, 1.5+I\cdot t\}$ lines away from the real axis.
+
+
+## Algorithm for spectrally filtered heavily truncated partial Euler Product based Riemann Siegel Z function peak estimates along the $s=\{0+I\cdot t, 1+I\cdot t, 1.5+I\cdot t\}$ lines
+
+The algorithm used for spectral filtering and splicing using Pari-GP language [26] FFT analysis and equation (12) when $Re(s) \ne 0.5$ consisted of
+
+\begin{enumerate}
+\item Obtain a discrete spectrum sample $\Delta t = (t_0-6.35,t_0+6.4)$, grid point spacing 0.05, $n\sim 256$ for the term $EP_1$ (when Re(s) > 0.5) OR the term $EP_2$ (when Re(s) < 0.5) respectively in equation (12), away from the real axis, using heavy truncation at $N_{\frac{\sqrt{N_1}}{2}}$ to greatly reduce computation time but expecting some inaccuracy in the estimated large and/or extreme peak height.
+\item use spectral filtering to retain only the discrete fourier transform components under Pari-GP [26] FFT analysis of (i) $EP_1$  i.e., the (-,0] angular frequencies OR (ii) $EP_2$  i.e., the [0,+) angular frequencies 
+\item splice together either 
+
+the (-,0] angular frequencies from $EP_1$  and the imputed values by conjugate reflection using the functional sideband relationship [25] prescription (shown in code, where the file "test" is $EP_1$ and res=Re(s)={0.5,1.5} for this paper)
+\subitem \begin{verbatim}
+logfun_chi3(res,t)=((res+I*t)-1/2)*log(Pi)+lngamma((1-(res+I*t))/2)-lngamma((res+I*t)/2);
+\\scaling factor for sval > 0.5
+fadj=listcreate(10);
+forstep(k=0,128,1,listput(fadj,abs(exp(logfun_chi3(res+I*exp(k*4*Pi/256/.05)*2*Pi)))));
+k=8;N=2^k;w=FFTinit(k);vhat1=FFT(Vec(test),w);
+fh=(concat((vhat1[1]),concat(conj(Vecrev(vecextract(vhat1,"130..256"))),
+concat((vhat1[129]),vecextract(vhat1,"130..256")))));
+forstep(k=2,128,1,fh[k]=fh[k]*fadj[k]);
+\end{verbatim}
+where vhat1 is the vector output of FFT($EP_1$)
+
+OR 
+
+the [0,+) angular frequencies from $EP_2$ and the imputed values by conjugate reflection using the functional sideband relationship [25] prescription (shown in code, where the file "test" is $EP_2$ and res=Re(s)=0.0 for this paper)
+\subitem \begin{verbatim}
+logfun_chi3(res,t)=((res+I*t)-1/2)*log(Pi)+lngamma((1-(res+I*t))/2)-lngamma((res+I*t)/2);
+\\scaling factor for sval < 0.5
+fadjneg=listcreate(10);
+forstep(k=0,128,1,listput(fadjneg,abs(exp(logfun_chi3(1-(res+I*exp(k*4*Pi/256/.05)*2*Pi))))));
+k=8;N=2^k;w=FFTinit(k);vhat2=FFT(Vec(test),w);
+fh=(concat((vhat2[1]),concat(((vecextract(vhat2,"2..128"))),
+concat((vhat2[129]),conj(Vecrev(vecextract(vhat2,"2..128")))))));
+forstep(k=2,128,1,fh[256+2-k]=fh[256+2-k]*fadjneg[k]);
+\end{verbatim}
+where vhat2 is the vector output of FFT($EP_2$).  
+\item \textbf{OPTIONAL for close spacings between non-trivial zeroes} execute and average fourier analyses of differing lengths from the original stored spectrum. Such averaging was attempted during research for [19] and showed that the \textbf{extreme peak height} minimally changed when analyzing 32768, 16384, 8192, 4096, 2048, 1024, 512 and 256 grid points respectively. So the published results only use 256 grid points of grid point spacing $\Delta t=0.05$. Therefore no averaging results of the fourier analysis of differing lengths was deemed necessary.
+\item \textbf{OPTIONAL} use interpolation of the final fitted results (spacing 0.05) onto a finer interpolation grid to estimate non-trivial zero positions. The interpolation prescribed this step is not performed in this paper as the single large peak height is the purpose of this paper's calculation.
+\end{enumerate}
+
+Note that (i) in the algorithm only one partial Euler Product term needs to be calculated (just $EP_1$ or $EP_2$) which reduces the the number of calculations required compared to naive application of equation (12) and (ii) compared to the critical line algorithm described in [19] the restrictions "real(vhat1[1])" and "real(vhat1[129])" appearing in [19] are relaxed to "(vhat1[1])" and "(vhat1[129])" and likewise for their vhat2 counterparts since the DC component of FFT($Z_\zeta(s)$) i.e. element [1] can be complex when $Re(s)\ne0.5$ and the same convention has been applied to the mid-spectrum element [129].
+
+## Results
+
+$\mathbf{s=0+I\cdot t}$ \textbf{line:}
+
+Using the above algorithm, Figure 1 presents the log(|Z|) versus log(t) growth
+
+(i) of high precision estimates of peak heights of extreme Riemann Siegel Z function belonging to the locations nearby reported by Kotnick [11] (solid red circles) for t < 1e13 and
+
+(ii) of preliminary estimates of peak heights of extreme Riemann Siegel Z function belonging to the locations nearby reported by (a) Kotnick [11] (black crosses), (b) Hiary [13], Hiary and Bober [14] (blue crosses), (c) Tihanyi et al [16-18] (green crosses) and (d) [19] (magenta triangles) using spectrally filtered heavily truncated Euler Product calculations based on equation (12).
+
+Qualitatively, from figure 1 it can be seen that
+\begin{itemize}
+\item equation (12) estimates of extreme peak height (black crosses) are initially lower than the true peak height for $t < 10^{12}$ (red solid circles).  
+\item the log-log plot of the $s=0+I\cdot t$ line extreme peak magnitude growth is \textbf{not} exactly linear for the interval shown. As a baseline guide the brown dashed line indicates a naive $\sqrt{\frac{t}{2\pi}}$ growth rate.
+ \end{itemize}
+
+The heuristic basis for the illustrated baseline behaviour is that (i) from the functional equation  $\zeta(1+I\cdot t)=\mychi(1+I\cdot t)\zeta(0+I\cdot t)$, (ii) empirically $1/|\mychi(1+I\cdot t)| \approx \sqrt{\frac{t}{2\pi}}$ for t > 4 for the interval displayed and (iii) presupposing that $|\zeta(1+I\cdot t)|$ for t > 2 has a naive baseline value of 1. Therefore the corresponding naive baseline growth rate for $|\zeta(0+I\cdot t)|$ would be $\frac{1}{\frac{1}{\sqrt{\frac{t}{2\pi}}}} \sim \sqrt{\frac{t}{2\pi}}$. Figure 1 then provides evidence that the extreme peak growth on the $s=0+I\cdot t$ line is greater than $\sqrt{\frac{t}{2\pi}}$ in the interval $1e6 < t < 1e40$.
+
+
+```{r comparing_taperedRScalculations_and_heavily_truncatedspectrallyfilteredEPcalculations, echo = FALSE,results = "asis", warning=FALSE,fig.height=7}
+
+df=read.csv("/home/john/pari/filtered_zetaEP_est_Sis_zeroline_kotnickinitialvalue_approx_256.csv",header=FALSE,sep=",",colClasses = "character")
+dg=read.csv("/home/john/pari/filtered_zetaEP_est_Sis_zeroline_tihanyiinitialvalue_approx_256.csv",header=FALSE,sep=",",colClasses = "character")
+dh=read.csv("/home/john/pari/filtered_zetaEP_est_Sis_zeroline_HiaryBoberinitialvalue_approx_256.csv",header=FALSE,sep=",",colClasses = "character")
+di=read.csv("/home/john/pari/filtered_zetaEP_est_Sis_zeroline_LLLsearchinitialvalue_approx_256.csv",header=FALSE,sep=",",colClasses = "character")
+
+xspan=range(as.numeric(df$V1),as.numeric(dg$V1),as.numeric(dh$V1),as.numeric(di$V1),1e50)
+yspan=range(20,as.numeric(df$V4),as.numeric(dg$V4),as.numeric(dh$V4),as.numeric(di$V4),1e23)
+plot(as.numeric(df$V1),abs(as.numeric(df$V5)),log="xy",xlim=xspan,ylim=yspan,pch=20,col="red",cex=0.3,
+     ylab="log(|peak height|)",xlab="log(t)");grid(col="gray2")
+points(as.numeric(df$V1),abs(as.numeric(df$V4)),pch=4,col=rgb(0,0,0,0.5),lty=2,cex=0.2)
+points((as.numeric(dg$V1)),as.numeric(dg$V4),pch=4,col="green",cex=0.2)
+points((as.numeric(dh$V1)),as.numeric(dh$V4),pch=4,col="darkblue",cex=0.2)
+
+points((as.numeric(di$V1)),as.numeric(di$V4),pch=6,col="magenta",cex=0.2)
+
+lines(c(1e0,1e40),0.5+sqrt(c(1e0,1e40)/2/pi),lty=2,col="brown")
+
+
+legend(x=1e21, y=1e7, legend=c("nearby Kotnick + Odlyzko peak locations exact peak height","nearby Kotnick + Odlyzko peak locations preliminary peak height","nearby Tihanyi, Kovacs & Kovacs + Odlyzko peak locations preliminary peak height","nearby Hiary & Bober peak locations preliminary peak height","nearby [19] LLL search peak locations preliminary peak height","baseline sqrt(t/2/Pi) growth rate comparison"),pch=c(20,4,4,4,25,-1),col=c("red","black","green","darkblue","magenta","brown"),lty=c(0,0,0,0,0,2),bg="white",pt.bg=c("white","white","white","white","magenta","white"),cex=0.5)
+
+```
+
+***Figure 1. Comparison using log|Z| versus log(t) scatterplot of (i) good precision extreme Riemann Siegel Z function peak heights on the $s=0+I\cdot t$ line between 1e6 < t < 1e13 (red solid circles) equation (16) and (ii) preliminary extreme Riemann Siegel Z function peak heights between 1e6 < t < 1e40 based on spectral filtered heavily truncated Euler products based approximation equation (12)***
+
+
+
+
+
+
+Quantitatively, figure 2 uses the same extreme peak height data from figure 1 but presents the ratios |equation (12)|/|equation (16)| for peaks (i) nearby Kotnick [11] and low lying Tihanyi [16-18] locations (black crosses)  and (ii) nearby [19] locations (magenta circles) for t < 1e21.
+
+Hence in figure 2 it can be seen that spectrally filtered heavily truncated estimates using equation (12)
+\begin{itemize}
+\item underestimates the extreme peak height for low t for the $s=0+I\cdot t$ line
+\item there is a slight overshoot the extreme peak height estimate and then evidence of recovery to ratio=1 beyond 1e12. The span of available true peak height data 1e5 < t < 1e21 is however currently \textbf{not} sufficient to show whether the approximations based on spectrally filtered equation (12) are properly converging to ratio=1.
+\item the spread of the ratio values for equation (14) in the region 1e10 < t < 1e21 is roughly (0.99,1.01) so a nominal accuracy performance for spectrally filtered equation (12) estimates is set at $\pm 1\%$ along the $s=0+I\cdot t$ line for 1e12 < t < 1e22. 
+\item comparing to figure 2 of [19] the accuracy of the preliminary estimates along the $s=0+I\cdot t$ line is much better $\pm 1\%$ than observed along the critical line $\pm 10\%$ which can be explained by the lower contribution of the higher frequency components of the fourier transform of $|Z_\zeta(s)|$ when $Re(s) \ne 0.5$ [25].
+\end{itemize}
+
+
+
+```{r ratio_comparison_taperedRScalculations_and_heavily_truncatedspectrallyfilteredEPcalculations, echo = FALSE,results = "asis", warning=FALSE,fig.height=7}
+
+plot(as.numeric(df$V1),abs(as.numeric(df$V4))/abs(as.numeric(df$V5)),log="x",xlim=c(1e5,1e44),ylim=c(0.7,1.05),pch=4,col="black",cex=0.7,
+     ylab="|Zapprox|/|Zknown|",xlab="log(t)");grid(col="gray2")
+points((as.numeric(dg$V1)),abs(as.numeric(dg$V4))/abs(as.numeric(dg$V5)),pch=4,col="black",cex=0.7)
+#points((as.numeric(dh$V1)),abs(as.numeric(dh$V4))/abs(as.numeric(dh$V5)),pch=4,col="black",cex=0.7)
+points((as.numeric(di$V1)),abs(as.numeric(di$V4))/abs(as.numeric(di$V5)),pch=20,col=rgb(1,0,1,0.5),cex=0.9)
+abline(h=c(0.99,1.01),lty=3,col="gray")
+
+
+
+legend(x=5e11,y=0.8,legend=c("numerator; preliminary extreme peak heights nearby Kotnick, Odlyzko, Tihanyi peak locations"," numerator; preliminary extreme peak heights nearby [19] LLL search peak locations","denominator; equation (16) in Appendix"),pch=c(4,20,-1),pt.cex=c(0.6,1),col=c("black",rgb(1,0,1,0.5),0),lty=0,bg="white",cex=0.6)
+
+```
+
+***Figure 2. Ratio of spectrally filtered preliminary approximation equation (12) estimates compared to 128 point tapered first order Riemann Siegel formula equation (16) calculations on the $s=0+I\cdot t$ line between 1e6 < t < 1e22. ***
+
+This $\pm 1\%$ accuracy for Re(s)=0 is then speculated to reasonably hold for the wider region 1e10 < t < 1e40 to be tabulated in table 1 given the wider benchmarking that was possible in [19] and figure 9 of this paper for Re(s)=0.5 and Re(s)=1.5 respectively.
+
+
+\tiny
+```{r grid_results_new_high_peaks, echo = FALSE,results = "asis", warning=FALSE} 
+
+
+table_grid_results <- as.data.frame(t(cbind(
+c("2302202919833091938191454510490853528294.00","2.30E39","194431305710368885883.770 +/-1%",NA),
+c("1756509788486806518440112005496184630402.00","1.75E39","162155514505848820381.936 +/-1%",NA),
+c("1083530769932923537813715159168803540949.00","1.08E39","131266457970117070657.973 +/-1%",NA),
+c("244718139402890211698201316945603869614.95","2.44E38","62886438673048831561.904 +/-1%",NA),
+c("40980891527423944866379351595135084705.00","4.09E37","24859762130880306393.267 +/-1%",NA),
+c("39985965418841204149359159903547304319.00","3.99E37","24199775010550699857.091 +/-1%",NA),
+c("32701888308714838788593397151662529169.00","3.27E37","22479178707689458676.960 +/-1%",NA),
+c("15305431401376096542184352490753570342.00","1.53E37","15223213265072005507.399 +/-1%",NA),
+c("3789770975227925929913752596153535659.00","3.78E36","7313624769720215415.496 +/-1%",NA),
+c("3106923501574575498217324013775898531.00","3.10E36","6743557842900054209.048 +/-1%",NA),
+c("2383973557258554840502898227029004956.00","2.38E36","6174914510877437573.904 +/-1%",NA),
+c("1613337044611093444653528186136557938.00","1.61E36","4905501949589912306.741 +/-1%",NA),
+c("284101325235663073414512322415836351.95","2.84E35","2076246465859109758.031 +/-1%",NA),
+c("228437899979252082766848904790108956.00","2.28E35","1850999951372771046.597 +/-1%",NA),
+c("190153064537019900206349886977800740.00","1.90E35","1658060811248277463.964 +/-1%",NA),
+c("167617402698692190502094182200775332.00","1.67E35","1523281443649590374.776 +/-1%",NA),
+c("128150196512905705499425650363369432.00","1.28E35","1387213882687408142.204 +/-1%",NA),
+c("60758714763756271032716974136770397.00","6.07E34","930536929619052947.883 +/-1%",NA),
+c("21230740937947194961712185865535245.00","2.12E34","564799651653303715.182 +/-1%",NA),
+c("19885272645274159978060436859288428.00","1.98E34","548743340890013903.751 +/-1%",NA),
+c("3598696183652727889399753988496854.95","3.59E33","228512741289707128.144 +/-1%",NA),
+c("3546129586355636707276899029799461.00","3.54E33","228847954374815364.887 +/-1%",NA),
+c("799009489684392745192175404403618.00","7.99E32","109332264140122742.792 +/-1%",NA),
+c("207410624279318332567566187765800.95","2.07E32","54867990864561785.503 +/-1%",NA),
+c("103421228622988210350418104528308.00","1.03E32","39081541584168172.473 +/-1%",NA),
+c("77636197551578282885077537989878.00","7.76E31","32954078208857492.667 +/-1%",NA),
+c("57402689537187327152922167612334.00","5.74E31","28476249722644635.446 +/-1%",NA),
+c("12563916677893023747500097076528.00","1.25E31","13529061135766840.094 +/-1%",NA),
+c("7536416471667947828910808698.00","7.53E27","317067683587301.512 +/-1%",NA),
+c("3286305986924467937604770718.00","3.28E27","212361404750938.347 +/-1%",NA),
+c("207977319495059838955685936.00","2.07E26","53671039955057.761 +/-1%",NA),
+c("195379681268348910290306782.00","1.95E26","51606692086767.551 +/-1%",NA),
+c("3047726497970993730122699.00","3.04E24","6414117433339.727 +/-1%",NA),
+c("249774893717336617897828.00","2.49E23","1710083817976.083 +/-1%",NA),
+c("103594925224774818957500.00","1.03E23","1140261222687.428 +/-1%",NA),
+c("61633023223668798329128.00","6.16E22","858695828946.967 +/-1%",NA),
+c("173641788002704982030.00","1.73E20","45164089099.550 +/-1%","45183636245.590"),
+c("89782960779401678872.95","8.97E19","32664881912.051 +/-1%","32643641931.144"),
+c("6668512732743895218.00","6.66E18","8830382750.480 +/-1%","8820038884.978"),
+c("2811690412751902758.90","2.81E18","5703654727.312 +/-1%","5697044785.555"),
+c("927083404338712008.00","9.27E17","3219323351.441 +/-1%","3218259647.665"),
+c("472353376312336470.00","4.72E17","2219866408.026 +/-1%","2219452533.668"),
+c("45698266087910604.00","4.56E16","712702694.460 +/-1%","713070666.111"),
+c("6107360564274685.00","6.10E15","253913746.543 +/-1%","254266067.259"),
+c("3897826077577121.00","3.89E15","198811620.863 +/-1%","198752525.496"),
+c("3758358676276705.00","3.75E15","193810465.306 +/-1%","194013897.355"),
+c("2641348786316487.00","2.64E15","161943223.012 +/-1%","162192765.024"),
+c("486153633057302.95","4.86E14","69701365.943 +/-1%","69176714.750"),
+c("234578622590902.00","2.34E14","47316174.875 +/-1%","47189239.857"),
+c("126430847573809.95","1.26E14","34129734.866 +/-1%","34085720.150"),
+c("95913486256898.95","9.59E13","29572095.440 +/-1%","29619932.479"),
+c("14223012917203.00","1.42E13","11475603.915 +/-1%","11452031.799"),
+c("4779391590262.05","4.77E12","6455719.203 +/-1%","6450055.076"),
+c("3556019595338.05","3.55E12","5544234.143 +/-1%","5542856.436"),
+c("594979079066.05","5.94E11","2286244.573 +/-1%","2247410.031"),
+c("249284579994.95","2.49E11","1403852.026 +/-1%","1399023.121"),
+c("23065530804.95","2.30E10","422578.873 +/-1%","420040.253"),
+c("1387123310.00","1.38E9","99184.210 +/-1%","103517.944"),
+c("102805259.025","1.02E8","24822.570 +/-1%","25766.801")
+)))
+
+
+colnames(table_grid_results) = c("nearest grid t co-ordinate of peak", "|t|",  
+"preliminary peak magnitude","|zeta(0.0+I*t)|")
+
+
+knitr::kable(table_grid_results,  caption = "Grid search location $\\Delta t=0.05$ (column 1) and preliminary height estimate of additional large Riemann Zeta peaks (column 3) using an approximate spectrally filtered Euler Product calculation employing the heavily reduced threshold $N_{\\frac{\\sqrt{N_1}}{2}} =  \\frac{1}{2}\\cdot\\left\\lfloor\\left(\\frac{t}{2\\pi}\\right)^{0.25}\\right\\rfloor$. The heavy truncation in the EP calculations results in loss of the precision required for identifying Riemann Zeta zeroes but remains sufficient for preliminary estimates of (~+/- 1% accuracy) large peak heights on the critical line for $1e10 < t < 1e22$ (and by speculation for $1e22 < t < 1e40$). The righthand column (if available) presents the |Z| value obtained using first order Riemann Siegel formula with 128 endpoint tapering calculations.",
+             align = c("l","r","r","r"),longtable=TRUE)
+
+
+
+```
+\normalsize
+
+Table 1 presents a comparison of the preliminary estimates using equation (12) and the 3+ decimal place accuracy of equation (16) estimates for absolute value extreme Riemann Siegel Z function peaks  $|Z_\zeta(0+I\cdot t)|$ along the $s=0+I\cdot t$ line. The peak locations are nearby the peak locations reported by [19] on the critical line. Typically, given the results are from a fourier analysis grid with input spectrum spacing $\Delta t = 0.05$ the peak locations along the $s=0+I\cdot t$ line are only $\{-0.05,0,0.05\}$ different from the locations reported in [19] observed alog the critical line.
+
+Of particular note is that the growth of $|Z_\zeta(0+I\cdot t)|$ for these extreme peak locations in Table 1 appears strongly monotonic which was not the case for the corresponding table in [19] on the critical line.
+
+
+\clearpage 
+
+$\mathbf{s=1+I\cdot t}$ \textbf{line:}
+
+Using the above spectral filtering algorithm and equation (16), Figure 3 presents the |Z| versus log(t) growth of
+
+(i) good precision estimates of peak heights of extreme Riemann Siegel Z function belonging to the locations nearby reported by Kotnick [11] (solid red circles) for t < 1e13 based on equation (16) and
+
+(ii) preliminary estimates of peak heights of extreme Riemann Siegel Z function belonging to the locations nearby reported by (a) Kotnick [11] (black crosses), (b) Hiary [13], Hiary and Bober [14] (blue crosses), (c) Tihanyi et al [16-18] (green crosses) and (d) [19] (magenta triangles) using spectrally filtered heavily truncated Euler Product calculations based on equation (12).
+
+
+
+```{r comparing_oneline_taperedRScalculations_and_heavily_truncatedspectrallyfilteredEPcalculations, echo = FALSE,results = "asis", warning=FALSE,fig.height=7}
+
+df=read.csv("/home/john/pari/filtered_zetaEP_est_Sis_oneline_kotnickinitialvalue_approx_256.csv",header=FALSE,sep=",",colClasses = "character")
+dg=read.csv("/home/john/pari/filtered_zetaEP_est_Sis_oneline_tihanyiinitialvalue_approx_256.csv",header=FALSE,sep=",",colClasses = "character")
+dh=read.csv("/home/john/pari/filtered_zetaEP_est_Sis_oneline_HiaryBoberinitialvalue_approx_256.csv",header=FALSE,sep=",",colClasses = "character")
+di=read.csv("/home/john/pari/filtered_zetaEP_est_Sis_oneline_LLLsearchinitialvalue_approx_256.csv",header=FALSE,sep=",",colClasses = "character")
+
+
+xspan=(range(as.numeric(df$V1),as.numeric(dg$V1),as.numeric(dh$V1),as.numeric(di$V1),1e50))
+yspan=range(as.numeric(df$V4),as.numeric(dg$V4),as.numeric(dh$V4),as.numeric(di$V4),10.5)
+plot((as.numeric(df$V1)),abs(as.numeric(df$V5)),log="x",xlim=xspan,ylim=yspan,pch=20,col="red",cex=0.3,
+     ylab="|peak height|",xlab="log(t)");grid(col="gray2")
+points(as.numeric(df$V1),abs(as.numeric(df$V4)),pch=4,col=rgb(0,0,0,0.5),lty=2,cex=0.2)
+points((as.numeric(dg$V1)),as.numeric(dg$V4),pch=4,col="green",cex=0.2)
+points((as.numeric(dh$V1)),as.numeric(dh$V4),pch=4,col="darkblue",cex=0.2)
+points((as.numeric(di$V1)),as.numeric(di$V4),pch=6,col="magenta",cex=0.2)
+
+
+
+legend(x=1e21, y=7, legend=c("nearby Kotnick + Odlyzko peak locations exact peak height","nearby Kotnick + Odlyzko peak locations preliminary peak height","nearby Tihanyi, Kovacs & Kovacs + Odlyzko peak locations preliminary peak height","nearby Hiary & Bober peak locations preliminary peak height","nearby [19] LLL search peak locations preliminary peak height"),pch=c(20,4,4,4,25),col=c("red","black","green","darkblue","magenta"),pt.bg=c("white","white","white","white","magenta"),lty=c(0,0,0,0,0),bg="white",cex=0.5)
+
+
+```
+
+***Figure 3. Comparison using |Z| versus log(t) scatterplot of (i) good precision extreme Riemann Siegel Z function peak heights on the $s=1+I\cdot t$ line between 1e6 < t < 1e13 (red solid circles) equation (16) and (ii) preliminary extreme Riemann Siegel Z function peak heights between 1e6 < t < 1e40 based on spectral filtered heavily truncated Euler products based approximation equation (12)***
+
+\clearpage
+
+Qualitatively, from figure 3 it can be seen that
+\begin{itemize}
+\item equation (12) estimates of extreme peak height (black crosses) are initially lower than the true peak height for $t < 10^{9}$ (red solid circles) but eventually reach reasonable agreement with the good precision equation (16) estimates between $10^{9} < t < 10^{13}$.  
+\end{itemize}
+
+Quantitatively, figure 4 uses the same extreme peak height data from figure 3 but presents the ratios |equation (12)|/|equation (16)| for peaks (i) derived nearby Kotnick [11] and low lying Tihanyi [16-18] locations (black crosses)  and (ii) nearby [19] locations (magenta circles) for t < 1e21.
+
+Hence in figure 4 it can be seen that spectrally filtered heavily truncated estimates using equation (12)
+\begin{itemize}
+\item underestimates the extreme peak height for low t for the $s=1+I\cdot t$ line
+\item there is a slight overshoot the extreme peak height estimate and then evidence of recovery to ratio=1 beyond 1e12. The span of available true peak height data 1e5 < t < 1e21 is however currently \textbf{not} sufficient to show whether the approximations based on spectrally filtered equation (12) are properly converging to ratio=1.
+\item the spread of the ratio values for equation (12) in the region 1e10 < t < 1e21 is roughly (0.99,1.01) so a nominal accuracy performance for spectrally filtered equation (12) estimates is set at $\pm 1\%$ along the $s=0+I\cdot t$ line for 1e12 < t < 1e22. 
+\item comparing to figure 2 of [19] the accuracy of the preliminary estimates along the $s=1+I\cdot t$ line is much better $\pm 1\%$ than observed along the critical line $\pm 10\%$ which can be explained by the lower contribution of the higher frequency components of the fourier transform of $|Z_\zeta(s)|$ when $Re(s) \ne 0.5$ [25].
+\end{itemize}
+
+On even cursory inspection figures 2 and 4 are basically the same scatterplots but independently calculated using $s=0+I\cdot t$ and $s=1+I\cdot t$ inputs and in hindsight should exhibit the same ratio behaviour due to the Riemann Zeta functional equation. 
+
+Numerically, the independent spectral filtering based calculations using 58 digit precision under Pari-GP [26] computation do closely follow the functional equation behaviour, for example
+
+when t0=927083404338712008,
+
+At $s=0+I\cdot t0$, |Z|=3219323351.4411029188415423827222407873067510328955 using spectral filtering of equation (12)
+
+using the functional equation $|Z|\cdot\mychi(1+I\cdot t0) \equiv 8.3809862956570668036325560070816853423454059289737$ 
+
+
+At $s=1+I\cdot t0$, |Z|=8.3809862956570668036270338532171408878901737023153 using spectral filtering of equation (12)
+
+So the Pari-GP [26] based spectral filtering calculations contain enough precision to demonstrate the Riemann Zeta functional equation behaviour.
+
+Currently, figure 4 contains an extra data point (compared to figure 2) by accessing the CoCalc platform [34] at
+
+$s=1+I\cdot 6436526919750171929565.996$ i.e. 6.43e21
+
+
+|Zknown|=8.6834122929229958833373942001201198419876975974308 equation (16) using CoCalc platform [34]
+
+CPU time=4x47.5 = 190 hrs
+
+|Zapprox|=8.6856918716480791787548727571430305415832130555602 spectrally filtered equation (12)
+
+CPU time=6 secs
+
+ratio |Zapprox|/|Zknown| = 1.000262...
+
+as further benchmarking testing continues. It should be noted that equation (16) has low RAM requirements but the spectral filtered equation (12) calculations have increasing RAM requirements as t increases in order to reuse log(prime) values for all 256 grid points (hence why the current published t value limit < 1e40 in this paper).
+
+
+
+
+
+```{r ratio_comparison_oneline_taperedRScalculations_and_heavily_truncatedspectrallyfilteredEPcalculations, echo = FALSE,results = "asis", warning=FALSE,fig.height=7}
+
+plot(as.numeric(df$V1),abs(as.numeric(df$V4))/abs(as.numeric(df$V5)),log="x",xlim=c(1e5,1e44),ylim=c(0.7,1.05),pch=4,col="black",cex=0.7,
+     ylab="|Zapprox|/|Zknown|",xlab="log(t)");grid(col="gray2")
+points((as.numeric(dg$V1)),abs(as.numeric(dg$V4))/abs(as.numeric(dg$V5)),pch=4,col="black",cex=0.7)
+points((as.numeric(di$V1)),abs(as.numeric(di$V4))/abs(as.numeric(di$V5)),pch=20,col=rgb(1,0,1,0.5),cex=0.9)
+abline(h=c(0.99,1.01),lty=3,col="gray")
+
+
+
+
+legend(x=5e11,y=0.75,legend=c("numerator; preliminary extreme peak heights nearby Kotnick, Odlyzko, Tihanyi peak locations"," numerator; preliminary extreme peak heights nearby [19] LLL search peak locations","denominator; equation (16) in Appendix"),pch=c(4,20,-1),pt.cex=c(0.6,1),col=c("black",rgb(1,0,1,0.5),0),lty=0,bg="white",cex=0.6)
+
+```
+
+***Figure 4. Ratio of spectrally filtered preliminary approximation equation (12) estimates compared to 128 point tapered first order Riemann Siegel formula equation (16) calculations on the $s=1+I\cdot t$ line between 1e6 < t < 1e22. ***
+
+This $\pm 1\%$ accuracy for Re(s)=1, in figure 4 is then speculated to reasonably hold for the wider region 1e10 < t < 1e40 to be tabulated in table 2 given the wider benchmarking that was possible in [19] and figure 9 of this paper for Re(s)=0.5 and Re(s)=1.5 respectively.
+
+
+\clearpage
+
+
+\tiny
+```{r grid_results_new_high_peaks_oneline, echo = FALSE,results = "asis", warning=FALSE} 
+
+
+table_grid_results <- as.data.frame(t(cbind(
+c("2302202919833091938191454510490853528294.00","2.30E39","10.157441 +/-1%",NA),
+c("1756509788486806518440112005496184630402.00","1.75E39","9.698316 +/-1%",NA),
+c("1083530769932923537813715159168803540949.00","1.08E39","9.995986 +/-1%",NA),
+c("244718139402890211698201316945603869614.95","2.44E38","10.076596 +/-1%",NA),
+c("40980891527423944866379351595135084705.00","4.09E37","9.734108 +/-1%",NA),
+c("39985965418841204149359159903547304319.00","3.99E37","9.592845 +/-1%",NA),
+c("32701888308714838788593397151662529169.00","3.27E37","9.853351 +/-1%",NA),
+c("15305431401376096542184352490753570342.00","1.53E37","9.753791 +/-1%",NA),
+c("3789770975227925929913752596153535659.00","3.78E36","9.417077 +/-1%",NA),
+c("3106923501574575498217324013775898531.00","3.10E36","9.589892 +/-1%",NA),
+c("2383973557258554840502898227029004956.00","2.38E36","10.024671 +/-1%",NA),
+c("1613337044611093444653528186136557938.00","1.61E36","9.680790 +/-1%",NA),
+c("284101325235663073414512322415836351.95","2.84E35","9.764099 +/-1%",NA),
+c("228437899979252082766848904790108956.00","2.28E35","9.707608 +/-1%",NA),
+c("190153064537019900206349886977800740.00","1.90E35","9.531005 +/-1%",NA),
+c("167617402698692190502094182200775332.00","1.67E35","9.326324 +/-1%",NA),
+c("128150196512905705499425650363369432.00","1.28E35","9.713454 +/-1%",NA),
+c("60758714763756271032716974136770397.00","6.07E34","9.462791 +/-1%",NA),
+c("21230740937947194961712185865535245.00","2.12E34","9.716319 +/-1%",NA),
+c("19885272645274159978060436859288428.00","1.98E34","9.754239 +/-1%",NA),
+c("3598696183652727889399753988496854.95","3.59E33","9.548337 +/-1%",NA),
+c("3546129586355636707276899029799461.00","3.54E33","9.632958 +/-1%",NA),
+c("799009489684392745192175404403618.00","7.99E32","9.695323 +/-1%",NA),
+c("207410624279318332567566187765800.95","2.07E32","9.549782 +/-1%",NA),
+c("103421228622988210350418104528308.00","1.03E32","9.631874 +/-1%",NA),
+c("77636197551578282885077537989878.00","7.76E31","9.374907 +/-1%",NA),
+c("57402689537187327152922167612334.00","5.74E31","9.421208 +/-1%",NA),
+c("12563916677893023747500097076528.00","1.25E31","9.567425 +/-1%",NA),
+c("7536416471667947828910808698.00","7.53E27","9.155023 +/-1%",NA),
+c("3286305986924467937604770718.00","3.28E27","9.285633 +/-1%",NA),
+c("207977319495059838955685936.00","2.07E26","9.328717 +/-1%",NA),
+c("195379681268348910290306782.00","1.95E26","9.254570 +/-1%",NA),
+c("3047726497970993730122699.00","3.04E24","9.209559 +/-1%",NA),
+c("249774893717336617897828.00","2.49E23","8.576951 +/-1%",NA),
+c("103594925224774818957500.00","1.03E23","8.880247 +/-1%",NA),
+c("61633023223668798329128.00","6.16E22","8.670068 +/-1%",NA),
+c("173641788002704982030.00","1.73E20","8.591244 +/-1%","8.594962"),
+c("89782960779401678872.95","8.97E19","8.641200 +/-1%","8.635581"),
+c("6668512732743895218.00","6.66E18","8.571463 +/-1%","8.561422"),
+c("2811690412751902758.90","2.81E18","8.526276 +/-1%","8.516395"),
+c("927083404338712008.00","9.27E17","8.380986 +/-1%","8.378217"),
+c("472353376312336470.00","4.72E17","8.096237 +/-1%","8.094728"),
+c("45698266087910604.00","4.56E16","8.356962 +/-1%","8.361277"),
+c("6107360564274685.00","6.10E15","8.144217 +/-1%","8.155518"),
+c("3897826077577121.00","3.89E15","7.982160 +/-1%","7.979788"),
+c("3758358676276705.00","3.75E15","7.924430 +/-1%","7.932748"),
+c("2641348786316487.00","2.64E15","7.898412 +/-1%","7.910583"),
+c("486153633057302.95","4.86E14","7.923999 +/-1%","7.864354"),
+c("234578622590902.00","2.34E14","7.743821 +/-1%","7.723047"),
+c("126430847573809.95","1.26E14","7.608452 +/-1%","7.598640"),
+c("95913486256898.95","9.59E13","7.568890 +/-1%","7.581133"),
+c("14223012917203.00","1.42E13","7.627279 +/-1%","7.611612"),
+c("4779391590262.05","4.77E12","7.401985 +/-1%","7.395491"),
+c("3556019595338.05","3.55E12","7.369693 +/-1%","7.367862"),
+c("594979079066.05","5.94E11","7.429537 +/-1%","7.303338"),
+c("249284579994.95","2.49E11","7.047962 +/-1%","7.023718"),
+c("23065530804.95","2.30E10","6.974546 +/-1%","6.932647"),
+c("1387123310.00","1.38E9","6.675363 +/-1%","6.967035"),
+c("102805259.025","1.02E8","6.136616 +/-1%","6.370049")
+)))
+
+
+colnames(table_grid_results) = c("nearest grid t co-ordinate of peak", "|t|",  
+"preliminary peak magnitude","|zeta(1+I*t)|")
+
+
+knitr::kable(table_grid_results,  caption = "Grid search location $\\Delta t=0.05$ (column 1) and preliminary height estimate of additional large Riemann Zeta peaks (column 3) using an approximate spectrally filtered Euler Product calculation employing the heavily reduced threshold $N_{\\frac{\\sqrt{N_1}}{2}} =  \\frac{1}{2}\\cdot\\left\\lfloor\\left(\\frac{t}{2\\pi}\\right)^{0.25}\\right\\rfloor$. The heavy truncation in the EP calculations results in loss of the precision required for identifying Riemann Zeta zeroes but remains sufficient for preliminary estimates of (~+/- 1% accuracy) large peak heights on the critical line for $1e10 < t < 1e22$ (and by speculation for $1e22 < t < 1e40$). The righthand column (if available) presents the |Z| value obtained using first order Riemann Siegel formula with 128 endpoint tapering calculations.",
+             align = c("l","r","r","r"),longtable=TRUE)
+
+
+
+```
+\normalsize
+
+Table 2 presents a comparison of the preliminary estimates using equation (12) and the 3+ decimal place accuracy of equation (16) estimates for absolute value extreme Riemann Siegel Z function peaks  $|Z_\zeta(1+I\cdot t)|$ along the $s=1+I\cdot t$ line. The peak locations are nearby the peak locations reported by [19] on the critical line. Typically, given the results are from a fourier analysis grid with input spectrum spacing $\Delta t = 0.05$ the peak locations along the $s=1+I\cdot t$ line are only $\{-0.05,0,0.05\}$ different from the locations reported in [19] observed alog the critical line.
+
+Figure 5 below represents the same data as figure 3 but displayed using a |Z| versus log(log(t)) scatterplot. Qualitatively, from figure 5 it can be seen that
+\begin{itemize}
+\item the |Z| versus log(log(t)) plot of the $s=1+I\cdot t$ line extreme peak magnitude growth is slowing down for the highest t values in the interval shown providing some empirical evidence that the extreme peak height growth rate on the $s=1+I\cdot t$ line is < log(log(t)) for the interval 1e6 < t < 1e40. 
+ \end{itemize}
+
+
+```{r comparing_oneline_taperedRScalculations_and_heavily_truncatedspectrallyfilteredEPcalculations_loglogt_version, echo = FALSE,results = "asis", warning=FALSE,fig.height=7}
+
+xspan=log(range(as.numeric(df$V1),as.numeric(dg$V1),as.numeric(dh$V1),as.numeric(di$V1),1e50))
+yspan=range(as.numeric(df$V4),as.numeric(dg$V4),as.numeric(dh$V4),as.numeric(di$V4),10.5)
+plot(log(as.numeric(df$V1)),abs(as.numeric(df$V5)),log="x",xlim=xspan,ylim=yspan,pch=20,col="red",cex=0.3,
+     ylab="|peak height|",xlab="log(log(t))");grid(col="gray2")
+points(log(as.numeric(df$V1)),abs(as.numeric(df$V4)),pch=4,col=rgb(0,0,0,0.5),lty=2,cex=0.2)
+points(log(as.numeric(dg$V1)),as.numeric(dg$V4),pch=4,col="green",cex=0.2)
+points(log(as.numeric(dh$V1)),as.numeric(dh$V4),pch=4,col="darkblue",cex=0.2)
+points(log(as.numeric(di$V1)),as.numeric(di$V4),pch=6,col="magenta",cex=0.2)
+
+legend(x=log(1e13), y=6, legend=c("nearby Kotnick + Odlyzko peak locations exact peak height","nearby Kotnick + Odlyzko peak locations preliminary peak height","nearby Tihanyi, Kovacs & Kovacs + Odlyzko peak locations preliminary peak height","nearby Hiary & Bober peak locations preliminary peak height","nearby [19] LLL search peak locations preliminary peak height"),pch=c(20,4,4,4,25),col=c("red","black","green","darkblue","magenta"),pt.bg=c("white","white","white","white","magenta"),lty=c(0,0,0,0,0),bg="white",cex=0.5)
+
+```
+
+***Figure 5. Comparison using |Z| versus log(log(t)) scatterplot of (i) good precision extreme Riemann Siegel Z function peak heights on the $s=1+I\cdot t$ line between 1e6 < t < 1e13 (red solid circles) equation (16) and (ii) preliminary extreme Riemann Siegel Z function peak heights between 1e6 < t < 1e40 based on spectral filtered heavily truncated Euler products based approximation equation (12)***
+
+
+
+\clearpage
+
+$\mathbf{s=1.5+I\cdot t}$ \textbf{line:}
+
+Using the above spectral filtering algorithm and equation (8), Figure 6 presents the |Z| versus log(t) growth of
+
+(i) ~6 decimal place precision estimates of peak heights of extreme Riemann Siegel Z function belonging to the locations nearby reported by Kotnick [11] (solid red circles) for t < 1e13 based on equation (16),
+
+(ii) preliminary estimates of peak heights of extreme Riemann Siegel Z function belonging to the locations nearby reported by (a) Kotnick [11] (black crosses), (b) Hiary [13], Hiary and Bober [14] (blue crosses), (c) Tihanyi et al [16-18] (green crosses) and (d) [19] (magenta triangles) using spectrally filtered heavily truncated Euler Product calculations based on equation (12),
+
+(iii) ~6 decimal place precision estimate of peak height of a \textbf{large but not extreme} Riemann Siegel Z function peak |Z|=2.4233872854839288869837694110748369725756299326622 at $s=1.5+I\cdot 39246764589894309155251169284104.100622$ confirming the preliminary spectral filtering estimate from equation (12) (blue cross) nearby the reported $t= 39246764589894309155251169284104.050622$ location (black circle) which had a extreme Riemann Siegel Z function peak on the critical line reported by Hiary [13], Hiary and Bober [14], and
+
+(iv) ~6 decimal place precision estimates of peak heights of likely extreme Riemann Siegel Z function peaks nearby $s=1.5+I\cdot 1365681057030674482103304468891389645545741053$ and $s=1.5+I\cdot 261409419268328144234497983633649591532920417313$ (black circles).
+
+Qualitatively, from figure 6 it can be seen that
+\begin{itemize}
+\item equation (12) estimates of extreme peak height (black crosses) are initially lower than the true peak height for $t < 10^{9}$ (red solid circles) but eventually reach reasonable agreement with the good precision equation (8) estimates between $10^{9} < t < 10^{13}$.
+\item as mentioned there is good agreement between the preliminary estimate and equation (8) estimates for $s=1.5+I\cdot 39246764589894309155251169284104.100622$
+ \end{itemize}
+
+Quantitatively, figure 7 uses the same extreme peak height data from figure 6 but presents the ratios |equation (12)|/|equation (8)| for peaks (i) nearby Kotnick [11], Tihanyi [16-18] and Hiary, Bober locations [13,14] (black crosses)  and (ii) nearby [19] locations (magenta circles) for t < 1e21.
+
+Hence in figure 7 it can be seen that spectrally filtered heavily truncated estimates using equation (12)
+\begin{itemize}
+\item underestimates the extreme peak height for low t for the $s=1.5+I\cdot t$ line
+\item there is a slight overshoot the extreme peak height estimate and then evidence of recovery to ratio=1 beyond 1e12. The span of available true peak height data 1e5 < t < 1e40 shows the approximations based on spectrally filtered equation (12) are reasonably converging to ratio=1 in the region 1e12 < t < 1e40 but it would good to increase the investigated region as it may become necessary to tweak the spectrally filtered equation (12) calculations by increasing Pari-GP [26] precision beyond 58 digits and/or increase the number of grid points and/or change grid spacing to maintain accuracy as $t \rightarrow \infty$.
+\item the spread of the ratio values for equation (14) in the region 1e10 < t < 1e21 is roughly (0.999,1.001) so a nominal accuracy performance for spectrally filtered equation (12) estimates is set at $\pm 0.1\%$ along the $s=1.5+I\cdot t$ line for 1e12 < t < 1e40. 
+\item comparing to figure 2 of [19] and figures 2 and 4 of this paper, the accuracy of the preliminary estimates along the $s=1.5+I\cdot t$ line is much better $\pm 0.1\%$ than observed along the critical line $\pm 10\%$ and the Re(s)={0,1} lines $\pm 1\%$ which can be explained by the lower contribution of the higher frequency components of the fourier transform of $|Z_\zeta(s)|$ when Re(s) is far away from 0.5 [25].
+\end{itemize}
+
+
+```{r comparing_onepointfiveline_taperedRScalculations_and_heavily_truncatedspectrallyfilteredEPcalculations, echo = FALSE,results = "asis", warning=FALSE,fig.height=7}
+
+df=read.csv("/home/john/pari/filtered_zetaEP_est_Sis_onepointfiveline_kotnickinitialvalue_approx_256.csv",header=FALSE,sep=",",colClasses = "character")
+dg=read.csv("/home/john/pari/filtered_zetaEP_est_Sis_onepointfiveline_tihanyiinitialvalue_approx_256.csv",header=FALSE,sep=",",colClasses = "character")
+dh=read.csv("/home/john/pari/filtered_zetaEP_est_Sis_onepointfiveline_HiaryBoberinitialvalue_approx_256.csv",header=FALSE,sep=",",colClasses = "character")
+di=read.csv("/home/john/pari/filtered_zetaEP_est_Sis_onepointfiveline_LLLsearchinitialvalue_approx_256.csv",header=FALSE,sep=",",colClasses = "character")
+
+
+xspan=range(as.numeric(df$V1),as.numeric(dg$V1),as.numeric(dh$V1),as.numeric(di$V1),1e50)
+yspan=range(as.numeric(df$V4),as.numeric(dg$V4),as.numeric(dh$V4),as.numeric(di$V4),2.6)#,(as.numeric(dtest$V2)))
+plot(as.numeric(df$V1),abs(as.numeric(df$V5)),log="x",xlim=xspan,ylim=yspan,pch=20,col="red",cex=0.3,
+     ylab="|peak height|",xlab="log(t)");grid(col="gray2")
+points((as.numeric(df$V1)),abs(as.numeric(df$V4)),pch=4,col=rgb(0,0,0,0.5),lty=2,cex=0.2)
+points((as.numeric(dg$V1)),as.numeric(dg$V4),pch=4,col="green",cex=0.2)
+points((as.numeric(dh$V1)),as.numeric(dh$V4),pch=4,col="darkblue",cex=0.2)
+points((as.numeric(di$V1)),as.numeric(di$V4),pch=6,col="magenta",cex=0.2)
+
+points(39246764589894309155251169284104.100622,2.4233,cex=0.6)# convergent EP calculation equation (8) Re(s)=1.5 
+
+points(1365681057030674482103304468891389645545741053,2.5635658737915189903212252155690151264676779664884,cex=0.6)# convergent EP calculation equation (8) Re(s)=1.5 
+points(261409419268328144234497983633649591532920417313,2.5535621308342341910322311167531021940772218158340,cex=0.6)# convergent EP calculation equation (8) Re(s)=1.5 
+
+
+
+legend(x=1e21, y=2.35, legend=c("nearby Kotnick + Odlyzko peak locations exact peak height","nearby Kotnick + Odlyzko peak locations preliminary peak height","nearby Tihanyi, Kovacs & Kovacs + Odlyzko peak locations preliminary peak height","nearby Hiary & Bober peak locations preliminary peak height","nearby [19] LLL search peak locations preliminary peak height","equation (8) calculation convergent when Re(s) > 1"),pch=c(20,4,4,4,25,1),col=c("red","black","green","darkblue","magenta","black"),pt.bg=c("white","white","white","white","magenta","white"),lty=c(0,0,0,0,0),bg="white",cex=0.5,pt.cex=c(0.5,0.5,0.5,0.3,0.5,0.7))
+
+```
+
+***Figure 6. Comparison using log|Z| versus log(t) scatterplot of (i) good precision extreme Riemann Siegel Z function peak heights on the $s=1.5+I\cdot t$ line between 1e6 < t < 1e13 (red solid circles) equation (8) since Re(s) > 1, (ii) preliminary extreme Riemann Siegel Z function peak heights between 1e6 < t < 1e40 based on spectral filtered heavily truncated Euler products based approximation equation (12) and (iii) two likely extreme Riemann Siegel Z function peak heights nearby 1.36e45 and 2.61e47 (black circles).***
+
+
+
+\clearpage
+
+```{r ratio_comparison_onepointfiveline_taperedRScalculations_and_heavily_truncatedspectrallyfilteredEPcalculations, echo = FALSE,results = "asis", warning=FALSE,fig.height=7}
+
+plot(as.numeric(df$V1),abs(as.numeric(df$V4))/abs(as.numeric(df$V5)),log="x",xlim=c(1e5,1e44),ylim=c(0.9,1.01),pch=4,col="black",cex=0.7,
+     ylab="|Zapprox|/|Zknown|",xlab="log(t)");grid(col="gray2")
+points((as.numeric(dg$V1)),abs(as.numeric(dg$V4))/abs(as.numeric(dg$V5)),pch=4,col="black",cex=0.6)
+points((as.numeric(dh$V1)),abs(as.numeric(dh$V4))/abs(as.numeric(dh$V5)),pch=4,col="black",cex=0.6)
+points((as.numeric(di$V1)),abs(as.numeric(di$V4))/abs(as.numeric(di$V5)),pch=20,col=rgb(1,0,1,0.5),cex=0.6)
+abline(h=c(0.999,1.001),lty=3,col="gray")
+
+
+
+legend(x=5e11,y=0.95,legend=c("numerator; preliminary extreme peak heights nearby Kotnick, Odlyzko, Tihanyi, \n Hiary, Bober peak locations"," numerator; preliminary extreme peak heights nearby [19] LLL search peak locations","denominator; equation (8) since Re(s) > 1 "),pch=c(4,20,-1),pt.cex=c(0.6,1),col=c("black",rgb(1,0,1,0.5),0),lty=0,bg="white",cex=0.6)
+
+```
+
+***Figure 7. Ratio of spectrally filtered preliminary approximation equation (12) estimates compared to convergent equation (8) calculations on the $s=1.5+I\cdot t$ line between 1e6 < t < 1e40. ***
+
+
+
+\tiny
+```{r grid_results_new_high_peaks_onepointfiveline, echo = FALSE,results = "asis", warning=FALSE} 
+
+
+table_grid_results <- as.data.frame(t(cbind(
+c("2302202919833091938191454510490853528294.00","2.30E39","2.555272 +/-0.1%","2.559122"),
+c("1756509788486806518440112005496184630402.00","1.75E39","2.536182 +/-0.1%","2.537221"),
+c("1083530769932923537813715159168803540949.00","1.08E39","2.555757 +/-0.1%","2.553335"),
+c("244718139402890211698201316945603869614.95","2.44E38","2.548114 +/-0.1%","2.550482"),
+c("40980891527423944866379351595135084705.00","4.09E37","2.547051 +/-0.1%","2.548184"),
+c("39985965418841204149359159903547304319.00","3.99E37","2.541468 +/-0.1%","2.544745"),
+c("32701888308714838788593397151662529169.00","3.27E37","2.550996 +/-0.1%","2.552184"),
+c("15305431401376096542184352490753570342.00","1.53E37","2.553415 +/-0.1%","2.551681"),
+c("3789770975227925929913752596153535659.00","3.78E36","2.534556 +/-0.1%","2.534435"),
+c("3106923501574575498217324013775898531.00","3.10E36","2.548008 +/-0.1%","2.546155"),
+c("2383973557258554840502898227029004956.00","2.38E36","2.555889 +/-0.1%","2.554430"),
+c("1613337044611093444653528186136557938.00","1.61E36","2.552590 +/-0.1%","2.551509"),
+c("284101325235663073414512322415836351.95","2.84E35","2.548209 +/-0.1%","2.547121"),
+c("228437899979252082766848904790108956.00","2.28E35","2.542819 +/-0.1%","2.542288"),
+c("190153064537019900206349886977800740.00","1.90E35","2.529448 +/-0.1%","2.529951"),
+c("167617402698692190502094182200775332.00","1.67E35","2.522413 +/-0.1%","2.523886"),
+c("128150196512905705499425650363369432.00","1.28E35","2.548348 +/-0.1%","2.551216"),
+c("60758714763756271032716974136770397.00","6.07E34","2.539624 +/-0.1%","2.538547"),
+c("21230740937947194961712185865535245.00","2.12E34","2.547919 +/-0.1%","2.548833"),
+c("19885272645274159978060436859288428.00","1.98E34","2.554744 +/-0.1%","2.556620"),
+c("3598696183652727889399753988496854.95","3.59E33","2.537662 +/-0.1%","2.538440"),
+c("3546129586355636707276899029799461.00","3.54E33","2.544270 +/-0.1%","2.545005"),
+c("799009489684392745192175404403618.00","7.99E32","2.549435 +/-0.1%","2.547709"),
+c("207410624279318332567566187765800.95","2.07E32","2.547471 +/-0.1%","2.547459"),
+c("103421228622988210350418104528308.00","1.03E32","2.546034 +/-0.1%","2.544361"),
+c("77636197551578282885077537989878.00","7.76E31","2.533799 +/-0.1%","2.533855"),
+c("57402689537187327152922167612334.00","5.74E31","2.545204 +/-0.1%","2.545234"),
+c("12563916677893023747500097076528.00","1.25E31","2.552095 +/-0.1%","2.551349"),
+c("7536416471667947828910808698.00","7.53E27","2.536914 +/-0.1%","2.535484"),
+c("3286305986924467937604770718.00","3.28E27","2.531476 +/-0.1%","2.531652"),
+c("207977319495059838955685936.00","2.07E26","2.539807 +/-0.1%","2.539410"),
+c("195379681268348910290306782.00","1.95E26","2.532890 +/-0.1%","2.532328"),
+c("3047726497970993730122699.00","3.04E24","2.542064 +/-0.1%","2.541322"),
+c("249774893717336617897828.00","2.49E23","2.515978 +/-0.1%","2.516000"),
+c("103594925224774818957500.00","1.03E23","2.515232 +/-0.1%","2.515450"),
+c("61633023223668798329128.00","6.16E22","2.517707 +/-0.1%","2.518445"),
+c("173641788002704982030.00","1.73E20","2.516260 +/-0.1%","2.516562"),
+c("89782960779401678873.00","8.97E19","2.508738 +/-0.1%","2.508829"),
+c("6668512732743895218.00","6.66E18","2.522367 +/-0.1%","2.522254"),
+c("2811690412751902758.90","2.81E18","2.514326 +/-0.1%","2.515289"),
+c("927083404338712008.00","9.27E17","2.518068 +/-0.1%","2.517770"),
+c("472353376312336470.00","4.72E17","2.500111 +/-0.1%","2.500568"),
+c("45698266087910604.00","4.56E16","2.515949 +/-0.1%","2.516590"),
+c("6107360564274685.00","6.10E15","2.508011 +/-0.1%","2.508592"),
+c("3897826077577121.00","3.89E15","2.501695 +/-0.1%","2.500889"),
+c("3758358676276705.00","3.75E15","2.491838 +/-0.1%","2.491342"),
+c("2641348786316487.00","2.64E15","2.508899 +/-0.1%","2.507711"),
+c("486153633057302.95","4.86E14","2.493563 +/-0.1%","2.491783"),
+c("234578622590902.00","2.34E14","2.481613 +/-0.1%","2.481785"),
+c("126430847573810.00","1.26E14","2.474888 +/-0.1%","2.476963"),
+c("95913486256899.00","9.59E13","2.480231 +/-0.1%","2.480368"),
+c("14223012917202.95","1.42E13","2.487345 +/-0.1%","2.487493"),
+c("4779391590262.05","4.77E12","2.482215 +/-0.1%","2.482581"),
+c("3556019595338.00","3.55E12","2.480275 +/-0.1%","2.474587"),
+c("594979079066.05","5.94E11","2.475629 +/-0.1%","2.473842"),
+c("249284579994.95","2.49E11","2.460146 +/-0.1%","2.458958"),
+c("23065530805.00","2.30E10","2.475044 +/-0.1%","2.472195"),
+c("1387123310.00","1.38E9","2.439626 +/-0.1%","2.458610"),
+c("102805259.025","1.02E8","2.406315 +/-0.1%","2.424678")
+)))
+
+
+colnames(table_grid_results) = c("nearest grid t co-ordinate of peak", "|t|",  
+"preliminary peak magnitude","|zeta(1.5+I*t)|")
+
+
+knitr::kable(table_grid_results,  caption = "Grid search location $\\Delta t=0.05$ (column 1) and preliminary height estimate of additional large Riemann Zeta peaks (column 3) using an approximate spectrally filtered Euler Product calculation employing the heavily reduced threshold $N_{\\frac{\\sqrt{N_1}}{2}} =  \\frac{1}{2}\\cdot\\left\\lfloor\\left(\\frac{t}{2\\pi}\\right)^{0.25}\\right\\rfloor$. The heavy truncation in the EP calculations results in loss of the precision required for identifying Riemann Zeta zeroes but remains sufficient for preliminary estimates of (~+/- 0.1% accuracy) large peak heights on the critical line for $1e10 < t < 1e40$. The righthand column (if available) presents the |Z| value obtained using first order Riemann Siegel formula with 128 endpoint tapering calculations.",
+             align = c("l","r","r","r"),longtable=TRUE)
+
+
+
+```
+\normalsize
+
+Table 3 presents a comparison of the preliminary estimates using equation (12) and the 6+ decimal place accuracy of equation (8) estimates for absolute value extreme Riemann Siegel Z function peaks  $|Z_\zeta(1.5+I\cdot t)|$ along the $s=1.5+I\cdot t$ line. The peak locations are nearby the peak locations reported by [19] on the critical line. Typically, given the results are from a fourier analysis grid with input spectrum spacing $\Delta t = 0.05$ the peak locations along the $s=1.5+I\cdot t$ line are only $\{-0.05,0,0.05\}$ different from the locations reported in [19] observed alog the critical line.
+
+
+## Conclusions
+
+In the region 1e10 < t < 1e40 the use of spectrally filtered heavily truncated partial Euler Products approximations of the Riemann Siegel Z function shows potential for preliminary estimation of extreme peak height growth behaviour across the complex plane. The use of heavy truncation and short spectrum lengths for fourier analysis appears applicable to extreme peak height estimation and this approach may provide a useful tool for pre-screening LLL algorithm [35] search results prior to high precision calculations.
+
+
+\clearpage
+
+##References
+
+1. Brent, R.P. (1979) "On the zeros of the Riemann zeta function in the critical strip" Math. Comp. 33 , p1361-1372
+DOI: https://doi.org/10.1090/S0025-5718-1979-0537983-2
+
+2. Brent R.P., van de Lune J., te Riele H.J.J. and Winter D.T. (1982) "On the Zeros of the Riemann Zeta function in the Critical Strip. II" Mathematics of Computation, Volume 39, Number 160, October 1982, Pages 681-688
+
+3. van de Lune J. and te Riele H.J.J. "On the Zeros of the Riemann Zeta Function in the Critical Strip." III (1983) MATHEMATICS OF COMPUTATION VOLUME 41, NUMBER 164 OCTOBER PAGES 759-767
+
+4. van de Lune J., te Riele H.J.J. and Winter D.T. (1986) “On the Zeros of the Riemann Zeta function in the Critical Strip. IV” Mathematics of Computation, Volume 46, Pages 667-681
+
+5. A.M. Odlyzko, A. Schönhage, Fast algorithms for multiple evaluations of the Riemann zeta function, Trans. Am. Math. Soc., 309, (1988), 797–809.
+
+6. Odlyzko, A. M. "On the Distribution of Spacings Between Zeros of the Zeta Function", (1987) Mathematics of Computation Vol 48, no. 177, 1987, pages 273-308 
+
+7. Odlyzko, A.M. "The $10^{20}$-th zero of the Riemann Zeta function and 175 million of its neighbors". (1988) http://www.dtc.umn.edu/~odlyzko/unpublished/
+
+8. Odlyzko A.M. "The $10^{22}$-nd zero of the Riemann zeta function, Dynamical, Spectral, and
+Arithmetic Zeta Functions"  (2001) Amer. Math. Soc., Contemporary Math. series, no. 290,
+139-144.
+
+9. Gourdon X. and Sebah P., Numbers, Constants and Computation, http://numbers.computation.free.fr/Constants/constants.html, (1999) 
+table of maximum Riemann Zeta peaks http://numbers.computation.free.fr/Constants/Miscellaneous/MaxiZAll.txt
+
+10. Gourdon X. "The $10^{13}$-th first zeros of the Riemann Zeta function and zeros computation at very large height" (2004)
+http://numbers.computation.free.fr/Constants/Miscellaneous/zetazeros1e13-1e24.pdf
+
+11. Kotnick T., "COMPUTATIONAL ESTIMATION OF THE ORDER OF $\zeta$(1/2+it)" (2003) MATHEMATICS OF COMPUTATION, Volume 73, Number 246, Pages 949–956 S 0025-5718(03)01568-0
+
+12. Hiary G.A., "Fast methods to compute the Riemann Zeta function" (2011)	
+Annals of Mathematics, Valome 174, Pages 891-946	https://doi.org/http://dx.doi.org/10.4007/annals.2011.174.2.4
+
+13. Hiary G.A., Table of high Riemann Zeta peaks (second table on the url page) https://people.math.osu.edu/hiary.1/fastmethods.html
+
+14. Bober J.W. and Hiary G.A., "New computations of the Riemann zeta function on the critical line" (2018) Experimental Mathematics, 27(2), 125-137. https://doi.org/10.1080/10586458.2016.1233083
+
+15. Tihanyi N., Kovács A. and Szűcs A. (2014) "Distributed computing of simultaneous Diophantine approximation problems" (2014) Stud. Univ. Babeş-Bolyai Math. 59, No. 4, 557–566
+
+16. Tihanyi N., Kovacs A. and Kovacs J., "Computing Extremely Large Values of the Riemann Zeta Function" (2017) J Grid Computing 15:527–534
+https://doi.org/10.1007/s10723-017-9416-0
+
+17. Tihanyi N. and Kovacs A. "IMPROVEMENTS ON FINDING LARGE VALUES OF THE RIEMANN ZETA FUNCTION ON THE CRITICAL LINE" (2018) Annales Univ. Sci. Budapest., Sect. Comp., 48, p53–64
+
+18. Tihanyi N. "Numerical computing of extremely large values of the Riemann-Siegel Z-function" (2019) Doctoral Thesis, Eötvös Loránd University
+
+19. Martin, J.P.D. "Preliminary estimates of extreme Riemann Zeta function peak heights with $\pm 10\%$ accuracy on the critical line using spectrally filtered heavily truncated partial Euler Product calculations" (2026) 
+http://dx.doi.org/10.6084/m9.figshare.31990179
+
+20. Martin, J.P.D. "A useful approximation of the Riemann Zeta function away from the real axis using spectral filtering of the partial Euler product" (2025)
+http://dx.doi.org/10.6084/m9.figshare.28528652
+
+21. Martin, J.P.D. "Crucial steps for robust first quiescent region truncated partial Euler Product based approximations of closely spaced Riemann Zeta function non-trivial zeroes" (2025)
+http://dx.doi.org/10.6084/m9.figshare.29095232
+
+22. Martin, J.P.D. "Examples of spectrally filtered first quiescent region truncated partial Euler Product based approximations of Riemann Siegel Z functions for different L-functions and the two Davenport-Heilbronn 5-periodic functions on the critical line away from the real axis" (2025)
+http://dx.doi.org/10.6084/m9.figshare.29577545
+
+23. Martin, J.P.D. "For L-functions without poles spectrally filtered first quiescent region truncated partial Euler Product based estimates of Riemann-Siegel Z functions can provide useful standalone approximations about the real axis across the critical strip." (2025)
+https://dx.doi.org/10.6084/m9.figshare.29825609
+
+24. Martin, J.P.D. "A first order approximation about the real axis across the critical strip of the continuous version of $\sqrt{\zeta(s)\zeta(1-s)}$ using a spectrally filtered linear combination of the first quiescent region truncated partial Euler Product and the simple s=1 pole." (2025)
+https://dx.doi.org/10.6084/m9.figshare.29991979
+
+25. Martin, J.P.D. "A useful approximate functional relationship between the fourier analysis sidebands of the Riemann Siegel Z function and its application for robust spectral filtering of partial Euler Products when $Re(s) \rightarrow 1 \text{ or } 0$" (2026)
+https://dx.doi.org/10.6084/m9.figshare.31344229
+
+26. The PARI~Group, PARI/GP version 2.12.0, Univ. Bordeaux, 2018,
+\url{http://pari.math.u-bordeaux.fr/}.
+
+27. R Core Team (2017). R: A language and environment for statistical computing. R Foundation for
+Statistical Computing, Vienna, Austria. \url{https://www.R-project.org/}.
+
+28. RStudio Team (2015). RStudio: Integrated Development for R. RStudio, Inc., Boston, MA URL
+http://www.rstudio.com/.
+
+
+29. Edwards, H.M. (1974). Riemann’s zeta function. Pure and Applied Mathematics 58. New York-London:
+Academic Press. ISBN 0-12-232750-0. Zbl 0315.10035.
+
+30. Berry, M. V. “The Riemann-Siegel Expansion for the Zeta Function: High Orders and Remainders.”
+Proc. Roy. Soc. London A 450, 439-462, 1995.
+
+31. J. Arias De Reyna, “High precision computation of Riemann’s Zeta function by the Riemann-Siegel formula”, Mathematics of Computation Vol 80, no. 274, 2011, Pages 995–1009
+
+32. Riemann, Bernhard (1859). "?ber die Anzahl der Primzahlen unter einer gegebenen Gr?sse". Monatsberichte der Berliner Akademie.. In Gesammelte Werke, Teubner, Leipzig (1892), Reprinted by Dover, New York (1953).
+
+33. Titchmarsh, E.C. (1986) The Theory of the Riemann Zeta Function. 2nd Revised (Heath-Brown, D.R. ) Edition, Oxford University Press, Oxford.
+
+34. CoCalc – Collaborative Calculation and Data Science, Sagemath, Inc., (2024) 
+\url{https://cocalc.com}}
+
+35. Lenstra A.K., Lenstra Jr. H.W., Lovász L., "Factoring polynomials with rational coefficients" (1982) Math. Ann., 261, (4), 515–534.
+
+36. Martin, J.P.D. "Some high peaks of partial Euler Product of the lowest primes on the Riemann Zeta critical line in the interval $10^{20} - 10^{400}$ providing a proxy lower bound on Riemann Zeta function growth" (2018)7
+https://dx.doi.org/10.6084/m9.figshare.7185092
+
+
+
+
+
+
+\clearpage
+
+## Appendix - Existing methods for calculating Riemann Siegel Z function peak height
+
+Equation (9) itself is calculated for the Riemann Siegel Z function at the identified peak position either using one of four methods depending on the value of the t-coordinate and whether Re(s) > 1. 
+
+At the lowest t values
+
+\begin{equation}
+|Z_\zeta(s)| = \left|e^{I\cdot imag(\theta_{ext}(s))}\zeta(s)\right|
+\end{equation}
+
+using the intrinsic Pari-GP function [26] employing the Euler-Maclaurin approximation.
+
+For $p\cdot \pi < t < p^2\cdot 2 \cdot\pi$ by tapered truncation at the second quiescent region using the Riemann Zeta Dirichlet Series $\left\lfloor\frac{t}{\pi}\right\rfloor$ approximation
+
+\begin{align}
+\left|e^{I\cdot imag(\theta_{ext}(s))}\zeta(s)\right|
+&\approx \left| e^{I\cdot imag(\theta_{ext}(s))}\cdot\Bigg[\sum_{k=1}^{\left(\lfloor\frac{t}{\pi}\rfloor-p\right)}\left(\frac{1}{k^{(s)}}\right) +\sum_{i=\left(-p+1\right)}^{p}\frac{\frac{1}{2^{2p}} \left( 2^{2p}-\sum_{k=1}^{i+p}\binom{2p}{2p-k}\right)}{\left( (\lfloor\frac{t}{\pi}\rfloor+i)^{(s)}\right)}\Bigg] \right|,  \qquad \Im(s) \rightarrow \infty
+\end{align}
+
+giving multidecimal agreement using 2p=128 endpoint tapering with the Euler-Maclaurin approximation $t > p\cdot \pi$.
+
+At $t > p^2\cdot 2 \cdot\pi$ by tapered truncation of the first order Riemann Siegel formula terms [29-31] at the first quiescent region using the Riemann Zeta Dirichlet Series $\left\lfloor\sqrt{\frac{t}{2\pi}}\right\rfloor$ approximation
+
+\begin{align}
+\left|e^{I\cdot imag(\theta_{ext}(s))}\zeta(s)\right|
+&\approx \Bigg|e^{I\cdot imag(\theta_{ext}(s))}\cdot\Bigg[\sum_{k=1}^{\left(\lfloor\sqrt{\frac{t}{2\pi}}\rfloor-p\right)}\left(\frac{1}{ k^{(s)}}\right) +\sum_{i=\left(-p+1\right)}^{p}\frac{\frac{1}{2^{2p}} \left( 2^{2p}-\sum_{k=1}^{i+p}\binom{2p}{2p-k}\right)}{\left( (\lfloor\sqrt{\frac{t}{2\pi}}\rfloor+i)^{(s)}\right)} \nonumber \\
+&+ \mychi(s)\cdot\Bigg(\sum_{k=1}^{\left(\lfloor\sqrt{\frac{t}{2\pi}}\rfloor-p\right)}\left(\frac{1}{ k^{(1-(s))}}\right) +\sum_{i=\left(-p+1\right)}^{p}\frac{\frac{1}{2^{2p}} \left( 2^{2p}-\sum_{k=1}^{i+p}\binom{2p}{2p-k}\right)}{\left( (\lfloor\sqrt{\frac{t}{2\pi}}\rfloor+i)^{(1-(s))}\right)}\Bigg)\Bigg]\Bigg| \nonumber \\
+&,  \qquad \Im(s) \rightarrow \infty
+\end{align}
+
+giving 3+ decimal place accuracy (for 2p=128 endpoint tapering) and improving as t increases, where 2p is the number of end taper weighted points present in the second term of the equation and (iii) $\binom{2p}{2p-k}$ are the binomial coefficients. Away from the real axis these tapered Dirichlet Series sums provides an excellent approximation of its Riemann Zeta and Riemann Siegel Z function analogues.
+
+At the highest t values t > 1e21, the only available confirmed high precision extreme Riemann Siegel Z function heights used in this paper for $Re(s) \ne 0.5$ are those obtained via equation (8) when Re(s)=1.5.
+
