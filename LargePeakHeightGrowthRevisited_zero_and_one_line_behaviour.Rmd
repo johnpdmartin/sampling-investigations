@@ -105,7 +105,7 @@ $N_{\frac{\sqrt{N_1}}{2}}=\frac{1}{2}\cdot\left(\sqrt{\frac{t}{2\pi}}\space\righ
 &= |EP_1 + EP_2|
 \end{align}
  
- where when $Re(s) \ne 0.5$ the Riemann Siegel Z function has both real and imaginary components so $|Z_\zeta(1.5+I\cdot t)|$ is the natural way to rank extreme peaks and  
+ where when $Re(s) \ne 0.5$ the Riemann Siegel Z function has both real and imaginary components so $|Z_\zeta(s)|$ is the natural way to rank extreme peaks and  
 (ii) The width of the analyzed spectrum can be lowered to t=(t0-6.35,t0+6.4) based on a 256 point fourier grid of spacing $\Delta t=0.05$
 
 with minimal loss in the estimated extreme peak height (i.e., the difference in extreme peak height of |Z| > 1000 was $\epsilon < 1$ between using a 32768 point grid and an 256 point grid of the same $\Delta t=0.05$ spacing and $N_{\frac{\sqrt{N_1}}{2}}$ truncation of the partial Euler Product) resulting in a 128x speed up in estimating extreme Riemann Siegel Z function peak height compared to [20-25] algorithm.
@@ -320,7 +320,7 @@ knitr::kable(table_grid_results,  caption = "Grid search location $\\Delta t=0.0
 ```
 \normalsize
 
-Table 1 presents a comparison of the preliminary estimates using equation (12) and the 3+ decimal place accuracy of equation (16) estimates for absolute value extreme Riemann Siegel Z function peaks  $|Z_\zeta(0+I\cdot t)|$ along the $s=0+I\cdot t$ line. The peak locations are nearby the peak locations reported by [19] on the critical line. Typically, given the results are from a fourier analysis grid with input spectrum spacing $\Delta t = 0.05$ the peak locations along the $s=0+I\cdot t$ line are only $\{-0.05,0,0.05\}$ different from the locations reported in [19] observed alog the critical line.
+Table 1 presents a comparison of the preliminary estimates using equation (12) and the 3+ decimal place accuracy of equation (16) estimates for absolute value extreme Riemann Siegel Z function peaks  $|Z_\zeta(0+I\cdot t)|$ along the $s=0+I\cdot t$ line. The peak locations are nearby the peak locations reported by [19] on the critical line. Typically, given the results are from a fourier analysis grid with input spectrum spacing $\Delta t = 0.05$ the peak locations along the $s=0+I\cdot t$ line are only $\{-0.05,0,0.05\}$ different from the locations reported in [19] observed along the critical line.
 
 Of particular note is that the growth of $|Z_\zeta(0+I\cdot t)|$ for these extreme peak locations in Table 1 appears strongly monotonic which was not the case for the corresponding table in [19] on the critical line.
 
@@ -518,7 +518,7 @@ knitr::kable(table_grid_results,  caption = "Grid search location $\\Delta t=0.0
 ```
 \normalsize
 
-Table 2 presents a comparison of the preliminary estimates using equation (12) and the 3+ decimal place accuracy of equation (16) estimates for absolute value extreme Riemann Siegel Z function peaks  $|Z_\zeta(1+I\cdot t)|$ along the $s=1+I\cdot t$ line. The peak locations are nearby the peak locations reported by [19] on the critical line. Typically, given the results are from a fourier analysis grid with input spectrum spacing $\Delta t = 0.05$ the peak locations along the $s=1+I\cdot t$ line are only $\{-0.05,0,0.05\}$ different from the locations reported in [19] observed alog the critical line.
+Table 2 presents a comparison of the preliminary estimates using equation (12) and the 3+ decimal place accuracy of equation (16) estimates for absolute value extreme Riemann Siegel Z function peaks  $|Z_\zeta(1+I\cdot t)|$ along the $s=1+I\cdot t$ line. The peak locations are nearby the peak locations reported by [19] on the critical line. Typically, given the results are from a fourier analysis grid with input spectrum spacing $\Delta t = 0.05$ the peak locations along the $s=1+I\cdot t$ line are only $\{-0.05,0,0.05\}$ different from the locations reported in [19] observed along the critical line.
 
 Figure 5 below represents the same data as figure 3 but displayed using a |Z| versus log(log(t)) scatterplot. Qualitatively, from figure 5 it can be seen that
 \begin{itemize}
@@ -708,7 +708,7 @@ knitr::kable(table_grid_results,  caption = "Grid search location $\\Delta t=0.0
 ```
 \normalsize
 
-Table 3 presents a comparison of the preliminary estimates using equation (12) and the 6+ decimal place accuracy of equation (8) estimates for absolute value extreme Riemann Siegel Z function peaks  $|Z_\zeta(1.5+I\cdot t)|$ along the $s=1.5+I\cdot t$ line. The peak locations are nearby the peak locations reported by [19] on the critical line. Typically, given the results are from a fourier analysis grid with input spectrum spacing $\Delta t = 0.05$ the peak locations along the $s=1.5+I\cdot t$ line are only $\{-0.05,0,0.05\}$ different from the locations reported in [19] observed alog the critical line.
+Table 3 presents a comparison of the preliminary estimates using equation (12) and the 6+ decimal place accuracy of equation (8) estimates for absolute value extreme Riemann Siegel Z function peaks  $|Z_\zeta(1.5+I\cdot t)|$ along the $s=1.5+I\cdot t$ line. The peak locations are nearby the peak locations reported by [19] on the critical line. Typically, given the results are from a fourier analysis grid with input spectrum spacing $\Delta t = 0.05$ the peak locations along the $s=1.5+I\cdot t$ line are only $\{-0.05,0,0.05\}$ different from the locations reported in [19] observed along the critical line.
 
 
 ## Conclusions
