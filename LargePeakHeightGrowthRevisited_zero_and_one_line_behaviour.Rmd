@@ -395,9 +395,10 @@ At $s=1+I\cdot t0$, |Z|=8.3809862956570668036270338532171408878901737023153 usin
 
 So the Pari-GP [26] based spectral filtering calculations contain enough precision to demonstrate the Riemann Zeta functional equation behaviour.
 
-Currently, figure 4 contains an extra data point (compared to figure 2) by accessing the CoCalc platform [34] at
+Currently, figure 4 contains three additional data points (compared to figure 2) by accessing the CoCalc platform [34] at
 
-$s=1+I\cdot 6436526919750171929565.996$ i.e. 6.43e21
+
+(1) $s=1+I\cdot 6436526919750171929565.996$ i.e. 6.43e21
 
 
 |Zknown|=8.6834122929229958833373942001201198419876975974308 equation (16) using CoCalc platform [34]
@@ -409,6 +410,36 @@ CPU time=4x47.5 = 190 hrs
 CPU time=6 secs
 
 ratio |Zapprox|/|Zknown| = 1.000262...
+
+
+
+(2) $s=1+I\cdot 25911478989738226351131.25$ i.e. 2.59e22
+
+|Zknown|=8.2070918810250663115169424329539519919990656494285 equation (16) using CoCalc platform [34]
+
+CPU time=4x95.4 = 381.6 hrs
+
+|Zapprox|=8.2113526381385702225381909590260043107136931326172 spectrally filtered equation (12)
+
+CPU time=7 secs
+
+ratio |Zapprox|/|Zknown| = 1.000519...
+
+
+
+(3) $s=1+I\cdot 61633023223668798329128$ i.e. 6.16e22
+
+|Zknown|=8.6713697412080909095144095456390531217979325211402 equation (16) using CoCalc platform [34]
+
+CPU time=4x160.5 = 642 hrs
+
+|Zapprox|=8.6700689622340724331396260195552563080921009037858 spectrally filtered equation (12)
+
+CPU time=8.5 secs
+
+ratio |Zapprox|/|Zknown| = 0.999849...
+
+
 
 as further benchmarking testing continues. It should be noted that equation (16) has low RAM requirements but the spectral filtered equation (12) calculations have increasing RAM requirements as t increases in order to reuse log(prime) values for all 256 grid points (hence why the current published t value limit < 1e40 in this paper).
 
@@ -479,7 +510,7 @@ c("195379681268348910290306782.00","1.95E26","9.254570 +/-1%",NA),
 c("3047726497970993730122699.00","3.04E24","9.209559 +/-1%",NA),
 c("249774893717336617897828.00","2.49E23","8.576951 +/-1%",NA),
 c("103594925224774818957500.00","1.03E23","8.880247 +/-1%",NA),
-c("61633023223668798329128.00","6.16E22","8.670068 +/-1%",NA),
+c("61633023223668798329128.00","6.16E22","8.670068 +/-1%","8.671369"),
 c("173641788002704982030.00","1.73E20","8.591244 +/-1%","8.594962"),
 c("89782960779401678872.95","8.97E19","8.641200 +/-1%","8.635581"),
 c("6668512732743895218.00","6.66E18","8.571463 +/-1%","8.561422"),
