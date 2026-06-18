@@ -2397,7 +2397,10 @@ Using a transformation of the t co-ordinate based on the first quiescent region,
 
 ##Supplementary Material
 
-A zip file of the located (extreme or otherwise) peak locations for the investigated L- functions and Davenport_Heilbronn counterparts is available on github. The typical format is 4-7 columns for files containing calculations by this author: 
+A zip file of the located (extreme or otherwise) peak locations for the investigated L- functions and Davenport_Heilbronn counterparts is available on github https://github.com/johnpdmartin/sampling-investigations/blob/master/files_with_extreme_peaks_of_L_functions.zip. 
+
+
+The typical format is 4-7 columns for files containing calculations by this author: 
 
 column 1 - t value (accurate to 0.05), 
 
