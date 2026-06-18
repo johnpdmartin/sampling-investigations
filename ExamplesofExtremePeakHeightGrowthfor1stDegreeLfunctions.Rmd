@@ -1,0 +1,2517 @@
+---
+title: "A first order universal growth chart on the critical line for periodic 1st degree Dirichlet character L-functions and a phenomenological model for trend growth of the known Riemann Zeta extreme peak heights."
+author: "John Martin"
+date: \today
+header-includes:  
+  - \usepackage{xcolor}
+  - \usepackage{pdflscape}
+  - \newcommand{\blandscape}{\begin{landscape}}
+  - \newcommand{\elandscape}{\end{landscape}}
+output:
+  pdf_document:
+  fig_crop: no
+
+---
+  
+```{r setup, include=FALSE}
+# knitr::opts_chunk$set(echo = FALSE)
+
+```
+
+<!-- https://stackoverflow.com/questions/41655383/r-markdown-similar-feature-to-newcommand-in-latex/41664105 -->
+  \newcommand{\mychi}{\raisebox{0pt}[1ex][1ex]{$\chi$}}
+
+
+##Executive Summary
+
+In order to better understand the growth behaviour of extreme Riemann Zeta function peaks on the critical line a comparison of extreme peak height behaviour of several periodic 1st degree L-functions is presented along with some Davenport-Heilbronn functions and the Ramanujan L-function. Firstly, it is empirically demonstrated that a first order universal growth chart on the critical line for periodic 1st degree L-functions can be constructed by (i) rescaling of the t co-ordinate and (ii) rescaling of the L-function height by the proportion of zero (periodic) dirichlet characters. Secondly a Box Cox transformation model is fitted to the (monotonically increasing) known extreme peak heights $|Z|$ of the Riemann Zeta function on the critical line to yield the trend growth estimate $log\Bigg[|Z_\zeta(0.5+I\cdot t)|_{max}\Bigg]_{trend}\approx 1.274014+0.866363\cdot\left(\frac{\sqrt{\log\left[\sqrt{\frac{t}{2\pi}}\right]}-1}{0.5}\right)$ which more generally predicts $log\Bigg[|Z_L(k+I\cdot t)|_{max}\cdot \frac{N_C}{N_{\chi \ne 0}}\Bigg]_{trend}\lesssim 1.274014+0.866363\cdot\left(\frac{\sqrt{\log\left[\sqrt{\left(\frac{t}{2\pi}\right)^d\cdot N_C}\right]}-1}{0.5}\right)$ for periodic L-functions with $|\chi| = 0, 1$ on the critical line (where $N_{\chi \ne 0}$  is the number of non-zero dirichlet characters) using the first order universal growth chart behaviour. As part of locating extreme peaks for generic 1st degree L-functions systematic modifications of the LLL algorithm constraints for their Dirichlet series terms have been identified.
+
+
+
+
+
+
+\clearpage
+
+
+
+## Introduction
+
+Various authors [1-18] have identified large and/or extreme Riemann Siegel Z function peaks. Of these authors, Gourdon and Sebah [9] and  Kotnick [11] presented systematic tabulations of the growth of extreme Riemann Siegel Z function peaks up to t < $10^{13}$. Odlyzko and Schönhage [5] made significant algorithm improvements in Riemann Zeta function calculations with which Odlyzko [6-8]  investigated Riemann Zeta zero spacing behaviour but also identified three longstanding extreme peaks Z(t) = {855.364, 1287.14 and 1581.7} located at t= {4257232978148261.797669, 356071078353654562.22 and 5032868769288289111.35} respectively where the latter two peaks were the first reported peaks with height |Z| > 1000. Later on, Hiary [12] introduced further significant algorithm improvements to Riemann Zeta function calculations which allowed Hiary [13] and  Hiary and Bober [14] to investigate and report numerous detailed short interval examples of Riemann Zeta function behaviour on the critical line regarding zero location, argument value and both small and large (including extreme) height peaks up to t < 1e36. Tihanyi, Kovacs and Szűcs [15] and Tihanyi, Kovacs and Kovacs [16] then introduced improvements to the searching method to find candidate locations for extremely large values of the Riemann zeta function on the critical line which allowed Tihanyi, Kovacs and Kovacs [16], Tihanyi and Kovacs [17] and Tihanyi [18] to investigate and report extreme Riemann Siegel Z function peak height behaviour up to $t < 10^{33}$. 
+
+More recently, Martin [19,20] has also reported additional extreme Riemann Siegel Z function peaks in the range 1e8 < t < 1e40 on the critical line [19] as well as the s=0 & 1 lines [20] using for progressively higher t values (i) available high precision Riemann Zeta calculations, (ii) high precision tapered Riemann Zeta dirichlet series estimates at the second quiescent region $N_{2}=\frac{t}{\pi}$  (iii) multiple decimal place accuracy tapered first order Riemann Siegel formula estimates at the first quiescent region $N_{1}=\sqrt{\frac{t}{2\pi}}$, (iv) multiple decimal place accuracy spectrally filtered Euler Product analogues of first order Riemann Siegel formula as well as (vi) 10% accuracy (critical line), 1% accuracy (s=0,1 lines) preliminary peak height estimates for t < 1e40 using a spectrally filtered heavily truncated Euler Product method $N_{sub1}=0.5\cdot \left(\sqrt{\frac{t}{2\pi}}\right)^{0.5}$. Where overlap of adjoining methods was included to validate calculation performance.
+
+In this paper, the extreme peak height growth behaviour of the Riemann Siegel Z function analogues of 
+
+\begin{itemize}
+\item $\zeta(0.5+I\cdot t)$ [21-25],
+\item $L(\chi_3(2,.),0.5+I\cdot t)$ [26],
+\item $L(\chi_4(3,.),0.5+I\cdot t)$ [26],
+\item $L(\chi_5(4,.),0.5+I\cdot t)$ [26], 
+\item the dual pair $L(\chi_5(3,.),s)$ [26], $L(\chi_5(2,.),s)$ [26] and
+\subitem their Davenport-Heilbronn function counterparts $f_{1}(s)$ and $f_{2}(s)$ [27-29],
+\item $L(\chi_7(6,.),0.5+I\cdot t)$ [26],
+\item the dual pair $L(\chi_7(5,.),0.5+I\cdot t)$ [26], $L(\chi_7(3,.),s)$ [26], and 
+\subitem their Davenport-Heilbronn function counterparts $f_{3}(s)$ and $f_{4}(s)$ [30],
+\item $L(\chi_37(36,.),0.5+I\cdot t)$ [26],
+\item $L(\chi_51(50,.),0.5+I\cdot t)$ [26] and
+\item the Ramanujan Tau L-function 2-1-1.1-c11-0-0 which has degree 2 and character $\chi_{1}(1,.)$  [26,31].
+\end{itemize}
+
+along their critical line are compared in order to better understand the growth behaviour of L-functions and the Riemann Zeta Rieman Siegel Z function.  Box Cox transformation modelling of the Riemann Zeta function extreme peak Riemann Siegel Z function growth is conducted in order to provide a trend growth prediction (i.e. extreme peak heights occur either side of the trend growth line).   
+
+In figures 1 and 2, the extreme peak growth behaviour of the above 1st degree L-functions (all with dirichlet character magnitudes $|\chi| = 0,1$) are compared in the range 0 < t < 1e20. 
+
+\begin{itemize}
+
+\item When plotting log(|Z|) vs log(t) in figure 1 it can be seen that each L-function varies in their growth rates of the extreme peak heights as a function of log(t). They are similar but different.
+
+\item However in figure 2 by 
+\subitem changing the x-axis from $t \rightarrow \log\left[\sqrt{\left(\frac{t}{2\pi}\right)^d\cdot N_C}\right]$ and 
+\subitem adjusting the y axis $log(|Z|) \rightarrow log(|Z|\cdot \frac{N_C}{N_{\chi \ne 0}})$ 
+
+where $N_C$ is the L-function conductor and $N_{\chi \ne 0}$ is the number of non-zero dirichlet characters Mod $N_C$, it can be seen that under these rescaled xy axes the 1st degree L-functions growth rates coincide reasonably well with the Riemann Zeta Riemann Siegel Z function behaviour as $t \rightarrow \infty$.
+
+\end{itemize}
+
+
+```{r highest_peaks_in_sequence_distribution_by_unnormalised_position_logt, echo=FALSE, warning=FALSE, fig.show = "hold",  out.width = c("99%"), fig.align = "center", fig.cap="Standard log-log overlay of the growth behaviour of extreme Riemann Siegel Z function peak heights |Z| for different 1st degree L-functions in the interval t < 1e20.", fig.height=6.5}
+
+
+
+df=read.csv("/home/john/pari/largest_value_zeta_insqrtsegment_0to3636_consolidatedfile.csv",header=FALSE,sep=",",colClasses = "character")
+df=df[order(as.numeric(df$V1)),]
+df$Z=as.numeric(df$V4)
+df$residual=as.numeric(df$V3)
+# hist(df$residual,breaks=151,main="Frequency distribution of the relative position of the largest Riemann Siegel Z function \n peak within each $[N^2*2*Pi,(N+1)^2*2*Pi)$ piecewise interval for N={0-3636} (this paper). Binned using its sqrt{t/(2Pi)}-floor(sqrt{t/(2Pi)}) co-ordinate.",xlab="sqrt{t/(2Pi)}-floor(sqrt{t/(2Pi)})  value for each peak",cex.main=0.8,border="Black");grid(col="gray2")
+# abline(v=c(0.25,0.75,1),col="red",lwd=1,lty=2)
+
+
+df2=read.csv("/home/john/pari/largest_value_zeta_insqrtsegment_some5000to22000peaks_consolidatedfile.csv",header=FALSE,sep=",",colClasses = "character")
+df2=df2[order(as.numeric(df2$V1)),]
+df2$Z=as.numeric(df2$V4)
+df2$residual=as.numeric(df2$V3)
+
+df_kotnick=read.csv("/home/john/pari/large_t_behaviour_revisited_withspectralfilteredEP/kotnick_list_peaks.csv",header=TRUE,sep=",",colClasses = "character")
+df_kotnick$Z=gsub("–","-",df_kotnick$Z)
+df_kotnick$V2=sqrt(as.numeric(df_kotnick$t)/2/pi)
+df_kotnick$floor=floor(df_kotnick$V2)
+df_kotnick$residual=df_kotnick$V2-df_kotnick$floor
+df_kotnick=df_kotnick[order(df_kotnick$floor,abs(as.numeric(df_kotnick$Z)),decreasing = c(FALSE,TRUE)),]
+
+df_kotnick_nodup=df_kotnick[!duplicated(df_kotnick$floor),]
+
+dft=read.csv("/home/john/pari/tihanyi_thesis_largest_peaks.csv",header=TRUE,colClasses = c("character",rep("numeric",2)))
+
+dfr=read.csv("/home/john/pari/large_t_behaviour_revisited_withspectralfilteredEP/kotnick_list_peaks.csv",header=TRUE)
+dgr=read.csv("/home/john/pari/large_t_behaviour_revisited_withspectralfilteredEP/tihanyi_peaks_list_fastmethods.csv",header=FALSE,nrows=34)
+dhr=read.csv("/home/john/pari/large_t_behaviour_revisited_withspectralfilteredEP/extreme_peak_locations_HiaryBober.csv",header=TRUE,colClasses="character")
+
+
+di=read.csv("/home/john/pari/large_t_behaviour_revisited_withspectralfilteredEP/filtered_zetaEP_est_Sis_halfline_LLL_35_search_initialvalue_approx.csv",header=FALSE,sep=",",colClasses = "character")
+di=di[di$V6 == "1stQshortspectrum_0.5squared",]
+
+dilowerT=read.csv("/home/john/pari/large_t_behaviour_revisited_withspectralfilteredEP/lowerT_estimates_approx.csv",header=FALSE,sep=",",colClasses = "character")
+
+
+# highlighting extreme edge of known peak heights for riemann zeta function
+
+dfcomb=df[,c("V2","Z")]
+dfcomb=rbind(dfcomb,df2[,c("V2","Z")])
+dfcomb=rbind(dfcomb,df_kotnick_nodup[,c("V2","Z")])
+dft_tihanyi_high=dft[,c("Q1","Z")]
+
+colnames(dft_tihanyi_high)=c("V2","Z")
+dfcomb=rbind(dfcomb,dft_tihanyi_high)
+dfr_=dfr[,c("t","Z")]
+dfr_$V2=sqrt(dfr_$t/2/pi)
+dfcomb=rbind(dfcomb,dfr_[,c("V2","Z")])
+dgr_=dgr
+dgr_$V2=sqrt(dgr_$V1/2/pi)
+colnames(dgr_)=c("V1","V2","Z")
+dfcomb=rbind(dfcomb,dgr_[,c("V2","Z")])
+dhr_=dhr[,c("Q1","Z")]
+colnames(dhr_)=c("V2","Z")
+di_=di[,c("V2","V4")]
+colnames(di_)=c("V2","Z")
+dfcomb=rbind(dfcomb,di_)
+dilowerT_=dilowerT[,c("V2","V4")]
+colnames(dilowerT_)=c("V2","Z")
+dfcomb=rbind(dfcomb,dilowerT_)
+dfcomb=dfcomb[order(floor(as.numeric(dfcomb$V2)),abs(as.numeric(dfcomb$Z)),decreasing = c(FALSE,TRUE)),]
+dfcomb=dfcomb[!duplicated(floor(as.numeric(dfcomb$V2))),]
+
+
+dfcomb$inc=0
+
+
+for (i in 1:dim(dfcomb)[1]) {
+  if(i==1) {
+    
+    dfcomb[i,"inc"]=1
+    
+  } 
+  else if (abs(as.numeric(dfcomb[i,"Z"]))>max(abs(as.numeric(dfcomb[1:(i-1),"Z"])))) {
+    dfcomb[i,"inc"]=1
+  }
+}
+
+dfcomb2=df[,c("V2","Z")]
+dfcomb2=rbind(dfcomb2,df2[,c("V2","Z")])
+dfcomb2=rbind(dfcomb2,df_kotnick_nodup[,c("V2","Z")])
+dilowerT_=dilowerT[,c("V2","V4")]
+colnames(dilowerT_)=c("V2","Z")
+dfcomb2=rbind(dfcomb2,dilowerT_)
+dfcomb2=dfcomb2[order(floor(as.numeric(dfcomb2$V2)),abs(as.numeric(dfcomb2$Z)),decreasing = c(FALSE,TRUE)),]
+dfcomb2=dfcomb2[!duplicated(floor(as.numeric(dfcomb2$V2))),]
+
+
+dfcomb2$inc=0
+
+
+for (i in 1:dim(dfcomb2)[1]) {
+  if(i==1) {
+    
+    dfcomb2[i,"inc"]=1
+    
+  } 
+  else if (abs(as.numeric(dfcomb2[i,"Z"]))>max(abs(as.numeric(dfcomb2[1:(i-1),"Z"])))) {
+    dfcomb2[i,"inc"]=1
+  }
+}
+
+# Other 1st degree L-functions
+dfL32=read.csv("/home/john/pari/largest_value_L32_insqrtsegment.csv",header=FALSE,sep=",",colClasses = "character")
+dfL32_1001_1350=read.csv("/home/john/pari/largest_value_L32_insqrtsegment_1001onwards.csv",header=FALSE,sep=",",colClasses = "character")
+dfL32=rbind(dfL32,dfL32_1001_1350)
+dfL32_1350onwards=read.csv("/home/john/pari/filtered_L32EP_est_1350onwards.csv",header=FALSE,sep=",",colClasses = "character")
+dfL32=rbind(dfL32,dfL32_1350onwards)
+#dfL32_1350onwards based on filtered EP calculations using Q1 point truncation
+#uses .05 grid compared to 0.1 grid used for dfL32, dfL32_1001_1350 tapered dirichlet series calculations
+# so the following two lines select the largest peak value for n=1349,1350 from the dfL32_1001_1350  dfL32_1350onwards files between the 0.05 and 0.1 grids
+dfL32=dfL32[order(floor(as.numeric(dfL32$V2)),abs(as.numeric(dfL32$V4)),decreasing = c(FALSE,TRUE)),]
+dfL32=dfL32[!duplicated(floor(as.numeric(dfL32$V2))),]
+dfL32=dfL32[order(as.numeric(dfL32$V1)),]
+dfL32$Z=as.numeric(dfL32$V4)
+dfL32$residual=as.numeric(dfL32$V3)
+dfL32$n=floor(as.numeric(dfL32$V2))
+#print(head(dfL32$residual))
+
+dfL32$inc=0
+
+
+for (i in 1:dim(dfL32)[1]) {
+  if(i==1) {
+    
+    dfL32[i,"inc"]=1
+    
+  } 
+  else if (as.numeric(dfL32[i,"V4"])>max(as.numeric(dfL32[1:(i-1),"V4"]))) {
+    dfL32[i,"inc"]=1
+  }
+}
+
+dfL32_LLL=read.csv("/home/john/pari/LLL_search_location_L32_peak_heights.csv",header=FALSE,sep=",",colClasses = "character")
+dfL32_LLL=dfL32_LLL[,c(1:6)]
+dfL32_LLL=dfL32_LLL[order(floor(as.numeric(dfL32_LLL$V2)),as.numeric(dfL32_LLL$V4),decreasing = c(FALSE,TRUE)),]
+dfL32_LLL=dfL32_LLL[!duplicated(floor(as.numeric(dfL32_LLL$V2))),]
+dfL32_LLL$Z=as.numeric(dfL32_LLL$V4)
+dfL32_LLL$residual=as.numeric(dfL32_LLL$V3)
+#print(head(dfL32_LLL$residual))
+
+
+dfL32_LLL_2decplace=read.csv("/home/john/pari/LLL_search_location_L32_peak_heights_2decimalplaceaccuracy.csv",header=FALSE,sep=",",colClasses = "character")
+dfL32_LLL_2decplace=dfL32_LLL_2decplace[,c(1:6)]
+dfL32_LLL_2decplace=dfL32_LLL_2decplace[order(floor(as.numeric(dfL32_LLL_2decplace$V2)),as.numeric(dfL32_LLL_2decplace$V4),decreasing = c(FALSE,TRUE)),]
+dfL32_LLL_2decplace=dfL32_LLL_2decplace[!duplicated(floor(as.numeric(dfL32_LLL_2decplace$V2))),]
+dfL32_LLL_2decplace$Z=as.numeric(dfL32_LLL_2decplace$V4)
+dfL32_LLL_2decplace$residual=as.numeric(dfL32_LLL_2decplace$V3)
+#print(head(dfL32_LLL_2decplace$residual))
+
+
+dfL32_LLL_approx=read.csv("/home/john/pari/LLL_search_location_L32_peak_heights_0.5squaredapprox.csv",header=FALSE,sep=",",colClasses = "character")
+dfL32_LLL_approx=dfL32_LLL_approx[,c(1:6)]
+dfL32_LLL_approx=dfL32_LLL_approx[order(floor(as.numeric(dfL32_LLL_approx$V2)),as.numeric(dfL32_LLL_approx$V4),decreasing = c(FALSE,TRUE)),]
+dfL32_LLL_approx=dfL32_LLL_approx[!duplicated(floor(as.numeric(dfL32_LLL_approx$V2))),]
+dfL32_LLL_approx$Z=as.numeric(dfL32_LLL_approx$V4)
+dfL32_LLL_approx$residual=as.numeric(dfL32_LLL_approx$V3)
+#print(head(dfL32_LLL_approx$residual))
+
+dfL32_LLL_3xapprox=read.csv("/home/john/pari/LLL_search_location_L32_peak_heights_3xapprox2decimalplace.csv",header=FALSE,sep=",",colClasses = "character")
+dfL32_LLL_3xapprox=dfL32_LLL_3xapprox[as.numeric(dfL32_LLL_3xapprox$V7)>123 & as.numeric(dfL32_LLL_3xapprox$V7)<133,c(1:6)]
+dfL32_LLL_3xapprox=dfL32_LLL_3xapprox[order(floor(as.numeric(dfL32_LLL_3xapprox$V2)),as.numeric(dfL32_LLL_3xapprox$V4),decreasing = c(FALSE,TRUE)),]
+dfL32_LLL_3xapprox=dfL32_LLL_3xapprox[!duplicated(floor(as.numeric(dfL32_LLL_3xapprox$V2))),]
+dfL32_LLL_3xapprox$Z=as.numeric(dfL32_LLL_3xapprox$V4)
+dfL32_LLL_3xapprox$residual=as.numeric(dfL32_LLL_3xapprox$V3)
+#print(head(dfL32_LLL_3xapprox$residual))
+
+dfL32_LLL_3xapprox$inc=0
+for (i in 1:dim(dfL32_LLL_3xapprox)[1]) {
+  if(i==1) {
+    
+    dfL32_LLL_3xapprox[i,"inc"]=1
+    
+  } 
+  else if (log(as.numeric(dfL32_LLL_3xapprox[i,"V4"]))>max(log(as.numeric(dfL32_LLL_3xapprox[1:(i-1),"V4"])))-0.3) {
+    dfL32_LLL_3xapprox[i,"inc"]=1
+  }
+}
+dfL32_LLL_3xapprox=dfL32_LLL_3xapprox[dfL32_LLL_3xapprox$"inc"==1,]
+
+dfL43=read.csv("/home/john/pari/largest_value_L43_insqrtsegment.csv",header=FALSE,sep=",",colClasses = "character")
+dfL43=dfL43[order(as.numeric(dfL43$V1)),]
+dfL43$Z=as.numeric(dfL43$V4)
+dfL43$residual=as.numeric(dfL43$V3)
+#print(head(dfL43$residual))
+
+dfL43_LLL=read.csv("/home/john/pari/LLL_search_location_L43_peak_heights.csv",header=FALSE,sep=",",colClasses = "character")
+dfL43_LLL=dfL43_LLL[,c(1:6)]
+dfL43_LLL=dfL43_LLL[order(floor(as.numeric(dfL43_LLL$V2)),as.numeric(dfL43_LLL$V4),decreasing = c(FALSE,TRUE)),]
+dfL43_LLL=dfL43_LLL[!duplicated(floor(as.numeric(dfL43_LLL$V2))),]
+dfL43_LLL$Z=as.numeric(dfL43_LLL$V4)
+dfL43_LLL$residual=as.numeric(dfL43_LLL$V3)
+#print(head(dfL43_LLL$residual))
+
+dfL43_LLL_4xapprox=read.csv("/home/john/pari/LLL_search_location_L43_peak_heights_4xapprox2decimalplace.csv",header=FALSE,sep=",",colClasses = "character")
+dfL43_LLL_4xapprox=dfL43_LLL_4xapprox[as.numeric(dfL43_LLL_4xapprox$V7)>123 & as.numeric(dfL43_LLL_4xapprox$V7)<133,c(1:6)]
+dfL43_LLL_4xapprox=dfL43_LLL_4xapprox[order(floor(as.numeric(dfL43_LLL_4xapprox$V2)),as.numeric(dfL43_LLL_4xapprox$V4),decreasing = c(FALSE,TRUE)),]
+dfL43_LLL_4xapprox=dfL43_LLL_4xapprox[!duplicated(floor(as.numeric(dfL43_LLL_4xapprox$V2))),]
+dfL43_LLL_4xapprox$Z=as.numeric(dfL43_LLL_4xapprox$V4)
+dfL43_LLL_4xapprox$residual=as.numeric(dfL43_LLL_4xapprox$V3)
+#print(head(dfL43_LLL_4xapprox$residual))
+
+dfL43_LLL_4xapprox$inc=0
+for (i in 1:dim(dfL43_LLL_4xapprox)[1]) {
+  if(i==1) {
+    
+    dfL43_LLL_4xapprox[i,"inc"]=1
+    
+  } 
+  else if (log(as.numeric(dfL43_LLL_4xapprox[i,"V4"]))>max(log(as.numeric(dfL43_LLL_4xapprox[1:(i-1),"V4"])))-0.3) {
+    dfL43_LLL_4xapprox[i,"inc"]=1
+  }
+}
+dfL43_LLL_4xapprox=dfL43_LLL_4xapprox[dfL43_LLL_4xapprox$"inc"==1,]
+
+dfL54=read.csv("/home/john/pari/largest_value_L54_insqrtsegment.csv",header=FALSE,sep=",",colClasses = "character")
+dfL54=dfL54[order(as.numeric(dfL54$V1)),]
+dfL54$Z=as.numeric(dfL54$V4)
+dfL54$residual=as.numeric(dfL54$V3)
+#print(head(dfL54$residual))
+
+dfL54_LLL_approx=read.csv("/home/john/pari/LLL_search_location_L54_peak_heights_0.5squaredapprox.csv",header=FALSE,sep=",",colClasses = "character")
+dfL54_LLL_approx=dfL54_LLL_approx[,c(1:6)]
+dfL54_LLL_approx=dfL54_LLL_approx[order(floor(as.numeric(dfL54_LLL_approx$V2)),as.numeric(dfL54_LLL_approx$V4),decreasing = c(FALSE,TRUE)),]
+dfL54_LLL_approx=dfL54_LLL_approx[!duplicated(floor(as.numeric(dfL54_LLL_approx$V2))),]
+dfL54_LLL_approx$Z=as.numeric(dfL54_LLL_approx$V4)
+dfL54_LLL_approx$residual=as.numeric(dfL54_LLL_approx$V3)
+#print(head(dfL54_LLL_approx$residual))
+
+dfL53=read.csv("/home/john/pari/largest_value_L53_insqrtsegment.csv",header=FALSE,sep=",",colClasses = "character")
+dfL53_high=read.csv("/home/john/pari/largest_value_L53_insqrtsegment_high.csv",header=FALSE,sep=",",colClasses = "character")
+dfL53=rbind(dfL53,dfL53_high)
+dfL53=dfL53[order(as.numeric(dfL53$V1)),]
+dfL53$Z=as.numeric(dfL53$V4)
+dfL53$residual=as.numeric(dfL53$V3)
+#print(head(dfL53$residual))
+
+dfL53_LLL=read.csv("/home/john/pari/LLL_search_location_L53_peak_heights.csv",header=FALSE,sep=",",colClasses = "character")
+dfL53_LLL=dfL53_LLL[abs(as.numeric(dfL53_LLL$V4))>30,c(1:6)]
+dfL53_LLL=dfL53_LLL[order(floor(as.numeric(dfL53_LLL$V2)),as.numeric(dfL53_LLL$V4),decreasing = c(FALSE,TRUE)),]
+dfL53_LLL=dfL53_LLL[!duplicated(floor(as.numeric(dfL53_LLL$V2))),]
+dfL53_LLL$Z=as.numeric(dfL53_LLL$V4)
+dfL53_LLL$residual=as.numeric(dfL53_LLL$V3)
+#print(head(dfL53_LLL$residual))
+
+dfL53_LLL_2decplace=read.csv("/home/john/pari/LLL_search_location_L53_peak_heights_approx2decimalplace.csv",header=FALSE,sep=",",colClasses = "character")
+dfL53_LLL_2decplace=dfL53_LLL_2decplace[abs(as.numeric(dfL53_LLL_2decplace$V4))>30,c(1:6)]
+dfL53_LLL_2decplace=dfL53_LLL_2decplace[order(floor(as.numeric(dfL53_LLL_2decplace$V2)),as.numeric(dfL53_LLL_2decplace$V4),decreasing = c(FALSE,TRUE)),]
+dfL53_LLL_2decplace=dfL53_LLL_2decplace[!duplicated(floor(as.numeric(dfL53_LLL_2decplace$V2))),]
+dfL53_LLL_2decplace$Z=as.numeric(dfL53_LLL_2decplace$V4)
+dfL53_LLL_2decplace$residual=as.numeric(dfL53_LLL_2decplace$V3)
+#print(head(dfL53_LLL_2decplace$residual))
+
+dfL53_LLL_5xapprox=read.csv("/home/john/pari/LLL_search_location_L53_peak_heights_5xapprox2decimalplace.csv",header=FALSE,sep=",",colClasses = "character")
+dfL53_LLL_5xapprox2=read.csv("/home/john/pari/LLL_search_location_L53_peak_heights_5xapprox2decimalplace_10_30.csv",header=FALSE,sep=",",colClasses = "character")
+dfL53_LLL_5xapprox=rbind(dfL53_LLL_5xapprox,dfL53_LLL_5xapprox2)
+dfL53_LLL_5xapprox3=read.csv("/home/john/pari/LLL_search_location_L53_peak_heights_5xapprox2decimalplace_10_35.csv",header=FALSE,sep=",",colClasses = "character")
+dfL53_LLL_5xapprox=rbind(dfL53_LLL_5xapprox,dfL53_LLL_5xapprox3)
+dfL53_LLL_5xapprox=dfL53_LLL_5xapprox[as.numeric(dfL53_LLL_5xapprox$V7)>123 & as.numeric(dfL53_LLL_5xapprox$V7)<133,c(1:6)]
+dfL53_LLL_5xapprox=dfL53_LLL_5xapprox[order(floor(as.numeric(dfL53_LLL_5xapprox$V2)),as.numeric(dfL53_LLL_5xapprox$V4),decreasing = c(FALSE,TRUE)),]
+dfL53_LLL_5xapprox=dfL53_LLL_5xapprox[!duplicated(floor(as.numeric(dfL53_LLL_5xapprox$V2))),]
+dfL53_LLL_5xapprox$Z=as.numeric(dfL53_LLL_5xapprox$V4)
+dfL53_LLL_5xapprox$residual=as.numeric(dfL53_LLL_5xapprox$V3)
+#print(head(dfL53_LLL_5xapprox$residual))
+
+dfL53_LLL_5xapprox$inc=0
+for (i in 1:dim(dfL53_LLL_5xapprox)[1]) {
+  if(i==1) {
+    
+    dfL53_LLL_5xapprox[i,"inc"]=1
+    
+  } 
+  else if (log(as.numeric(dfL53_LLL_5xapprox[i,"V4"]))>max(log(as.numeric(dfL53_LLL_5xapprox[1:(i-1),"V4"])))-0.3) {
+    dfL53_LLL_5xapprox[i,"inc"]=1
+  }
+}
+dfL53_LLL_5xapprox=dfL53_LLL_5xapprox[dfL53_LLL_5xapprox$"inc"==1,]
+  
+  
+dfL52=read.csv("/home/john/pari/largest_value_L52_insqrtsegment.csv",header=FALSE,sep=",",colClasses = "character")
+dfL52_high=read.csv("/home/john/pari/largest_value_L52_insqrtsegment_high.csv",header=FALSE,sep=",",colClasses = "character")
+dfL52=rbind(dfL52,dfL52_high)
+dfL52=dfL52[order(as.numeric(dfL52$V1)),]
+dfL52$Z=as.numeric(dfL52$V4)
+dfL52$residual=as.numeric(dfL52$V3)
+#print(head(dfL52$residual))
+
+dfL52_LLL=read.csv("/home/john/pari/LLL_search_location_L52_peak_heights.csv",header=FALSE,sep=",",colClasses = "character")
+dfL52_LLL=dfL52_LLL[abs(as.numeric(dfL52_LLL$V4))>30,c(1:6)]
+dfL52_LLL=dfL52_LLL[order(floor(as.numeric(dfL52_LLL$V2)),as.numeric(dfL52_LLL$V4),decreasing = c(FALSE,TRUE)),]
+dfL52_LLL=dfL52_LLL[!duplicated(floor(as.numeric(dfL52_LLL$V2))),]
+dfL52_LLL$Z=as.numeric(dfL52_LLL$V4)
+dfL52_LLL$residual=as.numeric(dfL52_LLL$V3)
+#print(head(dfL52_LLL$residual))
+
+dfL52_LLL_2decplace=read.csv("/home/john/pari/LLL_search_location_L52_peak_heights_approx2decimalplace.csv",header=FALSE,sep=",",colClasses = "character")
+dfL52_LLL_2decplace=dfL52_LLL_2decplace[abs(as.numeric(dfL52_LLL_2decplace$V4))>30,c(1:6)]
+dfL52_LLL_2decplace=dfL52_LLL_2decplace[order(floor(as.numeric(dfL52_LLL_2decplace$V2)),as.numeric(dfL52_LLL_2decplace$V4),decreasing = c(FALSE,TRUE)),]
+dfL52_LLL_2decplace=dfL52_LLL_2decplace[!duplicated(floor(as.numeric(dfL52_LLL_2decplace$V2))),]
+dfL52_LLL_2decplace$Z=as.numeric(dfL52_LLL_2decplace$V4)
+dfL52_LLL_2decplace$residual=as.numeric(dfL52_LLL_2decplace$V3)
+#print(head(dfL52_LLL_2decplace$residual))
+
+dfL52_LLL_5xapprox=read.csv("/home/john/pari/LLL_search_location_L52_peak_heights_5xapprox2decimalplace.csv",header=FALSE,sep=",",colClasses = "character")
+dfL52_LLL_5xapprox2=read.csv("/home/john/pari/LLL_search_location_L52_peak_heights_5xapprox2decimalplace_10_30.csv",header=FALSE,sep=",",colClasses = "character")
+dfL52_LLL_5xapprox=rbind(dfL52_LLL_5xapprox,dfL52_LLL_5xapprox2)
+dfL52_LLL_5xapprox3=read.csv("/home/john/pari/LLL_search_location_L52_peak_heights_5xapprox2decimalplace_10_35.csv",header=FALSE,sep=",",colClasses = "character")
+dfL52_LLL_5xapprox=rbind(dfL52_LLL_5xapprox,dfL52_LLL_5xapprox3)
+dfL52_LLL_5xapprox=dfL52_LLL_5xapprox[as.numeric(dfL52_LLL_5xapprox$V7)>123 & as.numeric(dfL52_LLL_5xapprox$V7)<133,c(1:6)]
+dfL52_LLL_5xapprox=dfL52_LLL_5xapprox[order(floor(as.numeric(dfL52_LLL_5xapprox$V2)),as.numeric(dfL52_LLL_5xapprox$V4),decreasing = c(FALSE,TRUE)),]
+dfL52_LLL_5xapprox=dfL52_LLL_5xapprox[!duplicated(floor(as.numeric(dfL52_LLL_5xapprox$V2))),]
+dfL52_LLL_5xapprox$Z=as.numeric(dfL52_LLL_5xapprox$V4)
+dfL52_LLL_5xapprox$residual=as.numeric(dfL52_LLL_5xapprox$V3)
+#print(head(dfL52_LLL_5xapprox$residual))
+
+dfL52_LLL_5xapprox$inc=0
+for (i in 1:dim(dfL52_LLL_5xapprox)[1]) {
+  if(i==1) {
+    
+    dfL52_LLL_5xapprox[i,"inc"]=1
+    
+  } 
+  else if (log(as.numeric(dfL52_LLL_5xapprox[i,"V4"]))>max(log(as.numeric(dfL52_LLL_5xapprox[1:(i-1),"V4"])))-0.3) {
+    dfL52_LLL_5xapprox[i,"inc"]=1
+  }
+}
+dfL52_LLL_5xapprox=dfL52_LLL_5xapprox[dfL52_LLL_5xapprox$"inc"==1,]
+
+
+dfDHf2=read.csv("/home/john/pari/largest_value_DHf2_insqrtsegment.csv",header=FALSE,sep=",",colClasses = "character")
+dfDHf2_high=read.csv("/home/john/pari/largest_value_DHf2_insqrtsegment_high.csv",header=FALSE,sep=",",colClasses = "character")
+dfDHf2=rbind(dfDHf2,dfDHf2_high)
+dfDHf2_EP_est_1572onwards_step14=read.csv("/home/john/pari/filtered_DHf2EP_est_1572onwards_step14.csv",header=FALSE,sep=",",colClasses = "character")
+dfDHf2=rbind(dfDHf2,dfDHf2_EP_est_1572onwards_step14[,c(1:4)])
+dfDHf2_EP_est_1580onwards_step14=read.csv("/home/john/pari/filtered_DHf2EP_est_1580onwards_step14.csv",header=FALSE,sep=",",colClasses = "character")
+dfDHf2=rbind(dfDHf2,dfDHf2_EP_est_1580onwards_step14[,c(1:4)])
+dfDHf2=dfDHf2[order(as.numeric(dfDHf2$V1)),]
+dfDHf2$Z=as.numeric(dfDHf2$V4)
+dfDHf2$residual=as.numeric(dfDHf2$V3)
+#print(head(dfDHf2$residual))
+
+dfDHf2_LLL=read.csv("/home/john/pari/LLL_search_location_DHf2_peak_heights.csv",header=FALSE,sep=",",colClasses = "character")
+dfDHf2_LLL=dfDHf2_LLL[abs(as.numeric(dfDHf2_LLL$V4))>30,c(1:6)]
+dfDHf2_LLL=dfDHf2_LLL[order(floor(as.numeric(dfDHf2_LLL$V2)),as.numeric(dfDHf2_LLL$V4),decreasing = c(FALSE,TRUE)),]
+dfDHf2_LLL=dfDHf2_LLL[!duplicated(floor(as.numeric(dfDHf2_LLL$V2))),]
+dfDHf2_LLL$Z=as.numeric(dfDHf2_LLL$V4)
+dfDHf2_LLL$residual=as.numeric(dfDHf2_LLL$V3)
+#print(head(dfDHf2_LLL$residual))
+
+dfDHf2_LLL_2decplace=read.csv("/home/john/pari/LLL_search_location_DHf2_peak_heights_approx2decimalplace.csv",header=FALSE,sep=",",colClasses = "character")
+dfDHf2_LLL_2decplace=dfDHf2_LLL_2decplace[abs(as.numeric(dfDHf2_LLL_2decplace$V4))>30,c(1:6)]
+dfDHf2_LLL_2decplace=dfDHf2_LLL_2decplace[order(floor(as.numeric(dfDHf2_LLL_2decplace$V2)),as.numeric(dfDHf2_LLL_2decplace$V4),decreasing = c(FALSE,TRUE)),]
+dfDHf2_LLL_2decplace=dfDHf2_LLL_2decplace[!duplicated(floor(as.numeric(dfDHf2_LLL_2decplace$V2))),]
+dfDHf2_LLL_2decplace$Z=as.numeric(dfDHf2_LLL_2decplace$V4)
+dfDHf2_LLL_2decplace$residual=as.numeric(dfDHf2_LLL_2decplace$V3)
+#print(head(dfDHf2_LLL_2decplace$residual))
+
+dfDHf2_LLL_5xapprox=read.csv("/home/john/pari/LLL_search_location_DHf2_peak_heights_5xapprox2decimalplace.csv",header=FALSE,sep=",",colClasses = "character")
+dfDHf2_LLL_5xapprox2=read.csv("/home/john/pari/LLL_search_location_DHf2_peak_heights_5xapprox2decimalplace_10_30.csv",header=FALSE,sep=",",colClasses = "character")
+dfDHf2_LLL_5xapprox=rbind(dfDHf2_LLL_5xapprox,dfDHf2_LLL_5xapprox2)
+dfDHf2_LLL_5xapprox3=read.csv("/home/john/pari/LLL_search_location_DHf2_peak_heights_5xapprox2decimalplace_10_35.csv",header=FALSE,sep=",",colClasses = "character")
+dfDHf2_LLL_5xapprox=rbind(dfDHf2_LLL_5xapprox,dfDHf2_LLL_5xapprox3)
+dfDHf2_LLL_5xapprox=dfDHf2_LLL_5xapprox[as.numeric(dfDHf2_LLL_5xapprox$V7)>123 & as.numeric(dfDHf2_LLL_5xapprox$V7)<133,c(1:6)]
+dfDHf2_LLL_5xapprox=dfDHf2_LLL_5xapprox[order(floor(as.numeric(dfDHf2_LLL_5xapprox$V2)),as.numeric(dfDHf2_LLL_5xapprox$V4),decreasing = c(FALSE,TRUE)),]
+dfDHf2_LLL_5xapprox=dfDHf2_LLL_5xapprox[!duplicated(floor(as.numeric(dfDHf2_LLL_5xapprox$V2))),]
+dfDHf2_LLL_5xapprox$Z=as.numeric(dfDHf2_LLL_5xapprox$V4)
+dfDHf2_LLL_5xapprox$residual=as.numeric(dfDHf2_LLL_5xapprox$V3)
+#print(head(dfDHf2_LLL_5xapprox$residual))
+
+dfDHf2_LLL_5xapprox$inc=0
+for (i in 1:dim(dfDHf2_LLL_5xapprox)[1]) {
+  if(i==1) {
+    
+    dfDHf2_LLL_5xapprox[i,"inc"]=1
+    
+  } 
+  else if (log(as.numeric(dfDHf2_LLL_5xapprox[i,"V4"]))>max(log(as.numeric(dfDHf2_LLL_5xapprox[1:(i-1),"V4"])))-0.3) {
+    dfDHf2_LLL_5xapprox[i,"inc"]=1
+  }
+}
+dfDHf2_LLL_5xapprox=dfDHf2_LLL_5xapprox[dfDHf2_LLL_5xapprox$"inc"==1,]
+
+dfDHf1=read.csv("/home/john/pari/largest_value_DHf1_insqrtsegment.csv",header=FALSE,sep=",",colClasses = "character")
+dfDHf1_high=read.csv("/home/john/pari/filtered_DHf1EP_est_high.csv",header=FALSE,sep=",",colClasses = "character")
+dfDHf1=rbind(dfDHf1,dfDHf1_high)
+dfDHf1_EP_est_1419onwards_step14=read.csv("/home/john/pari/filtered_DHf1EP_est_1419onwards_step14.csv",header=FALSE,sep=",",colClasses = "character")
+dfDHf1=rbind(dfDHf1,dfDHf1_EP_est_1419onwards_step14[,c(1:4)])
+dfDHf1_EP_est_1425onwards_step14=read.csv("/home/john/pari/filtered_DHf1EP_est_1425onwards_step14.csv",header=FALSE,sep=",",colClasses = "character")
+dfDHf1=rbind(dfDHf1,dfDHf1_EP_est_1425onwards_step14[,c(1:4)])
+dfDHf1=dfDHf1[order(as.numeric(dfDHf1$V1)),]
+dfDHf1$Z=as.numeric(dfDHf1$V4)
+dfDHf1$residual=as.numeric(dfDHf1$V3)
+#print(head(dfDHf1$residual))
+
+dfDHf1_LLL=read.csv("/home/john/pari/LLL_search_location_DHf1_peak_heights.csv",header=FALSE,sep=",",colClasses = "character")
+dfDHf1_LLL=dfDHf1_LLL[abs(as.numeric(dfDHf1_LLL$V4))>30,c(1:6)]
+dfDHf1_LLL=dfDHf1_LLL[order(floor(as.numeric(dfDHf1_LLL$V2)),as.numeric(dfDHf1_LLL$V4),decreasing = c(FALSE,TRUE)),]
+dfDHf1_LLL=dfDHf1_LLL[!duplicated(floor(as.numeric(dfDHf1_LLL$V2))),]
+dfDHf1_LLL$Z=as.numeric(dfDHf1_LLL$V4)
+dfDHf1_LLL$residual=as.numeric(dfDHf1_LLL$V3)
+#print(head(dfDHf1_LLL$residual))
+
+dfDHf1_LLL_2decplace=read.csv("/home/john/pari/LLL_search_location_DHf1_peak_heights_approx2decimalplace.csv",header=FALSE,sep=",",colClasses = "character")
+dfDHf1_LLL_2decplace=dfDHf1_LLL_2decplace[abs(as.numeric(dfDHf1_LLL_2decplace$V4))>30,c(1:6)]
+dfDHf1_LLL_2decplace=dfDHf1_LLL_2decplace[order(floor(as.numeric(dfDHf1_LLL_2decplace$V2)),as.numeric(dfDHf1_LLL_2decplace$V4),decreasing = c(FALSE,TRUE)),]
+dfDHf1_LLL_2decplace=dfDHf1_LLL_2decplace[!duplicated(floor(as.numeric(dfDHf1_LLL_2decplace$V2))),]
+dfDHf1_LLL_2decplace$Z=as.numeric(dfDHf1_LLL_2decplace$V4)
+dfDHf1_LLL_2decplace$residual=as.numeric(dfDHf1_LLL_2decplace$V3)
+#print(head(dfDHf1_LLL_2decplace$residual))
+
+dfDHf1_LLL_5xapprox=read.csv("/home/john/pari/LLL_search_location_DHf1_peak_heights_5xapprox2decimalplace.csv",header=FALSE,sep=",",colClasses = "character")
+dfDHf1_LLL_5xapprox2=read.csv("/home/john/pari/LLL_search_location_DHf1_peak_heights_5xapprox2decimalplace_10_30.csv",header=FALSE,sep=",",colClasses = "character")
+dfDHf1_LLL_5xapprox=rbind(dfDHf1_LLL_5xapprox,dfDHf1_LLL_5xapprox2)
+dfDHf1_LLL_5xapprox3=read.csv("/home/john/pari/LLL_search_location_DHf1_peak_heights_5xapprox2decimalplace_10_35.csv",header=FALSE,sep=",",colClasses = "character")
+dfDHf1_LLL_5xapprox=rbind(dfDHf1_LLL_5xapprox,dfDHf1_LLL_5xapprox3)
+dfDHf1_LLL_5xapprox=dfDHf1_LLL_5xapprox[as.numeric(dfDHf1_LLL_5xapprox$V7)>123 & as.numeric(dfDHf1_LLL_5xapprox$V7)<133,c(1:6)]
+dfDHf1_LLL_5xapprox=dfDHf1_LLL_5xapprox[order(floor(as.numeric(dfDHf1_LLL_5xapprox$V2)),as.numeric(dfDHf1_LLL_5xapprox$V4),decreasing = c(FALSE,TRUE)),]
+dfDHf1_LLL_5xapprox=dfDHf1_LLL_5xapprox[!duplicated(floor(as.numeric(dfDHf1_LLL_5xapprox$V2))),]
+dfDHf1_LLL_5xapprox$Z=as.numeric(dfDHf1_LLL_5xapprox$V4)
+dfDHf1_LLL_5xapprox$residual=as.numeric(dfDHf1_LLL_5xapprox$V3)
+#print(head(dfDHf1_LLL_5xapprox$residual))
+
+dfDHf1_LLL_5xapprox$inc=0
+for (i in 1:dim(dfDHf1_LLL_5xapprox)[1]) {
+  if(i==1) {
+    
+    dfDHf1_LLL_5xapprox[i,"inc"]=1
+    
+  } 
+  else if (log(as.numeric(dfDHf1_LLL_5xapprox[i,"V4"]))>max(log(as.numeric(dfDHf1_LLL_5xapprox[1:(i-1),"V4"])))-0.3) {
+    dfDHf1_LLL_5xapprox[i,"inc"]=1
+  }
+}
+dfDHf1_LLL_5xapprox=dfDHf1_LLL_5xapprox[dfDHf1_LLL_5xapprox$"inc"==1,]
+
+dfL76=read.csv("/home/john/pari/largest_value_L76_insqrtsegment.csv",header=FALSE,sep=",",colClasses = "character")
+dfL76=dfL76[order(as.numeric(dfL76$V1)),]
+dfL76$Z=as.numeric(dfL76$V4)
+dfL76$residual=as.numeric(dfL76$V3)
+#print(head(dfL76$residual))
+
+dfL75=read.csv("/home/john/pari/largest_value_L75_insqrtsegment.csv",header=FALSE,sep=",",colClasses = "character")
+dfL75=dfL75[order(as.numeric(dfL75$V1)),]
+dfL75$Z=as.numeric(dfL75$V4)
+dfL75$residual=as.numeric(dfL75$V3)
+#print(head(dfL75$residual))
+
+dfL75_LLL=read.csv("/home/john/pari/LLL_search_location_L75_peak_heights.csv",header=FALSE,sep=",",colClasses = "character")
+dfL75_LLL=dfL75_LLL[,c(1:6)]
+dfL75_LLL=dfL75_LLL[order(floor(as.numeric(dfL75_LLL$V2)),as.numeric(dfL75_LLL$V4),decreasing = c(FALSE,TRUE)),]
+dfL75_LLL=dfL75_LLL[!duplicated(floor(as.numeric(dfL75_LLL$V2))),]
+dfL75_LLL$Z=as.numeric(dfL75_LLL$V4)
+dfL75_LLL=dfL75_LLL[dfL75_LLL$Z>50,]
+dfL75_LLL$residual=as.numeric(dfL75_LLL$V3)
+#print(head(dfL75_LLL$residual))
+
+dfL73=read.csv("/home/john/pari/largest_value_L73_insqrtsegment.csv",header=FALSE,sep=",",colClasses = "character")
+dfL73=dfL73[order(as.numeric(dfL73$V1)),]
+dfL73$Z=as.numeric(dfL73$V4)
+dfL73$residual=as.numeric(dfL73$V3)
+#print(head(dfL73$residual))
+
+dfL73_LLL=read.csv("/home/john/pari/LLL_search_location_L73_peak_heights.csv",header=FALSE,sep=",",colClasses = "character")
+dfL73_LLL=dfL73_LLL[,c(1:6)]
+dfL73_LLL=dfL73_LLL[order(floor(as.numeric(dfL73_LLL$V2)),as.numeric(dfL73_LLL$V4),decreasing = c(FALSE,TRUE)),]
+dfL73_LLL=dfL73_LLL[!duplicated(floor(as.numeric(dfL73_LLL$V2))),]
+dfL73_LLL$Z=as.numeric(dfL73_LLL$V4)
+dfL73_LLL=dfL73_LLL[dfL73_LLL$Z>50,]
+dfL73_LLL$residual=as.numeric(dfL73_LLL$V3)
+#print(head(dfL73_LLL$residual))
+
+dfDHf3=read.csv("/home/john/pari/largest_value_DHf3_insqrtsegment.csv",header=FALSE,sep=",",colClasses = "character")
+dfDHf3=dfDHf3[order(as.numeric(dfDHf3$V1)),]
+dfDHf3$Z=as.numeric(dfDHf3$V4)
+dfDHf3$residual=as.numeric(dfDHf3$V3)
+#print(head(dfDHf3$residual))
+
+dfDHf3_LLL=read.csv("/home/john/pari/LLL_search_location_DHf3_peak_heights.csv",header=FALSE,sep=",",colClasses = "character")
+dfDHf3_LLL=dfDHf3_LLL[,c(1:6)]
+dfDHf3_LLL=dfDHf3_LLL[order(floor(as.numeric(dfDHf3_LLL$V2)),as.numeric(dfDHf3_LLL$V4),decreasing = c(FALSE,TRUE)),]
+dfDHf3_LLL=dfDHf3_LLL[!duplicated(floor(as.numeric(dfDHf3_LLL$V2))),]
+dfDHf3_LLL$Z=as.numeric(dfDHf3_LLL$V4)
+dfDHf3_LLL=dfDHf3_LLL[dfDHf3_LLL$Z>25,]
+dfDHf3_LLL$residual=as.numeric(dfDHf3_LLL$V3)
+#print(head(dfDHf3_LLL$residual))
+
+dfDHf4=read.csv("/home/john/pari/largest_value_DHf4_insqrtsegment.csv",header=FALSE,sep=",",colClasses = "character")
+dfDHf4=dfDHf4[order(as.numeric(dfDHf4$V1)),]
+dfDHf4$Z=as.numeric(dfDHf4$V4)
+dfDHf4$residual=as.numeric(dfDHf4$V3)
+#print(head(dfDHf4$residual))
+
+dfDHf4_LLL=read.csv("/home/john/pari/LLL_search_location_DHf4_peak_heights.csv",header=FALSE,sep=",",colClasses = "character")
+dfDHf4_LLL=dfDHf4_LLL[,c(1:6)]
+dfDHf4_LLL=dfDHf4_LLL[order(floor(as.numeric(dfDHf4_LLL$V2)),as.numeric(dfDHf4_LLL$V4),decreasing = c(FALSE,TRUE)),]
+dfDHf4_LLL=dfDHf4_LLL[!duplicated(floor(as.numeric(dfDHf4_LLL$V2))),]
+dfDHf4_LLL$Z=as.numeric(dfDHf4_LLL$V4)
+dfDHf4_LLL=dfDHf4_LLL[dfDHf4_LLL$Z>25,]
+dfDHf4_LLL$residual=as.numeric(dfDHf4_LLL$V3)
+#print(head(dfDHf4_LLL$residual))
+
+dfL37p36=read.csv("/home/john/pari/largest_value_L37p36_insqrtsegment.csv",header=FALSE,sep=",",colClasses = "character")
+dfL37p36=dfL37p36[order(as.numeric(dfL37p36$V1)),]
+dfL37p36$Z=as.numeric(dfL37p36$V4)
+dfL37p36$residual=as.numeric(dfL37p36$V3)
+#print(head(dfL37p36$residual))
+
+dfL37p36_LLL=read.csv("/home/john/pari/LLL_search_location_L37p36_peak_heights.csv",header=FALSE,sep=",",colClasses = "character")
+dfL37p36_LLL=dfL37p36_LLL[,c(1:6)]
+dfL37p36_LLL=dfL37p36_LLL[order(floor(as.numeric(dfL37p36_LLL$V2)),as.numeric(dfL37p36_LLL$V4),decreasing = c(FALSE,TRUE)),]
+dfL37p36_LLL=dfL37p36_LLL[!duplicated(floor(as.numeric(dfL37p36_LLL$V2))),]
+dfL37p36_LLL$Z=as.numeric(dfL37p36_LLL$V4)
+dfL37p36_LLL$residual=as.numeric(dfL37p36_LLL$V3)
+#print(head(dfL37p36_LLL$residual))
+
+dfL37p36_LLL_approx=read.csv("/home/john/pari/LLL_search_location_L37p36_peak_heights_0.5squaredapprox.csv",header=FALSE,sep=",",colClasses = "character")
+dfL37p36_LLL_approx=dfL37p36_LLL_approx[,c(1:6)]
+dfL37p36_LLL_approx=dfL37p36_LLL_approx[order(floor(as.numeric(dfL37p36_LLL_approx$V2)),as.numeric(dfL37p36_LLL_approx$V4),decreasing = c(FALSE,TRUE)),]
+dfL37p36_LLL_approx=dfL37p36_LLL_approx[!duplicated(floor(as.numeric(dfL37p36_LLL_approx$V2))),]
+dfL37p36_LLL_approx$Z=as.numeric(dfL37p36_LLL_approx$V4)
+dfL37p36_LLL_approx$residual=as.numeric(dfL37p36_LLL_approx$V3)
+#print(head(dfL37p36_LLL_approx$residual))
+
+dfL51p50=read.csv("/home/john/pari/largest_value_L51p50_insqrtsegment.csv",header=FALSE,sep=",",colClasses = "character")
+dfL51p50=dfL51p50[,c(1:6)]
+dfL51p50=dfL51p50[order(floor(as.numeric(dfL51p50$V2)),as.numeric(dfL51p50$V4),decreasing = c(FALSE,TRUE)),]
+dfL51p50=dfL51p50[!duplicated(floor(as.numeric(dfL51p50$V2))),]
+dfL51p50$Z=as.numeric(dfL51p50$V4)
+dfL51p50$residual=as.numeric(dfL51p50$V3)
+#print(head(dfL51p50$residual))
+
+dfRaman=read.csv("/home/john/pari/largest_value_inRamanN1segment.csv",header=FALSE,sep=",",colClasses = "character")
+dfRamanRS=read.csv("/home/john/pari/largest_value_inRamanN1segment_RS128.csv",header=FALSE,sep=",",colClasses = "character")
+dfRaman=rbind(dfRaman,dfRamanRS)
+dfRamanRS_3compare=read.csv("/home/john/pari/largest_value_inRamanN1segment_3compare.csv",header=FALSE,sep=",",colClasses = "character")
+dfRaman=rbind(dfRaman,dfRamanRS_3compare)
+dfRamanRS_RS128_3compare=read.csv("/home/john/pari/largest_value_inRamanN1segment_RS128_3compare.csv",header=FALSE,sep=",",colClasses = "character")
+dfRaman=rbind(dfRaman,dfRamanRS_RS128_3compare)
+dfRamanRS_RS128_3compare=read.csv("/home/john/pari/largest_value_inRamanN1segment_RS128_3compare.csv",header=FALSE,sep=",",colClasses = "character")
+dfRaman=rbind(dfRaman,dfRamanRS_RS128_3compare)
+dfRamanRS_3compare_EP=read.csv("/home/john/pari/largest_value_inRamanN1segment_3compare_EP.csv",header=FALSE,sep=",",colClasses = "character")
+dfRaman=rbind(dfRaman,dfRamanRS_3compare_EP)
+dfRaman=dfRaman[order(as.numeric(dfRaman$V1)),]
+#print(paste("here1",dim(dfRaman)[1]))
+dfRaman$Z=as.numeric(dfRaman$V4)
+dfRaman$residual=as.numeric(dfRaman$V3)
+dfRaman=dfRaman[order(floor(as.numeric(dfRaman$V2)),abs(as.numeric(dfRaman$V4)),decreasing = c(FALSE,TRUE)),]
+dfRaman$V7=floor(as.numeric(dfRaman$V2))
+dfRaman=dfRaman[!duplicated(floor(as.numeric(dfRaman$V2))),]
+#print(paste("here2",dim(dfRaman)[1]))
+
+
+plot((as.numeric(df$V1)),(df$Z),pch=20,col="gray",cex=0.5,
+     xlim=c((1e0),(1e20)),ylim=(c(0.5,4000)),log="xy",
+     main="Growth behaviour of the largest Riemann Siegel |Z| peaks \n for several 1st degree L-functions on a log-log plot",xlab="log(t) scale",ylab="log(|Z|) scale");grid(col="gray2")
+points((as.numeric(df2$V1)),(df2$Z),pch=20,col="gray",cex=0.5)
+points((as.numeric(df_kotnick_nodup$t)),(abs(as.numeric(df_kotnick_nodup$Z))),pch=6,col="gray2",cex=0.3)
+points((as.numeric(dft$t)),(abs(as.numeric(dft$Z))),pch=6,col="gray",cex=0.3)
+points((as.numeric(dfL32$V1)),(dfL32$Z),col=rgb(1,0,0,0.5),pch=20,cex=0.5)
+#lines((as.numeric(dfL32$V1[dfL32$inc==1])),(dfL32$Z[dfL32$inc==1]),col="black",pch=20,cex=0.5)
+points((as.numeric(dfL32_LLL$V1)),(dfL32_LLL$Z),col=rgb(1,0,0,0.5),pch=8,cex=0.2)
+points((as.numeric(dfL32_LLL_2decplace$V1)),(dfL32_LLL_2decplace$Z),col=rgb(1,0,0,0.5),pch=6,cex=0.3)
+points((as.numeric(dfL43$V1)),(dfL43$Z),col=rgb(0,0,1,0.5),pch=20,cex=0.5)
+points((as.numeric(dfL54$V1)),(dfL54$Z),col=rgb(1,0,1,0.5),pch=20,cex=0.5)
+points((as.numeric(dfL76$V1)),(dfL76$Z),col=rgb(0.5,1,0.5,0.5),pch=20,cex=0.5)
+points((as.numeric(dfL37p36$V1)),(dfL37p36$Z),col=rgb(1,0.498,0.314,0.5),pch=20,cex=0.5)
+points((as.numeric(dfL37p36_LLL$V1)),(dfL37p36_LLL$Z),col=rgb(1,0.498,0.314,0.5),pch=8,cex=0.2)
+
+points((as.numeric(dfL51p50$V1)),(dfL51p50$Z),col=rgb(1,0.843,0.,0.5),pch=20,cex=0.5)
+
+points((as.numeric(dfL53$V1)),(dfL53$Z),col=rgb(0.5,0.2,1,0.5),pch=20,cex=0.5)
+points((as.numeric(dfL52$V1)),(dfL52$Z),col=rgb(0.2,0.5,1,0.5),pch=20,cex=0.5)
+# points((as.numeric(dfDHf2$V1)),(dfDHf2$Z),col=rgb(0,0,0,0.5),pch=20,cex=0.5)
+# points((as.numeric(dfDHf1$V1)),(dfDHf1$Z),col=rgb(0,0,0,0.5),pch=20,cex=0.5)
+
+#points((as.numeric(dfRaman$V1)),(dfRaman$Z),col="magenta",pch=20,cex=0.5)
+
+points((as.numeric(dfL73$V1)),(dfL73$Z),col=rgb(0.5,0.5,1,0.5),pch=20,cex=0.5)
+points((as.numeric(dfL73_LLL$V1)),(dfL73_LLL$Z),col=rgb(0.5,0.5,0,0.5),pch=8,cex=0.2)
+
+points((as.numeric(dfcomb$V2[dfcomb$inc==1])^2*2*pi),abs(as.numeric(dfcomb$Z[dfcomb$inc==1])),pch=18,col="black",cex=0.7)
+
+legend(x="bottomright",legend=c("Zeta fn, monotonically increasing extreme peak heights","Zeta fn, largest peak every piecewise interval t=[N^2*2*Pi,(N+1)^2*2*Pi) for N={0-3636}, then LLL search locations","L32 fn, largest peak every interval t=[N^2*2*Pi/3,(N+1)^2*2*Pi/3) for N={0-1000}, then LLL search locations","L43 fn, largest peak every interval t=[N^2*2*Pi/4,(N+1)^2*2*Pi/4) for N={0-1000}, then LLL search locations","L54 fn, largest peak every interval t=[N^2*2*Pi/5,(N+1)^2*2*Pi/5) for N={0-1000}, then LLL search locations","L76 fn, largest peak every interval t=[N^2*2*Pi/7,(N+1)^2*2*Pi/7) for N={0-1000}, then LLL search locations","L37p36 fn, largest peak every interval t=[N^2*2*Pi/37,(N+1)^2*2*Pi/37) for N={0-1000}, then LLL search locations","L51p50 fn, largest peak every interval t=[N^2*2*Pi/51,(N+1)^2*2*Pi/51) for N={0-1000}, then LLL search locations","L53 fn, largest peak every interval t=[N^2*2*Pi/5,(N+1)^2*2*Pi/5) for N={0-1000}, then LLL search locations","L52 fn, largest peak every interval t=[N^2*2*Pi/5,(N+1)^2*2*Pi/5) for N={0-1000}, then LLL search locations"),cex=0.5,bty="n",
+       pch=c(18,rep(20,9)),col=c("black","gray","red",rgb(0,0,1,1),rgb(1,0,1,1),rgb(0.5,1,0.5,1),rgb(1,0.498,0.314,1),rgb(1,0.843,0.,1),rgb(0.5,0.2,1,1),rgb(0.2,0.5,1,1)))
+
+```
+
+
+
+```{r highest_peaks_in_sequence_distribution_by_normalised_position_N, echo=FALSE, warning=FALSE, fig.show = "hold",  out.width = c("99%"), fig.align = "center", fig.cap="Rescaled XY axes overlay of the growth behaviour of extreme Riemann Siegel Z function peak heights |Z| for different 1st degree L-functions in the interval t < 1e20. The |Z| values on the Y axis are scaled by the ratio of the (L-function conductor value)/(number of non-zero dirichlet characters mod Nc) i.e. $log(|Z|\\cdot\\frac{N_C}{N_{\\chi \\ne 0}})$. The t co-ordinate on the X axis is transformed to the first quiescent region value of the L-function i.e. $log(\\sqrt{(\\frac{t}{2\\pi})^d\\cdot N_C})$.", fig.height=7.5}
+
+plot((as.numeric(df$V2)),(df$Z),pch=20,col="gray",cex=0.5,
+     xlim=(c(1,1e10)),ylim=(c(0.5,4000)),log="xy",
+     main="Scaled growth behaviour of the largest Riemann Siegel |Z| peaks for \n several 1st degree L-functions using a log(sqrt((t/2/pi)^1*Nc)) x-axis \n and adjusting the y axis for the proportion of non-zero dirichlet characters.",xlab="log(sqrt((t/2/pi)^1*Nc)) scale",ylab="log(|Z| Nc/Nne0) scale",cex.main=0.95);grid(col="gray2")
+points((as.numeric(df2$V2)),(df2$Z),pch=20,col="gray",cex=0.5)
+points((sqrt(as.numeric(df_kotnick_nodup$t)/2/pi)),(abs(as.numeric(df_kotnick_nodup$Z))),pch=6,col="gray2",cex=0.3)
+points((sqrt(as.numeric(dft$t)/2/pi)),(abs(as.numeric(dft$Z))),pch=6,col="gray",cex=0.3)
+points((as.numeric(dfL32$V2)),((dfL32$Z)*3/2),col=rgb(1,0,0,0.5),pch=20,cex=0.5)
+#lines((as.numeric(dfL32$V2[dfL32$inc==1])),((dfL32$Z[dfL32$inc==1])*3/2),col="black",pch=20,cex=0.5)
+points((as.numeric(dfL32_LLL$V2)),((dfL32_LLL$Z)*3/2),col=rgb(1,0,0,0.5),pch=8,cex=0.2)
+points((as.numeric(dfL32_LLL_2decplace$V2)),((dfL32_LLL_2decplace$Z)*3/2),col=rgb(1,0,0,0.5),pch=6,cex=0.3)
+points((as.numeric(dfL43$V2)),((dfL43$Z)*4/2),col=rgb(0,0,1,0.5),pch=20,cex=0.5)
+points((as.numeric(dfL54$V2)),((dfL54$Z)*5/4),col=rgb(1,0,1,0.5),pch=20,cex=0.5)
+points((as.numeric(dfL76$V2)),((dfL76$Z)*7/6),col=rgb(0.5,1,0.5,0.5),pch=20,cex=0.5)
+
+
+points((sqrt(dfr$t/2/pi)),(abs(dfr$Z)),pch=20,col="gray",cex=0.4)
+points((sqrt(as.numeric(dgr$V1)/2/pi)),(abs(as.numeric(dgr$V3))),pch=20,col="gray",cex=0.4)
+points((as.numeric(dhr$Q1)),(abs(as.numeric(dhr$Z))),pch=20,col="gray",cex=0.4)
+
+
+points((as.numeric(di$V2)),(abs(as.numeric(di$V4))),pch=6,col=rgb(0,1,1,0.2),cex=0.5)
+arrows(x0=(as.numeric(di$V2)),y0=(0.9*abs(as.numeric(di$V4))),x1=(as.numeric(di$V2)),col=rgb(0,1,1,0.2),
+       y1=(1.1*abs(as.numeric(di$V4))), length=0.02, angle=90, code=3)
+
+points((as.numeric(dilowerT$V2)),(abs(as.numeric(dilowerT$V4))),col=rgb(0,1,1,0.2),pch=6,cex=0.5)
+arrows(x0=(as.numeric(dilowerT$V2)),y0=(0.9*abs(as.numeric(dilowerT$V4))),x1=(as.numeric(dilowerT$V2)),col=rgb(0,1,1,0.2),
+       y1=(1.1*abs(as.numeric(dilowerT$V4))), length=0.02, angle=90, code=3)
+points((as.numeric(dilowerT$V2)),(abs(as.numeric(dilowerT$V5))),pch=20,col="gray",cex=0.4)
+
+points((as.numeric(dfL37p36$V2)),((dfL37p36$Z)*37/36),col=rgb(1,0.498,0.314,0.5),pch=20,cex=0.5)
+points((as.numeric(dfL37p36_LLL$V2)),((dfL37p36_LLL$Z)*37/36),col=rgb(1,0.498,0.314,0.5),pch=8,cex=0.2)
+
+points((as.numeric(dfL51p50$V2)),(dfL51p50$Z*51/32),col=rgb(1,0.843,0.,0.5),pch=20,cex=0.5)
+
+points((as.numeric(dfL53$V2)),(dfL53$Z*5/4),col=rgb(0.5,0.2,1,0.5),pch=20,cex=0.5)
+points((as.numeric(dfL52$V2)),(dfL52$Z*5/4),col=rgb(0.2,0.5,1,0.5),pch=20,cex=0.5)
+# points((as.numeric(dfDHf2$V2)),(dfDHf2$Z*5/4/2)^alpha_val,col=rgb(0,0,0,0.5),pch=20,cex=0.5)
+# points((as.numeric(dfDHf1$V2)),(dfDHf1$Z*5/4*2)^alpha_val,col=rgb(0,0,0,0.5),pch=20,cex=0.5)
+
+#points(sqrt(as.numeric(dfRaman$V2)),(dfRaman$Z),col="magenta",pch=20,cex=0.5)
+points((as.numeric(dfcomb$V2[dfcomb$inc==1])),abs(as.numeric(dfcomb$Z[dfcomb$inc==1])),pch=18,col="black",cex=0.7)
+
+
+
+legend(x="topleft",legend=c("Zeta fn x 1/1, monotonically increasing extreme peak heights","Zeta fn x 1/1, largest peak every piecewise interval t=[N^2*2*Pi,(N+1)^2*2*Pi) for N={0-3636}, then LLL search locations","L32 fn x 3/2, largest peak every interval t=[N^2*2*Pi/3,(N+1)^2*2*Pi/3) for N={0-1000}, then LLL search locations","L43 fn x 4/2, largest peak every interval t=[N^2*2*Pi/4,(N+1)^2*2*Pi/4) for N={0-1000}, then LLL search locations","L54 fn x 5/4, largest peak every interval t=[N^2*2*Pi/5,(N+1)^2*2*Pi/5) for N={0-1000}, then LLL search locations"),cex=0.5,bty="n",
+       pch=c(18,rep(20,4)),col=c("black","gray","red",rgb(0,0,1,1),rgb(1,0,1,1)))
+
+legend(x="bottomright",legend=c("L76 fn x 7/6, largest peak every interval t=[N^2*2*Pi/7,(N+1)^2*2*Pi/7) for N={0-1000}, then LLL search locations","L37p36 fn x 37/36, largest peak every interval t=[N^2*2*Pi/37,(N+1)^2*2*Pi/37) for N={0-1000}, then LLL search locations","L51p50 fn x 51/32, largest peak every interval t=[N^2*2*Pi/51,(N+1)^2*2*Pi/51) for N={0-1000}, then LLL search locations","L53 fn x 5/4, largest peak every interval t=[N^2*2*Pi/5,(N+1)^2*2*Pi/5) for N={0-1000}, then LLL search locations","L52 fn x 5/4, largest peak every interval t=[N^2*2*Pi/5,(N+1)^2*2*Pi/5) for N={0-1000}, then LLL search locations"),cex=0.5,bty="n",
+       pch=20,col=c(rgb(0.5,1,0.5,1),rgb(1,0.498,0.314,1),rgb(1,0.843,0.,1),rgb(0.5,0.2,1,1),rgb(0.2,0.5,1,1)))
+
+```
+
+\clearpage
+
+Such behaviour (transformation of different L-functions to a universal reference frame) relies on the strong piecewise interval behaviour of L-functions ($N_1=\sqrt{\left(\frac{t}{2\pi}\right)^d\cdot N_C}$) depending on the L-function conductor value $N_C$ & degree d in the Riemann Siegel formula and the bounded (Dirac comb) nature occurring at extreme 1st-degree L-function peaks (i.e. $|\Im(\frac{\chi}{n^s})|\lesssim \pm|\chi| \lesssim \pm1$ for $\chi\ne0$ and $\frac{\chi}{n^s}=0$ for $\chi=0$ for the low lying Dirichlet series terms $\frac{\chi_L}{n^s}$).
+
+That is, for the subset of L-functions with dirichlet characters $|\chi| = 0,1$ therefore each $|\Im(\frac{\chi}{n^s})|\lesssim \pm|\chi| \lesssim \pm1$ for $\chi\ne0$ and so each dirichlet term only contribute a maximum of 1 to |Z| summing up to the dirichlet series truncation point $N=\sqrt{\left(\frac{t}{2\pi}\right)^d\cdot N_C}$. Hence the \text{extreme} Riemann Siegel function peak value for for the subset of L-functions with dirichlet characters $|\chi| = 0,1$ will differ in first order from the Riemann Zeta function behaviour by the proportion of dirichlet characters that are non-zero when compared on a common x-axis scale i.e. $log(\sqrt{\left(\frac{t}{2\pi}\right)^d\cdot N_C})$. 
+
+
+
+## Searching and identifying candidate locations of extreme Riemann Siegel Z function peaks for L-functions
+
+In similar manner to [19], for each given L-function (and Davenport-Heilbronn counterpart) extreme Riemann Siegel Z function peaks in the range 0 < t < 1e30 on the critical line using for progressively higher t values (i) available high precision L-function calculations, (ii) high precision tapered Riemann Zeta dirichlet series estimates at the second quiescent region $N_{2}=2*\left(\frac{t}{2\pi}\right)^d*N_C$  (iii) multiple decimal place accuracy tapered first order Riemann Siegel formula estimates at the first quiescent region $N_{1}=\sqrt{\left(\frac{t}{2\pi}\right)^d\cdot N_C}$, (iv) multiple decimal place accuracy spectrally filtered Euler Product analogues of first order Riemann Siegel formula as well as (vi) preliminary peak height estimates using a spectrally filtered heavily truncated Euler Product method $N_{sub1}=\frac{N_C}{2}\cdot \left(\sqrt{\left(\frac{t}{2\pi}\right)^d\cdot N_C}\right)^{0.5}$. Again with overlap of adjoining methods was included to validate calculation performance. In particular, the validation process highlighted the conservative but slower use of $\frac{N_C}{2}$ rather than $\frac{1}{2}$ for the heavily truncated $N_{sub1}$ method.
+
+### 1. To identify extreme Riemann Siegel Z function peak locations for each given L-function,
+
+\begin{enumerate}
+\item a grid search $\Delta =0.05$ for $t < 26^2\cdot(2\cdot\pi)^d/N_C$ within each $t=[N^2\cdot(2\cdot\pi)^d/N_C,(N+1)^2\cdot(2\cdot\pi)^d/N_C)$ interval using estimation methods (i) is conducted with some manual cleanup for peaks on the boundary edges between piecewise intervals
+\item a grid search $\Delta =0.05$ for $26^2\cdot(2\cdot\pi)^d/N_C \le t < 65^2\cdot(2\cdot\pi)^d/N_C$ within each $t=[N^2\cdot(2\cdot\pi)^d/N_C,(N+1)^2\cdot(2\cdot\pi)^d/N_C)$ interval using estimation method (ii) with a method (i) calculation for the final identified peak location
+\item a grid search $\Delta =0.1$ for $65^2\cdot(2\cdot\pi)^d/N_C \le t < 1001^2\cdot(2\cdot\pi)^d/N_C$ within each $t=[N^2\cdot(2\cdot\pi)^d/N_C,(N+1)^2\cdot(2\cdot\pi)^d/N_C)$ interval using estimation method (iii) with a method (ii) calculation for the final identified peak location
+\item using LLL algorithm predictions for extreme peak locations 
+\subitem a short interval grid search $\Delta =0.05$ over a $\delta t=\pm 0.25$ interval about the LLL predicted location using estimation method (iii) is conducted (with some use of method (ii) for lower t values) and/or
+\subitem a short 256 point fourier grid search $\Delta =0.05$ over a $\delta t=[-6.35,6.4]$ interval about the LLL predicted location using estimation method (iv) (spectral filtered Euler Product $N_1$ truncation) often conducted with a method (iii) calculation for the final identified peak location
+\subitem for $t \gtrsim 10^{15}$ a short 256 point fourier grid search $\Delta =0.05$ over a $\delta t=[-6.35,6.4]$ interval about the LLL predicted location using preliminary estimation method (v) (spectral filtered Euler Product with heavy $N_{1sub}$ truncation)
+\end{enumerate}
+
+
+### 2. Adjusting the LLL search algorithm [32] constraints for L-functions with non-zero dirichlet characters with magnitudes of order unity ($|\chi|=1$)
+
+Firstly, it is known [5,11,12,15] that for $\zeta(s)$ the magnitude of the dirichlet series terms $\sum_{k=1}^{N_1} \frac{1}{k^s}$ are maximised when $\frac{t*log(k)}{2\pi}\approx n \in \mathbb{N}$ for as many of the low lying dirichlet terms as possible. 
+
+Secondly, by inspection for the investigated L-functions with non-zero dirichlet characters with magnitudes of order unity ($|\chi|=1$) from the grid search results and previous other high peaks known to the author for the lowest lying 1st degree L-functions $L(\chi_3(2,.),0.5+I\cdot t)$ to $L(\chi_5(2,.),0.5+I\cdot t)$
+
+
+\textbf{for $L(\chi_3(2,.),0.5+I\cdot t)$, for the low lying dirichlet terms} 
+
+$\frac{t_{peak}*log(k \bmod 3 = 1)}{2\pi}\approx n \in \mathbb{N}$, $\frac{t_{peak}*log(k \bmod 3 = 2)}{2\pi}\approx m+\frac{1}{2} \in \mathbb{N}$  was observed. 
+
+The periodic dirichlet characters are $\chi_{L32}= \{1,-1,0\}$ for $k \bmod 3 = [1,2,0]$. 
+
+Therefore the following adjusted LLL algorithm constraints were used successfully to find other high $L(\chi_3(2,.),0.5+I\cdot t)$ peaks
+
+$\frac{t_{peak}*log(k \bmod 3 = 1)}{2\pi}\approx n \in \mathbb{N}$, $2\cdot \frac{t_{peak}*log(k \bmod 3 = 2)}{2\pi}\approx m^\prime \in \mathbb{N}$ and $0*\frac{t_{peak}*log(k \bmod 3 = 0)}{2\pi}\approx 0 \in \mathbb{N}$. 
+
+(Where the zero constraint terms are then dropped in the LLL algorithm calculation.)
+
+\textbf{For $L(\chi_4(3,.),0.5+I\cdot t)$, for the low lying dirichlet terms} 
+
+$\frac{t_{peak}*log(k \bmod 4 = 1)}{2\pi}\approx n \in \mathbb{N}$, $\frac{t_{peak}*log(k \bmod 4 = 3)}{2\pi}\approx m+\frac{1}{2} \in \mathbb{N}$  was observed. 
+
+The periodic dirichlet characters are $\chi_{L43}= \{1,0,-1,0\}$ for $k \bmod 4 = [1,2,3,0]$. 
+
+Therefore the following adjusted LLL algorithm constraints were used successfully to find other high $L(\chi_4(3,.),0.5+I\cdot t)$ peaks
+
+$\frac{t_{peak}*log(k \bmod 4 = 1)}{2\pi}\approx n \in \mathbb{N}$, $0*\frac{t_{peak}*log(k \bmod 3 = 2)}{2\pi}\approx 0 \in \mathbb{N}$, $2\cdot \frac{t_{peak}*log(k \bmod 4 = 3)}{2\pi}\approx m^\prime \in \mathbb{N}$ and $0*\frac{t_{peak}*log(k \bmod 4 = 0)}{2\pi}\approx 0 \in \mathbb{N}$. 
+
+(Where the zero constraint terms are then dropped in the LLL algorithm calculation.)
+
+\textbf{For $L(\chi_5(4,.),0.5+I\cdot t)$, for the low lying dirichlet terms} 
+
+$\frac{t_{peak}*log(k \bmod 5 = 1)}{2\pi}\approx n \in \mathbb{N}$, $\frac{t_{peak}*log(k \bmod 5 = 2)}{2\pi}\approx m+\frac{1}{2} \in \mathbb{N}$, $\frac{t_{peak}*log(k \bmod 5 = 3)}{2\pi}\approx p+\frac{1}{2} \in \mathbb{N}$, $\frac{t_{peak}*log(k \bmod 5 = 4)}{2\pi}\approx q+\frac{1}{2} \in \mathbb{N}$  was observed. 
+
+The periodic dirichlet characters are $\chi_{L54}= \{1,-1,-1,1,0\}$ for $k \bmod 5 = [1,2,3,4,0]$. 
+
+Therefore the following adjusted LLL algorithm constraints were used successfully to find other high $L(\chi_5(4,.),0.5+I\cdot t)$ peaks
+
+$\frac{t_{peak}*log(k \bmod 5 = 1)}{2\pi}\approx n \in \mathbb{N}$, $2\cdot \frac{t_{peak}*log(k \bmod 5 = 2)}{2\pi}\approx m^\prime \in \mathbb{N}$, $2\cdot \frac{t_{peak}*log(k \bmod 5 = 3)}{2\pi}\approx p^\prime \in \mathbb{N}$, $\frac{t_{peak}*log(k \bmod 5 = 3)}{2\pi}\approx q^\prime \in \mathbb{N}$ and $0*\frac{t_{peak}*log(k \bmod 5 = 0)}{2\pi}\approx 0 \in \mathbb{N}$. 
+
+(Where the zero constraint terms are then dropped in the LLL algorithm calculation.)
+
+\textbf{For $L(\chi_5(3,.),0.5+I\cdot t)$, for the low lying dirichlet terms} 
+
+$\frac{t_{peak}*log(k \bmod 5 = 1)}{2\pi}\approx n \in \mathbb{N}$, $\frac{t_{peak}*log(k \bmod 5 = 2)}{2\pi}\approx m+\frac{3}{4} \in \mathbb{N}$, $\frac{t_{peak}*log(k \bmod 5 = 3)}{2\pi}\approx p+\frac{1}{4} \in \mathbb{N}$, $\frac{t_{peak}*log(k \bmod 5 = 4)}{2\pi}\approx q+\frac{1}{2} \in \mathbb{N}$  was observed. 
+
+The periodic dirichlet characters are $\chi_{L53}= \{1,-I,I,-1,0\}$ for $k \bmod 5 = [1,2,3,4,0]$. 
+
+Therefore the following adjusted LLL algorithm constraints were used successfully to find other high $L(\chi_5(3,.),0.5+I\cdot t)$ peaks
+
+$\frac{t_{peak}*log(k \bmod 5 = 1)}{2\pi}\approx n \in \mathbb{N}$, $4\cdot \frac{t_{peak}*log(k \bmod 5 = 2)}{2\pi}\approx m^\prime \in \mathbb{N}$, $4\cdot \frac{t_{peak}*log(k \bmod 5 = 3)}{2\pi}\approx p^\prime \in \mathbb{N}$, $2\cdot \frac{t_{peak}*log(k \bmod 5 = 3)}{2\pi}\approx q^\prime \in \mathbb{N}$ and $0*\frac{t_{peak}*log(k \bmod 5 = 0)}{2\pi}\approx 0 \in \mathbb{N}$. 
+
+(Where the zero constraint terms are then dropped in the LLL algorithm calculation.)
+
+\textbf{For $L(\chi_5(2,.),0.5+I\cdot t)$, for the low lying dirichlet terms} 
+
+$\frac{t_{peak}*log(k \bmod 5 = 1)}{2\pi}\approx n \in \mathbb{N}$, $\frac{t_{peak}*log(k \bmod 5 = 2)}{2\pi}\approx m+\frac{1}{4} \in \mathbb{N}$, $\frac{t_{peak}*log(k \bmod 5 = 3)}{2\pi}\approx p+\frac{3}{4} \in \mathbb{N}$, $\frac{t_{peak}*log(k \bmod 5 = 4)}{2\pi}\approx q+\frac{1}{2} \in \mathbb{N}$  was observed. 
+
+The periodic dirichlet characters are $\chi_{L53}= \{1,I,-I,-1,0\}$ for $k \bmod 5 = [1,2,3,4,0]$. 
+
+Therefore the following adjusted LLL algorithm constraints were used successfully to find other high $L(\chi_5(2,.),0.5+I\cdot t)$ peaks
+
+$\frac{t_{peak}*log(k \bmod 5 = 1)}{2\pi}\approx n \in \mathbb{N}$, $4\cdot \frac{t_{peak}*log(k \bmod 5 = 2)}{2\pi}\approx m^\prime \in \mathbb{N}$, $4\cdot \frac{t_{peak}*log(k \bmod 5 = 3)}{2\pi}\approx p^\prime \in \mathbb{N}$, $2\cdot \frac{t_{peak}*log(k \bmod 5 = 3)}{2\pi}\approx q^\prime \in \mathbb{N}$ and $0*\frac{t_{peak}*log(k \bmod 5 = 0)}{2\pi}\approx 0 \in \mathbb{N}$. 
+
+(Where the zero constraint terms are then dropped in the LLL algorithm calculation.)
+
+Thirdly, by trial and error extrapolation of the above results for L-functions with non-zero dirichlet characters with magnitudes of order unity ($|\chi|=1$) (for the lowest lying 1st degree L-functions) and noting that the results for $L(\chi_5(3,.),0.5+I\cdot t)$ and $L(\chi_5(2,.),0.5+I\cdot t)$ contain the fractional exponents of the 4th cyclotomic polynomial roots of unity {1,1/4,3/4,1/2}.
+
+\textbf{For $L(\chi_7(6,.),0.5+I\cdot t)$} 
+
+The periodic dirichlet characters are $\chi_{L76}= \{1,1,-1,1,-1,-1,0\}$ for $k \bmod 5 = [1,2,3,4,5,6,0]$. 
+
+Therefore the following adjusted LLL algorithm constraints were attempted and used successfully to find high $L(\chi_7(6,.),0.5+I\cdot t)$ peaks
+
+$\frac{t_{peak}*log(k|\chi_{L76} = 1)}{2\pi}\approx n \in \mathbb{N}$, $2\cdot \frac{t_{peak}*log(k|\chi_{L76} = -1)}{2\pi}\approx m^\prime \in \mathbb{N}$ and $0*\frac{t_{peak}*log(k|\chi_{L76} = 0)}{2\pi}\approx 0 \in \mathbb{N}$. 
+
+(Where the zero constraint terms are then dropped in the LLL algorithm calculation.)
+
+
+\textbf{For $L(\chi_7(5,.),0.5+I\cdot t)$} 
+
+The periodic dirichlet characters are $\chi_{L75}= \{1,-\frac{1}{2}-I\cdot\sqrt{\frac{3}{4}},\frac{1}{2}-I\cdot\sqrt{\frac{3}{4}},-\frac{1}{2}+I\cdot\sqrt{\frac{3}{4}},\frac{1}{2}+I\cdot\sqrt{\frac{3}{4}},-1,0\}$ for $k \bmod 5 = [1,2,3,4,5,6,0]$ AND noting that the fractional exponents of the 6th cyclotomic polynomial roots of unity are {1,1/6,2/6,1/2,4/6,5/6}.
+
+Therefore the following adjusted LLL algorithm constraints were attempted and used successfully to find high $L(\chi_7(5,.),0.5+I\cdot t)$ peaks
+
+$\frac{t_{peak}*log(k|\chi_{L75} = 1)}{2\pi}\approx n \in \mathbb{N}$, $2\cdot \frac{t_{peak}*log(k|\chi_{L75} = -1)}{2\pi}\approx m^\prime \in \mathbb{N}$, $0*\frac{t_{peak}*log(k|\chi_{L75} = 0)}{2\pi}\approx 0 \in \mathbb{N}$ and $6\cdot \frac{t_{peak}*log(k|\chi_{L75} \ne \{1,-1,0\})}{2\pi}\approx p^\prime \in \mathbb{N}$. 
+
+(Where the zero constraint terms are then dropped in the LLL algorithm calculation.) This above result relies on the non-zero $\chi_{L75}$ periodic dirichlet characters being the roots of unity for n=6.
+
+On \textbf{hindsight} investigation of identified extreme peaks using the above LLL algorithm constraints, for example examining the $L(\chi_7(5,.),0.5+I\cdot t)$ peaks at  $t\approx1090699285.00$  with $Z = 124.850$ and $t\approx542478128.00$  with $Z = 118.187$. It is seen that 
+
+$\frac{t_{peak}*log(k \bmod 7 = 1)}{2\pi}\approx n \in \mathbb{N}$, $\frac{t_{peak}*log(k \bmod 7 = 2)}{2\pi}\approx m+\frac{2}{3} \in \mathbb{N}$, $\frac{t_{peak}*log(k \bmod 7 = 3)}{2\pi}\approx p+\frac{5}{6} \in \mathbb{N}$, $\frac{t_{peak}*log(k \bmod 7 = 4)}{2\pi}\approx q+\frac{1}{3} \in \mathbb{N}$, $\frac{t_{peak}*log(k \bmod 7 = 5)}{2\pi}\approx q+\frac{1}{6} \in \mathbb{N}$, $\frac{t_{peak}*log(k \bmod 7 = 6)}{2\pi}\approx q+\frac{1}{2} \in \mathbb{N}$  was observed. 
+
+So an alternate set of LLL constraints worth using for $L(\chi_7(5,.),0.5+I\cdot t)$ is $[1,3,6,3,6,2,0]\cdot\frac{t_{peak}*log(k)}{2\pi}$ for $k \bmod 7 = [1,2,3,4,5,6,0]$ rather than $[1,6,6,6,6,2,0]\cdot\frac{t_{peak}*log(k)}{2\pi}$ above.
+
+\textbf{For $L(\chi_7(3,.),0.5+I\cdot t)$} 
+
+The periodic dirichlet characters are $\chi_{L73}= \{1,-\frac{1}{2}+I\cdot\sqrt{\frac{3}{4}},\frac{1}{2}+I\cdot\sqrt{\frac{3}{4}},-\frac{1}{2}-I\cdot\sqrt{\frac{3}{4}},\frac{1}{2}-I\cdot\sqrt{\frac{3}{4}},-1,0\}$ for $k \bmod 5 = [1,2,3,4,5,6,0]$ AND noting that the fractional exponents of the 6th cyclotomic polynomial roots of unity are {1,1/6,2/6,1/2,4/6,5/6}.
+
+Therefore the following adjusted LLL algorithm constraints were attempted and used successfully to find high $L(\chi_7(3,.),0.5+I\cdot t)$ peaks
+
+$\frac{t_{peak}*log(k|\chi_{L73} = 1)}{2\pi}\approx n \in \mathbb{N}$, $2\cdot \frac{t_{peak}*log(k|\chi_{L73} = -1)}{2\pi}\approx m^\prime \in \mathbb{N}$, $0*\frac{t_{peak}*log(k|\chi_{L73} = 0)}{2\pi}\approx 0 \in \mathbb{N}$ and $6\cdot \frac{t_{peak}*log(k|\chi_{L73} \ne \{1,-1,0\})}{2\pi}\approx p^\prime \in \mathbb{N}$. 
+
+(Where the zero constraint terms are then dropped in the LLL algorithm calculation.) This above result relies on the non-zero $\chi_{L73}$ periodic dirichlet characters being the roots of unity for n=6.
+
+On \textbf{hindsight} investigation of identified extreme peaks using the above LLL algorithm constraints, for example examining the $L(\chi_7(3,.),0.5+I\cdot t)$ peaks at  $t\approx445648230$  with $Z = 119.524$ and $t\approx873477627.95$  with $Z = 131.156$. It is seen that 
+
+$\frac{t_{peak}*log(k \bmod 7 = 1)}{2\pi}\approx n \in \mathbb{N}$, $\frac{t_{peak}*log(k \bmod 7 = 2)}{2\pi}\approx m+\frac{1}{3} \in \mathbb{N}$, $\frac{t_{peak}*log(k \bmod 7 = 3)}{2\pi}\approx p+\frac{1}{6} \in \mathbb{N}$, $\frac{t_{peak}*log(k \bmod 7 = 4)}{2\pi}\approx q+\frac{2}{3} \in \mathbb{N}$, $\frac{t_{peak}*log(k \bmod 7 = 5)}{2\pi}\approx q+\frac{5}{6} \in \mathbb{N}$, $\frac{t_{peak}*log(k \bmod 7 = 6)}{2\pi}\approx q+\frac{1}{2} \in \mathbb{N}$  was observed. 
+
+So an alternate set of LLL constraints worth using for $L(\chi_7(3,.),0.5+I\cdot t)$ is $[1,3,6,3,6,2,0]\cdot\frac{t_{peak}*log(k)}{2\pi}$ for $k \bmod 7 = [1,2,3,4,5,6,0]$ rather than $[1,6,6,6,6,2,0]\cdot\frac{t_{peak}*log(k)}{2\pi}$ above.
+
+\textbf{For $L(\chi_37(36,.),0.5+I\cdot t)$} 
+
+The periodic dirichlet characters are $\chi_{L37p36}= \{1,-1,1,1,-1,-1,1,-1,1,1,1,1,-1,-1,-1,1,-1,-1,-1,-1,1,-1,-1,-1,1,1,1,1,-1,1,-1,-1,1,1,-1,1,0\}$ for $k \bmod 37 = [1,2,3,...,34,35,36,0]$. 
+
+Therefore the following adjusted LLL algorithm constraints were attempted and used successfully to find high $L(\chi_37(36,.),0.5+I\cdot t)$ peaks
+
+$\frac{t_{peak}*log(k|\chi_{L37p36} = 1)}{2\pi}\approx n \in \mathbb{N}$, $2\cdot \frac{t_{peak}*log(k|\chi_{L37p36} = -1)}{2\pi}\approx m^\prime \in \mathbb{N}$ and $0*\frac{t_{peak}*log(k|\chi_{L37p36} = 0)}{2\pi}\approx 0 \in \mathbb{N}$. 
+
+(Where the zero constraint terms are then dropped in the LLL algorithm calculation.)
+
+
+\textbf{For $L(\chi_51(50,.),0.5+I\cdot t)$} 
+
+The periodic dirichlet characters are $\chi_{L51p50}= \{1,-1,0,1,1,0,-1,-1,0,-1,1,0,1,1,0,1,0,0,1,1,0,-1,1,0,1,-1,0,-1,1,0,-1,-1,0,0,-1,0,-1,-1,0,-1,1,0,1,1,0,-1,-1,0,1,-1,0\}$ for $k \bmod 51 = [1,2,3,...,48,49,50,0]$. 
+
+Therefore the following adjusted LLL algorithm constraints were attempted and used successfully to find high $L(\chi_51(50,.),0.5+I\cdot t)$ peaks
+
+$\frac{t_{peak}*log(k|\chi_{L51p50} = 1)}{2\pi}\approx n \in \mathbb{N}$, $2\cdot \frac{t_{peak}*log(k|\chi_{L51p50} = -1)}{2\pi}\approx m^\prime \in \mathbb{N}$ and $0*\frac{t_{peak}*log(k|\chi_{L51p50} = 0)}{2\pi}\approx 0 \in \mathbb{N}$. 
+
+(Where the zero constraint terms are then dropped in the LLL algorithm calculation.)
+
+Finally, for the 5-periodic Davenport-Heilbronn functions ($f_1$ & $f_2$) and the 7-periodic Davenport-Heilbronn functions ($f_3$ & $f_4$) the LLL algorithm constraints are based on their L-functions counterpart extreme peak locations $L(\chi_5(3,.),0.5+I\cdot t)$ & $L(\chi_5(2,.),0.5+I\cdot t)$ and ($L(\chi_7(5,.),0.5+I\cdot t)$ & $L(\chi_7(3,.),0.5+I\cdot t)$) respectively. Indeed in practice, the full implemented LLL search algorithm actually uses the Davenport-Heilbronn functions first since both L-function counterparts contribute to the Davenport-Heilbronn function peak height to produce a candidate list of locations. On a second pass through the candidate location list, the two halves of the list exhibits a large peak height belonging to one L-function and vice versa.
+
+
+The above list of prescriptions has successfully identified candidate locations of extreme peak heights. However, that does not mean the above prescriptions definitively describe all constraints for possible extreme peaks nor will an actual implemented LLL algorithm report all possible instances of extreme peak locations. 
+
+## Box Cox transformation model of linear regression fit of trend growth in extreme |Z| peak height
+
+Box Cox transformation modelling [36,37] is conducted to approximate the non-linearity in the growth curve in figure 2. Under the suspicion that the non-linearity in figure 2 is approximately of the form $\sqrt{\log(\sqrt{(\frac{t}{2\pi})^d\cdot N_C})}$ the input linear regression model and the Box Cox transformation model output diagnostics in figure 3 both given below indeed confirms a close fit of the trend growth behaviour to $\frac{(x^{0.5}-1)}{0.5}$ Box Cox transformation behaviour. For example, the intercept and linear regression coefficients are highly statisticallly significant (and given in equation (1) below) and the mode of the Box Cox transformation fit in figure 3 is $\lambda=1$ which is evidence for a linear polynomial fit (with respect to $\sqrt{\log(\sqrt{(\frac{t}{2\pi})^d\cdot N_C})}$). 
+
+Yielding the following phenomological model of trend growth in extreme $|Z_\zeta(0.5+I\cdot t)|$ peak height on the critical line based on high quality data for t < 1e31,
+
+\begin{equation}
+log\Bigg[|Z_\zeta(0.5+I\cdot t)|_{max}\Bigg]_{trend}\approx 1.274014+0.866363\cdot\left(\frac{\sqrt{\log\Big[\sqrt{\frac{t}{2\pi}}\Big]}-1}{0.5}\right)
+\end{equation}
+
+which can be potentially generalised based on figure 2, for \textbf{1st degree L-functions with non-zero dirichlet characters with magnitudes of order unity ($|\chi|=1$)} to
+
+\begin{equation}
+log\Bigg[|Z_{L,d=1}(k+I\cdot t)|_{max}\cdot \frac{N_C}{N_{\chi \ne 0}}\Bigg]_{trend}\lesssim 1.274014+0.866363\cdot\left(\frac{\sqrt{\log\Big[\sqrt{\left(\frac{t}{2\pi}\right)^1\cdot N_C}\Big]}-1}{0.5}\right)
+\end{equation}
+
+
+Extrapolation of the model into the region 1e31 < t < 1e40 looks promising compared to available preliminary estimates of $|Z_\zeta(0.5+I\cdot t)|$ [19] (see later figures in this paper) but higher quality data and/or analytic results are needed for t > 1e31 to properly test the veracity of the above trend growth model at higher t. 
+
+\vspace{1cm}
+
+
+Linear regression model fit for $log\Bigg[|Z_\zeta(0.5+I\cdot t)|_{max}\Bigg] \sim \frac{\sqrt{\log\Big[\sqrt{\frac{t}{2\pi}}\Big]}-1}{0.5}$
+
+
+
+
+```{r box_cox_modelling, echo=FALSE, warning=FALSE, fig.show = "hold",  out.width = c("99%"), fig.align = "center", fig.cap="Box Cox modelling analysis using the MASS package on the growth behaviour of Riemann Zeta function extreme Riemann Siegel Z function peak heights |Z| for in the interval t < 1e31. Modelling Y $\\sim$ X, the input data comprises Y = $log(|Z|)$ and X = $\\frac{\\left(\\sqrt{log(\\sqrt{(\\frac{t}{2\\pi})^d\\cdot N_C})}-1\\right)}{0.5}$. Top panel - wide view of the log-likelihood of the Box Cox model fit supporting $\\lambda=1$ (i.e. linear behaviour with respect to the input regression model), Bottom panel - magnified view about $\\lambda=1$", fig.height=3.5}
+
+library(MASS)
+#using only higher quality peak N1 based estimates for input data i.e. not using heavily truncated N1sub estimates 
+yt3=log(abs(as.numeric(dfcomb2[dfcomb2$inc==1 ,"Z"])))[-1]
+xt2=log(abs(as.numeric(dfcomb2[dfcomb2$inc==1,"V2"])))[-1]
+xt3=(xt2^0.5-1)/0.5
+mod=lm(yt3~xt3)
+b2=boxcox(mod,
+          lambda = seq(-2, 4, 1/100),
+          main="Log-Likelihood of Box Cox transformation model parameter")
+lambda <- b2$x[which.max(b2$y)]
+lambda
+
+b2=boxcox(mod,
+          lambda = seq(0.5, 1.5, 1/100))
+
+print(summary(mod))
+
+
+
+```
+
+## Summary of languages/IDEs used for calculations
+
+The LLL search based algorithm, the high precision L-function calculations, tapered dirichlet series calculations, input discrete fourier spectra samples, the fourier transforms, the spectral filtering, the rescaled conjugate mirror reflection values and the inverse fourier transforms are calculated using Pari-GP [33] and the Box Cox transformation modelling and general graphing is performed using R [34] and RStudio IDE [35].
+
+
+\clearpage
+
+## Individual L-function and Davenport-Heilbronn function results in comparison to $|Z_\zeta(0.5+I\cdot t)|$
+
+Figures 4-9 below, display for each investigated 1st degree 1 L-function or Davenport-Heilbronn function
+
+\begin{enumerate}
+\item left column - $log\left(|Z_L|\right) \text{ vs } \log(t)$ of extreme L-function (or Davenport-Heilbronn function) peak height
+\item middle column - $log\left(|Z_L|\cdot \frac{N_C}{N_{\chi\ne0}}\right) \text{ vs } \log\left(\sqrt{(\frac{t}{2\pi})^{d=1}\cdot N_C}\right)$ of extreme L-function (or Davenport-Heilbronn function) peak height
+\item right column - $log\left(|Z_L|\cdot \frac{N_C}{N_{\chi\ne0}}\right) \text{ vs } \frac{\left(\sqrt{\log\left(\sqrt{(\frac{t}{2\pi})^{d=1}\cdot N_C}\right)}-1\right)}{0.5}$ of extreme L-function (or Davenport-Heilbronn function) peak height
+\end{enumerate}
+
+Figure 4 displays a comparison of $|Z_{\zeta}|$ behaviour with located extreme Riemann Siegel Z function peaks for 
+
+\begin{itemize}
+\item top row $L(\chi_1(1,.),0.5+I\cdot t)$ i.e. $\zeta(0.5+I\cdot t)$ with $N_C=1$ and $N_{\chi \ne0}=1$,
+\item middle row $L(\chi_3(2,.),0.5+I\cdot t)$ with $N_C=3$ and $N_{\chi \ne0}=2$,
+\item bottom row $L(\chi_4(3,.),0.5+I\cdot t)$ with $N_C=4$ and $N_{\chi \ne0}=2$
+\end{itemize}
+
+Figure 5 displays a comparison of $|Z_{\zeta}|$ behaviour with located extreme Riemann Siegel Z function peaks for 
+
+\begin{itemize}
+\item top row $L(\chi_5(4,.),0.5+I\cdot t)$ with $N_C=5$ and $N_{\chi \ne0}=4$,
+\item middle row $L(\chi_5(3,.),0.5+I\cdot t)$ with $N_C=5$ and $N_{\chi \ne0}=4$,
+\item bottom row $L(\chi_5(2,.),0.5+I\cdot t)$ with $N_C=5$ and $N_{\chi \ne0}=4$
+\end{itemize}
+
+Figure 6 displays a comparison of $|Z_{\zeta}|$ behaviour with located extreme Riemann Siegel Z function peaks for 
+
+\begin{itemize}
+\item top row $L(\chi_7(6,.),0.5+I\cdot t)$ with $N_C=7$ and $N_{\chi \ne0}=6$,
+\item middle row $L(\chi_37(36,.),0.5+I\cdot t)$ with $N_C=37$ and $N_{\chi \ne0}=36$,
+\item bottom row $L(\chi_51(50,.),0.5+I\cdot t)$ with $N_C=51$ and $N_{\chi \ne0}=32$
+\end{itemize}
+
+Figure 7 displays a comparison of $|Z_{\zeta}|$ behaviour with located extreme Riemann Siegel Z function peaks for 
+
+\begin{itemize}
+\item top row $f_{2}(0.5+I\cdot t)$ a 5-periodic Davenport-Heilbronn function with $N_C=5$ and $\sum_{k=1}^5 \chi_k \approx 9.04$,
+\item middle row $f_{1}(0.5+I\cdot t)$ a 5-periodic Davenport-Heilbronn function with $N_C=5$ and $\sum_{k=1}^5 \chi_k \approx 2.568$
+\end{itemize}
+
+Figure 8 displays a comparison of $|Z_{\zeta}|$ behaviour with located extreme Riemann Siegel Z function peaks for 
+
+\begin{itemize}
+\item top row $L(\chi_7(5,.),0.5+I\cdot t)$ with $N_C=7$ and $N_{\chi \ne0}=6$,
+\item bottom row $L(\chi_7(3,.),0.5+I\cdot t)$ with $N_C=7$ and $N_{\chi \ne0}=6$
+\end{itemize}
+
+Figure 9 displays a comparison of $|Z_{\zeta}|$ behaviour with located extreme Riemann Siegel Z function peaks for 
+
+\begin{itemize}
+\item top row $f_{3}(0.5+I\cdot t)$ a 7-periodic Davenport-Heilbronn function with $N_C=7$ and $\sum_{k=1}^7 \chi_k \approx 7.2077509$,
+\item bottom row $f_{4}(0.5+I\cdot t)$ a 7-periodic Davenport-Heilbronn function with $N_C=7$ and $\sum_{k=1}^7 \chi_k \approx 4.3042576$,
+\end{itemize}
+
+Finally figure 10, displays a comparison of $|Z_{\zeta}|$ extreme peak height behaviour with the Ramanujan Tau L-function 2-1-1.1-c11-0-0 a degree 2 L-function with $N_C=1$ and $N_{\chi \ne0}=1?$ (i.e. it is unconfirmed whether any Ramanujan Tau L-function dirichlet characters are zero) where an alternate rescaling of the two L-functions is used (cf. figures 4-9) since the Ramanujan Tau L-function has degree 2 and the Riemann Zeta function has degree 1.
+
+\begin{enumerate}
+\item left column - $log\left(|Z_{\tau}|\right) \text{ vs } \log(t)$ 
+\item middle column - $log\left(|Z_L|\cdot \frac{N_C}{N_{\chi\ne0}}\right) \text{ vs } \log\left(\frac{1}{d}\cdot\log\left(\sqrt{(\frac{t}{2\pi})^d}\right)+\log\left(\sqrt{N_C}\right)\right)$ 
+\item right column - $log\left(|Z_L|\cdot \frac{N_C}{N_{\chi\ne0}}\right) \text{ vs } \frac{\left(\sqrt{\log\left(\frac{1}{d}\cdot\log\left(\sqrt{(\frac{t}{2\pi})^d}\right)+\log\left(\sqrt{N_C}\right)\right)}-1\right)}{0.5}$ of extreme L-function (or Davenport-Heilbronn function) peak height
+\end{enumerate}
+
+Also displayed in the middle and right columns of figures 4-10 is equation (1), shown as a dashed line.
+
+### Highlights
+
+For the L- functions with only dirichlet characters of unity $|\chi|=1$ or zero $|\chi|=0$: figures 4, 5, 6, 8 and probably 10.
+
+In the left column, there is divergence between the L-function and Riemann Zeta |Z| extreme peak growth behaviour.
+
+In the middle and right columns, except for the lowest t values the re-scaled L-function extreme growth behaviour to first order, tends to lie reasonably adjacent to the Riemann Zeta |Z| extreme peak growth behaviour. While the LLL search results t > 1e5 do find extreme peaks it doesn't collect all of them as the grid search does for lower t so there is still room for re-scaled extreme L-function peaks to get closer to the Riemann Zeta |Z| behaviour. 
+
+The re-scaling of the y-axis is a simple argument using the two bits of information (i) that the Riemann Zeta has only non-zero characters of unity ($\chi=1$) while the other presented 1st degree L-functions have ($|\chi|= 0 \text{ OR } 1$) and (ii) for extreme peak locations at high t, the \textbf{imaginary component} of each lowest lying dirichlet series term contributes approximately 1 to the dirichlet series sum. 
+
+The re-scaling of the x-axis is a recognition that each L-function has an intrinsic length $N_1=\sqrt{\left(\frac{t}{2\pi}\right)^d\cdot N_C}$ and in properly comparing the growth behaviour of two L-functions the difference in their $N_1$ values must be taken into account. (The intrinsic length $N_2=2\cdot \left(\frac{t}{2\pi}\right)^d\cdot N_C$ also exists and tapered Dirichlet series sums using this length can approach high precision L-function calculation performance for some L-functions.)  
+
+
+For the Davenport-Heilbronn functions:
+
+In the left column, there is divergence between the Davenport-Heilbronn and Riemann Zeta |Z| extreme peak growth behaviour.
+
+In the middle and right columns, except for the lowest t values there is some evidence that the re-scaled Davenport-Heilbronn extreme growth behaviour \textbf{may be lower than} the Riemann Zeta |Z| extreme peak growth behaviour. In this case, the attempted y-axis re-scaling uses the $\sum_{k=1}^{N_C} |\chi_k|$ of the (absolute value of the) real coefficients of the known Davenport-Heilbronn dirichlet series.
+
+For figure 7, the rescaled 5-periodic Davenport-Heilbronn extreme growth behaviour for $f_1$ & $f_2$ appears to become equivalent at high t.
+
+For figure 9, the rescaled 7-periodic Davenport-Heilbronn extreme growth behaviour for $f_3$ & $f_4$ does not appear to become equivalent. So more investigation is needed to understand this use case. 
+
+
+
+\blandscape
+```{r different_rescalings_pt1, echo=FALSE, warnings=FALSE, fig.show = "hold",  out.width = c("32%","32%","32%"), fig.align = "center", fig.cap="A graphical comparison for each investigated 1st degree L-function or Davenport-Heilbronn function of \\textbf{left column} - $\\log\\left(|Z_L|\\right) \\text{ vs } \\log(t)$, \\textbf{middle column} - $\\log\\left(|Z_L|\\cdot \\frac{N_C}{N_{\\chi\\ne0}}\\right) \\text{ vs } \\log\\left(\\sqrt{(\\frac{t}{2\\pi})^d\\cdot N_C}\\right)$, \\textbf{right column} - $\\log\\left(|Z_L|\\cdot \\frac{N_C}{N_{\\chi\\ne0}}\\right) \\text{ vs } \\frac{\\left(\\sqrt{\\log\\left(\\sqrt{(\\frac{t}{2\\pi})^d\\cdot N_C}\\right)}-1\\right)}{0.5}$ for top row - $L(\\chi_1(1,.),0.5+I\\cdot t)$, middle row - $L(\\chi_3(2,.),0.5+I\\cdot t)$ and bottom row - $L(\\chi_4(3,.),0.5+I\\cdot t)$", fig.height=5}
+plot(log(as.numeric(df$V1)),log(df$Z),pch=20,col="gray2",cex=0.5,
+     xlim=c(log(1e0),log(1e40)),ylim=log(c(0.5,100000)),
+     main="growth of largest Riemann Siegel |Z| peaks \n standard log(|Z|) vs log(t) plot",xlab="log(t) value",ylab="log(|Z|) value");grid(col="gray2")
+points(log(as.numeric(df2$V1)),log(df2$Z),pch=20,col="gray2",cex=0.5)
+points(log(as.numeric(df_kotnick_nodup$t)),log(abs(as.numeric(df_kotnick_nodup$Z))),pch=6,col="gray2",cex=0.3)
+points(log(as.numeric(dft$t)),log(abs(as.numeric(dft$Z))),pch=6,col="gray2",cex=0.3)
+
+points(log(dfr$t),log(abs(dfr$Z)),pch=20,col="gray2",cex=0.4)
+points(log(as.numeric(dgr$V1)),log(abs(as.numeric(dgr$V3))),pch=20,col="gray2",cex=0.4)
+points(log(as.numeric(dhr$T)),log(abs(as.numeric(dhr$Z))),pch=20,col="gray2",cex=0.4)
+
+points(log(as.numeric(di$V1)),log(abs(as.numeric(di$V4))),pch=6,col=rgb(0,1,1,0.2),cex=0.5)
+arrows(x0=log(as.numeric(di$V1)),y0=log(0.9*abs(as.numeric(di$V4))),x1=log(as.numeric(di$V1)),col=rgb(0,1,1,0.2),
+       y1=log(1.1*abs(as.numeric(di$V4))), length=0.02, angle=90, code=3)
+
+points(log(as.numeric(dilowerT$V1)),log(abs(as.numeric(dilowerT$V4))),col=rgb(0,1,1,0.2),pch=6,cex=0.5)
+arrows(x0=log(as.numeric(dilowerT$V1)),y0=log(0.9*abs(as.numeric(dilowerT$V4))),x1=log(as.numeric(dilowerT$V1)),col=rgb(0,1,1,0.2),
+       y1=log(1.1*abs(as.numeric(dilowerT$V4))), length=0.02, angle=90, code=3)
+points(log(as.numeric(dilowerT$V1)),log(abs(as.numeric(dilowerT$V5))),pch=20,col="gray2",cex=0.4)
+
+plot(log(as.numeric(df$V2)),log(df$Z),pch=20,col="gray2",cex=0.5,
+     xlim=c(log(1e0),log(1e25)),ylim=log(c(0.5,100000)),
+     main="growth of largest Riemann Siegel |Z| peaks \n log(|Z|) vs log(sqrt((t/2/pi)^1*1)) plot",xlab="log(sqrt((t/2/pi)^d*Nc)) value",ylab="log(|Z|) value");grid(col="gray2")
+points(log(as.numeric(df2$V2)),log(df2$Z),pch=20,col="gray2",cex=0.5)
+points(log(sqrt(as.numeric(df_kotnick_nodup$t)/2/pi)),log(abs(as.numeric(df_kotnick_nodup$Z))),pch=6,col="gray2",cex=0.3)
+points(log(sqrt(as.numeric(dft$t)/2/pi)),log(abs(as.numeric(dft$Z))),pch=6,col="gray2",cex=0.3)
+
+points(log(sqrt(dfr$t/2/pi)),log(abs(dfr$Z)),pch=20,col="gray2",cex=0.4)
+points(log(sqrt(as.numeric(dgr$V1)/2/pi)),log(abs(as.numeric(dgr$V3))),pch=20,col="gray2",cex=0.4)
+points(log(as.numeric(dhr$Q1)),log(abs(as.numeric(dhr$Z))),pch=20,col="gray2",cex=0.4)
+
+
+points(log(as.numeric(di$V2)),log(abs(as.numeric(di$V4))),pch=6,col=rgb(0,1,1,0.6),cex=0.5)
+arrows(x0=log(as.numeric(di$V2)),y0=log(0.9*abs(as.numeric(di$V4))),x1=log(as.numeric(di$V2)),col=rgb(0,1,1,0.4),
+       y1=log(1.1*abs(as.numeric(di$V4))), length=0.02, angle=90, code=3)
+
+points(log(as.numeric(dilowerT$V2)),log(abs(as.numeric(dilowerT$V4))),col=rgb(0,1,1,0.6),pch=6,cex=0.5)
+arrows(x0=log(as.numeric(dilowerT$V2)),y0=log(0.9*abs(as.numeric(dilowerT$V4))),x1=log(as.numeric(dilowerT$V2)),col=rgb(0,1,1,0.4),
+       y1=log(1.1*abs(as.numeric(dilowerT$V4))), length=0.02, angle=90, code=3)
+points(log(as.numeric(dilowerT$V2)),log(abs(as.numeric(dilowerT$V5))),pch=20,col="gray2",cex=0.4)
+
+alpha_val=0.5
+lines(seq(.1,50,by=.1),1.274014+0.866363*(seq(.1,50,by=.1)^alpha_val-1)/alpha_val,col="brown",lty=6)
+
+
+plot((log(as.numeric(df$V2))^alpha_val-1)/alpha_val,log(df$Z),pch=20,col="gray2",cex=0.5,
+     xlim=log(c(1,1e5)),ylim=c(-1,15),
+     main="growth of largest Riemann Siegel |Z| peaks \n log(|Z|) vs (sqrt(log(sqrt((t/2/pi)^1*1)))-1)/0.5 plot",xlab="(sqrt(log(sqrt((t/2/pi)^1*1)))-1)/0.5 value",ylab="log(|Z|) value");grid(col="gray2")
+points((log(as.numeric(df2$V2))^alpha_val-1)/alpha_val,log(df2$Z),pch=20,col="gray2",cex=0.5)
+points((log(sqrt(as.numeric(df_kotnick_nodup$t)/2/pi))^alpha_val-1)/alpha_val,log(abs(as.numeric(df_kotnick_nodup$Z))),pch=6,col="gray2",cex=0.3)
+points((log(sqrt(as.numeric(dft$t)/2/pi))^alpha_val-1)/alpha_val,log(abs(as.numeric(dft$Z))),pch=6,col="gray2",cex=0.3)
+
+points((log(sqrt(dfr$t/2/pi))^alpha_val-1)/alpha_val,log(abs(dfr$Z)),pch=20,col="gray2",cex=0.4)
+points((log(sqrt(as.numeric(dgr$V1)/2/pi))^alpha_val-1)/alpha_val,log(abs(as.numeric(dgr$V3))),pch=20,col="gray2",cex=0.4)
+points((log(as.numeric(dhr$Q1))^alpha_val-1)/alpha_val,log(abs(as.numeric(dhr$Z))),pch=20,col="gray2",cex=0.4)
+
+points((log(as.numeric(di$V2))^alpha_val-1)/alpha_val,log(abs(as.numeric(di$V4))),pch=6,col=rgb(0,1,1,0.6),cex=0.5)
+arrows(x0=(log(as.numeric(di$V2))^alpha_val-1)/alpha_val,y0=log(0.9*abs(as.numeric(di$V4))),x1=(log(as.numeric(di$V2))^alpha_val-1)/alpha_val,col=rgb(0,1,1,0.4), y1=log(1.1*abs(as.numeric(di$V4))), length=0.02, angle=90, code=3)
+
+points((log(as.numeric(dilowerT$V2))^alpha_val-1)/alpha_val,log(abs(as.numeric(dilowerT$V4))),col=rgb(0,1,1,0.6),pch=6,cex=0.5)
+arrows(x0=(log(as.numeric(dilowerT$V2))^alpha_val-1)/alpha_val,y0=log(0.9*abs(as.numeric(dilowerT$V4))),x1=(log(as.numeric(dilowerT$V2))^alpha_val-1)/alpha_val,col=rgb(0,1,1,0.4),
+       y1=log(1.1*abs(as.numeric(dilowerT$V4))), length=0.02, angle=90, code=3)
+points((log(as.numeric(dilowerT$V2))^alpha_val-1)/alpha_val,log(abs(as.numeric(dilowerT$V5))),pch=20,col="gray2",cex=0.4)
+
+# points(log(as.numeric(dfcomb$V2)),abs(as.numeric(dfcomb$Z))^alpha_val)
+# points(log(as.numeric(dfcomb2$V2)),abs(as.numeric(dfcomb2$Z))^alpha_val,col=2,pch=20)
+abline(a=1.274014,b=.866363,col="brown",lty=6)
+
+
+
+
+plot(log(as.numeric(df$V1)),log(df$Z),pch=20,col="gray",cex=0.5,
+     xlim=c(log(1e0),log(1e40)),ylim=log(c(0.5,100000)),
+     main="growth of largest L32 |Z| peaks \n standard log(|Z|) vs log(t) plot",xlab="log(t) value",ylab="log(|Z|) value");grid(col="gray2")
+points(log(as.numeric(df2$V1)),log(df2$Z),pch=20,col="gray",cex=0.5)
+points(log(as.numeric(df_kotnick_nodup$t)),log(abs(as.numeric(df_kotnick_nodup$Z))),pch=6,col="gray2",cex=0.3)
+points(log(as.numeric(dft$t)),log(abs(as.numeric(dft$Z))),pch=6,col="gray",cex=0.3)
+
+points(log(dfr$t),log(abs(dfr$Z)),pch=20,col="gray",cex=0.4)
+points(log(as.numeric(dgr$V1)),log(abs(as.numeric(dgr$V3))),pch=20,col="gray",cex=0.4)
+points(log(as.numeric(dhr$T)),log(abs(as.numeric(dhr$Z))),pch=20,col="gray",cex=0.4)
+
+points(log(as.numeric(di$V1)),log(abs(as.numeric(di$V4))),pch=6,col=rgb(0,1,1,0.2),cex=0.5)
+arrows(x0=log(as.numeric(di$V1)),y0=log(0.9*abs(as.numeric(di$V4))),x1=log(as.numeric(di$V1)),col=rgb(0,1,1,0.2),
+       y1=log(1.1*abs(as.numeric(di$V4))), length=0.02, angle=90, code=3)
+
+points(log(as.numeric(dilowerT$V1)),log(abs(as.numeric(dilowerT$V4))),col=rgb(0,1,1,0.2),pch=6,cex=0.5)
+arrows(x0=log(as.numeric(dilowerT$V1)),y0=log(0.9*abs(as.numeric(dilowerT$V4))),x1=log(as.numeric(dilowerT$V1)),col=rgb(0,1,1,0.2),
+       y1=log(1.1*abs(as.numeric(dilowerT$V4))), length=0.02, angle=90, code=3)
+points(log(as.numeric(dilowerT$V1)),log(abs(as.numeric(dilowerT$V5))),pch=20,col="gray",cex=0.4)
+
+points(log(as.numeric(dfL32$V1)),log(dfL32$Z),col=rgb(1,0,0,0.5),pch=20,cex=0.5)
+#lines(log(as.numeric(dfL32$V1[dfL32$inc==1])),log(dfL32$Z[dfL32$inc==1]),col="black",pch=20,cex=0.5)
+points(log(as.numeric(dfL32_LLL$V1)),log(dfL32_LLL$Z),col=rgb(1,0,0,0.5),pch=8,cex=0.2)
+points(log(as.numeric(dfL32_LLL_2decplace$V1)),log(dfL32_LLL_2decplace$Z),col=rgb(1,0,0,0.5),pch=6,cex=0.3)
+points(log(as.numeric(dfL32_LLL_3xapprox$V1)),log(dfL32_LLL_3xapprox$Z),col=rgb(1,0,0,0.5),pch=6,cex=0.3)
+#points(log(as.numeric(dfL32_LLL_approx$V1)),log(dfL32_LLL_approx$Z),col=rgb(1,0,0,0.5),pch=6,cex=0.3)
+
+
+plot(log(as.numeric(df$V2)),log(df$Z),pch=20,col="gray",cex=0.5,
+     xlim=c(log(1e0),log(1e25)),ylim=log(c(0.5,100000)),
+     main="growth of largest L32 |Z| peaks \n log(|Z|*3/2) vs log(sqrt((t/2/pi)^1*3)) plot",xlab="log(sqrt((t/2/pi)^1*3)) value",ylab="log(|Z|*3/2) value");grid(col="gray2")
+points(log(as.numeric(df2$V2)),log(df2$Z),pch=20,col="gray",cex=0.5)
+points(log(sqrt(as.numeric(df_kotnick_nodup$t)/2/pi)),log(abs(as.numeric(df_kotnick_nodup$Z))),pch=6,col="gray2",cex=0.3)
+points(log(sqrt(as.numeric(dft$t)/2/pi)),log(abs(as.numeric(dft$Z))),pch=6,col="gray",cex=0.3)
+
+points(log(sqrt(dfr$t/2/pi)),log(abs(dfr$Z)),pch=20,col="gray",cex=0.4)
+points(log(sqrt(as.numeric(dgr$V1)/2/pi)),log(abs(as.numeric(dgr$V3))),pch=20,col="gray",cex=0.4)
+points(log(as.numeric(dhr$Q1)),log(abs(as.numeric(dhr$Z))),pch=20,col="gray",cex=0.4)
+
+
+points(log(as.numeric(di$V2)),log(abs(as.numeric(di$V4))),pch=6,col=rgb(0,1,1,0.2),cex=0.5)
+arrows(x0=log(as.numeric(di$V2)),y0=log(0.9*abs(as.numeric(di$V4))),x1=log(as.numeric(di$V2)),col=rgb(0,1,1,0.2),
+       y1=log(1.1*abs(as.numeric(di$V4))), length=0.02, angle=90, code=3)
+
+points(log(as.numeric(dilowerT$V2)),log(abs(as.numeric(dilowerT$V4))),col=rgb(0,1,1,0.2),pch=6,cex=0.5)
+arrows(x0=log(as.numeric(dilowerT$V2)),y0=log(0.9*abs(as.numeric(dilowerT$V4))),x1=log(as.numeric(dilowerT$V2)),col=rgb(0,1,1,0.2),
+       y1=log(1.1*abs(as.numeric(dilowerT$V4))), length=0.02, angle=90, code=3)
+points(log(as.numeric(dilowerT$V2)),log(abs(as.numeric(dilowerT$V5))),pch=20,col="gray",cex=0.4)
+
+points(log(as.numeric(dfL32$V2)),log(dfL32$Z*3/2),col=rgb(1,0,0,0.5),pch=20,cex=0.5)
+#lines(log(as.numeric(dfL32$V2[dfL32$inc==1])),log(dfL32$Z[dfL32$inc==1]*3/2),col="black",pch=20,cex=0.5)
+points(log(as.numeric(dfL32_LLL$V2)),log(dfL32_LLL$Z*3/2),col=rgb(1,0,0,0.5),pch=8,cex=0.2)
+points(log(as.numeric(dfL32_LLL_2decplace$V2)),log(dfL32_LLL_2decplace$Z*3/2),col=rgb(1,0,0,0.5),pch=6,cex=0.3)
+points(log(as.numeric(dfL32_LLL_3xapprox$V2)),log(dfL32_LLL_3xapprox$Z*3/2),col=rgb(1,0,0,0.5),pch=6,cex=0.3)
+#points(log(as.numeric(dfL32_LLL_approx$V2)),log(dfL32_LLL_approx$Z*3/2),col=rgb(1,0,0,0.5),pch=6,cex=0.3)
+lines(seq(.1,50,by=.1),1.274014+0.866363*(seq(.1,50,by=.1)^alpha_val-1)/alpha_val,col="brown",lty=6)
+
+
+plot((log(as.numeric(df$V2))^alpha_val-1)/alpha_val,log(df$Z),pch=20,col="gray",cex=0.5,
+     xlim=log(c(1,1e5)),ylim=c(-1,15),
+     main="growth of largest L32 |Z| peaks \n log(|Z|*3/2) vs (sqrt(log(sqrt((t/2/pi)^1*3)))-1)/0.5 plot",xlab="(sqrt(log(sqrt((t/2/pi)^1*3)))-1)/0.5 value",ylab="log(|Z|*3/2) value");grid(col="gray2")
+points((log(as.numeric(df2$V2))^alpha_val-1)/alpha_val,log(df2$Z),pch=20,col="gray",cex=0.5)
+points((log(sqrt(as.numeric(df_kotnick_nodup$t)/2/pi))^alpha_val-1)/alpha_val,log(abs(as.numeric(df_kotnick_nodup$Z))),pch=6,col="gray2",cex=0.3)
+points((log(sqrt(as.numeric(dft$t)/2/pi))^alpha_val-1)/alpha_val,log(abs(as.numeric(dft$Z))),pch=6,col="gray",cex=0.3)
+
+points((log(sqrt(dfr$t/2/pi))^alpha_val-1)/alpha_val,log(abs(dfr$Z)),pch=20,col="gray",cex=0.4)
+points((log(sqrt(as.numeric(dgr$V1)/2/pi))^alpha_val-1)/alpha_val,log(abs(as.numeric(dgr$V3))),pch=20,col="gray",cex=0.4)
+points((log(as.numeric(dhr$Q1))^alpha_val-1)/alpha_val,log(abs(as.numeric(dhr$Z))),pch=20,col="gray",cex=0.4)
+
+points((log(as.numeric(di$V2))^alpha_val-1)/alpha_val,log(abs(as.numeric(di$V4))),pch=6,col=rgb(0,1,1,0.2),cex=0.5)
+arrows(x0=(log(as.numeric(di$V2))^alpha_val-1)/alpha_val,y0=log(0.9*abs(as.numeric(di$V4))),x1=(log(as.numeric(di$V2))^alpha_val-1)/alpha_val,col=rgb(0,1,1,0.2),
+       y1=log(1.1*abs(as.numeric(di$V4))), length=0.02, angle=90, code=3)
+
+points((log(as.numeric(dilowerT$V2))^alpha_val-1)/alpha_val,log(abs(as.numeric(dilowerT$V4))),col=rgb(0,1,1,0.2),pch=6,cex=0.5)
+arrows(x0=(log(as.numeric(dilowerT$V2))^alpha_val-1)/alpha_val,y0=log(0.9*abs(as.numeric(dilowerT$V4))),x1=(log(as.numeric(dilowerT$V2))^alpha_val-1)/alpha_val,col=rgb(0,1,1,0.2),
+       y1=log(1.1*abs(as.numeric(dilowerT$V4))), length=0.02, angle=90, code=3)
+points((log(as.numeric(dilowerT$V2))^alpha_val-1)/alpha_val,log(abs(as.numeric(dilowerT$V5))),pch=20,col="gray",cex=0.4)
+
+abline(a=1.274014,b=.866363,col="brown",lty=6)
+
+
+points((log(as.numeric(dfL32$V2))^alpha_val-1)/alpha_val,log((dfL32$Z)*3/2),col=rgb(1,0,0,0.5),pch=20,cex=0.5)
+#lines((log(as.numeric(dfL32$V2[dfL32$inc==1]))^alpha_val-1)/alpha_val,log((dfL32$Z[dfL32$inc==1])*3/2),col="black",pch=20,cex=0.5)
+points((log(as.numeric(dfL32_LLL$V2))^alpha_val-1)/alpha_val,log((dfL32_LLL$Z)*3/2),col=rgb(1,0,0,0.5),pch=8,cex=0.2)
+points((log(as.numeric(dfL32_LLL_2decplace$V2))^alpha_val-1)/alpha_val,log((dfL32_LLL_2decplace$Z)*3/2),col=rgb(1,0,0,0.5),pch=6,cex=0.3)
+points((log(as.numeric(dfL32_LLL_3xapprox$V2))^alpha_val-1)/alpha_val,log(dfL32_LLL_3xapprox$Z*3/2),col=rgb(1,0,0,0.5),pch=6,cex=0.3)
+#points(log(as.numeric(dfL32_LLL_approx$V2)),((dfL32_LLL_approx$Z)*3/2)^alpha_val,col=rgb(1,0,0,0.5),pch=6,cex=0.3)
+
+
+
+plot(log(as.numeric(df$V1)),log(df$Z),pch=20,col="gray",cex=0.5,
+     xlim=c(log(1e0),log(1e40)),ylim=log(c(0.5,100000)),
+     main="growth of largest L43 |Z| peaks \n standard log(|Z|) vs log(t) plot",xlab="log(t) value",ylab="log(|Z|) value");grid(col="gray2")
+points(log(as.numeric(df2$V1)),log(df2$Z),pch=20,col="gray",cex=0.5)
+points(log(as.numeric(df_kotnick_nodup$t)),log(abs(as.numeric(df_kotnick_nodup$Z))),pch=6,col="gray2",cex=0.3)
+points(log(as.numeric(dft$t)),log(abs(as.numeric(dft$Z))),pch=6,col="gray",cex=0.3)
+
+points(log(dfr$t),log(abs(dfr$Z)),pch=20,col="gray",cex=0.4)
+points(log(as.numeric(dgr$V1)),log(abs(as.numeric(dgr$V3))),pch=20,col="gray",cex=0.4)
+points(log(as.numeric(dhr$T)),log(abs(as.numeric(dhr$Z))),pch=20,col="gray",cex=0.4)
+
+points(log(as.numeric(di$V1)),log(abs(as.numeric(di$V4))),pch=6,col=rgb(0,1,1,0.2),cex=0.5)
+arrows(x0=log(as.numeric(di$V1)),y0=log(0.9*abs(as.numeric(di$V4))),x1=log(as.numeric(di$V1)),col=rgb(0,1,1,0.2),
+       y1=log(1.1*abs(as.numeric(di$V4))), length=0.02, angle=90, code=3)
+
+points(log(as.numeric(dilowerT$V1)),log(abs(as.numeric(dilowerT$V4))),col=rgb(0,1,1,0.2),pch=6,cex=0.5)
+arrows(x0=log(as.numeric(dilowerT$V1)),y0=log(0.9*abs(as.numeric(dilowerT$V4))),x1=log(as.numeric(dilowerT$V1)),col=rgb(0,1,1,0.2),
+       y1=log(1.1*abs(as.numeric(dilowerT$V4))), length=0.02, angle=90, code=3)
+points(log(as.numeric(dilowerT$V1)),log(abs(as.numeric(dilowerT$V5))),pch=20,col="gray",cex=0.4)
+
+points(log(as.numeric(dfL43$V1)),log(dfL43$Z),col=rgb(0,0,1,0.5),pch=20,cex=0.5)
+points(log(as.numeric(dfL43_LLL$V1)),log(dfL43_LLL$Z),col=rgb(0,0,1,0.5),pch=20,cex=0.5)
+points(log(as.numeric(dfL43_LLL_4xapprox$V1)),log(dfL43_LLL_4xapprox$Z),col=rgb(0,0,1,0.5),pch=6,cex=0.3)
+#points(log(as.numeric(dfL43_LLL_approx$V1)),log(dfL43_LLL_approx$Z),col=rgb(0,0,1,0.5),pch=6,cex=0.3)
+
+
+plot(log(as.numeric(df$V2)),log(df$Z),pch=20,col="gray",cex=0.5,
+     xlim=c(log(1e0),log(1e25)),ylim=log(c(0.5,100000)),
+     main="growth of largest L43 |Z| peaks \n log(|Z|*4/2) vs log(sqrt((t/2/pi)^1*4)) plot",xlab="log(sqrt((t/2/pi)^1*4)) value",ylab="log(|Z|*4/2) value");grid(col="gray2")
+points(log(as.numeric(df2$V2)),log(df2$Z),pch=20,col="gray",cex=0.5)
+points(log(sqrt(as.numeric(df_kotnick_nodup$t)/2/pi)),log(abs(as.numeric(df_kotnick_nodup$Z))),pch=6,col="gray2",cex=0.3)
+points(log(sqrt(as.numeric(dft$t)/2/pi)),log(abs(as.numeric(dft$Z))),pch=6,col="gray",cex=0.3)
+
+points(log(sqrt(dfr$t/2/pi)),log(abs(dfr$Z)),pch=20,col="gray",cex=0.4)
+points(log(sqrt(as.numeric(dgr$V1)/2/pi)),log(abs(as.numeric(dgr$V3))),pch=20,col="gray",cex=0.4)
+points(log(as.numeric(dhr$Q1)),log(abs(as.numeric(dhr$Z))),pch=20,col="gray",cex=0.4)
+
+
+points(log(as.numeric(di$V2)),log(abs(as.numeric(di$V4))),pch=6,col=rgb(0,1,1,0.2),cex=0.5)
+arrows(x0=log(as.numeric(di$V2)),y0=log(0.9*abs(as.numeric(di$V4))),x1=log(as.numeric(di$V2)),col=rgb(0,1,1,0.2),
+       y1=log(1.1*abs(as.numeric(di$V4))), length=0.02, angle=90, code=3)
+
+points(log(as.numeric(dilowerT$V2)),log(abs(as.numeric(dilowerT$V4))),col=rgb(0,1,1,0.2),pch=6,cex=0.5)
+arrows(x0=log(as.numeric(dilowerT$V2)),y0=log(0.9*abs(as.numeric(dilowerT$V4))),x1=log(as.numeric(dilowerT$V2)),col=rgb(0,1,1,0.2),
+       y1=log(1.1*abs(as.numeric(dilowerT$V4))), length=0.02, angle=90, code=3)
+points(log(as.numeric(dilowerT$V2)),log(abs(as.numeric(dilowerT$V5))),pch=20,col="gray",cex=0.4)
+
+points(log(as.numeric(dfL43$V2)),log(dfL43$Z*4/2),col=rgb(0,0,1,0.5),pch=20,cex=0.5)
+points(log(as.numeric(dfL43_LLL$V2)),log(dfL43_LLL$Z*4/2),col=rgb(0,0,1,0.5),pch=20,cex=0.5)
+points(log(as.numeric(dfL43_LLL_4xapprox$V2)),log(dfL43_LLL_4xapprox$Z*4/2),col=rgb(0,0,1,0.5),pch=6,cex=0.3)
+#points(log(as.numeric(dfL43_LLL_approx$V2)),log(dfL43_LLL_approx$Z*4/2),col=rgb(0,0,1,0.5),pch=6,cex=0.3)
+lines(seq(.1,50,by=.1),1.274014+0.866363*(seq(.1,50,by=.1)^alpha_val-1)/alpha_val,col="brown",lty=6)
+
+
+plot((log(as.numeric(df$V2))^alpha_val-1)/alpha_val,log(df$Z),pch=20,col="gray",cex=0.5,
+     xlim=log(c(1,1e5)),ylim=c(-1,15),
+     main="growth of largest L43 |Z| peaks \n log(|Z|*4/2) vs (sqrt(log(sqrt((t/2/pi)^1*4)))-1)/0.5 plot",xlab="(sqrt(log(sqrt((t/2/pi)^1*4)))-1)/0.5 value",ylab="log(|Z|*4/2) value");grid(col="gray2")
+points((log(as.numeric(df2$V2))^alpha_val-1)/alpha_val,log(df2$Z),pch=20,col="gray",cex=0.5)
+points((log(sqrt(as.numeric(df_kotnick_nodup$t)/2/pi))^alpha_val-1)/alpha_val,log(abs(as.numeric(df_kotnick_nodup$Z))),pch=6,col="gray2",cex=0.3)
+points((log(sqrt(as.numeric(dft$t)/2/pi))^alpha_val-1)/alpha_val,log(abs(as.numeric(dft$Z))),pch=6,col="gray",cex=0.3)
+
+points((log(sqrt(dfr$t/2/pi))^alpha_val-1)/alpha_val,log(abs(dfr$Z)),pch=20,col="gray",cex=0.4)
+points((log(sqrt(as.numeric(dgr$V1)/2/pi))^alpha_val-1)/alpha_val,log(abs(as.numeric(dgr$V3))),pch=20,col="gray",cex=0.4)
+points((log(as.numeric(dhr$Q1))^alpha_val-1)/alpha_val,log(abs(as.numeric(dhr$Z))),pch=20,col="gray",cex=0.4)
+
+points((log(as.numeric(di$V2))^alpha_val-1)/alpha_val,log(abs(as.numeric(di$V4))),pch=6,col=rgb(0,1,1,0.2),cex=0.5)
+arrows(x0=(log(as.numeric(di$V2))^alpha_val-1)/alpha_val,y0=log(0.9*abs(as.numeric(di$V4))),x1=(log(as.numeric(di$V2))^alpha_val-1)/alpha_val,col=rgb(0,1,1,0.2),
+       y1=log(1.1*abs(as.numeric(di$V4))), length=0.02, angle=90, code=3)
+
+points((log(as.numeric(dilowerT$V2))^alpha_val-1)/alpha_val,log(abs(as.numeric(dilowerT$V4))),col=rgb(0,1,1,0.2),pch=6,cex=0.5)
+arrows(x0=(log(as.numeric(dilowerT$V2))^alpha_val-1)/alpha_val,y0=log(0.9*abs(as.numeric(dilowerT$V4))),x1=(log(as.numeric(dilowerT$V2))^alpha_val-1)/alpha_val,col=rgb(0,1,1,0.2),
+       y1=log(1.1*abs(as.numeric(dilowerT$V4))), length=0.02, angle=90, code=3)
+points((log(as.numeric(dilowerT$V2))^alpha_val-1)/alpha_val,log(abs(as.numeric(dilowerT$V5))),pch=20,col="gray",cex=0.4)
+
+abline(a=1.274014,b=.866363,col="brown",lty=6)
+
+
+points((log(as.numeric(dfL43$V2))^alpha_val-1)/alpha_val,log(dfL43$Z*4/2),col=rgb(0,0,1,0.5),pch=20,cex=0.5)
+points((log(as.numeric(dfL43_LLL$V2))^alpha_val-1)/alpha_val,log(dfL43_LLL$Z*4/2),col=rgb(0,0,1,0.5),pch=20,cex=0.5)
+points((log(as.numeric(dfL43_LLL_4xapprox$V2))^alpha_val-1)/alpha_val,log(dfL43_LLL_4xapprox$Z*4/2),col=rgb(0,0,1,0.5),pch=6,cex=0.3)
+
+
+
+
+```
+\elandscape
+
+\clearpage
+
+\blandscape
+```{r different_rescalings_pt2, echo=FALSE, warnings=FALSE, fig.show = "hold",  out.width = c("32%","32%","32%"), fig.align = "center", fig.cap="A graphical comparison for each investigated 1st degree L-function or Davenport-Heilbronn function of \\textbf{left column} - $\\log\\left(|Z_L|\\right) \\text{ vs } \\log(t)$, \\textbf{middle column} - $\\log\\left(|Z_L|\\cdot \\frac{N_C}{N_{\\chi\\ne0}}\\right) \\text{ vs } \\log\\left(\\sqrt{(\\frac{t}{2\\pi})^d\\cdot N_C}\\right)$, \\textbf{right column} - $\\log\\left(|Z_L|\\cdot \\frac{N_C}{N_{\\chi\\ne0}}\\right) \\text{ vs } \\frac{\\left(\\sqrt{\\log\\left(\\sqrt{(\\frac{t}{2\\pi})^d\\cdot N_C}\\right)}-1\\right)}{0.5}$ for top row - $L(\\chi_5(4,.),0.5+I\\cdot t)$, middle row - $L(\\chi_5(3,.),0.5+I\\cdot t)$ and bottom row - $L(\\chi_5(2,.),0.5+I\\cdot t)$", fig.height=5}
+
+plot(log(as.numeric(df$V1)),log(df$Z),pch=20,col="gray",cex=0.5,
+     xlim=c(log(1e0),log(1e40)),ylim=log(c(0.5,100000)),
+     main="growth of largest L54 |Z| peaks \n standard log(|Z|) vs log(t) plot",xlab="log(t) value",ylab="log(|Z|) value");grid(col="gray2")
+points(log(as.numeric(df2$V1)),log(df2$Z),pch=20,col="gray",cex=0.5)
+points(log(as.numeric(df_kotnick_nodup$t)),log(abs(as.numeric(df_kotnick_nodup$Z))),pch=6,col="gray2",cex=0.3)
+points(log(as.numeric(dft$t)),log(abs(as.numeric(dft$Z))),pch=6,col="gray",cex=0.3)
+
+points(log(dfr$t),log(abs(dfr$Z)),pch=20,col="gray",cex=0.4)
+points(log(as.numeric(dgr$V1)),log(abs(as.numeric(dgr$V3))),pch=20,col="gray",cex=0.4)
+points(log(as.numeric(dhr$T)),log(abs(as.numeric(dhr$Z))),pch=20,col="gray",cex=0.4)
+
+points(log(as.numeric(di$V1)),log(abs(as.numeric(di$V4))),pch=6,col=rgb(0,1,1,0.2),cex=0.5)
+arrows(x0=log(as.numeric(di$V1)),y0=log(0.9*abs(as.numeric(di$V4))),x1=log(as.numeric(di$V1)),col=rgb(0,1,1,0.2),
+       y1=log(1.1*abs(as.numeric(di$V4))), length=0.02, angle=90, code=3)
+
+points(log(as.numeric(dilowerT$V1)),log(abs(as.numeric(dilowerT$V4))),col=rgb(0,1,1,0.2),pch=6,cex=0.5)
+arrows(x0=log(as.numeric(dilowerT$V1)),y0=log(0.9*abs(as.numeric(dilowerT$V4))),x1=log(as.numeric(dilowerT$V1)),col=rgb(0,1,1,0.2),
+       y1=log(1.1*abs(as.numeric(dilowerT$V4))), length=0.02, angle=90, code=3)
+points(log(as.numeric(dilowerT$V1)),log(abs(as.numeric(dilowerT$V5))),pch=20,col="gray",cex=0.4)
+
+points(log(as.numeric(dfL54$V1)),log(dfL54$Z),col=rgb(1,0,1,0.5),pch=20,cex=0.5)
+points(log(as.numeric(dfL54_LLL_approx$V1)),log(dfL54_LLL_approx$Z),col=rgb(1,0,1,0.5),pch=6,cex=0.3)
+
+
+plot(log(as.numeric(df$V2)),log(df$Z),pch=20,col="gray",cex=0.5,
+     xlim=c(log(1e0),log(1e25)),ylim=log(c(0.5,100000)),
+     main="growth of largest L54 |Z| peaks \n log(|Z|*5/4) vs log(sqrt((t/2/pi)^1*5)) plot",xlab="log(sqrt((t/2/pi)^1*5)) value",ylab="log(|Z|*5/4) value");grid(col="gray2")
+points(log(as.numeric(df2$V2)),log(df2$Z),pch=20,col="gray",cex=0.5)
+points(log(sqrt(as.numeric(df_kotnick_nodup$t)/2/pi)),log(abs(as.numeric(df_kotnick_nodup$Z))),pch=6,col="gray2",cex=0.3)
+points(log(sqrt(as.numeric(dft$t)/2/pi)),log(abs(as.numeric(dft$Z))),pch=6,col="gray",cex=0.3)
+
+points(log(sqrt(dfr$t/2/pi)),log(abs(dfr$Z)),pch=20,col="gray",cex=0.4)
+points(log(sqrt(as.numeric(dgr$V1)/2/pi)),log(abs(as.numeric(dgr$V3))),pch=20,col="gray",cex=0.4)
+points(log(as.numeric(dhr$Q1)),log(abs(as.numeric(dhr$Z))),pch=20,col="gray",cex=0.4)
+
+
+points(log(as.numeric(di$V2)),log(abs(as.numeric(di$V4))),pch=6,col=rgb(0,1,1,0.2),cex=0.5)
+arrows(x0=log(as.numeric(di$V2)),y0=log(0.9*abs(as.numeric(di$V4))),x1=log(as.numeric(di$V2)),col=rgb(0,1,1,0.2),
+       y1=log(1.1*abs(as.numeric(di$V4))), length=0.02, angle=90, code=3)
+
+points(log(as.numeric(dilowerT$V2)),log(abs(as.numeric(dilowerT$V4))),col=rgb(0,1,1,0.2),pch=6,cex=0.5)
+arrows(x0=log(as.numeric(dilowerT$V2)),y0=log(0.9*abs(as.numeric(dilowerT$V4))),x1=log(as.numeric(dilowerT$V2)),col=rgb(0,1,1,0.2),
+       y1=log(1.1*abs(as.numeric(dilowerT$V4))), length=0.02, angle=90, code=3)
+points(log(as.numeric(dilowerT$V2)),log(abs(as.numeric(dilowerT$V5))),pch=20,col="gray",cex=0.4)
+
+points(log(as.numeric(dfL54$V2)),log(dfL54$Z*5/4),col=rgb(1,0,1,0.5),pch=20,cex=0.5)
+points(log(as.numeric(dfL54_LLL_approx$V2)),log(dfL54_LLL_approx$Z*5/4),col=rgb(1,0,1,0.5),pch=6,cex=0.3)
+
+lines(seq(.1,50,by=.1),1.274014+0.866363*(seq(.1,50,by=.1)^alpha_val-1)/alpha_val,col="brown",lty=6)
+
+
+plot((log(as.numeric(df$V2))^alpha_val-1)/alpha_val,log(df$Z),pch=20,col="gray",cex=0.5,
+     xlim=log(c(1,1e5)),ylim=c(-1,15),
+     main="growth of largest L54 |Z| peaks \n log(|Z|*5/4) vs (sqrt(log(sqrt((t/2/pi)^1*5)))-1)/0.5 plot",xlab="(sqrt(log(sqrt((t/2/pi)^1*5)))-1)/0.5 value",ylab="log(|Z|*5/4) value");grid(col="gray2")
+points((log(as.numeric(df2$V2))^alpha_val-1)/alpha_val,log(df2$Z),pch=20,col="gray",cex=0.5)
+points((log(sqrt(as.numeric(df_kotnick_nodup$t)/2/pi))^alpha_val-1)/alpha_val,log(abs(as.numeric(df_kotnick_nodup$Z))),pch=6,col="gray2",cex=0.3)
+points((log(sqrt(as.numeric(dft$t)/2/pi))^alpha_val-1)/alpha_val,log(abs(as.numeric(dft$Z))),pch=6,col="gray",cex=0.3)
+
+points((log(sqrt(dfr$t/2/pi))^alpha_val-1)/alpha_val,log(abs(dfr$Z)),pch=20,col="gray",cex=0.4)
+points((log(sqrt(as.numeric(dgr$V1)/2/pi))^alpha_val-1)/alpha_val,log(abs(as.numeric(dgr$V3))),pch=20,col="gray",cex=0.4)
+points((log(as.numeric(dhr$Q1))^alpha_val-1)/alpha_val,log(abs(as.numeric(dhr$Z))),pch=20,col="gray",cex=0.4)
+
+points((log(as.numeric(di$V2))^alpha_val-1)/alpha_val,log(abs(as.numeric(di$V4))),pch=6,col=rgb(0,1,1,0.2),cex=0.5)
+arrows(x0=(log(as.numeric(di$V2))^alpha_val-1)/alpha_val,y0=log(0.9*abs(as.numeric(di$V4))),x1=(log(as.numeric(di$V2))^alpha_val-1)/alpha_val,col=rgb(0,1,1,0.2),
+       y1=log(1.1*abs(as.numeric(di$V4))), length=0.02, angle=90, code=3)
+
+points((log(as.numeric(dilowerT$V2))^alpha_val-1)/alpha_val,log(abs(as.numeric(dilowerT$V4))),col=rgb(0,1,1,0.2),pch=6,cex=0.5)
+arrows(x0=(log(as.numeric(dilowerT$V2))^alpha_val-1)/alpha_val,y0=log(0.9*abs(as.numeric(dilowerT$V4))),x1=(log(as.numeric(dilowerT$V2))^alpha_val-1)/alpha_val,col=rgb(0,1,1,0.2),
+       y1=log(1.1*abs(as.numeric(dilowerT$V4))), length=0.02, angle=90, code=3)
+points((log(as.numeric(dilowerT$V2))^alpha_val-1)/alpha_val,log(abs(as.numeric(dilowerT$V5))),pch=20,col="gray",cex=0.4)
+
+abline(a=1.274014,b=.866363,col="brown",lty=6)
+
+points((log(as.numeric(dfL54$V2))^alpha_val-1)/alpha_val,log(dfL54$Z*5/4),col=rgb(1,0,1,0.5),pch=20,cex=0.5)
+points((log(as.numeric(dfL54_LLL_approx$V2))^alpha_val-1)/alpha_val,log(dfL54_LLL_approx$Z*5/4),col=rgb(1,0,1,0.5),pch=6,cex=0.3)
+
+
+
+plot(log(as.numeric(df$V1)),log(df$Z),pch=20,col="gray",cex=0.5,
+     xlim=c(log(1e0),log(1e40)),ylim=log(c(0.5,100000)),
+     main="growth of largest L53 |Z| peaks \n standard log(|Z|) vs log(t) plot",xlab="log(t) value",ylab="log(|Z|) value");grid(col="gray2")
+points(log(as.numeric(df2$V1)),log(df2$Z),pch=20,col="gray",cex=0.5)
+points(log(as.numeric(df_kotnick_nodup$t)),log(abs(as.numeric(df_kotnick_nodup$Z))),pch=6,col="gray2",cex=0.3)
+points(log(as.numeric(dft$t)),log(abs(as.numeric(dft$Z))),pch=6,col="gray",cex=0.3)
+
+points(log(dfr$t),log(abs(dfr$Z)),pch=20,col="gray",cex=0.4)
+points(log(as.numeric(dgr$V1)),log(abs(as.numeric(dgr$V3))),pch=20,col="gray",cex=0.4)
+points(log(as.numeric(dhr$T)),log(abs(as.numeric(dhr$Z))),pch=20,col="gray",cex=0.4)
+
+points(log(as.numeric(di$V1)),log(abs(as.numeric(di$V4))),pch=6,col=rgb(0,1,1,0.2),cex=0.5)
+arrows(x0=log(as.numeric(di$V1)),y0=log(0.9*abs(as.numeric(di$V4))),x1=log(as.numeric(di$V1)),col=rgb(0,1,1,0.2),
+       y1=log(1.1*abs(as.numeric(di$V4))), length=0.02, angle=90, code=3)
+
+points(log(as.numeric(dilowerT$V1)),log(abs(as.numeric(dilowerT$V4))),col=rgb(0,1,1,0.2),pch=6,cex=0.5)
+arrows(x0=log(as.numeric(dilowerT$V1)),y0=log(0.9*abs(as.numeric(dilowerT$V4))),x1=log(as.numeric(dilowerT$V1)),col=rgb(0,1,1,0.2),
+       y1=log(1.1*abs(as.numeric(dilowerT$V4))), length=0.02, angle=90, code=3)
+points(log(as.numeric(dilowerT$V1)),log(abs(as.numeric(dilowerT$V5))),pch=20,col="gray",cex=0.4)
+
+points(log(as.numeric(dfL53$V1)),log(dfL53$Z),col=rgb(0.5,0.2,1,0.5),pch=20,cex=0.5)
+points(log(as.numeric(dfL53_LLL$V1)),log(dfL53_LLL$Z),col=rgb(0.5,0.2,1,0.5),pch=20,cex=0.5)
+points(log(as.numeric(dfL53_LLL_2decplace$V1)),log(dfL53_LLL_2decplace$Z),col=rgb(0.5,0.2,1,0.5),pch=20,cex=0.5)
+# points(log(as.numeric(dfL53_LLL_approx$V1)),log(dfL53_LLL_approx$Z),col=rgb(0.5,0.2,1,0.5),pch=6,cex=0.3)
+points(log(as.numeric(dfL53_LLL_5xapprox$V1)),log(dfL53_LLL_5xapprox$Z),col=rgb(0.5,0.2,1,0.5),pch=6,cex=0.3)
+
+
+plot(log(as.numeric(df$V2)),log(df$Z),pch=20,col="gray",cex=0.5,
+     xlim=c(log(1e0),log(1e25)),ylim=log(c(0.5,100000)),
+     main="growth of largest L53 |Z| peaks \n log(|Z|*5/3) vs log(sqrt((t/2/pi)^1*5)) plot",xlab="log(sqrt((t/2/pi)^1*5)) value",ylab="log(|Z|*5/4) value");grid(col="gray2")
+points(log(as.numeric(df2$V2)),log(df2$Z),pch=20,col="gray",cex=0.5)
+points(log(sqrt(as.numeric(df_kotnick_nodup$t)/2/pi)),log(abs(as.numeric(df_kotnick_nodup$Z))),pch=6,col="gray2",cex=0.3)
+points(log(sqrt(as.numeric(dft$t)/2/pi)),log(abs(as.numeric(dft$Z))),pch=6,col="gray",cex=0.3)
+
+points(log(sqrt(dfr$t/2/pi)),log(abs(dfr$Z)),pch=20,col="gray",cex=0.4)
+points(log(sqrt(as.numeric(dgr$V1)/2/pi)),log(abs(as.numeric(dgr$V3))),pch=20,col="gray",cex=0.4)
+points(log(as.numeric(dhr$Q1)),log(abs(as.numeric(dhr$Z))),pch=20,col="gray",cex=0.4)
+
+
+points(log(as.numeric(di$V2)),log(abs(as.numeric(di$V4))),pch=6,col=rgb(0,1,1,0.2),cex=0.5)
+arrows(x0=log(as.numeric(di$V2)),y0=log(0.9*abs(as.numeric(di$V4))),x1=log(as.numeric(di$V2)),col=rgb(0,1,1,0.2),
+       y1=log(1.1*abs(as.numeric(di$V4))), length=0.02, angle=90, code=3)
+
+points(log(as.numeric(dilowerT$V2)),log(abs(as.numeric(dilowerT$V4))),col=rgb(0,1,1,0.2),pch=6,cex=0.5)
+arrows(x0=log(as.numeric(dilowerT$V2)),y0=log(0.9*abs(as.numeric(dilowerT$V4))),x1=log(as.numeric(dilowerT$V2)),col=rgb(0,1,1,0.2),
+       y1=log(1.1*abs(as.numeric(dilowerT$V4))), length=0.02, angle=90, code=3)
+points(log(as.numeric(dilowerT$V2)),log(abs(as.numeric(dilowerT$V5))),pch=20,col="gray",cex=0.4)
+
+points(log(as.numeric(dfL53$V2)),log(dfL53$Z*5/4),col=rgb(0.5,0.2,1,0.5),pch=20,cex=0.5)
+points(log(as.numeric(dfL53_LLL$V2)),log(dfL53_LLL$Z*5/4),col=rgb(0.5,0.2,1,0.5),pch=20,cex=0.5)
+points(log(as.numeric(dfL53_LLL_2decplace$V2)),log(dfL53_LLL_2decplace$Z*5/4),col=rgb(0.5,0.2,1,0.5),pch=20,cex=0.5)
+# points(log(as.numeric(dfL53_LLL_approx$V2)),log(dfL53_LLL_approx$Z*5/4),col=rgb(0.5,0.2,1,0.5),pch=6,cex=0.3)
+points(log(as.numeric(dfL53_LLL_5xapprox$V2)),log(dfL53_LLL_5xapprox$Z*5/4),col=rgb(0.5,0.2,1,0.5),pch=6,cex=0.3)
+
+lines(seq(.1,50,by=.1),1.274014+0.866363*(seq(.1,50,by=.1)^alpha_val-1)/alpha_val,col="brown",lty=6)
+
+
+plot((log(as.numeric(df$V2))^alpha_val-1)/alpha_val,log(df$Z),pch=20,col="gray",cex=0.5,
+     xlim=log(c(1,1e5)),ylim=c(-1,15),
+     main="growth of largest L53 |Z| peaks \n log(|Z|*5/4) vs (sqrt(log(sqrt((t/2/pi)^1*5)))-1)/0.5 plot",xlab="(sqrt(log(sqrt((t/2/pi)^1*5)))-1)/0.5 value",ylab="log(|Z|*5/4) value");grid(col="gray2")
+points((log(as.numeric(df2$V2))^alpha_val-1)/alpha_val,log(df2$Z),pch=20,col="gray",cex=0.5)
+points((log(sqrt(as.numeric(df_kotnick_nodup$t)/2/pi))^alpha_val-1)/alpha_val,log(abs(as.numeric(df_kotnick_nodup$Z))),pch=6,col="gray2",cex=0.3)
+points((log(sqrt(as.numeric(dft$t)/2/pi))^alpha_val-1)/alpha_val,log(abs(as.numeric(dft$Z))),pch=6,col="gray",cex=0.3)
+
+points((log(sqrt(dfr$t/2/pi))^alpha_val-1)/alpha_val,log(abs(dfr$Z)),pch=20,col="gray",cex=0.4)
+points((log(sqrt(as.numeric(dgr$V1)/2/pi))^alpha_val-1)/alpha_val,log(abs(as.numeric(dgr$V3))),pch=20,col="gray",cex=0.4)
+points((log(as.numeric(dhr$Q1))^alpha_val-1)/alpha_val,log(abs(as.numeric(dhr$Z))),pch=20,col="gray",cex=0.4)
+
+points((log(as.numeric(di$V2))^alpha_val-1)/alpha_val,log(abs(as.numeric(di$V4))),pch=6,col=rgb(0,1,1,0.2),cex=0.5)
+arrows(x0=(log(as.numeric(di$V2))^alpha_val-1)/alpha_val,y0=log(0.9*abs(as.numeric(di$V4))),x1=(log(as.numeric(di$V2))^alpha_val-1)/alpha_val,col=rgb(0,1,1,0.2),
+       y1=log(1.1*abs(as.numeric(di$V4))), length=0.02, angle=90, code=3)
+
+points((log(as.numeric(dilowerT$V2))^alpha_val-1)/alpha_val,log(abs(as.numeric(dilowerT$V4))),col=rgb(0,1,1,0.2),pch=6,cex=0.5)
+arrows(x0=(log(as.numeric(dilowerT$V2))^alpha_val-1)/alpha_val,y0=log(0.9*abs(as.numeric(dilowerT$V4))),x1=(log(as.numeric(dilowerT$V2))^alpha_val-1)/alpha_val,col=rgb(0,1,1,0.2),
+       y1=log(1.1*abs(as.numeric(dilowerT$V4))), length=0.02, angle=90, code=3)
+points((log(as.numeric(dilowerT$V2))^alpha_val-1)/alpha_val,log(abs(as.numeric(dilowerT$V5))),pch=20,col="gray",cex=0.4)
+
+abline(a=1.274014,b=.866363,col="brown",lty=6)
+
+points((log(as.numeric(dfL53$V2))^alpha_val-1)/alpha_val,log(dfL53$Z*5/4),col=rgb(0.5,0.2,1,0.5),pch=20,cex=0.5)
+points((log(as.numeric(dfL53_LLL$V2))^alpha_val-1)/alpha_val,log(dfL53_LLL$Z*5/4),col=rgb(0.5,0.2,1,0.5),pch=20,cex=0.5)
+points((log(as.numeric(dfL53_LLL_2decplace$V2))^alpha_val-1)/alpha_val,log(dfL53_LLL_2decplace$Z*5/4),col=rgb(0.5,0.2,1,0.5),pch=20,cex=0.5)
+points((log(as.numeric(dfL53_LLL_5xapprox$V2))^alpha_val-1)/alpha_val,log(dfL53_LLL_5xapprox$Z*5/4),col=rgb(0.5,0.2,1,0.5),pch=6,cex=0.3)
+
+
+
+plot(log(as.numeric(df$V1)),log(df$Z),pch=20,col="gray",cex=0.5,
+     xlim=c(log(1e0),log(1e40)),ylim=log(c(0.5,100000)),
+     main="growth of largest L52 |Z| peaks \n standard log(|Z|) vs log(t) plot",xlab="log(t) value",ylab="log(|Z|) value");grid(col="gray2")
+points(log(as.numeric(df2$V1)),log(df2$Z),pch=20,col="gray",cex=0.5)
+points(log(as.numeric(df_kotnick_nodup$t)),log(abs(as.numeric(df_kotnick_nodup$Z))),pch=6,col="gray2",cex=0.3)
+points(log(as.numeric(dft$t)),log(abs(as.numeric(dft$Z))),pch=6,col="gray",cex=0.3)
+
+points(log(dfr$t),log(abs(dfr$Z)),pch=20,col="gray",cex=0.4)
+points(log(as.numeric(dgr$V1)),log(abs(as.numeric(dgr$V3))),pch=20,col="gray",cex=0.4)
+points(log(as.numeric(dhr$T)),log(abs(as.numeric(dhr$Z))),pch=20,col="gray",cex=0.4)
+
+points(log(as.numeric(di$V1)),log(abs(as.numeric(di$V4))),pch=6,col=rgb(0,1,1,0.2),cex=0.5)
+arrows(x0=log(as.numeric(di$V1)),y0=log(0.9*abs(as.numeric(di$V4))),x1=log(as.numeric(di$V1)),col=rgb(0,1,1,0.2),
+       y1=log(1.1*abs(as.numeric(di$V4))), length=0.02, angle=90, code=3)
+
+points(log(as.numeric(dilowerT$V1)),log(abs(as.numeric(dilowerT$V4))),col=rgb(0,1,1,0.2),pch=6,cex=0.5)
+arrows(x0=log(as.numeric(dilowerT$V1)),y0=log(0.9*abs(as.numeric(dilowerT$V4))),x1=log(as.numeric(dilowerT$V1)),col=rgb(0,1,1,0.2),
+       y1=log(1.1*abs(as.numeric(dilowerT$V4))), length=0.02, angle=90, code=3)
+points(log(as.numeric(dilowerT$V1)),log(abs(as.numeric(dilowerT$V5))),pch=20,col="gray",cex=0.4)
+
+points(log(as.numeric(dfL52$V1)),log(dfL52$Z),col=rgb(0.2,0.5,1,0.5),pch=20,cex=0.5)
+points(log(as.numeric(dfL52_LLL$V1)),log(dfL52_LLL$Z),col=rgb(0.2,0.5,1,0.5),pch=20,cex=0.5)
+points(log(as.numeric(dfL52_LLL_2decplace$V1)),log(dfL52_LLL_2decplace$Z),col=rgb(0.2,0.5,1,0.5),pch=20,cex=0.5)
+# points(log(as.numeric(dfL52_LLL_approx$V1)),log(dfL52_LLL_approx$Z),col=rgb(0.2,0.5,1,0.5),pch=6,cex=0.3)
+points(log(as.numeric(dfL52_LLL_5xapprox$V1)),log(dfL52_LLL_5xapprox$Z),col=rgb(0.2,0.5,1,0.5),pch=6,cex=0.3)
+
+
+plot(log(as.numeric(df$V2)),log(df$Z),pch=20,col="gray",cex=0.5,
+     xlim=c(log(1e0),log(1e25)),ylim=log(c(0.5,100000)),
+     main="growth of largest L52 |Z| peaks \n log(|Z|*5/4) vs log(sqrt((t/2/pi)^1*5)) plot",xlab="log(sqrt((t/2/pi)^1*5)) value",ylab="log(|Z|*5/4) value");grid(col="gray2")
+points(log(as.numeric(df2$V2)),log(df2$Z),pch=20,col="gray",cex=0.5)
+points(log(sqrt(as.numeric(df_kotnick_nodup$t)/2/pi)),log(abs(as.numeric(df_kotnick_nodup$Z))),pch=6,col="gray2",cex=0.3)
+points(log(sqrt(as.numeric(dft$t)/2/pi)),log(abs(as.numeric(dft$Z))),pch=6,col="gray",cex=0.3)
+
+points(log(sqrt(dfr$t/2/pi)),log(abs(dfr$Z)),pch=20,col="gray",cex=0.4)
+points(log(sqrt(as.numeric(dgr$V1)/2/pi)),log(abs(as.numeric(dgr$V3))),pch=20,col="gray",cex=0.4)
+points(log(as.numeric(dhr$Q1)),log(abs(as.numeric(dhr$Z))),pch=20,col="gray",cex=0.4)
+
+
+points(log(as.numeric(di$V2)),log(abs(as.numeric(di$V4))),pch=6,col=rgb(0,1,1,0.2),cex=0.5)
+arrows(x0=log(as.numeric(di$V2)),y0=log(0.9*abs(as.numeric(di$V4))),x1=log(as.numeric(di$V2)),col=rgb(0,1,1,0.2),
+       y1=log(1.1*abs(as.numeric(di$V4))), length=0.02, angle=90, code=3)
+
+points(log(as.numeric(dilowerT$V2)),log(abs(as.numeric(dilowerT$V4))),col=rgb(0,1,1,0.2),pch=6,cex=0.5)
+arrows(x0=log(as.numeric(dilowerT$V2)),y0=log(0.9*abs(as.numeric(dilowerT$V4))),x1=log(as.numeric(dilowerT$V2)),col=rgb(0,1,1,0.2),
+       y1=log(1.1*abs(as.numeric(dilowerT$V4))), length=0.02, angle=90, code=3)
+points(log(as.numeric(dilowerT$V2)),log(abs(as.numeric(dilowerT$V5))),pch=20,col="gray",cex=0.4)
+
+points(log(as.numeric(dfL52$V2)),log(dfL52$Z*5/4),col=rgb(0.2,0.5,1,0.5),pch=20,cex=0.5)
+points(log(as.numeric(dfL52_LLL$V2)),log(dfL52_LLL$Z*5/4),col=rgb(0.2,0.5,1,0.5),pch=20,cex=0.5)
+points(log(as.numeric(dfL52_LLL_2decplace$V2)),log(dfL52_LLL_2decplace$Z*5/4),col=rgb(0.2,0.5,1,0.5),pch=20,cex=0.5)
+# points(log(as.numeric(dfL52_LLL_approx$V2)),log(dfL52_LLL_approx$Z*5/4),col=rgb(0.2,0.5,1,0.5),pch=6,cex=0.3)
+points(log(as.numeric(dfL52_LLL_5xapprox$V2)),log(dfL52_LLL_5xapprox$Z*5/4),col=rgb(0.2,0.5,1,0.5),pch=6,cex=0.3)
+
+lines(seq(.1,50,by=.1),1.274014+0.866363*(seq(.1,50,by=.1)^alpha_val-1)/alpha_val,col="brown",lty=6)
+
+
+plot((log(as.numeric(df$V2))^alpha_val-1)/alpha_val,log(df$Z),pch=20,col="gray",cex=0.5,
+     xlim=log(c(1,1e5)),ylim=c(-1,15),
+     main="growth of largest L52 |Z| peaks \n log(|Z|*5/4) vs (sqrt(log(sqrt((t/2/pi)^1*5)))-1)/0.5 plot",xlab="(sqrt(log(sqrt((t/2/pi)^1*5)))-1)/0.5 value",ylab="log(|Z|*5/4) value");grid(col="gray2")
+points((log(as.numeric(df2$V2))^alpha_val-1)/alpha_val,log(df2$Z),pch=20,col="gray",cex=0.5)
+points((log(sqrt(as.numeric(df_kotnick_nodup$t)/2/pi))^alpha_val-1)/alpha_val,log(abs(as.numeric(df_kotnick_nodup$Z))),pch=6,col="gray2",cex=0.3)
+points((log(sqrt(as.numeric(dft$t)/2/pi))^alpha_val-1)/alpha_val,log(abs(as.numeric(dft$Z))),pch=6,col="gray",cex=0.3)
+
+points((log(sqrt(dfr$t/2/pi))^alpha_val-1)/alpha_val,log(abs(dfr$Z)),pch=20,col="gray",cex=0.4)
+points((log(sqrt(as.numeric(dgr$V1)/2/pi))^alpha_val-1)/alpha_val,log(abs(as.numeric(dgr$V3))),pch=20,col="gray",cex=0.4)
+points((log(as.numeric(dhr$Q1))^alpha_val-1)/alpha_val,log(abs(as.numeric(dhr$Z))),pch=20,col="gray",cex=0.4)
+
+points((log(as.numeric(di$V2))^alpha_val-1)/alpha_val,log(abs(as.numeric(di$V4))),pch=6,col=rgb(0,1,1,0.2),cex=0.5)
+arrows(x0=(log(as.numeric(di$V2))^alpha_val-1)/alpha_val,y0=log(0.9*abs(as.numeric(di$V4))),x1=(log(as.numeric(di$V2))^alpha_val-1)/alpha_val,col=rgb(0,1,1,0.2),
+       y1=log(1.1*abs(as.numeric(di$V4))), length=0.02, angle=90, code=3)
+
+points((log(as.numeric(dilowerT$V2))^alpha_val-1)/alpha_val,log(abs(as.numeric(dilowerT$V4))),col=rgb(0,1,1,0.2),pch=6,cex=0.5)
+arrows(x0=(log(as.numeric(dilowerT$V2))^alpha_val-1)/alpha_val,y0=log(0.9*abs(as.numeric(dilowerT$V4))),x1=(log(as.numeric(dilowerT$V2))^alpha_val-1)/alpha_val,col=rgb(0,1,1,0.2),
+       y1=log(1.1*abs(as.numeric(dilowerT$V4))), length=0.02, angle=90, code=3)
+points((log(as.numeric(dilowerT$V2))^alpha_val-1)/alpha_val,log(abs(as.numeric(dilowerT$V5))),pch=20,col="gray",cex=0.4)
+
+abline(a=1.274014,b=.866363,col="brown",lty=6)
+
+points((log(as.numeric(dfL52$V2))^alpha_val-1)/alpha_val,log(dfL52$Z*5/4),col=rgb(0.2,0.5,1,0.5),pch=20,cex=0.5)
+points((log(as.numeric(dfL52_LLL$V2))^alpha_val-1)/alpha_val,log(dfL52_LLL$Z*5/4),col=rgb(0.2,0.5,1,0.5),pch=20,cex=0.5)
+points((log(as.numeric(dfL52_LLL_2decplace$V2))^alpha_val-1)/alpha_val,log(dfL52_LLL_2decplace$Z*5/4),col=rgb(0.2,0.5,1,0.5),pch=20,cex=0.5)
+points((log(as.numeric(dfL52_LLL_5xapprox$V2))^alpha_val-1)/alpha_val,log(dfL52_LLL_5xapprox$Z*5/4),col=rgb(0.2,0.5,1,0.5),pch=6,cex=0.3)
+
+
+
+
+```
+\elandscape
+
+\clearpage
+
+\blandscape
+```{r different_rescalings_pt3, echo=FALSE, warnings=FALSE, fig.show = "hold",  out.width = c("32%","32%","32%"), fig.align = "center", fig.cap="A graphical comparison for each investigated 1st degree L-function or Davenport-Heilbronn function of \\textbf{left column} - $\\log\\left(|Z_L|\\right) \\text{ vs } \\log(t)$, \\textbf{middle column} - $\\log\\left(|Z_L|\\cdot \\frac{N_C}{N_{\\chi\\ne0}}\\right) \\text{ vs } \\log\\left(\\sqrt{(\\frac{t}{2\\pi})^d\\cdot N_C}\\right)$, \\textbf{right column} - $\\log\\left(|Z_L|\\cdot \\frac{N_C}{N_{\\chi\\ne0}}\\right) \\text{ vs } \\frac{\\left(\\sqrt{\\log\\left(\\sqrt{(\\frac{t}{2\\pi})^d\\cdot N_C}\\right)}-1\\right)}{0.5}$ for top row - $L(\\chi_7(6,.),0.5+I\\cdot t)$, middle row - $L(\\chi_{37}(36,.),0.5+I\\cdot t)$ and bottom row - $L(\\chi_{51}(50,.),0.5+I\\cdot t)$", fig.height=5}
+
+plot(log(as.numeric(df$V1)),log(df$Z),pch=20,col="gray",cex=0.5,
+     xlim=c(log(1e0),log(1e40)),ylim=log(c(0.5,100000)),
+     main="growth of largest L76 |Z| peaks \n standard log(|Z|) vs log(t) plot",xlab="log(t) value",ylab="log(|Z|) value");grid(col="gray2")
+points(log(as.numeric(df2$V1)),log(df2$Z),pch=20,col="gray",cex=0.5)
+points(log(as.numeric(df_kotnick_nodup$t)),log(abs(as.numeric(df_kotnick_nodup$Z))),pch=6,col="gray2",cex=0.3)
+points(log(as.numeric(dft$t)),log(abs(as.numeric(dft$Z))),pch=6,col="gray",cex=0.3)
+
+points(log(dfr$t),log(abs(dfr$Z)),pch=20,col="gray",cex=0.4)
+points(log(as.numeric(dgr$V1)),log(abs(as.numeric(dgr$V3))),pch=20,col="gray",cex=0.4)
+points(log(as.numeric(dhr$T)),log(abs(as.numeric(dhr$Z))),pch=20,col="gray",cex=0.4)
+
+points(log(as.numeric(di$V1)),log(abs(as.numeric(di$V4))),pch=6,col=rgb(0,1,1,0.2),cex=0.5)
+arrows(x0=log(as.numeric(di$V1)),y0=log(0.9*abs(as.numeric(di$V4))),x1=log(as.numeric(di$V1)),col=rgb(0,1,1,0.2),
+       y1=log(1.1*abs(as.numeric(di$V4))), length=0.02, angle=90, code=3)
+
+points(log(as.numeric(dilowerT$V1)),log(abs(as.numeric(dilowerT$V4))),col=rgb(0,1,1,0.2),pch=6,cex=0.5)
+arrows(x0=log(as.numeric(dilowerT$V1)),y0=log(0.9*abs(as.numeric(dilowerT$V4))),x1=log(as.numeric(dilowerT$V1)),col=rgb(0,1,1,0.2),
+       y1=log(1.1*abs(as.numeric(dilowerT$V4))), length=0.02, angle=90, code=3)
+points(log(as.numeric(dilowerT$V1)),log(abs(as.numeric(dilowerT$V5))),pch=20,col="gray",cex=0.4)
+
+points(log(as.numeric(dfL76$V1)),log(dfL76$Z),col=rgb(0.5,1,0.5,0.5),pch=20,cex=0.5)
+
+
+plot(log(as.numeric(df$V2)),log(df$Z),pch=20,col="gray",cex=0.5,
+     xlim=c(log(1e0),log(1e25)),ylim=log(c(0.5,100000)),
+     main="growth of largest L76 |Z| peaks \n log(|Z|*7/6) vs log(sqrt((t/2/pi)^1*7)) plot",xlab="log(sqrt((t/2/pi)^1*7)) value",ylab="log(|Z|*7/6) value");grid(col="gray2")
+points(log(as.numeric(df2$V2)),log(df2$Z),pch=20,col="gray",cex=0.5)
+points(log(sqrt(as.numeric(df_kotnick_nodup$t)/2/pi)),log(abs(as.numeric(df_kotnick_nodup$Z))),pch=6,col="gray2",cex=0.3)
+points(log(sqrt(as.numeric(dft$t)/2/pi)),log(abs(as.numeric(dft$Z))),pch=6,col="gray",cex=0.3)
+
+points(log(sqrt(dfr$t/2/pi)),log(abs(dfr$Z)),pch=20,col="gray",cex=0.4)
+points(log(sqrt(as.numeric(dgr$V1)/2/pi)),log(abs(as.numeric(dgr$V3))),pch=20,col="gray",cex=0.4)
+points(log(as.numeric(dhr$Q1)),log(abs(as.numeric(dhr$Z))),pch=20,col="gray",cex=0.4)
+
+
+points(log(as.numeric(di$V2)),log(abs(as.numeric(di$V4))),pch=6,col=rgb(0,1,1,0.2),cex=0.5)
+arrows(x0=log(as.numeric(di$V2)),y0=log(0.9*abs(as.numeric(di$V4))),x1=log(as.numeric(di$V2)),col=rgb(0,1,1,0.2),
+       y1=log(1.1*abs(as.numeric(di$V4))), length=0.02, angle=90, code=3)
+
+points(log(as.numeric(dilowerT$V2)),log(abs(as.numeric(dilowerT$V4))),col=rgb(0,1,1,0.2),pch=6,cex=0.5)
+arrows(x0=log(as.numeric(dilowerT$V2)),y0=log(0.9*abs(as.numeric(dilowerT$V4))),x1=log(as.numeric(dilowerT$V2)),col=rgb(0,1,1,0.2),
+       y1=log(1.1*abs(as.numeric(dilowerT$V4))), length=0.02, angle=90, code=3)
+points(log(as.numeric(dilowerT$V2)),log(abs(as.numeric(dilowerT$V5))),pch=20,col="gray",cex=0.4)
+
+points(log(as.numeric(dfL76$V2)),log(dfL76$Z*7/6),col=rgb(0.5,1,0.5,0.5),pch=20,cex=0.5)
+
+lines(seq(.1,50,by=.1),1.274014+0.866363*(seq(.1,50,by=.1)^alpha_val-1)/alpha_val,col="brown",lty=6)
+
+
+plot((log(as.numeric(df$V2))^alpha_val-1)/alpha_val,log(df$Z),pch=20,col="gray",cex=0.5,
+     xlim=log(c(1,1e5)),ylim=c(-1,15),
+     main="growth of largest L76 |Z| peaks \n log(|Z|*7/6) vs (sqrt(log(sqrt((t/2/pi)^1*7)))-1)/0.5 plot",xlab="(sqrt(log(sqrt((t/2/pi)^1*7)))-1)/0.5 value",ylab="log(|Z|*7/6) value");grid(col="gray2")
+points((log(as.numeric(df2$V2))^alpha_val-1)/alpha_val,log(df2$Z),pch=20,col="gray",cex=0.5)
+points((log(sqrt(as.numeric(df_kotnick_nodup$t)/2/pi))^alpha_val-1)/alpha_val,log(abs(as.numeric(df_kotnick_nodup$Z))),pch=6,col="gray2",cex=0.3)
+points((log(sqrt(as.numeric(dft$t)/2/pi))^alpha_val-1)/alpha_val,log(abs(as.numeric(dft$Z))),pch=6,col="gray",cex=0.3)
+
+points((log(sqrt(dfr$t/2/pi))^alpha_val-1)/alpha_val,log(abs(dfr$Z)),pch=20,col="gray",cex=0.4)
+points((log(sqrt(as.numeric(dgr$V1)/2/pi))^alpha_val-1)/alpha_val,log(abs(as.numeric(dgr$V3))),pch=20,col="gray",cex=0.4)
+points((log(as.numeric(dhr$Q1))^alpha_val-1)/alpha_val,log(abs(as.numeric(dhr$Z))),pch=20,col="gray",cex=0.4)
+
+points((log(as.numeric(di$V2))^alpha_val-1)/alpha_val,log(abs(as.numeric(di$V4))),pch=6,col=rgb(0,1,1,0.2),cex=0.5)
+arrows(x0=(log(as.numeric(di$V2))^alpha_val-1)/alpha_val,y0=log(0.9*abs(as.numeric(di$V4))),x1=(log(as.numeric(di$V2))^alpha_val-1)/alpha_val,col=rgb(0,1,1,0.2),
+       y1=log(1.1*abs(as.numeric(di$V4))), length=0.02, angle=90, code=3)
+
+points((log(as.numeric(dilowerT$V2))^alpha_val-1)/alpha_val,log(abs(as.numeric(dilowerT$V4))),col=rgb(0,1,1,0.2),pch=6,cex=0.5)
+arrows(x0=(log(as.numeric(dilowerT$V2))^alpha_val-1)/alpha_val,y0=log(0.9*abs(as.numeric(dilowerT$V4))),x1=(log(as.numeric(dilowerT$V2))^alpha_val-1)/alpha_val,col=rgb(0,1,1,0.2),
+       y1=log(1.1*abs(as.numeric(dilowerT$V4))), length=0.02, angle=90, code=3)
+points((log(as.numeric(dilowerT$V2))^alpha_val-1)/alpha_val,log(abs(as.numeric(dilowerT$V5))),pch=20,col="gray",cex=0.4)
+
+abline(a=1.274014,b=.866363,col="brown",lty=6)
+
+points((log(as.numeric(dfL76$V2))^alpha_val-1)/alpha_val,log(dfL76$Z*7/6),col=rgb(0.5,1,0.5,0.5),pch=20,cex=0.5)
+
+
+
+
+plot(log(as.numeric(df$V1)),log(df$Z),pch=20,col="gray",cex=0.5,
+     xlim=c(log(1e0),log(1e40)),ylim=log(c(0.5,100000)),
+     main="growth of largest L37p36 |Z| peaks \n standard log(|Z|) vs log(t) plot",xlab="log(t) value",ylab="log(|Z|) value");grid(col="gray2")
+points(log(as.numeric(df2$V1)),log(df2$Z),pch=20,col="gray",cex=0.5)
+points(log(as.numeric(df_kotnick_nodup$t)),log(abs(as.numeric(df_kotnick_nodup$Z))),pch=6,col="gray2",cex=0.3)
+points(log(as.numeric(dft$t)),log(abs(as.numeric(dft$Z))),pch=6,col="gray",cex=0.3)
+
+points(log(dfr$t),log(abs(dfr$Z)),pch=20,col="gray",cex=0.4)
+points(log(as.numeric(dgr$V1)),log(abs(as.numeric(dgr$V3))),pch=20,col="gray",cex=0.4)
+points(log(as.numeric(dhr$T)),log(abs(as.numeric(dhr$Z))),pch=20,col="gray",cex=0.4)
+
+points(log(as.numeric(di$V1)),log(abs(as.numeric(di$V4))),pch=6,col=rgb(0,1,1,0.2),cex=0.5)
+arrows(x0=log(as.numeric(di$V1)),y0=log(0.9*abs(as.numeric(di$V4))),x1=log(as.numeric(di$V1)),col=rgb(0,1,1,0.2),
+       y1=log(1.1*abs(as.numeric(di$V4))), length=0.02, angle=90, code=3)
+
+points(log(as.numeric(dilowerT$V1)),log(abs(as.numeric(dilowerT$V4))),col=rgb(0,1,1,0.2),pch=6,cex=0.5)
+arrows(x0=log(as.numeric(dilowerT$V1)),y0=log(0.9*abs(as.numeric(dilowerT$V4))),x1=log(as.numeric(dilowerT$V1)),col=rgb(0,1,1,0.2),
+       y1=log(1.1*abs(as.numeric(dilowerT$V4))), length=0.02, angle=90, code=3)
+points(log(as.numeric(dilowerT$V1)),log(abs(as.numeric(dilowerT$V5))),pch=20,col="gray",cex=0.4)
+
+points(log(as.numeric(dfL37p36$V1)),log(dfL37p36$Z),col=rgb(1,0.498,0.314,0.5),pch=20,cex=0.5)
+points(log(as.numeric(dfL37p36_LLL$V1)),log(dfL37p36_LLL$Z),col=rgb(1,0.498,0.314,0.5),pch=8,cex=0.2)
+points(log(as.numeric(dfL37p36_LLL_approx$V1)),log(dfL37p36_LLL_approx$Z),col=rgb(1,0.498,0.314,0.5),pch=6,cex=0.3)
+
+
+plot(log(as.numeric(df$V2)),log(df$Z),pch=20,col="gray",cex=0.5,
+     xlim=c(log(1e0),log(1e25)),ylim=log(c(0.5,100000)),
+     main="growth of largest L37p36 |Z| peaks \n log(|Z|*37/36) vs log(sqrt((t/2/pi)^1*37)) plot",xlab="log(sqrt((t/2/pi)^1*37)) value",ylab="log(|Z|*37/36) value");grid(col="gray2")
+points(log(as.numeric(df2$V2)),log(df2$Z),pch=20,col="gray",cex=0.5)
+points(log(sqrt(as.numeric(df_kotnick_nodup$t)/2/pi)),log(abs(as.numeric(df_kotnick_nodup$Z))),pch=6,col="gray2",cex=0.3)
+points(log(sqrt(as.numeric(dft$t)/2/pi)),log(abs(as.numeric(dft$Z))),pch=6,col="gray",cex=0.3)
+
+points(log(sqrt(dfr$t/2/pi)),log(abs(dfr$Z)),pch=20,col="gray",cex=0.4)
+points(log(sqrt(as.numeric(dgr$V1)/2/pi)),log(abs(as.numeric(dgr$V3))),pch=20,col="gray",cex=0.4)
+points(log(as.numeric(dhr$Q1)),log(abs(as.numeric(dhr$Z))),pch=20,col="gray",cex=0.4)
+
+
+points(log(as.numeric(di$V2)),log(abs(as.numeric(di$V4))),pch=6,col=rgb(0,1,1,0.2),cex=0.5)
+arrows(x0=log(as.numeric(di$V2)),y0=log(0.9*abs(as.numeric(di$V4))),x1=log(as.numeric(di$V2)),col=rgb(0,1,1,0.2),
+       y1=log(1.1*abs(as.numeric(di$V4))), length=0.02, angle=90, code=3)
+
+points(log(as.numeric(dilowerT$V2)),log(abs(as.numeric(dilowerT$V4))),col=rgb(0,1,1,0.2),pch=6,cex=0.5)
+arrows(x0=log(as.numeric(dilowerT$V2)),y0=log(0.9*abs(as.numeric(dilowerT$V4))),x1=log(as.numeric(dilowerT$V2)),col=rgb(0,1,1,0.2),
+       y1=log(1.1*abs(as.numeric(dilowerT$V4))), length=0.02, angle=90, code=3)
+points(log(as.numeric(dilowerT$V2)),log(abs(as.numeric(dilowerT$V5))),pch=20,col="gray",cex=0.4)
+
+points(log(as.numeric(dfL37p36$V2)),log(dfL37p36$Z*37/36),col=rgb(1,0.498,0.314,0.5),pch=20,cex=0.5)
+points(log(as.numeric(dfL37p36_LLL$V2)),log(dfL37p36_LLL$Z*37/36),col=rgb(1,0.498,0.314,0.5),pch=8,cex=0.2)
+points(log(as.numeric(dfL37p36_LLL_approx$V2)),log(dfL37p36_LLL_approx$Z*37/36),col=rgb(1,0.498,0.314,0.5),pch=6,cex=0.3)
+
+lines(seq(.1,50,by=.1),1.274014+0.866363*(seq(.1,50,by=.1)^alpha_val-1)/alpha_val,col="brown",lty=6)
+
+
+plot((log(as.numeric(df$V2))^alpha_val-1)/alpha_val,log(df$Z),pch=20,col="gray",cex=0.5,
+     xlim=log(c(1,1e5)),ylim=c(-1,15),
+     main="growth of largest L37p36 |Z| peaks \n log(|Z|*37/36) vs (sqrt(log(sqrt((t/2/pi)^1*37)))-1)/0.5 plot",xlab="(sqrt(log(sqrt((t/2/pi)^1*37)))-1)/0.5 value",ylab="log(|Z|*37/36) value");grid(col="gray2")
+points((log(as.numeric(df2$V2))^alpha_val-1)/alpha_val,log(df2$Z),pch=20,col="gray",cex=0.5)
+points((log(sqrt(as.numeric(df_kotnick_nodup$t)/2/pi))^alpha_val-1)/alpha_val,log(abs(as.numeric(df_kotnick_nodup$Z))),pch=6,col="gray2",cex=0.3)
+points((log(sqrt(as.numeric(dft$t)/2/pi))^alpha_val-1)/alpha_val,log(abs(as.numeric(dft$Z))),pch=6,col="gray",cex=0.3)
+
+points((log(sqrt(dfr$t/2/pi))^alpha_val-1)/alpha_val,log(abs(dfr$Z)),pch=20,col="gray",cex=0.4)
+points((log(sqrt(as.numeric(dgr$V1)/2/pi))^alpha_val-1)/alpha_val,log(abs(as.numeric(dgr$V3))),pch=20,col="gray",cex=0.4)
+points((log(as.numeric(dhr$Q1))^alpha_val-1)/alpha_val,log(abs(as.numeric(dhr$Z))),pch=20,col="gray",cex=0.4)
+
+points((log(as.numeric(di$V2))^alpha_val-1)/alpha_val,log(abs(as.numeric(di$V4))),pch=6,col=rgb(0,1,1,0.2),cex=0.5)
+arrows(x0=(log(as.numeric(di$V2))^alpha_val-1)/alpha_val,y0=log(0.9*abs(as.numeric(di$V4))),x1=(log(as.numeric(di$V2))^alpha_val-1)/alpha_val,col=rgb(0,1,1,0.2),
+       y1=log(1.1*abs(as.numeric(di$V4))), length=0.02, angle=90, code=3)
+
+points((log(as.numeric(dilowerT$V2))^alpha_val-1)/alpha_val,log(abs(as.numeric(dilowerT$V4))),col=rgb(0,1,1,0.2),pch=6,cex=0.5)
+arrows(x0=(log(as.numeric(dilowerT$V2))^alpha_val-1)/alpha_val,y0=log(0.9*abs(as.numeric(dilowerT$V4))),x1=(log(as.numeric(dilowerT$V2))^alpha_val-1)/alpha_val,col=rgb(0,1,1,0.2),
+       y1=log(1.1*abs(as.numeric(dilowerT$V4))), length=0.02, angle=90, code=3)
+points((log(as.numeric(dilowerT$V2))^alpha_val-1)/alpha_val,log(abs(as.numeric(dilowerT$V5))),pch=20,col="gray",cex=0.4)
+
+abline(a=1.274014,b=.866363,col="brown",lty=6)
+
+
+points((log(as.numeric(dfL37p36$V2))^alpha_val-1)/alpha_val,log(dfL37p36$Z*37/36),col=rgb(1,0.498,0.314,0.5),pch=20,cex=0.5)
+points((log(as.numeric(dfL37p36_LLL$V2))^alpha_val-1)/alpha_val,log(dfL37p36_LLL$Z*37/36),col=rgb(1,0.498,0.314,0.5),pch=8,cex=0.2)
+
+
+
+plot(log(as.numeric(df$V1)),log(df$Z),pch=20,col="gray",cex=0.5,
+     xlim=c(log(1e0),log(1e40)),ylim=log(c(0.5,100000)),
+     main="growth of largest L51p50 |Z| peaks \n standard log(|Z|) vs log(t) plot",xlab="log(t) value",ylab="log(|Z|) value");grid(col="gray2")
+points(log(as.numeric(df2$V1)),log(df2$Z),pch=20,col="gray",cex=0.5)
+points(log(as.numeric(df_kotnick_nodup$t)),log(abs(as.numeric(df_kotnick_nodup$Z))),pch=6,col="gray2",cex=0.3)
+points(log(as.numeric(dft$t)),log(abs(as.numeric(dft$Z))),pch=6,col="gray",cex=0.3)
+
+points(log(dfr$t),log(abs(dfr$Z)),pch=20,col="gray",cex=0.4)
+points(log(as.numeric(dgr$V1)),log(abs(as.numeric(dgr$V3))),pch=20,col="gray",cex=0.4)
+points(log(as.numeric(dhr$T)),log(abs(as.numeric(dhr$Z))),pch=20,col="gray",cex=0.4)
+
+points(log(as.numeric(di$V1)),log(abs(as.numeric(di$V4))),pch=6,col=rgb(0,1,1,0.2),cex=0.5)
+arrows(x0=log(as.numeric(di$V1)),y0=log(0.9*abs(as.numeric(di$V4))),x1=log(as.numeric(di$V1)),col=rgb(0,1,1,0.2),
+       y1=log(1.1*abs(as.numeric(di$V4))), length=0.02, angle=90, code=3)
+
+points(log(as.numeric(dilowerT$V1)),log(abs(as.numeric(dilowerT$V4))),col=rgb(0,1,1,0.2),pch=6,cex=0.5)
+arrows(x0=log(as.numeric(dilowerT$V1)),y0=log(0.9*abs(as.numeric(dilowerT$V4))),x1=log(as.numeric(dilowerT$V1)),col=rgb(0,1,1,0.2),
+       y1=log(1.1*abs(as.numeric(dilowerT$V4))), length=0.02, angle=90, code=3)
+points(log(as.numeric(dilowerT$V1)),log(abs(as.numeric(dilowerT$V5))),pch=20,col="gray",cex=0.4)
+
+points(log(as.numeric(dfL51p50$V1)),log(dfL51p50$Z),col=rgb(1,0.843,0.,0.5),pch=20,cex=0.5)
+
+
+plot(log(as.numeric(df$V2)),log(df$Z),pch=20,col="gray",cex=0.5,
+     xlim=c(log(1e0),log(1e25)),ylim=log(c(0.5,100000)),
+     main="growth of largest L51p50 |Z| peaks \n log(|Z|*51/32) vs log(sqrt((t/2/pi)^1*51)) plot",xlab="log(sqrt((t/2/pi)^1*51)) value",ylab="log(|Z|*51/32) value");grid(col="gray2")
+points(log(as.numeric(df2$V2)),log(df2$Z),pch=20,col="gray",cex=0.5)
+points(log(sqrt(as.numeric(df_kotnick_nodup$t)/2/pi)),log(abs(as.numeric(df_kotnick_nodup$Z))),pch=6,col="gray2",cex=0.3)
+points(log(sqrt(as.numeric(dft$t)/2/pi)),log(abs(as.numeric(dft$Z))),pch=6,col="gray",cex=0.3)
+
+points(log(sqrt(dfr$t/2/pi)),log(abs(dfr$Z)),pch=20,col="gray",cex=0.4)
+points(log(sqrt(as.numeric(dgr$V1)/2/pi)),log(abs(as.numeric(dgr$V3))),pch=20,col="gray",cex=0.4)
+points(log(as.numeric(dhr$Q1)),log(abs(as.numeric(dhr$Z))),pch=20,col="gray",cex=0.4)
+
+
+points(log(as.numeric(di$V2)),log(abs(as.numeric(di$V4))),pch=6,col=rgb(0,1,1,0.2),cex=0.5)
+arrows(x0=log(as.numeric(di$V2)),y0=log(0.9*abs(as.numeric(di$V4))),x1=log(as.numeric(di$V2)),col=rgb(0,1,1,0.2),
+       y1=log(1.1*abs(as.numeric(di$V4))), length=0.02, angle=90, code=3)
+
+points(log(as.numeric(dilowerT$V2)),log(abs(as.numeric(dilowerT$V4))),col=rgb(0,1,1,0.2),pch=6,cex=0.5)
+arrows(x0=log(as.numeric(dilowerT$V2)),y0=log(0.9*abs(as.numeric(dilowerT$V4))),x1=log(as.numeric(dilowerT$V2)),col=rgb(0,1,1,0.2),
+       y1=log(1.1*abs(as.numeric(dilowerT$V4))), length=0.02, angle=90, code=3)
+points(log(as.numeric(dilowerT$V2)),log(abs(as.numeric(dilowerT$V5))),pch=20,col="gray",cex=0.4)
+
+points(log(as.numeric(dfL51p50$V2)),log(dfL51p50$Z*51/32),col=rgb(1,0.843,0.,0.5),pch=20,cex=0.5)
+
+lines(seq(.1,50,by=.1),1.274014+0.866363*(seq(.1,50,by=.1)^alpha_val-1)/alpha_val,col="brown",lty=6)
+
+
+plot((log(as.numeric(df$V2))^alpha_val-1)/alpha_val,log(df$Z),pch=20,col="gray",cex=0.5,
+     xlim=log(c(1,1e5)),ylim=c(-1,15),
+     main="growth of largest L51p50 |Z| peaks \n log(|Z|*51/32) vs (sqrt(log(sqrt((t/2/pi)^1*51)))-1)/0.5 plot",xlab="(sqrt(log(sqrt((t/2/pi)^1*51)))-1)/0.5 value",ylab="log(|Z|*51/32) value");grid(col="gray2")
+points((log(as.numeric(df2$V2))^alpha_val-1)/alpha_val,log(df2$Z),pch=20,col="gray",cex=0.5)
+points((log(sqrt(as.numeric(df_kotnick_nodup$t)/2/pi))^alpha_val-1)/alpha_val,log(abs(as.numeric(df_kotnick_nodup$Z))),pch=6,col="gray2",cex=0.3)
+points((log(sqrt(as.numeric(dft$t)/2/pi))^alpha_val-1)/alpha_val,log(abs(as.numeric(dft$Z))),pch=6,col="gray",cex=0.3)
+
+points((log(sqrt(dfr$t/2/pi))^alpha_val-1)/alpha_val,log(abs(dfr$Z)),pch=20,col="gray",cex=0.4)
+points((log(sqrt(as.numeric(dgr$V1)/2/pi))^alpha_val-1)/alpha_val,log(abs(as.numeric(dgr$V3))),pch=20,col="gray",cex=0.4)
+points((log(as.numeric(dhr$Q1))^alpha_val-1)/alpha_val,log(abs(as.numeric(dhr$Z))),pch=20,col="gray",cex=0.4)
+
+points((log(as.numeric(di$V2))^alpha_val-1)/alpha_val,log(abs(as.numeric(di$V4))),pch=6,col=rgb(0,1,1,0.2),cex=0.5)
+arrows(x0=(log(as.numeric(di$V2))^alpha_val-1)/alpha_val,y0=log(0.9*abs(as.numeric(di$V4))),x1=(log(as.numeric(di$V2))^alpha_val-1)/alpha_val,col=rgb(0,1,1,0.2),
+       y1=log(1.1*abs(as.numeric(di$V4))), length=0.02, angle=90, code=3)
+
+points((log(as.numeric(dilowerT$V2))^alpha_val-1)/alpha_val,log(abs(as.numeric(dilowerT$V4))),col=rgb(0,1,1,0.2),pch=6,cex=0.5)
+arrows(x0=(log(as.numeric(dilowerT$V2))^alpha_val-1)/alpha_val,y0=log(0.9*abs(as.numeric(dilowerT$V4))),x1=(log(as.numeric(dilowerT$V2))^alpha_val-1)/alpha_val,col=rgb(0,1,1,0.2),
+       y1=log(1.1*abs(as.numeric(dilowerT$V4))), length=0.02, angle=90, code=3)
+points((log(as.numeric(dilowerT$V2))^alpha_val-1)/alpha_val,log(abs(as.numeric(dilowerT$V5))),pch=20,col="gray",cex=0.4)
+
+abline(a=1.274014,b=.866363,col="brown",lty=6)
+
+
+points((log(as.numeric(dfL51p50$V2))^alpha_val-1)/alpha_val,log(dfL51p50$Z*51/32),col=rgb(1,0.843,0.,0.5),pch=20,cex=0.5)
+
+
+ 
+
+
+```
+\elandscape
+
+\clearpage
+
+
+\blandscape
+```{r different_rescalings_pt4, echo=FALSE, warnings=FALSE, fig.show = "hold",  out.width = c("32%","32%","32%"), fig.align = "center", fig.cap="A graphical comparison for each 1st degree investigated 1st degree L-function or Davenport-Heilbronn function of \\textbf{left column} - $\\log\\left(|Z_L|\\right) \\text{ vs } \\log(t)$, \\textbf{middle column} - $\\log\\left(|Z_L|\\cdot \\frac{N_C}{N_{\\chi\\ne0}}\\right) \\text{ vs } \\log\\left(\\sqrt{(\\frac{t}{2\\pi})^d\\cdot N_C}\\right)$, \\textbf{right column} - $\\log\\left(|Z_L|\\cdot \\frac{N_C}{N_{\\chi\\ne0}}\\right) \\text{ vs } \\frac{\\left(\\sqrt{\\log\\left(\\sqrt{(\\frac{t}{2\\pi})^d\\cdot N_C}\\right)}-1\\right)}{0.5}$ for top row - $f_2(0.5+I\\cdot t)$ and bottom row - $f_1(0.5+I\\cdot t)$.", fig.height=7}
+
+plot(log(as.numeric(df$V1)),log(df$Z),pch=20,col="gray",cex=0.5,
+     xlim=c(log(1e0),log(1e40)),ylim=log(c(0.5,100000)),
+     main="growth of largest $f_2$ |Z| peaks \n standard log(|Z|) vs log(t) plot",xlab="log(t) value",ylab="log(|Z|) value");grid(col="gray2")
+points(log(as.numeric(df2$V1)),log(df2$Z),pch=20,col="gray",cex=0.5)
+points(log(as.numeric(df_kotnick_nodup$t)),log(abs(as.numeric(df_kotnick_nodup$Z))),pch=6,col="gray2",cex=0.3)
+points(log(as.numeric(dft$t)),log(abs(as.numeric(dft$Z))),pch=6,col="gray",cex=0.3)
+
+points(log(dfr$t),log(abs(dfr$Z)),pch=20,col="gray",cex=0.4)
+points(log(as.numeric(dgr$V1)),log(abs(as.numeric(dgr$V3))),pch=20,col="gray",cex=0.4)
+points(log(as.numeric(dhr$T)),log(abs(as.numeric(dhr$Z))),pch=20,col="gray",cex=0.4)
+
+points(log(as.numeric(di$V1)),log(abs(as.numeric(di$V4))),pch=6,col=rgb(0,1,1,0.2),cex=0.5)
+arrows(x0=log(as.numeric(di$V1)),y0=log(0.9*abs(as.numeric(di$V4))),x1=log(as.numeric(di$V1)),col=rgb(0,1,1,0.2),
+       y1=log(1.1*abs(as.numeric(di$V4))), length=0.02, angle=90, code=3)
+
+points(log(as.numeric(dilowerT$V1)),log(abs(as.numeric(dilowerT$V4))),col=rgb(0,1,1,0.2),pch=6,cex=0.5)
+arrows(x0=log(as.numeric(dilowerT$V1)),y0=log(0.9*abs(as.numeric(dilowerT$V4))),x1=log(as.numeric(dilowerT$V1)),col=rgb(0,1,1,0.2),
+       y1=log(1.1*abs(as.numeric(dilowerT$V4))), length=0.02, angle=90, code=3)
+points(log(as.numeric(dilowerT$V1)),log(abs(as.numeric(dilowerT$V5))),pch=20,col="gray",cex=0.4)
+
+points(log(as.numeric(dfDHf2$V1)),log(dfDHf2$Z),col=rgb(0,0,0,0.5),pch=20,cex=0.5)
+points(log(as.numeric(dfDHf2_LLL$V1)),log(dfDHf2_LLL$Z),col=rgb(0,0,0,0.5),pch=20,cex=0.5)
+points(log(as.numeric(dfDHf2_LLL_2decplace$V1)),log(dfDHf2_LLL_2decplace$Z),col=rgb(0,0,0,0.5),pch=20,cex=0.5)
+# points(log(as.numeric(dfDHf2_LLL_approx$V1)),log(dfDHf2_LLL_approx$Z),col=rgb(0,0,0,0.5),pch=6,cex=0.3)
+points(log(as.numeric(dfDHf2_LLL_5xapprox$V1)),log(dfDHf2_LLL_5xapprox$Z),col=rgb(0,0,0,0.5),pch=6,cex=0.3)
+
+
+plot(log(as.numeric(df$V2)),log(df$Z),pch=20,col="gray",cex=0.5,
+     xlim=c(log(1e0),log(1e25)),ylim=log(c(0.5,100000)),
+     main="growth of largest $f_2$ |Z| peaks \n log(|Z|*5/9.04) vs log(sqrt((t/2/pi)^1*5)) plot",xlab="log(sqrt((t/2/pi)^1*5)) value",ylab="log(|Z|*5/9.04) value");grid(col="gray2")
+points(log(as.numeric(df2$V2)),log(df2$Z),pch=20,col="gray",cex=0.5)
+points(log(sqrt(as.numeric(df_kotnick_nodup$t)/2/pi)),log(abs(as.numeric(df_kotnick_nodup$Z))),pch=6,col="gray2",cex=0.3)
+points(log(sqrt(as.numeric(dft$t)/2/pi)),log(abs(as.numeric(dft$Z))),pch=6,col="gray",cex=0.3)
+
+points(log(sqrt(dfr$t/2/pi)),log(abs(dfr$Z)),pch=20,col="gray",cex=0.4)
+points(log(sqrt(as.numeric(dgr$V1)/2/pi)),log(abs(as.numeric(dgr$V3))),pch=20,col="gray",cex=0.4)
+points(log(as.numeric(dhr$Q1)),log(abs(as.numeric(dhr$Z))),pch=20,col="gray",cex=0.4)
+
+
+points(log(as.numeric(di$V2)),log(abs(as.numeric(di$V4))),pch=6,col=rgb(0,1,1,0.2),cex=0.5)
+arrows(x0=log(as.numeric(di$V2)),y0=log(0.9*abs(as.numeric(di$V4))),x1=log(as.numeric(di$V2)),col=rgb(0,1,1,0.2),
+       y1=log(1.1*abs(as.numeric(di$V4))), length=0.02, angle=90, code=3)
+
+points(log(as.numeric(dilowerT$V2)),log(abs(as.numeric(dilowerT$V4))),col=rgb(0,1,1,0.2),pch=6,cex=0.5)
+arrows(x0=log(as.numeric(dilowerT$V2)),y0=log(0.9*abs(as.numeric(dilowerT$V4))),x1=log(as.numeric(dilowerT$V2)),col=rgb(0,1,1,0.2),
+       y1=log(1.1*abs(as.numeric(dilowerT$V4))), length=0.02, angle=90, code=3)
+points(log(as.numeric(dilowerT$V2)),log(abs(as.numeric(dilowerT$V5))),pch=20,col="gray",cex=0.4)
+
+points(log(as.numeric(dfDHf2$V2)),log(dfDHf2$Z*5/9.04),col=rgb(0,0,0,0.5),pch=20,cex=0.5)
+points(log(as.numeric(dfDHf2_LLL$V2)),log(dfDHf2_LLL$Z*5/9.04),col=rgb(0,0,0,0.5),pch=20,cex=0.5)
+points(log(as.numeric(dfDHf2_LLL_2decplace$V2)),log(dfDHf2_LLL_2decplace$Z*5/9.04),col=rgb(0,0,0,0.5),pch=20,cex=0.5)
+# points(log(as.numeric(dfDHf2_LLL_approx$V2)),log(dfDHf2_LLL_approx$Z*5/9.04),col=rgb(0,0,0,0.5),pch=6,cex=0.3)
+points(log(as.numeric(dfDHf2_LLL_5xapprox$V2)),log(dfDHf2_LLL_5xapprox$Z*5/9.04),col=rgb(0,0,0,0.5),pch=6,cex=0.3)
+
+lines(seq(.1,50,by=.1),1.274014+0.866363*(seq(.1,50,by=.1)^alpha_val-1)/alpha_val,col="brown",lty=6)
+
+
+plot((log(as.numeric(df$V2))^alpha_val-1)/alpha_val,log(df$Z),pch=20,col="gray",cex=0.5,
+     xlim=log(c(1,1e5)),ylim=c(-1,15),
+     main="growth of largest $f_2$ |Z| peaks \n log(|Z|*5/9.04) vs (sqrt(log(sqrt((t/2/pi)^1*5)))-1)/0.5 plot",xlab="(sqrt(log(sqrt((t/2/pi)^1*5)))-1)/0.5 value",ylab="log(|Z|*5/9.04) value");grid(col="gray2")
+points((log(as.numeric(df2$V2))^alpha_val-1)/alpha_val,log(df2$Z),pch=20,col="gray",cex=0.5)
+points((log(sqrt(as.numeric(df_kotnick_nodup$t)/2/pi))^alpha_val-1)/alpha_val,log(abs(as.numeric(df_kotnick_nodup$Z))),pch=6,col="gray2",cex=0.3)
+points((log(sqrt(as.numeric(dft$t)/2/pi))^alpha_val-1)/alpha_val,log(abs(as.numeric(dft$Z))),pch=6,col="gray",cex=0.3)
+
+points((log(sqrt(dfr$t/2/pi))^alpha_val-1)/alpha_val,log(abs(dfr$Z)),pch=20,col="gray",cex=0.4)
+points((log(sqrt(as.numeric(dgr$V1)/2/pi))^alpha_val-1)/alpha_val,log(abs(as.numeric(dgr$V3))),pch=20,col="gray",cex=0.4)
+points((log(as.numeric(dhr$Q1))^alpha_val-1)/alpha_val,log(abs(as.numeric(dhr$Z))),pch=20,col="gray",cex=0.4)
+
+points((log(as.numeric(di$V2))^alpha_val-1)/alpha_val,log(abs(as.numeric(di$V4))),pch=6,col=rgb(0,1,1,0.2),cex=0.5)
+arrows(x0=(log(as.numeric(di$V2))^alpha_val-1)/alpha_val,y0=log(0.9*abs(as.numeric(di$V4))),x1=(log(as.numeric(di$V2))^alpha_val-1)/alpha_val,col=rgb(0,1,1,0.2),
+       y1=log(1.1*abs(as.numeric(di$V4))), length=0.02, angle=90, code=3)
+
+points((log(as.numeric(dilowerT$V2))^alpha_val-1)/alpha_val,log(abs(as.numeric(dilowerT$V4))),col=rgb(0,1,1,0.2),pch=6,cex=0.5)
+arrows(x0=(log(as.numeric(dilowerT$V2))^alpha_val-1)/alpha_val,y0=log(0.9*abs(as.numeric(dilowerT$V4))),x1=(log(as.numeric(dilowerT$V2))^alpha_val-1)/alpha_val,col=rgb(0,1,1,0.2),
+       y1=log(1.1*abs(as.numeric(dilowerT$V4))), length=0.02, angle=90, code=3)
+points((log(as.numeric(dilowerT$V2))^alpha_val-1)/alpha_val,log(abs(as.numeric(dilowerT$V5))),pch=20,col="gray",cex=0.4)
+
+
+
+points((log(as.numeric(dfDHf2$V2))^alpha_val-1)/alpha_val,log(dfDHf2$Z*5/9.04),col=rgb(0,0,0,0.5),pch=20,cex=0.5)
+points((log(as.numeric(dfDHf2_LLL$V2))^alpha_val-1)/alpha_val,log(dfDHf2_LLL$Z*5/9.04),col=rgb(0,0,0,0.5),pch=20,cex=0.5)
+points((log(as.numeric(dfDHf2_LLL_2decplace$V2))^alpha_val-1)/alpha_val,log(dfDHf2_LLL_2decplace$Z*5/9.04),col=rgb(0,0,0,0.5),pch=20,cex=0.5)
+# points(log(as.numeric(dfDHf2_LLL_approx$V2)),(dfDHf2_LLL_approx$Z*5/9.04)^alpha_val,col=rgb(0,0,0,0.5),pch=6,cex=0.3)
+points((log(as.numeric(dfDHf2_LLL_5xapprox$V2))^alpha_val-1)/alpha_val,log(dfDHf2_LLL_5xapprox$Z*5/9.04),col=rgb(0,0,0,0.5),pch=6,cex=0.3)
+
+abline(a=1.274014,b=.866363,col="brown",lty=6)
+
+
+
+plot(log(as.numeric(df$V1)),log(df$Z),pch=20,col="gray",cex=0.5,
+     xlim=c(log(1e0),log(1e40)),ylim=log(c(0.5,100000)),
+     main="growth of largest $f_1$ |Z| peaks \n standard log(|Z|) vs log(t) plot",xlab="log(t) value",ylab="log(|Z|) value");grid(col="gray2")
+points(log(as.numeric(df2$V1)),log(df2$Z),pch=20,col="gray",cex=0.5)
+points(log(as.numeric(df_kotnick_nodup$t)),log(abs(as.numeric(df_kotnick_nodup$Z))),pch=6,col="gray2",cex=0.3)
+points(log(as.numeric(dft$t)),log(abs(as.numeric(dft$Z))),pch=6,col="gray",cex=0.3)
+
+points(log(dfr$t),log(abs(dfr$Z)),pch=20,col="gray",cex=0.4)
+points(log(as.numeric(dgr$V1)),log(abs(as.numeric(dgr$V3))),pch=20,col="gray",cex=0.4)
+points(log(as.numeric(dhr$T)),log(abs(as.numeric(dhr$Z))),pch=20,col="gray",cex=0.4)
+
+points(log(as.numeric(di$V1)),log(abs(as.numeric(di$V4))),pch=6,col=rgb(0,1,1,0.2),cex=0.5)
+arrows(x0=log(as.numeric(di$V1)),y0=log(0.9*abs(as.numeric(di$V4))),x1=log(as.numeric(di$V1)),col=rgb(0,1,1,0.2),
+       y1=log(1.1*abs(as.numeric(di$V4))), length=0.02, angle=90, code=3)
+
+points(log(as.numeric(dilowerT$V1)),log(abs(as.numeric(dilowerT$V4))),col=rgb(0,1,1,0.2),pch=6,cex=0.5)
+arrows(x0=log(as.numeric(dilowerT$V1)),y0=log(0.9*abs(as.numeric(dilowerT$V4))),x1=log(as.numeric(dilowerT$V1)),col=rgb(0,1,1,0.2),
+       y1=log(1.1*abs(as.numeric(dilowerT$V4))), length=0.02, angle=90, code=3)
+points(log(as.numeric(dilowerT$V1)),log(abs(as.numeric(dilowerT$V5))),pch=20,col="gray",cex=0.4)
+
+points(log(as.numeric(dfDHf1$V1)),log(dfDHf1$Z),col=rgb(0,0,0,0.5),pch=20,cex=0.5)
+points(log(as.numeric(dfDHf1_LLL$V1)),log(dfDHf1_LLL$Z),col=rgb(0,0,0,0.5),pch=20,cex=0.5)
+points(log(as.numeric(dfDHf1_LLL_2decplace$V1)),log(dfDHf1_LLL_2decplace$Z),col=rgb(0,0,0,0.5),pch=20,cex=0.5)
+# points(log(as.numeric(dfDHf1_LLL_approx$V1)),log(dfDHf1_LLL_approx$Z),col=rgb(0,0,0,0.5),pch=6,cex=0.3)
+points(log(as.numeric(dfDHf1_LLL_5xapprox$V1)),log(dfDHf1_LLL_5xapprox$Z),col=rgb(0,0,0,0.5),pch=6,cex=0.3)
+
+
+plot(log(as.numeric(df$V2)),log(df$Z),pch=20,col="gray",cex=0.5,
+     xlim=c(log(1e0),log(1e25)),ylim=log(c(0.5,100000)),
+     main="growth of largest DHf1 |Z| peaks \n log(|Z|*5/2.568) vs log(sqrt((t/2/pi)^1*5)) plot",xlab="log(sqrt((t/2/pi)^1*5)) value",ylab="log(|Z|*5/2.568) value");grid(col="gray2")
+points(log(as.numeric(df2$V2)),log(df2$Z),pch=20,col="gray",cex=0.5)
+points(log(sqrt(as.numeric(df_kotnick_nodup$t)/2/pi)),log(abs(as.numeric(df_kotnick_nodup$Z))),pch=6,col="gray2",cex=0.3)
+points(log(sqrt(as.numeric(dft$t)/2/pi)),log(abs(as.numeric(dft$Z))),pch=6,col="gray",cex=0.3)
+
+points(log(sqrt(dfr$t/2/pi)),log(abs(dfr$Z)),pch=20,col="gray",cex=0.4)
+points(log(sqrt(as.numeric(dgr$V1)/2/pi)),log(abs(as.numeric(dgr$V3))),pch=20,col="gray",cex=0.4)
+points(log(as.numeric(dhr$Q1)),log(abs(as.numeric(dhr$Z))),pch=20,col="gray",cex=0.4)
+
+
+points(log(as.numeric(di$V2)),log(abs(as.numeric(di$V4))),pch=6,col=rgb(0,1,1,0.2),cex=0.5)
+arrows(x0=log(as.numeric(di$V2)),y0=log(0.9*abs(as.numeric(di$V4))),x1=log(as.numeric(di$V2)),col=rgb(0,1,1,0.2),
+       y1=log(1.1*abs(as.numeric(di$V4))), length=0.02, angle=90, code=3)
+
+points(log(as.numeric(dilowerT$V2)),log(abs(as.numeric(dilowerT$V4))),col=rgb(0,1,1,0.2),pch=6,cex=0.5)
+arrows(x0=log(as.numeric(dilowerT$V2)),y0=log(0.9*abs(as.numeric(dilowerT$V4))),x1=log(as.numeric(dilowerT$V2)),col=rgb(0,1,1,0.2),
+       y1=log(1.1*abs(as.numeric(dilowerT$V4))), length=0.02, angle=90, code=3)
+points(log(as.numeric(dilowerT$V2)),log(abs(as.numeric(dilowerT$V5))),pch=20,col="gray",cex=0.4)
+
+points(log(as.numeric(dfDHf1$V2)),log(dfDHf1$Z*5/2.568),col=rgb(0,0,0,0.5),pch=20,cex=0.5)
+points(log(as.numeric(dfDHf1_LLL$V2)),log(dfDHf1_LLL$Z*5/2.568),col=rgb(0,0,0,0.5),pch=20,cex=0.5)
+points(log(as.numeric(dfDHf1_LLL_2decplace$V2)),log(dfDHf1_LLL_2decplace$Z*5/2.568),col=rgb(0,0,0,0.5),pch=20,cex=0.5)
+# points(log(as.numeric(dfDHf1_LLL_approx$V2)),log(dfDHf1_LLL_approx$Z*5/2.568),col=rgb(0,0,0,0.5),pch=6,cex=0.3)
+points(log(as.numeric(dfDHf1_LLL_5xapprox$V2)),log(dfDHf1_LLL_5xapprox$Z*5/2.568),col=rgb(0,0,0,0.5),pch=6,cex=0.3)
+
+lines(seq(.1,50,by=.1),1.274014+0.866363*(seq(.1,50,by=.1)^alpha_val-1)/alpha_val,col="brown",lty=6)
+
+
+plot((log(as.numeric(df$V2))^alpha_val-1)/alpha_val,log(df$Z),pch=20,col="gray",cex=0.5,
+     xlim=log(c(1,1e5)),ylim=c(-1,15),
+     main="growth of largest DHf1 |Z| peaks \n log(|Z|*5/2.568) vs (sqrt(log(sqrt((t/2/pi)^1*5)))-1)/0.5 plot",xlab="(sqrt(log(sqrt((t/2/pi)^1*5)))-1)/0.5 value",ylab="log(|Z|*5/2.568) value");grid(col="gray2")
+points((log(as.numeric(df2$V2))^alpha_val-1)/alpha_val,log(df2$Z),pch=20,col="gray",cex=0.5)
+points((log(sqrt(as.numeric(df_kotnick_nodup$t)/2/pi))^alpha_val-1)/alpha_val,log(abs(as.numeric(df_kotnick_nodup$Z))),pch=6,col="gray2",cex=0.3)
+points((log(sqrt(as.numeric(dft$t)/2/pi))^alpha_val-1)/alpha_val,log(abs(as.numeric(dft$Z))),pch=6,col="gray",cex=0.3)
+
+points((log(sqrt(dfr$t/2/pi))^alpha_val-1)/alpha_val,log(abs(dfr$Z)),pch=20,col="gray",cex=0.4)
+points((log(sqrt(as.numeric(dgr$V1)/2/pi))^alpha_val-1)/alpha_val,log(abs(as.numeric(dgr$V3))),pch=20,col="gray",cex=0.4)
+points((log(as.numeric(dhr$Q1))^alpha_val-1)/alpha_val,log(abs(as.numeric(dhr$Z))),pch=20,col="gray",cex=0.4)
+
+points((log(as.numeric(di$V2))^alpha_val-1)/alpha_val,log(abs(as.numeric(di$V4))),pch=6,col=rgb(0,1,1,0.2),cex=0.5)
+arrows(x0=(log(as.numeric(di$V2))^alpha_val-1)/alpha_val,y0=log(0.9*abs(as.numeric(di$V4))),x1=(log(as.numeric(di$V2))^alpha_val-1)/alpha_val,col=rgb(0,1,1,0.2),
+       y1=log(1.1*abs(as.numeric(di$V4))), length=0.02, angle=90, code=3)
+
+points((log(as.numeric(dilowerT$V2))^alpha_val-1)/alpha_val,log(abs(as.numeric(dilowerT$V4))),col=rgb(0,1,1,0.2),pch=6,cex=0.5)
+arrows(x0=(log(as.numeric(dilowerT$V2))^alpha_val-1)/alpha_val,y0=log(0.9*abs(as.numeric(dilowerT$V4))),x1=(log(as.numeric(dilowerT$V2))^alpha_val-1)/alpha_val,col=rgb(0,1,1,0.2),
+       y1=log(1.1*abs(as.numeric(dilowerT$V4))), length=0.02, angle=90, code=3)
+points((log(as.numeric(dilowerT$V2))^alpha_val-1)/alpha_val,log(abs(as.numeric(dilowerT$V5))),pch=20,col="gray",cex=0.4)
+
+
+points((log(as.numeric(dfDHf1$V2))^alpha_val-1)/alpha_val,log(dfDHf1$Z*5/2.568),col=rgb(0,0,0,0.5),pch=20,cex=0.5)
+points((log(as.numeric(dfDHf1_LLL$V2))^alpha_val-1)/alpha_val,log(dfDHf1_LLL$Z*5/2.568),col=rgb(0,0,0,0.5),pch=20,cex=0.5)
+points((log(as.numeric(dfDHf1_LLL_2decplace$V2))^alpha_val-1)/alpha_val,log(dfDHf1_LLL_2decplace$Z*5/2.568),col=rgb(0,0,0,0.5),pch=20,cex=0.5)
+points((log(as.numeric(dfDHf1_LLL_5xapprox$V2))^alpha_val-1)/alpha_val,log(dfDHf1_LLL_5xapprox$Z*5/2.568),col=rgb(0,0,0,0.5),pch=6,cex=0.3)
+
+abline(a=1.274014,b=.866363,col="brown",lty=6)
+
+
+
+```
+\elandscape
+
+\clearpage
+
+\blandscape
+```{r different_rescalings_pt5, echo=FALSE, warnings=FALSE, fig.show = "hold",  out.width = c("32%","32%","32%"), fig.align = "center", fig.cap="A graphical comparison for each investigated 1st degree L-function or Davenport-Heilbronn function of \\textbf{left column} - $\\log\\left(|Z_L|\\right) \\text{ vs } \\log(t)$, \\textbf{middle column} - $\\log\\left(|Z_L|\\cdot \\frac{N_C}{N_{\\chi\\ne0}}\\right) \\text{ vs } \\log\\left(\\sqrt{(\\frac{t}{2\\pi})^d\\cdot N_C}\\right)$, \\textbf{right column} - $\\log\\left(|Z_L|\\cdot \\frac{N_C}{N_{\\chi\\ne0}}\\right) \\text{ vs } \\frac{\\left(\\sqrt{\\log\\left(\\sqrt{(\\frac{t}{2\\pi})^d\\cdot N_C}\\right)}-1\\right)}{0.5}$ for top row - $L(\\chi_7(5,.),0.5+I\\cdot t)$ and bottom row - $L(\\chi_7(3,.),0.5+I\\cdot t)$", fig.height=7}
+
+
+
+plot(log(as.numeric(df$V1)),log(df$Z),pch=20,col="gray",cex=0.5,
+     xlim=c(log(1e0),log(1e40)),ylim=log(c(0.5,100000)),
+     main="growth of largest L75 |Z| peaks \n standard log(|Z|) vs log(t) plot",xlab="log(t) value",ylab="log(|Z|) value");grid(col="gray2")
+points(log(as.numeric(df2$V1)),log(df2$Z),pch=20,col="gray",cex=0.5)
+points(log(as.numeric(df_kotnick_nodup$t)),log(abs(as.numeric(df_kotnick_nodup$Z))),pch=6,col="gray2",cex=0.3)
+points(log(as.numeric(dft$t)),log(abs(as.numeric(dft$Z))),pch=6,col="gray",cex=0.3)
+
+points(log(dfr$t),log(abs(dfr$Z)),pch=20,col="gray",cex=0.4)
+points(log(as.numeric(dgr$V1)),log(abs(as.numeric(dgr$V3))),pch=20,col="gray",cex=0.4)
+points(log(as.numeric(dhr$T)),log(abs(as.numeric(dhr$Z))),pch=20,col="gray",cex=0.4)
+
+points(log(as.numeric(di$V1)),log(abs(as.numeric(di$V4))),pch=6,col=rgb(0,1,1,0.2),cex=0.5)
+arrows(x0=log(as.numeric(di$V1)),y0=log(0.9*abs(as.numeric(di$V4))),x1=log(as.numeric(di$V1)),col=rgb(0,1,1,0.2),
+       y1=log(1.1*abs(as.numeric(di$V4))), length=0.02, angle=90, code=3)
+
+points(log(as.numeric(dilowerT$V1)),log(abs(as.numeric(dilowerT$V4))),col=rgb(0,1,1,0.2),pch=6,cex=0.5)
+arrows(x0=log(as.numeric(dilowerT$V1)),y0=log(0.9*abs(as.numeric(dilowerT$V4))),x1=log(as.numeric(dilowerT$V1)),col=rgb(0,1,1,0.2),
+       y1=log(1.1*abs(as.numeric(dilowerT$V4))), length=0.02, angle=90, code=3)
+points(log(as.numeric(dilowerT$V1)),log(abs(as.numeric(dilowerT$V5))),pch=20,col="gray",cex=0.4)
+
+points(log(as.numeric(dfL75$V1)),log(dfL75$Z*7/6),col=rgb(0.5,0.5,1,0.5),pch=20,cex=0.5)
+points(log(as.numeric(dfL75_LLL$V1)),log(dfL75_LLL$Z*7/6),col=rgb(0.5,0.5,1,0.5),pch=20,cex=0.5)
+
+
+plot(log(as.numeric(df$V2)),log(df$Z),pch=20,col="gray",cex=0.5,
+     xlim=c(log(1e0),log(1e25)),ylim=log(c(0.5,100000)),
+     main="growth of largest L75 |Z| peaks \n log(|Z|*7/6) vs log(sqrt((t/2/pi)^1*7)) plot",xlab="log(sqrt((t/2/pi)^1*7)) value",ylab="log(|Z|*7/6) value");grid(col="gray2")
+points(log(as.numeric(df2$V2)),log(df2$Z),pch=20,col="gray",cex=0.5)
+points(log(sqrt(as.numeric(df_kotnick_nodup$t)/2/pi)),log(abs(as.numeric(df_kotnick_nodup$Z))),pch=6,col="gray2",cex=0.3)
+points(log(sqrt(as.numeric(dft$t)/2/pi)),log(abs(as.numeric(dft$Z))),pch=6,col="gray",cex=0.3)
+
+points(log(sqrt(dfr$t/2/pi)),log(abs(dfr$Z)),pch=20,col="gray",cex=0.4)
+points(log(sqrt(as.numeric(dgr$V1)/2/pi)),log(abs(as.numeric(dgr$V3))),pch=20,col="gray",cex=0.4)
+points(log(as.numeric(dhr$Q1)),log(abs(as.numeric(dhr$Z))),pch=20,col="gray",cex=0.4)
+
+
+points(log(as.numeric(di$V2)),log(abs(as.numeric(di$V4))),pch=6,col=rgb(0,1,1,0.2),cex=0.5)
+arrows(x0=log(as.numeric(di$V2)),y0=log(0.9*abs(as.numeric(di$V4))),x1=log(as.numeric(di$V2)),col=rgb(0,1,1,0.2),
+       y1=log(1.1*abs(as.numeric(di$V4))), length=0.02, angle=90, code=3)
+
+points(log(as.numeric(dilowerT$V2)),log(abs(as.numeric(dilowerT$V4))),col=rgb(0,1,1,0.2),pch=6,cex=0.5)
+arrows(x0=log(as.numeric(dilowerT$V2)),y0=log(0.9*abs(as.numeric(dilowerT$V4))),x1=log(as.numeric(dilowerT$V2)),col=rgb(0,1,1,0.2),
+       y1=log(1.1*abs(as.numeric(dilowerT$V4))), length=0.02, angle=90, code=3)
+points(log(as.numeric(dilowerT$V2)),log(abs(as.numeric(dilowerT$V5))),pch=20,col="gray",cex=0.4)
+
+points(log(as.numeric(dfL75$V2)),log(dfL75$Z*7/6),col=rgb(0.5,0.5,1,0.5),pch=20,cex=0.5)
+points(log(as.numeric(dfL75_LLL$V2)),log(dfL75_LLL$Z*7/6),col=rgb(0.5,0.5,1,0.5),pch=20,cex=0.5)
+
+lines(seq(.1,50,by=.1),1.274014+0.866363*(seq(.1,50,by=.1)^alpha_val-1)/alpha_val,col="brown",lty=6)
+
+
+
+plot((log(as.numeric(df$V2))^alpha_val-1)/alpha_val,log(df$Z),pch=20,col="gray",cex=0.5,
+     xlim=log(c(1,1e5)),ylim=c(-1,15),
+     main="growth of largest L75 |Z| peaks \n log(|Z|*7/6) vs (sqrt(log(sqrt((t/2/pi)^1*7)))-1)/0.5 plot",xlab="(sqrt(log(sqrt((t/2/pi)^1*7)))-1)/0.5 value",ylab="log(|Z|*7/6) value");grid(col="gray2")
+points((log(as.numeric(df2$V2))^alpha_val-1)/alpha_val,log(df2$Z),pch=20,col="gray",cex=0.5)
+points((log(sqrt(as.numeric(df_kotnick_nodup$t)/2/pi))^alpha_val-1)/alpha_val,log(abs(as.numeric(df_kotnick_nodup$Z))),pch=6,col="gray2",cex=0.3)
+points((log(sqrt(as.numeric(dft$t)/2/pi))^alpha_val-1)/alpha_val,log(abs(as.numeric(dft$Z))),pch=6,col="gray",cex=0.3)
+
+points((log(sqrt(dfr$t/2/pi))^alpha_val-1)/alpha_val,log(abs(dfr$Z)),pch=20,col="gray",cex=0.4)
+points((log(sqrt(as.numeric(dgr$V1)/2/pi))^alpha_val-1)/alpha_val,log(abs(as.numeric(dgr$V3))),pch=20,col="gray",cex=0.4)
+points((log(as.numeric(dhr$Q1))^alpha_val-1)/alpha_val,log(abs(as.numeric(dhr$Z))),pch=20,col="gray",cex=0.4)
+
+points((log(as.numeric(di$V2))^alpha_val-1)/alpha_val,log(abs(as.numeric(di$V4))),pch=6,col=rgb(0,1,1,0.2),cex=0.5)
+arrows(x0=(log(as.numeric(di$V2))^alpha_val-1)/alpha_val,y0=log(0.9*abs(as.numeric(di$V4))),x1=(log(as.numeric(di$V2))^alpha_val-1)/alpha_val,col=rgb(0,1,1,0.2),
+       y1=log(1.1*abs(as.numeric(di$V4))), length=0.02, angle=90, code=3)
+
+points((log(as.numeric(dilowerT$V2))^alpha_val-1)/alpha_val,log(abs(as.numeric(dilowerT$V4))),col=rgb(0,1,1,0.2),pch=6,cex=0.5)
+arrows(x0=(log(as.numeric(dilowerT$V2))^alpha_val-1)/alpha_val,y0=log(0.9*abs(as.numeric(dilowerT$V4))),x1=(log(as.numeric(dilowerT$V2))^alpha_val-1)/alpha_val,col=rgb(0,1,1,0.2),
+       y1=log(1.1*abs(as.numeric(dilowerT$V4))), length=0.02, angle=90, code=3)
+points((log(as.numeric(dilowerT$V2))^alpha_val-1)/alpha_val,log(abs(as.numeric(dilowerT$V5))),pch=20,col="gray",cex=0.4)
+
+
+points((log(as.numeric(dfL75$V2))^alpha_val-1)/alpha_val,log(dfL75$Z*7/6),col=rgb(0.5,0.5,1,0.5),pch=20,cex=0.5)
+points((log(as.numeric(dfL75_LLL$V2))^alpha_val-1)/alpha_val,log(dfL75_LLL$Z*7/6),col=rgb(0.5,0.5,1,0.5),pch=20,cex=0.5)
+
+abline(a=1.274014,b=.866363,col="brown",lty=6)
+
+
+
+plot(log(as.numeric(df$V1)),log(df$Z),pch=20,col="gray",cex=0.5,
+     xlim=c(log(1e0),log(1e40)),ylim=log(c(0.5,100000)),
+     main="growth of largest L73 |Z| peaks \n standard log(|Z|) vs log(t) plot",xlab="log(t) value",ylab="log(|Z|) value");grid(col="gray2")
+points(log(as.numeric(df2$V1)),log(df2$Z),pch=20,col="gray",cex=0.5)
+points(log(as.numeric(df_kotnick_nodup$t)),log(abs(as.numeric(df_kotnick_nodup$Z))),pch=6,col="gray2",cex=0.3)
+points(log(as.numeric(dft$t)),log(abs(as.numeric(dft$Z))),pch=6,col="gray",cex=0.3)
+
+points(log(dfr$t),log(abs(dfr$Z)),pch=20,col="gray",cex=0.4)
+points(log(as.numeric(dgr$V1)),log(abs(as.numeric(dgr$V3))),pch=20,col="gray",cex=0.4)
+points(log(as.numeric(dhr$T)),log(abs(as.numeric(dhr$Z))),pch=20,col="gray",cex=0.4)
+
+points(log(as.numeric(di$V1)),log(abs(as.numeric(di$V4))),pch=6,col=rgb(0,1,1,0.2),cex=0.5)
+arrows(x0=log(as.numeric(di$V1)),y0=log(0.9*abs(as.numeric(di$V4))),x1=log(as.numeric(di$V1)),col=rgb(0,1,1,0.2),
+       y1=log(1.1*abs(as.numeric(di$V4))), length=0.02, angle=90, code=3)
+
+points(log(as.numeric(dilowerT$V1)),log(abs(as.numeric(dilowerT$V4))),col=rgb(0,1,1,0.2),pch=6,cex=0.5)
+arrows(x0=log(as.numeric(dilowerT$V1)),y0=log(0.9*abs(as.numeric(dilowerT$V4))),x1=log(as.numeric(dilowerT$V1)),col=rgb(0,1,1,0.2),
+       y1=log(1.1*abs(as.numeric(dilowerT$V4))), length=0.02, angle=90, code=3)
+points(log(as.numeric(dilowerT$V1)),log(abs(as.numeric(dilowerT$V5))),pch=20,col="gray",cex=0.4)
+
+points(log(as.numeric(dfL73$V1)),log(dfL73$Z*7/6),col=rgb(0.25,0.75,0.5,0.5),pch=20,cex=0.5)
+points(log(as.numeric(dfL73_LLL$V1)),log(dfL73_LLL$Z*7/6),col=rgb(0.25,0.75,0.5,0.5),pch=20,cex=0.5)
+
+
+plot(log(as.numeric(df$V2)),log(df$Z),pch=20,col="gray",cex=0.5,
+     xlim=c(log(1e0),log(1e25)),ylim=log(c(0.5,100000)),
+     main="growth of largest L73 |Z| peaks \n log(|Z|*7/6) vs log(sqrt((t/2/pi)^1*7)) plot",xlab="log(sqrt((t/2/pi)^1*7)) value",ylab="log(|Z|*7/6) value");grid(col="gray2")
+points(log(as.numeric(df2$V2)),log(df2$Z),pch=20,col="gray",cex=0.5)
+points(log(sqrt(as.numeric(df_kotnick_nodup$t)/2/pi)),log(abs(as.numeric(df_kotnick_nodup$Z))),pch=6,col="gray2",cex=0.3)
+points(log(sqrt(as.numeric(dft$t)/2/pi)),log(abs(as.numeric(dft$Z))),pch=6,col="gray",cex=0.3)
+
+points(log(sqrt(dfr$t/2/pi)),log(abs(dfr$Z)),pch=20,col="gray",cex=0.4)
+points(log(sqrt(as.numeric(dgr$V1)/2/pi)),log(abs(as.numeric(dgr$V3))),pch=20,col="gray",cex=0.4)
+points(log(as.numeric(dhr$Q1)),log(abs(as.numeric(dhr$Z))),pch=20,col="gray",cex=0.4)
+
+
+points(log(as.numeric(di$V2)),log(abs(as.numeric(di$V4))),pch=6,col=rgb(0,1,1,0.2),cex=0.5)
+arrows(x0=log(as.numeric(di$V2)),y0=log(0.9*abs(as.numeric(di$V4))),x1=log(as.numeric(di$V2)),col=rgb(0,1,1,0.2),
+       y1=log(1.1*abs(as.numeric(di$V4))), length=0.02, angle=90, code=3)
+
+points(log(as.numeric(dilowerT$V2)),log(abs(as.numeric(dilowerT$V4))),col=rgb(0,1,1,0.2),pch=6,cex=0.5)
+arrows(x0=log(as.numeric(dilowerT$V2)),y0=log(0.9*abs(as.numeric(dilowerT$V4))),x1=log(as.numeric(dilowerT$V2)),col=rgb(0,1,1,0.2),
+       y1=log(1.1*abs(as.numeric(dilowerT$V4))), length=0.02, angle=90, code=3)
+points(log(as.numeric(dilowerT$V2)),log(abs(as.numeric(dilowerT$V5))),pch=20,col="gray",cex=0.4)
+
+points(log(as.numeric(dfL73$V2)),log(dfL73$Z*7/6),col=rgb(0.25,0.75,0.5,0.5),pch=20,cex=0.5)
+points(log(as.numeric(dfL73_LLL$V2)),log(dfL73_LLL$Z*7/6),col=rgb(0.25,0.75,0.5,0.5),pch=20,cex=0.5)
+
+lines(seq(.1,50,by=.1),1.274014+0.866363*(seq(.1,50,by=.1)^alpha_val-1)/alpha_val,col="brown",lty=6)
+
+
+plot((log(as.numeric(df$V2))^alpha_val-1)/alpha_val,log(df$Z),pch=20,col="gray",cex=0.5,
+     xlim=log(c(1,1e5)),ylim=c(-1,15),
+     main="growth of largest L73 |Z| peaks \n log(|Z|*7/6) vs (sqrt(log(sqrt((t/2/pi)^1*7)))-1)/0.5 plot",xlab="(sqrt(log(sqrt((t/2/pi)^1*7)))-1)/0.5 value",ylab="log(|Z|*7/6) value");grid(col="gray2")
+points((log(as.numeric(df2$V2))^alpha_val-1)/alpha_val,log(df2$Z),pch=20,col="gray",cex=0.5)
+points((log(sqrt(as.numeric(df_kotnick_nodup$t)/2/pi))^alpha_val-1)/alpha_val,log(abs(as.numeric(df_kotnick_nodup$Z))),pch=6,col="gray2",cex=0.3)
+points((log(sqrt(as.numeric(dft$t)/2/pi))^alpha_val-1)/alpha_val,log(abs(as.numeric(dft$Z))),pch=6,col="gray",cex=0.3)
+
+points((log(sqrt(dfr$t/2/pi))^alpha_val-1)/alpha_val,log(abs(dfr$Z)),pch=20,col="gray",cex=0.4)
+points((log(sqrt(as.numeric(dgr$V1)/2/pi))^alpha_val-1)/alpha_val,log(abs(as.numeric(dgr$V3))),pch=20,col="gray",cex=0.4)
+points((log(as.numeric(dhr$Q1))^alpha_val-1)/alpha_val,log(abs(as.numeric(dhr$Z))),pch=20,col="gray",cex=0.4)
+
+points((log(as.numeric(di$V2))^alpha_val-1)/alpha_val,log(abs(as.numeric(di$V4))),pch=6,col=rgb(0,1,1,0.2),cex=0.5)
+arrows(x0=(log(as.numeric(di$V2))^alpha_val-1)/alpha_val,y0=log(0.9*abs(as.numeric(di$V4))),x1=(log(as.numeric(di$V2))^alpha_val-1)/alpha_val,col=rgb(0,1,1,0.2),
+       y1=log(1.1*abs(as.numeric(di$V4))), length=0.02, angle=90, code=3)
+
+points((log(as.numeric(dilowerT$V2))^alpha_val-1)/alpha_val,log(abs(as.numeric(dilowerT$V4))),col=rgb(0,1,1,0.2),pch=6,cex=0.5)
+arrows(x0=(log(as.numeric(dilowerT$V2))^alpha_val-1)/alpha_val,y0=log(0.9*abs(as.numeric(dilowerT$V4))),x1=(log(as.numeric(dilowerT$V2))^alpha_val-1)/alpha_val,col=rgb(0,1,1,0.2),
+       y1=log(1.1*abs(as.numeric(dilowerT$V4))), length=0.02, angle=90, code=3)
+points((log(as.numeric(dilowerT$V2))^alpha_val-1)/alpha_val,log(abs(as.numeric(dilowerT$V5))),pch=20,col="gray",cex=0.4)
+
+
+points((log(as.numeric(dfL73$V2))^alpha_val-1)/alpha_val,log(dfL73$Z*7/6),col=rgb(0.25,0.75,0.5,0.5),pch=20,cex=0.5)
+points((log(as.numeric(dfL73_LLL$V2))^alpha_val-1)/alpha_val,log(dfL73_LLL$Z*7/6),col=rgb(0.25,0.75,0.5,0.5),pch=20,cex=0.5)
+
+abline(a=1.274014,b=.866363,col="brown",lty=6)
+
+
+
+```
+\elandscape
+
+\clearpage
+
+\blandscape
+```{r different_rescalings_pt6, echo=FALSE, warnings=FALSE, fig.show = "hold",  out.width = c("32%","32%","32%"), fig.align = "center", fig.cap="A graphical comparison for each investigated 1st degree L-function or Davenport-Heilbronn function of \\textbf{left column} - $\\log\\left(|Z_L|\\right) \\text{ vs } \\log(t)$, \\textbf{middle column} - $\\log\\left(|Z_L|\\cdot \\frac{N_C}{N_{\\chi\\ne0}}\\right) \\text{ vs } \\log\\left(\\sqrt{(\\frac{t}{2\\pi})^d\\cdot N_C}\\right)$, \\textbf{right column} - $\\log\\left(|Z_L|\\cdot \\frac{N_C}{N_{\\chi\\ne0}}\\right) \\text{ vs } \\frac{\\left(\\sqrt{\\log\\left(\\sqrt{(\\frac{t}{2\\pi})^d\\cdot N_C}\\right)}-1\\right)}{0.5}$ for top row - $f_3(0.5+I\\cdot t)$,  and bottom row - $f_4(0.5+I\\cdot t)$", fig.height=7}
+
+plot(log(as.numeric(df$V1)),log(df$Z),pch=20,col="gray",cex=0.5,
+     xlim=c(log(1e0),log(1e40)),ylim=log(c(0.5,100000)),
+     main="growth of largest DHf3 |Z| peaks \n standard log(|Z|) vs log(t) plot",xlab="log(t) value",ylab="log(|Z|) value");grid(col="gray2")
+points(log(as.numeric(df2$V1)),log(df2$Z),pch=20,col="gray",cex=0.5)
+points(log(as.numeric(df_kotnick_nodup$t)),log(abs(as.numeric(df_kotnick_nodup$Z))),pch=6,col="gray2",cex=0.3)
+points(log(as.numeric(dft$t)),log(abs(as.numeric(dft$Z))),pch=6,col="gray",cex=0.3)
+
+points(log(dfr$t),log(abs(dfr$Z)),pch=20,col="gray",cex=0.4)
+points(log(as.numeric(dgr$V1)),log(abs(as.numeric(dgr$V3))),pch=20,col="gray",cex=0.4)
+points(log(as.numeric(dhr$T)),log(abs(as.numeric(dhr$Z))),pch=20,col="gray",cex=0.4)
+
+points(log(as.numeric(di$V1)),log(abs(as.numeric(di$V4))),pch=6,col=rgb(0,1,1,0.2),cex=0.5)
+arrows(x0=log(as.numeric(di$V1)),y0=log(0.9*abs(as.numeric(di$V4))),x1=log(as.numeric(di$V1)),col=rgb(0,1,1,0.2),
+       y1=log(1.1*abs(as.numeric(di$V4))), length=0.02, angle=90, code=3)
+
+points(log(as.numeric(dilowerT$V1)),log(abs(as.numeric(dilowerT$V4))),col=rgb(0,1,1,0.2),pch=6,cex=0.5)
+arrows(x0=log(as.numeric(dilowerT$V1)),y0=log(0.9*abs(as.numeric(dilowerT$V4))),x1=log(as.numeric(dilowerT$V1)),col=rgb(0,1,1,0.2),
+       y1=log(1.1*abs(as.numeric(dilowerT$V4))), length=0.02, angle=90, code=3)
+points(log(as.numeric(dilowerT$V1)),log(abs(as.numeric(dilowerT$V5))),pch=20,col="gray",cex=0.4)
+
+points(log(as.numeric(dfDHf3$V1)),log(dfDHf3$Z),col=rgb(0,0,0,0.5),pch=20,cex=0.5)
+points(log(as.numeric(dfDHf3_LLL$V1)),log(dfDHf3_LLL$Z),col=rgb(0,0,0,0.5),pch=20,cex=0.5)
+
+
+plot(log(as.numeric(df$V2)),log(df$Z),pch=20,col="gray",cex=0.5,
+     xlim=c(log(1e0),log(1e25)),ylim=log(c(0.5,100000)),
+     main="growth of largest DHf3 |Z| peaks \n log(|Z|*7/7.2077509) vs log(sqrt((t/2/pi)^1*7)) plot",xlab="log(sqrt((t/2/pi)^1*7)) value",ylab="log(|Z|*7/7.2077509) value");grid(col="gray2")
+points(log(as.numeric(df2$V2)),log(df2$Z),pch=20,col="gray",cex=0.5)
+points(log(sqrt(as.numeric(df_kotnick_nodup$t)/2/pi)),log(abs(as.numeric(df_kotnick_nodup$Z))),pch=6,col="gray2",cex=0.3)
+points(log(sqrt(as.numeric(dft$t)/2/pi)),log(abs(as.numeric(dft$Z))),pch=6,col="gray",cex=0.3)
+
+points(log(sqrt(dfr$t/2/pi)),log(abs(dfr$Z)),pch=20,col="gray",cex=0.4)
+points(log(sqrt(as.numeric(dgr$V1)/2/pi)),log(abs(as.numeric(dgr$V3))),pch=20,col="gray",cex=0.4)
+points(log(as.numeric(dhr$Q1)),log(abs(as.numeric(dhr$Z))),pch=20,col="gray",cex=0.4)
+
+
+points(log(as.numeric(di$V2)),log(abs(as.numeric(di$V4))),pch=6,col=rgb(0,1,1,0.2),cex=0.5)
+arrows(x0=log(as.numeric(di$V2)),y0=log(0.9*abs(as.numeric(di$V4))),x1=log(as.numeric(di$V2)),col=rgb(0,1,1,0.2),
+       y1=log(1.1*abs(as.numeric(di$V4))), length=0.02, angle=90, code=3)
+
+points(log(as.numeric(dilowerT$V2)),log(abs(as.numeric(dilowerT$V4))),col=rgb(0,1,1,0.2),pch=6,cex=0.5)
+arrows(x0=log(as.numeric(dilowerT$V2)),y0=log(0.9*abs(as.numeric(dilowerT$V4))),x1=log(as.numeric(dilowerT$V2)),col=rgb(0,1,1,0.2),
+       y1=log(1.1*abs(as.numeric(dilowerT$V4))), length=0.02, angle=90, code=3)
+points(log(as.numeric(dilowerT$V2)),log(abs(as.numeric(dilowerT$V5))),pch=20,col="gray",cex=0.4)
+
+points(log(as.numeric(dfDHf3$V2)),log(dfDHf3$Z*7/7.2077509),col=rgb(0,0,0,0.5),pch=20,cex=0.5)
+points(log(as.numeric(dfDHf3_LLL$V2)),log(dfDHf3_LLL$Z*7/7.2077509),col=rgb(0,0,0,0.5),pch=20,cex=0.5)
+
+lines(seq(.1,50,by=.1),1.274014+0.866363*(seq(.1,50,by=.1)^alpha_val-1)/alpha_val,col="brown",lty=6)
+
+plot((log(as.numeric(df$V2))^alpha_val-1)/alpha_val,log(df$Z),pch=20,col="gray",cex=0.5,
+     xlim=log(c(1,1e5)),ylim=c(-1,15),
+     main="growth of largest DHf3 |Z| peaks \n log(|Z|*7/7.2077509) vs (sqrt(log(sqrt((t/2/pi)^1*7)))-1)/0.5 plot",xlab="(sqrt(log(sqrt((t/2/pi)^1*7)))-1)/0.5 value",ylab="log(|Z|*7/7.2077509) value");grid(col="gray2")
+points((log(as.numeric(df2$V2))^alpha_val-1)/alpha_val,log(df2$Z),pch=20,col="gray",cex=0.5)
+points((log(sqrt(as.numeric(df_kotnick_nodup$t)/2/pi))^alpha_val-1)/alpha_val,log(abs(as.numeric(df_kotnick_nodup$Z))),pch=6,col="gray2",cex=0.3)
+points((log(sqrt(as.numeric(dft$t)/2/pi))^alpha_val-1)/alpha_val,log(abs(as.numeric(dft$Z))),pch=6,col="gray",cex=0.3)
+
+points((log(sqrt(dfr$t/2/pi))^alpha_val-1)/alpha_val,log(abs(dfr$Z)),pch=20,col="gray",cex=0.4)
+points((log(sqrt(as.numeric(dgr$V1)/2/pi))^alpha_val-1)/alpha_val,log(abs(as.numeric(dgr$V3))),pch=20,col="gray",cex=0.4)
+points((log(as.numeric(dhr$Q1))^alpha_val-1)/alpha_val,log(abs(as.numeric(dhr$Z))),pch=20,col="gray",cex=0.4)
+
+points((log(as.numeric(di$V2))^alpha_val-1)/alpha_val,log(abs(as.numeric(di$V4))),pch=6,col=rgb(0,1,1,0.2),cex=0.5)
+arrows(x0=(log(as.numeric(di$V2))^alpha_val-1)/alpha_val,y0=log(0.9*abs(as.numeric(di$V4))),x1=(log(as.numeric(di$V2))^alpha_val-1)/alpha_val,col=rgb(0,1,1,0.2),
+       y1=log(1.1*abs(as.numeric(di$V4))), length=0.02, angle=90, code=3)
+
+points((log(as.numeric(dilowerT$V2))^alpha_val-1)/alpha_val,log(abs(as.numeric(dilowerT$V4))),col=rgb(0,1,1,0.2),pch=6,cex=0.5)
+arrows(x0=(log(as.numeric(dilowerT$V2))^alpha_val-1)/alpha_val,y0=log(0.9*abs(as.numeric(dilowerT$V4))),x1=(log(as.numeric(dilowerT$V2))^alpha_val-1)/alpha_val,col=rgb(0,1,1,0.2),
+       y1=log(1.1*abs(as.numeric(dilowerT$V4))), length=0.02, angle=90, code=3)
+points((log(as.numeric(dilowerT$V2))^alpha_val-1)/alpha_val,log(abs(as.numeric(dilowerT$V5))),pch=20,col="gray",cex=0.4)
+
+points((log(as.numeric(dfDHf3$V2))^alpha_val-1)/alpha_val,log(dfDHf3$Z*7/7.2077509),col=rgb(0,0,0,0.5),pch=20,cex=0.5)
+points((log(as.numeric(dfDHf3_LLL$V2))^alpha_val-1)/alpha_val,log(dfDHf3_LLL$Z*7/7.2077509),col=rgb(0,0,0,0.5),pch=20,cex=0.5)
+
+abline(a=1.274014,b=.866363,col="brown",lty=6)
+
+
+plot(log(as.numeric(df$V1)),log(df$Z),pch=20,col="gray",cex=0.5,
+     xlim=c(log(1e0),log(1e40)),ylim=log(c(0.5,100000)),
+     main="growth of largest DHf4 |Z| peaks \n standard log(|Z|) vs log(t) plot",xlab="log(t) value",ylab="log(|Z|) value");grid(col="gray2")
+points(log(as.numeric(df2$V1)),log(df2$Z),pch=20,col="gray",cex=0.5)
+points(log(as.numeric(df_kotnick_nodup$t)),log(abs(as.numeric(df_kotnick_nodup$Z))),pch=6,col="gray2",cex=0.3)
+points(log(as.numeric(dft$t)),log(abs(as.numeric(dft$Z))),pch=6,col="gray",cex=0.3)
+
+points(log(dfr$t),log(abs(dfr$Z)),pch=20,col="gray",cex=0.4)
+points(log(as.numeric(dgr$V1)),log(abs(as.numeric(dgr$V3))),pch=20,col="gray",cex=0.4)
+points(log(as.numeric(dhr$T)),log(abs(as.numeric(dhr$Z))),pch=20,col="gray",cex=0.4)
+
+points(log(as.numeric(di$V1)),log(abs(as.numeric(di$V4))),pch=6,col=rgb(0,1,1,0.2),cex=0.5)
+arrows(x0=log(as.numeric(di$V1)),y0=log(0.9*abs(as.numeric(di$V4))),x1=log(as.numeric(di$V1)),col=rgb(0,1,1,0.2),
+       y1=log(1.1*abs(as.numeric(di$V4))), length=0.02, angle=90, code=3)
+
+points(log(as.numeric(dilowerT$V1)),log(abs(as.numeric(dilowerT$V4))),col=rgb(0,1,1,0.2),pch=6,cex=0.5)
+arrows(x0=log(as.numeric(dilowerT$V1)),y0=log(0.9*abs(as.numeric(dilowerT$V4))),x1=log(as.numeric(dilowerT$V1)),col=rgb(0,1,1,0.2),
+       y1=log(1.1*abs(as.numeric(dilowerT$V4))), length=0.02, angle=90, code=3)
+points(log(as.numeric(dilowerT$V1)),log(abs(as.numeric(dilowerT$V5))),pch=20,col="gray",cex=0.4)
+
+points(log(as.numeric(dfDHf4$V1)),log(dfDHf4$Z),col=rgb(0,0,0,0.5),pch=20,cex=0.5)
+points(log(as.numeric(dfDHf4_LLL$V1)),log(dfDHf4_LLL$Z),col=rgb(0,0,0,0.5),pch=20,cex=0.5)
+
+
+plot(log(as.numeric(df$V2)),log(df$Z),pch=20,col="gray",cex=0.5,
+     xlim=c(log(1e0),log(1e25)),ylim=log(c(0.5,100000)),
+     main="growth of largest DHf4 |Z| peaks \n log(|Z|*7/4.3042576) vs log(sqrt((t/2/pi)^1*7)) plot",xlab="log(sqrt((t/2/pi)^1*7)) value",ylab="log(|Z|*7/4.3042576) value");grid(col="gray2")
+points(log(as.numeric(df2$V2)),log(df2$Z),pch=20,col="gray",cex=0.5)
+points(log(sqrt(as.numeric(df_kotnick_nodup$t)/2/pi)),log(abs(as.numeric(df_kotnick_nodup$Z))),pch=6,col="gray2",cex=0.3)
+points(log(sqrt(as.numeric(dft$t)/2/pi)),log(abs(as.numeric(dft$Z))),pch=6,col="gray",cex=0.3)
+
+points(log(sqrt(dfr$t/2/pi)),log(abs(dfr$Z)),pch=20,col="gray",cex=0.4)
+points(log(sqrt(as.numeric(dgr$V1)/2/pi)),log(abs(as.numeric(dgr$V3))),pch=20,col="gray",cex=0.4)
+points(log(as.numeric(dhr$Q1)),log(abs(as.numeric(dhr$Z))),pch=20,col="gray",cex=0.4)
+
+
+points(log(as.numeric(di$V2)),log(abs(as.numeric(di$V4))),pch=6,col=rgb(0,1,1,0.2),cex=0.5)
+arrows(x0=log(as.numeric(di$V2)),y0=log(0.9*abs(as.numeric(di$V4))),x1=log(as.numeric(di$V2)),col=rgb(0,1,1,0.2),
+       y1=log(1.1*abs(as.numeric(di$V4))), length=0.02, angle=90, code=3)
+
+points(log(as.numeric(dilowerT$V2)),log(abs(as.numeric(dilowerT$V4))),col=rgb(0,1,1,0.2),pch=6,cex=0.5)
+arrows(x0=log(as.numeric(dilowerT$V2)),y0=log(0.9*abs(as.numeric(dilowerT$V4))),x1=log(as.numeric(dilowerT$V2)),col=rgb(0,1,1,0.2),
+       y1=log(1.1*abs(as.numeric(dilowerT$V4))), length=0.02, angle=90, code=3)
+points(log(as.numeric(dilowerT$V2)),log(abs(as.numeric(dilowerT$V5))),pch=20,col="gray",cex=0.4)
+
+points(log(as.numeric(dfDHf4$V2)),log(dfDHf4$Z*7/4.3042576),col=rgb(0,0,0,0.5),pch=20,cex=0.5)
+points(log(as.numeric(dfDHf4_LLL$V2)),log(dfDHf4_LLL$Z*7/4.3042576),col=rgb(0,0,0,0.5),pch=20,cex=0.5)
+
+lines(seq(.1,50,by=.1),1.274014+0.866363*(seq(.1,50,by=.1)^alpha_val-1)/alpha_val,col="brown",lty=6)
+
+
+plot((log(as.numeric(df$V2))^alpha_val-1)/alpha_val,log(df$Z),pch=20,col="gray",cex=0.5,
+     xlim=log(c(1,1e5)),ylim=c(-1,15),
+     main="growth of largest DHf4 |Z| peaks \n log(|Z|*7/4.3042576) vs (sqrt(log(sqrt((t/2/pi)^1*7)))-1)/0.5 plot",xlab="(sqrt(log(sqrt((t/2/pi)^1*7)))-1)/0.5 value",ylab="log(|Z|*7/4.3042576) value");grid(col="gray2")
+points((log(as.numeric(df2$V2))^alpha_val-1)/alpha_val,log(df2$Z),pch=20,col="gray",cex=0.5)
+points((log(sqrt(as.numeric(df_kotnick_nodup$t)/2/pi))^alpha_val-1)/alpha_val,log(abs(as.numeric(df_kotnick_nodup$Z))),pch=6,col="gray2",cex=0.3)
+points((log(sqrt(as.numeric(dft$t)/2/pi))^alpha_val-1)/alpha_val,log(abs(as.numeric(dft$Z))),pch=6,col="gray",cex=0.3)
+
+points((log(sqrt(dfr$t/2/pi))^alpha_val-1)/alpha_val,log(abs(dfr$Z)),pch=20,col="gray",cex=0.4)
+points((log(sqrt(as.numeric(dgr$V1)/2/pi))^alpha_val-1)/alpha_val,log(abs(as.numeric(dgr$V3))),pch=20,col="gray",cex=0.4)
+points((log(as.numeric(dhr$Q1))^alpha_val-1)/alpha_val,log(abs(as.numeric(dhr$Z))),pch=20,col="gray",cex=0.4)
+
+points((log(as.numeric(di$V2))^alpha_val-1)/alpha_val,log(abs(as.numeric(di$V4))),pch=6,col=rgb(0,1,1,0.2),cex=0.5)
+arrows(x0=(log(as.numeric(di$V2))^alpha_val-1)/alpha_val,y0=log(0.9*abs(as.numeric(di$V4))),x1=(log(as.numeric(di$V2))^alpha_val-1)/alpha_val,col=rgb(0,1,1,0.2),
+       y1=log(1.1*abs(as.numeric(di$V4))), length=0.02, angle=90, code=3)
+
+points((log(as.numeric(dilowerT$V2))^alpha_val-1)/alpha_val,log(abs(as.numeric(dilowerT$V4))),col=rgb(0,1,1,0.2),pch=6,cex=0.5)
+arrows(x0=(log(as.numeric(dilowerT$V2))^alpha_val-1)/alpha_val,y0=log(0.9*abs(as.numeric(dilowerT$V4))),x1=(log(as.numeric(dilowerT$V2))^alpha_val-1)/alpha_val,col=rgb(0,1,1,0.2),
+       y1=log(1.1*abs(as.numeric(dilowerT$V4))), length=0.02, angle=90, code=3)
+points((log(as.numeric(dilowerT$V2))^alpha_val-1)/alpha_val,log(abs(as.numeric(dilowerT$V5))),pch=20,col="gray",cex=0.4)
+
+
+points((log(as.numeric(dfDHf4$V2))^alpha_val-1)/alpha_val,log(dfDHf4$Z*7/4.3042576),col=rgb(0,0,0,0.5),pch=20,cex=0.5)
+points((log(as.numeric(dfDHf4_LLL$V2))^alpha_val-1)/alpha_val,log(dfDHf4_LLL$Z*7/4.3042576),col=rgb(0,0,0,0.5),pch=20,cex=0.5)
+
+abline(a=1.274014,b=.866363,col="brown",lty=6)
+
+
+```
+\elandscape
+
+\clearpage
+
+\blandscape
+```{r different_rescalings_pt7, echo=FALSE, warnings=FALSE, fig.show = "hold",  out.width = c("32%","32%","32%"), fig.align = "center", fig.cap="A graphical comparison for the 2nd degree Ramanujan's Tau L-function and the Riemann Zeta function extreme peaks on the critical line of \\textbf{left panel} - $\\log\\left(|Z_L|\\right) \\text{ vs } \\log(t)$, \\textbf{middle panel} - $\\log\\left(|Z_L|\\cdot \\frac{N_C}{N_{\\chi\\ne0}}\\right) \\text{ vs } \\frac{1}{d}\\cdot\\log\\left(\\sqrt{(\\frac{t}{2\\pi})^d}\\right)+\\log\\left(\\sqrt{N_C}\\right)$, \\textbf{right panel} - $\\log\\left(|Z_L|\\cdot \\frac{N_C}{N_{\\chi\\ne0}}\\right) \\text{ vs } \\frac{\\left(\\sqrt{\\frac{1}{d}\\cdot\\log\\left(\\sqrt{(\\frac{t}{2\\pi})^d}\\right)+\\log\\left(\\sqrt{N_C}\\right)}-1\\right)}{0.5}$. The x axis rescaling in the middle and right panel is different in figure 10 compared to figures 4-9 because the two L-functions being compared in figure 10 are of different degrees.", fig.height=7}
+
+
+plot(log(as.numeric(df$V1)),log(df$Z),pch=20,col="gray",cex=0.5,
+     xlim=c(log(1e0),log(1e40)),ylim=log(c(0.5,100000)),
+     main="growth of largest Ramanujan Tau L-function |Z| peaks \n standard log(|Z|) vs log(t) plot",xlab="log(t) value",ylab="log(|Z|) value");grid(col="gray2")
+points(log(as.numeric(df2$V1)),log(df2$Z),pch=20,col="gray",cex=0.5)
+points(log(as.numeric(df_kotnick_nodup$t)),log(abs(as.numeric(df_kotnick_nodup$Z))),pch=6,col="gray2",cex=0.3)
+points(log(as.numeric(dft$t)),log(abs(as.numeric(dft$Z))),pch=6,col="gray",cex=0.3)
+
+points(log(dfr$t),log(abs(dfr$Z)),pch=20,col="gray",cex=0.4)
+points(log(as.numeric(dgr$V1)),log(abs(as.numeric(dgr$V3))),pch=20,col="gray",cex=0.4)
+points(log(as.numeric(dhr$T)),log(abs(as.numeric(dhr$Z))),pch=20,col="gray",cex=0.4)
+
+points(log(as.numeric(di$V1)),log(abs(as.numeric(di$V4))),pch=6,col=rgb(0,1,1,0.2),cex=0.5)
+arrows(x0=log(as.numeric(di$V1)),y0=log(0.9*abs(as.numeric(di$V4))),x1=log(as.numeric(di$V1)),col=rgb(0,1,1,0.2),
+       y1=log(1.1*abs(as.numeric(di$V4))), length=0.02, angle=90, code=3)
+
+points(log(as.numeric(dilowerT$V1)),log(abs(as.numeric(dilowerT$V4))),col=rgb(0,1,1,0.2),pch=6,cex=0.5)
+arrows(x0=log(as.numeric(dilowerT$V1)),y0=log(0.9*abs(as.numeric(dilowerT$V4))),x1=log(as.numeric(dilowerT$V1)),col=rgb(0,1,1,0.2),
+       y1=log(1.1*abs(as.numeric(dilowerT$V4))), length=0.02, angle=90, code=3)
+points(log(as.numeric(dilowerT$V1)),log(abs(as.numeric(dilowerT$V5))),pch=20,col="gray",cex=0.4)
+
+points(log(as.numeric(dfRaman$V1)),log(dfRaman$Z),col="magenta",pch=20,cex=0.5)
+
+
+plot(log(as.numeric(df$V2)),log(df$Z),pch=20,col="gray",cex=0.5,
+     xlim=c(log(1e0),log(1e25)),ylim=log(c(0.5,100000)),
+     main="growth of largest Ramanujan Tau L-function |Z| peaks \n log(|Z|*1/1) vs 1/2*log(sqrt((t/2/pi)^2*1))+log(sqrt(1)) plot",xlab="log(sqrt((t/2/pi)^2*1)) value",ylab="log(|Z|*1/1) value");grid(col="gray2")
+points(log(as.numeric(df2$V2)),log(df2$Z),pch=20,col="gray",cex=0.5)
+points(log(sqrt(as.numeric(df_kotnick_nodup$t)/2/pi)),log(abs(as.numeric(df_kotnick_nodup$Z))),pch=6,col="gray2",cex=0.3)
+points(log(sqrt(as.numeric(dft$t)/2/pi)),log(abs(as.numeric(dft$Z))),pch=6,col="gray",cex=0.3)
+
+points(log(sqrt(dfr$t/2/pi)),log(abs(dfr$Z)),pch=20,col="gray",cex=0.4)
+points(log(sqrt(as.numeric(dgr$V1)/2/pi)),log(abs(as.numeric(dgr$V3))),pch=20,col="gray",cex=0.4)
+points(log(as.numeric(dhr$Q1)),log(abs(as.numeric(dhr$Z))),pch=20,col="gray",cex=0.4)
+
+
+points(log(as.numeric(di$V2)),log(abs(as.numeric(di$V4))),pch=6,col=rgb(0,1,1,0.2),cex=0.5)
+arrows(x0=log(as.numeric(di$V2)),y0=log(0.9*abs(as.numeric(di$V4))),x1=log(as.numeric(di$V2)),col=rgb(0,1,1,0.2),
+       y1=log(1.1*abs(as.numeric(di$V4))), length=0.02, angle=90, code=3)
+
+points(log(as.numeric(dilowerT$V2)),log(abs(as.numeric(dilowerT$V4))),col=rgb(0,1,1,0.2),pch=6,cex=0.5)
+arrows(x0=log(as.numeric(dilowerT$V2)),y0=log(0.9*abs(as.numeric(dilowerT$V4))),x1=log(as.numeric(dilowerT$V2)),col=rgb(0,1,1,0.2),
+       y1=log(1.1*abs(as.numeric(dilowerT$V4))), length=0.02, angle=90, code=3)
+points(log(as.numeric(dilowerT$V2)),log(abs(as.numeric(dilowerT$V5))),pch=20,col="gray",cex=0.4)
+
+points(1/2*log(as.numeric(dfRaman$V2)),log(dfRaman$Z),col="magenta",pch=20,cex=0.5)
+
+lines(seq(.1,50,by=.1),1.274014+0.866363*(seq(.1,50,by=.1)^alpha_val-1)/alpha_val,col="brown",lty=6)
+
+
+plot((log(as.numeric(df$V2))^alpha_val-1)/alpha_val,log(df$Z),pch=20,col="gray",cex=0.5,
+     xlim=log(c(1,1e5)),ylim=c(-1,15),
+     main="growth of largest Ramanujan Tau L-function |Z| peaks \n log(|Z|*1/1) vs (sqrt(1/2*log(sqrt((t/2/pi)^2*1))+log(sqrt(1)))-1)/0.5 plot",xlab="(sqrt(log(sqrt((t/2/pi)^2*1)))-1)/0.5 value",ylab="log(|Z|*1/1) value");grid(col="gray2")
+points((log(as.numeric(df2$V2))^alpha_val-1)/alpha_val,log(df2$Z),pch=20,col="gray",cex=0.5)
+points((log(sqrt(as.numeric(df_kotnick_nodup$t)/2/pi))^alpha_val-1)/alpha_val,log(abs(as.numeric(df_kotnick_nodup$Z))),pch=6,col="gray2",cex=0.3)
+points((log(sqrt(as.numeric(dft$t)/2/pi))^alpha_val-1)/alpha_val,log(abs(as.numeric(dft$Z))),pch=6,col="gray",cex=0.3)
+
+points((log(sqrt(dfr$t/2/pi))^alpha_val-1)/alpha_val,log(abs(dfr$Z)),pch=20,col="gray",cex=0.4)
+points((log(sqrt(as.numeric(dgr$V1)/2/pi))^alpha_val-1)/alpha_val,log(abs(as.numeric(dgr$V3))),pch=20,col="gray",cex=0.4)
+points((log(as.numeric(dhr$Q1))^alpha_val-1)/alpha_val,log(abs(as.numeric(dhr$Z))),pch=20,col="gray",cex=0.4)
+
+points((log(as.numeric(di$V2))^alpha_val-1)/alpha_val,log(abs(as.numeric(di$V4))),pch=6,col=rgb(0,1,1,0.2),cex=0.5)
+arrows(x0=(log(as.numeric(di$V2))^alpha_val-1)/alpha_val,y0=log(0.9*abs(as.numeric(di$V4))),x1=(log(as.numeric(di$V2))^alpha_val-1)/alpha_val,col=rgb(0,1,1,0.2),
+       y1=log(1.1*abs(as.numeric(di$V4))), length=0.02, angle=90, code=3)
+
+points((log(as.numeric(dilowerT$V2))^alpha_val-1)/alpha_val,log(abs(as.numeric(dilowerT$V4))),col=rgb(0,1,1,0.2),pch=6,cex=0.5)
+arrows(x0=(log(as.numeric(dilowerT$V2))^alpha_val-1)/alpha_val,y0=log(0.9*abs(as.numeric(dilowerT$V4))),x1=(log(as.numeric(dilowerT$V2))^alpha_val-1)/alpha_val,col=rgb(0,1,1,0.2),
+       y1=log(1.1*abs(as.numeric(dilowerT$V4))), length=0.02, angle=90, code=3)
+points((log(as.numeric(dilowerT$V2))^alpha_val-1)/alpha_val,log(abs(as.numeric(dilowerT$V5))),pch=20,col="gray",cex=0.4)
+
+
+points(((1/2*log(as.numeric(dfRaman$V2)))^alpha_val-1)/alpha_val,log(dfRaman$Z),col="magenta",pch=20,cex=0.5)
+
+abline(a=1.274014,b=.866363,col="brown",lty=6)
+
+
+ 
+
+```
+\elandscape
+
+\clearpage
+
+
+##Conclusions
+
+A method for re-scaling the growth behaviour of extreme Riemann Siegel Z function of 1st degree L-functions with non-zero dirichlet characters of magnitude unity $|\chi|=1$ is demonstrated which allows easier comparison to the Riemann Zeta extreme Riemann Siegel Z function growth behaviour. Likewise an adjustment to the LLL algorithm based on the fractional exponents of the roots of unity associated with such L-functions is used to identify candidate locations for their extreme Riemann Siegel Z function peaks.
+
+Using a transformation of the t co-ordinate based on the first quiescent region, a promising trend growth formula for extreme Riemann Siegel Z function peaks of the Riemann Zeta function is fitted to known montonically increasing |Z| peaks in the range 0 < t < 1e31. 
+
+
+##Supplementary Material
+
+A zip file of the located (extreme or otherwise) peak locations for the investigated L- functions and Davenport_Heilbronn counterparts is available on github. The typical format is 4-7 columns for files containing calculations by this author: 
+
+column 1 - t value (accurate to 0.05), 
+
+column 2 - N_1 value, 
+
+column 3 - residual of N_1 value (used for investigating multi-modal distribution of peaks within [N,N+1) piecewise intervals. The file largest_value_zeta_insqrtsegment_0to3636_consolidatedfile.csv contains the extreme peak location in the lowest 3637 piecewise intervals of Riemann Zeta function.)
+
+column 4 - |Z| value,
+
+column 5 - Z value (sometimes calculated by more accurate method as crosscheck)
+
+column 6 - text message describing method used for column 4 and 5
+
+column 7 - may contain a number indicating element number of vector of estimates where peak occurred.
+
+For files containing data from references there are typically column headers.
+
+
+
+\clearpage
+
+
+##References
+
+1. Brent, R.P. (1979) "On the zeros of the Riemann zeta function in the critical strip" Math. Comp. 33 , p1361-1372
+DOI: https://doi.org/10.1090/S0025-5718-1979-0537983-2
+
+2. Brent R.P., van de Lune J., te Riele H.J.J. and Winter D.T. (1982) "On the Zeros of the Riemann Zeta function in the Critical Strip. II" Mathematics of Computation, Volume 39, Number 160, October 1982, Pages 681-688
+
+3. van de Lune J. and te Riele H.J.J. "On the Zeros of the Riemann Zeta Function in the Critical Strip." III (1983) MATHEMATICS OF COMPUTATION VOLUME 41, NUMBER 164 OCTOBER PAGES 759-767
+
+4. van de Lune J., te Riele H.J.J. and Winter D.T. (1986) “On the Zeros of the Riemann Zeta function in the Critical Strip. IV” Mathematics of Computation, Volume 46, Pages 667-681
+
+5. A.M. Odlyzko, A. Schönhage, Fast algorithms for multiple evaluations of the Riemann zeta function, Trans. Am. Math. Soc., 309, (1988), 797–809.
+
+6. Odlyzko, A. M. "On the Distribution of Spacings Between Zeros of the Zeta Function", (1987) Mathematics of Computation Vol 48, no. 177, 1987, pages 273-308 
+
+7. Odlyzko, A.M. "The $10^{20}$-th zero of the Riemann Zeta function and 175 million of its neighbors". (1988) http://www.dtc.umn.edu/~odlyzko/unpublished/
+
+8. Odlyzko A.M. "The $10^{22}$-nd zero of the Riemann zeta function, Dynamical, Spectral, and
+Arithmetic Zeta Functions"  (2001) Amer. Math. Soc., Contemporary Math. series, no. 290,
+139-144.
+
+9. Gourdon X. and Sebah P., Numbers, Constants and Computation, http://numbers.computation.free.fr/Constants/constants.html, (1999) 
+table of maximum Riemann Zeta peaks http://numbers.computation.free.fr/Constants/Miscellaneous/MaxiZAll.txt
+
+10. Gourdon X. "The $10^{13}$-th first zeros of the Riemann Zeta function and zeros computation at very large height" (2004)
+http://numbers.computation.free.fr/Constants/Miscellaneous/zetazeros1e13-1e24.pdf
+
+11. Kotnick T., "COMPUTATIONAL ESTIMATION OF THE ORDER OF $\zeta$(1/2+it)" (2003) MATHEMATICS OF COMPUTATION, Volume 73, Number 246, Pages 949–956 S 0025-5718(03)01568-0
+
+12. Hiary G.A., "Fast methods to compute the Riemann Zeta function" (2011)	
+Annals of Mathematics, Valome 174, Pages 891-946	https://doi.org/http://dx.doi.org/10.4007/annals.2011.174.2.4
+
+13. Hiary G.A., Table of high Riemann Zeta peaks (second table on the url page) https://people.math.osu.edu/hiary.1/fastmethods.html
+
+14. Bober J.W. and Hiary G.A., "New computations of the Riemann zeta function on the critical line" (2018) Experimental Mathematics, 27(2), 125-137. https://doi.org/10.1080/10586458.2016.1233083
+
+15. Tihanyi N., Kovács A. and Szűcs A. (2014) "Distributed computing of simultaneous Diophantine approximation problems" (2014) Stud. Univ. Babeş-Bolyai Math. 59, No. 4, 557–566
+
+16. Tihanyi N., Kovacs A. and Kovacs J., "Computing Extremely Large Values of the Riemann Zeta Function" (2017) J Grid Computing 15:527–534
+https://doi.org/10.1007/s10723-017-9416-0
+
+17. Tihanyi N. and Kovacs A. "IMPROVEMENTS ON FINDING LARGE VALUES OF THE RIEMANN ZETA FUNCTION ON THE CRITICAL LINE" (2018) Annales Univ. Sci. Budapest., Sect. Comp., 48, p53–64
+
+18. Tihanyi N. "Numerical computing of extremely large values of the Riemann-Siegel Z-function" (2019) Doctoral Thesis, Eötvös Loránd University
+
+19. Martin, J.P.D. "Preliminary estimates of extreme Riemann Zeta function peak heights with $\pm 10\%$ accuracy on the critical line using spectrally filtered heavily truncated partial Euler Product calculations" (2026) 
+http://dx.doi.org/10.6084/m9.figshare.31990179
+
+20. Martin, J.P.D. "Preliminary estimates of extreme Riemann Zeta function peak heights on three lines $s=\{0+I\cdot t, 1+I\cdot t, 1.5+I\cdot t\}$ away from the real axis with $\pm 1\%, \pm 1\%, \pm 0.1\%$ accuracy for $10^{12} < t < 10^{40}$ using spectrally filtered heavily truncated partial Euler Product calculations." (2026)
+http://dx.doi.org/10.6084/m9.figshare.32129782
+
+21. Riemann, Bernhard (1859). "$\ddot{U}$ber die Anzahl der Primzahlen unter einer gegebenen Gr$\ddot{o}$sse". Monatsberichte der Berliner Akademie.. In Gesammelte Werke, Teubner, Leipzig (1892), Reprinted by Dover, New York (1953).
+
+22. Titchmarsh, E.C. (1986) The Theory of the Riemann Zeta Function. 2nd Revised (Heath-Brown, D.R. ) Edition, Oxford University Press, Oxford.
+
+23. Edwards, H.M. (1974). Riemann’s zeta function. Pure and Applied Mathematics 58. New York-London:
+Academic Press. ISBN 0-12-232750-0. Zbl 0315.10035.
+
+24. Berry, M. V. “The Riemann-Siegel Expansion for the Zeta Function: High Orders and Remainders.”
+Proc. Roy. Soc. London A 450, 439-462, 1995.
+
+25. J. Arias De Reyna, “High precision computation of Riemann’s Zeta function by the Riemann-Siegel formula”, Mathematics of Computation Vol 80, no. 274, 2011, Pages 995–1009
+
+26. The LMFDB Collaboration, The L-functions and Modular Forms Database, \url{http://www.lmfdb.org}, 2019, [Online; accessed January 2020].
+
+27. Spira, R. Mathematics of Computation, Volume 63, Number 208,
+October 1994, Pages 747-748
+
+28. Balanzario, E.P. and Sanchez-Ortiz, J. Mathematics of Computation,
+Volume 76, Number 260, October 2007, Pages 2045–2049
+
+29. E. Bombieri, A. Ghosh, “Around the Davenport–Heilbronn function”, Uspekhi Mat. Nauk, 66:2(398) (2011), 15–66; Russian Math. Surveys, 66:2 (2011), 221–270
+https://doi.org/10.4213/rm9410 
+IAS lecture https://www.youtube.com/watch?v=-JUHypc2_9A
+
+30. Martin, J.P.D. "7-, \& 9-periodic dual Davenport Heilbronn counterexamples are derived for the corresponding Degree 1 dual L-functions pairs given in https://www.lmfdb.org/L/degree1." (2020)
+http://dx.doi.org/10.6084/m9.figshare.11675877
+
+31.  Keiper, J. B. "On the Zeros of the Ramanujan $tau$-Dirichlet Series in the Critical Strip." Mathematics of Computation 65, no. 216 (1996): 1613-619. Accessed February 10, 2021. http://www.jstor.org/stable/2153727.
+
+32. Lenstra A.K., Lenstra Jr. H.W., Lovász L., "Factoring polynomials with rational coefficients" (1982) Math. Ann., 261, (4), 515–534.
+
+33. The PARI~Group, PARI/GP version 2.12.0, Univ. Bordeaux, 2018,
+\url{http://pari.math.u-bordeaux.fr/}.
+
+34. R Core Team (2017). R: A language and environment for statistical computing.
+R Foundation for Statistical Computing, Vienna, Austria. \url{https://www.R-project.org/}.
+
+35. RStudio Team (2015). RStudio: Integrated Development for R. RStudio, Inc., Boston, MA \url{http://www.rstudio.com/}.
+
+36. Box, G. E. P., & Cox, D. R. (1964). An analysis of transformations. Journal of the Royal Statistical Society: Series B (Methodological), 26(2), 211–252. 
+https://www.jstor.org/stable/2984418
+
+37. Venables, W. N. & Ripley, B. D. (2002) Modern Applied Statistics with S. Fourth Edition. Springer, New York. ISBN 0-387-95457-0
+
