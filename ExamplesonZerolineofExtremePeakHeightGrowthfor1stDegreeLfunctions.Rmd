@@ -128,7 +128,7 @@ for (i in 1:dim(dfL32_zeroline)[1]) {
 
 #print(head(dfL32_zeroline$residual))
 
-dfL32_LLL_zeroline=read.csv("/home/john/pari/LLL_search_location_L32_zeroline_peak_heights.csv",header=FALSE,sep=",",colClasses = "character")
+dfL32_LLL_zeroline=read.csv("/home/john/pari/LLL_search_location_L32_zeroline_peak_heights_V2.csv",header=FALSE,sep=",",colClasses = "character")
 dfL32_LLL_zeroline=dfL32_LLL_zeroline[order(as.numeric(dfL32_LLL_zeroline$V1)),]
 dfL32_LLL_zeroline$Z=as.numeric(dfL32_LLL_zeroline$V4)
 dfL32_LLL_zeroline$residual=as.numeric(dfL32_LLL_zeroline$V3)
@@ -161,7 +161,7 @@ dfL43_zeroline$Z=as.numeric(dfL43_zeroline$V4)
 dfL43_zeroline$residual=as.numeric(dfL43_zeroline$V3)
 #print(head(dfL43$residual))
 
-dfL43_LLL_zeroline=read.csv("/home/john/pari/LLL_search_location_L43_zeroline_peak_heights.csv",header=FALSE,sep=",",colClasses = "character")
+dfL43_LLL_zeroline=read.csv("/home/john/pari/LLL_search_location_L43_zeroline_peak_heights_V2.csv",header=FALSE,sep=",",colClasses = "character")
 dfL43_LLL_zeroline=dfL43_LLL_zeroline[,c(1:6)]
 dfL43_LLL_zeroline=dfL43_LLL_zeroline[order(floor(as.numeric(dfL43_LLL_zeroline$V2)),as.numeric(dfL43_LLL_zeroline$V4),decreasing = c(FALSE,TRUE)),]
 dfL43_LLL_zeroline=dfL43_LLL_zeroline[!duplicated(floor(as.numeric(dfL43_LLL_zeroline$V2))),]
@@ -196,7 +196,7 @@ dfL54_zeroline$Z=as.numeric(dfL54_zeroline$V4)
 dfL54_zeroline$residual=as.numeric(dfL54_zeroline$V3)
 #print(head(dfL54$residual))
 
-dfL54_LLL_zeroline=read.csv("/home/john/pari/LLL_search_location_L54_zeroline_peak_heights.csv",header=FALSE,sep=",",colClasses = "character")
+dfL54_LLL_zeroline=read.csv("/home/john/pari/LLL_search_location_L54_zeroline_peak_heights_V2.csv",header=FALSE,sep=",",colClasses = "character")
 dfL54_LLL_zeroline=dfL54_LLL_zeroline[,c(1:6)]
 dfL54_LLL_zeroline=dfL54_LLL_zeroline[order(floor(as.numeric(dfL54_LLL_zeroline$V2)),as.numeric(dfL54_LLL_zeroline$V4),decreasing = c(FALSE,TRUE)),]
 dfL54_LLL_zeroline=dfL54_LLL_zeroline[!duplicated(floor(as.numeric(dfL54_LLL_zeroline$V2))),]
@@ -232,7 +232,7 @@ dfL53_zeroline$Z=as.numeric(dfL53_zeroline$V4)
 dfL53_zeroline$residual=as.numeric(dfL53_zeroline$V3)
 #print(head(dfL53$residual))
 
-dfL53_LLL_zeroline=read.csv("/home/john/pari/LLL_search_location_L53_zeroline_peak_heights.csv",header=FALSE,sep=",",colClasses = "character")
+dfL53_LLL_zeroline=read.csv("/home/john/pari/LLL_search_location_L53_zeroline_peak_heights_V2.csv",header=FALSE,sep=",",colClasses = "character")
 dfL53_LLL_zeroline=dfL53_LLL_zeroline[,c(1:6)]
 dfL53_LLL_zeroline=dfL53_LLL_zeroline[order(floor(as.numeric(dfL53_LLL_zeroline$V2)),as.numeric(dfL53_LLL_zeroline$V4),decreasing = c(FALSE,TRUE)),]
 dfL53_LLL_zeroline=dfL53_LLL_zeroline[!duplicated(floor(as.numeric(dfL53_LLL_zeroline$V2))),]
@@ -287,7 +287,7 @@ dfL52_zeroline$Z=as.numeric(dfL52_zeroline$V4)
 dfL52_zeroline$residual=as.numeric(dfL52_zeroline$V3)
 #print(head(dfL52$residual))
 
-dfL52_LLL_zeroline=read.csv("/home/john/pari/LLL_search_location_L52_zeroline_peak_heights.csv",header=FALSE,sep=",",colClasses = "character")
+dfL52_LLL_zeroline=read.csv("/home/john/pari/LLL_search_location_L52_zeroline_peak_heights_V2.csv",header=FALSE,sep=",",colClasses = "character")
 dfL52_LLL_zeroline=dfL52_LLL_zeroline[,c(1:6)]
 dfL52_LLL_zeroline=dfL52_LLL_zeroline[order(floor(as.numeric(dfL52_LLL_zeroline$V2)),as.numeric(dfL52_LLL_zeroline$V4),decreasing = c(FALSE,TRUE)),]
 dfL52_LLL_zeroline=dfL52_LLL_zeroline[!duplicated(floor(as.numeric(dfL52_LLL_zeroline$V2))),]
@@ -343,7 +343,7 @@ dfDHf1_zeroline$Z=as.numeric(dfDHf1_zeroline$V4)
 dfDHf1_zeroline$residual=as.numeric(dfDHf1_zeroline$V3)
 #print(head(dfDHf1$residual))
 
-dfDHf1_LLL_zeroline=read.csv("/home/john/pari/LLL_search_location_DHf1_zeroline_peak_heights.csv",header=FALSE,sep=",",colClasses = "character")
+dfDHf1_LLL_zeroline=read.csv("/home/john/pari/LLL_search_location_DHf1_zeroline_peak_heights_V2.csv",header=FALSE,sep=",",colClasses = "character")
 dfDHf1_LLL_zeroline=dfDHf1_LLL_zeroline[,c(1:6)]
 dfDHf1_LLL_zeroline=dfDHf1_LLL_zeroline[order(floor(as.numeric(dfDHf1_LLL_zeroline$V2)),as.numeric(dfDHf1_LLL_zeroline$V4),decreasing = c(FALSE,TRUE)),]
 dfDHf1_LLL_zeroline=dfDHf1_LLL_zeroline[!duplicated(floor(as.numeric(dfDHf1_LLL_zeroline$V2))),]
@@ -398,7 +398,7 @@ dfDHf2_zeroline$Z=as.numeric(dfDHf2_zeroline$V4)
 dfDHf2_zeroline$residual=as.numeric(dfDHf2_zeroline$V3)
 #print(head(dfDHf2$residual))
 
-dfDHf2_LLL_zeroline=read.csv("/home/john/pari/LLL_search_location_DHf2_zeroline_peak_heights.csv",header=FALSE,sep=",",colClasses = "character")
+dfDHf2_LLL_zeroline=read.csv("/home/john/pari/LLL_search_location_DHf2_zeroline_peak_heights_V2.csv",header=FALSE,sep=",",colClasses = "character")
 dfDHf2_LLL_zeroline=dfDHf2_LLL_zeroline[,c(1:6)]
 dfDHf2_LLL_zeroline=dfDHf2_LLL_zeroline[order(floor(as.numeric(dfDHf2_LLL_zeroline$V2)),as.numeric(dfDHf2_LLL_zeroline$V4),decreasing = c(FALSE,TRUE)),]
 dfDHf2_LLL_zeroline=dfDHf2_LLL_zeroline[!duplicated(floor(as.numeric(dfDHf2_LLL_zeroline$V2))),]
@@ -454,7 +454,7 @@ dfL76_zeroline$Z=as.numeric(dfL76_zeroline$V4)
 dfL76_zeroline$residual=as.numeric(dfL76_zeroline$V3)
 #print(head(dfL76$residual))
 
-dfL76_LLL_zeroline=read.csv("/home/john/pari/LLL_search_location_L76_zeroline_peak_heights.csv",header=FALSE,sep=",",colClasses = "character")
+dfL76_LLL_zeroline=read.csv("/home/john/pari/LLL_search_location_L76_zeroline_peak_heights_V2.csv",header=FALSE,sep=",",colClasses = "character")
 dfL76_LLL_zeroline=dfL76_LLL_zeroline[,c(1:6)]
 dfL76_LLL_zeroline=dfL76_LLL_zeroline[order(floor(as.numeric(dfL76_LLL_zeroline$V2)),as.numeric(dfL76_LLL_zeroline$V4),decreasing = c(FALSE,TRUE)),]
 dfL76_LLL_zeroline=dfL76_LLL_zeroline[!duplicated(floor(as.numeric(dfL76_LLL_zeroline$V2))),]
@@ -468,7 +468,7 @@ dfL75_zeroline$Z=as.numeric(dfL75_zeroline$V4)
 dfL75_zeroline$residual=as.numeric(dfL75_zeroline$V3)
 #print(head(dfL75$residual))
 
-dfL75_LLL_zeroline=read.csv("/home/john/pari/LLL_search_location_L75_zeroline_peak_heights.csv",header=FALSE,sep=",",colClasses = "character")
+dfL75_LLL_zeroline=read.csv("/home/john/pari/LLL_search_location_L75_zeroline_peak_heights_V2.csv",header=FALSE,sep=",",colClasses = "character")
 dfL75_LLL_zeroline=dfL75_LLL_zeroline[,c(1:6)]
 dfL75_LLL_zeroline=dfL75_LLL_zeroline[order(floor(as.numeric(dfL75_LLL_zeroline$V2)),as.numeric(dfL75_LLL_zeroline$V4),decreasing = c(FALSE,TRUE)),]
 dfL75_LLL_zeroline=dfL75_LLL_zeroline[!duplicated(floor(as.numeric(dfL75_LLL_zeroline$V2))),]
@@ -482,7 +482,7 @@ dfL73_zeroline$Z=as.numeric(dfL73_zeroline$V4)
 dfL73_zeroline$residual=as.numeric(dfL73_zeroline$V3)
 #print(head(dfL73$residual))
 
-dfL73_LLL_zeroline=read.csv("/home/john/pari/LLL_search_location_L73_zeroline_peak_heights.csv",header=FALSE,sep=",",colClasses = "character")
+dfL73_LLL_zeroline=read.csv("/home/john/pari/LLL_search_location_L73_zeroline_peak_heights_V2.csv",header=FALSE,sep=",",colClasses = "character")
 dfL73_LLL_zeroline=dfL73_LLL_zeroline[,c(1:6)]
 dfL73_LLL_zeroline=dfL73_LLL_zeroline[order(floor(as.numeric(dfL73_LLL_zeroline$V2)),as.numeric(dfL73_LLL_zeroline$V4),decreasing = c(FALSE,TRUE)),]
 dfL73_LLL_zeroline=dfL73_LLL_zeroline[!duplicated(floor(as.numeric(dfL73_LLL_zeroline$V2))),]
@@ -496,7 +496,7 @@ dfDHf3_zeroline$Z=as.numeric(dfDHf3_zeroline$V4)
 dfDHf3_zeroline$residual=as.numeric(dfDHf3_zeroline$V3)
 #print(head(dfDHf3$residual))
 
-dfDHf3_LLL_zeroline=read.csv("/home/john/pari/LLL_search_location_DHf3_zeroline_peak_heights.csv",header=FALSE,sep=",",colClasses = "character")
+dfDHf3_LLL_zeroline=read.csv("/home/john/pari/LLL_search_location_DHf3_zeroline_peak_heights_V2.csv",header=FALSE,sep=",",colClasses = "character")
 dfDHf3_LLL_zeroline=dfDHf3_LLL_zeroline[,c(1:6)]
 dfDHf3_LLL_zeroline=dfDHf3_LLL_zeroline[order(floor(as.numeric(dfDHf3_LLL_zeroline$V2)),as.numeric(dfDHf3_LLL_zeroline$V4),decreasing = c(FALSE,TRUE)),]
 dfDHf3_LLL_zeroline=dfDHf3_LLL_zeroline[!duplicated(floor(as.numeric(dfDHf3_LLL_zeroline$V2))),]
@@ -510,7 +510,7 @@ dfDHf4_zeroline$Z=as.numeric(dfDHf4_zeroline$V4)
 dfDHf4_zeroline$residual=as.numeric(dfDHf4_zeroline$V3)
 #print(head(dfDHf4$residual))
 
-dfDHf4_LLL_zeroline=read.csv("/home/john/pari/LLL_search_location_DHf4_zeroline_peak_heights.csv",header=FALSE,sep=",",colClasses = "character")
+dfDHf4_LLL_zeroline=read.csv("/home/john/pari/LLL_search_location_DHf4_zeroline_peak_heights_V2.csv",header=FALSE,sep=",",colClasses = "character")
 dfDHf4_LLL_zeroline=dfDHf4_LLL_zeroline[,c(1:6)]
 dfDHf4_LLL_zeroline=dfDHf4_LLL_zeroline[order(floor(as.numeric(dfDHf4_LLL_zeroline$V2)),as.numeric(dfDHf4_LLL_zeroline$V4),decreasing = c(FALSE,TRUE)),]
 dfDHf4_LLL_zeroline=dfDHf4_LLL_zeroline[!duplicated(floor(as.numeric(dfDHf4_LLL_zeroline$V2))),]
@@ -524,7 +524,7 @@ dfL37p36_zeroline$Z=as.numeric(dfL37p36_zeroline$V4)
 dfL37p36_zeroline$residual=as.numeric(dfL37p36_zeroline$V3)
 #print(head(dfL37p36$residual))
 
-dfL37p36_LLL_zeroline=read.csv("/home/john/pari/LLL_search_location_L37p36_zeroline_peak_heights.csv",header=FALSE,sep=",",colClasses = "character")
+dfL37p36_LLL_zeroline=read.csv("/home/john/pari/LLL_search_location_L37p36_zeroline_peak_heights_V2.csv",header=FALSE,sep=",",colClasses = "character")
 dfL37p36_LLL_zeroline=dfL37p36_LLL_zeroline[,c(1:6)]
 dfL37p36_LLL_zeroline=dfL37p36_LLL_zeroline[order(floor(as.numeric(dfL37p36_LLL_zeroline$V2)),as.numeric(dfL37p36_LLL_zeroline$V4),decreasing = c(FALSE,TRUE)),]
 dfL37p36_LLL_zeroline=dfL37p36_LLL_zeroline[!duplicated(floor(as.numeric(dfL37p36_LLL_zeroline$V2))),]
@@ -559,7 +559,7 @@ dfL51p50_zeroline$Z=as.numeric(dfL51p50_zeroline$V4)
 dfL51p50_zeroline$residual=as.numeric(dfL51p50_zeroline$V3)
 #print(head(dfL51p50$residual))
 
-dfL51p50_LLL_zeroline=read.csv("/home/john/pari/LLL_search_location_L51p50_zeroline_peak_heights.csv",header=FALSE,sep=",",colClasses = "character")
+dfL51p50_LLL_zeroline=read.csv("/home/john/pari/LLL_search_location_L51p50_zeroline_peak_heights_V2.csv",header=FALSE,sep=",",colClasses = "character")
 dfL51p50_LLL_zeroline=dfL51p50_LLL_zeroline[,c(1:6)]
 dfL51p50_LLL_zeroline=dfL51p50_LLL_zeroline[order(floor(as.numeric(dfL51p50_LLL_zeroline$V2)),as.numeric(dfL51p50_LLL_zeroline$V4),decreasing = c(FALSE,TRUE)),]
 dfL51p50_LLL_zeroline=dfL51p50_LLL_zeroline[!duplicated(floor(as.numeric(dfL51p50_LLL_zeroline$V2))),]
@@ -633,9 +633,9 @@ points((as.numeric(dfDHf2_LLL_zeroline_highest_5xapprox$V1)),(dfDHf2_LLL_zerolin
 points((as.numeric(dfL76_zeroline$V1)),(dfL76_zeroline$V4),col=rgb(0.5,1,0.5,0.5),pch=20,lty=1,cex=0.05)
 points((as.numeric(dfL76_LLL_zeroline$V1)),(dfL76_LLL_zeroline$V4),col=rgb(0.5,1,0.5,0.5),pch=20,lty=1,cex=0.05)
 points((as.numeric(dfL75_zeroline$V1)),(dfL75_zeroline$V4),col=rgb(0.55,0.45,1,0.5),pch=20,lty=1,cex=0.05)
-#points((as.numeric(dfL75_LLL_zeroline$V1)),(dfL75_LLL_zeroline$V4),col=rgb(0.5,0.5,0,0.5),pch=20,lty=1,cex=0.05)
+points((as.numeric(dfL75_LLL_zeroline$V1)),(dfL75_LLL_zeroline$V4),col=rgb(0.55,0.45,1,0.5),pch=20,lty=1,cex=0.05)
 points((as.numeric(dfL73_zeroline$V1)),(dfL73_zeroline$V4),col=rgb(0.45,0.55,1,0.5),pch=20,lty=1,cex=0.05)
-# points((as.numeric(dfL73_LLL_zeroline$V1)),(dfL73_LLL_zeroline$V4),col=rgb(0.5,0.5,0,0.5),pch=20,lty=1,cex=0.05)
+points((as.numeric(dfL73_LLL_zeroline$V1)),(dfL73_LLL_zeroline$V4),col=rgb(0.45,0.55,1,0.5),pch=20,lty=1,cex=0.05)
 points((as.numeric(dfL37p36_zeroline$V1)),(dfL37p36_zeroline$V4),col=rgb(1,0.498,0.314,0.5),pch=20,lty=1,cex=0.05)
 points((as.numeric(dfL37p36_LLL_zeroline$V1)),(dfL37p36_LLL_zeroline$V4),col=rgb(1,0.498,0.314,0.5),pch=20,lty=1,cex=0.05)
 points((as.numeric(dfL37p36_LLL_zeroline_37xapprox$V1)),(dfL37p36_LLL_zeroline_37xapprox$V4),col=rgb(1,0.498,0.314,0.5),pch=6,lty=1,cex=0.05)
@@ -868,23 +868,16 @@ points((as.numeric(dfDHf2_LLL_zeroline_5xapprox$V2)),as.numeric(dfDHf2_LLL_zerol
 points((as.numeric(dfDHf2_LLL_zeroline_highest_5xapprox$V2)),as.numeric(dfDHf2_LLL_zeroline_highest_5xapprox$V4)*5/9.04,col=rgb(0,0,0,0.5),pch=6,lty=1,cex=0.05)
 points((as.numeric(dfL76_zeroline$V2)),as.numeric(dfL76_zeroline$V4)*7/6,col=rgb(0.5,1,0.5,0.5),pch=20,lty=1,cex=0.05)
 points((as.numeric(dfL76_LLL_zeroline$V2)),as.numeric(dfL76_LLL_zeroline$V4)*7/6,col=rgb(0.5,1,0.5,0.5),pch=20,lty=1,cex=0.05)
-# points((as.numeric(dfL76$V2)),as.numeric(dfL76$Z)*7/6,col=rgb(0.5,1,0.5,0.5),pch=20,cex=0.5)
-# points((as.numeric(dfL76$V2)),as.numeric(dfL76$Z)*7/6,col=rgb(0.5,1,0.5,0.5),pch=20,cex=0.5)
 points((as.numeric(dfL75_zeroline$V2)),as.numeric(dfL75_zeroline$V4)*7/6,col=rgb(0.55,0.45,1,0.5),pch=20,lty=1,cex=0.05)
-#points((as.numeric(dfL75_LLL_zeroline$V2)),as.numeric(dfL75_LLL_zeroline$V4)*7/6,col=rgb(0.5,0.5,0,0.5),pch=20,lty=1,cex=0.05)
+points((as.numeric(dfL75_LLL_zeroline$V2)),as.numeric(dfL75_LLL_zeroline$V4)*7/6,col=rgb(0.55,0.45,1,0.5),pch=20,lty=1,cex=0.05)
 points((as.numeric(dfL73_zeroline$V2)),as.numeric(dfL73_zeroline$V4)*7/6,col=rgb(0.45,0.55,1,0.5),pch=20,lty=1,cex=0.05)
-# points((as.numeric(dfL73_LLL_zeroline$V2)),as.numeric(dfL73_LLL_zeroline$V4)*7/6,col=rgb(0.5,0.5,0,0.5),pch=20,lty=1,cex=0.05)
+points((as.numeric(dfL73_LLL_zeroline$V2)),as.numeric(dfL73_LLL_zeroline$V4)*7/6,col=rgb(0.45,0.55,1,0.5),pch=20,lty=1,cex=0.05)
 points((as.numeric(dfL37p36_zeroline$V2)),as.numeric(dfL37p36_zeroline$V4)*37/36,col=rgb(1,0.498,0.314,0.5),pch=20,lty=1,cex=0.05)
 points((as.numeric(dfL37p36_LLL_zeroline$V2)),as.numeric(dfL37p36_LLL_zeroline$V4)*37/36,col=rgb(1,0.498,0.314,0.5),pch=20,lty=1,cex=0.05)
 points((as.numeric(dfL37p36_LLL_zeroline_37xapprox$V2)),as.numeric(dfL37p36_LLL_zeroline_37xapprox$V4)*37/36,col=rgb(1,0.498,0.314,0.5),pch=6,lty=1,cex=0.05)
 points((as.numeric(dfL51p50_zeroline$V2)),as.numeric(dfL51p50_zeroline$V4)*51/32,col=rgb(1,0.843,0.,0.5),pch=20,lty=1,cex=0.05)
 points((as.numeric(dfL51p50_LLL_zeroline$V2)),as.numeric(dfL51p50_LLL_zeroline$V4)*51/32,col=rgb(1,0.843,0.,0.5),pch=20,lty=1,cex=0.05)
 points((as.numeric(dfL51p50_LLL_zeroline_51xapprox$V2)),as.numeric(dfL51p50_LLL_zeroline_51xapprox$V4)*51/32,col=rgb(1,0.843,0.,0.5),pch=6,lty=1,cex=0.05)
-# 
-# #points((as.numeric(dfRaman$V1)),(dfRaman$Z),col="magenta",pch=20,cex=0.5)
-# 
-# 
-# points((as.numeric(dfcomb$V2[dfcomb$inc==1])^2*2*pi),abs(as.numeric(dfcomb$Z[dfcomb$inc==1])),pch=18,col="black",cex=0.7)
 
 text(x=0.5e8,y=1e7,labels="these lower reported satellite points are byproduct small L52 & L53 zeroline peak locations \n since the re-used DHf1 LLL search locations are 50% extreme L52 peak and small L53 peak \n in origin and vice versa for the other 50% of investigated locations",
      srt=29.5,col="red",cex=0.25)
@@ -1878,6 +1871,7 @@ points(log(as.numeric(di_zeroline$V2)),log(as.numeric(di_zeroline$V4)),pch=20,co
 
 lines(seq(.1,50,by=.1),2.1656076+1.1459223*(seq(.1,50,by=.1)^av-1)/av,col="brown",lty=6)
 
+
 points(log(as.numeric(dfDHf4_zeroline$V2)),log(as.numeric(dfDHf4_zeroline$V4)*7/4.3042576),col=rgb(0,0,0,0.5),pch=20,lty=1,cex=0.2)
 points(log(as.numeric(dfDHf4_LLL_zeroline$V2)),log(as.numeric(dfDHf4_LLL_zeroline$V4)*7/4.3042576),col=rgb(0,0,0,0.5),pch=20,lty=1,cex=0.2)
 
@@ -2468,7 +2462,6 @@ legend(x="topleft", legend=c("combined model equation (1) and functional equatio
 ```
 
 ***Figure 13. Observed |Z| versus log(t) scatterplot of (i) good precision extreme Riemann Siegel Z function peak heights on the $s=1+I\cdot t$ line between 1e6 < t < 1e13 (red solid circles) equation (16) and (ii) preliminary extreme Riemann Siegel Z function peak heights between 1e6 < t < 1e40 based on spectral filtered heavily truncated Euler products based approximation method (v) overlayed by (I) dot-dashed brown line and green dashed line of two mapped trend estimates based on fitted $s=0+I\cdot t$ extreme peak behaviour (equations (1) and (3)) and the known functional equation and (II) shonw as gray points $s=0+I\cdot t$ extreme peak heights transformed by the known functional equation***
-
 
 
 ##Conclusions
