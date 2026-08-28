@@ -2805,7 +2805,7 @@ points(log((19.905)),log(296.5412),col=rgb(1,0,0,0.5),pch=20,cex=0.5)
 
 plot(log(as.numeric(dfzeta_zeroline$V2)),log(as.numeric(dfzeta_zeroline$V4)),pch=20,col="gray",cex=0.5,
      xlim=c(log(1e0),log(1e25)),ylim=log(c(0.5,1e25)),
-     main="growth of the s=0+It line L5704p2851 L-function |Z| peaks \n log(|Z|*Nc/Nne0) vs log(sqrt((t/2/pi)^d*Nc)) plot",xlab="1/2*log(t/2/pi) value",ylab="log(|Z|*Nc/Nne0) value",cex.main=0.9);grid(col="gray2")
+     main="growth of the s=0+It line L5704p2851 L-function |Z| peaks \n log(|Z|*Nc/Nne0) vs log(sqrt((t/2/pi)^d*Nc)) plot",xlab="1/2*log((t/2/pi)^1*5704) value",ylab="log(|Z|*Nc/Nne0) value",cex.main=0.9);grid(col="gray2")
 points(log(as.numeric(df_zeroline$V2)),log(abs(as.numeric(df_zeroline$V4))),pch=6,col="gray",cex=0.3)
 points(log(as.numeric(dg_zeroline$V2)),log(abs(as.numeric(dg_zeroline$V4))),pch=6,col="gray",cex=0.3)
 points(log(as.numeric(dh_zeroline$V2)),log(abs(as.numeric(dh_zeroline$V4))),pch=6,col="gray",cex=0.3)
@@ -2884,7 +2884,7 @@ points(log(as.numeric(dfL5704p2851_LLL_5704xapprox_inputset2$V1)),log(as.numeric
 
 plot(log(as.numeric(df$V2)),log(df$Z),pch=20,col="gray",cex=0.5,
      xlim=c(log(1e0),log(1e25)),ylim=log(c(0.5,100000)),
-     main="growth of L5704p2851 L-function |Z| peaks on critical line \n log(|Z|*Nc/Nne0) vs log(sqrt((t/2/pi)^d*Nc)) plot",xlab="1/2*log(t/2/pi) value",ylab="log(|Z|*Nc/Nne0) value",cex.main=0.9);grid(col="gray2")
+     main="growth of L5704p2851 L-function |Z| peaks on critical line \n log(|Z|*Nc/Nne0) vs log(sqrt((t/2/pi)^d*Nc)) plot",xlab="1/2*log((t/2/pi)^1*5704) value",ylab="log(|Z|*Nc/Nne0) value",cex.main=0.9);grid(col="gray2")
 points(log(as.numeric(df2$V2)),log(df2$Z),pch=20,col="gray",cex=0.5)
 points(log(sqrt(as.numeric(df_kotnick_nodup$t)/2/pi)),log(abs(as.numeric(df_kotnick_nodup$Z))),pch=6,col="gray2",cex=0.3)
 points(log(sqrt(as.numeric(dft$t)/2/pi)),log(abs(as.numeric(dft$Z))),pch=6,col="gray",cex=0.3)
@@ -2966,7 +2966,7 @@ points(log(as.numeric(dfL6389p6388_LLL_zeroline_6389xapprox$V1)),log(as.numeric(
 
 plot(log(as.numeric(dfzeta_zeroline$V2)),log(as.numeric(dfzeta_zeroline$V4)),pch=20,col="gray",cex=0.5,
      xlim=c(log(1e0),log(1e25)),ylim=log(c(0.5,1e25)),
-     main="growth of the s=0+It line L6389p6388 L-function |Z| peaks \n log(|Z|*Nc/Nne0) vs log(sqrt((t/2/pi)^d*Nc)) plot",xlab="1/2*log(t/2/pi) value",ylab="log(|Z|*Nc/Nne0) value",cex.main=0.9);grid(col="gray2")
+     main="growth of the s=0+It line L6389p6388 L-function |Z| peaks \n log(|Z|*Nc/Nne0) vs log(sqrt((t/2/pi)^d*Nc)) plot",xlab="1/2*log((t/2/pi)^1*6389) value",ylab="log(|Z|*Nc/Nne0) value",cex.main=0.9);grid(col="gray2")
 points(log(as.numeric(df_zeroline$V2)),log(abs(as.numeric(df_zeroline$V4))),pch=6,col="gray",cex=0.3)
 points(log(as.numeric(dg_zeroline$V2)),log(abs(as.numeric(dg_zeroline$V4))),pch=6,col="gray",cex=0.3)
 points(log(as.numeric(dh_zeroline$V2)),log(abs(as.numeric(dh_zeroline$V4))),pch=6,col="gray",cex=0.3)
@@ -3035,7 +3035,7 @@ points(log(as.numeric(dfL6389p6388_LLL_6389xapprox$V1)),log(as.numeric(dfL6389p6
 
 plot(log(as.numeric(df$V2)),log(df$Z),pch=20,col="gray",cex=0.5,
      xlim=c(log(1e0),log(1e25)),ylim=log(c(0.5,100000)),
-     main="growth of L6389p6388 L-function |Z| peaks on critical line \n log(|Z|*Nc/Nne0) vs log(sqrt((t/2/pi)^d*Nc)) plot",xlab="1/2*log(t/2/pi) value",ylab="log(|Z|*Nc/Nne0) value",cex.main=0.9);grid(col="gray2")
+     main="growth of L6389p6388 L-function |Z| peaks on critical line \n log(|Z|*Nc/Nne0) vs log(sqrt((t/2/pi)^d*Nc)) plot",xlab="1/2*log((t/2/pi)^1*6389) value",ylab="log(|Z|*Nc/Nne0) value",cex.main=0.9);grid(col="gray2")
 points(log(as.numeric(df2$V2)),log(df2$Z),pch=20,col="gray",cex=0.5)
 points(log(sqrt(as.numeric(df_kotnick_nodup$t)/2/pi)),log(abs(as.numeric(df_kotnick_nodup$Z))),pch=6,col="gray2",cex=0.3)
 points(log(sqrt(as.numeric(dft$t)/2/pi)),log(abs(as.numeric(dft$Z))),pch=6,col="gray",cex=0.3)
