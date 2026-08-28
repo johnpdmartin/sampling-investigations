@@ -47,8 +47,10 @@ In this paper, (i) the extreme peak height growth behaviour along the $s=0+I\cdo
 \item $L(\chi_7(6,.),0.0+I\cdot t)$ [27],
 \item the dual pair $L(\chi_7(5,.),0.0+I\cdot t)$ [27], $L(\chi_7(3,.),0.0+I\cdot t)$ [27], and 
 \subitem their Davenport-Heilbronn function counterparts $f_{3}(0.0+I\cdot t)$ and $f_{4}(0.0+I\cdot t)$ [31],
-\item $L(\chi_37(36,.),0.0+I\cdot t)$ [27],
-\item $L(\chi_51(50,.),0.0+I\cdot t)$ [27]
+\item $L(\chi_{37}(36,.),0.0+I\cdot t)$ [27],
+\item $L(\chi_{51}(50,.),0.0+I\cdot t)$ [27],
+\item $L(\chi_{5704}(2851,.),0.0+I\cdot t)$ [27],
+\item $L(\chi_{6389}(6388,.),0.0+I\cdot t)$ [27]
 \end{itemize}
 
 and $s=5.5+I\cdot t$ line of the Riemann Siegel Z function analogue of 
@@ -59,18 +61,8 @@ and $s=5.5+I\cdot t$ line of the Riemann Siegel Z function analogue of
 
 are compared on the lower boundary of their critical strip to further understand the growth behaviour of L-functions and the Riemann Zeta Rieman Siegel Z function, (ii) Box Cox transformation modelling (and simpler log(|Z|) vs log(t) modelling) of the Riemann Zeta function extreme peak Riemann Siegel Z function growth is conducted to provide a trend growth prediction on the critical strip lower boundary (i.e. extreme peak heights occur either side of the trend growth line) and (iii) the fitted $s=0+I\cdot t$ trend growth estimate is used with the Riemann Zeta functional equation to estimate the $s=1+I\cdot t$ (critical strip upper boundary) extreme peak trend behaviour for t < 1e40.
 
-In contrast to [21], where for the 2nd degree Ramanujan Tau L-function just methods (i-iii) were employed as the interval investigated was only t < 6600, in this paper, extreme peaks for the wider interval t < 1e13 were identified for the 2nd degree Ramanujan Tau L-function and it has been empirically observed when using the spectrally filtered heavily truncated Euler Product method that $\beta_{tau L}=100,10,1$ hyperparameter settings for the 2nd degree Ramanujan Tau L-function extreme peak estimates were achieving ~1%, ~10%, weaker accuracy respectively on its critical line using method (iii) for benchmarking.
-
-
-## Combined comparison of results for 1st degree L-functions
-
-In figures 1 and 2, the extreme peak growth behaviour of the above 1st degree L-functions (all with dirichlet character magnitudes $|\chi| = 0,1$) are compared in the range 0 < t < 1e20. 
-
-\begin{itemize}
-
-\item When plotting log(|Z|) vs log(t) in figure 1 it can be seen that each L-function varies in their growth rates of the extreme peak heights as a function of log(t). They are similar but different.
-
-\end{itemize}
+In addition, the extreme peak height growth behaviour along the critical line $s=0.5+I\cdot t$ line of the Riemann Siegel Z function analogues of 
+$L(\chi_{5704}(2851,.),0.0+I\cdot t)$ [27], $L(\chi_{6389}(6388,.),0.0+I\cdot t)$ [27] and the critical line $s=6+I\cdot t$ line (for a wider distribution of peaks) of the Riemann Siegel Z function analogue of the Ramanujan Tau L-function 2-1-1.1-c11-0-0 [27,32] are included to supplement the previous results contained in [21] on the critical line behaviour of L-function extreme peak height growth behaviour. In contrast to [21], where for the 2nd degree Ramanujan Tau L-function just methods (i-iii) were employed as the interval investigated was only t < 6600, in this paper, extreme peaks for the wider interval t < 1e13 were identified for the 2nd degree Ramanujan Tau L-function and it has been empirically observed when using the spectrally filtered heavily truncated Euler Product method that $\beta_{Tau L}=100,10,1$ hyperparameter settings for the 2nd degree Ramanujan Tau L-function extreme peak estimates were achieving ~1%, ~10%, weaker accuracy respectively on its critical line using method (iii) for benchmarking.
 
 
 \newgeometry{top=0.5in,bottom=0.5in,left=0.5in,right=0.5in}
@@ -240,7 +232,8 @@ dfL53_LLL_zeroline$Z=as.numeric(dfL53_LLL_zeroline$V4)
 dfL53_LLL_zeroline$residual=as.numeric(dfL53_LLL_zeroline$V3)
 #print(head(dfL53_LLL$residual))
 
-dfL53_LLL_zeroline_5xapprox=read.csv("/home/john/pari/LLL_search_location_L53_zeroline_peak_heights_5xapprox2decimalplace.csv",header=FALSE,sep=",",colClasses = "character")
+#dfL53_LLL_zeroline_5xapprox=read.csv("/home/john/pari/LLL_search_location_L53_zeroline_peak_heights_5xapprox2decimalplace.csv",header=FALSE,sep=",",colClasses = "character")
+dfL53_LLL_zeroline_5xapprox=read.csv("/home/john/pari/LLL_search_location_test_L53_zeroline_peak_heights_cleaned_5xapprox_rpt2.csv",header=FALSE,sep=",",colClasses = "character")
 dfL53_LLL_zeroline_5xapprox=dfL53_LLL_zeroline_5xapprox[as.numeric(dfL53_LLL_zeroline_5xapprox$V7)>123 & as.numeric(dfL53_LLL_zeroline_5xapprox$V7)<133,c(1:6)]
 dfL53_LLL_zeroline_5xapprox=dfL53_LLL_zeroline_5xapprox[order(floor(as.numeric(dfL53_LLL_zeroline_5xapprox$V2)),as.numeric(dfL53_LLL_zeroline_5xapprox$V4),decreasing = c(FALSE,TRUE)),]
 dfL53_LLL_zeroline_5xapprox=dfL53_LLL_zeroline_5xapprox[!duplicated(floor(as.numeric(dfL53_LLL_zeroline_5xapprox$V2))),]
@@ -261,7 +254,10 @@ for (i in 1:dim(dfL53_LLL_zeroline_5xapprox)[1]) {
 }
 #dfL53_LLL_zeroline_5xapprox=dfL53_LLL_zeroline_5xapprox[dfL53_LLL_zeroline_5xapprox$"inc"==1,]
 
-dfL53_LLL_zeroline_highest_5xapprox=read.csv("/home/john/pari/LLL_search_location_L53_zeroline_peak_heights_5xapprox_highest_t.csv",header=FALSE,sep=",",colClasses = "character")
+#dfL53_LLL_zeroline_highest_5xapprox=read.csv("/home/john/pari/LLL_search_location_L53_zeroline_peak_heights_5xapprox_highest_t.csv",header=FALSE,sep=",",colClasses = "character")
+dfL53_LLL_zeroline_highest_5xapprox2=read.csv("/home/john/pari/LLL_search_location_test_L53_zeroline_peak_heights_cleaned_5xapprox_highest_t_rpt2.csv",header=FALSE,sep=",",colClasses = "character")
+dfL53_LLL_zeroline_highest_5xapprox3=read.csv("/home/john/pari/LLL_search_location_test_L53_zeroline_peak_heights_cleaned_5xapprox_highest_t_rpt3.csv",header=FALSE,sep=",",colClasses = "character")
+dfL53_LLL_zeroline_highest_5xapprox=rbind(dfL53_LLL_zeroline_highest_5xapprox2,dfL53_LLL_zeroline_highest_5xapprox3)
 dfL53_LLL_zeroline_highest_5xapprox=dfL53_LLL_zeroline_highest_5xapprox[as.numeric(dfL53_LLL_zeroline_highest_5xapprox$V7)>123 & as.numeric(dfL53_LLL_zeroline_highest_5xapprox$V7)<133,c(1:6)]
 dfL53_LLL_zeroline_highest_5xapprox=dfL53_LLL_zeroline_highest_5xapprox[order(floor(as.numeric(dfL53_LLL_zeroline_highest_5xapprox$V2)),as.numeric(dfL53_LLL_zeroline_highest_5xapprox$V4),decreasing = c(FALSE,TRUE)),]
 dfL53_LLL_zeroline_highest_5xapprox=dfL53_LLL_zeroline_highest_5xapprox[!duplicated(floor(as.numeric(dfL53_LLL_zeroline_highest_5xapprox$V2))),]
@@ -296,7 +292,8 @@ dfL52_LLL_zeroline$residual=as.numeric(dfL52_LLL_zeroline$V3)
 #print(head(dfL52_LLL$residual))
 
 
-dfL52_LLL_zeroline_5xapprox=read.csv("/home/john/pari/LLL_search_location_L52_zeroline_peak_heights_5xapprox2decimalplace.csv",header=FALSE,sep=",",colClasses = "character")
+#dfL52_LLL_zeroline_5xapprox=read.csv("/home/john/pari/LLL_search_location_L52_zeroline_peak_heights_5xapprox2decimalplace.csv",header=FALSE,sep=",",colClasses = "character")
+dfL52_LLL_zeroline_5xapprox=read.csv("/home/john/pari/LLL_search_location_test_L52_zeroline_peak_heights_cleaned_5xapprox_rpt2.csv",header=FALSE,sep=",",colClasses = "character")
 dfL52_LLL_zeroline_5xapprox=dfL52_LLL_zeroline_5xapprox[as.numeric(dfL52_LLL_zeroline_5xapprox$V7)>123 & as.numeric(dfL52_LLL_zeroline_5xapprox$V7)<133,c(1:6)]
 dfL52_LLL_zeroline_5xapprox=dfL52_LLL_zeroline_5xapprox[order(floor(as.numeric(dfL52_LLL_zeroline_5xapprox$V2)),as.numeric(dfL52_LLL_zeroline_5xapprox$V4),decreasing = c(FALSE,TRUE)),]
 dfL52_LLL_zeroline_5xapprox=dfL52_LLL_zeroline_5xapprox[!duplicated(floor(as.numeric(dfL52_LLL_zeroline_5xapprox$V2))),]
@@ -317,7 +314,10 @@ for (i in 1:dim(dfL52_LLL_zeroline_5xapprox)[1]) {
 }
 #dfL52_LLL_zeroline_5xapprox=dfL52_LLL_zeroline_5xapprox[dfL52_LLL_zeroline_5xapprox$"inc"==1,]
 
-dfL52_LLL_zeroline_highest_5xapprox=read.csv("/home/john/pari/LLL_search_location_L52_zeroline_peak_heights_5xapprox_highest_t.csv",header=FALSE,sep=",",colClasses = "character")
+#dfL52_LLL_zeroline_highest_5xapprox=read.csv("/home/john/pari/LLL_search_location_L52_zeroline_peak_heights_5xapprox_highest_t.csv",header=FALSE,sep=",",colClasses = "character")
+dfL52_LLL_zeroline_highest_5xapprox2=read.csv("/home/john/pari/LLL_search_location_test_L52_zeroline_peak_heights_cleaned_5xapprox_highest_t_rpt2.csv",header=FALSE,sep=",",colClasses = "character")
+dfL52_LLL_zeroline_highest_5xapprox3=read.csv("/home/john/pari/LLL_search_location_test_L52_zeroline_peak_heights_cleaned_5xapprox_highest_t_rpt3.csv",header=FALSE,sep=",",colClasses = "character")
+dfL52_LLL_zeroline_highest_5xapprox=rbind(dfL52_LLL_zeroline_highest_5xapprox2,dfL52_LLL_zeroline_highest_5xapprox3)
 dfL52_LLL_zeroline_highest_5xapprox=dfL52_LLL_zeroline_highest_5xapprox[as.numeric(dfL52_LLL_zeroline_highest_5xapprox$V7)>123 & as.numeric(dfL52_LLL_zeroline_highest_5xapprox$V7)<133,c(1:6)]
 dfL52_LLL_zeroline_highest_5xapprox=dfL52_LLL_zeroline_highest_5xapprox[order(floor(as.numeric(dfL52_LLL_zeroline_highest_5xapprox$V2)),as.numeric(dfL52_LLL_zeroline_highest_5xapprox$V4),decreasing = c(FALSE,TRUE)),]
 dfL52_LLL_zeroline_highest_5xapprox=dfL52_LLL_zeroline_highest_5xapprox[!duplicated(floor(as.numeric(dfL52_LLL_zeroline_highest_5xapprox$V2))),]
@@ -351,7 +351,8 @@ dfDHf1_LLL_zeroline$Z=as.numeric(dfDHf1_LLL_zeroline$V4)
 dfDHf1_LLL_zeroline$residual=as.numeric(dfDHf1_LLL_zeroline$V3)
 #print(head(dfDHf1_LLL$residual))
 
-dfDHf1_LLL_zeroline_5xapprox=read.csv("/home/john/pari/LLL_search_location_DHf1_zeroline_peak_heights_5xapprox2decimalplace.csv",header=FALSE,sep=",",colClasses = "character")
+#dfDHf1_LLL_zeroline_5xapprox=read.csv("/home/john/pari/LLL_search_location_DHf1_zeroline_peak_heights_5xapprox2decimalplace.csv",header=FALSE,sep=",",colClasses = "character")
+dfDHf1_LLL_zeroline_5xapprox=read.csv("/home/john/pari/LLL_search_location_test_DHf1_zeroline_peak_heights_cleaned_5xapprox_rpt2.csv",header=FALSE,sep=",",colClasses = "character")
 dfDHf1_LLL_zeroline_5xapprox=dfDHf1_LLL_zeroline_5xapprox[as.numeric(dfDHf1_LLL_zeroline_5xapprox$V7)>123 & as.numeric(dfDHf1_LLL_zeroline_5xapprox$V7)<133,c(1:6)]
 dfDHf1_LLL_zeroline_5xapprox=dfDHf1_LLL_zeroline_5xapprox[order(floor(as.numeric(dfDHf1_LLL_zeroline_5xapprox$V2)),as.numeric(dfDHf1_LLL_zeroline_5xapprox$V4),decreasing = c(FALSE,TRUE)),]
 dfDHf1_LLL_zeroline_5xapprox=dfDHf1_LLL_zeroline_5xapprox[!duplicated(floor(as.numeric(dfDHf1_LLL_zeroline_5xapprox$V2))),]
@@ -372,8 +373,11 @@ for (i in 1:dim(dfDHf1_LLL_zeroline_5xapprox)[1]) {
 }
 #dfDHf1_LLL_zeroline_5xapprox=dfDHf1_LLL_zeroline_5xapprox[dfDHf1_LLL_zeroline_5xapprox$"inc"==1,]
 
-dfDHf1_LLL_zeroline_highest_5xapprox=read.csv("/home/john/pari/LLL_search_location_DHf1_zeroline_peak_heights_5xapprox_highest_t.csv",header=FALSE,sep=",",colClasses = "character")
-dfDHf1_LLL_zeroline_highest_5xapprox=dfDHf1_LLL_zeroline_highest_5xapprox[as.numeric(dfDHf1_LLL_zeroline_highest_5xapprox$V7)>123 & as.numeric(dfDHf1_LLL_zeroline_highest_5xapprox$V7)<133,c(1:6)]
+#dfDHf1_LLL_zeroline_highest_5xapprox=read.csv("/home/john/pari/LLL_search_location_DHf1_zeroline_peak_heights_5xapprox_highest_t.csv",header=FALSE,sep=",",colClasses = "character")
+dfDHf1_LLL_zeroline_highest_5xapprox2=read.csv("/home/john/pari/LLL_search_location_test_DHf1_zeroline_peak_heights_cleaned_5xapprox_highest_t_rpt2.csv",header=FALSE,sep=",",colClasses = "character")
+dfDHf1_LLL_zeroline_highest_5xapprox3=read.csv("/home/john/pari/LLL_search_location_test_DHf1_zeroline_peak_heights_cleaned_5xapprox_highest_t_rpt3.csv",header=FALSE,sep=",",colClasses = "character")
+dfDHf1_LLL_zeroline_highest_5xapprox=rbind(dfDHf1_LLL_zeroline_highest_5xapprox2,dfDHf1_LLL_zeroline_highest_5xapprox3)
+#dfDHf1_LLL_zeroline_highest_5xapprox=dfDHf1_LLL_zeroline_highest_5xapprox[as.numeric(dfDHf1_LLL_zeroline_highest_5xapprox$V7)>123 & as.numeric(dfDHf1_LLL_zeroline_highest_5xapprox$V7)<133,c(1:6)]
 dfDHf1_LLL_zeroline_highest_5xapprox=dfDHf1_LLL_zeroline_highest_5xapprox[order(floor(as.numeric(dfDHf1_LLL_zeroline_highest_5xapprox$V2)),as.numeric(dfDHf1_LLL_zeroline_highest_5xapprox$V4),decreasing = c(FALSE,TRUE)),]
 dfDHf1_LLL_zeroline_highest_5xapprox=dfDHf1_LLL_zeroline_highest_5xapprox[!duplicated(floor(as.numeric(dfDHf1_LLL_zeroline_highest_5xapprox$V2))),]
 dfDHf1_LLL_zeroline_highest_5xapprox$residual=as.numeric(dfDHf1_LLL_zeroline_highest_5xapprox$V3)
@@ -406,7 +410,8 @@ dfDHf2_LLL_zeroline$Z=as.numeric(dfDHf2_LLL_zeroline$V4)
 dfDHf2_LLL_zeroline$residual=as.numeric(dfDHf2_LLL_zeroline$V3)
 #print(head(dfDHf2_LLL$residual))
 
-dfDHf2_LLL_zeroline_5xapprox=read.csv("/home/john/pari/LLL_search_location_DHf2_zeroline_peak_heights_5xapprox2decimalplace.csv",header=FALSE,sep=",",colClasses = "character")
+#dfDHf2_LLL_zeroline_5xapprox=read.csv("/home/john/pari/LLL_search_location_DHf2_zeroline_peak_heights_5xapprox2decimalplace.csv",header=FALSE,sep=",",colClasses = "character")
+dfDHf2_LLL_zeroline_5xapprox=read.csv("/home/john/pari/LLL_search_location_test_DHf2_zeroline_peak_heights_cleaned_5xapprox_rpt2.csv",header=FALSE,sep=",",colClasses = "character")
 dfDHf2_LLL_zeroline_5xapprox=dfDHf2_LLL_zeroline_5xapprox[as.numeric(dfDHf2_LLL_zeroline_5xapprox$V7)>123 & as.numeric(dfDHf2_LLL_zeroline_5xapprox$V7)<133,c(1:6)]
 dfDHf2_LLL_zeroline_5xapprox=dfDHf2_LLL_zeroline_5xapprox[order(floor(as.numeric(dfDHf2_LLL_zeroline_5xapprox$V2)),as.numeric(dfDHf2_LLL_zeroline_5xapprox$V4),decreasing = c(FALSE,TRUE)),]
 dfDHf2_LLL_zeroline_5xapprox=dfDHf2_LLL_zeroline_5xapprox[!duplicated(floor(as.numeric(dfDHf2_LLL_zeroline_5xapprox$V2))),]
@@ -427,7 +432,10 @@ for (i in 1:dim(dfDHf2_LLL_zeroline_5xapprox)[1]) {
 }
 #dfDHf2_LLL_zeroline_5xapprox=dfDHf2_LLL_zeroline_5xapprox[dfDHf2_LLL_zeroline_5xapprox$"inc"==1,]
 
-dfDHf2_LLL_zeroline_highest_5xapprox=read.csv("/home/john/pari/LLL_search_location_DHf2_zeroline_peak_heights_5xapprox_highest_t.csv",header=FALSE,sep=",",colClasses = "character")
+#dfDHf2_LLL_zeroline_highest_5xapprox=read.csv("/home/john/pari/LLL_search_location_DHf2_zeroline_peak_heights_5xapprox_highest_t.csv",header=FALSE,sep=",",colClasses = "character")
+dfDHf2_LLL_zeroline_highest_5xapprox2=read.csv("/home/john/pari/LLL_search_location_test_DHf2_zeroline_peak_heights_cleaned_5xapprox_highest_t_rpt2.csv",header=FALSE,sep=",",colClasses = "character")
+dfDHf2_LLL_zeroline_highest_5xapprox3=read.csv("/home/john/pari/LLL_search_location_test_DHf2_zeroline_peak_heights_cleaned_5xapprox_highest_t_rpt3.csv",header=FALSE,sep=",",colClasses = "character")
+dfDHf2_LLL_zeroline_highest_5xapprox=rbind(dfDHf2_LLL_zeroline_highest_5xapprox2,dfDHf2_LLL_zeroline_highest_5xapprox3)
 #dfDHf2_LLL_zeroline_highest_5xapprox=dfDHf2_LLL_zeroline_highest_5xapprox[as.numeric(dfDHf2_LLL_zeroline_highest_5xapprox$V7)>123 & as.numeric(dfDHf2_LLL_zeroline_highest_5xapprox$V7)<133,c(1:6)]
 dfDHf2_LLL_zeroline_highest_5xapprox=dfDHf2_LLL_zeroline_highest_5xapprox[order(floor(as.numeric(dfDHf2_LLL_zeroline_highest_5xapprox$V2)),as.numeric(dfDHf2_LLL_zeroline_highest_5xapprox$V4),decreasing = c(FALSE,TRUE)),]
 dfDHf2_LLL_zeroline_highest_5xapprox=dfDHf2_LLL_zeroline_highest_5xapprox[!duplicated(floor(as.numeric(dfDHf2_LLL_zeroline_highest_5xapprox$V2))),]
@@ -476,6 +484,47 @@ dfL75_LLL_zeroline$Z=as.numeric(dfL75_LLL_zeroline$V4)
 dfL75_LLL_zeroline$residual=as.numeric(dfL75_LLL_zeroline$V3)
 #print(head(dfL75_LLL$residual))
 
+dfL75_LLL_zeroline_7xapprox=read.csv("/home/john/pari/LLL_search_location_test_L75_zeroline_peak_heights_7xapprox.csv",header=FALSE,sep=",",colClasses = "character")
+dfL75_LLL_zeroline_7xapprox=dfL75_LLL_zeroline_7xapprox[as.numeric(dfL75_LLL_zeroline_7xapprox$V7)>123 & as.numeric(dfL75_LLL_zeroline_7xapprox$V7)<133,c(1:6)]
+dfL75_LLL_zeroline_7xapprox=dfL75_LLL_zeroline_7xapprox[order(floor(as.numeric(dfL75_LLL_zeroline_7xapprox$V2)),as.numeric(dfL75_LLL_zeroline_7xapprox$V4),decreasing = c(FALSE,TRUE)),]
+dfL75_LLL_zeroline_7xapprox=dfL75_LLL_zeroline_7xapprox[!duplicated(floor(as.numeric(dfL75_LLL_zeroline_7xapprox$V2))),]
+dfL75_LLL_zeroline_7xapprox$Z=as.numeric(dfL75_LLL_zeroline_7xapprox$V4)
+dfL75_LLL_zeroline_7xapprox$residual=as.numeric(dfL75_LLL_zeroline_7xapprox$V3)
+#print(head(dfL75_LLL_zeroline_7xapprox$residual))
+
+dfL75_LLL_zeroline_7xapprox$inc=0
+for (i in 1:dim(dfL75_LLL_zeroline_7xapprox)[1]) {
+  if(i==1) {
+    
+    dfL75_LLL_zeroline_7xapprox[i,"inc"]=1
+    
+  } 
+  else if (log(as.numeric(dfL75_LLL_zeroline_7xapprox[i,"V4"]))>max(log(as.numeric(dfL75_LLL_zeroline_7xapprox[1:(i-1),"V4"])))-0.3) {
+    dfL75_LLL_zeroline_7xapprox[i,"inc"]=1
+  }
+}
+#dfL75_LLL_zeroline_7xapprox=dfL75_LLL_zeroline_7xapprox[dfL75_LLL_zeroline_7xapprox$"inc"==1,]
+
+dfL75_LLL_zeroline_highest_7xapprox=read.csv("/home/john/pari/LLL_search_location_test_L75_zeroline_peak_heights_7xapprox_highest_t.csv",header=FALSE,sep=",",colClasses = "character")
+dfL75_LLL_zeroline_highest_7xapprox=dfL75_LLL_zeroline_highest_7xapprox[as.numeric(dfL75_LLL_zeroline_highest_7xapprox$V7)>123 & as.numeric(dfL75_LLL_zeroline_highest_7xapprox$V7)<133,c(1:6)]
+dfL75_LLL_zeroline_highest_7xapprox=dfL75_LLL_zeroline_highest_7xapprox[order(floor(as.numeric(dfL75_LLL_zeroline_highest_7xapprox$V2)),as.numeric(dfL75_LLL_zeroline_highest_7xapprox$V4),decreasing = c(FALSE,TRUE)),]
+dfL75_LLL_zeroline_highest_7xapprox=dfL75_LLL_zeroline_highest_7xapprox[!duplicated(floor(as.numeric(dfL75_LLL_zeroline_highest_7xapprox$V2))),]
+dfL75_LLL_zeroline_highest_7xapprox$residual=as.numeric(dfL75_LLL_zeroline_highest_7xapprox$V3)
+#print(head(dfL75_LLL_zeroline_highest_7xapprox$residual))
+
+dfL75_LLL_zeroline_highest_7xapprox$inc=0
+for (i in 1:dim(dfL75_LLL_zeroline_highest_7xapprox)[1]) {
+  if(i==1) {
+
+    dfL75_LLL_zeroline_highest_7xapprox[i,"inc"]=1
+
+  }
+  else if (log(as.numeric(dfL75_LLL_zeroline_highest_7xapprox[i,"V4"]))>max(log(as.numeric(dfL75_LLL_zeroline_highest_7xapprox[1:(i-1),"V4"])))-0.3) {
+    dfL75_LLL_zeroline_highest_7xapprox[i,"inc"]=1
+  }
+}
+#dfL75_LLL_zeroline_highest_7xapprox=dfL75_LLL_zeroline_highest_7xapprox[dfL75_LLL_zeroline_highest_7xapprox$"inc"==1,]
+
 dfL73_zeroline=read.csv("/home/john/pari/largest_value_L73_zeroline_insqrtsegment.csv",header=FALSE,sep=",",colClasses = "character")
 dfL73_zeroline=dfL73_zeroline[order(as.numeric(dfL73_zeroline$V1)),]
 dfL73_zeroline$Z=as.numeric(dfL73_zeroline$V4)
@@ -489,6 +538,47 @@ dfL73_LLL_zeroline=dfL73_LLL_zeroline[!duplicated(floor(as.numeric(dfL73_LLL_zer
 dfL73_LLL_zeroline$Z=as.numeric(dfL73_LLL_zeroline$V4)
 dfL73_LLL_zeroline$residual=as.numeric(dfL73_LLL_zeroline$V3)
 #print(head(dfL73_LLL$residual))
+
+dfL73_LLL_zeroline_7xapprox=read.csv("/home/john/pari/LLL_search_location_test_L73_zeroline_peak_heights_7xapprox.csv",header=FALSE,sep=",",colClasses = "character")
+dfL73_LLL_zeroline_7xapprox=dfL73_LLL_zeroline_7xapprox[as.numeric(dfL73_LLL_zeroline_7xapprox$V7)>123 & as.numeric(dfL73_LLL_zeroline_7xapprox$V7)<133,c(1:6)]
+dfL73_LLL_zeroline_7xapprox=dfL73_LLL_zeroline_7xapprox[order(floor(as.numeric(dfL73_LLL_zeroline_7xapprox$V2)),as.numeric(dfL73_LLL_zeroline_7xapprox$V4),decreasing = c(FALSE,TRUE)),]
+dfL73_LLL_zeroline_7xapprox=dfL73_LLL_zeroline_7xapprox[!duplicated(floor(as.numeric(dfL73_LLL_zeroline_7xapprox$V2))),]
+dfL73_LLL_zeroline_7xapprox$Z=as.numeric(dfL73_LLL_zeroline_7xapprox$V4)
+dfL73_LLL_zeroline_7xapprox$residual=as.numeric(dfL73_LLL_zeroline_7xapprox$V3)
+#print(head(dfL73_LLL_zeroline_7xapprox$residual))
+
+dfL73_LLL_zeroline_7xapprox$inc=0
+for (i in 1:dim(dfL73_LLL_zeroline_7xapprox)[1]) {
+  if(i==1) {
+    
+    dfL73_LLL_zeroline_7xapprox[i,"inc"]=1
+    
+  } 
+  else if (log(as.numeric(dfL73_LLL_zeroline_7xapprox[i,"V4"]))>max(log(as.numeric(dfL73_LLL_zeroline_7xapprox[1:(i-1),"V4"])))-0.3) {
+    dfL73_LLL_zeroline_7xapprox[i,"inc"]=1
+  }
+}
+#dfL73_LLL_zeroline_7xapprox=dfL73_LLL_zeroline_7xapprox[dfL73_LLL_zeroline_7xapprox$"inc"==1,]
+
+dfL73_LLL_zeroline_highest_7xapprox=read.csv("/home/john/pari/LLL_search_location_test_L73_zeroline_peak_heights_7xapprox_highest_t.csv",header=FALSE,sep=",",colClasses = "character")
+dfL73_LLL_zeroline_highest_7xapprox=dfL73_LLL_zeroline_highest_7xapprox[as.numeric(dfL73_LLL_zeroline_highest_7xapprox$V7)>123 & as.numeric(dfL73_LLL_zeroline_highest_7xapprox$V7)<133,c(1:6)]
+dfL73_LLL_zeroline_highest_7xapprox=dfL73_LLL_zeroline_highest_7xapprox[order(floor(as.numeric(dfL73_LLL_zeroline_highest_7xapprox$V2)),as.numeric(dfL73_LLL_zeroline_highest_7xapprox$V4),decreasing = c(FALSE,TRUE)),]
+dfL73_LLL_zeroline_highest_7xapprox=dfL73_LLL_zeroline_highest_7xapprox[!duplicated(floor(as.numeric(dfL73_LLL_zeroline_highest_7xapprox$V2))),]
+dfL73_LLL_zeroline_highest_7xapprox$residual=as.numeric(dfL73_LLL_zeroline_highest_7xapprox$V3)
+#print(head(dfL73_LLL_zeroline_highest_7xapprox$residual))
+
+dfL73_LLL_zeroline_highest_7xapprox$inc=0
+for (i in 1:dim(dfL73_LLL_zeroline_highest_7xapprox)[1]) {
+  if(i==1) {
+
+    dfL73_LLL_zeroline_highest_7xapprox[i,"inc"]=1
+
+  }
+  else if (log(as.numeric(dfL73_LLL_zeroline_highest_7xapprox[i,"V4"]))>max(log(as.numeric(dfL73_LLL_zeroline_highest_7xapprox[1:(i-1),"V4"])))-0.3) {
+    dfL73_LLL_zeroline_highest_7xapprox[i,"inc"]=1
+  }
+}
+#dfL73_LLL_zeroline_highest_7xapprox=dfL73_LLL_zeroline_highest_7xapprox[dfL73_LLL_zeroline_highest_7xapprox$"inc"==1,]
 
 dfDHf3_zeroline=read.csv("/home/john/pari/largest_value_DHf3_zeroline_insqrtsegment.csv",header=FALSE,sep=",",colClasses = "character")
 dfDHf3_zeroline=dfDHf3_zeroline[order(as.numeric(dfDHf3_zeroline$V1)),]
@@ -504,6 +594,47 @@ dfDHf3_LLL_zeroline$Z=as.numeric(dfDHf3_LLL_zeroline$V4)
 dfDHf3_LLL_zeroline$residual=as.numeric(dfDHf3_LLL_zeroline$V3)
 #print(head(dfDHf3_LLL$residual))
 
+dfDHf3_LLL_zeroline_7xapprox=read.csv("/home/john/pari/LLL_search_location_test_DHf3_zeroline_peak_heights_7xapprox.csv",header=FALSE,sep=",",colClasses = "character")
+dfDHf3_LLL_zeroline_7xapprox=dfDHf3_LLL_zeroline_7xapprox[as.numeric(dfDHf3_LLL_zeroline_7xapprox$V7)>123 & as.numeric(dfDHf3_LLL_zeroline_7xapprox$V7)<133,c(1:6)]
+dfDHf3_LLL_zeroline_7xapprox=dfDHf3_LLL_zeroline_7xapprox[order(floor(as.numeric(dfDHf3_LLL_zeroline_7xapprox$V2)),as.numeric(dfDHf3_LLL_zeroline_7xapprox$V4),decreasing = c(FALSE,TRUE)),]
+dfDHf3_LLL_zeroline_7xapprox=dfDHf3_LLL_zeroline_7xapprox[!duplicated(floor(as.numeric(dfDHf3_LLL_zeroline_7xapprox$V2))),]
+dfDHf3_LLL_zeroline_7xapprox$Z=as.numeric(dfDHf3_LLL_zeroline_7xapprox$V4)
+dfDHf3_LLL_zeroline_7xapprox$residual=as.numeric(dfDHf3_LLL_zeroline_7xapprox$V3)
+#print(head(dfDHf3_LLL_zeroline_7xapprox$residual))
+
+dfDHf3_LLL_zeroline_7xapprox$inc=0
+for (i in 1:dim(dfDHf3_LLL_zeroline_7xapprox)[1]) {
+  if(i==1) {
+    
+    dfDHf3_LLL_zeroline_7xapprox[i,"inc"]=1
+    
+  } 
+  else if (log(as.numeric(dfDHf3_LLL_zeroline_7xapprox[i,"V4"]))>max(log(as.numeric(dfDHf3_LLL_zeroline_7xapprox[1:(i-1),"V4"])))-0.3) {
+    dfDHf3_LLL_zeroline_7xapprox[i,"inc"]=1
+  }
+}
+#dfDHf3_LLL_zeroline_7xapprox=dfDHf3_LLL_zeroline_7xapprox[dfDHf3_LLL_zeroline_7xapprox$"inc"==1,]
+
+dfDHf3_LLL_zeroline_highest_7xapprox=read.csv("/home/john/pari/LLL_search_location_test_DHf3_zeroline_peak_heights_7xapprox_highest_t.csv",header=FALSE,sep=",",colClasses = "character")
+dfDHf3_LLL_zeroline_highest_7xapprox=dfDHf3_LLL_zeroline_highest_7xapprox[as.numeric(dfDHf3_LLL_zeroline_highest_7xapprox$V7)>123 & as.numeric(dfDHf3_LLL_zeroline_highest_7xapprox$V7)<133,c(1:6)]
+dfDHf3_LLL_zeroline_highest_7xapprox=dfDHf3_LLL_zeroline_highest_7xapprox[order(floor(as.numeric(dfDHf3_LLL_zeroline_highest_7xapprox$V2)),as.numeric(dfDHf3_LLL_zeroline_highest_7xapprox$V4),decreasing = c(FALSE,TRUE)),]
+dfDHf3_LLL_zeroline_highest_7xapprox=dfDHf3_LLL_zeroline_highest_7xapprox[!duplicated(floor(as.numeric(dfDHf3_LLL_zeroline_highest_7xapprox$V2))),]
+dfDHf3_LLL_zeroline_highest_7xapprox$residual=as.numeric(dfDHf3_LLL_zeroline_highest_7xapprox$V3)
+#print(head(dfDHf3_LLL_zeroline_highest_7xapprox$residual))
+
+dfDHf3_LLL_zeroline_highest_7xapprox$inc=0
+for (i in 1:dim(dfDHf3_LLL_zeroline_highest_7xapprox)[1]) {
+  if(i==1) {
+
+    dfDHf3_LLL_zeroline_highest_7xapprox[i,"inc"]=1
+
+  }
+  else if (log(as.numeric(dfDHf3_LLL_zeroline_highest_7xapprox[i,"V4"]))>max(log(as.numeric(dfDHf3_LLL_zeroline_highest_7xapprox[1:(i-1),"V4"])))-0.3) {
+    dfDHf3_LLL_zeroline_highest_7xapprox[i,"inc"]=1
+  }
+}
+#dfDHf3_LLL_zeroline_highest_7xapprox=dfDHf3_LLL_zeroline_highest_7xapprox[dfDHf3_LLL_zeroline_highest_7xapprox$"inc"==1,]
+
 dfDHf4_zeroline=read.csv("/home/john/pari/largest_value_DHf4_zeroline_insqrtsegment.csv",header=FALSE,sep=",",colClasses = "character")
 dfDHf4_zeroline=dfDHf4_zeroline[order(as.numeric(dfDHf4_zeroline$V1)),]
 dfDHf4_zeroline$Z=as.numeric(dfDHf4_zeroline$V4)
@@ -517,6 +648,47 @@ dfDHf4_LLL_zeroline=dfDHf4_LLL_zeroline[!duplicated(floor(as.numeric(dfDHf4_LLL_
 dfDHf4_LLL_zeroline$Z=as.numeric(dfDHf4_LLL_zeroline$V4)
 dfDHf4_LLL_zeroline$residual=as.numeric(dfDHf4_LLL_zeroline$V3)
 #print(head(dfDHf4_LLL$residual))
+
+dfDHf4_LLL_zeroline_7xapprox=read.csv("/home/john/pari/LLL_search_location_test_DHf4_zeroline_peak_heights_7xapprox.csv",header=FALSE,sep=",",colClasses = "character")
+dfDHf4_LLL_zeroline_7xapprox=dfDHf4_LLL_zeroline_7xapprox[as.numeric(dfDHf4_LLL_zeroline_7xapprox$V7)>123 & as.numeric(dfDHf4_LLL_zeroline_7xapprox$V7)<133,c(1:6)]
+dfDHf4_LLL_zeroline_7xapprox=dfDHf4_LLL_zeroline_7xapprox[order(floor(as.numeric(dfDHf4_LLL_zeroline_7xapprox$V2)),as.numeric(dfDHf4_LLL_zeroline_7xapprox$V4),decreasing = c(FALSE,TRUE)),]
+dfDHf4_LLL_zeroline_7xapprox=dfDHf4_LLL_zeroline_7xapprox[!duplicated(floor(as.numeric(dfDHf4_LLL_zeroline_7xapprox$V2))),]
+dfDHf4_LLL_zeroline_7xapprox$Z=as.numeric(dfDHf4_LLL_zeroline_7xapprox$V4)
+dfDHf4_LLL_zeroline_7xapprox$residual=as.numeric(dfDHf4_LLL_zeroline_7xapprox$V3)
+#print(head(dfDHf4_LLL_zeroline_7xapprox$residual))
+
+dfDHf4_LLL_zeroline_7xapprox$inc=0
+for (i in 1:dim(dfDHf4_LLL_zeroline_7xapprox)[1]) {
+  if(i==1) {
+    
+    dfDHf4_LLL_zeroline_7xapprox[i,"inc"]=1
+    
+  } 
+  else if (log(as.numeric(dfDHf4_LLL_zeroline_7xapprox[i,"V4"]))>max(log(as.numeric(dfDHf4_LLL_zeroline_7xapprox[1:(i-1),"V4"])))-0.3) {
+    dfDHf4_LLL_zeroline_7xapprox[i,"inc"]=1
+  }
+}
+#dfDHf4_LLL_zeroline_7xapprox=dfDHf4_LLL_zeroline_7xapprox[dfDHf4_LLL_zeroline_7xapprox$"inc"==1,]
+
+dfDHf4_LLL_zeroline_highest_7xapprox=read.csv("/home/john/pari/LLL_search_location_test_DHf4_zeroline_peak_heights_7xapprox_highest_t.csv",header=FALSE,sep=",",colClasses = "character")
+dfDHf4_LLL_zeroline_highest_7xapprox=dfDHf4_LLL_zeroline_highest_7xapprox[as.numeric(dfDHf4_LLL_zeroline_highest_7xapprox$V7)>123 & as.numeric(dfDHf4_LLL_zeroline_highest_7xapprox$V7)<133,c(1:6)]
+dfDHf4_LLL_zeroline_highest_7xapprox=dfDHf4_LLL_zeroline_highest_7xapprox[order(floor(as.numeric(dfDHf4_LLL_zeroline_highest_7xapprox$V2)),as.numeric(dfDHf4_LLL_zeroline_highest_7xapprox$V4),decreasing = c(FALSE,TRUE)),]
+dfDHf4_LLL_zeroline_highest_7xapprox=dfDHf4_LLL_zeroline_highest_7xapprox[!duplicated(floor(as.numeric(dfDHf4_LLL_zeroline_highest_7xapprox$V2))),]
+dfDHf4_LLL_zeroline_highest_7xapprox$residual=as.numeric(dfDHf4_LLL_zeroline_highest_7xapprox$V3)
+#print(head(dfDHf4_LLL_zeroline_highest_7xapprox$residual))
+
+dfDHf4_LLL_zeroline_highest_7xapprox$inc=0
+for (i in 1:dim(dfDHf4_LLL_zeroline_highest_7xapprox)[1]) {
+  if(i==1) {
+
+    dfDHf4_LLL_zeroline_highest_7xapprox[i,"inc"]=1
+
+  }
+  else if (log(as.numeric(dfDHf4_LLL_zeroline_highest_7xapprox[i,"V4"]))>max(log(as.numeric(dfDHf4_LLL_zeroline_highest_7xapprox[1:(i-1),"V4"])))-0.3) {
+    dfDHf4_LLL_zeroline_highest_7xapprox[i,"inc"]=1
+  }
+}
+#dfDHf4_LLL_zeroline_highest_7xapprox=dfDHf4_LLL_zeroline_highest_7xapprox[dfDHf4_LLL_zeroline_highest_7xapprox$"inc"==1,]
 
 dfL37p36_zeroline=read.csv("/home/john/pari/largest_value_L37p36_zeroline_insqrtsegment.csv",header=FALSE,sep=",",colClasses = "character")
 dfL37p36_zeroline=dfL37p36_zeroline[order(as.numeric(dfL37p36_zeroline$V1)),]
@@ -597,6 +769,53 @@ dfRaman_zeroline$V7=floor(as.numeric(dfRaman_zeroline$V2))
 dfRaman_zeroline=dfRaman_zeroline[!duplicated(floor(as.numeric(dfRaman_zeroline$V2))),]
 #print(paste("here2",dim(dfRaman_zeroline)[1]))
 
+
+dfL5704p2851_zeroline=read.csv("/home/john/pari/largest_value_L5704p2851_zeroline_every10Pisegment.csv",header=FALSE,sep=",",colClasses = "character")
+dfL5704p2851_zeroline=dfL5704p2851_zeroline[order(as.numeric(dfL5704p2851_zeroline$V1)),]
+dfL5704p2851_zeroline$Z=as.numeric(dfL5704p2851_zeroline$V4)
+dfL5704p2851_zeroline$residual=as.numeric(dfL5704p2851_zeroline$V3)
+dfL5704p2851_zeroline$n=floor(as.numeric(dfL5704p2851_zeroline$V2))
+
+
+dfL5704p2851_LLL_zeroline=read.csv("/home/john/pari/LLL_search_location_L5704p2851_zeroline_peak_heights.csv",header=FALSE,sep=",",colClasses = "character")
+dfL5704p2851_LLL_zeroline=dfL5704p2851_LLL_zeroline[order(as.numeric(dfL5704p2851_LLL_zeroline$V1)),]
+dfL5704p2851_LLL_zeroline$Z=as.numeric(dfL5704p2851_LLL_zeroline$V4)
+dfL5704p2851_LLL_zeroline$residual=as.numeric(dfL5704p2851_LLL_zeroline$V3)
+dfL5704p2851_LLL_zeroline$n=floor(as.numeric(dfL5704p2851_LLL_zeroline$V2))
+
+dfL5704p2851_LLL_zeroline_5704xapprox=read.csv("/home/john/pari/LLL_search_location_L5704p2851_zeroline_peak_heights_5704xapprox.csv",header=FALSE,sep=",",colClasses = "character")
+dfL5704p2851_LLL_zeroline_5704xapprox=dfL5704p2851_LLL_zeroline_5704xapprox[order(as.numeric(dfL5704p2851_LLL_zeroline_5704xapprox$V1)),]
+dfL5704p2851_LLL_zeroline_5704xapprox$Z=as.numeric(dfL5704p2851_LLL_zeroline_5704xapprox$V4)
+dfL5704p2851_LLL_zeroline_5704xapprox$residual=as.numeric(dfL5704p2851_LLL_zeroline_5704xapprox$V3)
+dfL5704p2851_LLL_zeroline_5704xapprox$n=floor(as.numeric(dfL5704p2851_LLL_zeroline_5704xapprox$V2))
+
+
+dfL5704p2851_LLL_zeroline_5704xapprox_inputset2=read.csv("/home/john/pari/LLL_search_location_L5704p2851_zeroline_peak_heights_5704xapprox_inputset2.csv",header=FALSE,sep=",",colClasses = "character")
+dfL5704p2851_LLL_zeroline_5704xapprox_inputset2=dfL5704p2851_LLL_zeroline_5704xapprox_inputset2[order(as.numeric(dfL5704p2851_LLL_zeroline_5704xapprox_inputset2$V1)),]
+dfL5704p2851_LLL_zeroline_5704xapprox_inputset2$Z=as.numeric(dfL5704p2851_LLL_zeroline_5704xapprox_inputset2$V4)
+dfL5704p2851_LLL_zeroline_5704xapprox_inputset2$residual=as.numeric(dfL5704p2851_LLL_zeroline_5704xapprox_inputset2$V3)
+dfL5704p2851_LLL_zeroline_5704xapprox_inputset2$n=floor(as.numeric(dfL5704p2851_LLL_zeroline_5704xapprox_inputset2$V2))
+
+
+
+dfL6389p6388_zeroline=read.csv("/home/john/pari/largest_value_L6389p6388_zeroline_every15segment.csv",header=FALSE,sep=",",colClasses = "character")
+dfL6389p6388_zeroline=dfL6389p6388_zeroline[order(as.numeric(dfL6389p6388_zeroline$V1)),]
+dfL6389p6388_zeroline$Z=as.numeric(dfL6389p6388_zeroline$V4)
+dfL6389p6388_zeroline$residual=as.numeric(dfL6389p6388_zeroline$V3)
+dfL6389p6388_zeroline$n=floor(as.numeric(dfL6389p6388_zeroline$V2))
+
+dfL6389p6388_LLL_zeroline=read.csv("/home/john/pari/LLL_search_location_L6389p6388_zeroline_peak_heights.csv",header=FALSE,sep=",",colClasses = "character")
+dfL6389p6388_LLL_zeroline=dfL6389p6388_LLL_zeroline[order(as.numeric(dfL6389p6388_LLL_zeroline$V1)),]
+dfL6389p6388_LLL_zeroline$Z=as.numeric(dfL6389p6388_LLL_zeroline$V4)
+dfL6389p6388_LLL_zeroline$residual=as.numeric(dfL6389p6388_LLL_zeroline$V3)
+dfL6389p6388_LLL_zeroline$n=floor(as.numeric(dfL6389p6388_LLL_zeroline$V2))
+
+dfL6389p6388_LLL_zeroline_6389xapprox=read.csv("/home/john/pari/LLL_search_location_L6389p6388_zeroline_peak_heights_6389xapprox.csv",header=FALSE,sep=",",colClasses = "character")
+dfL6389p6388_LLL_zeroline_6389xapprox=dfL6389p6388_LLL_zeroline_6389xapprox[order(as.numeric(dfL6389p6388_LLL_zeroline_6389xapprox$V1)),]
+dfL6389p6388_LLL_zeroline_6389xapprox$Z=as.numeric(dfL6389p6388_LLL_zeroline_6389xapprox$V4)
+dfL6389p6388_LLL_zeroline_6389xapprox$residual=as.numeric(dfL6389p6388_LLL_zeroline_6389xapprox$V3)
+dfL6389p6388_LLL_zeroline_6389xapprox$n=floor(as.numeric(dfL6389p6388_LLL_zeroline_6389xapprox$V2))
+
 plot((as.numeric(dfzeta_zeroline$V1)),as.numeric(dfzeta_zeroline$V5),pch=20,col="gray",cex=0.5,
      xlim=c((1e0),(1e40)),ylim=(c(0.5,1e20)),log="xy",
      main="Growth behaviour of the s=0+It line largest Riemann Siegel |Z| peaks \n for several 1st degree L-functions on a log-log plot",xlab="log(t) scale",ylab="log(|Z|) scale");grid(col="gray2")
@@ -604,6 +823,23 @@ points((as.numeric(df_zeroline$V1)),(abs(as.numeric(df_zeroline$V4))),pch=6,col=
 points((as.numeric(dg_zeroline$V1)),(abs(as.numeric(dg_zeroline$V4))),pch=6,col="gray",cex=0.3)
 points((as.numeric(dh_zeroline$V1)),(abs(as.numeric(dh_zeroline$V4))),pch=6,col="gray",cex=0.3)
 points((as.numeric(di_zeroline$V1)),(di_zeroline$V4),pch=20,col="gray",cex=0.5)
+
+points((as.numeric(dfDHf1_zeroline$V1)),(dfDHf1_zeroline$V4),col=rgb(0,0,0,0.5),pch=20,lty=1,cex=0.05)
+points((as.numeric(dfDHf1_LLL_zeroline$V1)),(dfDHf1_LLL_zeroline$V4),col=rgb(0,0,0,0.5),pch=20,lty=1,cex=0.05)
+points((as.numeric(dfDHf1_LLL_zeroline_5xapprox$V1)),(dfDHf1_LLL_zeroline_5xapprox$V4),col=rgb(0,0,0,0.5),pch=6,lty=1,cex=0.05)
+points((as.numeric(dfDHf1_LLL_zeroline_highest_5xapprox$V1)),(dfDHf1_LLL_zeroline_highest_5xapprox$V4),col=rgb(0,0,0,0.5),pch=6,lty=1,cex=0.05)
+points((as.numeric(dfDHf2_zeroline$V1)),(dfDHf2_zeroline$V4),col=rgb(0,0,0,0.5),pch=20,lty=1,cex=0.05)
+points((as.numeric(dfDHf2_LLL_zeroline$V1)),(dfDHf2_LLL_zeroline$V4),col=rgb(0,0,0,0.5),pch=20,lty=1,cex=0.05)
+points((as.numeric(dfDHf2_LLL_zeroline_5xapprox$V1)),(dfDHf2_LLL_zeroline_5xapprox$V4),col=rgb(0,0,0,0.5),pch=6,lty=1,cex=0.05)
+points((as.numeric(dfDHf2_LLL_zeroline_highest_5xapprox$V1)),(dfDHf2_LLL_zeroline_highest_5xapprox$V4),col=rgb(0,0,0,0.5),pch=6,lty=1,cex=0.05)
+points((as.numeric(dfDHf3_zeroline$V1)),(as.numeric(dfDHf3_zeroline$V4)),col=rgb(0,0,0,0.5),pch=20,lty=1,cex=0.2)
+points((as.numeric(dfDHf3_LLL_zeroline$V1)),(as.numeric(dfDHf3_LLL_zeroline$V4)),col=rgb(0,0,0,0.5),pch=20,lty=1,cex=0.2)
+points((as.numeric(dfDHf3_LLL_zeroline_7xapprox$V1)),(as.numeric(dfDHf3_LLL_zeroline_7xapprox$V4)),col=rgb(0,0,0,0.5),pch=20,lty=1,cex=0.2)
+points((as.numeric(dfDHf3_LLL_zeroline_highest_7xapprox$V1)),(as.numeric(dfDHf3_LLL_zeroline_highest_7xapprox$V4)),col=rgb(0,0,0,0.5),pch=20,lty=1,cex=0.2)
+points((as.numeric(dfDHf4_zeroline$V1)),(as.numeric(dfDHf4_zeroline$V4)),col=rgb(0,0,0,0.5),pch=20,lty=1,cex=0.2)
+points((as.numeric(dfDHf4_LLL_zeroline$V1)),(as.numeric(dfDHf4_LLL_zeroline$V4)),col=rgb(0,0,0,0.5),pch=20,lty=1,cex=0.2)
+points((as.numeric(dfDHf4_LLL_zeroline_7xapprox$V1)),(as.numeric(dfDHf4_LLL_zeroline_7xapprox$V4)),col=rgb(0,0,0,0.5),pch=20,lty=1,cex=0.2)
+points((as.numeric(dfDHf4_LLL_zeroline_highest_7xapprox$V1)),(as.numeric(dfDHf4_LLL_zeroline_highest_7xapprox$V4)),col=rgb(0,0,0,0.5),pch=20,lty=1,cex=0.2)
 points((as.numeric(dfL32_zeroline$V1)),(dfL32_zeroline$V4),col=rgb(1,0,0,0.5),pch=20,lty=1,cex=0.05)
 #points((as.numeric(dfL32_zeroline$V1[dfL32$inc==1])),(dfL32_zeroline$V4[dfL32$inc==1]),col="black",pch=20,lty=1,cex=0.05)
 points((as.numeric(dfL32_LLL_zeroline$V1)),(dfL32_LLL_zeroline$V4),col=rgb(1,0,0,0.5),pch=20,lty=1,cex=0.05)
@@ -622,20 +858,14 @@ points((as.numeric(dfL52_zeroline$V1)),(dfL52_zeroline$V4),col=rgb(0.2,0.5,1,0.5
 points((as.numeric(dfL52_LLL_zeroline$V1)),(dfL52_LLL_zeroline$V4),col=rgb(0.2,0.5,1,0.5),pch=20,lty=1,cex=0.05)
 points((as.numeric(dfL52_LLL_zeroline_5xapprox$V1)),(dfL52_LLL_zeroline_5xapprox$V4),col=rgb(0.2,0.5,1,0.5),pch=6,lty=1,cex=0.05)
 points((as.numeric(dfL52_LLL_zeroline_highest_5xapprox$V1)),(dfL52_LLL_zeroline_highest_5xapprox$V4),col=rgb(0.2,0.5,1,0.5),pch=6,lty=1,cex=0.05)
-points((as.numeric(dfDHf1_zeroline$V1)),(dfDHf1_zeroline$V4),col=rgb(0,0,0,0.5),pch=20,lty=1,cex=0.05)
-points((as.numeric(dfDHf1_LLL_zeroline$V1)),(dfDHf1_LLL_zeroline$V4),col=rgb(0,0,0,0.5),pch=20,lty=1,cex=0.05)
-points((as.numeric(dfDHf1_LLL_zeroline_5xapprox$V1)),(dfDHf1_LLL_zeroline_5xapprox$V4),col=rgb(0,0,0,0.5),pch=6,lty=1,cex=0.05)
-points((as.numeric(dfDHf1_LLL_zeroline_highest_5xapprox$V1)),(dfDHf1_LLL_zeroline_highest_5xapprox$V4),col=rgb(0,0,0,0.5),pch=6,lty=1,cex=0.05)
-points((as.numeric(dfDHf2_zeroline$V1)),(dfDHf2_zeroline$V4),col=rgb(0,0,0,0.5),pch=20,lty=1,cex=0.05)
-points((as.numeric(dfDHf2_LLL_zeroline$V1)),(dfDHf2_LLL_zeroline$V4),col=rgb(0,0,0,0.5),pch=20,lty=1,cex=0.05)
-points((as.numeric(dfDHf2_LLL_zeroline_5xapprox$V1)),(dfDHf2_LLL_zeroline_5xapprox$V4),col=rgb(0,0,0,0.5),pch=6,lty=1,cex=0.05)
-points((as.numeric(dfDHf2_LLL_zeroline_highest_5xapprox$V1)),(dfDHf2_LLL_zeroline_highest_5xapprox$V4),col=rgb(0,0,0,0.5),pch=6,lty=1,cex=0.05)
 points((as.numeric(dfL76_zeroline$V1)),(dfL76_zeroline$V4),col=rgb(0.5,1,0.5,0.5),pch=20,lty=1,cex=0.05)
 points((as.numeric(dfL76_LLL_zeroline$V1)),(dfL76_LLL_zeroline$V4),col=rgb(0.5,1,0.5,0.5),pch=20,lty=1,cex=0.05)
 points((as.numeric(dfL75_zeroline$V1)),(dfL75_zeroline$V4),col=rgb(0.55,0.45,1,0.5),pch=20,lty=1,cex=0.05)
 points((as.numeric(dfL75_LLL_zeroline$V1)),(dfL75_LLL_zeroline$V4),col=rgb(0.55,0.45,1,0.5),pch=20,lty=1,cex=0.05)
+points((as.numeric(dfL75_LLL_zeroline_7xapprox$V1)),(dfL75_LLL_zeroline_7xapprox$V4),col=rgb(0.55,0.45,1,0.5),pch=20,lty=1,cex=0.05)
 points((as.numeric(dfL73_zeroline$V1)),(dfL73_zeroline$V4),col=rgb(0.45,0.55,1,0.5),pch=20,lty=1,cex=0.05)
 points((as.numeric(dfL73_LLL_zeroline$V1)),(dfL73_LLL_zeroline$V4),col=rgb(0.45,0.55,1,0.5),pch=20,lty=1,cex=0.05)
+points((as.numeric(dfL73_LLL_zeroline_7xapprox$V1)),(dfL73_LLL_zeroline_7xapprox$V4),col=rgb(0.45,0.55,1,0.5),pch=20,lty=1,cex=0.05)
 points((as.numeric(dfL37p36_zeroline$V1)),(dfL37p36_zeroline$V4),col=rgb(1,0.498,0.314,0.5),pch=20,lty=1,cex=0.05)
 points((as.numeric(dfL37p36_LLL_zeroline$V1)),(dfL37p36_LLL_zeroline$V4),col=rgb(1,0.498,0.314,0.5),pch=20,lty=1,cex=0.05)
 points((as.numeric(dfL37p36_LLL_zeroline_37xapprox$V1)),(dfL37p36_LLL_zeroline_37xapprox$V4),col=rgb(1,0.498,0.314,0.5),pch=6,lty=1,cex=0.05)
@@ -644,14 +874,44 @@ points((as.numeric(dfL51p50_LLL_zeroline$V1)),(dfL51p50_LLL_zeroline$V4),col=rgb
 points((as.numeric(dfL51p50_LLL_zeroline_51xapprox$V1)),(dfL51p50_LLL_zeroline_51xapprox$V4),col=rgb(1,0.843,0.,0.5),pch=6,lty=1,cex=0.05)
 # 
 
-text(x=1e16,y=1e7,labels="these lower reported satellite points are byproduct small L52 & L53 zeroline peak locations \n since the re-used DHf1 LLL search locations are 50% extreme L52 peak and small L53 peak \n in origin and vice versa for the other 50% of investigated locations",
-     srt=29.5,col="red",cex=0.25)
 
-legend(x="topleft",legend=c("Zeta fn, largest peak every piecewise interval t=[N^2*2*Pi,(N+1)^2*2*Pi) for N={0-3636}, then near known critical line locations","L32 fn, largest peak every interval t=[N^2*2*Pi/3,(N+1)^2*2*Pi/3) for N={0-1000}, then LLL search locations","L43 fn, largest peak every interval t=[N^2*2*Pi/4,(N+1)^2*2*Pi/4) for N={0-1000}, then LLL search locations","L54 fn, largest peak every interval t=[N^2*2*Pi/5,(N+1)^2*2*Pi/5) for N={0-1000}, then LLL search locations","L76 fn, largest peak every interval t=[N^2*2*Pi/7,(N+1)^2*2*Pi/7) for N={0-1000}, then LLL search locations","L75 fn, largest peak every interval t=[N^2*2*Pi/7,(N+1)^2*2*Pi/7) for N={0-1000}, then LLL search locations"),cex=0.5,bty="n",
-       pch=c(rep(20,6)),col=c("gray","red",rgb(0,0,1,1),rgb(1,0,1,1),rgb(0.5,1,0.5,1),rgb(0.55,0.45,1,0.5)))
 
-legend(x="bottomright",legend=c("L73 fn, largest peak every interval t=[N^2*2*Pi/7,(N+1)^2*2*Pi/7) for N={0-1000}, then LLL search locations","L37p36 fn, largest peak every interval t=[N^2*2*Pi/37,(N+1)^2*2*Pi/37) for N={0-1000}, then LLL search locations","L51p50 fn, largest peak every interval t=[N^2*2*Pi/51,(N+1)^2*2*Pi/51) for N={0-1000}, then LLL search locations","L53 fn, largest peak every interval t=[N^2*2*Pi/5,(N+1)^2*2*Pi/5) for N={0-1000}, then LLL search locations","L52 fn, largest peak every interval t=[N^2*2*Pi/5,(N+1)^2*2*Pi/5) for N={0-1000}, then LLL search locations","DHf1 fn, largest peak every interval t=[N^2*2*Pi/5,(N+1)^2*2*Pi/5) for N={0-1000}, then LLL search locations","DHf2 fn, largest peak every interval t=[N^2*2*Pi/5,(N+1)^2*2*Pi/5) for N={0-1000}, then LLL search locations"),cex=0.5,bty="n",
-       pch=c(rep(20,7)),col=c(rgb(0.45,0.55,1,0.5),rgb(1,0.498,0.314,1),rgb(1,0.843,0.,1),rgb(0.5,0.2,1,1),rgb(0.2,0.5,1,1),rgb(0,0,0,0.5),rgb(0,0,0,0.5)))
+
+points((as.numeric(dfL6389p6388_zeroline$V1)),(as.numeric(dfL6389p6388_zeroline$Z)),col=rgb(0,0,1,0.5),pch=20,cex=0.05)
+points((as.numeric(dfL6389p6388_LLL_zeroline$V1)),(as.numeric(dfL6389p6388_LLL_zeroline$Z)),col=rgb(0,0,1,0.5),pch=20,cex=0.05)
+points((as.numeric(dfL6389p6388_LLL_zeroline_6389xapprox$V1)),(as.numeric(dfL6389p6388_LLL_zeroline_6389xapprox$Z)),col=rgb(0,0,1,0.5),pch=20,cex=0.05)
+points((as.numeric(dfL5704p2851_zeroline$V1)),(as.numeric(dfL5704p2851_zeroline$Z)),col=rgb(1,0,0,0.5),pch=20,cex=0.05)
+points((as.numeric(dfL5704p2851_LLL_zeroline$V1)),(as.numeric(dfL5704p2851_LLL_zeroline$Z)),col=rgb(1,0,0,0.5),pch=20,cex=0.05)
+points((as.numeric(dfL5704p2851_LLL_zeroline_5704xapprox$V1)),(as.numeric(dfL5704p2851_LLL_zeroline_5704xapprox$Z)),col=rgb(1,0,0,0.5),pch=20,cex=0.05)
+points((as.numeric(dfL5704p2851_LLL_zeroline_5704xapprox_inputset2$V1)),(as.numeric(dfL5704p2851_LLL_zeroline_5704xapprox_inputset2$Z)),col=rgb(1,0,0,0.5),pch=20,cex=0.05)
+
+
+text(x=1e16,y=1e7,labels="these lower reported satellite points are byproduct small L52 & L53 (and L75 & L73) zeroline peak locations \n since the re-used DHf1 LLL search locations are 50% extreme L52 peak and small L53 peak \n in origin and vice versa for the other 50% of investigated locations. \n Likewise for L75 & L73 where re-used DHf4 LLL search locations are 50% extreme L75 peak and small L73 peak in origin.",
+     srt=30,col="red",cex=0.25)
+
+text(x=1e16,y=1e7,labels="these lower reported satellite points are byproduct small L52 & L53 (and L75 & L73) zeroline peak locations \n since the re-used DHf1 LLL search locations are 50% extreme L52 peak and small L53 peak \n in origin and vice versa for the other 50% of investigated locations. \n Likewise for L75 & L73 where re-used DHf4 LLL search locations are 50% extreme L75 peak and small L73 peak in origin.",
+     srt=30,col="red",cex=0.25)
+
+text(x=1e16,y=1.5e10,labels="L6389p6388 \n L5704p2851",
+     srt=30,col="darkblue",cex=0.35)
+
+text(x=5e24,y=5e13,labels="L37p36 \n L51p50",
+     srt=30,col="darkblue",cex=0.35)
+
+text(x=0.5e34,y=0.8e18,labels="DHf2 \n DHf3",
+     srt=30,col="darkblue",cex=0.35)
+
+text(x=5e34,y=1e18,labels="DHf4 \n DHf1",
+     srt=30,col="darkblue",cex=0.35)
+
+text(x=5e39,y=1.5e20,labels="Riemann Zeta fn",
+     srt=30,col="darkblue",cex=0.35)
+
+legend(x="topleft",legend=c("Zeta fn, largest peak every piecewise interval t=[N^2*2*Pi,(N+1)^2*2*Pi) for N={0-3636}, then near known critical line locations","L32 fn, largest peak every interval t=[N^2*2*Pi/3,(N+1)^2*2*Pi/3) for N={0-1000}, then LLL search locations","L43 fn, largest peak every interval t=[N^2*2*Pi/4,(N+1)^2*2*Pi/4) for N={0-1000}, then LLL search locations","L54 fn, largest peak every interval t=[N^2*2*Pi/5,(N+1)^2*2*Pi/5) for N={0-1000}, then LLL search locations","L76 fn, largest peak every interval t=[N^2*2*Pi/7,(N+1)^2*2*Pi/7) for N={0-1000}, then LLL search locations","L75 fn, largest peak every interval t=[N^2*2*Pi/7,(N+1)^2*2*Pi/7) for N={0-1000}, then LLL search locations","L73 fn, largest peak every interval t=[N^2*2*Pi/7,(N+1)^2*2*Pi/7) for N={0-1000}, then LLL search locations"),cex=0.5,bty="n",
+       pch=c(rep(20,7)),col=c("gray","red",rgb(0,0,1,1),rgb(1,0,1,1),rgb(0.5,1,0.5,1),rgb(0.55,0.45,1,0.5),rgb(0.45,0.55,1,0.5)))
+
+legend(x="bottomright",legend=c("L37p36 fn x 37/36, largest peak every interval t=[N^2*2*Pi/37,(N+1)^2*2*Pi/37) for N={0-1000}, then LLL search locations","L51p50 fn x 51/32, largest peak every interval t=[N^2*2*Pi/51,(N+1)^2*2*Pi/51) for N={0-1000}, then LLL search locations","L53 fn x 5/4, largest peak every interval t=[N^2*2*Pi/5,(N+1)^2*2*Pi/5) for N={0-1000}, then LLL search locations","L52 fn x 5/4, largest peak every interval t=[N^2*2*Pi/5,(N+1)^2*2*Pi/5) for N={0-1000}, then LLL search locations","DHf1 fn x 5/2.568, largest peak every interval t=[N^2*2*Pi/5,(N+1)^2*2*Pi/5) for N={0-1000}, then LLL search locations","DHf2 fn x 5/9.04, largest peak every interval t=[N^2*2*Pi/5,(N+1)^2*2*Pi/5) for N={0-1000}, then LLL search locations","DHf3 fn x 7/7.2077509, largest peak every interval t=[N^2*2*Pi/7,(N+1)^2*2*Pi/7) for N={0-1000}, then LLL search locations","DHf4 fn x 7/4.3042576, largest peak every interval t=[N^2*2*Pi/7,(N+1)^2*2*Pi/7) for N={0-1000}, then LLL search locations","L5704p2851 fn x 5704/2640, largest peak every interval Delta t=10*pi*j for j={0-21}, then LLL search locations","L6389p6388 fn x 6389/6388, largest peak every interval Delta t=15*j for j={0-52}, then LLL search locations"),cex=0.5,bty="n",
+       pch=c(rep(20,10)),col=c(rgb(1,0.498,0.314,1),rgb(1,0.843,0.,1),rgb(0.5,0.2,1,1),rgb(0.2,0.5,1,1),rgb(0,0,0,0.5),rgb(0,0,0,0.5),rgb(0,0,0,0.5),rgb(0,0,0,0.5),rgb(1,0,0,0.5),rgb(0,0,1,0.5)))
 
 
 df=read.csv("/home/john/pari/largest_value_zeta_insqrtsegment_0to3636_consolidatedfile.csv",header=FALSE,sep=",",colClasses = "character")
@@ -807,8 +1067,14 @@ dfRaman=dfRaman[!duplicated(floor(as.numeric(dfRaman$V2))),]
 \elandscape
 \restoregeometry
 
+## Combined comparison of results for 1st degree L-functions
+
+In figures 1 and 2, the extreme peak growth behaviour of the above 1st degree L-functions (all with dirichlet character magnitudes $|\chi| = 0,1$) are compared in the range 0 < t < 1e20. 
 
 \begin{itemize}
+
+\item When plotting log(|Z|) vs log(t) in figure 1 it can be seen that each L-function varies in their growth rates of the extreme peak heights as a function of log(t). They are similar but different.
+
 \item However in figure 2 by 
 \subitem 1. changing the x-axis from $log(t) \rightarrow \log\left[\sqrt{\left(\frac{t}{2\pi}\right)^d\cdot N_C}\right]$ AND 
 \subitem 2a. adjusting the y axis $log(|Z|) \rightarrow log(|Z|\cdot \frac{N_C}{N_{\chi \ne 0}})$ for L-functions OR
@@ -824,7 +1090,7 @@ That is, for the subset of L-functions with dirichlet characters $|\chi| = 0,1$ 
 
 By close examination of the ordered source data or by magnifying figures 1 and 2 it can be seen that the $s=0+I\cdot t$ Rieman Siegel |Z| function extreme peak heights are not strictly monotonically increasing with t but the trend growth component is clearly dominant. Model fitting results of the trend growth rate of the extreme peak height will be presented later in this paper.
 
-Also present in figures 1 & 2 are some low height peaks (i.e., not extreme) for $L(\chi_5(3,.),0.0+I\cdot t)$ & $L(\chi_5(2,.),0.0+I\cdot t)$ and ($L(\chi_7(5,.),0.0+I\cdot t)$ & $L(\chi_7(3,.),0.0+I\cdot t)$) L-functions because the search method for predicting extreme peaks for these dual pair L-functions relied on pre-screen calculations of the behaviour of the Davenport-Heilbronn functions $f_{1}(0.0+I\cdot t)$ and ($f_{4}(0.0+I\cdot t)$) respectively. That is, half each of the $f_{1}(0.0+I\cdot t)$ extreme peaks are due to $L(\chi_5(3,.),0.0+I\cdot t)$ ($L(\chi_5(2,.),0.0+I\cdot t)$) extreme peaks and likewise half each of the $f_{4}(0.0+I\cdot t)$ extreme peaks are due to $L(\chi_7(5,.),0.0+I\cdot t)$ ($L(\chi_7(3,.),0.0+I\cdot t)$) extreme peaks. So when $L(\chi_5(3,.),0.0+I\cdot t)$ ($L(\chi_5(2,.),0.0+I\cdot t)$) grid search or euler product spectrum calculations are run over the $f_{1}(0.0+I\cdot t)$ identified extreme peak locations only half of the $L(\chi_5(3,.),0.0+I\cdot t)$ ($L(\chi_5(2,.),0.0+I\cdot t)$) peaks are extreme and likewise when $L(\chi_7(5,.),0.0+I\cdot t)$ ($L(\chi_7(3,.),0.0+I\cdot t)$) grid search or euler product spectrum calculations are run over the $f_{4}(0.0+I\cdot t)$ extreme peaks locations.
+Also present in figures 1 & 2 are some low height peaks (i.e., not extreme) for $L(\chi_5(3,.),0.0+I\cdot t)$ & $L(\chi_5(2,.),0.0+I\cdot t)$ and ($L(\chi_7(5,.),0.0+I\cdot t)$ & $L(\chi_7(3,.),0.0+I\cdot t)$) L-functions because the search method for predicting extreme peaks for these dual pair L-functions relied on pre-screen calculations of the behaviour of the Davenport-Heilbronn functions $f_{1}(0.0+I\cdot t)$ and ($f_{4}(0.0+I\cdot t)$) respectively. That is, half each of the $f_{1}(0.0+I\cdot t)$ extreme peaks are due to $L(\chi_5(3,.),0.0+I\cdot t)$ ($L(\chi_5(2,.),0.0+I\cdot t)$) extreme peaks and likewise half each of the $f_{4}(0.0+I\cdot t)$ extreme peaks are due to $L(\chi_7(5,.),0.0+I\cdot t)$ ($L(\chi_7(3,.),0.0+I\cdot t)$) extreme peaks. So when $L(\chi_5(3,.),0.0+I\cdot t)$ ($L(\chi_5(2,.),0.0+I\cdot t)$) grid search or euler product spectrum calculations are run over the $f_{1}(0.0+I\cdot t)$ identified extreme peak locations only half of the $L(\chi_5(3,.),0.0+I\cdot t)$ ($L(\chi_5(2,.),0.0+I\cdot t)$) peaks are extreme (and likewise in figure 10 when $L(\chi_7(5,.),0.0+I\cdot t)$ ($L(\chi_7(3,.),0.0+I\cdot t)$) grid search or euler product spectrum calculations are run over the $f_{4}(0.0+I\cdot t)$ extreme peaks locations).
 
 
 
@@ -866,12 +1132,33 @@ points((as.numeric(dfDHf2_zeroline$V2)),as.numeric(dfDHf2_zeroline$V4)*5/9.04,co
 points((as.numeric(dfDHf2_LLL_zeroline$V2)),as.numeric(dfDHf2_LLL_zeroline$V4)*5/9.04,col=rgb(0,0,0,0.5),pch=20,lty=1,cex=0.05)
 points((as.numeric(dfDHf2_LLL_zeroline_5xapprox$V2)),as.numeric(dfDHf2_LLL_zeroline_5xapprox$V4)*5/9.04,col=rgb(0,0,0,0.5),pch=6,lty=1,cex=0.05)
 points((as.numeric(dfDHf2_LLL_zeroline_highest_5xapprox$V2)),as.numeric(dfDHf2_LLL_zeroline_highest_5xapprox$V4)*5/9.04,col=rgb(0,0,0,0.5),pch=6,lty=1,cex=0.05)
+points((as.numeric(dfDHf3_zeroline$V2)),(as.numeric(dfDHf3_zeroline$V4)*7/7.2077509),col=rgb(0,0,0,0.5),pch=20,lty=1,cex=0.2)
+points((as.numeric(dfDHf3_LLL_zeroline$V2)),(as.numeric(dfDHf3_LLL_zeroline$V4)*7/7.2077509),col=rgb(0,0,0,0.5),pch=20,lty=1,cex=0.2)
+points((as.numeric(dfDHf3_LLL_zeroline_7xapprox$V2)),(as.numeric(dfDHf3_LLL_zeroline_7xapprox$V4)*7/7.2077509),col=rgb(0,0,0,0.5),pch=20,lty=1,cex=0.2)
+points((as.numeric(dfDHf3_LLL_zeroline_highest_7xapprox$V2)),(as.numeric(dfDHf3_LLL_zeroline_highest_7xapprox$V4)*7/7.2077509),col=rgb(0,0,0,0.5),pch=20,lty=1,cex=0.2)
+
+points((as.numeric(dfDHf4_zeroline$V2)),(as.numeric(dfDHf4_zeroline$V4)*7/4.3042576),col=rgb(0,0,0,0.5),pch=20,lty=1,cex=0.2)
+points((as.numeric(dfDHf4_LLL_zeroline$V2)),(as.numeric(dfDHf4_LLL_zeroline$V4)*7/4.3042576),col=rgb(0,0,0,0.5),pch=20,lty=1,cex=0.2)
+points((as.numeric(dfDHf4_LLL_zeroline_7xapprox$V2)),(as.numeric(dfDHf4_LLL_zeroline_7xapprox$V4)*7/4.3042576),col=rgb(0,0,0,0.5),pch=20,lty=1,cex=0.2)
+points((as.numeric(dfDHf4_LLL_zeroline_highest_7xapprox$V2)),(as.numeric(dfDHf4_LLL_zeroline_highest_7xapprox$V4)*7/4.3042576),col=rgb(0,0,0,0.5),pch=20,lty=1,cex=0.2)
+
 points((as.numeric(dfL76_zeroline$V2)),as.numeric(dfL76_zeroline$V4)*7/6,col=rgb(0.5,1,0.5,0.5),pch=20,lty=1,cex=0.05)
 points((as.numeric(dfL76_LLL_zeroline$V2)),as.numeric(dfL76_LLL_zeroline$V4)*7/6,col=rgb(0.5,1,0.5,0.5),pch=20,lty=1,cex=0.05)
 points((as.numeric(dfL75_zeroline$V2)),as.numeric(dfL75_zeroline$V4)*7/6,col=rgb(0.55,0.45,1,0.5),pch=20,lty=1,cex=0.05)
 points((as.numeric(dfL75_LLL_zeroline$V2)),as.numeric(dfL75_LLL_zeroline$V4)*7/6,col=rgb(0.55,0.45,1,0.5),pch=20,lty=1,cex=0.05)
+points((as.numeric(dfL75_LLL_zeroline_7xapprox$V2)),as.numeric(dfL75_LLL_zeroline_7xapprox$V4)*7/6,col=rgb(0.55,0.45,1,0.5),pch=20,lty=1,cex=0.05)
 points((as.numeric(dfL73_zeroline$V2)),as.numeric(dfL73_zeroline$V4)*7/6,col=rgb(0.45,0.55,1,0.5),pch=20,lty=1,cex=0.05)
 points((as.numeric(dfL73_LLL_zeroline$V2)),as.numeric(dfL73_LLL_zeroline$V4)*7/6,col=rgb(0.45,0.55,1,0.5),pch=20,lty=1,cex=0.05)
+points((as.numeric(dfL73_LLL_zeroline_7xapprox$V2)),as.numeric(dfL73_LLL_zeroline_7xapprox$V4)*7/6,col=rgb(0.45,0.55,1,0.5),pch=20,lty=1,cex=0.05)
+
+points((as.numeric(dfL6389p6388_zeroline$V2)),(as.numeric(dfL6389p6388_zeroline$Z)*6389/6388),col=rgb(0,0,1,0.5),pch=20,cex=0.05)
+points((as.numeric(dfL6389p6388_LLL_zeroline$V2)),(as.numeric(dfL6389p6388_LLL_zeroline$Z)*6389/6388),col=rgb(0,0,1,0.5),pch=20,cex=0.05)
+points((as.numeric(dfL6389p6388_LLL_zeroline_6389xapprox$V2)),(as.numeric(dfL6389p6388_LLL_zeroline_6389xapprox$Z)*6389/6388),col=rgb(0,0,1,0.5),pch=20,cex=0.05)
+points((as.numeric(dfL5704p2851_zeroline$V2)),(as.numeric(dfL5704p2851_zeroline$Z)*5704/2640),col=rgb(1,0,0,0.5),pch=20,cex=0.05)
+points((as.numeric(dfL5704p2851_LLL_zeroline$V2)),(as.numeric(dfL5704p2851_LLL_zeroline$Z)*5704/2640),col=rgb(1,0,0,0.5),pch=20,cex=0.05)
+points((as.numeric(dfL5704p2851_LLL_zeroline_5704xapprox$V2)),(as.numeric(dfL5704p2851_LLL_zeroline_5704xapprox$Z)*5704/2640),col=rgb(1,0,0,0.5),pch=20,cex=0.05)
+points((as.numeric(dfL5704p2851_LLL_zeroline_5704xapprox_inputset2$V2)),(as.numeric(dfL5704p2851_LLL_zeroline_5704xapprox_inputset2$Z)*5704/2640),col=rgb(1,0,0,0.5),pch=20,cex=0.05)
+
 points((as.numeric(dfL37p36_zeroline$V2)),as.numeric(dfL37p36_zeroline$V4)*37/36,col=rgb(1,0.498,0.314,0.5),pch=20,lty=1,cex=0.05)
 points((as.numeric(dfL37p36_LLL_zeroline$V2)),as.numeric(dfL37p36_LLL_zeroline$V4)*37/36,col=rgb(1,0.498,0.314,0.5),pch=20,lty=1,cex=0.05)
 points((as.numeric(dfL37p36_LLL_zeroline_37xapprox$V2)),as.numeric(dfL37p36_LLL_zeroline_37xapprox$V4)*37/36,col=rgb(1,0.498,0.314,0.5),pch=6,lty=1,cex=0.05)
@@ -879,14 +1166,15 @@ points((as.numeric(dfL51p50_zeroline$V2)),as.numeric(dfL51p50_zeroline$V4)*51/32
 points((as.numeric(dfL51p50_LLL_zeroline$V2)),as.numeric(dfL51p50_LLL_zeroline$V4)*51/32,col=rgb(1,0.843,0.,0.5),pch=20,lty=1,cex=0.05)
 points((as.numeric(dfL51p50_LLL_zeroline_51xapprox$V2)),as.numeric(dfL51p50_LLL_zeroline_51xapprox$V4)*51/32,col=rgb(1,0.843,0.,0.5),pch=6,lty=1,cex=0.05)
 
-text(x=0.5e8,y=1e7,labels="these lower reported satellite points are byproduct small L52 & L53 zeroline peak locations \n since the re-used DHf1 LLL search locations are 50% extreme L52 peak and small L53 peak \n in origin and vice versa for the other 50% of investigated locations",
+
+text(x=0.5e8,y=1e7,labels="these lower reported satellite points are byproduct small L52 & L53 (and L75 & L73) zeroline peak locations \n since the re-used DHf1 LLL search locations are 50% extreme L52 peak and small L53 peak \n in origin and vice versa for the other 50% of investigated locations. \n Likewise for L75 & L73 where re-used DHf4 LLL search locations are 50% extreme L75 peak and small L73 peak in origin",
      srt=29.5,col="red",cex=0.25)
 
-legend(x="topleft",legend=c("Zeta fn x 1/1, largest peak every piecewise interval t=[N^2*2*Pi,(N+1)^2*2*Pi) for N={0-3636}, then near known critical line locations","L32 fn x 3/2, largest peak every interval t=[N^2*2*Pi/3,(N+1)^2*2*Pi/3) for N={0-1000}, then LLL search locations","L43 fn x 4/2, largest peak every interval t=[N^2*2*Pi/4,(N+1)^2*2*Pi/4) for N={0-1000}, then LLL search locations","L54 fn x 5/4, largest peak every interval t=[N^2*2*Pi/5,(N+1)^2*2*Pi/5) for N={0-1000}, then LLL search locations","L76 fn x 7/6, largest peak every interval t=[N^2*2*Pi/7,(N+1)^2*2*Pi/7) for N={0-1000}, then LLL search locations","L75 fn x 7/6, largest peak every interval t=[N^2*2*Pi/7,(N+1)^2*2*Pi/7) for N={0-1000}, then LLL search locations"),cex=0.5,bty="n",
-       pch=c(rep(20,6)),col=c("gray","red",rgb(0,0,1,1),rgb(1,0,1,1),rgb(0.5,1,0.5,1),rgb(0.55,0.45,1,0.5)))
+legend(x="topleft",legend=c("Zeta fn x 1/1, largest peak every piecewise interval t=[N^2*2*Pi,(N+1)^2*2*Pi) for N={0-3636}, then near known critical line locations","L32 fn x 3/2, largest peak every interval t=[N^2*2*Pi/3,(N+1)^2*2*Pi/3) for N={0-1000}, then LLL search locations","L43 fn x 4/2, largest peak every interval t=[N^2*2*Pi/4,(N+1)^2*2*Pi/4) for N={0-1000}, then LLL search locations","L54 fn x 5/4, largest peak every interval t=[N^2*2*Pi/5,(N+1)^2*2*Pi/5) for N={0-1000}, then LLL search locations","L76 fn x 7/6, largest peak every interval t=[N^2*2*Pi/7,(N+1)^2*2*Pi/7) for N={0-1000}, then LLL search locations","L75 fn x 7/6, largest peak every interval t=[N^2*2*Pi/7,(N+1)^2*2*Pi/7) for N={0-1000}, then LLL search locations","L73 fn x 7/6, largest peak every interval t=[N^2*2*Pi/7,(N+1)^2*2*Pi/7) for N={0-1000}, then LLL search locations"),cex=0.5,bty="n",
+       pch=c(rep(20,7)),col=c("gray","red",rgb(0,0,1,1),rgb(1,0,1,1),rgb(0.5,1,0.5,1),rgb(0.55,0.45,1,0.5),rgb(0.45,0.55,1,0.5)))
 
-legend(x="bottomright",legend=c("L73 fn x 7/6, largest peak every interval t=[N^2*2*Pi/7,(N+1)^2*2*Pi/7) for N={0-1000}, then LLL search locations","L37p36 fn x 37/36, largest peak every interval t=[N^2*2*Pi/37,(N+1)^2*2*Pi/37) for N={0-1000}, then LLL search locations","L51p50 fn x 51/32, largest peak every interval t=[N^2*2*Pi/51,(N+1)^2*2*Pi/51) for N={0-1000}, then LLL search locations","L53 fn x 5/4, largest peak every interval t=[N^2*2*Pi/5,(N+1)^2*2*Pi/5) for N={0-1000}, then LLL search locations","L52 fn x 5/4, largest peak every interval t=[N^2*2*Pi/5,(N+1)^2*2*Pi/5) for N={0-1000}, then LLL search locations","DHf1 fn x 5/2.568, largest peak every interval t=[N^2*2*Pi/5,(N+1)^2*2*Pi/5) for N={0-1000}, then LLL search locations","DHf2 fn x 5/9.04, largest peak every interval t=[N^2*2*Pi/5,(N+1)^2*2*Pi/5) for N={0-1000}, then LLL search locations"),cex=0.5,bty="n",
-       pch=c(rep(20,7)),col=c(rgb(0.45,0.55,1,0.5),rgb(1,0.498,0.314,1),rgb(1,0.843,0.,1),rgb(0.5,0.2,1,1),rgb(0.2,0.5,1,1),rgb(0,0,0,0.5),rgb(0,0,0,0.5)))
+legend(x="bottomright",legend=c("L37p36 fn x 37/36, largest peak every interval t=[N^2*2*Pi/37,(N+1)^2*2*Pi/37) for N={0-1000}, then LLL search locations","L51p50 fn x 51/32, largest peak every interval t=[N^2*2*Pi/51,(N+1)^2*2*Pi/51) for N={0-1000}, then LLL search locations","L53 fn x 5/4, largest peak every interval t=[N^2*2*Pi/5,(N+1)^2*2*Pi/5) for N={0-1000}, then LLL search locations","L52 fn x 5/4, largest peak every interval t=[N^2*2*Pi/5,(N+1)^2*2*Pi/5) for N={0-1000}, then LLL search locations","DHf1 fn x 5/2.568, largest peak every interval t=[N^2*2*Pi/5,(N+1)^2*2*Pi/5) for N={0-1000}, then LLL search locations","DHf2 fn x 5/9.04, largest peak every interval t=[N^2*2*Pi/5,(N+1)^2*2*Pi/5) for N={0-1000}, then LLL search locations","DHf3 fn x 7/7.2077509, largest peak every interval t=[N^2*2*Pi/7,(N+1)^2*2*Pi/7) for N={0-1000}, then LLL search locations","DHf4 fn x 7/4.3042576, largest peak every interval t=[N^2*2*Pi/7,(N+1)^2*2*Pi/7) for N={0-1000}, then LLL search locations","L5704p2851 fn x 5704/2640, largest peak every interval Delta t=10*pi*j for j={0-21}, then LLL search locations","L6389p6388 fn x 6389/6388, largest peak every interval Delta t=15*j for j={0-52}, then LLL search locations"),cex=0.5,bty="n",
+       pch=c(rep(20,10)),col=c(rgb(1,0.498,0.314,1),rgb(1,0.843,0.,1),rgb(0.5,0.2,1,1),rgb(0.2,0.5,1,1),rgb(0,0,0,0.5),rgb(0,0,0,0.5),rgb(0,0,0,0.5),rgb(0,0,0,0.5),rgb(1,0,0,0.5),rgb(0,0,1,0.5)))
 
 
 ```
@@ -1710,6 +1998,8 @@ points(log(as.numeric(di_zeroline$V1)),log(as.numeric(di_zeroline$V4)),pch=20,co
 
 points(log(as.numeric(dfL75_zeroline$V1)),log(as.numeric(dfL75_zeroline$V4)),col=rgb(0.55,0.45,1,0.5),pch=20,lty=1,cex=0.2)
 points(log(as.numeric(dfL75_LLL_zeroline$V1)),log(as.numeric(dfL75_LLL_zeroline$V4)),col=rgb(0.55,0.45,1,0.5),pch=20,lty=1,cex=0.2)
+points(log(as.numeric(dfL75_LLL_zeroline_7xapprox$V1)),log(as.numeric(dfL75_LLL_zeroline_7xapprox$V4)),col=rgb(0.55,0.45,1,0.5),pch=20,lty=1,cex=0.2)
+points(log(as.numeric(dfL75_LLL_zeroline_highest_7xapprox$V1)),log(as.numeric(dfL75_LLL_zeroline_highest_7xapprox$V4)),col=rgb(0.55,0.45,1,0.5),pch=20,lty=1,cex=0.2)
 
 text(x=30,y=12,labels="these lower reported satellite points are byproduct small L75 & L73 zeroline peak locations \n since the re-used DHf4 LLL search locations are 50% extreme L75 peak and small L73 peak \n in origin and vice versa for the other 50% of investigated locations",
      srt=25,col="red",cex=0.25)
@@ -1727,6 +2017,8 @@ lines(seq(.1,50,by=.1),2.1656076+1.1459223*(seq(.1,50,by=.1)^av-1)/av,col="brown
 
 points(log(as.numeric(dfL75_zeroline$V2)),log(as.numeric(dfL75_zeroline$V4)*7/6),col=rgb(0.55,0.45,1,0.5),pch=20,lty=1,cex=0.2)
 points(log(as.numeric(dfL75_LLL_zeroline$V2)),log(as.numeric(dfL75_LLL_zeroline$V4)*7/6),col=rgb(0.55,0.45,1,0.5),pch=20,lty=1,cex=0.2)
+points(log(as.numeric(dfL75_LLL_zeroline_7xapprox$V2)),log(as.numeric(dfL75_LLL_zeroline_7xapprox$V4)*7/6),col=rgb(0.55,0.45,1,0.5),pch=20,lty=1,cex=0.2)
+points(log(as.numeric(dfL75_LLL_zeroline_highest_7xapprox$V2)),log(as.numeric(dfL75_LLL_zeroline_highest_7xapprox$V4)*7/6),col=rgb(0.55,0.45,1,0.5),pch=20,lty=1,cex=0.2)
 
 text(x=15,y=12,labels="these lower reported satellite points are byproduct small L75 & L73 zeroline peak locations \n since the re-used DHf4 LLL search locations are 50% extreme L75 peak and small L73 peak \n in origin and vice versa for the other 50% of investigated locations",
      srt=25,col="red",cex=0.25)
@@ -1758,6 +2050,8 @@ points(log(as.numeric(di_zeroline$V1)),log(as.numeric(di_zeroline$V4)),pch=20,co
 
 points(log(as.numeric(dfL73_zeroline$V1)),log(as.numeric(dfL73_zeroline$V4)),col=rgb(0.45,0.55,1,0.5),pch=20,lty=1,cex=0.2)
 points(log(as.numeric(dfL73_LLL_zeroline$V1)),log(as.numeric(dfL73_LLL_zeroline$V4)),col=rgb(0.45,0.55,1,0.5),pch=20,lty=1,cex=0.2)
+points(log(as.numeric(dfL73_LLL_zeroline_7xapprox$V1)),log(as.numeric(dfL73_LLL_zeroline_7xapprox$V4)),col=rgb(0.45,0.55,1,0.5),pch=20,lty=1,cex=0.2)
+points(log(as.numeric(dfL73_LLL_zeroline_highest_7xapprox$V1)),log(as.numeric(dfL73_LLL_zeroline_highest_7xapprox$V4)),col=rgb(0.45,0.55,1,0.5),pch=20,lty=1,cex=0.2)
 
 text(x=30,y=12,labels="these lower reported satellite points are byproduct small L75 & L73 zeroline peak locations \n since the re-used DHf4 LLL search locations are 50% extreme L75 peak and small L73 peak \n in origin and vice versa for the other 50% of investigated locations",
      srt=25,col="red",cex=0.25)
@@ -1775,6 +2069,8 @@ lines(seq(.1,50,by=.1),2.1656076+1.1459223*(seq(.1,50,by=.1)^av-1)/av,col="brown
 
 points(log(as.numeric(dfL73_zeroline$V2)),log(as.numeric(dfL73_zeroline$V4)*7/6),col=rgb(0.45,0.55,1,0.5),pch=20,lty=1,cex=0.2)
 points(log(as.numeric(dfL73_LLL_zeroline$V2)),log(as.numeric(dfL73_LLL_zeroline$V4)*7/6),col=rgb(0.45,0.55,1,0.5),pch=20,lty=1,cex=0.2)
+points(log(as.numeric(dfL73_LLL_zeroline_7xapprox$V2)),log(as.numeric(dfL73_LLL_zeroline_7xapprox$V4)*7/6),col=rgb(0.45,0.55,1,0.5),pch=20,lty=1,cex=0.2)
+points(log(as.numeric(dfL73_LLL_zeroline_highest_7xapprox$V2)),log(as.numeric(dfL73_LLL_zeroline_highest_7xapprox$V4)*7/6),col=rgb(0.45,0.55,1,0.5),pch=20,lty=1,cex=0.2)
 
 text(x=15,y=12,labels="these lower reported satellite points are byproduct small L75 & L73 zeroline peak locations \n since the re-used DHf4 LLL search locations are 50% extreme L75 peak and small L73 peak \n in origin and vice versa for the other 50% of investigated locations",
      srt=25,col="red",cex=0.25)
@@ -1819,6 +2115,8 @@ points(log(as.numeric(di_zeroline$V1)),log(as.numeric(di_zeroline$V4)),pch=20,co
 
 points(log(as.numeric(dfDHf3_zeroline$V1)),log(as.numeric(dfDHf3_zeroline$V4)),col=rgb(0,0,0,0.5),pch=20,lty=1,cex=0.2)
 points(log(as.numeric(dfDHf3_LLL_zeroline$V1)),log(as.numeric(dfDHf3_LLL_zeroline$V4)),col=rgb(0,0,0,0.5),pch=20,lty=1,cex=0.2)
+points(log(as.numeric(dfDHf3_LLL_zeroline_7xapprox$V1)),log(as.numeric(dfDHf3_LLL_zeroline_7xapprox$V4)),col=rgb(0,0,0,0.5),pch=20,lty=1,cex=0.2)
+points(log(as.numeric(dfDHf3_LLL_zeroline_highest_7xapprox$V1)),log(as.numeric(dfDHf3_LLL_zeroline_highest_7xapprox$V4)),col=rgb(0,0,0,0.5),pch=20,lty=1,cex=0.2)
 
 
 plot(log(as.numeric(dfzeta_zeroline$V2)),log(as.numeric(dfzeta_zeroline$V5)),pch=20,col="gray",cex=0.5,
@@ -1833,6 +2131,8 @@ lines(seq(.1,50,by=.1),2.1656076+1.1459223*(seq(.1,50,by=.1)^av-1)/av,col="brown
 
 points(log(as.numeric(dfDHf3_zeroline$V2)),log(as.numeric(dfDHf3_zeroline$V4)*7/7.2077509),col=rgb(0,0,0,0.5),pch=20,lty=1,cex=0.2)
 points(log(as.numeric(dfDHf3_LLL_zeroline$V2)),log(as.numeric(dfDHf3_LLL_zeroline$V4)*7/7.2077509),col=rgb(0,0,0,0.5),pch=20,lty=1,cex=0.2)
+points(log(as.numeric(dfDHf3_LLL_zeroline_7xapprox$V2)),log(as.numeric(dfDHf3_LLL_zeroline_7xapprox$V4)*7/7.2077509),col=rgb(0,0,0,0.5),pch=20,lty=1,cex=0.2)
+points(log(as.numeric(dfDHf3_LLL_zeroline_highest_7xapprox$V2)),log(as.numeric(dfDHf3_LLL_zeroline_highest_7xapprox$V4)*7/7.2077509),col=rgb(0,0,0,0.5),pch=20,lty=1,cex=0.2)
 
 # plot((log(as.numeric(dfzeta_zeroline$V2))^av-1)/av,log(as.numeric(dfzeta_zeroline$V5)),pch=20,col="gray",cex=0.5,
 #      xlim=(c(log(1e0),log(1e25))^av-1)/av,ylim=log(c(0.5,1e25)),
@@ -1859,6 +2159,8 @@ points(log(as.numeric(di_zeroline$V1)),log(as.numeric(di_zeroline$V4)),pch=20,co
 
 points(log(as.numeric(dfDHf4_zeroline$V1)),log(as.numeric(dfDHf4_zeroline$V4)),col=rgb(0,0,0,0.5),pch=20,lty=1,cex=0.2)
 points(log(as.numeric(dfDHf4_LLL_zeroline$V1)),log(as.numeric(dfDHf4_LLL_zeroline$V4)),col=rgb(0,0,0,0.5),pch=20,lty=1,cex=0.2)
+points(log(as.numeric(dfDHf4_LLL_zeroline_7xapprox$V1)),log(as.numeric(dfDHf4_LLL_zeroline_7xapprox$V4)),col=rgb(0,0,0,0.5),pch=20,lty=1,cex=0.2)
+points(log(as.numeric(dfDHf4_LLL_zeroline_highest_7xapprox$V1)),log(as.numeric(dfDHf4_LLL_zeroline_highest_7xapprox$V4)),col=rgb(0,0,0,0.5),pch=20,lty=1,cex=0.2)
 
 
 plot(log(as.numeric(dfzeta_zeroline$V2)),log(as.numeric(dfzeta_zeroline$V5)),pch=20,col="gray",cex=0.5,
@@ -1874,6 +2176,8 @@ lines(seq(.1,50,by=.1),2.1656076+1.1459223*(seq(.1,50,by=.1)^av-1)/av,col="brown
 
 points(log(as.numeric(dfDHf4_zeroline$V2)),log(as.numeric(dfDHf4_zeroline$V4)*7/4.3042576),col=rgb(0,0,0,0.5),pch=20,lty=1,cex=0.2)
 points(log(as.numeric(dfDHf4_LLL_zeroline$V2)),log(as.numeric(dfDHf4_LLL_zeroline$V4)*7/4.3042576),col=rgb(0,0,0,0.5),pch=20,lty=1,cex=0.2)
+points(log(as.numeric(dfDHf4_LLL_zeroline_7xapprox$V2)),log(as.numeric(dfDHf4_LLL_zeroline_7xapprox$V4)*7/4.3042576),col=rgb(0,0,0,0.5),pch=20,lty=1,cex=0.2)
+points(log(as.numeric(dfDHf4_LLL_zeroline_highest_7xapprox$V2)),log(as.numeric(dfDHf4_LLL_zeroline_highest_7xapprox$V4)*7/4.3042576),col=rgb(0,0,0,0.5),pch=20,lty=1,cex=0.2)
 
 # plot((log(as.numeric(dfzeta_zeroline$V2))^av-1)/av,log(as.numeric(dfzeta_zeroline$V5)),pch=20,col="gray",cex=0.5,
 #      xlim=(c(log(1e0),log(1e25))^av-1)/av,ylim=log(c(0.5,1e25)),
@@ -1917,8 +2221,7 @@ In the left column, there is divergence between the Davenport-Heilbronn and Riem
 
 In the right columns (comparing to the pure L-function figures), except for the lowest t values there is weak but possible evidence that the re-scaled Davenport-Heilbronn extreme growth behaviour \textbf{may be lower than} the Riemann Zeta |Z| extreme peak growth behaviour. In this case, the attempted y-axis re-scaling uses the $\sum_{k=1}^{N_C} |\chi_k|$ of the (absolute value of the) real coefficients of the known Davenport-Heilbronn dirichlet series.
 
-
-
+# Extreme peak height results displaying both (i) lower boundary of critical strip and (ii) critical line behaviour
 
 ## Individual comparison of Ramanujan Tau L-function Riemann Siegel Z function extreme peak behaviour for $s=5.5+I\cdot t$ and $s=6+I\cdot t$ lines in the complex plane to the $|Z_\zeta(0+I\cdot t)|$ and $|Z_\zeta(0.5+I\cdot t)|$ extreme peak behaviour respectively.
 
@@ -2033,6 +2336,9 @@ dfRaman_5p5line_LLL_1xapprox$V7=floor(as.numeric(dfRaman_5p5line_LLL_1xapprox$V2
 dfRaman_5p5line_LLL_1xapprox=dfRaman_5p5line_LLL_1xapprox[!duplicated(floor(as.numeric(dfRaman_5p5line_LLL_1xapprox$V2))),]
 
 
+
+
+
 plot(log(as.numeric(dfzeta_zeroline$V1)),log(as.numeric(dfzeta_zeroline$V5)),pch=20,col="gray",cex=0.5,
      xlim=c(log(1e0),log(1e40)),ylim=log(c(0.5,1e25)),
      main="growth of the s=5.5+It line largest Ramanujan Tau L-function |Z| peaks \n standard log(|Z|) vs log(t) plot",xlab="log(t) value",ylab="log(|Z|) value",cex.main=0.9);grid(col="gray2")
@@ -2049,7 +2355,7 @@ points(log(as.numeric(dfRaman_5p5line$V1)),log(as.numeric(dfRaman_5p5line$V5)),c
 
 
 plot(log(as.numeric(dfzeta_zeroline$V2)),log(as.numeric(dfzeta_zeroline$V4)),pch=20,col="gray",cex=0.5,
-     xlim=c(log(1e0),log(1e20)),ylim=log(c(0.5,1e25)),
+     xlim=c(log(1e0),log(1e25)),ylim=log(c(0.5,1e25)),
      main="growth of the s=5.5+It line largest Ramanujan Tau L-function |Z| peaks \n log(|Z|*1/1) vs 1/2*log(sqrt((t/2/pi)^d))+log(sqrt(Nc)) plot",xlab="1/2*log(t/2/pi) value",ylab="log(|Z|*1/1) value",cex.main=0.9);grid(col="gray2")
 points(log(as.numeric(df_zeroline$V2)),log(abs(as.numeric(df_zeroline$V4))),pch=6,col="gray",cex=0.3)
 points(log(as.numeric(dg_zeroline$V2)),log(abs(as.numeric(dg_zeroline$V4))),pch=6,col="gray",cex=0.3)
@@ -2067,7 +2373,6 @@ points(1/2*log(as.numeric(dfRaman_5p5line$V2)),1*log(as.numeric(dfRaman_5p5line$
 points(1/2*log(as.numeric(dfRaman_5p5line_1xapprox$V2)),0.5*2.1656076+0.5*log(as.numeric(dfRaman_5p5line_1xapprox$V4)),col="darkgreen",pch=6,lty=1,cex=0.5)
 
 legend(x=5,y=7,legend="additional scaling of yaxis - 0.5*2.1656076+0.5*log(|Ztau|*1/1)",col="darkgreen",pch=6,cex=0.5,bty="n")
-
 
 
 
@@ -2273,6 +2578,9 @@ for (i in 1:dim(dfcomb2)[1]) {
   }
 }
 
+
+
+
 plot(log(as.numeric(df$V1)),log(df$Z),pch=20,col="gray",cex=0.5,
      xlim=c(log(1e0),log(1e40)),ylim=log(c(0.5,100000)),
      main="growth of largest Ramanujan Tau L-function |Z| peaks on critical line\n standard log(|Z|) vs log(t) plot",xlab="log(t) value",ylab="log(|Z|) value",cex.main=0.9);grid(col="gray2")
@@ -2306,6 +2614,8 @@ points(log(as.numeric(dfRaman_LLL_1xapprox_highest$V1)),log(as.numeric(dfRaman_L
 points(log(as.numeric(dfRaman_LLL_10xapprox_high$V1)),log(as.numeric(dfRaman_LLL_10xapprox_high$Z)),col="green",pch=8,cex=0.3)
 
 
+
+
 plot(log(as.numeric(df$V2)),log(df$Z),pch=20,col="gray",cex=0.5,
      xlim=c(log(1e0),log(1e25)),ylim=log(c(0.5,100000)),
      main="growth of largest Ramanujan Tau L-function |Z| peaks on critical line \n  log(|Z|*1/1) vs 1/2*log(sqrt((t/2/pi)^2*1))+log(sqrt(Nc)) plot",xlab="1/2*log(t/2/pi) value",ylab="log(|Z|*1/1) value",cex.main=0.9);grid(col="gray2")
@@ -2331,7 +2641,7 @@ points(1/2*log(as.numeric(dfRaman$V2)),log(dfRaman$Z),col="magenta",pch=20,cex=0
 points(1/2*log(as.numeric(dfRaman_rpt$V2)),log(dfRaman_rpt$Z),col=rgb(0,1,1,0.5),pch=20,cex=0.5)
 
 points(1/2*log(as.numeric(dfRaman_high$V2)),log(dfRaman_high$Z),col="magenta",pch=20,cex=0.5)
-points(1/2*log(as.numeric(dfRaman_10xapprox$V2)),log(as.numeric(dfRaman_10xapprox$V4)),col="coral",pch=6,cex=0.5)
+points(1/2*log(as.numeric(dfRaman_10xapprox$V2)),log(as.numeric(dfRaman_10xapprox$V4)),col="coral",pch=8,cex=0.5)
 points(1/2*log(as.numeric(dfRaman_100xapprox$V2)),log(as.numeric(dfRaman_100xapprox$V4)),col="coral",pch=6,cex=0.5)
 points(1/2*log(as.numeric(dfRaman_100xapprox_recentered$V2)),log(as.numeric(dfRaman_100xapprox_recentered$V4)),col="blue",pch=6,cex=0.5)
 points(1/2*log(as.numeric(dfRaman_10xapprox$V2)),log(as.numeric(dfRaman_10xapprox$V5)),col="magenta",pch=20,cex=0.5)
@@ -2339,8 +2649,268 @@ points(1/2*log(as.numeric(dfRaman_LLL_100xapprox$V2)),log(as.numeric(dfRaman_LLL
 points(1/2*log(as.numeric(dfRaman_LLL_1xapprox_highest$V2)),log(as.numeric(dfRaman_LLL_1xapprox_highest$Z)),col="red",pch=8,cex=0.5)
 points(1/2*log(as.numeric(dfRaman_LLL_10xapprox_high$V2)),log(as.numeric(dfRaman_LLL_10xapprox_high$Z)),col="green",pch=8,cex=0.3)
 
+
 lines(seq(.1,50,by=.1),1.274014+0.866363*(seq(.1,50,by=.1)^alpha_val-1)/alpha_val,col="brown2",lty=6)
 
+
+```
+\elandscape
+\restoregeometry
+
+
+\clearpage
+
+### Large $N_C$ value L-function extreme peak height behaviour 
+
+Figures 13 & 14 below, display for two investigated large $N_C$ value 1st degree 1 L-functions
+
+\begin{enumerate}
+\item left column - $log\left(|Z_L|\right) \text{ vs } \log(t)$ 
+\item right column - $log\left(|Z_L|\cdot \frac{N_C}{N_{\chi\ne0}}\right) \text{ vs } \log\left(\sqrt{(\frac{t}{2\pi})^{d=1}\cdot N_C}\right)$ 
+\end{enumerate}
+
+of extreme L-function peak height respectively.
+
+Figure 13 displays a comparison of $|Z_{\zeta}|$ behaviour with located extreme Riemann Siegel Z function peaks for 
+
+\begin{itemize}
+\item top row $L(\chi_{5704}(2851,.),0+I\cdot t)$,
+\item bottom row $L(\chi_{5704}(2851,.),0.5+I\cdot t)$
+\end{itemize}
+
+with $N_C=5704$ and $N_{\chi \ne0}=2640$ [27,34].
+
+Figure 14 displays a comparison of $|Z_{\zeta}|$ behaviour with located extreme Riemann Siegel Z function peaks for 
+
+\begin{itemize}
+\item top row $L(\chi_{6389}(6388,.),0+I\cdot t)$,
+\item bottom row $L(\chi_{6389}(6388,.),0.5+I\cdot t)$
+\end{itemize}
+
+with $N_C=6389$ and $N_{\chi \ne0}=6388$ [27,34].
+
+
+For the top row, 
+
+\begin{itemize}
+\item the Box Cox transformation based trend growth rate model given in equation (1) of this current paper is displayed shown, as brown dot-dashed line.
+\end{itemize}
+
+For the bottom row, 
+
+\begin{itemize}
+\item the Box Cox transformation based fitted trend growth rate model (t < 1e31) from [21] for the critical line of the Riemann Zeta function 
+
+\begin{equation}
+log\Bigg[|Z_\zeta(0.5+I\cdot t)|_{max}\Bigg]_{trend}\approx 1.274014+0.866363\cdot\left(\frac{\sqrt{\log\Big[\sqrt{\frac{t}{2\pi}}\Big]}-1}{0.5}\right)
+\end{equation}
+
+is displayed, shown as brown dot-dashed line.
+
+\end{itemize}
+
+
+### Highlights part 3
+
+For the example large $N_C$ L-functions
+
+Examining the top row panels of figures 13 & 14, 
+
+\begin{itemize}
+\item the growth rate of extreme peaks at low t, on the lower boundary of the large $N_C$ L-function critical strip clearly exceeds the growth rate of extreme peaks on the lower boundary of the Riemann Zeta function critical strip.
+\item the xy scale transformation $log\left(|Z_L|\cdot \frac{N_C}{N_{\chi\ne0}}\right) \text{ vs } \log\left(\sqrt{(\frac{t}{2\pi})^{d=1}\cdot N_C}\right)$ in the right panel produces to first order a universal growth rate behaviour for the two large $N_C$ L-functions. 
+\end{itemize}
+
+It is important to remember that on the lower boundary of the critical strip the dirichlet series terms have no decay component to their magnitude since 
+
+\begin{equation}
+\left|\frac{\chi_k}{k^s}\right|\rightarrow \left|\frac{\chi_k}{k^{I\cdot t}}\right| \rightarrow |\chi_k| \text{ when } s=0+I\cdot t
+\end{equation}
+
+
+Examining the bottom row panels of figure 13 & 14 
+
+\begin{itemize}
+\item the growth rate of extreme peaks at low t, on the lower boundary of the large $N_C$ L-function critical strip clearly exceeds the growth rate of extreme peaks on the lower boundary of the Riemann Zeta function critical strip.
+\item for $L(\chi_{6389}(6388,.),0.5+I\cdot t)$ in figure 14, the xy scale transformation $log\left(|Z_L|\cdot \frac{N_C}{N_{\chi\ne0}}\right) \text{ vs } \log\left(\sqrt{(\frac{t}{2\pi})^{d=1}\cdot N_C}\right)$ in the right panel produces similar behaviour to the low $N_C$ 1st degree L-functions whereby many extreme peaks lie very close to the Riemann Zeta extreme peak behaviour (in the transformed scale).
+\item for $L(\chi_{5704}(2851,.),0.5+I\cdot t)$ in figure 13, the xy scale transformation $log\left(|Z_L|\cdot \frac{N_C}{N_{\chi\ne0}}\right) \text{ vs } \log\left(\sqrt{(\frac{t}{2\pi})^{d=1}\cdot N_C}\right)$ in the right panel displays very few extreme peaks which lie very close to the Riemann Zeta extreme peak behaviour (in the transformed scale). 
+\end{itemize}
+
+Since the $s=0+I\cdot t$  extreme peak behaviour growth rate behaviour (in the transformed universal growth chart) is similar for  $L(\chi_{6389}(6388,.),0.5+I\cdot t)$ and $L(\chi_{5704}(2851,.),0.5+I\cdot t)$ the most likely reason for their different behaviour (in the transformed universal growth chart) for $s=0.5+I\cdot t$ is the combined impact of large number of dirichlet terms with $\chi_k=0$ and decay in $|\chi_k|$ induced by the real component of s.
+
+That is, on the critical line
+
+\begin{equation}
+\left|\frac{\chi_k}{k^s}\right|\rightarrow \left|\frac{\chi_k}{k^{0.5+I\cdot t}}\right| \rightarrow \frac{1}{\sqrt{k}}\cdot|\chi_k| \text{ when } s=0.5+I\cdot t
+\end{equation}
+
+
+So for $L(\chi_{6389}(6388,.),0.5+I\cdot t)$, $6388/6389>0.9998$ dirichlet series terms are of the magnitude $\frac{1}{\sqrt{k}}\cdot|\chi_k=1|$  whereas for $L(\chi_{5704}(2851,.),0.5+I\cdot t)$ only $2640/6389\approx0.4132$ dirichlet series terms are of the magnitude $\frac{1}{\sqrt{k}}\cdot|\chi_k=1|$ the rest of the dirichlet zeries terms being zero. Where the simple y-axis universal growth scaling $log\left(|Z_L|\cdot \frac{N_C}{N_{\chi\ne0}}\right)$ in the right columns doesn't appear to smartly address decay factor effect also occurring on the critical line it is sufficient (to first order) on the lower boundary of the critical strip. The empirical evidence displayed however supports that
+(equation (2) of [21]) 
+
+$log\Bigg[|Z_L(k+I\cdot t)|_{max}\cdot \frac{N_C}{N_{\chi \ne 0}}\Bigg]_{trend}\lesssim 1.274014+0.866363\cdot\left(\frac{\sqrt{\log\left[\sqrt{\left(\frac{t}{2\pi}\right)^d\cdot N_C}\right]}-1}{0.5}\right)$
+
+remains a useful approximate extreme peak height trend growth upper bound for large $N_C$ 1st degree L-functions on the critical line.  
+
+
+
+\newgeometry{top=0.5in,bottom=0.25in,left=0.15in,right=0.25in}
+\blandscape
+```{r different_rescalings_pt8, echo=FALSE, warning=FALSE, fig.show = "hold",  out.width = c("49%","49%"), fig.align = "center", fig.cap="\\small{A graphical comparison for the L5704p2851 1st degree L-functions and the Riemann Zeta function extreme peaks of \\textbf{left panel} - $\\log\\left(|Z_L|\\right) \\text{ vs } \\log(t)$, \\textbf{right panel} - $\\log\\left(|Z_L|\\cdot \\frac{N_C}{N_{\\chi\\ne0}}\\right) \\text{ vs } \\log\\left(\\sqrt{(\\frac{t}{2\\pi})^d\\cdot N_C}\\right)$ for \\textbf{top row} - $s = 0+I\\cdot t$ (zero line),  and \\textbf{bottom row} - $s = 0.5+I\\cdot t$ (critical line). The x axis rescaling in the right panel is the same in figure 14 compared to figures 4-11. With one a different fitted model for extreme peak height trend growth rate depending on Re(s). Riemann Zeta function behaviour shown in gray for known peak heights (and cyan for high t preliminary peak height estimates.}", fig.height=4.9}
+
+
+
+dfL5704p2851_zeroline=read.csv("/home/john/pari/largest_value_L5704p2851_zeroline_every10Pisegment.csv",header=FALSE,sep=",",colClasses = "character")
+dfL5704p2851_zeroline=dfL5704p2851_zeroline[order(as.numeric(dfL5704p2851_zeroline$V1)),]
+dfL5704p2851_zeroline$Z=as.numeric(dfL5704p2851_zeroline$V4)
+dfL5704p2851_zeroline$residual=as.numeric(dfL5704p2851_zeroline$V3)
+dfL5704p2851_zeroline$n=floor(as.numeric(dfL5704p2851_zeroline$V2))
+
+
+dfL5704p2851_LLL_zeroline=read.csv("/home/john/pari/LLL_search_location_L5704p2851_zeroline_peak_heights.csv",header=FALSE,sep=",",colClasses = "character")
+dfL5704p2851_LLL_zeroline=dfL5704p2851_LLL_zeroline[order(as.numeric(dfL5704p2851_LLL_zeroline$V1)),]
+dfL5704p2851_LLL_zeroline$Z=as.numeric(dfL5704p2851_LLL_zeroline$V4)
+dfL5704p2851_LLL_zeroline$residual=as.numeric(dfL5704p2851_LLL_zeroline$V3)
+dfL5704p2851_LLL_zeroline$n=floor(as.numeric(dfL5704p2851_LLL_zeroline$V2))
+
+dfL5704p2851_LLL_zeroline_5704xapprox=read.csv("/home/john/pari/LLL_search_location_L5704p2851_zeroline_peak_heights_5704xapprox.csv",header=FALSE,sep=",",colClasses = "character")
+dfL5704p2851_LLL_zeroline_5704xapprox=dfL5704p2851_LLL_zeroline_5704xapprox[order(as.numeric(dfL5704p2851_LLL_zeroline_5704xapprox$V1)),]
+dfL5704p2851_LLL_zeroline_5704xapprox$Z=as.numeric(dfL5704p2851_LLL_zeroline_5704xapprox$V4)
+dfL5704p2851_LLL_zeroline_5704xapprox$residual=as.numeric(dfL5704p2851_LLL_zeroline_5704xapprox$V3)
+dfL5704p2851_LLL_zeroline_5704xapprox$n=floor(as.numeric(dfL5704p2851_LLL_zeroline_5704xapprox$V2))
+
+
+dfL5704p2851_LLL_zeroline_5704xapprox_inputset2=read.csv("/home/john/pari/LLL_search_location_L5704p2851_zeroline_peak_heights_5704xapprox_inputset2.csv",header=FALSE,sep=",",colClasses = "character")
+dfL5704p2851_LLL_zeroline_5704xapprox_inputset2=dfL5704p2851_LLL_zeroline_5704xapprox_inputset2[order(as.numeric(dfL5704p2851_LLL_zeroline_5704xapprox_inputset2$V1)),]
+dfL5704p2851_LLL_zeroline_5704xapprox_inputset2$Z=as.numeric(dfL5704p2851_LLL_zeroline_5704xapprox_inputset2$V4)
+dfL5704p2851_LLL_zeroline_5704xapprox_inputset2$residual=as.numeric(dfL5704p2851_LLL_zeroline_5704xapprox_inputset2$V3)
+dfL5704p2851_LLL_zeroline_5704xapprox_inputset2$n=floor(as.numeric(dfL5704p2851_LLL_zeroline_5704xapprox_inputset2$V2))
+
+
+
+plot(log(as.numeric(dfzeta_zeroline$V1)),log(as.numeric(dfzeta_zeroline$V5)),pch=20,col="gray",cex=0.5,
+     xlim=c(log(1e0),log(1e40)),ylim=log(c(0.5,1e25)),
+     main="growth of the s=0+It line largest L5704p2851  L-function |Z| peaks \n standard log(|Z|) vs log(t) plot",xlab="log(t) value",ylab="log(|Z|) value",cex.main=0.9);grid(col="gray2")
+points(log(as.numeric(df_zeroline$V1)),log(abs(as.numeric(df_zeroline$V4))),pch=6,col="gray",cex=0.3)
+points(log(as.numeric(dg_zeroline$V1)),log(abs(as.numeric(dg_zeroline$V4))),pch=6,col="gray",cex=0.3)
+points(log(as.numeric(dh_zeroline$V1)),log(abs(as.numeric(dh_zeroline$V4))),pch=6,col="gray",cex=0.3)
+points(log(as.numeric(di_zeroline$V1)),log(as.numeric(di_zeroline$V4)),pch=20,col="gray",cex=0.5)
+
+points(log(as.numeric(dfL5704p2851_zeroline$V1)),log(as.numeric(dfL5704p2851_zeroline$Z)),col=rgb(1,0,0,0.5),pch=20,cex=0.5)
+points(log(as.numeric(dfL5704p2851_LLL_zeroline$V1)),log(as.numeric(dfL5704p2851_LLL_zeroline$Z)),col=rgb(1,0,0,0.5),pch=20,cex=0.5)
+points(log(as.numeric(dfL5704p2851_LLL_zeroline_5704xapprox$V1)),log(as.numeric(dfL5704p2851_LLL_zeroline_5704xapprox$Z)),col=rgb(1,0,0,0.5),pch=6,cex=0.5)
+points(log(as.numeric(dfL5704p2851_LLL_zeroline_5704xapprox_inputset2$V1)),log(as.numeric(dfL5704p2851_LLL_zeroline_5704xapprox_inputset2$Z)),col=rgb(1,0,0,0.5),pch=8,cex=0.3)
+
+points(log((19.905)),log(296.5412),col=rgb(1,0,0,0.5),pch=20,cex=0.5)
+
+plot(log(as.numeric(dfzeta_zeroline$V2)),log(as.numeric(dfzeta_zeroline$V4)),pch=20,col="gray",cex=0.5,
+     xlim=c(log(1e0),log(1e25)),ylim=log(c(0.5,1e25)),
+     main="growth of the s=0+It line L5704p2851 L-function |Z| peaks \n log(|Z|*Nc/Nne0) vs log(sqrt((t/2/pi)^d*Nc)) plot",xlab="1/2*log(t/2/pi) value",ylab="log(|Z|*Nc/Nne0) value",cex.main=0.9);grid(col="gray2")
+points(log(as.numeric(df_zeroline$V2)),log(abs(as.numeric(df_zeroline$V4))),pch=6,col="gray",cex=0.3)
+points(log(as.numeric(dg_zeroline$V2)),log(abs(as.numeric(dg_zeroline$V4))),pch=6,col="gray",cex=0.3)
+points(log(as.numeric(dh_zeroline$V2)),log(abs(as.numeric(dh_zeroline$V4))),pch=6,col="gray",cex=0.3)
+points(log(as.numeric(di_zeroline$V2)),log(as.numeric(di_zeroline$V4)),pch=20,col="gray",cex=0.5)
+
+points(log(as.numeric(dfL5704p2851_zeroline$V2)),log(as.numeric(dfL5704p2851_zeroline$Z)*5704/2640),col=rgb(1,0,0,0.5),pch=20,cex=0.5)
+points(log(as.numeric(dfL5704p2851_LLL_zeroline$V2)),log(as.numeric(dfL5704p2851_LLL_zeroline$Z)*5704/2640),col=rgb(1,0,0,0.5),pch=20,cex=0.5)
+points(log(as.numeric(dfL5704p2851_LLL_zeroline_5704xapprox$V2)),log(as.numeric(dfL5704p2851_LLL_zeroline_5704xapprox$Z)*5704/2640),col=rgb(1,0,0,0.5),pch=6,cex=0.5)
+points(log(as.numeric(dfL5704p2851_LLL_zeroline_5704xapprox_inputset2$V2)),log(as.numeric(dfL5704p2851_LLL_zeroline_5704xapprox_inputset2$Z)*5704/2640),col=rgb(1,0,0,0.5),pch=8,cex=0.3)
+
+lines(seq(.1,50,by=.1),2.1656076+1.1459223*(seq(.1,50,by=.1)^av-1)/av,col="brown",lty=6)
+
+
+points(log(sqrt(19.905/2/pi*5704)),log(296.541*5704/2640),col=rgb(1,0,0,0.5),pch=20,cex=0.5)
+
+
+alpha_val=0.5
+
+
+
+
+dfL5704p2851=read.csv("/home/john/pari/largest_value_L5704p2851_every10Pisegment.csv",header=FALSE,sep=",",colClasses = "character")
+dfL5704p2851=dfL5704p2851[order(as.numeric(dfL5704p2851$V1)),]
+dfL5704p2851$Z=as.numeric(dfL5704p2851$V4)
+dfL5704p2851$residual=as.numeric(dfL5704p2851$V3)
+dfL5704p2851$n=floor(as.numeric(dfL5704p2851$V2))
+
+dfL5704p2851_LLL=read.csv("/home/john/pari/LLL_search_location_L5704p2851_peak_heights.csv",header=FALSE,sep=",",colClasses = "character")
+dfL5704p2851_LLL=dfL5704p2851_LLL[order(as.numeric(dfL5704p2851_LLL$V1)),]
+dfL5704p2851_LLL$Z=as.numeric(dfL5704p2851_LLL$V4)
+dfL5704p2851_LLL$residual=as.numeric(dfL5704p2851_LLL$V3)
+dfL5704p2851_LLL$n=floor(as.numeric(dfL5704p2851_LLL$V2))
+
+dfL5704p2851_LLL_5704xapprox=read.csv("/home/john/pari/LLL_search_location_L5704p2851_peak_heights_5704xapprox.csv",header=FALSE,sep=",",colClasses = "character")
+dfL5704p2851_LLL_5704xapprox=dfL5704p2851_LLL_5704xapprox[order(as.numeric(dfL5704p2851_LLL_5704xapprox$V1)),]
+dfL5704p2851_LLL_5704xapprox$Z=as.numeric(dfL5704p2851_LLL_5704xapprox$V4)
+dfL5704p2851_LLL_5704xapprox$residual=as.numeric(dfL5704p2851_LLL_5704xapprox$V3)
+dfL5704p2851_LLL_5704xapprox$n=floor(as.numeric(dfL5704p2851_LLL_5704xapprox$V2))
+
+
+dfL5704p2851_LLL_5704xapprox_inputset2=read.csv("/home/john/pari/LLL_search_location_L5704p2851_peak_heights_5704xapprox_inputset2.csv",header=FALSE,sep=",",colClasses = "character")
+dfL5704p2851_LLL_5704xapprox_inputset2=dfL5704p2851_LLL_5704xapprox_inputset2[order(as.numeric(dfL5704p2851_LLL_5704xapprox_inputset2$V1)),]
+dfL5704p2851_LLL_5704xapprox_inputset2$Z=as.numeric(dfL5704p2851_LLL_5704xapprox_inputset2$V4)
+dfL5704p2851_LLL_5704xapprox_inputset2$residual=as.numeric(dfL5704p2851_LLL_5704xapprox_inputset2$V3)
+dfL5704p2851_LLL_5704xapprox_inputset2$n=floor(as.numeric(dfL5704p2851_LLL_5704xapprox_inputset2$V2))
+
+
+plot(log(as.numeric(df$V1)),log(df$Z),pch=20,col="gray",cex=0.5,
+     xlim=c(log(1e0),log(1e40)),ylim=log(c(0.5,100000)),
+     main="growth of largest L5704p2851  L-function |Z| peaks on critical line\n standard log(|Z|) vs log(t) plot",xlab="log(t) value",ylab="log(|Z|) value",cex.main=0.9);grid(col="gray2")
+points(log(as.numeric(df2$V1)),log(df2$Z),pch=20,col="gray",cex=0.5)
+points(log(as.numeric(df_kotnick_nodup$t)),log(abs(as.numeric(df_kotnick_nodup$Z))),pch=6,col="gray2",cex=0.3)
+points(log(as.numeric(dft$t)),log(abs(as.numeric(dft$Z))),pch=6,col="gray",cex=0.3)
+
+points(log(dfr$t),log(abs(dfr$Z)),pch=20,col="gray",cex=0.4)
+points(log(as.numeric(dgr$V1)),log(abs(as.numeric(dgr$V3))),pch=20,col="gray",cex=0.4)
+points(log(as.numeric(dhr$T)),log(abs(as.numeric(dhr$Z))),pch=20,col="gray",cex=0.4)
+
+points(log(as.numeric(di$V1)),log(abs(as.numeric(di$V4))),pch=6,col=rgb(0,1,1,0.2),cex=0.5)
+arrows(x0=log(as.numeric(di$V1)),y0=log(0.9*abs(as.numeric(di$V4))),x1=log(as.numeric(di$V1)),col=rgb(0,1,1,0.2),
+       y1=log(1.1*abs(as.numeric(di$V4))), length=0.02, angle=90, code=3)
+
+points(log(as.numeric(dilowerT$V1)),log(abs(as.numeric(dilowerT$V4))),col=rgb(0,1,1,0.2),pch=6,cex=0.5)
+arrows(x0=log(as.numeric(dilowerT$V1)),y0=log(0.9*abs(as.numeric(dilowerT$V4))),x1=log(as.numeric(dilowerT$V1)),col=rgb(0,1,1,0.2),
+       y1=log(1.1*abs(as.numeric(dilowerT$V4))), length=0.02, angle=90, code=3)
+points(log(as.numeric(dilowerT$V1)),log(abs(as.numeric(dilowerT$V5))),pch=20,col="gray",cex=0.4)
+
+
+
+points(log(as.numeric(dfL5704p2851$V1)),log(as.numeric(dfL5704p2851$Z)),col=rgb(1,0,0,0.5),pch=20,cex=0.5)
+points(log(as.numeric(dfL5704p2851_LLL$V1)),log(as.numeric(dfL5704p2851_LLL$Z)),col=rgb(1,0,0,0.5),pch=20,cex=0.5)
+points(log(as.numeric(dfL5704p2851_LLL_5704xapprox$V1)),log(as.numeric(dfL5704p2851_LLL_5704xapprox$Z)),col=rgb(1,0,0,0.5),pch=6,cex=0.5)
+points(log(as.numeric(dfL5704p2851_LLL_5704xapprox_inputset2$V1)),log(as.numeric(dfL5704p2851_LLL_5704xapprox_inputset2$Z)),col=rgb(1,0,0,0.5),pch=8,cex=0.3)
+
+
+
+plot(log(as.numeric(df$V2)),log(df$Z),pch=20,col="gray",cex=0.5,
+     xlim=c(log(1e0),log(1e25)),ylim=log(c(0.5,100000)),
+     main="growth of L5704p2851 L-function |Z| peaks on critical line \n log(|Z|*Nc/Nne0) vs log(sqrt((t/2/pi)^d*Nc)) plot",xlab="1/2*log(t/2/pi) value",ylab="log(|Z|*Nc/Nne0) value",cex.main=0.9);grid(col="gray2")
+points(log(as.numeric(df2$V2)),log(df2$Z),pch=20,col="gray",cex=0.5)
+points(log(sqrt(as.numeric(df_kotnick_nodup$t)/2/pi)),log(abs(as.numeric(df_kotnick_nodup$Z))),pch=6,col="gray2",cex=0.3)
+points(log(sqrt(as.numeric(dft$t)/2/pi)),log(abs(as.numeric(dft$Z))),pch=6,col="gray",cex=0.3)
+
+points(log(sqrt(dfr$t/2/pi)),log(abs(dfr$Z)),pch=20,col="gray",cex=0.4)
+points(log(sqrt(as.numeric(dgr$V1)/2/pi)),log(abs(as.numeric(dgr$V3))),pch=20,col="gray",cex=0.4)
+points(log(as.numeric(dhr$Q1)),log(abs(as.numeric(dhr$Z))),pch=20,col="gray",cex=0.4)
+
+
+points(log(as.numeric(di$V2)),log(abs(as.numeric(di$V4))),pch=6,col=rgb(0,1,1,0.2),cex=0.5)
+arrows(x0=log(as.numeric(di$V2)),y0=log(0.9*abs(as.numeric(di$V4))),x1=log(as.numeric(di$V2)),col=rgb(0,1,1,0.2),
+       y1=log(1.1*abs(as.numeric(di$V4))), length=0.02, angle=90, code=3)
+
+points(log(as.numeric(dilowerT$V2)),log(abs(as.numeric(dilowerT$V4))),col=rgb(0,1,1,0.2),pch=6,cex=0.5)
+arrows(x0=log(as.numeric(dilowerT$V2)),y0=log(0.9*abs(as.numeric(dilowerT$V4))),x1=log(as.numeric(dilowerT$V2)),col=rgb(0,1,1,0.2),
+       y1=log(1.1*abs(as.numeric(dilowerT$V4))), length=0.02, angle=90, code=3)
+points(log(as.numeric(dilowerT$V2)),log(abs(as.numeric(dilowerT$V5))),pch=20,col="gray",cex=0.4)
+
+
+
+points(log(as.numeric(dfL5704p2851$V2)),log(as.numeric(dfL5704p2851$Z)*5704/2640),col=rgb(1,0,0,0.5),pch=20,cex=0.5)
+points(log(as.numeric(dfL5704p2851_LLL$V2)),log(as.numeric(dfL5704p2851_LLL$Z)*5704/2640),col=rgb(1,0,0,0.5),pch=20,cex=0.5)
+points(log(as.numeric(dfL5704p2851_LLL_5704xapprox$V2)),log(as.numeric(dfL5704p2851_LLL_5704xapprox$Z)*5704/2640),col=rgb(1,0,0,0.5),pch=6,cex=0.5)
+points(log(as.numeric(dfL5704p2851_LLL_5704xapprox_inputset2$V2)),log(as.numeric(dfL5704p2851_LLL_5704xapprox_inputset2$Z)*5704/2640),col=rgb(1,0,0,0.5),pch=8,cex=0.3)
+
+lines(seq(.1,50,by=.1),1.274014+0.866363*(seq(.1,50,by=.1)^alpha_val-1)/alpha_val,col="brown2",lty=6)
 
 
 
@@ -2354,9 +2924,159 @@ lines(seq(.1,50,by=.1),1.274014+0.866363*(seq(.1,50,by=.1)^alpha_val-1)/alpha_va
 
 \clearpage
 
+
+\newgeometry{top=0.5in,bottom=0.25in,left=0.15in,right=0.25in}
+\blandscape
+```{r different_rescalings_pt9, echo=FALSE, warning=FALSE, fig.show = "hold",  out.width = c("49%","49%"), fig.align = "center", fig.cap="\\small{A graphical comparison for the L6389p6388 1st degree L-functions and the Riemann Zeta function extreme peaks of \\textbf{left panel} - $\\log\\left(|Z_L|\\right) \\text{ vs } \\log(t)$, \\textbf{right panel} - $\\log\\left(|Z_L|\\cdot \\frac{N_C}{N_{\\chi\\ne0}}\\right) \\text{ vs } \\log\\left(\\sqrt{(\\frac{t}{2\\pi})^d\\cdot N_C}\\right)$ for \\textbf{top row} - $s = 0+I\\cdot t$ (zero line),  and \\textbf{bottom row} - $s = 0.5+I\\cdot t$ (critical line). The x axis rescaling in the right panel is the same in figure 15 compared to figures 4-11. With one a different fitted model for extreme peak height trend growth rate depending on Re(s). Riemann Zeta function behaviour shown in gray for known peak heights (and cyan for high t preliminary peak height estimates.}", fig.height=4.9}
+
+
+
+
+dfL6389p6388_zeroline=read.csv("/home/john/pari/largest_value_L6389p6388_zeroline_every15segment.csv",header=FALSE,sep=",",colClasses = "character")
+dfL6389p6388_zeroline=dfL6389p6388_zeroline[order(as.numeric(dfL6389p6388_zeroline$V1)),]
+dfL6389p6388_zeroline$Z=as.numeric(dfL6389p6388_zeroline$V4)
+dfL6389p6388_zeroline$residual=as.numeric(dfL6389p6388_zeroline$V3)
+dfL6389p6388_zeroline$n=floor(as.numeric(dfL6389p6388_zeroline$V2))
+
+dfL6389p6388_LLL_zeroline=read.csv("/home/john/pari/LLL_search_location_L6389p6388_zeroline_peak_heights.csv",header=FALSE,sep=",",colClasses = "character")
+dfL6389p6388_LLL_zeroline=dfL6389p6388_LLL_zeroline[order(as.numeric(dfL6389p6388_LLL_zeroline$V1)),]
+dfL6389p6388_LLL_zeroline$Z=as.numeric(dfL6389p6388_LLL_zeroline$V4)
+dfL6389p6388_LLL_zeroline$residual=as.numeric(dfL6389p6388_LLL_zeroline$V3)
+dfL6389p6388_LLL_zeroline$n=floor(as.numeric(dfL6389p6388_LLL_zeroline$V2))
+
+dfL6389p6388_LLL_zeroline_6389xapprox=read.csv("/home/john/pari/LLL_search_location_L6389p6388_zeroline_peak_heights_6389xapprox.csv",header=FALSE,sep=",",colClasses = "character")
+dfL6389p6388_LLL_zeroline_6389xapprox=dfL6389p6388_LLL_zeroline_6389xapprox[order(as.numeric(dfL6389p6388_LLL_zeroline_6389xapprox$V1)),]
+dfL6389p6388_LLL_zeroline_6389xapprox$Z=as.numeric(dfL6389p6388_LLL_zeroline_6389xapprox$V4)
+dfL6389p6388_LLL_zeroline_6389xapprox$residual=as.numeric(dfL6389p6388_LLL_zeroline_6389xapprox$V3)
+dfL6389p6388_LLL_zeroline_6389xapprox$n=floor(as.numeric(dfL6389p6388_LLL_zeroline_6389xapprox$V2))
+
+
+plot(log(as.numeric(dfzeta_zeroline$V1)),log(as.numeric(dfzeta_zeroline$V5)),pch=20,col="gray",cex=0.5,
+     xlim=c(log(1e0),log(1e40)),ylim=log(c(0.5,1e25)),
+     main="growth of the s=0+It line largest L6389p6388 L-function |Z| peaks \n standard log(|Z|) vs log(t) plot",xlab="log(t) value",ylab="log(|Z|) value",cex.main=0.9);grid(col="gray2")
+points(log(as.numeric(df_zeroline$V1)),log(abs(as.numeric(df_zeroline$V4))),pch=6,col="gray",cex=0.3)
+points(log(as.numeric(dg_zeroline$V1)),log(abs(as.numeric(dg_zeroline$V4))),pch=6,col="gray",cex=0.3)
+points(log(as.numeric(dh_zeroline$V1)),log(abs(as.numeric(dh_zeroline$V4))),pch=6,col="gray",cex=0.3)
+points(log(as.numeric(di_zeroline$V1)),log(as.numeric(di_zeroline$V4)),pch=20,col="gray",cex=0.5)
+
+points(log(as.numeric(dfL6389p6388_zeroline$V1)),log(as.numeric(dfL6389p6388_zeroline$Z)),col=rgb(0,0,1,0.5),pch=20,cex=0.5)
+points(log(as.numeric(dfL6389p6388_LLL_zeroline$V1)),log(as.numeric(dfL6389p6388_LLL_zeroline$Z)),col=rgb(0,0,1,0.5),pch=20,cex=0.5)
+points(log(as.numeric(dfL6389p6388_LLL_zeroline_6389xapprox$V1)),log(as.numeric(dfL6389p6388_LLL_zeroline_6389xapprox$Z)),col=rgb(0,0,1,0.5),pch=20,cex=0.5)
+
+
+plot(log(as.numeric(dfzeta_zeroline$V2)),log(as.numeric(dfzeta_zeroline$V4)),pch=20,col="gray",cex=0.5,
+     xlim=c(log(1e0),log(1e25)),ylim=log(c(0.5,1e25)),
+     main="growth of the s=0+It line L6389p6388 L-function |Z| peaks \n log(|Z|*Nc/Nne0) vs log(sqrt((t/2/pi)^d*Nc)) plot",xlab="1/2*log(t/2/pi) value",ylab="log(|Z|*Nc/Nne0) value",cex.main=0.9);grid(col="gray2")
+points(log(as.numeric(df_zeroline$V2)),log(abs(as.numeric(df_zeroline$V4))),pch=6,col="gray",cex=0.3)
+points(log(as.numeric(dg_zeroline$V2)),log(abs(as.numeric(dg_zeroline$V4))),pch=6,col="gray",cex=0.3)
+points(log(as.numeric(dh_zeroline$V2)),log(abs(as.numeric(dh_zeroline$V4))),pch=6,col="gray",cex=0.3)
+points(log(as.numeric(di_zeroline$V2)),log(as.numeric(di_zeroline$V4)),pch=20,col="gray",cex=0.5)
+
+points(log(as.numeric(dfL6389p6388_zeroline$V2)),log(as.numeric(dfL6389p6388_zeroline$Z)*6389/6388),col=rgb(0,0,1,0.5),pch=20,cex=0.5)
+points(log(as.numeric(dfL6389p6388_LLL_zeroline$V2)),log(as.numeric(dfL6389p6388_LLL_zeroline$Z)*6389/6388),col=rgb(0,0,1,0.5),pch=20,cex=0.5)
+points(log(as.numeric(dfL6389p6388_LLL_zeroline_6389xapprox$V2)),log(as.numeric(dfL6389p6388_LLL_zeroline_6389xapprox$Z)*6389/6388),col=rgb(0,0,1,0.5),pch=20,cex=0.5)
+
+lines(seq(.1,50,by=.1),2.1656076+1.1459223*(seq(.1,50,by=.1)^av-1)/av,col="brown",lty=6)
+
+
+
+
+alpha_val=0.5
+
+
+
+
+
+dfL6389p6388=read.csv("/home/john/pari/largest_value_L6389p6388_every15segment.csv",header=FALSE,sep=",",colClasses = "character")
+dfL6389p6388=dfL6389p6388[order(as.numeric(dfL6389p6388$V1)),]
+dfL6389p6388$Z=as.numeric(dfL6389p6388$V4)
+dfL6389p6388$residual=as.numeric(dfL6389p6388$V3)
+dfL6389p6388$n=floor(as.numeric(dfL6389p6388$V2))
+
+dfL6389p6388_LLL=read.csv("/home/john/pari/LLL_search_location_L6389p6388_peak_heights.csv",header=FALSE,sep=",",colClasses = "character")
+dfL6389p6388_LLL=dfL6389p6388_LLL[order(as.numeric(dfL6389p6388_LLL$V1)),]
+dfL6389p6388_LLL$Z=as.numeric(dfL6389p6388_LLL$V4)
+dfL6389p6388_LLL$residual=as.numeric(dfL6389p6388_LLL$V3)
+dfL6389p6388_LLL$n=floor(as.numeric(dfL6389p6388_LLL$V2))
+
+dfL6389p6388_LLL_6389xapprox=read.csv("/home/john/pari/LLL_search_location_L6389p6388_peak_heights_6389xapprox.csv",header=FALSE,sep=",",colClasses = "character")
+dfL6389p6388_LLL_6389xapprox=dfL6389p6388_LLL_6389xapprox[order(as.numeric(dfL6389p6388_LLL_6389xapprox$V1)),]
+dfL6389p6388_LLL_6389xapprox$Z=as.numeric(dfL6389p6388_LLL_6389xapprox$V4)
+dfL6389p6388_LLL_6389xapprox$residual=as.numeric(dfL6389p6388_LLL_6389xapprox$V3)
+dfL6389p6388_LLL_6389xapprox$n=floor(as.numeric(dfL6389p6388_LLL_6389xapprox$V2))
+
+plot(log(as.numeric(df$V1)),log(df$Z),pch=20,col="gray",cex=0.5,
+     xlim=c(log(1e0),log(1e40)),ylim=log(c(0.5,100000)),
+     main="growth of largest L6389p6388 L-function |Z| peaks on critical line\n standard log(|Z|) vs log(t) plot",xlab="log(t) value",ylab="log(|Z|) value",cex.main=0.9);grid(col="gray2")
+points(log(as.numeric(df2$V1)),log(df2$Z),pch=20,col="gray",cex=0.5)
+points(log(as.numeric(df_kotnick_nodup$t)),log(abs(as.numeric(df_kotnick_nodup$Z))),pch=6,col="gray2",cex=0.3)
+points(log(as.numeric(dft$t)),log(abs(as.numeric(dft$Z))),pch=6,col="gray",cex=0.3)
+
+points(log(dfr$t),log(abs(dfr$Z)),pch=20,col="gray",cex=0.4)
+points(log(as.numeric(dgr$V1)),log(abs(as.numeric(dgr$V3))),pch=20,col="gray",cex=0.4)
+points(log(as.numeric(dhr$T)),log(abs(as.numeric(dhr$Z))),pch=20,col="gray",cex=0.4)
+
+points(log(as.numeric(di$V1)),log(abs(as.numeric(di$V4))),pch=6,col=rgb(0,1,1,0.2),cex=0.5)
+arrows(x0=log(as.numeric(di$V1)),y0=log(0.9*abs(as.numeric(di$V4))),x1=log(as.numeric(di$V1)),col=rgb(0,1,1,0.2),
+       y1=log(1.1*abs(as.numeric(di$V4))), length=0.02, angle=90, code=3)
+
+points(log(as.numeric(dilowerT$V1)),log(abs(as.numeric(dilowerT$V4))),col=rgb(0,1,1,0.2),pch=6,cex=0.5)
+arrows(x0=log(as.numeric(dilowerT$V1)),y0=log(0.9*abs(as.numeric(dilowerT$V4))),x1=log(as.numeric(dilowerT$V1)),col=rgb(0,1,1,0.2),
+       y1=log(1.1*abs(as.numeric(dilowerT$V4))), length=0.02, angle=90, code=3)
+points(log(as.numeric(dilowerT$V1)),log(abs(as.numeric(dilowerT$V5))),pch=20,col="gray",cex=0.4)
+
+
+
+points(log(as.numeric(dfL6389p6388$V1)),log(as.numeric(dfL6389p6388$Z)),col=rgb(0,0,1,0.5),pch=20,cex=0.5)
+points(log(as.numeric(dfL6389p6388_LLL$V1)),log(as.numeric(dfL6389p6388_LLL$Z)),col=rgb(0,0,1,0.5),pch=20,cex=0.5)
+points(log(as.numeric(dfL6389p6388_LLL_6389xapprox$V1)),log(as.numeric(dfL6389p6388_LLL_6389xapprox$Z)),col=rgb(0,0,1,0.5),pch=6,cex=0.5)
+
+
+
+plot(log(as.numeric(df$V2)),log(df$Z),pch=20,col="gray",cex=0.5,
+     xlim=c(log(1e0),log(1e25)),ylim=log(c(0.5,100000)),
+     main="growth of L6389p6388 L-function |Z| peaks on critical line \n log(|Z|*Nc/Nne0) vs log(sqrt((t/2/pi)^d*Nc)) plot",xlab="1/2*log(t/2/pi) value",ylab="log(|Z|*Nc/Nne0) value",cex.main=0.9);grid(col="gray2")
+points(log(as.numeric(df2$V2)),log(df2$Z),pch=20,col="gray",cex=0.5)
+points(log(sqrt(as.numeric(df_kotnick_nodup$t)/2/pi)),log(abs(as.numeric(df_kotnick_nodup$Z))),pch=6,col="gray2",cex=0.3)
+points(log(sqrt(as.numeric(dft$t)/2/pi)),log(abs(as.numeric(dft$Z))),pch=6,col="gray",cex=0.3)
+
+points(log(sqrt(dfr$t/2/pi)),log(abs(dfr$Z)),pch=20,col="gray",cex=0.4)
+points(log(sqrt(as.numeric(dgr$V1)/2/pi)),log(abs(as.numeric(dgr$V3))),pch=20,col="gray",cex=0.4)
+points(log(as.numeric(dhr$Q1)),log(abs(as.numeric(dhr$Z))),pch=20,col="gray",cex=0.4)
+
+
+points(log(as.numeric(di$V2)),log(abs(as.numeric(di$V4))),pch=6,col=rgb(0,1,1,0.2),cex=0.5)
+arrows(x0=log(as.numeric(di$V2)),y0=log(0.9*abs(as.numeric(di$V4))),x1=log(as.numeric(di$V2)),col=rgb(0,1,1,0.2),
+       y1=log(1.1*abs(as.numeric(di$V4))), length=0.02, angle=90, code=3)
+
+points(log(as.numeric(dilowerT$V2)),log(abs(as.numeric(dilowerT$V4))),col=rgb(0,1,1,0.2),pch=6,cex=0.5)
+arrows(x0=log(as.numeric(dilowerT$V2)),y0=log(0.9*abs(as.numeric(dilowerT$V4))),x1=log(as.numeric(dilowerT$V2)),col=rgb(0,1,1,0.2),
+       y1=log(1.1*abs(as.numeric(dilowerT$V4))), length=0.02, angle=90, code=3)
+points(log(as.numeric(dilowerT$V2)),log(abs(as.numeric(dilowerT$V5))),pch=20,col="gray",cex=0.4)
+
+
+
+points(log(as.numeric(dfL6389p6388$V2)),log(as.numeric(dfL6389p6388$Z)*6389/6388),col=rgb(0,0,1,0.5),pch=20,cex=0.5)
+points(log(as.numeric(dfL6389p6388_LLL$V2)),log(as.numeric(dfL6389p6388_LLL$Z)*6389/6388),col=rgb(0,0,1,0.5),pch=20,cex=0.5)
+points(log(as.numeric(dfL6389p6388_LLL_6389xapprox$V2)),log(as.numeric(dfL6389p6388_LLL_6389xapprox$Z)*6389/6388),col=rgb(0,0,1,0.5),pch=6,cex=0.5)
+
+lines(seq(.1,50,by=.1),1.274014+0.866363*(seq(.1,50,by=.1)^alpha_val-1)/alpha_val,col="brown2",lty=6)
+
+
+
+
+
+
+```
+\elandscape
+\restoregeometry
+
+\clearpage
+
+
 ## Testing equation (1) and (3) trend model estimates by assessing their performance at predicting $s=1+I\cdot t$ behaviour
 
-A second available method of assessing equation (1) and (3) trend model performance is by co-opting the Riemann Zeta functional equation to extract $s=1+I\cdot t$ extreme peak trend behaviour predictions and compare such predictions to observed $s=1+I\cdot t$ behaviour. Figure 13 displays this comparison as well as mapping the exact $s=0+I\cdot t$ peak heights to the $s=1+I\cdot t$ line shown as gray dots.
+A second available method of assessing equation (1) and (3) trend model performance is by co-opting the Riemann Zeta functional equation to extract $s=1+I\cdot t$ extreme peak trend behaviour predictions and compare such predictions to observed $s=1+I\cdot t$ behaviour. Figure 15 displays this comparison as well as mapping the exact $s=0+I\cdot t$ peak heights to the $s=1+I\cdot t$ line shown as gray dots.
 
 Given the Riemann Zeta functional equation [22-26]
 
@@ -2389,39 +3109,44 @@ and
 \end{equation}
 
 
-as shown when comparing equations (1) (brown dot-dashed line) and (3) (green dashed line) based estimates to predict $s=1+I\cdot t$ in figure 13.
+as shown when comparing equations (1) (brown dot-dashed line) and (3) (green dashed line) based estimates to predict $s=1+I\cdot t$ in figure 15.
 
 
-#### Highlights part 3
+#### Highlights part 4
 
 1. The close agreement between the gray dots and the coloured data points shows that the $s=0+I\cdot t$ peak heights are accurately mapped to the $s=1+I\cdot t$ peak heights via the functional equation behaviour.
 
-2. Equation (12) shows reasonable performance as a trend estimate for t < 1e18 but is inaccurate for t > 1e18
+2. Equation (15) shows reasonable performance as a trend estimate for t < 1e18 but is inaccurate for t > 1e18
 
-3. Equation (13) is an unphysical trend estimate predicting a constant extreme peak height for the $s=1+I\cdot t$ line
+3. Equation (16) is an unphysical trend estimate predicting a constant extreme peak height for the $s=1+I\cdot t$ line
 
 
 Numerically it is easy to see that 
 
 \begin{equation}
-|\mychi(1+I\cdot t)| \rightarrow \frac{1}{\sqrt{\frac{t}{2\pi}}}  \text{ for } t > \pi 
+|\mychi(1+I\cdot t)| \rightarrow \frac{1}{\sqrt{\frac{t}{2\pi}}} \qquad \text{ for } t > \pi 
 \end{equation}
 
 with four decimal place accuracy and rapidly improving.
 
 
-Hence re-examining equation (13)
+Hence re-examining equation (16)
 
 \begin{align}
 \Bigg[|Z_\zeta(1+I\cdot t)|_{max}\Bigg]_{\text{trend}} &\sim |\mychi(1+I\cdot t)|\cdot\exp\left[2.1656+\log{\left(\sqrt{\frac{t}{2\pi}}\right)}\right] \nonumber \\
-&\rightarrow \frac{1}{\sqrt{\frac{t}{2\pi}}}\cdot\exp[2.1656]\cdot\sqrt{\frac{t}{2\pi}} \\
-&= \exp[2.1656]
+&\rightarrow \frac{1}{\sqrt{\frac{t}{2\pi}}}\cdot\exp[2.1656]\cdot\sqrt{\frac{t}{2\pi}} \qquad  \text{ for } t > \pi \\
+&= \exp[2.1656] \qquad  \text{ for } t > \pi 
 \end{align}
 
 shows that constant amplitude behaviour of extreme peaks on $s=1+I\cdot t$ is the predicted (unphysical) behaviour of equation (3) when mapped to the $s=1+I\cdot t$ line.
 
 
-```{r comparing_onelinebehaviour_and_a_zerolinebasedtrendestimate, echo = FALSE,results = "asis", warning=FALSE,fig.height=7}
+
+
+
+
+
+```{r comparing_onelinebehaviour_and_a_zerolinebasedtrendestimate, echo = FALSE,results = "asis", warning=FALSE,fig.height=7,fig.cap="Observed |Z| versus log(t) scatterplot of (i) good precision extreme Riemann Siegel Z function peak heights on the $s=1+I\\cdot t$ line between 1e6 < t < 1e13 (red solid circles) equation (16) and (ii) preliminary extreme Riemann Siegel Z function peak heights between 1e6 < t < 1e40 based on spectral filtered heavily truncated Euler products based approximation method (v) overlayed by (I) dot-dashed brown line and green dashed line of two mapped trend estimates based on fitted $s=0+I\\cdot t$ extreme peak behaviour (equations (1) and (3)) and the known functional equation and (II) shown as gray points $s=0+I\\cdot t$ extreme peak heights transformed by the known functional equation"}
 
 df_oneline=read.csv("/home/john/pari/filtered_zetaEP_est_Sis_oneline_kotnickinitialvalue_approx_256.csv",header=FALSE,sep=",",colClasses = "character")
 
@@ -2461,12 +3186,223 @@ legend(x="topleft", legend=c("combined model equation (1) and functional equatio
 
 ```
 
-***Figure 13. Observed |Z| versus log(t) scatterplot of (i) good precision extreme Riemann Siegel Z function peak heights on the $s=1+I\cdot t$ line between 1e6 < t < 1e13 (red solid circles) equation (16) and (ii) preliminary extreme Riemann Siegel Z function peak heights between 1e6 < t < 1e40 based on spectral filtered heavily truncated Euler products based approximation method (v) overlayed by (I) dot-dashed brown line and green dashed line of two mapped trend estimates based on fitted $s=0+I\cdot t$ extreme peak behaviour (equations (1) and (3)) and the known functional equation and (II) shonw as gray points $s=0+I\cdot t$ extreme peak heights transformed by the known functional equation***
 
+## Assessing \textbf{self-dual} 1st degree L-function and Davenport-Heilbronn mapped extreme peak height $s=1+I\cdot t$ behaviour from $s=0+I\cdot t$ results using the L-function's functional equation
+
+Finally figure 16 maps the $s=0+I\cdot t$ |Z| data in figure 1 to the $s=1+I\cdot t$ line using the functional equations of the various \textbf{self-dual} L-functions (and Davenport-Heilbronn functions) overlayed by explicit $\zeta(1+I\cdot t)$ data.
+
+Using the functional equation of an L-function, 
+
+\begin{align}
+L(\chi_{N_c}(m,.),s) &= \mychi_L(s)\cdot \bar{L}(\chi_{N_c}(m,.),2k-s)
+\end{align}
+
+with critical line k=1/2
+
+\begin{align}
+L(\chi_{N_c}(m,.),1+I\cdot t) &= \mychi_L(1+I\cdot t)\cdot \bar{L}(\chi_{N_c}(m,.),1-(1+I\cdot t)) \\
+&=\mychi_L(1+I\cdot t)\cdot \bar{L}(\chi_{N_c}(m,.),0-I\cdot t) \\
+&=e^{-2\theta_{ext}(1+I\cdot t)}\cdot \bar{L}(\chi_{N_c}(m,.),0-I\cdot t)
+\end{align}
+
+The (unnormalised) Riemann Siegel Z function is therefore of the form for both the LHS and RHS of equations (21,23) 
+
+\begin{align}
+Z_L(\chi,1+I\cdot t) &\equiv e^{I\cdot\operatorname{Im}(\theta_{ext}(1+I\cdot t))}\cdot L(\chi_{N_c}(m,.),1+I\cdot t) \\
+&= e^{I\cdot\operatorname{Im}(\theta_{ext}(1+I\cdot t))}\cdot \mychi_L(1+I\cdot t)\cdot \bar{L}(\chi_{N_c}(m,.),1-(1+I\cdot t)) \\
+&=e^{I\cdot\operatorname{Im}(\theta_{ext}(1+I\cdot t))}\cdot e^{-2\theta_{ext}(1+I\cdot t)}\cdot \bar{L}(\chi_{N_c}(m,.),0-I\cdot t)
+\end{align}
+
+with the (unnormalised) property (shown using critical line k=1/2)
+
+\begin{equation}
+|Z_L(\chi,s)|\equiv|L(\chi,s)|=|\mychi_L(s)\cdot \bar{L}(\chi_{N_c}(m,.),1-s)|
+\end{equation}
+
+since estimating the extreme peak heights of $|L(\chi,s)|$ is the aim of the exercise. Using estimation methods (i-iii) in this paper, $|L(\chi,s)|$ is directly calculated off the critical line (and $Z_L$ on the critical line), however when using the spectral filtering based methods (iv) and (v), $Z_L(\chi,s)$ is required for calculation.)
+
+Using the multiplicative property of the absolute value on the field of complex numbers  $|z_1\cdot z_2|=|z_1|\cdot|z_2|$ [42-44]
+
+
+\begin{align}
+|Z_L(\chi,1+I\cdot t)| &= |e^{I\cdot\operatorname{Im}(\theta_{ext}(1+I\cdot t))}|\cdot |L(\chi_{N_c}(m,.),1+I\cdot t)| =  |L(\chi_{N_c}(m,.),1+I\cdot t)|\\
+&= |e^{I\cdot\operatorname{Im}(\theta_{ext}(1+I\cdot t))}\cdot \mychi_L(1+I\cdot t)\cdot \bar{L}(\chi_{N_c}(m,.),1-(1+I\cdot t))| \\
+&=|e^{I\cdot\operatorname{Im}(\theta_{ext}(1+I\cdot t))}|\cdot |\mychi_L(1+I\cdot t)|\cdot |\bar{L}(\chi_{N_c}(m,.),1-(1+I\cdot t))| \\
+&=|\mychi_L(1+I\cdot t)|\cdot |\bar{L}(\chi_{N_c}(m,.),1-(1+I\cdot t))|
+\end{align}
+
+Using the complex conjugate symmetry of 1st degree self-dual L-functions (shown using critical line k=1/2)
+
+\begin{align}
+\bar{L}_{\text{self-dual}}(\chi,1-s)=L_{\text{self-dual}}(\chi,1-s) \\
+|L(\chi,0-I\cdot t)|=|L(\chi,0+I\cdot t)|
+\end{align}
+
+Therefore, the magnitude of the Riemann Siegel Z function for self-dual L-functions $|Z_L\text{self-dual}(s_{UB})|$ on the upper boundary of the critical strip can be obtained from the magnitude of the Rieman Siegel Z function $|Z_L\text{self-dual}(s_{LB})|$ using the functional equation, equation (31), the complex conjugate symmetry of 1st degree self-dual L-functions and the multiplicative property of the absolute value on the field of complex numbers $|z_1\cdot z_2|=|z_1|\cdot|z_2|$ 
+
+\begin{align}
+|Z_L(\chi,1+I\cdot t)|_{\text{self-dual}} &= |L_{\text{self-dual}}(\chi_{N_c}(m,.),1+I\cdot t)| \\
+&= |\mychi_L(1+I\cdot t)|\cdot |\bar{L}_{\text{self-dual}}(\chi_{N_c}(m,.),1-(1+I\cdot t))| \\
+&= |\mychi_L(1+I\cdot t)|\cdot |L_{\text{self-dual}}(\chi_{N_c}(m,.),1-(1+I\cdot t))| ,  \\
+&\qquad \qquad \text { since } \bar{L}_{\text{self-dual}}(\chi,1-s)=L_{\text{self-dual}}(\chi,1-s) \nonumber \\
+&= |\mychi_L(1+I\cdot t)|\cdot |L_{\text{self-dual}}(\chi_{N_c}(m,.),0-I\cdot t)| \\
+&= |\mychi_L(1+I\cdot t)|\cdot |L_{\text{self-dual}}(\chi_{N_c}(m,.),0+I\cdot t)|,  \\
+&\qquad \qquad \text { since } |L_{\text{self-dual}}(\chi_{N_c}(m,.),0-I\cdot t)| = |L_{\text{self-dual}}(\chi_{N_c}(m,.),0+I\cdot t)| \nonumber
+\end{align}
+
+Where furthermore numerically for $t > \pi$, for the investigated 1st degree L-functions (and their Davenport-Heilbronn functions) 
+
+\begin{equation}
+|\mychi_L(1+I\cdot t)| \rightarrow \frac{1}{\sqrt{\left(\frac{t}{2\pi}\right)^1\cdot N_C}}, \text{ for } t > \pi
+\end{equation}
+
+so in the existing datasets of $s=0+I\cdot t$ results $|L_{\text{self-dual}}(\chi_{N_c}(m,.),0+I\cdot t)|$ and $\sqrt{\frac{t}{2\pi}\cdot N_C}$ are already available for easy mapping to $s=1+I\cdot t$ behaviour via equation (38).
+
+Thus in figure 16 it is shown 
+
+\begin{itemize}
+\item in the lefthand panel - the mapped 1st degree L-function peak heights are compared to \textbf{explicit} $\zeta(1+I\cdot t)$ data for extreme peak heights in the interval t < 1e30 using the first order universal growth chart plot
+
+$|\mychi_L(1+I\cdot t)|\cdot\left(|Z_L(0+I\cdot t)|\cdot\frac{Nc}{N_\chi\ne0}\right) \text{ vs } \log\left[\log\left(\sqrt{\left(\left(\frac{t}{2\pi}\right)^1*Nc\right)}\right)\right]$ 
+
+
+\item in the righthand panel - the mapped 5-periodic and 7-periodic Davenport-Heilbronn counterparts of 1st degree L-function peak heights are compared to \textbf{explicit} $\zeta(1+I\cdot t)$ data for extreme peak heights in the interval t < 1e30 using the first order universal growth chart plot
+
+$|\mychi_L(1+I\cdot t)|\cdot\left(|Z_L(0+I\cdot t)|\cdot\frac{Nc}{\sum_1^{N_C} |\chi_k|}\right) \text{ vs } \log\left[\log\left(\sqrt{\left(\left(\frac{t}{2\pi}\right)^1*Nc\right)}\right)\right]$
+
+\item in both panels - the mapped data from $|\zeta(0+I\cdot t)|$ (large gray discs) to high numerical precision superimposes onto the explicit $|\zeta(1+I\cdot t)|$ data (various coloured symbols).
+\end{itemize}
+
+Since both $s=0-I\cdot t$ and $s=0+I\cdot t$ data would be required to map the lower boundary of the critical strip to the upper boundary  for the dual pairs $L(\chi_5(3,.),s)$ & $L(\chi_5(2,.),s)$ and $L(\chi_7(5,.),s)$ [27], $L(\chi_7(3,.),s)$  and only $s=0+I\cdot t$ data was calculated and stored, the above non self-dual L-functions were not included in the lefthand panel of figure 16. Their Davenport-Heilbronn (D-H) counterparts are shown in the righthand panel however since these D-H functions have real coefficient Dirichlet Series and are therefore self-dual in nature.
+
+
+#### Highlights part 5
+
+\begin{enumerate}
+\item In the lefthand panel, there is good first order agreement between the \textbf{maximum} of the extreme peak heights of the mapped $s=0+I\cdot t$ peak heights of the L-function via the functional equation behaviour to the $s=1+I\cdot t$ peak heights explicitly calculated for $\zeta(1+I\cdot t)$.
+
+\item In the righthand panel, there is a gap between the \textbf{maximum} of the extreme peak heights of the mapped $s=0+I\cdot t$ peak heights of the examined 5-periodic and 7-periodic Davenport-Heilbronn 1st degree L-function counterparts via the functional equation behaviour to the $s=1+I\cdot t$ peak heights explicitly calculated for $\zeta(1+I\cdot t)$. In particular,
+
+\subitem (i) in the transformed universal growth chart reference frame the Davenport-Heilbronn counterpart functions have lower extreme peak heights on $s=1+I\cdot t$ and $s=0+I\cdot t$ for t < 1e30 than $\zeta(1+I\cdot t)$ and $\zeta(0+I\cdot t)$. (In figure 2 it was visually much harder to assess the qualitative difference in extreme peak height because of the much faster growth rate for $s=0+I\cdot t$ compared to the slow growth along $s=1+I\cdot t$ in figure 16.)
+\subitem (ii) in the transformed universal growth chart frame the $f_2(1+I\cdot t)$ and $f_3(1+I\cdot t)$ for t < 1e30 have lower extreme peak heights than  $f_1(1+I\cdot t)$ and $f_4(1+I\cdot t)$ respectively. (It is noted for the record that there is already empirical evidence for low t [29-31], that the density of $f_1(1+I\cdot t)$ and $f_4(1+I\cdot t)$ off-critical line non-trivial zeroes is lower than for $f_2(1+I\cdot t)$ and $f_3(1+I\cdot t)$ respectively.)
+\subitem (iii) in figure 16 the graphical evidence indicates that adjusting for the gap between the $\zeta(1+I\cdot t)$ behaviour and the Davenport-Heilbronn functions behaviour for extreme peak heights would require a functional dependence on t (not an additional constant numerical factor).
+\end{enumerate}
+
+
+
+
+
+\newgeometry{top=0.5in,bottom=0.5in,left=0.5in,right=0.5in}
+\blandscape
+```{r highest_peaks_in_sequence_distribution_by_normalised_position_N_transformed_to_s_equals_1_line, echo=FALSE, warning=FALSE, out.width=c("49%","49%"), fig.show = "hold",   fig.align = "center", fig.cap="Rescaled XY axes overlay of the growth behaviour of extreme Riemann Siegel Z function peak heights |Z| for different 1st degree \\textbf{self-dual} L-functions in the interval t < 1e30 mapped from the $s=0+I\\cdot t$ line to the $s=1+I\\cdot t$ line and compared to $\\zeta(1+I\\cdot t)$ extreme peak behaviour. The |Z| values on the Y axis are scaled by the ratio of the (L-function conductor value)/(number of non-zero dirichlet characters mod Nc) i.e. $log(|Z|\\cdot\\frac{N_C}{N_{\\chi \\ne 0}})$. (For the n-periodic Davenport-Heilbronn functions $log(|Z|\\cdot\\frac{n}{\\sum_{k=1}^n |\\chi_k|})$ (where n=5,7 for the investigated self-dual D-H functions in this paper) is used for Y axis rescaling.) The X axis is transformed by the first quiescent region value of the L-function and hence the displayed scale is  $log(log(\\sqrt{(\\frac{t}{2\\pi})^{1}\\cdot N_C}))$.", fig.height=8}
+
+
+plot(log(as.numeric(dfzeta_zeroline$V2)),as.numeric(dfzeta_zeroline$V5)/(as.numeric(dfzeta_zeroline$V2)),pch=20,col="gray",cex=0.5,
+     xlim=c(log(1e0)+.5,log(1e30)),ylim=(c(0,12.5)),log="x",
+     main="Scaled growth behaviour using s=0+It data mapped to s=1+It largest Riemann Siegel |Z| peaks for several 1st degree self-dual L-functions \n using a log(sqrt((t/2/pi)^1*Nc)) x-axis and (inversely) adjusting the y axis for the proportion of non-zero dirichlet characters.",xlab="log(log(sqrt((t/2/pi)^1*Nc))) scale",ylab="adj peak height = (|Z|*Nc/Nne0) scale",cex.main=0.5);grid(col="gray2")
+points(log(as.numeric(df_zeroline$V2)),(abs(as.numeric(df_zeroline$V4)))/(as.numeric(df_zeroline$V2)),pch=6,col="gray",cex=0.3)
+points(log(as.numeric(dg_zeroline$V2)),(abs(as.numeric(dg_zeroline$V4)))/(as.numeric(dg_zeroline$V2)),pch=6,col="gray",cex=0.3)
+points(log(as.numeric(dh_zeroline$V2)),(abs(as.numeric(dh_zeroline$V4)))/(as.numeric(dh_zeroline$V2)),pch=6,col="gray",cex=0.3)
+points(log(as.numeric(di_zeroline$V2)),abs(as.numeric(di_zeroline$V4))/(as.numeric(di_zeroline$V2)),pch=20,col="gray",cex=0.5)
+
+points(log(as.numeric(df_oneline$V2)),abs(as.numeric(df_oneline$V5)),pch=20,col="red",cex=0.8)
+points(log(as.numeric(dg_oneline$V2)),as.numeric(dg_oneline$V4),pch=4,col="green",cex=0.8)
+points(log(as.numeric(dh_oneline$V2)),as.numeric(dh_oneline$V4),pch=4,col="darkblue",cex=0.8)
+points(log(as.numeric(di_oneline$V2)),as.numeric(di_oneline$V4),pch=6,col="magenta",cex=0.8)
+
+
+
+points(log(as.numeric(dfL32_zeroline$V2)),as.numeric(dfL32_zeroline$V4)*3/2/(as.numeric(dfL32_zeroline$V2)),col=rgb(1,0,0,0.5),pch=20,lty=1,cex=0.05)
+points(log(as.numeric(dfL32_LLL_zeroline$V2)),as.numeric(dfL32_LLL_zeroline$V4)*3/2/(as.numeric(dfL32_LLL_zeroline$V2)),col=rgb(1,0,0,0.5),pch=20,lty=1,cex=0.05)
+points(log(as.numeric(dfL32_LLL_zeroline_3xapprox$V2)),as.numeric(dfL32_LLL_zeroline_3xapprox$V4)*3/2/(as.numeric(dfL32_LLL_zeroline_3xapprox$V2)),col=rgb(1,0,0,0.5),pch=6,lty=1,cex=0.05)
+points(log(as.numeric(dfL43_zeroline$V2)),as.numeric(dfL43_zeroline$V4)*4/2/(as.numeric(dfL43_zeroline$V2)),col=rgb(0,0,1,0.5),pch=20,lty=1,cex=0.05)
+points(log(as.numeric(dfL43_LLL_zeroline$V2)),as.numeric(dfL43_LLL_zeroline$V4)*4/2/(as.numeric(dfL43_LLL_zeroline$V2)),col=rgb(0,0,1,0.5),pch=20,lty=1,cex=0.05)
+points(log(as.numeric(dfL43_LLL_zeroline_4xapprox$V2)),as.numeric(dfL43_LLL_zeroline_4xapprox$V4)*4/2/(as.numeric(dfL43_LLL_zeroline_4xapprox$V2)),col=rgb(0,0,1,0.5),pch=6,lty=1,cex=0.05)
+points(log(as.numeric(dfL54_zeroline$V2)),as.numeric(dfL54_zeroline$V4)*5/4/(as.numeric(dfL54_zeroline$V2)),col=rgb(1,0,1,0.5),pch=20,lty=1,cex=0.05)
+points(log(as.numeric(dfL54_LLL_zeroline$V2)),as.numeric(dfL54_LLL_zeroline$V4)*5/4/(as.numeric(dfL54_LLL_zeroline$V2)),col=rgb(1,0,1,0.5),pch=20,lty=1,cex=0.05)
+points(log(as.numeric(dfL54_LLL_zeroline_5xapprox$V2)),as.numeric(dfL54_LLL_zeroline_5xapprox$V4)*5/4/(as.numeric(dfL54_LLL_zeroline_5xapprox$V2)),col=rgb(1,0,1,0.5),pch=6,lty=1,cex=0.05)
+
+
+points(log(as.numeric(dfL76_zeroline$V2)),as.numeric(dfL76_zeroline$V4)*7/6/(as.numeric(dfL76_zeroline$V2)),col=rgb(0.5,1,0.5,0.5),pch=20,lty=1,cex=0.05)
+points(log(as.numeric(dfL76_LLL_zeroline$V2)),as.numeric(dfL76_LLL_zeroline$V4)*7/6/(as.numeric(dfL76_LLL_zeroline$V2)),col=rgb(0.5,1,0.5,0.5),pch=20,lty=1,cex=0.05)
+points(log(as.numeric(dfL75_zeroline$V2)),as.numeric(dfL75_zeroline$V4)*7/6/(as.numeric(dfL75_zeroline$V2)),col=rgb(0.55,0.45,1,0.5),pch=20,lty=1,cex=0.05)
+
+
+points(log(as.numeric(dfL37p36_zeroline$V2)),as.numeric(dfL37p36_zeroline$V4)*37/36/(as.numeric(dfL37p36_zeroline$V2)),col=rgb(1,0.498,0.314,0.5),pch=20,lty=1,cex=0.05)
+points(log(as.numeric(dfL37p36_LLL_zeroline$V2)),as.numeric(dfL37p36_LLL_zeroline$V4)*37/36/(as.numeric(dfL37p36_LLL_zeroline$V2)),col=rgb(1,0.498,0.314,0.5),pch=20,lty=1,cex=0.05)
+points(log(as.numeric(dfL37p36_LLL_zeroline_37xapprox$V2)),as.numeric(dfL37p36_LLL_zeroline_37xapprox$V4)*37/36/(as.numeric(dfL37p36_LLL_zeroline_37xapprox$V2)),col=rgb(1,0.498,0.314,0.5),pch=6,lty=1,cex=0.05)
+points(log(as.numeric(dfL51p50_zeroline$V2)),as.numeric(dfL51p50_zeroline$V4)*51/32/(as.numeric(dfL51p50_zeroline$V2)),col=rgb(1,0.843,0.,0.5),pch=20,lty=1,cex=0.05)
+points(log(as.numeric(dfL51p50_LLL_zeroline$V2)),as.numeric(dfL51p50_LLL_zeroline$V4)*51/32/(as.numeric(dfL51p50_LLL_zeroline$V2)),col=rgb(1,0.843,0.,0.5),pch=20,lty=1,cex=0.05)
+points(log(as.numeric(dfL51p50_LLL_zeroline_51xapprox$V2)),as.numeric(dfL51p50_LLL_zeroline_51xapprox$V4)*51/32/(as.numeric(dfL51p50_LLL_zeroline_51xapprox$V2)),col=rgb(1,0.843,0.,0.5),pch=6,lty=1,cex=0.05)
+
+points(log(as.numeric(dfL5704p2851_zeroline$V2)),as.numeric(dfL5704p2851_zeroline$V4)*5704/2640/(as.numeric(dfL5704p2851_zeroline$V2)),col=rgb(1,0,0,0.5),pch=20,lty=1,cex=0.05)
+points(log(as.numeric(dfL5704p2851_LLL_zeroline$V2)),as.numeric(dfL5704p2851_LLL_zeroline$V4)*5704/2640/(as.numeric(dfL5704p2851_LLL_zeroline$V2)),col=rgb(1,0,0,0.5),pch=20,lty=1,cex=0.05)
+points(log(as.numeric(dfL5704p2851_LLL_zeroline_5704xapprox$V2)),as.numeric(dfL5704p2851_LLL_zeroline_5704xapprox$V4)*5704/2640/(as.numeric(dfL5704p2851_LLL_zeroline_5704xapprox$V2)),col=rgb(1,0,0,0.5),pch=6,lty=1,cex=0.05)
+points(log(as.numeric(dfL6389p6388_zeroline$V2)),as.numeric(dfL6389p6388_zeroline$V4)*6389/6388/(as.numeric(dfL6389p6388_zeroline$V2)),col=rgb(0,0,1,0.5),pch=20,lty=1,cex=0.05)
+points(log(as.numeric(dfL6389p6388_LLL_zeroline$V2)),as.numeric(dfL6389p6388_LLL_zeroline$V4)*6389/6388/(as.numeric(dfL6389p6388_LLL_zeroline$V2)),col=rgb(0,0,1,0.5),pch=20,lty=1,cex=0.05)
+points(log(as.numeric(dfL6389p6388_LLL_zeroline_6389xapprox$V2)),as.numeric(dfL6389p6388_LLL_zeroline_6389xapprox$V4)*6389/6388/(as.numeric(dfL6389p6388_LLL_zeroline_6389xapprox$V2)),col=rgb(0,0,1,0.5),pch=6,lty=1,cex=0.05)
+
+
+
+
+lines(log(as.numeric(df_oneline_zerolinebasedtrend_prediction$V2)),as.numeric(df_oneline_zerolinebasedtrend_prediction$V4),col="brown",lty=6)
+
+
+legend(x="topleft",legend=c("(various colours) Zeta fn x 1/1, largest peak every piecewise interval t=[N^2*2*Pi,(N+1)^2*2*Pi) for N={0-3636}, then near known critical line locations","L32 fn x 3/2, largest peak every interval t=[N^2*2*Pi/3,(N+1)^2*2*Pi/3) for N={0-1000}, then LLL search locations","L43 fn x 4/2, largest peak every interval t=[N^2*2*Pi/4,(N+1)^2*2*Pi/4) for N={0-1000}, then LLL search locations","L54 fn x 5/4, largest peak every interval t=[N^2*2*Pi/5,(N+1)^2*2*Pi/5) for N={0-1000}, then LLL search locations","L76 fn x 7/6, largest peak every interval t=[N^2*2*Pi/7,(N+1)^2*2*Pi/7) for N={0-1000}, then LLL search locations","L37p36 fn x 37/36, largest peak every interval t=[N^2*2*Pi/37,(N+1)^2*2*Pi/37) for N={0-1000}, then LLL search locations","L51p50 fn x 51/32, largest peak every interval t=[N^2*2*Pi/51,(N+1)^2*2*Pi/51) for N={0-1000}, then LLL search locations","L5704p2851 fn x 5704/2640, largest peak every interval Delta t=10*pi*j for j={0-21}, then LLL search locations","L6389p6388 fn x 6389/6388, largest peak every interval Delta t=15*j for j={0-52}, then LLL search locations"),cex=0.45,bty="n",
+       pch=c(rep(20,9)),col=c("gray","red",rgb(0,0,1,1),rgb(1,0,1,1),rgb(0.5,1,0.5,1),rgb(1,0.498,0.314,1),rgb(1,0.843,0.,1),rgb(1,0,0,0.5),rgb(0,0,1,0.5)))
+
+legend(x="bottomleft", legend=c("combined model equation (1) and functional equation based trend estimate"),pch=c(-1,-1),col=c("brown"),lty=c(6,2),bty="n",bg="white",cex=0.5)
+
+
+plot(log(as.numeric(dfzeta_zeroline$V2)),as.numeric(dfzeta_zeroline$V5)/(as.numeric(dfzeta_zeroline$V2)),pch=20,col="gray",cex=0.5,
+     xlim=c(log(1e0)+.5,log(1e30)),ylim=(c(0,12.5)),log="x",
+     main="Scaled growth behaviour using s=0+It data mapped to s=1+It largest Riemann Siegel |Z| peaks for several 1st degree \n Davenport-Heilbronn counterparts of L-functions using a log(log(sqrt((t/2/pi)^1*Nc))) x-axis and \n (inversely) adjusting the y axis using the ratio of the sum of their non-zero dirichlet characters and Nc.",xlab="log(log(sqrt((t/2/pi)^1*Nc))) scale",ylab="adj peak height = (|Z|*Nc/sum(|chi_k|)) scale",cex.main=0.5);grid(col="gray2")
+points(log(as.numeric(df_zeroline$V2)),(abs(as.numeric(df_zeroline$V4)))/(as.numeric(df_zeroline$V2)),pch=6,col="gray",cex=0.3)
+points(log(as.numeric(dg_zeroline$V2)),(abs(as.numeric(dg_zeroline$V4)))/(as.numeric(dg_zeroline$V2)),pch=6,col="gray",cex=0.3)
+points(log(as.numeric(dh_zeroline$V2)),(abs(as.numeric(dh_zeroline$V4)))/(as.numeric(dh_zeroline$V2)),pch=6,col="gray",cex=0.3)
+points(log(as.numeric(di_zeroline$V2)),abs(as.numeric(di_zeroline$V4))/(as.numeric(di_zeroline$V2)),pch=20,col="gray",cex=0.5)
+
+points(log(as.numeric(df_oneline$V2)),abs(as.numeric(df_oneline$V5)),pch=20,col="red",cex=0.8)
+points(log(as.numeric(dg_oneline$V2)),as.numeric(dg_oneline$V4),pch=4,col="green",cex=0.8)
+points(log(as.numeric(dh_oneline$V2)),as.numeric(dh_oneline$V4),pch=4,col="darkblue",cex=0.8)
+points(log(as.numeric(di_oneline$V2)),as.numeric(di_oneline$V4),pch=6,col="magenta",cex=0.8)
+
+points(log(as.numeric(dfDHf1_zeroline$V2)),as.numeric(dfDHf1_zeroline$V4)*5/2.568/(as.numeric(dfDHf1_zeroline$V2)),col=rgb(1,127/255,80/255,1),pch=20,lty=1,cex=0.05)#6.5/5.25*
+points(log(as.numeric(dfDHf1_LLL_zeroline$V2)),as.numeric(dfDHf1_LLL_zeroline$V4)*5/2.568/(as.numeric(dfDHf1_LLL_zeroline$V2)),col=rgb(1,127/255,80/255,1),pch=20,lty=1,cex=0.05)#6.5/5.25*
+points(log(as.numeric(dfDHf1_LLL_zeroline_5xapprox$V2)),as.numeric(dfDHf1_LLL_zeroline_5xapprox$V4)*5/2.568/(as.numeric(dfDHf1_LLL_zeroline_5xapprox$V2)),col=rgb(1,127/255,80/255,1),pch=6,lty=1,cex=0.05)#6.5/5.25*
+points(log(as.numeric(dfDHf1_LLL_zeroline_highest_5xapprox$V2)),as.numeric(dfDHf1_LLL_zeroline_highest_5xapprox$V4)*5/2.568/(as.numeric(dfDHf1_LLL_zeroline_highest_5xapprox$V2)),col=rgb(1,127/255,80/255,1),pch=6,lty=1,cex=0.05)#6.5/5.25*
+
+points(log(as.numeric(dfDHf2_zeroline$V2)),as.numeric(dfDHf2_zeroline$V4)*5/9.04/(as.numeric(dfDHf2_zeroline$V2)),col=rgb(1,0,0,0.5),pch=20,lty=1,cex=0.05)#6.5/4.75*
+points(log(as.numeric(dfDHf2_LLL_zeroline$V2)),as.numeric(dfDHf2_LLL_zeroline$V4)*5/9.04/(as.numeric(dfDHf2_LLL_zeroline$V2)),col=rgb(1,0,0,0.5),pch=20,lty=1,cex=0.05)#6.5/4.75*
+points(log(as.numeric(dfDHf2_LLL_zeroline_5xapprox$V2)),as.numeric(dfDHf2_LLL_zeroline_5xapprox$V4)*5/9.04/(as.numeric(dfDHf2_LLL_zeroline_5xapprox$V2)),col=rgb(1,0,0,0.5),pch=6,lty=1,cex=0.05)#6.5/4.75*
+points(log(as.numeric(dfDHf2_LLL_zeroline_highest_5xapprox$V2)),as.numeric(dfDHf2_LLL_zeroline_highest_5xapprox$V4)*5/9.04/(as.numeric(dfDHf2_LLL_zeroline_highest_5xapprox$V2)),col=rgb(1,0,0,0.5),pch=6,lty=1,cex=0.05)#6.5/4.75*
+
+points(log(as.numeric(dfDHf4_zeroline$V2)),(as.numeric(dfDHf4_zeroline$V4)*7/4.3042576)/(as.numeric(dfDHf4_zeroline$V2)),col=rgb(0,0,1,0.5),pch=20,lty=1,cex=0.05)
+points(log(as.numeric(dfDHf4_LLL_zeroline$V2)),(as.numeric(dfDHf4_LLL_zeroline$V4)*7/4.3042576)/(as.numeric(dfDHf4_LLL_zeroline$V2)),col=rgb(0,0,1,0.5),pch=20,lty=1,cex=0.05)
+points(log(as.numeric(dfDHf4_LLL_zeroline_7xapprox$V2)),(as.numeric(dfDHf4_LLL_zeroline_7xapprox$V4)*7/4.3042576)/(as.numeric(dfDHf4_LLL_zeroline_7xapprox$V2)),col=rgb(0,0,1,0.5),pch=6,lty=1,cex=0.05)
+points(log(as.numeric(dfDHf4_LLL_zeroline_highest_7xapprox$V2)),(as.numeric(dfDHf4_LLL_zeroline_highest_7xapprox$V4)*7/4.3042576)/(as.numeric(dfDHf4_LLL_zeroline_highest_7xapprox$V2)),col=rgb(0,0,1,0.5),pch=6,lty=1,cex=0.05)
+points(log(as.numeric(dfDHf3_zeroline$V2)),(as.numeric(dfDHf3_zeroline$V4)*7/7.2077509)/(as.numeric(dfDHf3_zeroline$V2)),col=rgb(0,1,0,0.5),pch=20,lty=1,cex=0.05)
+points(log(as.numeric(dfDHf3_LLL_zeroline$V2)),(as.numeric(dfDHf3_LLL_zeroline$V4)*7/7.2077509)/(as.numeric(dfDHf3_LLL_zeroline$V2)),col=rgb(0,1,0,0.5),pch=20,lty=1,cex=0.05)
+points(log(as.numeric(dfDHf3_LLL_zeroline_7xapprox$V2)),(as.numeric(dfDHf3_LLL_zeroline_7xapprox$V4)*7/7.2077509)/(as.numeric(dfDHf3_LLL_zeroline_7xapprox$V2)),col=rgb(0,1,0,0.5),pch=6,lty=1,cex=0.05)
+points(log(as.numeric(dfDHf3_LLL_zeroline_highest_7xapprox$V2)),(as.numeric(dfDHf3_LLL_zeroline_highest_7xapprox$V4)*7/7.2077509)/(as.numeric(dfDHf3_LLL_zeroline_highest_7xapprox$V2)),col=rgb(0,1,0,0.5),pch=6,lty=1,cex=0.05)
+
+lines(log(as.numeric(df_oneline_zerolinebasedtrend_prediction$V2)),as.numeric(df_oneline_zerolinebasedtrend_prediction$V4),col="brown",lty=6)
+
+legend(x="topleft",legend=c("(various colours) Zeta fn x 1/1, largest peak every piecewise interval t=[N^2*2*Pi,(N+1)^2*2*Pi) for N={0-3636}, then near known critical line locations"),cex=0.45,bty="n",
+       pch=c(rep(20,1)),col=c("gray"))
+legend(x="bottomright",legend=c("DHf1 fn x 5/2.568, largest peak every interval t=[N^2*2*Pi/5,(N+1)^2*2*Pi/5) for N={0-1000}, then LLL search locations","DHf2 fn x 5/9.04, largest peak every interval t=[N^2*2*Pi/5,(N+1)^2*2*Pi/5) for N={0-1000}, then LLL search locations","DHf3 fn x 7/7.2077509, largest peak every interval t=[N^2*2*Pi/7,(N+1)^2*2*Pi/7) for N={0-1000}, then LLL search locations","DHf4 fn x 7/4.3042576, largest peak every interval t=[N^2*2*Pi/7,(N+1)^2*2*Pi/7) for N={0-1000}, then LLL search locations"),cex=0.45,bty="n",
+       pch=c(rep(20,4)),col=c(rgb(1,127/255,80/255,1),rgb(1,0,0,1),rgb(0,1,0,1),rgb(0,0,1,1)))
+
+```
+\elandscape
+\restoregeometry
+
+
+\clearpage
 
 ##Conclusions
 
-A method for re-scaling the growth behaviour of extreme Riemann Siegel Z function of 1st degree L-functions with non-zero dirichlet characters of magnitude unity $|\chi|=1$ is demonstrated to work on the $s=0+I\cdot t$ in addition to previously reported critical line behaviour. Using a mapping from the $s=0+I\cdot t$ line to the $s=1+I\cdot t$ line, two simple candidate trend growth formula for extreme Riemann Siegel Z function peaks of the Riemann Zeta function fitted to $s=0+I\cdot t$ data are shown to have obvious deficiencies. 
+A method for re-scaling the growth behaviour of extreme Riemann Siegel Z function of 1st degree L-functions with non-zero dirichlet characters of magnitude unity $|\chi|=1$ is demonstrated to work on the $s=0+I\cdot t$ in addition to previously reported critical line behaviour. The re-scaling method is also shown to work for two large $N_C=\{5704,6389\}$ self-dual L-functions. Using a mapping from the $s=0+I\cdot t$ line to the $s=1+I\cdot t$ line, two simple candidate trend growth formula for extreme Riemann Siegel Z function peaks of the Riemann Zeta function fitted to $s=0+I\cdot t$ data are shown to have obvious deficiencies. 
 
 
 ##Supplementary Material
@@ -2500,7 +3436,7 @@ For files containing data from references there are typically column headers.
 ##References
 
 1. Brent, R.P. (1979) "On the zeros of the Riemann zeta function in the critical strip" Math. Comp. 33 , p1361-1372
-DOI: https://doi.org/10.1090/S0025-5718-1979-0537983-2
+DOI: \url{https://doi.org/10.1090/S0025-5718-1979-0537983-2}
 
 2. Brent R.P., van de Lune J., te Riele H.J.J. and Winter D.T. (1982) "On the Zeros of the Riemann Zeta function in the Critical Strip. II" Mathematics of Computation, Volume 39, Number 160, October 1982, Pages 681-688
 
@@ -2512,7 +3448,7 @@ DOI: https://doi.org/10.1090/S0025-5718-1979-0537983-2
 
 6. Odlyzko, A. M. "On the Distribution of Spacings Between Zeros of the Zeta Function", (1987) Mathematics of Computation Vol 48, no. 177, 1987, pages 273-308 
 
-7. Odlyzko, A.M. "The $10^{20}$-th zero of the Riemann Zeta function and 175 million of its neighbors". (1988) http://www.dtc.umn.edu/~odlyzko/unpublished/
+7. Odlyzko, A.M. "The $10^{20}$-th zero of the Riemann Zeta function and 175 million of its neighbors". (1988) \url{http://www.dtc.umn.edu/~odlyzko/unpublished/}
 
 8. Odlyzko A.M. "The $10^{22}$-nd zero of the Riemann zeta function, Dynamical, Spectral, and
 Arithmetic Zeta Functions"  (2001) Amer. Math. Soc., Contemporary Math. series, no. 290,
@@ -2522,7 +3458,7 @@ Arithmetic Zeta Functions"  (2001) Amer. Math. Soc., Contemporary Math. series, 
 table of maximum Riemann Zeta peaks http://numbers.computation.free.fr/Constants/Miscellaneous/MaxiZAll.txt
 
 10. Gourdon X. "The $10^{13}$-th first zeros of the Riemann Zeta function and zeros computation at very large height" (2004)
-http://numbers.computation.free.fr/Constants/Miscellaneous/zetazeros1e13-1e24.pdf
+\url{http://numbers.computation.free.fr/Constants/Miscellaneous/zetazeros1e13-1e24.pdf}
 
 11. Kotnick T., "COMPUTATIONAL ESTIMATION OF THE ORDER OF $\zeta$(1/2+it)" (2003) MATHEMATICS OF COMPUTATION, Volume 73, Number 246, Pages 949–956 S 0025-5718(03)01568-0
 
@@ -2543,13 +3479,13 @@ https://doi.org/10.1007/s10723-017-9416-0
 18. Tihanyi N. "Numerical computing of extremely large values of the Riemann-Siegel Z-function" (2019) Doctoral Thesis, Eötvös Loránd University
 
 19. Martin, J.P.D. "Preliminary estimates of extreme Riemann Zeta function peak heights with $\pm 10\%$ accuracy on the critical line using spectrally filtered heavily truncated partial Euler Product calculations" (2026) 
-http://dx.doi.org/10.6084/m9.figshare.31990179
+\url{http://dx.doi.org/10.6084/m9.figshare.31990179}
 
 20. Martin, J.P.D. "Preliminary estimates of extreme Riemann Zeta function peak heights on three lines $s=\{0+I\cdot t, 1+I\cdot t, 1.5+I\cdot t\}$ away from the real axis with $\pm 1\%, \pm 1\%, \pm 0.1\%$ accuracy for $10^{12} < t < 10^{40}$ using spectrally filtered heavily truncated partial Euler Product calculations." (2026)
-http://dx.doi.org/10.6084/m9.figshare.32129782
+\url{http://dx.doi.org/10.6084/m9.figshare.32129782}
 
 21. Martin, J.P.D. "A first order universal growth chart on the critical line for periodic 1st degree Dirichlet character L-functions and a phenomenological model for trend growth of the known Riemann Zeta extreme peak heights." (2026)
-http://dx.doi.org/10.6084/m9.figshare.32736930
+\url{http://dx.doi.org/10.6084/m9.figshare.32736930}
 
 22. Riemann, Bernhard (1859). "$\ddot{U}$ber die Anzahl der Primzahlen unter einer gegebenen Gr$\ddot{o}$sse". Monatsberichte der Berliner Akademie.. In Gesammelte Werke, Teubner, Leipzig (1892), Reprinted by Dover, New York (1953).
 
@@ -2572,11 +3508,11 @@ October 1994, Pages 747-748
 Volume 76, Number 260, October 2007, Pages 2045–2049
 
 30. E. Bombieri, A. Ghosh, “Around the Davenport–Heilbronn function”, Uspekhi Mat. Nauk, 66:2(398) (2011), 15–66; Russian Math. Surveys, 66:2 (2011), 221–270
-https://doi.org/10.4213/rm9410 
+\url{https://doi.org/10.4213/rm9410} 
 IAS lecture https://www.youtube.com/watch?v=-JUHypc2_9A
 
 31. Martin, J.P.D. "7-, \& 9-periodic dual Davenport Heilbronn counterexamples are derived for the corresponding Degree 1 dual L-functions pairs given in https://www.lmfdb.org/L/degree1." (2020)
-http://dx.doi.org/10.6084/m9.figshare.11675877
+\url{http://dx.doi.org/10.6084/m9.figshare.11675877}
 
 32.  Keiper, J. B. "On the Zeros of the Ramanujan $tau$-Dirichlet Series in the Critical Strip." Mathematics of Computation 65, no. 216 (1996): 1613-619. Accessed February 10, 2021. http://www.jstor.org/stable/2153727.
 
@@ -2591,14 +3527,20 @@ R Foundation for Statistical Computing, Vienna, Austria. \url{https://www.R-proj
 36. RStudio Team (2015). RStudio: Integrated Development for R. RStudio, Inc., Boston, MA \url{http://www.rstudio.com/}.
 
 37. Box, G. E. P., & Cox, D. R. (1964). An analysis of transformations. Journal of the Royal Statistical Society: Series B (Methodological), 26(2), 211–252. 
-https://www.jstor.org/stable/2984418
+\url{https://www.jstor.org/stable/2984418}
 
 38. Venables, W. N. & Ripley, B. D. (2002) Modern Applied Statistics with S. Fourth Edition. Springer, New York. ISBN 0-387-95457-0
 
 39. Gosper, R. W. "harmonic summation and exponential gfs." math-fun@cs-arizona.edu posting, Aug 2, 1996
 
 40. Sondow, J. and Weisstein, E. W. "Harmonic Number." From MathWorld--A Wolfram Resource. 
-https://mathworld.wolfram.com/HarmonicNumber.html
+\url{https://mathworld.wolfram.com/HarmonicNumber.html}
 
 41. Deligne, P. "La conjecture de Weil : I." Publications Mathématiques de l'IHÉS 43 (1974): 273–307. 
-https://doi.org/10.1007/BF02684373
+\url{https://doi.org/10.1007/BF02684373}
+
+42. Rudin, W. "Principles of Mathematical Analysis." (1976) 3rd Edition, McGraw-Hill, New York, Chapter 1, pp.14-15, Theorem 1.33 part (c)
+
+43. Brown J.W. and Churchill R.V. "Complex Variables and Applications" (2008) 8th Edition, McGraw-Hill Chapter 1
+
+44. Wikipedia contributors. (2026, June 16). Brahmagupta–Fibonacci identity. Section "Multiplication of complex numbers".  In Wikipedia, The Free Encyclopedia. Retrieved 02:41, August 27, 2026, from \url{https://en.wikipedia.org/w/index.php?title=Brahmagupta%E2%80%93Fibonacci_identity&oldid=1359602387}
